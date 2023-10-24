@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import Content from '../components/Content';
 import ReactionOptionsBottomSheet from './ReactionOptionsBottomSheet';
 import CommentInputBottomSheet from './CommentInputBottomSheet';
+import OtherActionsBottomSheet from './OtherActionsBottomSheet';
 import BottomMenu from '../components/BottomMenu';
 // import ReactionOptions from '../compoReactionOptions';
 import Comments from './Comments';
@@ -21,6 +22,7 @@ const ViewPost = (props) => {
   const mediaRefs = useRef([]);
   const reactionStatusesBottomSheetRef = useRef(null);
   const commentInputBottomSheetRef = useRef(null);
+  const otherActionsBottomSheetRef = useRef(null);
   const textInputRef = useRef(null);
   const [reactionStatuses, setReactionStatuses] = useState([]);
   const [isLoadingReactionStatuses, setIsLoadingReactionStatuses] = useState(false);
@@ -163,6 +165,7 @@ const ViewPost = (props) => {
         viewPostStackNavigatorNavigation: props.navigation,
         reactionStatusesBottomSheetRef,
         commentInputBottomSheetRef,
+        otherActionsBottomSheetRef,
         textInputRef,
         reactionStatuses,
         setReactionStatuses,
@@ -192,15 +195,9 @@ const ViewPost = (props) => {
         // commentInputBottomSheetRef={commentInputBottomSheetRef}
         // textInputRef={textInputRef}
         />
-        <CommentInputBottomSheet
-        // commentInputBottomSheetRef={commentInputBottomSheetRef} textInputRef={textInputRef}
-        />
-        <ReactionOptionsBottomSheet
-        // reactionStatusesBottomSheetRef={reactionStatusesBottomSheetRef}
-        // reactionStatuses={reactionStatuses}
-        // setReactionStatuses={setReactionStatuses}
-        // isLoadingReactionStatuses={isLoadingReactionStatuses}
-        />
+        <CommentInputBottomSheet />
+        <ReactionOptionsBottomSheet />
+        <OtherActionsBottomSheet />
         <LoadingSpinner />
         <SnackBar />
       </GestureHandlerRootView>

@@ -18,6 +18,7 @@ const BottomMenu = (props) => {
     reactionStatusesBottomSheetRef,
     commentInputBottomSheetRef,
     textInputRef,
+    otherActionsBottomSheetRef,
     reactionStatuses,
     getReactionStatuses,
   } = useContext(ViewPostContext);
@@ -156,7 +157,7 @@ const BottomMenu = (props) => {
       >
         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
           <MaterialCommunityIcons name='share-variant' size={22} color={'white'} style={{ marginBottom: 5 }} />
-          <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Info</Text>
+          <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>About</Text>
         </TouchableOpacity>
       </View>
       <View
@@ -168,7 +169,12 @@ const BottomMenu = (props) => {
           // backgroundColor: 'red',
         }}
       >
-        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity
+          style={{ justifyContent: 'center', alignItems: 'center' }}
+          onPress={() => {
+            otherActionsBottomSheetRef.current.snapToIndex(0);
+          }}
+        >
           <Feather name='more-horizontal' size={22} color={'white'} style={{ marginBottom: 5 }} />
           <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Other</Text>
         </TouchableOpacity>
