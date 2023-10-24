@@ -6,7 +6,7 @@ import { GlobalContext } from '../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-const AuthMenuBottomSheet = () => {
+const AuthMenuBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['40%'], []);
   const {
     authData,
@@ -37,6 +37,15 @@ const AuthMenuBottomSheet = () => {
 
   const onClosePress = () => {
     authMenuBottomSheetRef.current.close();
+  };
+
+  const onEditMyAccountPress = () => {
+    props.navigation.navigate({
+      name: 'EditAccountStackNavigator',
+      params: {
+        screen: 'EditAccount',
+      },
+    });
   };
 
   if (isAuthenticated) {
@@ -72,7 +81,7 @@ const AuthMenuBottomSheet = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => console.log('edit')}
+            onPress={() => onEditMyAccountPress()}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
               <MaterialCommunityIcons name='logout' color='white' size={25} style={{ marginRight: 10 }} />
