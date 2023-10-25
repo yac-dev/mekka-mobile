@@ -16,6 +16,8 @@ import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import backendAPI from '../../../apis/backend';
 import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // rgb(35, 35, 35)
 const OtherActionsBottomSheet = (props) => {
@@ -46,28 +48,59 @@ const OtherActionsBottomSheet = (props) => {
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
           <TouchableOpacity
             style={{
-              width: 70,
-              height: 70,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              justifyContent: 'center',
+              flexDirection: 'column',
               alignItems: 'center',
-              marginRight: 15,
+              justifyContent: 'center',
+              width: 80,
+              height: 80,
+            }}
+            onPress={() => {
+              viewPostStackNavigatorNavigation.navigate('ReportPost');
+              otherActionsBottomSheetRef.current.close();
             }}
           >
-            <Text>Report</Text>
+            <View
+              style={{
+                width: 50,
+                aspectRatio: 1,
+                borderRadius: 25,
+                marginBottom: 10,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <MaterialIcons name='report-problem' color={'black'} size={25} />
+            </View>
+            <Text style={{ color: 'white' }}>Report</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              width: 70,
-              height: 70,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              justifyContent: 'center',
+              flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'center',
+              width: 80,
+              height: 80,
+            }}
+            onPress={() => {
+              viewPostStackNavigatorNavigation.navigate('ReportContent');
+              otherActionsBottomSheetRef.current.close();
             }}
           >
-            <Text>Edit</Text>
+            <View
+              style={{
+                width: 50,
+                aspectRatio: 1,
+                borderRadius: 25,
+                marginBottom: 10,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <MaterialCommunityIcons name='file-edit' color={'black'} size={25} />
+            </View>
+            <Text style={{ color: 'white' }}>Edit</Text>
           </TouchableOpacity>
         </View>
       </BottomSheetView>

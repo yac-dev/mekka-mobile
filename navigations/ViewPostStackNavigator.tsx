@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import CommentsPage from '../features/Comments/pages/CommentsPage';
+import ReportPost from '../features/ViewPost/pages/ReportPost';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalContext } from '../contexts/GlobalContext';
 import FastImage from 'react-native-fast-image';
@@ -76,29 +77,29 @@ const ViewPostStackNavigator = () => {
         {/* all reactions */}
       </Stack.Group>
       {/* postのreport機能ね。 */}
-      {/* <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
-          <Stack.Screen
-            name='ViewPost'
-            component={ViewPost}
-            options={({ navigation }) => ({
-              headerShown: true,
-              // headerTransparent: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'transparent',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: primaryTextColor,
-              },
-            })}
-          />
-        </Stack.Group> */}
+      <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+        <Stack.Screen
+          name='ReportPost'
+          component={ReportPost}
+          options={({ navigation }) => ({
+            headerShown: true,
+            // headerTransparent: true,
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+              </TouchableOpacity>
+            ),
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+          })}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };
