@@ -35,6 +35,7 @@ const ContentThumbnail = (props) => {
         <Video
           source={{ uri: props.post.contents[0].data }}
           style={{ width: '100%', height: '100%', borderRadius: 5 }}
+          onLoad={handleImageLoad}
         />
       </TouchableOpacity>
     );

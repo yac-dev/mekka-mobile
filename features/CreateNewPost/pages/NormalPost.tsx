@@ -26,6 +26,7 @@ import { Ionicons } from '@expo/vector-icons';
 import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
 import SnackBar from '../../../components/SnackBar';
+import ContentThumbnail from '../components/Content';
 
 const NormalPost = () => {
   const { isIpad, setSnackBar } = useContext(GlobalContext);
@@ -35,41 +36,42 @@ const NormalPost = () => {
   const renderContents = () => {
     const list = contents.map((content, index) => {
       return (
-        <View key={index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}>
-          {content.type === 'image' ? (
-            <FastImage
-              source={{ uri: content.uri }}
-              style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
-            />
-          ) : (
-            <Video
-              source={{ uri: content.uri }}
-              style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
-            />
-          )}
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: -10,
-              right: 0,
-              backgroundColor: 'red',
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              setContents((previous) => {
-                const updating = [...previous];
-                const updated = updating.filter((content, idx) => index !== idx);
-                return updated;
-              })
-            }
-          >
-            <Ionicons name='trash' size={20} color={'white'} />
-          </TouchableOpacity>
-        </View>
+        <ContentThumbnail content={content} index={index} />
+        // <View key={index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}>
+        //   {content.type === 'image' ? (
+        //     <FastImage
+        //       source={{ uri: content.uri }}
+        //       style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
+        //     />
+        //   ) : (
+        //     <Video
+        //       source={{ uri: content.uri }}
+        //       style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
+        //     />
+        //   )}
+        //   <TouchableOpacity
+        //     style={{
+        //       position: 'absolute',
+        //       top: -10,
+        //       right: 0,
+        //       backgroundColor: 'red',
+        //       width: 30,
+        //       height: 30,
+        //       borderRadius: 15,
+        //       justifyContent: 'center',
+        //       alignItems: 'center',
+        //     }}
+        //     onPress={() =>
+        //       setContents((previous) => {
+        //         const updating = [...previous];
+        //         const updated = updating.filter((content, idx) => index !== idx);
+        //         return updated;
+        //       })
+        //     }
+        //   >
+        //     <Ionicons name='trash' size={20} color={'white'} />
+        //   </TouchableOpacity>
+        // </View>
       );
     });
 
