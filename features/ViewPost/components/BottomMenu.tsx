@@ -25,6 +25,7 @@ const BottomMenu = (props) => {
   const {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);
+  const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
   // const { currentPost } = useContext(TagViewContext);
 
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
@@ -80,7 +81,6 @@ const BottomMenu = (props) => {
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>{list}</View>
-        <Text style={{ color: 'white', textAlign: 'center' }}>React</Text>
       </TouchableOpacity>
     );
   };
@@ -142,8 +142,8 @@ const BottomMenu = (props) => {
           }}
           style={{ justifyContent: 'center', alignItems: 'center' }}
         >
-          <Entypo name='feather' size={20} color={'white'} style={{ marginBottom: 5 }} />
-          <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Comment</Text>
+          {/* <Entypo name='feather' size={20} color={'white'} style={{ marginBottom: 5 }} /> */}
+          <MaterialCommunityIcons name='comment-multiple' size={20} color={'white'} style={{ marginBottom: 5 }} />
         </TouchableOpacity>
       </View>
       <View
@@ -156,8 +156,7 @@ const BottomMenu = (props) => {
         }}
       >
         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <MaterialCommunityIcons name='share-variant' size={22} color={'white'} style={{ marginBottom: 5 }} />
-          <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>About</Text>
+          <FastImage source={{ uri: currentPost.createdBy.avatar }} style={{ width: 25, height: 25 }} />
         </TouchableOpacity>
       </View>
       <View
@@ -176,7 +175,6 @@ const BottomMenu = (props) => {
           }}
         >
           <Feather name='more-horizontal' size={22} color={'white'} style={{ marginBottom: 5 }} />
-          <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Other</Text>
         </TouchableOpacity>
       </View>
     </View>

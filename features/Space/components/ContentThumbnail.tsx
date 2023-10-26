@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
 import { TagViewContext } from '../contexts/TagViewContext';
 import Skeleton from './Skeleton';
+import { Ionicons } from '@expo/vector-icons';
 
 const ContentThumbnail = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +22,11 @@ const ContentThumbnail = (props) => {
   if (props.post.contents[0].type === 'video') {
     return (
       <TouchableOpacity
-        style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
+        style={{
+          width: oneAssetWidth,
+          height: oneAssetWidth,
+          padding: 2,
+        }}
         onPress={() => {
           setCurrentPost(props.post);
           setCurrentIndex(props.index);
@@ -34,8 +39,14 @@ const ContentThumbnail = (props) => {
         {isLoading && <Skeleton />}
         <Video
           source={{ uri: props.post.contents[0].data }}
-          style={{ width: '100%', height: '100%', borderRadius: 5 }}
+          style={{ width: '100%', height: '100%', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
           onLoad={handleImageLoad}
+        />
+        <Ionicons
+          name='play'
+          size={20}
+          color='white'
+          style={{ position: 'absolute', alignSelf: 'center', top: oneAssetWidth / 2 }}
         />
       </TouchableOpacity>
     );
