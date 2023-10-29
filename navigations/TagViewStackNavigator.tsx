@@ -61,6 +61,7 @@ const TagViewStackNavigator: React.FC = (props) => {
         setCurrentPost,
         currentIndex,
         setCurrentIndex,
+        getPostsByTagId,
       }}
     >
       <Stack.Navigator>

@@ -39,6 +39,7 @@ const App: React.FC = function () {
   const authMenuBottomSheetRef = useRef(null);
   const chooseViewBottomSheetRef = useRef(null);
   const [afterJoined, setAfterJoined] = useState(false);
+  const [isAfterPosted, setIsAfterPosted] = useState(false);
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
 
@@ -140,6 +141,8 @@ const App: React.FC = function () {
         setCurrentSpace,
         currentTagObject,
         setCurrentTagObject,
+        isAfterPosted,
+        setIsAfterPosted,
       }}
     >
       <PaperProvider>

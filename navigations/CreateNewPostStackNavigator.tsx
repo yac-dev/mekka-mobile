@@ -15,9 +15,10 @@ import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 
 const CreateNewPostStackNavigator = (props) => {
-  const { authData, setLoading, setSnackBar } = useContext(GlobalContext);
+  const { authData, setLoading, setSnackBar, isAfterPosted, setIsAfterPosted } = useContext(GlobalContext);
   const [postType, setPostType] = useState('');
   const [contents, setContents] = useState([]);
   const [caption, setCaption] = useState('');
@@ -113,6 +114,8 @@ const CreateNewPostStackNavigator = (props) => {
         params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
         merge: true,
       });
+      setIsAfterPosted(true);
+      // ここで、pageに戻った後に今いるこのspaceをrefreshすればいいんだけど。。。
     } catch (error) {
       console.log(error);
     }

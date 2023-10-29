@@ -62,7 +62,7 @@ const Content = forwardRef(({ post }, parentRef) => {
   if (viewingContent.type === 'video') {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'column', position: 'absolute', top: 80, left: 10 }}>
+        {/* <View style={{ flexDirection: 'column', position: 'absolute', top: 80, left: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
             <FastImage
               source={{ uri: post.createdBy.avatar }}
@@ -83,7 +83,7 @@ const Content = forwardRef(({ post }, parentRef) => {
               <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{post.caption}</Text>
             </View>
           </View>
-        </View>
+        </View> */}
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Video
             source={{ uri: viewingContent.data }}
@@ -102,7 +102,7 @@ const Content = forwardRef(({ post }, parentRef) => {
     // ただ、video再生はできているっぽいね。
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'column', position: 'absolute', top: 80, left: 10 }}>
+        {/* <View style={{ flexDirection: 'column', position: 'absolute', top: 80, left: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
             <FastImage
               source={{ uri: post.createdBy.avatar }}
@@ -123,7 +123,7 @@ const Content = forwardRef(({ post }, parentRef) => {
               <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{post.caption}</Text>
             </View>
           </View>
-        </View>
+        </View> */}
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <FastImage
             source={{ uri: viewingContent.data }}

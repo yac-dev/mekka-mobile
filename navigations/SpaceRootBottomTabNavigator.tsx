@@ -59,6 +59,7 @@ const SpaceRootBottomTabNavigator = (props) => {
   const [isFetchingLocationsViewPosts, setIsFetchingLocationsViewPosts] = useState(false);
   const [selectedLocationTag, setSelectedLocationTag] = useState(null);
   const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
+  const [isAfterPosted, setIsAfterPosted] = useState(false);
 
   // const getSpaceById = async () => {
   //   setHasSpaceBeenFetched(false);
@@ -123,6 +124,8 @@ const SpaceRootBottomTabNavigator = (props) => {
         chooseViewBottomSheetRef,
         viewPostsType,
         setViewPostsType,
+        isAfterPosted,
+        setIsAfterPosted,
       }}
     >
       <View style={{ flex: 1 }}>

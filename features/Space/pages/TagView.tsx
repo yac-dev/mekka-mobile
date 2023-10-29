@@ -11,7 +11,7 @@ import ContentThumbnail from '../components/ContentThumbnail';
 
 const TagView = (props) => {
   const { isIpad } = useContext(GlobalContext);
-  const { posts, setPosts, hasMoreItems, setCurrentPage, currentPage, isLoading, setCurrentPost } =
+  const { posts, setPosts, hasMoreItems, setCurrentPage, currentPage, isLoading, setCurrentPost, getPostsByTagId } =
     useContext(TagViewContext);
   const mediaRefs = useRef([]);
   // const { isIpad, authData } = useContext(GlobalContext);
@@ -20,16 +20,16 @@ const TagView = (props) => {
   // // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
   // const [posts, setPosts] = useState([]);
   // const [havePostsBeenFetched, setHavePostsBeenFetched] = useState(false);
-  // const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(0);
   // const [hasMoreItems, setHasMoreItems] = useState(true);
 
-  // const onRefresh = async () => {
-  //   setIsRefreshing(true);
-  //   await getPostsByTagId();
-  //   setIsRefreshing(false);
-  // };
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await getPostsByTagId();
+    setIsRefreshing(false);
+  };
 
   const loadMoreItem = () => {
     if (hasMoreItems) {
