@@ -174,7 +174,7 @@ const App: React.FC = function () {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
-              name='HomwStackNavigator'
+              name='HomeStackNavigator'
               component={HomeStackNavigator}
               options={({ navigation }) => ({
                 // headerShown: true,

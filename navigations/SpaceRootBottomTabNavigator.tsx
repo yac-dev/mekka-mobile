@@ -62,6 +62,92 @@ const SpaceRootBottomTabNavigator = (props) => {
   const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
   const [isAfterPosted, setIsAfterPosted] = useState(false);
 
+  const createPost = async () => {
+    const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
+      (element, index) => element.created
+    );
+    const filteredAddedTags = Object.values(createNewPostFormData.addedTags)
+      .filter((element, index) => !element.created)
+      .map((element, index) => element._id);
+    try {
+      const payload = new FormData();
+      payload.append('reactions', JSON.stringify(currentSpaceAndUserRelationship.space.reactions));
+      payload.append('caption', createNewPostFormData.caption);
+      payload.append('createdTags', JSON.stringify(filteredCreatedTags));
+      payload.append('addedTags', JSON.stringify(filteredAddedTags));
+      if (createNewPostFormData.addedLocationTag) {
+        if (createNewPostFormData.addedLocationTag.created) {
+          payload.append('createdLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag)); // これがない場合もある。
+        } else {
+          payload.append('addedLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag._id)); // これがない場合もある。
+        }
+      } else {
+        payload.append('addedLocationTag', '');
+      }
+      payload.append('createdBy', authData._id);
+      payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
+      for (let content of createNewPostFormData.contents) {
+        const obj = {
+          name: content.uri.split('/').pop(),
+          uri: content.uri,
+          type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
+        };
+        payload.append('contents', JSON.parse(JSON.stringify(obj)));
+      }
+      console.log(payload);
+      // setLoading(true);
+      setCreateNewPostResult((previous) => {
+        return {
+          ...previous,
+          isCreating: true,
+        };
+      });
+      setSnackBar({
+        isVisible: true,
+        barType: 'success',
+        message: 'It takes couple seconds to finish.',
+        duration: 4000,
+      });
+      const result = await backendAPI.post('/posts', payload, {
+        headers: { 'Content-type': 'multipart/form-data' },
+      });
+      // setLoading(false);
+      setCreateNewPostResult((previous) => {
+        return {
+          ...previous,
+          isCreating: false,
+          isSuccess: true,
+          responseData: result.data,
+        };
+      });
+      // setCreateNewPostFormData((previou))// initialのstateに戻す。
+      setSnackBar({
+        isVisible: true,
+        barType: 'success',
+        message: 'Post has been created successfully.',
+        duration: 5000,
+      });
+      // なるほど、戻る時に必要になるのか。。。でもなーーーー。
+      // props.navigation.navigate({
+      //   name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
+      //   params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
+      //   merge: true,
+      // });
+      // setIsAfterPosted(true);
+      // ここで、pageに戻った後に今いるこのspaceをrefreshすればいいんだけど。。。
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (props.route?.params?.createdPost) {
+      // ここでapiを起こして、setCreateとかのstate更新をしていく感じかな。。
+      // createPost();
+      console.log('create post!!');
+    }
+  }, [props.route?.params?.createdPost]);
+
   // const getSpaceById = async () => {
   //   setHasSpaceBeenFetched(false);
   //   const result = await backendAPI.get(`/spaces/${props.spaceAndUserRelationship.space._id}`);

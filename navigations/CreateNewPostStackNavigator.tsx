@@ -79,7 +79,16 @@ const CreateNewPostStackNavigator = (props) => {
   const onPostPress = async () => {
     // app.tsxにはいけないんだよね。まあ、globalだしどこで実行してもいいのだろうけど、、、
     props.navigation.navigate({
+      // createPostを起こすのはhomestackだから、homeStackNavへいったほうがいいのかな。。。
+      // name: 'SpacesDrawerNavigator',
+      // params: {
+      //   name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
+      //   // name: 'HomeStackNavigator',
+      //   params: { createdPost: true }, // 作ったtagをSpaceRootに入れる。
+      //   merge: true,
+      // },
       name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
+      // name: 'HomeStackNavigator',
       params: { createdPost: true }, // 作ったtagをSpaceRootに入れる。
       merge: true,
     });
