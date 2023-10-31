@@ -40,6 +40,26 @@ const App: React.FC = function () {
   const chooseViewBottomSheetRef = useRef(null);
   const [afterJoined, setAfterJoined] = useState(false);
   const [isAfterPosted, setIsAfterPosted] = useState(false);
+  const [createNewPostFormData, setCreateNewPostFormData] = useState({
+    postType: '',
+    contents: [],
+    caption: '',
+    dummyCreatedTagId: 1,
+    addedTags: {},
+    tagOptions: [],
+    addedLocationTag: null,
+    locationTagOptions: [],
+    moments: [],
+  });
+  const [createNewPostResult, setCreateNewPostResult] = useState({
+    isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
+    isSuccess: false,
+    isError: false,
+    responseData: {
+      data: null,
+      tags: [],
+    },
+  });
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
 
@@ -143,6 +163,10 @@ const App: React.FC = function () {
         setCurrentTagObject,
         isAfterPosted,
         setIsAfterPosted,
+        createNewPostFormData,
+        setCreateNewPostFormData,
+        createNewPostResult,
+        setCreateNewPostResult,
       }}
     >
       <PaperProvider>

@@ -45,7 +45,8 @@ const viewTypeObject = {
 };
 
 const SpaceRootBottomTabNavigator = (props) => {
-  const { spaceAndUserRelationship } = useContext(SpaceRootContext);
+  const { spaceAndUserRelationship, createNewPostFormData, setCreateNewPostResult, setSnackBar, authData } =
+    useContext(SpaceRootContext);
   const { isIpad, spaceMenuBottomSheetRef, currentSpace, setCurrentSpace, currentSpaceAndUserRelationship } =
     useContext(GlobalContext);
   const [space, setSpace] = useState(null);

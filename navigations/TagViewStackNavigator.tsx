@@ -28,6 +28,8 @@ const TagViewStackNavigator: React.FC = (props) => {
   const [currentPost, setCurrentPost] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  console.log(props.screenLoaded);
+
   const getPostsByTagId = async () => {
     setIsLoading(true);
     const result = await backendAPI.get(`/posts/tag/${props.tagObject.tag._id}?page=${currentPage}`);
@@ -64,48 +66,60 @@ const TagViewStackNavigator: React.FC = (props) => {
         getPostsByTagId,
       }}
     >
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
-            name='TagView'
-            component={TagView}
-            options={({ navigation }) => ({
-              headerShown: false,
-              // headerLeft: () => (
-              //   <TouchableOpacity onPress={() => navigation.goBack()}>
-              //     <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-              //   </TouchableOpacity>
-              // ),
-              // headerTitle: '',
-              // headerStyle: {
-              //   backgroundColor: 'rgb(30, 30, 30)',
-              // },
-              // headerTitleStyle: {
-              //   fontWeight: 'bold',
-              //   color: primaryTextColor,
-              // },
-            })}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
-            name='ViewPostStackNavigator'
-            component={ViewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              // headerTransparent: true,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'transparent',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: primaryTextColor,
-              },
-            })}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
+      <View
+        style={{ flex: 1 }}
+        onLayout={() =>
+          props.setScreenLoaded((previous) => {
+            return {
+              ...previous,
+              [props.tagObject.tag._id]: true,
+            };
+          })
+        }
+      >
+        <Stack.Navigator>
+          <Stack.Group>
+            <Stack.Screen
+              name='TagView'
+              component={TagView}
+              options={({ navigation }) => ({
+                headerShown: false,
+                // headerLeft: () => (
+                //   <TouchableOpacity onPress={() => navigation.goBack()}>
+                //     <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                //   </TouchableOpacity>
+                // ),
+                // headerTitle: '',
+                // headerStyle: {
+                //   backgroundColor: 'rgb(30, 30, 30)',
+                // },
+                // headerTitleStyle: {
+                //   fontWeight: 'bold',
+                //   color: primaryTextColor,
+                // },
+              })}
+            />
+          </Stack.Group>
+          <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+            <Stack.Screen
+              name='ViewPostStackNavigator'
+              component={ViewPostStackNavigator}
+              options={({ navigation }) => ({
+                headerShown: false,
+                // headerTransparent: true,
+                headerTitle: '',
+                headerStyle: {
+                  backgroundColor: 'transparent',
+                },
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  color: primaryTextColor,
+                },
+              })}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </View>
     </TagViewContext.Provider>
   );
 };

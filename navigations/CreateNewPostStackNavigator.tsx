@@ -18,7 +18,17 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 
 const CreateNewPostStackNavigator = (props) => {
-  const { authData, setLoading, setSnackBar, isAfterPosted, setIsAfterPosted } = useContext(GlobalContext);
+  const {
+    authData,
+    setLoading,
+    setSnackBar,
+    isAfterPosted,
+    setIsAfterPosted,
+    createNewPostFormData,
+    setCreateNewPostFormData,
+    createNewPostResult,
+    setCreateNewPostResult,
+  } = useContext(GlobalContext);
   const [postType, setPostType] = useState('');
   const [contents, setContents] = useState([]);
   const [caption, setCaption] = useState('');
@@ -67,58 +77,64 @@ const CreateNewPostStackNavigator = (props) => {
   }, []);
 
   const onPostPress = async () => {
-    const filteredCreatedTags = Object.values(addedTags).filter((element, index) => element.created);
-    const filteredAddedTags = Object.values(addedTags)
-      .filter((element, index) => !element.created)
-      .map((element, index) => element._id);
-    try {
-      const payload = new FormData();
-      payload.append('reactions', JSON.stringify(space.reactions));
-      payload.append('caption', caption);
-      payload.append('createdTags', JSON.stringify(filteredCreatedTags));
-      payload.append('addedTags', JSON.stringify(filteredAddedTags));
-      if (addedLocationTag) {
-        if (addedLocationTag.created) {
-          payload.append('createdLocationTag', JSON.stringify(addedLocationTag)); // これがない場合もある。
-        } else {
-          payload.append('addedLocationTag', JSON.stringify(addedLocationTag._id)); // これがない場合もある。
-        }
-      } else {
-        payload.append('addedLocationTag', '');
-      }
-      payload.append('createdBy', authData._id);
-      payload.append('spaceId', space._id);
-      for (let content of contents) {
-        const obj = {
-          name: content.uri.split('/').pop(),
-          uri: content.uri,
-          type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
-        };
-        payload.append('contents', JSON.parse(JSON.stringify(obj)));
-      }
-      console.log(payload);
-      setLoading(true);
-      const result = await backendAPI.post('/posts', payload, {
-        headers: { 'Content-type': 'multipart/form-data' },
-      });
-      setLoading(false);
-      setSnackBar({
-        isVisible: true,
-        barType: 'success',
-        message: 'Post has been created successfully.',
-        duration: 7000,
-      });
-      // なるほど、戻る時に必要になるのか。。。でもなーーーー。
-      props.navigation.navigate({
-        name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
-        params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
-        merge: true,
-      });
-      setIsAfterPosted(true);
-      // ここで、pageに戻った後に今いるこのspaceをrefreshすればいいんだけど。。。
-    } catch (error) {
-      console.log(error);
-    }
+    // app.tsxにはいけないんだよね。まあ、globalだしどこで実行してもいいのだろうけど、、、
+    props.navigation.navigate({
+      name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
+      params: { createdPost: true }, // 作ったtagをSpaceRootに入れる。
+      merge: true,
+    });
+    // const filteredCreatedTags = Object.values(addedTags).filter((element, index) => element.created);
+    // const filteredAddedTags = Object.values(addedTags)
+    //   .filter((element, index) => !element.created)
+    //   .map((element, index) => element._id);
+    // try {
+    //   const payload = new FormData();
+    //   payload.append('reactions', JSON.stringify(space.reactions));
+    //   payload.append('caption', caption);
+    //   payload.append('createdTags', JSON.stringify(filteredCreatedTags));
+    //   payload.append('addedTags', JSON.stringify(filteredAddedTags));
+    //   if (addedLocationTag) {
+    //     if (addedLocationTag.created) {
+    //       payload.append('createdLocationTag', JSON.stringify(addedLocationTag)); // これがない場合もある。
+    //     } else {
+    //       payload.append('addedLocationTag', JSON.stringify(addedLocationTag._id)); // これがない場合もある。
+    //     }
+    //   } else {
+    //     payload.append('addedLocationTag', '');
+    //   }
+    //   payload.append('createdBy', authData._id);
+    //   payload.append('spaceId', space._id);
+    //   for (let content of contents) {
+    //     const obj = {
+    //       name: content.uri.split('/').pop(),
+    //       uri: content.uri,
+    //       type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
+    //     };
+    //     payload.append('contents', JSON.parse(JSON.stringify(obj)));
+    //   }
+    //   console.log(payload);
+    //   setLoading(true);
+    //   const result = await backendAPI.post('/posts', payload, {
+    //     headers: { 'Content-type': 'multipart/form-data' },
+    //   });
+    //   setLoading(false);
+    //   setSnackBar({
+    //     isVisible: true,
+    //     barType: 'success',
+    //     message: 'Post has been created successfully.',
+    //     duration: 7000,
+    //   });
+    //   // なるほど、戻る時に必要になるのか。。。でもなーーーー。
+    //   props.navigation.navigate({
+    //     name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
+    //     params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
+    //     merge: true,
+    //   });
+    //   setIsAfterPosted(true);
+    //   // ここで、pageに戻った後に今いるこのspaceをrefreshすればいいんだけど。。。
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const onMomentPostPress = async () => {
@@ -218,11 +234,11 @@ const CreateNewPostStackNavigator = (props) => {
               headerRight: () => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('AddTags')}
-                  disabled={contents.length ? false : true}
+                  disabled={createNewPostFormData.contents.length ? false : true}
                 >
                   <Text
                     style={{
-                      color: contents.length ? 'white' : 'rgb(170,170,170)',
+                      color: createNewPostFormData.contents.length ? 'white' : 'rgb(170,170,170)',
                       fontSize: 20,
                       fontWeight: 'bold',
                     }}
@@ -252,12 +268,12 @@ const CreateNewPostStackNavigator = (props) => {
               headerRight: () => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('AddLocationTag')}
-                  disabled={Object.keys(addedTags).length ? false : true}
+                  disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}
                   // disabled={validateAddedTags() ? false : true}
                 >
                   <Text
                     style={{
-                      color: Object.keys(addedTags).length ? 'white' : 'rgb(170,170,170)',
+                      color: Object.keys(createNewPostFormData.addedTags).length ? 'white' : 'rgb(170,170,170)',
                       fontSize: 20,
                       fontWeight: 'bold',
                     }}
