@@ -42,12 +42,9 @@ const ContentThumbnail = (props) => {
           style={{ width: '100%', height: '100%', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
           onLoad={handleImageLoad}
         />
-        <Ionicons
-          name='play'
-          size={20}
-          color='white'
-          style={{ position: 'absolute', alignSelf: 'center', top: oneAssetWidth / 2 }}
-        />
+        <View style={{ position: 'absolute', right: 10, top: 10 }}>
+          <Text style={{ color: 'white' }}>{props.post.videoLength}</Text>
+        </View>
       </TouchableOpacity>
     );
   } else {
