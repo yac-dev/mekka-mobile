@@ -55,10 +55,7 @@ const App: React.FC = function () {
     isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
     isSuccess: false,
     isError: false,
-    responseData: {
-      data: null,
-      tags: [],
-    },
+    responseData: null,
   });
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);

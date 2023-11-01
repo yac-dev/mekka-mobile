@@ -45,10 +45,18 @@ const viewTypeObject = {
 };
 
 const SpaceRootBottomTabNavigator = (props) => {
-  const { spaceAndUserRelationship, createNewPostFormData, setCreateNewPostResult, setSnackBar, authData } =
-    useContext(SpaceRootContext);
-  const { isIpad, spaceMenuBottomSheetRef, currentSpace, setCurrentSpace, currentSpaceAndUserRelationship } =
-    useContext(GlobalContext);
+  const { spaceAndUserRelationship } = useContext(SpaceRootContext);
+  const {
+    isIpad,
+    spaceMenuBottomSheetRef,
+    currentSpace,
+    setCurrentSpace,
+    currentSpaceAndUserRelationship,
+    createNewPostFormData,
+    setCreateNewPostResult,
+    setSnackBar,
+    authData,
+  } = useContext(GlobalContext);
   const [space, setSpace] = useState(null);
   const [hasSpaceBeenFetched, setHasSpaceBeenFetched] = useState(false);
   const [tags, setTags] = useState({});
@@ -61,6 +69,7 @@ const SpaceRootBottomTabNavigator = (props) => {
   const [selectedLocationTag, setSelectedLocationTag] = useState(null);
   const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
   const [isAfterPosted, setIsAfterPosted] = useState(false);
+  const [screenLoaded, setScreenLoaded] = useState({});
 
   const createPost = async () => {
     const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
@@ -105,7 +114,7 @@ const SpaceRootBottomTabNavigator = (props) => {
       setSnackBar({
         isVisible: true,
         barType: 'success',
-        message: 'It takes couple seconds to finish.',
+        message: 'It takes couple seconds to finish processing....',
         duration: 4000,
       });
       const result = await backendAPI.post('/posts', payload, {
@@ -143,7 +152,7 @@ const SpaceRootBottomTabNavigator = (props) => {
   useEffect(() => {
     if (props.route?.params?.createdPost) {
       // ここでapiを起こして、setCreateとかのstate更新をしていく感じかな。。
-      // createPost();
+      createPost();
       console.log('create post!!');
     }
   }, [props.route?.params?.createdPost]);
@@ -213,6 +222,8 @@ const SpaceRootBottomTabNavigator = (props) => {
         setViewPostsType,
         isAfterPosted,
         setIsAfterPosted,
+        screenLoaded,
+        setScreenLoaded,
       }}
     >
       <View style={{ flex: 1 }}>

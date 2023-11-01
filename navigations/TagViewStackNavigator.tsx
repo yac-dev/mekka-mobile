@@ -15,9 +15,9 @@ import FastImage from 'react-native-fast-image';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 
 const TagViewStackNavigator: React.FC = (props) => {
-  const { isIpad, authData } = useContext(GlobalContext);
+  const { isIpad, authData, createNewPostResult, setCreateNewPostResult } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
-  const { spaceAndUserRelationship, navigation } = useContext(SpaceRootContext);
+  const { spaceAndUserRelationship, navigation, screenLoaded, setScreenLoaded } = useContext(SpaceRootContext);
   // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
   const [posts, setPosts] = useState([]);
   const [havePostsBeenFetched, setHavePostsBeenFetched] = useState(false);
@@ -27,8 +27,15 @@ const TagViewStackNavigator: React.FC = (props) => {
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const [currentPost, setCurrentPost] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(props.createdPost);
 
-  console.log(props.screenLoaded);
+  // console.log(props.screenLoaded);
+
+  useEffect(() => {
+    if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
+      setPosts((previous) => [...previous, createNewPostResult.responseData.post]);
+    }
+  }, [createNewPostResult]);
 
   const getPostsByTagId = async () => {
     setIsLoading(true);
@@ -47,6 +54,12 @@ const TagViewStackNavigator: React.FC = (props) => {
   useEffect(() => {
     getPostsByTagId();
   }, [currentPage]);
+
+  useEffect(() => {
+    if (props.createdPost) {
+      setPosts((previous) => [...previous, props.createdPost]);
+    }
+  }, [props.createdPost]);
 
   return (
     <TagViewContext.Provider
