@@ -8,9 +8,11 @@ import { iconColorTable, iconParameterBackgroundColorTable } from '../../../them
 import MapView, { Marker } from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 import backendAPI from '../../../apis/backend';
+import { GlobalContext } from '../../../contexts/GlobalContext';
 
 // いいや、locationは、
 const AddLocationTag = (props) => {
+  const { createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
   const {
     navigation,
     route,
@@ -34,7 +36,13 @@ const AddLocationTag = (props) => {
         updating.unshift(props.route?.params?.createdLocationTag);
         return updating;
       });
-      setAddedLocationTag(props.route?.params?.createdLocationTag);
+      setCreateNewPostFormData((previous) => {
+        return {
+          ...previous,
+          addedLocationTag: props.route?.params?.createdLocationTag,
+        };
+      });
+      // setAddedLocationTag(props.route?.params?.createdLocationTag);
       setDummyCreatedTagId((previous) => previous + 1);
     }
   }, [props.route?.params?.createdLocationTag]);
@@ -156,14 +164,32 @@ const AddLocationTag = (props) => {
             }}
             // disabled={addedLocationTag ? true : false}
             onPress={() => {
-              if (addedLocationTag) {
-                if (addedLocationTag._id === locationTag._id) {
-                  setAddedLocationTag(null);
+              if (createNewPostFormData.addedLocationTag) {
+                if (createNewPostFormData.addedLocationTag._id === locationTag._id) {
+                  // setAddedLocationTag(null);
+                  setCreateNewPostFormData((previous) => {
+                    return {
+                      ...previous,
+                      addedLocationTag: null,
+                    };
+                  });
                 } else {
-                  setAddedLocationTag(locationTag);
+                  // setAddedLocationTag(locationTag);
+                  setCreateNewPostFormData((previous) => {
+                    return {
+                      ...previous,
+                      addedLocationTag: locationTag,
+                    };
+                  });
                 }
               } else {
-                setAddedLocationTag(locationTag);
+                // setAddedLocationTag(locationTag);
+                setCreateNewPostFormData((previous) => {
+                  return {
+                    ...previous,
+                    addedLocationTag: locationTag,
+                  };
+                });
               }
             }}
           >
@@ -173,7 +199,8 @@ const AddLocationTag = (props) => {
               tintColor={locationTag.iconType === 'icon' ? locationTag.color : null}
             />
             <Text style={{ color: 'white' }}>{locationTag.name}</Text>
-            {addedLocationTag && addedLocationTag._id === locationTag._id ? (
+            {createNewPostFormData.addedLocationTag &&
+            createNewPostFormData.addedLocationTag._id === locationTag._id ? (
               <Ionicons
                 name='checkmark-circle'
                 size={25}
@@ -241,18 +268,22 @@ const AddLocationTag = (props) => {
         pitchEnabled={false}
       >
         {/* <TouchableOpacity onPress={() => navigation?.navigate('LocationPicker')}></TouchableOpacity> */}
-        {addedLocationTag ? (
+        {createNewPostFormData.addedLocationTag ? (
           <Marker
             tracksViewChanges={false}
             coordinate={{
-              latitude: addedLocationTag.point.coordinates[1],
-              longitude: addedLocationTag.point.coordinates[0],
+              latitude: createNewPostFormData.addedLocationTag.point.coordinates[1],
+              longitude: createNewPostFormData.addedLocationTag.point.coordinates[0],
             }}
           >
             <FastImage
-              source={{ uri: addedLocationTag.icon }}
+              source={{ uri: createNewPostFormData.addedLocationTag.icon }}
               style={{ width: 40, height: 40, borderRadius: 10 }}
-              tintColor={addedLocationTag.iconType === 'icon' ? addedLocationTag.color : null}
+              tintColor={
+                createNewPostFormData.addedLocationTag.iconType === 'icon'
+                  ? createNewPostFormData.addedLocationTag.color
+                  : null
+              }
             />
           </Marker>
         ) : null}

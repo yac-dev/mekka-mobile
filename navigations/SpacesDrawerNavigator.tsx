@@ -311,7 +311,7 @@ const SpacesDrawerNavigator = (props) => {
                         }}
                         onPress={() => navigation.toggleDrawer()}
                       >
-                        <Ionicons name='menu' style={{}} size={20} />
+                        <Ionicons name='list' style={{}} size={20} />
                       </TouchableOpacity>
                     );
                   },
@@ -367,6 +367,7 @@ const SpacesDrawerNavigator = (props) => {
                   <SpaceRootBottomTabNavigator
                     spaceAndUserRelationship={spaceAndUserRelationship}
                     navigation={navigation}
+                    route={route}
                   />
                 )}
               </Drawer.Screen>

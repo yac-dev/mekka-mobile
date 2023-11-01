@@ -29,12 +29,12 @@ import SnackBar from '../../../components/SnackBar';
 import ContentThumbnail from '../components/Content';
 
 const NormalPost = () => {
-  const { isIpad, setSnackBar } = useContext(GlobalContext);
+  const { isIpad, setSnackBar, createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
   const { contents, setContents, caption, setCaption, space, navigation, addedTags } = useContext(CreateNewPostContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
 
   const renderContents = () => {
-    const list = contents.map((content, index) => {
+    const list = createNewPostFormData.contents.map((content, index) => {
       return (
         <ContentThumbnail content={content} index={index} />
         // <View key={index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}>
@@ -77,7 +77,7 @@ const NormalPost = () => {
 
     return (
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-        {contents.length >= 6 ? null : (
+        {createNewPostFormData.contents.length >= 6 ? null : (
           <TouchableOpacity
             style={{
               backgroundColor: 'white',
@@ -97,7 +97,7 @@ const NormalPost = () => {
 
         {/* {contents.length && list} この記法、react native ではダメらしい。reactではいいんだけど。。。 */}
         {/* Error: Text strings must be rendered within a <Text> component.って言われる。 */}
-        {contents.length ? list : null}
+        {createNewPostFormData.contents.length ? list : null}
       </View>
     );
   };
@@ -124,12 +124,10 @@ const NormalPost = () => {
       quality: 1,
       // duration: space.videoLength ? space.videoLength : 3000,
     };
-    console.log(pickerOption);
     let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
     if (!result.canceled && result.assets) {
       // result assets それぞれのassetに対して、dataを作る様にすると。
-      setContents((previous) => {
-        console.log(result.assets);
+      setCreateNewPostFormData((previous) => {
         const adding = [];
         result.assets.forEach((asset) => {
           if (asset.type === 'video') {
@@ -150,7 +148,11 @@ const NormalPost = () => {
           }
         });
 
-        return [...previous, ...adding];
+        // return [...previous, ...adding];
+        return {
+          ...previous,
+          contents: [...previous.contents, ...adding],
+        };
       });
 
       // Determine media type based on file extension
@@ -215,8 +217,15 @@ const NormalPost = () => {
             placeholder='Add caption...'
             placeholderTextColor={'rgb(170,170,170)'}
             autoCapitalize='none'
-            value={caption}
-            onChangeText={(text) => setCaption(text)}
+            value={createNewPostFormData.caption}
+            onChangeText={(text) =>
+              setCreateNewPostFormData((previous) => {
+                return {
+                  ...previous,
+                  caption: text,
+                };
+              })
+            }
           />
           <SnackBar />
         </View>

@@ -65,7 +65,7 @@ const ViewPostsTopTabNavigator = () => {
           }),
         }}
       >
-        {viewTypeObject[viewPostsType]}
+        <MaterialCommunityIcons name='dots-grid' color='black' size={22} />
       </TouchableOpacity>
     </View>
   );

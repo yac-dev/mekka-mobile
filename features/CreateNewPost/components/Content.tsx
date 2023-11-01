@@ -8,7 +8,7 @@ import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
 
 const ContentThumbnail = (props) => {
-  const { isIpad } = useContext(GlobalContext);
+  const { isIpad, createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(true);
   const { setContents } = useContext(CreateNewPostContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
@@ -50,12 +50,21 @@ const ContentThumbnail = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        onPress={() =>
-          setContents((previous) => {
-            const updating = [...previous];
-            const updated = updating.filter((_, idx) => props.index !== idx);
-            return updated;
-          })
+        onPress={
+          () =>
+            setCreateNewPostFormData((previous) => {
+              const updating = [...previous.contents];
+              const updated = updating.filter((_, idx) => props.index !== idx);
+              return {
+                ...previous,
+                contents: updated,
+              };
+            })
+          // setContents((previous) => {
+          //   const updating = [...previous];
+          //   const updated = updating.filter((_, idx) => props.index !== idx);
+          //   return updated;
+          // })
         }
       >
         <Ionicons name='trash' size={20} color={'white'} />

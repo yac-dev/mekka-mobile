@@ -45,6 +45,8 @@ const TagsTopTabNavigator = (props) => {
     setHasSpaceBeenFetched,
     chooseViewBottomSheetRef,
     viewPostsType,
+    screenLoaded,
+    setScreenLoaded,
   } = useContext(SpaceRootContext);
   const {
     isIpad,
@@ -55,6 +57,7 @@ const TagsTopTabNavigator = (props) => {
     setCurrentTagObject,
     isAfterPosted,
     setIsAfterPosted,
+    createNewPostResult,
   } = useContext(GlobalContext);
   const route = useRoute();
   // const [space, setSpace] = useState(null);
@@ -71,6 +74,8 @@ const TagsTopTabNavigator = (props) => {
   //   setCurrentSpace(space);
   //   setHasSpaceBeenFetched(true);
   // };
+
+  // createしたtagを
 
   const getTags = async () => {
     // setIsLoadingTags(true);
@@ -96,6 +101,15 @@ const TagsTopTabNavigator = (props) => {
 
       return table;
     });
+
+    setScreenLoaded(() => {
+      const table = {};
+      tags.forEach((tag, index) => {
+        table[tag._id] = false;
+      });
+
+      return table;
+    });
     const defaultTagObject = {
       tag: tags[0],
       hasUnreadPosts: tags[0].updatedAt > props.route?.params?.lastCheckedIn ? true : false,
@@ -113,6 +127,8 @@ const TagsTopTabNavigator = (props) => {
     });
   };
 
+  // ここで、新しいtagを追加していく感じか。。。
+
   useEffect(() => {
     getTags();
   }, []);
@@ -123,6 +139,14 @@ const TagsTopTabNavigator = (props) => {
       setIsAfterPosted(false);
     }
   }, [isAfterPosted]);
+
+  const passCreatedPostToTags = () => {
+    createNewPostResult.responseData?.addedTags.forEach((tag) => {
+      if (screenLoaded[tag._id]) {
+        return createNewPostResult.responseData.post;
+      }
+    });
+  };
 
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
@@ -217,7 +241,7 @@ const TagsTopTabNavigator = (props) => {
         <Tab.Navigator
           tabBar={(props) => <CustomTabBar {...props} />}
           screenOptions={({ route }) => ({
-            lazy: true,
+            lazy: true, // これでそれぞれのとこに足す方がいいのかな。ただな、、
             swipeEnabled: false,
             // animationEnabled: false,
           })}
@@ -230,7 +254,17 @@ const TagsTopTabNavigator = (props) => {
               initialParams={{ tagObject }}
             >
               {/* {({ navigation }) => <ViewPostsTopTabNavigator navigation={navigation} tagObject={tagObject} />} */}
-              {({ navigation }) => <TagViewStackNavigator navigation={navigation} tagObject={tagObject} />}
+              {({ navigation }) => (
+                <TagViewStackNavigator
+                  screenLoaded={screenLoaded}
+                  setScreenLoaded={setScreenLoaded}
+                  navigation={navigation}
+                  tagObject={tagObject}
+                  // createdPost={} // addしたtagをloop throughして、もしscreenLoaded {tagId: true} であれば propsで渡す。
+                  // だから、まずはresponse ありきね。
+                  createdPost={createNewPostResult.responseData?.addedTags.length ? passCreatedPostToTags() : null}
+                />
+              )}
             </Tab.Screen>
           ))}
           {/* <Tab.Screen

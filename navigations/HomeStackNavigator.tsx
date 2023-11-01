@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/GlobalContext';
 import { icons } from '../utils/icons';
@@ -46,10 +46,19 @@ import Signup from '../features/NotAuthenticated/pages/Signup';
 
 import EditTag from '../features/EditTag/pages/Form';
 import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
-
+import backendAPI from '../apis/backend';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
+
 const HomeStackNavigator: React.FC = (props) => {
-  const { isAuthenticated } = useContext(GlobalContext);
+  const {
+    isAuthenticated,
+    createNewPostFormData,
+    setCreateNewPostFormData,
+    currentSpaceAndUserRelationship,
+    setCreateNewPostResult,
+    setSnackBar,
+    authData,
+  } = useContext(GlobalContext);
 
   return (
     <HomeStackNavContext.Provider value={{}}>

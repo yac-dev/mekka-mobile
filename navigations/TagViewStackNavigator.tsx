@@ -15,9 +15,9 @@ import FastImage from 'react-native-fast-image';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 
 const TagViewStackNavigator: React.FC = (props) => {
-  const { isIpad, authData } = useContext(GlobalContext);
+  const { isIpad, authData, createNewPostResult, setCreateNewPostResult } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
-  const { spaceAndUserRelationship, navigation } = useContext(SpaceRootContext);
+  const { spaceAndUserRelationship, navigation, screenLoaded, setScreenLoaded } = useContext(SpaceRootContext);
   // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
   const [posts, setPosts] = useState([]);
   const [havePostsBeenFetched, setHavePostsBeenFetched] = useState(false);
@@ -27,6 +27,15 @@ const TagViewStackNavigator: React.FC = (props) => {
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const [currentPost, setCurrentPost] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(props.createdPost);
+
+  // console.log(props.screenLoaded);
+
+  useEffect(() => {
+    if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
+      setPosts((previous) => [...previous, createNewPostResult.responseData.post]);
+    }
+  }, [createNewPostResult]);
 
   const getPostsByTagId = async () => {
     setIsLoading(true);
@@ -46,6 +55,12 @@ const TagViewStackNavigator: React.FC = (props) => {
     getPostsByTagId();
   }, [currentPage]);
 
+  useEffect(() => {
+    if (props.createdPost) {
+      setPosts((previous) => [...previous, props.createdPost]);
+    }
+  }, [props.createdPost]);
+
   return (
     <TagViewContext.Provider
       value={{
@@ -64,48 +79,60 @@ const TagViewStackNavigator: React.FC = (props) => {
         getPostsByTagId,
       }}
     >
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
-            name='TagView'
-            component={TagView}
-            options={({ navigation }) => ({
-              headerShown: false,
-              // headerLeft: () => (
-              //   <TouchableOpacity onPress={() => navigation.goBack()}>
-              //     <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-              //   </TouchableOpacity>
-              // ),
-              // headerTitle: '',
-              // headerStyle: {
-              //   backgroundColor: 'rgb(30, 30, 30)',
-              // },
-              // headerTitleStyle: {
-              //   fontWeight: 'bold',
-              //   color: primaryTextColor,
-              // },
-            })}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
-            name='ViewPostStackNavigator'
-            component={ViewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              // headerTransparent: true,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'transparent',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: primaryTextColor,
-              },
-            })}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
+      <View
+        style={{ flex: 1 }}
+        onLayout={() =>
+          props.setScreenLoaded((previous) => {
+            return {
+              ...previous,
+              [props.tagObject.tag._id]: true,
+            };
+          })
+        }
+      >
+        <Stack.Navigator>
+          <Stack.Group>
+            <Stack.Screen
+              name='TagView'
+              component={TagView}
+              options={({ navigation }) => ({
+                headerShown: false,
+                // headerLeft: () => (
+                //   <TouchableOpacity onPress={() => navigation.goBack()}>
+                //     <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                //   </TouchableOpacity>
+                // ),
+                // headerTitle: '',
+                // headerStyle: {
+                //   backgroundColor: 'rgb(30, 30, 30)',
+                // },
+                // headerTitleStyle: {
+                //   fontWeight: 'bold',
+                //   color: primaryTextColor,
+                // },
+              })}
+            />
+          </Stack.Group>
+          <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+            <Stack.Screen
+              name='ViewPostStackNavigator'
+              component={ViewPostStackNavigator}
+              options={({ navigation }) => ({
+                headerShown: false,
+                // headerTransparent: true,
+                headerTitle: '',
+                headerStyle: {
+                  backgroundColor: 'transparent',
+                },
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  color: primaryTextColor,
+                },
+              })}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </View>
     </TagViewContext.Provider>
   );
 };

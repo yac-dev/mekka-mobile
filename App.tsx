@@ -40,6 +40,23 @@ const App: React.FC = function () {
   const chooseViewBottomSheetRef = useRef(null);
   const [afterJoined, setAfterJoined] = useState(false);
   const [isAfterPosted, setIsAfterPosted] = useState(false);
+  const [createNewPostFormData, setCreateNewPostFormData] = useState({
+    postType: '',
+    contents: [],
+    caption: '',
+    dummyCreatedTagId: 1,
+    addedTags: {},
+    tagOptions: [],
+    addedLocationTag: null,
+    locationTagOptions: [],
+    moments: [],
+  });
+  const [createNewPostResult, setCreateNewPostResult] = useState({
+    isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
+    isSuccess: false,
+    isError: false,
+    responseData: null,
+  });
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
 
@@ -143,6 +160,10 @@ const App: React.FC = function () {
         setCurrentTagObject,
         isAfterPosted,
         setIsAfterPosted,
+        createNewPostFormData,
+        setCreateNewPostFormData,
+        createNewPostResult,
+        setCreateNewPostResult,
       }}
     >
       <PaperProvider>
@@ -150,7 +171,7 @@ const App: React.FC = function () {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
-              name='HomwStackNavigator'
+              name='HomeStackNavigator'
               component={HomeStackNavigator}
               options={({ navigation }) => ({
                 // headerShown: true,

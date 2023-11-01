@@ -3,8 +3,10 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
 import FastImage from 'react-native-fast-image';
+import { GlobalContext } from '../../../contexts/GlobalContext';
 
 const AddTags = (props) => {
+  const { createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
   const {
     navigation,
     route,
@@ -20,12 +22,18 @@ const AddTags = (props) => {
 
   useEffect(() => {
     if (props.route?.params?.createdTag) {
-      setAddedTags((previous) => {
+      setCreateNewPostFormData((previous) => {
         return {
           ...previous,
           [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
         };
       });
+      // setAddedTags((previous) => {
+      //   return {
+      //     ...previous,
+      //     [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
+      //   };
+      // });
       setTagOptions((previous) => {
         const updating = [...previous];
         updating.unshift(props.route?.params?.createdTag);
@@ -50,18 +58,35 @@ const AddTags = (props) => {
             marginBottom: 10,
           }}
           onPress={() => {
-            setAddedTags((previous) => {
-              const updating = { ...previous };
-              if (addedTags[tag._id]) {
+            setCreateNewPostFormData((previous) => {
+              const updating = { ...previous.addedTags };
+              if (createNewPostFormData.addedTags[tag._id]) {
                 delete updating[tag._id];
-                return updating;
-              } else {
                 return {
-                  ...updating,
-                  [tag._id]: tag,
+                  ...previous,
+                  addedTags: updating,
+                };
+              } else {
+                const updating = { ...previous.addedTags };
+                updating[tag._id] = tag;
+                return {
+                  ...previous,
+                  addedTags: updating,
                 };
               }
             });
+            // setAddedTags((previous) => {
+            //   const updating = { ...previous };
+            //   if (addedTags[tag._id]) {
+            //     delete updating[tag._id];
+            //     return updating;
+            //   } else {
+            //     return {
+            //       ...updating,
+            //       [tag._id]: tag,
+            //     };
+            //   }
+            // });
           }}
         >
           <FastImage
@@ -70,7 +95,7 @@ const AddTags = (props) => {
             tintColor={tag.iconType === 'icon' ? tag.color : null}
           />
           <Text style={{ color: 'white' }}>{tag.name}</Text>
-          {addedTags[tag._id] ? (
+          {createNewPostFormData.addedTags[tag._id] ? (
             <View style={{ position: 'absolute', top: -10, right: -7 }}>
               <Ionicons name='checkmark-circle' color='green' size={25} />
             </View>
