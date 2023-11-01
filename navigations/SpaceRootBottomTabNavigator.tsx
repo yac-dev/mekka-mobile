@@ -37,11 +37,39 @@ import MomentsViewStackNavigator from './MomentsViewStackNavigator';
 
 const Tab = createBottomTabNavigator();
 const viewTypeObject = {
-  grid: <MaterialCommunityIcons name='dots-grid' color='black' size={25} />,
-  map: (
-    <FastImage source={require('../assets/forApp/globe.png')} style={{ width: 25, height: 25 }} tintColor={'black'} />
+  tags: (
+    <Octicons
+      name='hash'
+      // color={focused ? 'white' : 'rgb(100, 100, 100)'}
+      size={23}
+      style={{ marginBottom: 5 }}
+      color={'white'}
+    />
   ),
-  people: <MaterialCommunityIcons name='account-multiple' color='black' size={25} />,
+  map: (
+    <FastImage source={require('../assets/forApp/globe.png')} style={{ width: 25, height: 25 }} tintColor={'white'} />
+  ),
+  people: <MaterialCommunityIcons name='account-multiple' color='white' size={25} />,
+};
+
+const getViewTypeObject = (isFocused, viewPostsType) => {
+  const viewTypeObject = {
+    tags: (
+      <Octicons name='hash' color={isFocused ? 'white' : 'rgb(100, 100, 100)'} size={23} style={{ marginBottom: 5 }} />
+    ),
+    map: (
+      <FastImage
+        source={require('../assets/forApp/globe.png')}
+        style={{ width: 25, height: 25 }}
+        tintColor={isFocused ? 'white' : 'rgb(100, 100, 100)'}
+      />
+    ),
+    people: (
+      <MaterialCommunityIcons name='account-multiple' color={isFocused ? 'white' : 'rgb(100, 100, 100)'} size={25} />
+    ),
+  };
+
+  return viewTypeObject[viewPostsType];
 };
 
 const SpaceRootBottomTabNavigator = (props) => {
@@ -67,7 +95,7 @@ const SpaceRootBottomTabNavigator = (props) => {
   const [haveLocationsViewPostsBeenFetched, setHaveLocationsViewPostsBeenFetched] = useState(false);
   const [isFetchingLocationsViewPosts, setIsFetchingLocationsViewPosts] = useState(false);
   const [selectedLocationTag, setSelectedLocationTag] = useState(null);
-  const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
+  const [viewPostsType, setViewPostsType] = useState('tags'); // grid, map, people
   const [isAfterPosted, setIsAfterPosted] = useState(false);
   const [screenLoaded, setScreenLoaded] = useState({});
 
@@ -252,14 +280,15 @@ const SpaceRootBottomTabNavigator = (props) => {
             component={ViewPostsTopTabNavigator}
             options={({ navigation, route }) => ({
               // tabBarShowLabel: false,
-              tabBarIcon: ({ size, color, focused }) => (
-                <Octicons
-                  name='hash'
-                  color={focused ? 'white' : 'rgb(100, 100, 100)'}
-                  size={23}
-                  style={{ marginBottom: 5 }}
-                />
-              ),
+              tabBarIcon: ({ size, color, focused }) =>
+                // <Octicons
+                //   name='hash'
+                //   color={focused ? 'white' : 'rgb(100, 100, 100)'}
+                //   size={23}
+                //   style={{ marginBottom: 5 }}
+                // />
+                // viewTypeObject[viewPostsType],
+                getViewTypeObject(focused, viewPostsType),
               tabBarLabel: ({ focused }) => {
                 return <Text style={{ color: focused ? 'white' : 'rgb(100, 100, 100)', fontSize: 13 }}>Home</Text>;
               },
