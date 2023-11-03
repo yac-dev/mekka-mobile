@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import FastImage from 'react-native-fast-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const EditAccount = () => {
   const { authData, setAuthData } = useContext(GlobalContext);
@@ -50,7 +53,13 @@ const EditAccount = () => {
         onPress={() => onAvatarPress()}
         style={{ width: 70, height: 70, alignSelf: 'center', marginBottom: 30 }}
       >
-        <FastImage source={{ uri: authData.avatar }} style={{ width: '100%', height: '100%' }} />
+        <ExpoImage
+          style={{ width: '100%', height: '100%' }}
+          source={{ uri: authData.avatar }}
+          placeholder={blurhash}
+          contentFit='cover'
+          transition={1000}
+        />
       </TouchableOpacity>
       <View>
         <View

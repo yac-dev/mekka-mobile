@@ -6,8 +6,11 @@ import { ViewPostContext } from '../contexts/ViewPostContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import backendAPI from '../../../apis/backend';
-import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // rgb(35, 35, 35)
 const ReactionOptionsBottomSheet = (props) => {
@@ -96,14 +99,17 @@ const ReactionOptionsBottomSheet = (props) => {
                 </View>
               ) : (
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                  <FastImage
-                    source={{ uri: reactionStatus.reaction.sticker.url }}
+                  <ExpoImage
                     style={{
                       width: 60,
                       height: 60,
                       marginBottom: 10,
                       // marginRight: reactionStatus.count ? 10 : 0
                     }}
+                    source={{ uri: reactionStatus.reaction.sticker.url }}
+                    placeholder={blurhash}
+                    contentFit='contain'
+                    transition={1000}
                   />
                   {reactionStatus.count ? (
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{reactionStatus.count}</Text>

@@ -6,7 +6,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MediaStats = () => {
   const { isIpad, spaceMenuBottomSheetRef, currentSpaceAndUserRelationship, currentSpace } = useContext(GlobalContext);
@@ -21,7 +24,16 @@ const MediaStats = () => {
             </Text>
           );
         } else if (reaction.type === 'sticker') {
-          return <FastImage key={index} source={{ uri: reaction.sticker.url }} style={{ width: 20, height: 20 }} />;
+          return (
+            <ExpoImage
+              key={index}
+              style={{ width: 20, height: 20 }}
+              source={{ uri: reaction.sticker.url }}
+              placeholder={blurhash}
+              contentFit='contain'
+              transition={1000}
+            />
+          );
         }
       } else {
         return null;
@@ -71,9 +83,12 @@ const MediaStats = () => {
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-          <FastImage
-            source={require('../../../assets/forApp/ghost.png')}
+          <ExpoImage
             style={{ width: 25, height: 25, marginRight: 15 }}
+            source={require('../../../assets/forApp/ghost.png')}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
             tintColor={'rgb(130,130,130)'}
           />
           <Text style={{ color: 'white' }}>

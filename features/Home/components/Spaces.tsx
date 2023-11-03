@@ -2,10 +2,13 @@ import React, { useContext, useCallback, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, FlatList, Dimensions, ScrollView } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { HomeContext } from '../contexts/HomeContext';
-import FastImage from 'react-native-fast-image';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { iconColorTable } from '../../../themes/color';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Spaces: React.FC = (props) => {
   const { isIpad, spaceAndUserRelationships } = useContext(GlobalContext);
@@ -41,10 +44,12 @@ const Spaces: React.FC = (props) => {
           onPress={() => navigate(relationship)}
         >
           <View style={{ width: iconWidth, aspectRatio: 1, marginBottom: 5 }}>
-            <FastImage
+            <ExpoImage
               style={{ width: '100%', height: '100%', borderRadius: 10 }}
               source={{ uri: relationship.space.icon }}
-              resizeMode={FastImage.resizeMode.contain}
+              placeholder={blurhash}
+              contentFit='contain'
+              transition={1000}
             />
             <View
               style={{

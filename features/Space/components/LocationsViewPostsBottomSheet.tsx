@@ -6,7 +6,10 @@ import GorhomBottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // rgb(35, 35, 35)
 const LocationsViewPostsBottomSheet = (props) => {
@@ -32,21 +35,6 @@ const LocationsViewPostsBottomSheet = (props) => {
     setIsFetchingLocationsViewPosts,
   } = useContext(SpaceRootContext);
 
-  // const renderItem = useCallback((item) => {
-  //   return (
-  //     <FastImage
-  //                 // onLoad={() => setInitialRender(false)}
-  //                 style={{
-  //                   width: '100%',
-  //                   height: '100%',
-  //                   borderRadius: 10,
-  //                 }}
-  //                 source={{ uri: route.params?.locationTag.icon }}
-  //                 style={{ width: 35, height: 35, borderRadius: 8, marginBottom: 5 }}
-  //                 tintColor={route.params?.locationTag.iconType === 'icon' ? route.params?.locationTag.color : null}
-  //               />
-  //   )
-  // },[])
   const renderItem = useCallback((post) => {
     if (post.content.type === 'video') {
       return (
@@ -63,7 +51,13 @@ const LocationsViewPostsBottomSheet = (props) => {
           style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
           onPress={() => props.navigation.navigate({ name: 'ViewPost', params: { post } })}
         >
-          <FastImage source={{ uri: post.content.data }} style={{ width: '100%', height: '100%', borderRadius: 5 }} />
+          <ExpoImage
+            style={{ width: '100%', height: '100%', borderRadius: 5 }}
+            source={{ uri: post.content.data }}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
+          />
         </TouchableOpacity>
       );
     }
@@ -120,9 +114,12 @@ const LocationsViewPostsBottomSheet = (props) => {
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FastImage
-                source={{ uri: selectedLocationTag.icon }}
+              <ExpoImage
                 style={{ width: 45, height: 45, marginRight: 15, borderRadius: 10 }}
+                source={{ uri: selectedLocationTag.icon }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
                 tintColor={selectedLocationTag.iconType === 'icon' ? selectedLocationTag.color : null}
               />
               <Text style={{ color: 'white', fontSize: 20 }}>{selectedLocationTag.name}</Text>

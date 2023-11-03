@@ -1,12 +1,15 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Description = () => {
   const { currentSpace } = useContext(GlobalContext);
@@ -41,9 +44,12 @@ const Description = () => {
             style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FastImage
-                source={{ uri: spaceAndUserRelationship.space.createdBy.avatar }}
+              <ExpoImage
                 style={{ width: 30, height: 30, borderRadius: 20, marginRight: 10 }}
+                source={{ uri: spaceAndUserRelationship.space.createdBy.avatar }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
               />
               <Text style={{ color: 'white', fontWeight: 'bold' }}>
                 {spaceAndUserRelationship.space.createdBy.name}

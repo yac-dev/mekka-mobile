@@ -7,7 +7,10 @@ import CommentsPage from '../features/Comments/pages/CommentsPage';
 import ReportPost from '../features/ViewPost/pages/ReportPost';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalContext } from '../contexts/GlobalContext';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ViewPostStackNavigator = () => {
   const { currentTagObject } = useContext(GlobalContext);
@@ -37,9 +40,12 @@ const ViewPostStackNavigator = () => {
             headerTransparent: true,
             headerTitle: () => (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FastImage
-                  source={{ uri: currentTagObject.tag.icon }}
+                <ExpoImage
                   style={{ width: 20, height: 20, marginRight: 10 }}
+                  source={{ uri: currentTagObject.tag.icon }}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                   tintColor={currentTagObject.tag.iconType === 'icon' ? currentTagObject.tag.color : null}
                 />
                 <Text style={{ color: 'white', fontSize: 20 }}>{currentTagObject.tag.name}</Text>

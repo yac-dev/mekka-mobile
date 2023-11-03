@@ -6,14 +6,24 @@ import PeopleViewTopTabNavigator from './PeopleViewTopTabNavigator';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { useContext } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createMaterialTopTabNavigator();
 
 const viewTypeObject = {
   grid: <MaterialCommunityIcons name='dots-grid' color='black' size={22} />,
   map: (
-    <FastImage source={require('../assets/forApp/globe.png')} style={{ width: 22, height: 22 }} tintColor={'black'} />
+    <ExpoImage
+      style={{ width: 22, height: 22 }}
+      source={require('../assets/forApp/globe.png')}
+      placeholder={blurhash}
+      contentFit='contain'
+      transition={1000}
+      tintColor={'black'}
+    />
   ),
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={22} />,
 };

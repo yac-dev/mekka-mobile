@@ -8,7 +8,10 @@ import { primaryTextColor } from '../../../themes/text';
 import CreateNewButton from '../components/CreateNewButton';
 import { DiscoverContext } from '../contexts/DiscoverContext';
 import SnackBar from '../../../components/SnackBar';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 type RouterProps = {
   navigation: NavigationProp<any, any>;
@@ -65,9 +68,12 @@ const Discover: React.FC<RouterProps> = (props) => {
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <FastImage
-            source={{ uri: space.icon }}
+          <ExpoImage
             style={{ width: 80, height: 80, borderRadius: 13, marginRight: 20 }}
+            source={{ uri: space.icon }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
           />
           <View style={{ flexDirection: 'column' }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 5 }}>{space.name}</Text>
@@ -106,42 +112,6 @@ const Discover: React.FC<RouterProps> = (props) => {
       </View>
     );
   }, []);
-
-  // const renderSpaces = () => {
-  //   const list = spaces.map((space, index) => {
-  //     return (
-  //       <View style={{ width: oneGridWidth, backgroundColor: 'blue', padding: 10 }} key={index}>
-  //         <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-  //           <FastImage source={{ uri: space.icon }} style={{ width: 70, height: 70, borderRadius: 10 }} />
-  //           <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}>{space.name}</Text>
-  //         </View>
-  //         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-  //           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-  //             <Text style={{ color: 'white' }}>Content</Text>
-  //             <Text style={{ color: 'white' }}>{space.contentType}</Text>
-  //           </View>
-  //           <View>
-  //             <Text style={{ color: 'white' }}>Video length</Text>
-  //             <Text style={{ color: 'white' }}>{space.videoLength}</Text>
-  //           </View>
-  //         </View>
-  //         <TouchableOpacity
-  //           onPress={() =>
-  //             props.navigation.navigate('SpaceDetailStackNavigator', {
-  //               screen: 'SpaceDetail',
-  //               params: { spaceId: space._id },
-  //             })
-  //           }
-  //           style={{ padding: 10, backgroundColor: 'red', borderRadius: 8, alignSelf: 'flex-end' }}
-  //         >
-  //           <Text style={{ color: 'white' }}>See detail</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     );
-  //   });
-
-  //   return <View style={{ flexDirection: 'row', alignItems: 'center' }}>{list}</View>;
-  // };
 
   const renderSpaces = () => {
     if (areSpacesFetched) {

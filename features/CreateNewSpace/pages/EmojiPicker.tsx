@@ -4,8 +4,11 @@ import { emojis } from '../../../utils/emojis';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { inputBackgroundColor } from '../../../themes/color';
 import { iconParameterBackgroundColorTable } from '../../../themes/color';
-import FastImage from 'react-native-fast-image';
 import backendAPI from '../../../apis/backend';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // smilyAndPeople, animalsAndNature, foodAndDrink, objects, flags, symbols, travelAndPlaces, activity
 
@@ -87,7 +90,13 @@ const EmojiPicker: React.FC = (props) => {
               alignItems: 'center',
             }}
           >
-            <FastImage source={{ uri: selectedReaction.sticker.url }} style={{ width: 65, height: 65 }} />
+            <ExpoImage
+              style={{ width: 65, height: 65 }}
+              source={{ uri: selectedReaction.sticker.url }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
+            />
           </View>
         );
       } else {
@@ -137,7 +146,13 @@ const EmojiPicker: React.FC = (props) => {
                 });
               }}
             >
-              <FastImage source={{ uri: sticker.url }} style={{ width: 30, height: 30 }} />
+              <ExpoImage
+                style={{ width: 30, height: 30 }}
+                source={{ uri: sticker.url }}
+                placeholder={blurhash}
+                contentFit='cover'
+                transition={1000}
+              />
             </TouchableOpacity>
           </View>
         );
@@ -235,7 +250,13 @@ const EmojiPicker: React.FC = (props) => {
               }}
               onPress={() => setFilterOption('sticker')}
             >
-              <FastImage source={require('../../../assets/forApp/elon-wtf.png')} style={{ width: 30, height: 30 }} />
+              <ExpoImage
+                style={{ width: 30, height: 30 }}
+                source={require('../../../assets/forApp/elon-wtf.png')}
+                placeholder={blurhash}
+                contentFit='cover'
+                transition={1000}
+              />
             </TouchableOpacity>
           </View>
           <View style={{ width: oneGridWidth, aspectRatio: 1, padding: 3 }}>

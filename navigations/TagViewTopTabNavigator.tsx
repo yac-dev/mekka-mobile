@@ -8,7 +8,6 @@ import backendAPI from '../apis/backend';
 import GalleryNew from '../features/Space/components/GalleryNew';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import TaggedPosts from '../features/Space/components/TaggedPosts';
-import FastImage from 'react-native-fast-image';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -21,6 +20,10 @@ import SnackBar from '../components/SnackBar';
 // import Grid from '../features/Space/components/Grid';
 import TagView from '../features/Space/pages/TagView';
 import Map from '../features/Space/components/Map';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -150,9 +153,12 @@ const TagViewTopTabNavigator = (props) => {
                 // onLongPress={() => console.log('long press')} edit画面をここに出す。
               >
                 {/* rgb(100, 100, 100) */}
-                <FastImage
-                  source={{ uri: route.params?.tagObject.tag.icon }}
+                <ExpoImage
                   style={{ width: 25, height: 25, marginBottom: 5 }}
+                  source={{ uri: route.params?.tagObject.tag.icon }}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                   tintColor={route.params?.tagObject.tag.iconType === 'icon' ? route.params?.tagObject.tag.color : null}
                 />
                 <Text numberOfLines={1} style={{ color: 'white' }}>

@@ -3,7 +3,10 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SpaceDetailContext } from '../../contexts/SpaceDetailContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Reactions = () => {
   const { space } = useContext(SpaceDetailContext);
@@ -19,10 +22,13 @@ const Reactions = () => {
         );
       } else if (reaction.type === 'sticker') {
         return (
-          <FastImage
+          <ExpoImage
             key={index}
-            source={{ uri: reaction.sticker.url }}
             style={{ width: 30, height: 30, marginRight: 5 }}
+            source={{ uri: reaction.sticker.url }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
           />
         );
       }
@@ -46,7 +52,16 @@ const Reactions = () => {
             </Text>
           );
         } else if (reaction.type === 'sticker') {
-          return <FastImage key={index} source={{ uri: reaction.sticker.url }} style={{ width: 30, height: 30 }} />;
+          return (
+            <ExpoImage
+              key={index}
+              style={{ width: 30, height: 30 }}
+              source={{ uri: reaction.sticker.url }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
+            />
+          );
         }
       } else {
         return null;

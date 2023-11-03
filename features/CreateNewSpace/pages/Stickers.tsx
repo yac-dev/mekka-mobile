@@ -6,7 +6,10 @@ import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import SnackBar from '../../../components/SnackBar';
 import { Ionicons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Stickers = (props) => {
   const { isIpad, setSnackBar } = useContext(GlobalContext);
@@ -85,7 +88,13 @@ const Stickers = (props) => {
               }
             }}
           >
-            <FastImage source={{ uri: item.url }} style={{ width: 30, height: 30 }} />
+            <ExpoImage
+              style={{ width: 30, height: 30 }}
+              source={{ uri: item.url }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
+            />
           </TouchableOpacity>
         </View>
       );

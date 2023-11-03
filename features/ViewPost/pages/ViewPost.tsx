@@ -15,7 +15,10 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import SnackBar from '../../../components/SnackBar';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ViewPost = (props) => {
   const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
@@ -26,63 +29,6 @@ const ViewPost = (props) => {
   const textInputRef = useRef(null);
   const [reactionStatuses, setReactionStatuses] = useState([]);
   const [isLoadingReactionStatuses, setIsLoadingReactionStatuses] = useState(false);
-  // const [post, setPost] = useState(null);
-  // const [isPostFetched, setIsPostFetched] = useState(false);
-  // const [reactionStatuses, setReactionStatuses] = useState([]);
-  // const [areReactionStatusesFetched, setAreReactionStatusesFetched] = useState(false);
-  // const [comments, setComments] = useState([]);
-  // const [areCommentsFetched, setAreCommentsFetched] = useState(false);
-  // const reactionOptionsBottomSheetRef = useRef(null);
-  // const commentInputBottomSheetRef = useRef(null);
-  // const textInputRef = useRef(null);
-
-  // const getPost = async () => {
-  //   const result = await backendAPI.get(`/posts/${props.route.params.post._id}`);
-  //   const { post } = result.data;
-  //   setPost(post);
-  //   setIsPostFetched(true);
-  // };
-
-  // const getReactionStatuses = async () => {
-  //   const result = await backendAPI.get(`/reactionstatuses/post/${props.route?.params?.post._id}`);
-  //   const { reactionStatuses } = result.data;
-  //   setReactionStatuses(reactionStatuses);
-  //   setAreReactionStatusesFetched(true);
-  // };
-
-  // const getComments = async () => {
-  //   const result = await backendAPI.get(`/comments/post/${props.route?.params?.post._id}`);
-  //   const { comments } = result.data;
-  //   setComments(comments);
-  //   setAreCommentsFetched(true);
-  // };
-
-  // useEffect(() => {}, []);
-
-  // useEffect(() => {
-  //   getPost();
-  //   getReactionStatuses();
-  //   getComments();
-  // }, []);
-
-  // if (viewingContent.type === 'video') {
-  //   return (
-  //     <View style={{ paddingTop: 10, paddingBottom: 10 }}>
-  //       <Video source={{ uri: viewingContent.data }} style={{ width: '100%' }} />
-  //       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>{renderContentOptions()}</View>
-  //     </View>
-  //   );
-  // } else if (viewingContent.type === 'photo') {
-  //   return (
-  //     <View style={{}}>
-  //       <FastImage
-  //         source={{ uri: viewingContent.data }}
-  //         style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
-  //         resizeMode='cover'
-  //       />
-  //       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>{renderContentOptions()}</View>
-  //     </View>
-  //   );
 
   const getReactionStatuses = async () => {
     // currentPostがあってこれを使う。

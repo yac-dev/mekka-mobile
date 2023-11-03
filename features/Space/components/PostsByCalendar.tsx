@@ -4,8 +4,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import ViewPostsByDateBottomSheet from './ViewPostsByDateBottomSheet';
 import backendAPI from '../../../apis/backend';
-import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const CalendarView = (props) => {
   const [currentYearAndMonth, setCurrentYearAndMonth] = useState('');
@@ -81,11 +84,14 @@ const CalendarView = (props) => {
             }
           >
             {marking.type === 'photo' ? (
-              <FastImage
+              <ExpoImage
                 style={{ width: '100%', height: '100%', borderRadius: 8 }}
                 source={{
                   uri: marking.thumbnail,
                 }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
               />
             ) : (
               <Video

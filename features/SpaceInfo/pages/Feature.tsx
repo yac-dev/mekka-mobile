@@ -1,12 +1,15 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Feature = () => {
   const { currentSpace } = useContext(GlobalContext);
@@ -43,7 +46,16 @@ const Feature = () => {
             </Text>
           );
         } else if (reaction.type === 'sticker') {
-          return <FastImage key={index} source={{ uri: reaction.sticker.url }} style={{ width: 20, height: 20 }} />;
+          return (
+            <ExpoImage
+              key={index}
+              style={{ width: 20, height: 20 }}
+              source={{ uri: reaction.sticker.url }}
+              placeholder={blurhash}
+              contentFit='contain'
+              transition={1000}
+            />
+          );
         }
       } else {
         return null;
@@ -95,9 +107,12 @@ const Feature = () => {
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-            <FastImage
-              source={require('../../../assets/forApp/ghost.png')}
+            <ExpoImage
               style={{ width: 25, height: 25, marginRight: 15 }}
+              source={require('../../../assets/forApp/ghost.png')}
+              placeholder={blurhash}
+              contentFit='contain'
+              transition={1000}
               tintColor={'rgb(130,130,130)'}
             />
             <Text style={{ color: 'white' }}>

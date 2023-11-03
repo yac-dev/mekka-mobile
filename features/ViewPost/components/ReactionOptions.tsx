@@ -5,7 +5,10 @@ import { ViewPostContext } from '../Space/contexts/ViewPostContext';
 import { RouteProp, ParamListBase } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import backendAPI from '../../apis/backend';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 type ReactionsProps = {
   route: RouteProp<ParamListBase, string> | undefined;
@@ -77,9 +80,12 @@ const ReactionOptions = () => {
               </View>
             ) : (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FastImage
-                  source={{ uri: reactionStatus.reaction.sticker.url }}
+                <ExpoImage
                   style={{ width: 35, height: 35, marginRight: reactionStatus.count ? 10 : 0 }}
+                  source={{ uri: reactionStatus.reaction.sticker.url }}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                 />
                 {reactionStatus.count ? <Text style={{ color: 'white' }}>{reactionStatus.count}</Text> : null}
               </View>

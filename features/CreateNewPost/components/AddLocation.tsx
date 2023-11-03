@@ -6,8 +6,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { iconColorTable, iconParameterBackgroundColorTable } from '../../../themes/color';
 import MapView, { Marker } from 'react-native-maps';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 // いいや、locationは、
 const AddLocation = () => {
   const { navigation, route, setFormData, formData, locationTagOptions, setLocationTagOptions } =
@@ -58,62 +60,6 @@ const AddLocation = () => {
     }
   }, [formData.addedLocationTag, formData.createdLocationTag]);
 
-  // formData.createdLocationTag dependencyにcreatedTagも入れる。
-
-  // {formData.createdLocationTag.name ? (
-  //   <TouchableOpacity
-  //     style={{
-  //       padding: 10,
-  //       flexDirection: 'row',
-  //       alignItems: 'center',
-  //       backgroundColor: 'rgb(80,80,80)',
-  //       borderRadius: 8,
-  //       marginRight: 10,
-  //       marginBottom: 10,
-  //     }}
-  //     onPress={() =>
-  //       setFormData((previous) => {
-  //         return {
-  //           ...previous,
-  //           createdLocationTag: {
-  //             ...previous.createdLocationTag,
-  //             selected: !previous.createdLocationTag.selected,
-  //           },
-  //           addedLocationTag: null,
-  //         };
-  //       })
-  //     }
-  //   >
-  //     <FastImage
-  //       source={{ uri: 'https://mekka-dev.s3.us-east-2.amazonaws.com/locationTagIcons/map-pin.png' }}
-  //       style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
-  //       tintColor={'white'}
-  //     />
-  //     <Text style={{ color: 'white', marginRight: 10 }}>{formData.createdLocationTag.name}</Text>
-  //     <Ionicons
-  //       name='checkmark-circle-sharp'
-  //       size={20}
-  //       color={formData.createdLocationTag.selected ? iconColorTable['lightGreen1'] : 'rgb(100,100,100)'}
-  //     />
-  //   </TouchableOpacity>
-  // ) : null}
-
-  // <TouchableOpacity
-  //         style={{
-  //           flexDirection: 'column',
-  //           alignItems: 'center',
-  //           backgroundColor: 'rgb(80,80,80)',
-  //           borderRadius: 8,
-  //           padding: 5,
-  //           marginRight: 10,
-  //           marginBottom: 10,
-  //         }}
-  //         onPress={() => navigation?.navigate('CreateNewLocationTag')}
-  //       >
-  //         <Ionicons name='create' size={20} color='white' style={{ marginBottom: 5 }} />
-  //         <Text style={{ color: 'white' }}>Create</Text>
-  //       </TouchableOpacity>
-
   // createdLocationTagがある場合はそれを優先で表示する。
   // ない場合は、addedLocationTagの方をrender
   const renderAddedLocationTag = () => {
@@ -131,10 +77,13 @@ const AddLocation = () => {
             alignSelf: 'flex-start',
           }}
         >
-          <FastImage
-            source={{ uri: formData.addedLocationTag.icon }}
+          <ExpoImage
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
-            // tintColor={'white'}
+            source={{ uri: formData.addedLocationTag.icon }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
+            tintColor={'white'}
           />
           <Text style={{ color: 'white', marginRight: 10 }}>{formData.addedLocationTag.name}</Text>
           <TouchableOpacity
@@ -172,9 +121,12 @@ const AddLocation = () => {
             alignSelf: 'flex-start',
           }}
         >
-          <FastImage
-            source={{ uri: formData.createdLocationTag.icon }}
+          <ExpoImage
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
+            source={{ uri: formData.createdLocationTag.icon }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
             tintColor={'white'}
           />
           <Text style={{ color: 'white', marginRight: 10 }}>{formData.createdLocationTag.name}</Text>
@@ -226,9 +178,13 @@ const AddLocation = () => {
               });
             }}
           >
-            <FastImage
-              source={{ uri: locationTag.icon }}
+            <ExpoImage
               style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
+              source={{ uri: locationTag.icon }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
+              tintColor={'white'}
             />
             <Text style={{ color: 'white', marginRight: 10 }}>{locationTag.name}</Text>
           </TouchableOpacity>
@@ -360,9 +316,13 @@ const AddLocation = () => {
                   longitude: formData.addedLocationTag.point.coordinates[0],
                 }}
               >
-                <FastImage
-                  source={{ uri: formData.addedLocationTag.icon }}
+                <ExpoImage
                   style={{ width: 40, height: 40, borderRadius: 10 }}
+                  source={{ uri: formData.addedLocationTag.icon }}
+                  placeholder={blurhash}
+                  contentFit='cover'
+                  transition={1000}
+                  tintColor={'white'}
                 />
               </Marker>
             ) : null}
@@ -374,9 +334,13 @@ const AddLocation = () => {
                   longitude: formData.createdLocationTag.point.coordinates[0],
                 }}
               >
-                <FastImage
-                  source={{ uri: formData.createdLocationTag.icon }}
+                <ExpoImage
                   style={{ width: 40, height: 40, borderRadius: 10 }}
+                  source={{ uri: formData.createdLocationTag.icon }}
+                  placeholder={blurhash}
+                  contentFit='cover'
+                  transition={1000}
+                  tintColor={'white'}
                 />
               </Marker>
             ) : null}

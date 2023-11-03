@@ -2,7 +2,10 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Reaction = (props) => {
   const { formData, setFormData } = useContext(CreateNewSpaceContext);
@@ -38,7 +41,13 @@ const Reaction = (props) => {
             {reactionObject.type === 'emoji' ? (
               <Text style={{ fontSize: 40 }}>{reactionObject.emoji}</Text>
             ) : (
-              <FastImage source={{ uri: reactionObject.sticker.url }} style={{ width: 40, height: 40 }} />
+              <ExpoImage
+                style={{ width: 40, height: 40 }}
+                source={{ uri: reactionObject.sticker.url }}
+                placeholder={blurhash}
+                contentFit='cover'
+                transition={1000}
+              />
             )}
           </TouchableOpacity>
         );

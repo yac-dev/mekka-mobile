@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import backendAPI from '../apis/backend';
 import LocationsView from '../features/Space/pages/LocationsView';
 import MapView, { Marker } from 'react-native-maps';
 import * as Haptics from 'expo-haptics';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -113,34 +116,6 @@ const LocationsViewTopTabNavigator = () => {
             }
           };
           return (
-            // <TouchableOpacity
-            //   key={route.key}
-            //   style={{
-            //     flexDirection: 'column',
-            //     justifyContent: 'center',
-            //     alignItems: 'center',
-            //     marginRight: 10,
-            //     // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
-            //     padding: 10,
-            //     // borderRadius: 20,
-            //     // backgroundColor: isFocused ? 'rgb(150, 150,150)' : 'rgb(60,60,60)',
-            //     width: 70,
-            //     height: 70,
-            //     borderBottomWidth: isFocused && 1,
-            //     borderBottomColor: isFocused && 'white',
-            //   }}
-            //   // contentTypeによって、いくnavigatorが変わるわけですよ。。。そう、つまりここでnavigatingを分ければいいわけね。
-            //   onPress={onPress}
-            // >
-            //   <FastImage
-            //     source={{ uri: route.params?.locationTag.icon }}
-            //     style={{ width: 35, height: 35, borderRadius: 8, marginBottom: 5 }}
-            //     tintColor={route.params?.locationTag.iconType === 'icon' ? route.params?.locationTag.color : null}
-            //   />
-            //   <Text numberOfLines={1} style={{ color: 'white', marginBottom: 5 }}>
-            //     {route.params?.locationTag.name}
-            //   </Text>
-            // </TouchableOpacity>
             <Marker
               tracksViewChanges={false}
               coordinate={{
@@ -157,8 +132,7 @@ const LocationsViewTopTabNavigator = () => {
                 style={{ width: 45, height: 45 }}
                 // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
               >
-                <FastImage
-                  // onLoad={() => setInitialRender(false)}
+                <ExpoImage
                   style={{
                     width: '100%',
                     height: '100%',
@@ -166,6 +140,9 @@ const LocationsViewTopTabNavigator = () => {
                   }}
                   source={{ uri: route.params?.locationTag.icon }}
                   style={{ width: 35, height: 35, borderRadius: 8, marginBottom: 5 }}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                   tintColor={route.params?.locationTag.iconType === 'icon' ? route.params?.locationTag.color : null}
                 />
               </TouchableOpacity>
@@ -200,8 +177,7 @@ const LocationsViewTopTabNavigator = () => {
               style={{ width: 45, height: 45 }}
               // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
             >
-              <FastImage
-                // onLoad={() => setInitialRender(false)}
+              <ExpoImage
                 style={{
                   width: '100%',
                   height: '100%',
@@ -209,6 +185,9 @@ const LocationsViewTopTabNavigator = () => {
                 }}
                 source={{ uri: locationTag.icon }}
                 style={{ width: 35, height: 35, borderRadius: 8, marginBottom: 5 }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
                 tintColor={locationTag.iconType === 'icon' ? locationTag.color : null}
               />
             </TouchableOpacity>

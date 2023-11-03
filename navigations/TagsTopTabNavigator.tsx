@@ -8,7 +8,6 @@ import backendAPI from '../apis/backend';
 import GalleryNew from '../features/Space/components/GalleryNew';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import TaggedPosts from '../features/Space/components/TaggedPosts';
-import FastImage from 'react-native-fast-image';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
@@ -26,13 +25,24 @@ import ViewPostsTopTabNavigator from './ViewPostsTopTabMavigator';
 import ChooseViewBottomSheet from '../features/Space/pages/ChooseViewBottomSheet';
 import { TagViewRootContext } from '../features/SpaceMenuBottomSheet/contexts/TagViewRootContext';
 import TagViewStackNavigator from './TagViewStackNavigator';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createMaterialTopTabNavigator();
 
 const viewTypeObject = {
   grid: <MaterialCommunityIcons name='dots-grid' color='black' size={25} />,
   map: (
-    <FastImage source={require('../assets/forApp/globe.png')} style={{ width: 25, height: 25 }} tintColor={'black'} />
+    <ExpoImage
+      style={{ width: 25, height: 25 }}
+      source={require('../assets/forApp/globe.png')}
+      placeholder={blurhash}
+      contentFit='contain'
+      transition={1000}
+      tintColor={'black'}
+    />
   ),
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={25} />,
 };
@@ -207,10 +217,12 @@ const TagsTopTabNavigator = (props) => {
                 // onLongPress={() => console.log('long press')} edit画面をここに出す。
               >
                 {/* rgb(100, 100, 100) */}
-                <FastImage
-                  source={{ uri: route.params?.tagObject.tag.icon }}
+                <ExpoImage
                   style={{ width: 25, height: 25, marginBottom: 5 }}
-                  // tintColor={route.params?.tagObject.tag.iconType === 'icon' ? route.params?.tagObject.tag.color : null}
+                  source={{ uri: route.params?.tagObject.tag.icon }}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                   tintColor={route.params?.tagObject.tag.iconType === 'icon' ? route.params?.tagObject.tag.color : null}
                 />
                 <Text numberOfLines={1} style={{ color: 'white' }}>

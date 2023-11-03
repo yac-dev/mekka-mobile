@@ -6,9 +6,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { iconColorTable, iconParameterBackgroundColorTable } from '../../../themes/color';
 import MapView, { Marker } from 'react-native-maps';
-import FastImage from 'react-native-fast-image';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // いいや、locationは、
 const AddLocationTag = (props) => {
@@ -80,10 +83,12 @@ const AddLocationTag = (props) => {
             alignSelf: 'flex-start',
           }}
         >
-          <FastImage
-            source={{ uri: addedLocationTag.icon }}
+          <ExpoImage
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
-            // tintColor={'white'}
+            source={{ uri: addedLocationTag.icon }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
           />
           <Text style={{ color: 'white', marginRight: 10 }}>{addedLocationTag.name}</Text>
           {/* <TouchableOpacity
@@ -121,9 +126,12 @@ const AddLocationTag = (props) => {
             alignSelf: 'flex-start',
           }}
         >
-          <FastImage
-            source={{ uri: createdLocationTag.icon }}
+          <ExpoImage
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
+            source={{ uri: createdLocationTag.icon }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
             tintColor={'white'}
           />
           <Text style={{ color: 'white', marginRight: 10 }}>{createdLocationTag.name}</Text>
@@ -193,9 +201,12 @@ const AddLocationTag = (props) => {
               }
             }}
           >
-            <FastImage
-              source={{ uri: locationTag.icon }}
+            <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10, borderRadius: 8 }}
+              source={{ uri: locationTag.icon }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
               tintColor={locationTag.iconType === 'icon' ? locationTag.color : null}
             />
             <Text style={{ color: 'white' }}>{locationTag.name}</Text>
@@ -228,9 +239,12 @@ const AddLocationTag = (props) => {
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 10 }}>
-          <FastImage
-            source={require('../../../assets/forApp/map-pin.png')}
+          <ExpoImage
             style={{ width: 20, height: 20, marginRight: 10 }}
+            source={require('../../../assets/forApp/map-pin.png')}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
             tintColor={'white'}
           />
           <Text
@@ -276,9 +290,12 @@ const AddLocationTag = (props) => {
               longitude: createNewPostFormData.addedLocationTag.point.coordinates[0],
             }}
           >
-            <FastImage
-              source={{ uri: createNewPostFormData.addedLocationTag.icon }}
+            <ExpoImage
               style={{ width: 40, height: 40, borderRadius: 10 }}
+              source={{ uri: createNewPostFormData.addedLocationTag.icon }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
               tintColor={
                 createNewPostFormData.addedLocationTag.iconType === 'icon'
                   ? createNewPostFormData.addedLocationTag.color

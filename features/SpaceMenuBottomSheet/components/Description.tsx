@@ -1,7 +1,10 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Share } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Description = () => {
   const { currentSpaceAndUserRelationship, spaceMenuBottomSheetRef, currentSpace } = useContext(GlobalContext);
@@ -63,9 +66,12 @@ const Description = () => {
       <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 10, color: 'white' }}>Description</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <FastImage
-            source={{ uri: currentSpace.createdBy.avatar }}
+          <ExpoImage
             style={{ width: 30, height: 30, borderRadius: 20, marginRight: 10 }}
+            source={{ uri: currentSpace.createdBy.avatar }}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
           />
           <Text style={{ color: 'white', fontWeight: 'bold' }}>{currentSpace.createdBy.name}</Text>
         </View>

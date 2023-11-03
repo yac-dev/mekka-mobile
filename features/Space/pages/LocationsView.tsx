@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo, useRef, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
 import backendAPI from '../../../apis/backend';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
@@ -9,6 +8,10 @@ import MapView, { Marker } from 'react-native-maps';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const LocationsView = (props) => {
   const { isIpad, authData } = useContext(GlobalContext);
@@ -64,7 +67,13 @@ const LocationsView = (props) => {
           style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
           onPress={() => props.navigation.navigate({ name: 'ViewPost', params: { post } })}
         >
-          <FastImage source={{ uri: post.content.data }} style={{ width: '100%', height: '100%', borderRadius: 5 }} />
+          <ExpoImage
+            style={{ width: '100%', height: '100%', borderRadius: 5 }}
+            source={{ uri: post.content.data }}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
+          />
         </TouchableOpacity>
       );
     }
@@ -98,9 +107,12 @@ const LocationsView = (props) => {
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FastImage
-                source={{ uri: props.locationTag.icon }}
+              <ExpoImage
                 style={{ width: 50, height: 50, marginRight: 15, borderRadius: 10 }}
+                source={{ uri: props.locationTag.icon }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
                 tintColor={props.locationTag.iconType === 'icon' ? props.locationTag.color : null}
               />
               <View style={{ flexDirection: 'column' }}>
@@ -147,63 +159,6 @@ const LocationsView = (props) => {
   // selectedLocationTag
 
   return (
-    // <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-    //   <MapView
-    //     userInterfaceStyle='dark'
-    //     ref={mapRef}
-    //     style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-    //     showsUserLocation={true}
-    //     // customMapStyle={mapStyle}
-    //     // // showsMyLocationButton={true}
-    //     // followsUserLocation={true}
-    //     showsCompass={true}
-    //     scrollEnabled={true}
-    //     zoomEnabled={true}
-    //     // onPress={(event) => setMeetupLocation(event)}
-    //     // initial regionっていうのは、最初に地図がloadされたときに画面の中心にどのlatitudeとlongitudeを映すかって言うことね。
-    //     // これ、今のuserの場所にしたほうがいいわな。開発中は、ずっとsanfransisco中心に進めていたけど。。
-    //     initialRegion={{
-    //       latitude: LATITUDE,
-    //       longitude: LONGITUDE,
-    //       latitudeDelta: LATITUDE_DELTA,
-    //       longitudeDelta: LONGITUDE_DELTA,
-    //     }}
-    //     // mapType={'satellite'}
-    //   >
-    //     <Marker
-    //       tracksViewChanges={false}
-    //       coordinate={{
-    //         latitude: props.selectedLocationTag.point.coordinates[1],
-    //         longitude: props.selectedLocationTag.point.coordinates[0],
-    //       }}
-    //       pinColor='black'
-    //       onPress={() => {
-    //         locationsViewPostsBottomSheetRef.current.snapToIndex(0);
-    //       }}
-    //     >
-    //       <TouchableOpacity
-    //         style={{ width: 45, height: 45 }}
-    //         // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
-    //       >
-    //         <FastImage
-    //           // onLoad={() => setInitialRender(false)}
-    //           style={{
-    //             width: '100%',
-    //             height: '100%',
-    //             borderRadius: 10,
-    //           }}
-    //           source={{
-    //             uri: props.selectedLocationTag.icon,
-    //             priority: FastImage.priority.normal,
-    //           }}
-    //           resizeMode={FastImage.resizeMode.contain}
-    //           tintColor={props.selectedLocationTag.iconType === 'icon' ? props.selectedLocationTag.color : null}
-    //         />
-    //       </TouchableOpacity>
-    //     </Marker>
-    //   </MapView>
-    //   {renderPosts()}
-    // </GestureHandlerRootView>
     <View style={{ backgroundColor: 'transparent' }}>
       <Text style={{ color: 'red' }}>Hello</Text>
     </View>

@@ -6,7 +6,10 @@ import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { iconColorTable, iconParameterBackgroundColorTable } from '../../../themes/color';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const AddTags = () => {
   const { navigation, route, setFormData, formData, tagOptions, setTagOptions } = useContext(CreateNewPostContext);
@@ -54,9 +57,12 @@ const AddTags = () => {
               });
             }}
           >
-            <FastImage
-              source={{ uri: tag.icon }}
+            <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10 }}
+              source={{ uri: tag.icon }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
               tintColor={'white'}
             />
             <Text style={{ color: 'white' }}>{tag.name}</Text>
@@ -129,9 +135,12 @@ const AddTags = () => {
               marginRight: 10,
             }}
           >
-            <FastImage
-              source={{ uri: tag.icon }}
+            <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10 }}
+              source={{ uri: tag.icon }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
               tintColor={'white'}
             />
             <Text style={{ color: 'white', marginRight: 10 }}>{tag.name}</Text>

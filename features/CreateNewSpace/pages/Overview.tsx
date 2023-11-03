@@ -4,7 +4,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Overview = () => {
   const { formData, setFormData } = useContext(CreateNewSpaceContext);
@@ -64,9 +67,12 @@ const Overview = () => {
           onPress={() => pickImage()}
         >
           {formData.icon ? (
-            <FastImage
-              source={{ uri: formData.icon }}
+            <ExpoImage
               style={{ width: 120, height: 120, borderRadius: 120 / 2, alignSelf: 'center' }}
+              source={{ uri: formData.icon }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
             />
           ) : (
             <>

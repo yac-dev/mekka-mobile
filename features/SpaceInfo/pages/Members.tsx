@@ -2,9 +2,12 @@ import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import FastImage from 'react-native-fast-image';
 import { FadingTransition } from 'react-native-reanimated';
 import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Members = () => {
   const { currentSpace } = useContext(GlobalContext);
@@ -35,7 +38,13 @@ const Members = () => {
           borderBottomColor: 'rgb(150,150,150)',
         }}
       >
-        <FastImage source={{ uri: user.avatar }} style={{ width: 35, height: 35, marginRight: 15 }} />
+        <ExpoImage
+          style={{ width: 35, height: 35, marginRight: 15 }}
+          source={{ uri: user.avatar }}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
+        />
         <Text style={{ color: 'white', fontSize: 17 }}>{user.name}</Text>
       </TouchableOpacity>
     );

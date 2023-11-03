@@ -2,8 +2,11 @@ import React, { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
 import { GlobalContext } from '../../../contexts/GlobalContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const AddTags = (props) => {
   const { createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
@@ -89,9 +92,12 @@ const AddTags = (props) => {
             // });
           }}
         >
-          <FastImage
-            source={{ uri: tag.icon }}
+          <ExpoImage
             style={{ width: 20, height: 20, marginRight: 10 }}
+            source={{ uri: tag.icon }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
             tintColor={tag.iconType === 'icon' ? tag.color : null}
           />
           <Text style={{ color: 'white' }}>{tag.name}</Text>
@@ -106,48 +112,6 @@ const AddTags = (props) => {
 
     return <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', padding: 10 }}>{list}</View>;
   };
-
-  // const renderCreatedTags = () => {
-  //   if (createdTags.length) {
-  //     const list = createdTags.map((tag, index) => {
-  //       return (
-  //         <View
-  //           key={index}
-  //           style={{
-  //             flexDirection: 'row',
-  //             alignItems: 'center',
-  //             backgroundColor: 'rgb(80,80,80)',
-  //             padding: 10,
-  //             borderRadius: 20,
-  //             marginRight: 10,
-  //             marginBottom: 10,
-  //           }}
-  //         >
-  //           <FastImage
-  //             source={require('../../../assets/forApp/hashtag-normal.png')}
-  //             style={{ width: 20, height: 20, marginRight: 10 }}
-  //             tintColor={'white'}
-  //           />
-  //           <Text style={{ color: 'white', marginRight: 15 }}>{tag.name}</Text>
-  //           <TouchableOpacity
-  //             onPress={() =>
-  //               setCreatedTags((previous) => {
-  //                 const updating = [...previous];
-  //                 return updating.filter((element, idx) => element._id !== tag._id);
-  //               })
-  //             }
-  //           >
-  //             <Ionicons name='close-circle' color='white' size={20} />
-  //           </TouchableOpacity>
-  //         </View>
-  //       );
-  //     });
-
-  //     return <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', padding: 10 }}>{list}</View>;
-  //   } else {
-  //     return null;
-  //   }
-  // };
 
   return (
     <View style={{ flex: 1, padding: 10, backgroundColor: 'black' }}>
