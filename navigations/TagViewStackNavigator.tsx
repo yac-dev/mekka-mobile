@@ -36,7 +36,11 @@ const TagViewStackNavigator: React.FC = (props) => {
 
   useEffect(() => {
     if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
-      setPosts((previous) => [...previous, createNewPostResult.responseData.post]);
+      setPosts((previous) => {
+        const updating = [...previous];
+        updating.unshift(createNewPostResult.responseData.post);
+        return updating;
+      });
     }
   }, [createNewPostResult]);
 

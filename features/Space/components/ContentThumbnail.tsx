@@ -67,9 +67,9 @@ const ContentThumbnail = (props) => {
         <ExpoImage
           style={{ width: '100%', height: '100%', borderRadius: 5 }}
           source={{ uri: props.post.contents[0].data }}
-          placeholder={blurhash}
-          contentFit='contain'
-          transition={1000}
+          // placeholder={blurhash}
+          contentFit='cover'
+          // transition={1000}
           onLoad={handleImageLoad}
         />
       </TouchableOpacity>

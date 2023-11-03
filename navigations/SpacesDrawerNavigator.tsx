@@ -47,8 +47,8 @@ const SpacesDrawerNavigator = (props) => {
               <ExpoImage
                 style={{ width: 35, height: 35, marginBottom: 10 }}
                 source={{ uri: authData.avatar }}
-                placeholder={blurhash}
-                contentFit='contain'
+                // placeholder={blurhash}
+                contentFit='cover'
                 transition={1000}
               />
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -211,9 +211,9 @@ const SpacesDrawerNavigator = (props) => {
                     <ExpoImage
                       style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
                       source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
-                      placeholder={blurhash}
-                      contentFit='contain'
-                      transition={1000}
+                      // placeholder={blurhash}
+                      contentFit='cover'
+                      transition={200}
                     />
                     <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
                       {route.params?.spaceAndUserRelationship.space.name}
@@ -367,9 +367,8 @@ const SpacesDrawerNavigator = (props) => {
                               marginRight: 10,
                             }}
                             source={{ uri: spaceAndUserRelationship.space.icon }}
-                            placeholder={blurhash}
-                            contentFit='contain'
-                            transition={1000}
+                            contentFit='cover'
+                            transition={500}
                           />
                         </TouchableOpacity>
                       </View>

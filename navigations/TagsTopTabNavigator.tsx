@@ -220,9 +220,9 @@ const TagsTopTabNavigator = (props) => {
                 <ExpoImage
                   style={{ width: 25, height: 25, marginBottom: 5 }}
                   source={{ uri: route.params?.tagObject.tag.icon }}
-                  placeholder={blurhash}
-                  contentFit='contain'
-                  transition={1000}
+                  // placeholder={blurhash}
+                  // contentFit='fill'
+                  // transition={1000}
                   tintColor={route.params?.tagObject.tag.iconType === 'icon' ? route.params?.tagObject.tag.color : null}
                 />
                 <Text numberOfLines={1} style={{ color: 'white' }}>
