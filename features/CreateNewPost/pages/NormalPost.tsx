@@ -106,7 +106,7 @@ const NormalPost = () => {
               });
             }
           } else if (asset.type === 'image') {
-            adding.push({ uri: asset.uri, type: 'image', duration: asset.duration ? asset.duration : null });
+            adding.push({ uri: asset.uri, type: 'photo', duration: asset.duration ? asset.duration : null });
           }
         });
 

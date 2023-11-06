@@ -124,6 +124,44 @@ const SpaceRootBottomTabNavigator = (props) => {
       payload.append('caption', createNewPostFormData.caption);
       payload.append('createdTags', JSON.stringify(filteredCreatedTags));
       payload.append('addedTags', JSON.stringify(filteredAddedTags));
+
+      // えーと。。。何したいんだっけ？？buffer側は
+      const contents = [],
+        bufferContents = [];
+      createNewPostFormData.contents.forEach((content) => {
+        if (content.type === 'photo') {
+          const fileName = `${content.uri.split('/').pop().split('.')[0]}.png`;
+          const contentObject = {
+            fileName: fileName,
+            type: 'photo',
+            duration: null,
+          };
+          contents.push(contentObject);
+
+          const bufferContent = {
+            name: fileName,
+            uri: content.uri,
+            type: content.type === 'image/jpg',
+          };
+          bufferContents.push(bufferContent);
+        } else if (content.type === 'video') {
+          const fileName = `${content.uri.split('/').pop().split('.')[0]}.mp4`;
+          const contentObject = {
+            fileName: fileName,
+            type: 'video',
+            duration: content.duration,
+          };
+
+          contents.push(contentObject);
+          const bufferContent = {
+            name: fileName,
+            uri: content.uri,
+            type: 'video/mp4',
+          };
+          bufferContents.push(bufferContent);
+        }
+      });
+
       if (createNewPostFormData.addedLocationTag) {
         if (createNewPostFormData.addedLocationTag.created) {
           payload.append('createdLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag)); // これがない場合もある。
@@ -135,15 +173,18 @@ const SpaceRootBottomTabNavigator = (props) => {
       }
       payload.append('createdBy', authData._id);
       payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
+      payload.append('contents', JSON.stringify(contents));
+      // payload.append('bufferContents', JSON.parse(JSON.stringify(bufferContents)));
       for (let content of createNewPostFormData.contents) {
+        const fileName = `${content.uri.split('/').pop().split('.')[0]}.${content.type === 'photo' ? 'png' : 'mp4'}`;
         const obj = {
-          name: content.uri.split('/').pop(),
+          name: fileName,
           uri: content.uri,
-          type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
+          type: content.type === 'photo' ? 'image/jpg' : 'video/mp4',
         };
-        payload.append('contents', JSON.parse(JSON.stringify(obj)));
+        payload.append('bufferContents', JSON.parse(JSON.stringify(obj)));
       }
-      console.log(payload);
+      // console.log('buffer contents', JSON.stringify(createNewPostFormData.contents, null, 4));
       // setLoading(true);
       setCreateNewPostResult((previous) => {
         return {
