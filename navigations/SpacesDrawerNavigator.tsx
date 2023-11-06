@@ -7,11 +7,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { iconParameterBackgroundColorTable, iconColorTable } from '../themes/color';
-import FastImage from 'react-native-fast-image';
 const Drawer = createDrawerNavigator();
 import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import NoSpaces from '../features/Utils/NoSpaces';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const SpacesDrawerNavigator = (props) => {
   const {
@@ -41,7 +44,13 @@ const SpacesDrawerNavigator = (props) => {
               <Ionicons name='close-circle' size={30} color='white' />
             </TouchableOpacity>
             <View style={{ flexDirection: 'column', alignItems: 'center', marginBottom: 10 }}>
-              <FastImage source={{ uri: authData.avatar }} style={{ width: 35, height: 35, marginBottom: 10 }} />
+              <ExpoImage
+                style={{ width: 35, height: 35, marginBottom: 10 }}
+                source={{ uri: authData.avatar }}
+                // placeholder={blurhash}
+                contentFit='cover'
+                transition={1000}
+              />
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginRight: 10 }}>
                   {authData.name}
@@ -199,10 +208,12 @@ const SpacesDrawerNavigator = (props) => {
                       borderRadius: 10,
                     }}
                   >
-                    <FastImage
+                    <ExpoImage
                       style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
                       source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
-                      resizeMode={FastImage.resizeMode.contain}
+                      // placeholder={blurhash}
+                      contentFit='cover'
+                      transition={200}
                     />
                     <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
                       {route.params?.spaceAndUserRelationship.space.name}
@@ -348,14 +359,16 @@ const SpacesDrawerNavigator = (props) => {
                             navigation.navigate('SpaceInfoStackNavigator', { spaceAndUserRelationship });
                           }}
                         >
-                          <FastImage
-                            source={{ uri: spaceAndUserRelationship.space.icon }}
+                          <ExpoImage
                             style={{
                               width: 30,
                               height: 30,
                               borderRadius: 8,
                               marginRight: 10,
                             }}
+                            source={{ uri: spaceAndUserRelationship.space.icon }}
+                            contentFit='cover'
+                            transition={500}
                           />
                         </TouchableOpacity>
                       </View>

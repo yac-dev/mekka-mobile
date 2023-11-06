@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Dimensions } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
 import backendAPI from '../../../apis/backend';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MomentsView = () => {
   const { isIpad } = useContext(GlobalContext);
@@ -38,9 +41,12 @@ const MomentsView = () => {
       <View
         style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 5, alignSelf: 'center' }}
       >
-        <FastImage
-          source={require('../../../assets/forApp/ghost.png')}
+        <ExpoImage
           style={{ width: 15, height: 15, marginRight: 5 }}
+          source={require('../../../assets/forApp/ghost.png')}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
           tintColor={'white'}
         />
         <Text style={{ color: 'white' }}>{`${hours ? `${hours} h` : ''} ${minutes ? `${minutes} min` : ''}`}</Text>
@@ -64,7 +70,13 @@ const MomentsView = () => {
           style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
           // onPress={() => navigation.navigate({ name: 'ViewPost', params: { moment } })}
         >
-          <FastImage source={{ uri: moment.content.data }} style={{ width: '100%', height: '100%', borderRadius: 5 }} />
+          <ExpoImage
+            style={{ width: '100%', height: '100%', borderRadius: 5 }}
+            source={{ uri: moment.content.data }}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
+          />
           {calculateLeftTime(moment.disappearAt)}
         </TouchableOpacity>
       );
@@ -92,9 +104,12 @@ const MomentsView = () => {
         <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 50, alignSelf: 'center' }}>
             <Text style={{ color: 'white', marginRight: 10 }}>There are no moments currently</Text>
-            <FastImage
-              source={require('../../../assets/forApp/ghost.png')}
+            <ExpoImage
               style={{ width: 25, height: 25 }}
+              source={require('../../../assets/forApp/ghost.png')}
+              placeholder={blurhash}
+              contentFit='contain'
+              transition={1000}
               tintColor={'white'}
             />
           </View>

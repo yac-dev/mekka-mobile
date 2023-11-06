@@ -11,8 +11,11 @@ import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { GlobalContext } from '../contexts/GlobalContext';
 import { TagViewContext } from '../features/Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
-import FastImage from 'react-native-fast-image';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const TagViewStackNavigator: React.FC = (props) => {
   const { isIpad, authData, createNewPostResult, setCreateNewPostResult } = useContext(GlobalContext);
@@ -33,7 +36,11 @@ const TagViewStackNavigator: React.FC = (props) => {
 
   useEffect(() => {
     if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
-      setPosts((previous) => [...previous, createNewPostResult.responseData.post]);
+      setPosts((previous) => {
+        const updating = [...previous];
+        updating.unshift(createNewPostResult.responseData.post);
+        return updating;
+      });
     }
   }, [createNewPostResult]);
 

@@ -3,9 +3,12 @@ import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, FlatList }
 import MapView, { Marker } from 'react-native-maps';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { ViewPostsRootContext } from '../../SpaceMenuBottomSheet/contexts/ViewPostsRootContext';
-import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
 import SVG from 'react-native-svg';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Map = (props) => {
   const { posts, havePostsBeenFetched } = useContext(ViewPostsRootContext);
@@ -35,21 +38,7 @@ const Map = (props) => {
           <TouchableOpacity
             style={{ width: 45, height: 45 }}
             // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
-          >
-            {/* <FastImage
-              // onLoad={() => setInitialRender(false)}
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 10,
-              }}
-              source={{
-                uri: post.content.data,
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-            /> */}
-          </TouchableOpacity>
+          ></TouchableOpacity>
         </Marker>
       );
     }
@@ -76,8 +65,7 @@ const Map = (props) => {
                 style={{ width: 45, height: 45 }}
                 // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
               >
-                <FastImage
-                  // onLoad={() => setInitialRender(false)}
+                <ExpoImage
                   style={{
                     width: '100%',
                     height: '100%',
@@ -85,9 +73,10 @@ const Map = (props) => {
                   }}
                   source={{
                     uri: post.content.data,
-                    priority: FastImage.priority.normal,
                   }}
-                  resizeMode={FastImage.resizeMode.contain}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                 />
               </TouchableOpacity>
             </Marker>
@@ -123,37 +112,6 @@ const Map = (props) => {
         // mapType={'satellite'}
       >
         {renderPostsByMarker()}
-        {/* <Marker
-          tracksViewChanges={false}
-          coordinate={{
-            latitude: props.selectedLocationTag.point.coordinates[1],
-            longitude: props.selectedLocationTag.point.coordinates[0],
-          }}
-          pinColor='black'
-          // onPress={() => {
-          //   locationsViewPostsBottomSheetRef.current.snapToIndex(0);
-          // }}
-        >
-          <TouchableOpacity
-            style={{ width: 45, height: 45 }}
-            // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
-          >
-            <FastImage
-              // onLoad={() => setInitialRender(false)}
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 10,
-              }}
-              source={{
-                uri: props.selectedLocationTag.icon,
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-              tintColor={props.selectedLocationTag.iconType === 'icon' ? props.selectedLocationTag.color : null}
-            />
-          </TouchableOpacity>
-        </Marker> */}
       </MapView>
     </View>
   );

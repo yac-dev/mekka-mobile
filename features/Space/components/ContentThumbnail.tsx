@@ -2,11 +2,14 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Video } from 'expo-av';
-import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
 import { TagViewContext } from '../contexts/TagViewContext';
 import Skeleton from './Skeleton';
 import { Ionicons } from '@expo/vector-icons';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ContentThumbnail = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,9 +64,12 @@ const ContentThumbnail = (props) => {
         }}
       >
         {isLoading && <Skeleton />}
-        <FastImage
-          source={{ uri: props.post.contents[0].data }}
+        <ExpoImage
           style={{ width: '100%', height: '100%', borderRadius: 5 }}
+          source={{ uri: props.post.contents[0].data }}
+          // placeholder={blurhash}
+          contentFit='cover'
+          // transition={1000}
           onLoad={handleImageLoad}
         />
       </TouchableOpacity>

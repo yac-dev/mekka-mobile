@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-nati
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import FastImage from 'react-native-fast-image';
 import { Ionicons } from '@expo/vector-icons';
 import backendAPI from '../../../apis/backend';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -11,6 +10,10 @@ import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Video } from 'expo-av';
 import { AntDesign } from '@expo/vector-icons';
 import SnackBar from '../../../components/SnackBar';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MomentPost = (props) => {
   const { isIpad, setLoading, setSnackBar, authData } = useContext(GlobalContext);
@@ -98,9 +101,13 @@ const MomentPost = (props) => {
       return (
         <View key={index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}>
           {content.type === 'image' ? (
-            <FastImage
-              source={{ uri: content.uri }}
+            <ExpoImage
               style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
+              source={{ uri: content.uri }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
+              tintColor={'rgb(170,170,170)'}
             />
           ) : (
             <Video
@@ -157,50 +164,6 @@ const MomentPost = (props) => {
       </View>
     );
   };
-
-  // const renderAddedContents = () => {
-  //   if (contents.length) {
-  //     const list = contents.map((content, index) => {
-  //       return (
-  //         <View key={index}>
-  //           <FastImage
-  //             source={{ uri: content.uri }}
-  //             style={{ width: 90, height: 90, borderRadius: 12, marginRight: 10 }}
-  //           />
-  //           <TouchableOpacity
-  //             style={{
-  //               position: 'absolute',
-  //               top: 0,
-  //               right: 10,
-  //               backgroundColor: 'red',
-  //               width: 30,
-  //               height: 30,
-  //               borderRadius: 15,
-  //               justifyContent: 'center',
-  //               alignItems: 'center',
-  //             }}
-  //             onPress={() =>
-  //               setContets((previous) => {
-  //                 const updating = [...previous];
-  //                 return updating.filter((element, idx) => index !== idx);
-  //               })
-  //             }
-  //           >
-  //             <Ionicons name='trash' size={20} color={'white'} />
-  //           </TouchableOpacity>
-  //         </View>
-  //       );
-  //     });
-
-  //     return (
-  //       <ScrollView horizontal={true}>
-  //         <View style={{ flexDirection: 'row', alignItems: 'center' }}>{list}</View>
-  //       </ScrollView>
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>

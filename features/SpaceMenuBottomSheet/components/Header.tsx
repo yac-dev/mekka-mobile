@@ -1,8 +1,11 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Share } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Feather } from '@expo/vector-icons';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Header = () => {
   const { currentSpaceAndUserRelationship, spaceMenuBottomSheetRef, currentSpace } = useContext(GlobalContext);
@@ -28,9 +31,12 @@ const Header = () => {
   return (
     <View style={{ marginBottom: 5 }}>
       <View style={{ height: 200, width: '100%', marginBottom: 20 }}>
-        <FastImage
-          source={{ uri: currentSpaceAndUserRelationship.space.icon }}
+        <ExpoImage
           style={{ width: '100%', height: '100%', borderRadius: 10 }}
+          source={{ uri: currentSpaceAndUserRelationship.space.icon }}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
         />
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, position: 'absolute', bottom: 10, left: 10 }}>
           {currentSpaceAndUserRelationship.space.name}

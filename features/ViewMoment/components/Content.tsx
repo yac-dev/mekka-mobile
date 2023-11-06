@@ -1,7 +1,10 @@
 import React, { useState, useContext, useEffect, forwardRef } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Content = forwardRef(({ moment }, parentRef) => {
   // const { post, setIsPostFetched, isPostFetched } = useContext(ViewPostContext);
@@ -39,7 +42,14 @@ const Content = forwardRef(({ moment }, parentRef) => {
               style={{ width: 40, height: 40, marginRight: 3 }}
               onPress={() => setViewingContent(content)}
             >
-              <FastImage source={{ uri: content.data }} style={{ width: '100%', height: '100%', borderRadius: 5 }} />
+              <ExpoImage
+                key={index}
+                style={{ width: '100%', height: '100%', borderRadius: 5 }}
+                source={{ uri: content.data }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
+              />
             </TouchableOpacity>
           );
         }
@@ -68,8 +78,7 @@ const Content = forwardRef(({ moment }, parentRef) => {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={{ flexDirection: 'column', position: 'absolute', top: 80, left: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-            <FastImage
-              source={{ uri: moment.createdBy.avatar }}
+            <ExpoImage
               style={{
                 width: 30,
                 height: 30,
@@ -77,7 +86,10 @@ const Content = forwardRef(({ moment }, parentRef) => {
                 // backgroundColor: iconColorTable['blue1'],
                 borderRadius: 5,
               }}
-              // tintColor={'white'}
+              source={{ uri: moment.createdBy.avatar }}
+              placeholder={blurhash}
+              contentFit='contain'
+              transition={1000}
             />
             <View style={{ flexDirection: 'column' }}>
               <View style={{ flexDirection: 'row', marginBottom: 10 }}>
@@ -89,10 +101,12 @@ const Content = forwardRef(({ moment }, parentRef) => {
           </View>
         </View>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <FastImage
-            source={{ uri: viewingContent.data }}
+          <ExpoImage
             style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
-            resizeMode='cover'
+            source={{ uri: viewingContent.data }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
           />
         </View>
         <View style={{ position: 'absolute', bottom: 60 }}>{renderContentOptions()}</View>

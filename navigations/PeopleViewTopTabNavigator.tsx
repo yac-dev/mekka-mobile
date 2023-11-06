@@ -3,8 +3,11 @@ import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import PeopleView from '../features/Space/pages/PeopleView';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
-import FastImage from 'react-native-fast-image';
 import backendAPI from '../apis/backend';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -80,15 +83,17 @@ const PeopleViewTopTabNavigator = () => {
                 // contentTypeによって、いくnavigatorが変わるわけですよ。。。そう、つまりここでnavigatingを分ければいいわけね。
                 onPress={onPress}
               >
-                <FastImage
-                  source={{ uri: route.params?.user.avatar }}
+                <ExpoImage
                   style={{
                     width: 35,
                     height: 35,
                     borderRadius: 8,
                     // marginBottom: 5,
                   }}
-                  // tintColor={'white'}
+                  source={{ uri: route.params?.user.avatar }}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                 />
                 <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(120, 120, 120)', marginBottom: 7 }}>
                   {route.params?.user.name}

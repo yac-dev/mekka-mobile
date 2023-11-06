@@ -1,11 +1,14 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { SpaceDetailContext } from '../contexts/SpaceDetailContext';
-import FastImage from 'react-native-fast-image';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const About = () => {
   const { space } = useContext(SpaceDetailContext);
@@ -41,10 +44,13 @@ const About = () => {
         );
       } else if (reaction.type === 'sticker') {
         return (
-          <FastImage
+          <ExpoImage
             key={index}
-            source={{ uri: reaction.sticker.url }}
             style={{ width: 30, height: 30, marginRight: 5 }}
+            source={{ uri: reaction.sticker.url }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
           />
         );
       }
@@ -68,7 +74,16 @@ const About = () => {
             </Text>
           );
         } else if (reaction.type === 'sticker') {
-          return <FastImage key={index} source={{ uri: reaction.sticker.url }} style={{ width: 20, height: 20 }} />;
+          return (
+            <ExpoImage
+              key={index}
+              style={{ width: 20, height: 20 }}
+              source={{ uri: reaction.sticker.url }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
+            />
+          );
         }
       } else {
         return null;
@@ -89,9 +104,12 @@ const About = () => {
       <ScrollView>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <FastImage
-              source={{ uri: space.createdBy.avatar }}
+            <ExpoImage
               style={{ width: 30, height: 30, borderRadius: 20, marginRight: 10 }}
+              source={{ uri: space.createdBy.avatar }}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
             />
             <Text style={{ color: 'white', fontWeight: 'bold' }}>{space.createdBy.name}</Text>
           </View>
@@ -144,9 +162,12 @@ const About = () => {
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-            <FastImage
-              source={require('../../../assets/forApp/ghost.png')}
+            <ExpoImage
               style={{ width: 25, height: 25, marginRight: 15 }}
+              source={require('../../../assets/forApp/ghost.png')}
+              placeholder={blurhash}
+              contentFit='cover'
+              transition={1000}
               tintColor={'rgb(130,130,130)'}
             />
             <Text style={{ color: 'white' }}>

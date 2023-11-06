@@ -2,10 +2,13 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Video } from 'expo-av';
-import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { MomentsContext } from '../contexts/MomentsContext';
 import Skeleton from './Skeleton';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MomentThumbnail = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,9 +32,12 @@ const MomentThumbnail = (props) => {
       <View
         style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 5, alignSelf: 'center' }}
       >
-        <FastImage
-          source={require('../../../assets/forApp/ghost.png')}
+        <ExpoImage
           style={{ width: 15, height: 15, marginRight: 5 }}
+          source={require('../../../assets/forApp/ghost.png')}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
           tintColor={'white'}
         />
         <Text style={{ color: 'white' }}>{`${hours ? `${hours} h` : ''} ${minutes ? `${minutes} min` : ''}`}</Text>
@@ -73,9 +79,13 @@ const MomentThumbnail = (props) => {
         }}
       >
         {isLoading && <Skeleton />}
-        <FastImage
-          source={{ uri: props.moment.contents[0].data }}
+        <ExpoImage
           style={{ width: '100%', height: '100%', borderRadius: 5 }}
+          source={{ uri: props.moment.contents[0].data }}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
+          tintColor={'white'}
           onLoad={handleImageLoad}
         />
         {calculateLeftTime(props.moment.disappearAt)}

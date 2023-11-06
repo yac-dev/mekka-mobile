@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import backendAPI from '../../../apis/backend';
-import FastImage from 'react-native-fast-image';
 import { iconColorTable } from '../../../themes/color';
 import { Feather } from '@expo/vector-icons';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Comments = (props) => {
   const [comments, setComments] = useState([]);
@@ -36,8 +39,7 @@ const Comments = (props) => {
         <View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
             <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FastImage
-                source={{ uri: comment.createdBy.avatar }}
+              <ExpoImage
                 style={{
                   width: 35,
                   height: 35,
@@ -45,6 +47,10 @@ const Comments = (props) => {
                   backgroundColor: iconColorTable['blue1'],
                   borderRadius: 5,
                 }}
+                source={{ uri: comment.createdBy.avatar }}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
                 tintColor={'white'}
               />
               <View style={{ flexDirection: 'column' }}>

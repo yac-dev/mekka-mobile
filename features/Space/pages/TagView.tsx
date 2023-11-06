@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, RefreshControl, Dimensions } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { Video } from 'expo-av';
-import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { PostsContext } from '../../../contexts/PostsContext';
@@ -50,40 +49,6 @@ const TagView = (props) => {
 
   const renderItem = useCallback((post, index) => {
     return <ContentThumbnail post={post} index={index} navigation={props.navigation} />;
-    // if (post.contents[0].type === 'video') {
-    //   return (
-    //     <TouchableOpacity
-    //       style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
-    //       onPress={() => {
-    //         setCurrentPost(post);
-    //         props.navigation.navigate({
-    //           name: 'ViewPostStackNavigator',
-    //           params: { screen: 'ViewPost', params: { post } },
-    //         });
-    //       }}
-    //     >
-    //       <Video source={{ uri: post.contents[0].data }} style={{ width: '100%', height: '100%', borderRadius: 5 }} />;
-    //     </TouchableOpacity>
-    //   );
-    // } else {
-    //   return (
-    //     <TouchableOpacity
-    //       style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
-    //       onPress={() => {
-    //         setCurrentPost(post);
-    //         props.navigation.navigate({
-    //           name: 'ViewPostStackNavigator',
-    //           params: { screen: 'ViewPost', params: { post } },
-    //         });
-    //       }}
-    //     >
-    //       <FastImage
-    //         source={{ uri: post.contents[0].data }}
-    //         style={{ width: '100%', height: '100%', borderRadius: 5 }}
-    //       />
-    //     </TouchableOpacity>
-    //   );
-    // }
   }, []);
 
   if (posts.length) {

@@ -26,7 +26,6 @@ import TagViewTopTabNavigator from './TagViewTopTabNavigator';
 import PeopleViewTopTabNavigator from './PeopleViewTopTabNavigator';
 import LocationsViewTopTabNavigator from './LocationsViewTopTabNavigator';
 import MomentsView from '../features/Space/pages/MomentsView';
-import FastImage from 'react-native-fast-image';
 import ViewPostsTopTabNavigator from './ViewPostsTopTabNavigator';
 import TagsTopTabNavigator from './TagsTopTabNavigator';
 import Projects from '../features/Space/pages/Projects';
@@ -34,6 +33,10 @@ import ChooseViewBottomSheet from '../features/Space/pages/ChooseViewBottomSheet
 import LocationsViewPostsBottomSheet from '../features/Space/components/LocationsViewPostsBottomSheet';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import MomentsViewStackNavigator from './MomentsViewStackNavigator';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createBottomTabNavigator();
 const viewTypeObject = {
@@ -47,7 +50,14 @@ const viewTypeObject = {
     />
   ),
   map: (
-    <FastImage source={require('../assets/forApp/globe.png')} style={{ width: 25, height: 25 }} tintColor={'white'} />
+    <ExpoImage
+      style={{ width: 25, height: 25 }}
+      source={require('../assets/forApp/globe.png')}
+      placeholder={blurhash}
+      contentFit='contain'
+      transition={1000}
+      tintColor={'white'}
+    />
   ),
   people: <MaterialCommunityIcons name='account-multiple' color='white' size={25} />,
 };
@@ -58,10 +68,12 @@ const getViewTypeObject = (isFocused, viewPostsType) => {
       <Octicons name='hash' color={isFocused ? 'white' : 'rgb(100, 100, 100)'} size={23} style={{ marginBottom: 5 }} />
     ),
     map: (
-      <FastImage
-        source={require('../assets/forApp/globe.png')}
+      <ExpoImage
         style={{ width: 25, height: 25 }}
-        tintColor={isFocused ? 'white' : 'rgb(100, 100, 100)'}
+        source={require('../assets/forApp/globe.png')}
+        placeholder={blurhash}
+        contentFit='contain'
+        transition={1000}
       />
     ),
     people: (
@@ -338,9 +350,12 @@ const SpaceRootBottomTabNavigator = (props) => {
             options={({ navigation }) => ({
               // tabBarShowLabel: false,
               tabBarIcon: ({ size, color, focused }) => (
-                <FastImage
-                  source={require('../assets/forApp/ghost.png')}
+                <ExpoImage
                   style={{ width: 25, height: 25, marginBottom: 5 }}
+                  source={require('../assets/forApp/ghost.png')}
+                  placeholder={blurhash}
+                  contentFit='contain'
+                  transition={1000}
                   tintColor={focused ? 'white' : 'rgb(100, 100, 100)'}
                 />
               ),
@@ -349,24 +364,6 @@ const SpaceRootBottomTabNavigator = (props) => {
               },
             })}
           />
-          {/* <Tab.Screen
-            name='Projects'
-            component={Projects}
-            options={({ navigation }) => ({
-              // tabBarShowLabel: false,
-              tabBarIcon: ({ size, color, focused }) => (
-                <Ionicons name='musical-notes' color={focused ? 'white' : 'rgb(100, 100, 100)'} size={30} />
-                // <FastImage
-                //   source={require('../assets/forApp/cameraman.png')}
-                //   style={{ width: 25, height: 25 }}
-                //   tintColor={focused ? 'white' : 'rgb(100, 100, 100)'}
-                // />
-              ),
-              tabBarLabel: ({ focused }) => {
-                return <Text style={{ color: 'white' }}>{focused ? 'Projects' : null}</Text>;
-              },
-            })}
-          /> */}
         </Tab.Navigator>
         {/* <TouchableOpacity もともとのpost button
           onPress={() => {

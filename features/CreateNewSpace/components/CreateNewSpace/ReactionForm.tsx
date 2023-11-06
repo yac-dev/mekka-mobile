@@ -6,7 +6,10 @@ import { CreateNewSpaceContext } from '../../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { iconColorTable, iconParameterBackgroundColorTable, inputBackgroundColor } from '../../../../themes/color';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ReactionForm: React.FC = (props) => {
   const [accordion, setAccordion] = useState(false);
@@ -96,7 +99,13 @@ const ReactionForm: React.FC = (props) => {
               }}
             >
               {reaction.type === 'sticker' ? (
-                <FastImage source={{ uri: reaction.sticker.url }} style={{ width: 35, height: 35 }} />
+                <ExpoImage
+                  style={{ width: 35, height: 35 }}
+                  source={{ uri: reaction.sticker.url }}
+                  placeholder={blurhash}
+                  contentFit='cover'
+                  transition={1000}
+                />
               ) : (
                 <Text style={{ fontSize: 40 }}>{reaction.emoji}</Text>
               )}

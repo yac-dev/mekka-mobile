@@ -7,7 +7,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // rgb(35, 35, 35)
 const ChooseViewBottomSheet = (props) => {
@@ -88,9 +91,12 @@ const ChooseViewBottomSheet = (props) => {
                 chooseViewBottomSheetRef.current.close();
               }}
             >
-              <FastImage
-                source={require('../../../assets/forApp/globe.png')}
+              <ExpoImage
                 style={{ width: 25, height: 35 }}
+                source={require('../../../assets/forApp/globe.png')}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
                 tintColor={'black'}
               />
             </TouchableOpacity>

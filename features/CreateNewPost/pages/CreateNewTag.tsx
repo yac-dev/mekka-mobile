@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { removeEmojis } from '../utils/removeEmoji';
-import FastImage from 'react-native-fast-image';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const CreateNewTag = (props) => {
   const { navigation } = useContext(CreateNewPostContext);
@@ -93,9 +96,12 @@ const CreateNewTag = (props) => {
           paddingRight: 10,
         }}
       >
-        <FastImage
-          source={require('../../../assets/forApp/hashtag-normal.png')}
+        <ExpoImage
           style={{ width: 25, height: 25 }}
+          source={require('../../../assets/forApp/hashtag-normal.png')}
+          placeholder={blurhash}
+          contentFit='cover'
+          transition={1000}
           tintColor={'rgb(170,170,170)'}
         />
         <TextInput

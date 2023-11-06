@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Skeleton from '../../Space/components/Skeleton';
-import FastImage from 'react-native-fast-image';
 import { Video } from 'expo-av';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ContentThumbnail = (props) => {
   const { isIpad, createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
@@ -22,9 +25,13 @@ const ContentThumbnail = (props) => {
       {props.content.type === 'image' ? (
         <>
           {/* {isLoading && <Skeleton />} */}
-          <FastImage
-            source={{ uri: props.content.uri }}
+          <ExpoImage
             style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
+            source={{ uri: props.content.uri }}
+            placeholder={blurhash}
+            contentFit='cover'
+            transition={1000}
+            tintColor={'white'}
             onLoad={handleImageLoad}
           />
         </>

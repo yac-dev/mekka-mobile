@@ -1,11 +1,14 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import FastImage from 'react-native-fast-image';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import SpaceInfoTopTabNavigator from '../../../navigations/SpaceInfoTopTabNavigator';
 import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const SpaceInfo = (props) => {
   const { currentSpaceAndUserRelationship, spaceMenuBottomSheetRef, currentSpace } = useContext(GlobalContext);
@@ -26,9 +29,12 @@ const SpaceInfo = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)', padding: 10 }}>
       <View style={{ height: 200, width: '100%', marginBottom: 10 }}>
-        <FastImage
-          source={{ uri: spaceAndUserRelationship.space.icon }}
+        <ExpoImage
           style={{ width: '100%', height: '100%', borderRadius: 10 }}
+          source={{ uri: spaceAndUserRelationship.space.icon }}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
         />
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, position: 'absolute', bottom: 10, left: 10 }}>
           {spaceAndUserRelationship.space.name}

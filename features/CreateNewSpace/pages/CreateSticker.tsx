@@ -140,7 +140,6 @@ const CreateCustomEmoji = (props) => {
           }}
           source={{
             uri: `${baseURL}/buffer/customemojis/removed-${fileName}.png`,
-            // priority: FastImage.priority.normal,
           }}
         />
       ) : null}

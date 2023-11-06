@@ -6,10 +6,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import * as Haptics from 'expo-haptics';
+import { Image as ExpoImage } from 'expo-image';
+
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const BottomMenu = (props) => {
   const { isIpad } = useContext(GlobalContext);
@@ -55,9 +58,8 @@ const BottomMenu = (props) => {
         );
       } else if (reaction.type === 'sticker') {
         return (
-          <FastImage
+          <ExpoImage
             key={index}
-            source={{ uri: reaction.sticker.url }}
             style={{
               width: 22,
               height: 22,
@@ -68,6 +70,10 @@ const BottomMenu = (props) => {
               // right: index === 0 ? null : -5,
               // bottom: index === 0 ? null : -5,
             }}
+            source={{ uri: reaction.sticker.url }}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
           />
         );
       }
@@ -156,7 +162,13 @@ const BottomMenu = (props) => {
         }}
       >
         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <FastImage source={{ uri: currentPost.createdBy.avatar }} style={{ width: 25, height: 25 }} />
+          <ExpoImage
+            style={{ width: 25, height: 25 }}
+            source={{ uri: currentPost.createdBy.avatar }}
+            placeholder={blurhash}
+            contentFit='contain'
+            transition={1000}
+          />
         </TouchableOpacity>
       </View>
       <View
