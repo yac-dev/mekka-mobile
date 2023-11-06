@@ -74,6 +74,7 @@ const getViewTypeObject = (isFocused, viewPostsType) => {
         placeholder={blurhash}
         contentFit='contain'
         transition={1000}
+        tintColor='white'
       />
     ),
     people: (

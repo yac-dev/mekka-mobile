@@ -92,7 +92,7 @@ const ChooseViewBottomSheet = (props) => {
               }}
             >
               <ExpoImage
-                style={{ width: 25, height: 35 }}
+                style={{ width: 35, height: 35 }}
                 source={require('../../../assets/forApp/globe.png')}
                 placeholder={blurhash}
                 contentFit='contain'

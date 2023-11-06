@@ -22,7 +22,7 @@ const viewTypeObject = {
       placeholder={blurhash}
       contentFit='contain'
       transition={1000}
-      tintColor={'black'}
+      tintColor={'white'}
     />
   ),
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={22} />,
