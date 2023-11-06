@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Skeleton from '../../Space/components/Skeleton';
-import { Video } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -42,6 +42,7 @@ const ContentThumbnail = (props) => {
             source={{ uri: props.content.uri }}
             style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
             onLoad={handleImageLoad}
+            resizeMode={ResizeMode.COVER}
           />
         </>
       )}

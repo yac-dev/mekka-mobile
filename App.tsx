@@ -22,6 +22,18 @@ type AuthDataType = {
   avatar: string;
 };
 
+const INITIAL_CREATE_NEW_POST_STATE = {
+  postType: '',
+  contents: [],
+  caption: '',
+  dummyCreatedTagId: 1,
+  addedTags: {},
+  tagOptions: [],
+  addedLocationTag: null,
+  locationTagOptions: [],
+  moments: [],
+};
+
 const App: React.FC = function () {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAuthDataFetched, setIsAuthDataFetched] = useState(false);
@@ -40,17 +52,7 @@ const App: React.FC = function () {
   const chooseViewBottomSheetRef = useRef(null);
   const [afterJoined, setAfterJoined] = useState(false);
   const [isAfterPosted, setIsAfterPosted] = useState(false);
-  const [createNewPostFormData, setCreateNewPostFormData] = useState({
-    postType: '',
-    contents: [],
-    caption: '',
-    dummyCreatedTagId: 1,
-    addedTags: {},
-    tagOptions: [],
-    addedLocationTag: null,
-    locationTagOptions: [],
-    moments: [],
-  });
+  const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
   const [createNewPostResult, setCreateNewPostResult] = useState({
     isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
     isSuccess: false,

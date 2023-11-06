@@ -24,6 +24,7 @@ const Skeleton = () => {
         width: oneAssetWidth,
         aspectRatio: 1,
         borderRadius: 5,
+        padding: 2,
       }}
     ></Animated.View>
   );

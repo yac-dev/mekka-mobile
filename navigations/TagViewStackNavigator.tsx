@@ -30,7 +30,7 @@ const TagViewStackNavigator: React.FC = (props) => {
   const [hasMoreItems, setHasMoreItems] = useState(true);
   const [currentPost, setCurrentPost] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(props.createdPost);
+  // console.log(props.createdPost);/
 
   // console.log(props.screenLoaded);
 
@@ -40,6 +40,14 @@ const TagViewStackNavigator: React.FC = (props) => {
         const updating = [...previous];
         updating.unshift(createNewPostResult.responseData.post);
         return updating;
+      });
+      setCreateNewPostResult((previous) => {
+        return {
+          ...previous,
+          isCreating: false,
+          isSuccess: false,
+          responseData: null,
+        };
       });
     }
   }, [createNewPostResult]);
@@ -62,11 +70,11 @@ const TagViewStackNavigator: React.FC = (props) => {
     getPostsByTagId();
   }, [currentPage]);
 
-  useEffect(() => {
-    if (props.createdPost) {
-      setPosts((previous) => [...previous, props.createdPost]);
-    }
-  }, [props.createdPost]);
+  // useEffect(() => {
+  //   if (props.createdPost) {
+  //     setPosts((previous) => [...previous, props.createdPost]);
+  //   }
+  // }, [props.createdPost]);
 
   return (
     <TagViewContext.Provider
@@ -89,7 +97,7 @@ const TagViewStackNavigator: React.FC = (props) => {
       <View
         style={{ flex: 1 }}
         onLayout={() =>
-          props.setScreenLoaded((previous) => {
+          setScreenLoaded((previous) => {
             return {
               ...previous,
               [props.tagObject.tag._id]: true,

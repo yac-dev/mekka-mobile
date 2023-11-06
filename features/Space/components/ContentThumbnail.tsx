@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { Video } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
 import { SpaceRootContext } from '../contexts/SpaceRootContext';
 import { TagViewContext } from '../contexts/TagViewContext';
 import Skeleton from './Skeleton';
@@ -20,6 +20,20 @@ const ContentThumbnail = (props) => {
   const handleImageLoad = () => {
     setIsLoading(false);
     console.log('loaded');
+  };
+
+  const millisecondsToTime = (milliseconds) => {
+    // Convert milliseconds to seconds
+    var seconds = Math.floor(milliseconds / 1000);
+
+    // Calculate minutes and seconds
+    var minutes = Math.floor(seconds / 60);
+    var remainingSeconds = seconds % 60;
+
+    // Format the result
+    var formattedTime = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+
+    return formattedTime;
   };
 
   if (props.post.contents[0].type === 'video') {
@@ -44,10 +58,15 @@ const ContentThumbnail = (props) => {
           source={{ uri: props.post.contents[0].data }}
           style={{ width: '100%', height: '100%', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
           onLoad={handleImageLoad}
+          resizeMode={ResizeMode.COVER}
         />
-        <View style={{ position: 'absolute', right: 10, top: 10 }}>
-          <Text style={{ color: 'white' }}>{props.post.videoLength}</Text>
-        </View>
+        {props.post.contents[0].duration && (
+          <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {millisecondsToTime(props.post.contents[0].duration)}
+            </Text>
+          </View>
+        )}
       </TouchableOpacity>
     );
   } else {
