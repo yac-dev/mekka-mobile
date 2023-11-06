@@ -160,7 +160,11 @@ const TagsTopTabNavigator = (props) => {
 
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+        }}
+      >
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -204,7 +208,7 @@ const TagsTopTabNavigator = (props) => {
                   alignItems: 'center',
                   marginRight: 15,
                   // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
-                  padding: 10,
+                  padding: 5,
                   // borderRadius: 5,
                   // width: 60,
                   // height: 60,
@@ -222,7 +226,7 @@ const TagsTopTabNavigator = (props) => {
                   source={{ uri: route.params?.tagObject.tag.icon }}
                   // placeholder={blurhash}
                   // contentFit='fill'
-                  // transition={1000}
+                  // transition={100}
                   tintColor={route.params?.tagObject.tag.iconType === 'icon' ? route.params?.tagObject.tag.color : null}
                 />
                 <Text numberOfLines={1} style={{ color: 'white' }}>
@@ -268,13 +272,13 @@ const TagsTopTabNavigator = (props) => {
               {/* {({ navigation }) => <ViewPostsTopTabNavigator navigation={navigation} tagObject={tagObject} />} */}
               {({ navigation }) => (
                 <TagViewStackNavigator
-                  screenLoaded={screenLoaded}
-                  setScreenLoaded={setScreenLoaded}
+                  // screenLoaded={screenLoaded}
+                  // setScreenLoaded={setScreenLoaded}
                   navigation={navigation}
                   tagObject={tagObject}
                   // createdPost={} // addしたtagをloop throughして、もしscreenLoaded {tagId: true} であれば propsで渡す。
                   // だから、まずはresponse ありきね。
-                  createdPost={createNewPostResult.responseData?.addedTags.length ? passCreatedPostToTags() : null}
+                  // createdPost={createNewPostResult.responseData?.addedTags.length ? passCreatedPostToTags() : null}
                 />
               )}
             </Tab.Screen>

@@ -296,6 +296,7 @@ const SpacesDrawerNavigator = (props) => {
                 name={`Space_${spaceAndUserRelationship._id}`}
                 initialParams={{ spaceAndUserRelationship }}
                 options={({ navigation }) => ({
+                  // headerShown: false,
                   headerTitle: spaceAndUserRelationship.space.name,
                   headerTitleStyle: {
                     fontSize: 20,

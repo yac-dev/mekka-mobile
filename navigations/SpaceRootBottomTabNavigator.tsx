@@ -85,6 +85,18 @@ const getViewTypeObject = (isFocused, viewPostsType) => {
   return viewTypeObject[viewPostsType];
 };
 
+const INITIAL_CREATE_NEW_POST_STATE = {
+  postType: '',
+  contents: [],
+  caption: '',
+  dummyCreatedTagId: 1,
+  addedTags: {},
+  tagOptions: [],
+  addedLocationTag: null,
+  locationTagOptions: [],
+  moments: [],
+};
+
 const SpaceRootBottomTabNavigator = (props) => {
   const { spaceAndUserRelationship } = useContext(SpaceRootContext);
   const {
@@ -94,6 +106,7 @@ const SpaceRootBottomTabNavigator = (props) => {
     setCurrentSpace,
     currentSpaceAndUserRelationship,
     createNewPostFormData,
+    setCreateNewPostFormData,
     setCreateNewPostResult,
     setSnackBar,
     authData,
@@ -211,7 +224,7 @@ const SpaceRootBottomTabNavigator = (props) => {
           responseData: result.data,
         };
       });
-      // setCreateNewPostFormData((previou))// initialのstateに戻す。
+      setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE); // initialのstateに戻す。
       setSnackBar({
         isVisible: true,
         barType: 'success',
@@ -231,6 +244,7 @@ const SpaceRootBottomTabNavigator = (props) => {
     }
   };
 
+  // というよりも、シンプルにsetCreatePostResultの更新じゃないかなー。。？paramsを使うと、その後のstate更新ができなくなるよね。。。
   useEffect(() => {
     if (props.route?.params?.createdPost) {
       // ここでapiを起こして、setCreateとかのstate更新をしていく感じかな。。
