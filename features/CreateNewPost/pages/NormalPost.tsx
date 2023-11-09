@@ -84,6 +84,9 @@ const NormalPost = () => {
           : ImagePicker.MediaTypeOptions.All,
       allowsMultipleSelection: true,
       quality: 1,
+      storageOptions: {
+        skipBackup: true,
+      },
       // duration: space.videoLength ? space.videoLength : 3000,
     };
     let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
@@ -142,56 +145,59 @@ const NormalPost = () => {
       // これ動かねーな。
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: 'black' }}
+      keyboardVerticalOffset={120}
       // keyboardVerticalOffset={Platform.select({
       //   ios: Header.HEIGHT, // iOS
       //   android:Header.HEIGHT + StatusBar.currentHeight, // android
       // })}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
-          <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
-            <Text
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View>
+            <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  marginBottom: 10,
+                }}
+              >
+                Normal post
+              </Text>
+              <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+                Please select at most 6 {renderContentType()} at first. {'\n'}The caption is optional.
+              </Text>
+            </View>
+            {renderContents()}
+            <TextInput
               style={{
+                // backgroundColor: 'rgb(88, 88, 88)',
+                padding: 10,
+                // borderRadius: 5,
+                marginBottom: 20,
                 color: 'white',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                fontSize: 20,
-                marginBottom: 10,
+                borderBottomColor: 'rgb(88, 88, 88)',
+                borderBottomWidth: 1,
               }}
-            >
-              Normal post
-            </Text>
-            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-              Please select at most 6 {renderContentType()} at first. {'\n'}The caption is optional.
-            </Text>
+              placeholder='Add caption...'
+              placeholderTextColor={'rgb(170,170,170)'}
+              autoCapitalize='none'
+              value={createNewPostFormData.caption}
+              onChangeText={(text) =>
+                setCreateNewPostFormData((previous) => {
+                  return {
+                    ...previous,
+                    caption: text,
+                  };
+                })
+              }
+            />
+            <SnackBar />
           </View>
-          {renderContents()}
-          <TextInput
-            style={{
-              // backgroundColor: 'rgb(88, 88, 88)',
-              padding: 10,
-              // borderRadius: 5,
-              marginBottom: 20,
-              color: 'white',
-              borderBottomColor: 'rgb(88, 88, 88)',
-              borderBottomWidth: 1,
-            }}
-            placeholder='Add caption...'
-            placeholderTextColor={'rgb(170,170,170)'}
-            autoCapitalize='none'
-            value={createNewPostFormData.caption}
-            onChangeText={(text) =>
-              setCreateNewPostFormData((previous) => {
-                return {
-                  ...previous,
-                  caption: text,
-                };
-              })
-            }
-          />
-          <SnackBar />
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
