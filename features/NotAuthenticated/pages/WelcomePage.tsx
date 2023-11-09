@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import SnackBar from '../../../components/SnackBar';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -76,6 +77,7 @@ const WelcomePage = (props) => {
           {/* <MaterialCommunityIcons name='chevron-right' size={25} color='white' /> */}
         </TouchableOpacity>
       </View>
+      <SnackBar />
     </SafeAreaView>
   );
 };

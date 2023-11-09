@@ -32,7 +32,7 @@ const Login = (props) => {
         </TouchableWithoutFeedback>
       ),
     });
-  }, [isValidated]);
+  }, [isValidated, email, password]);
 
   useEffect(() => {
     if (email.length && password.length) {

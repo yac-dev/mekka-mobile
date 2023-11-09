@@ -33,7 +33,7 @@ const Signup = (props) => {
         </TouchableWithoutFeedback>
       ),
     });
-  }, [isValidated]);
+  }, [isValidated, name, email, password]);
 
   const onSubmitPress = async () => {
     const payload = {
