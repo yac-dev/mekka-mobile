@@ -40,6 +40,7 @@ import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocat
 import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
 import EditAccountStackNavigator from './EditAccountStackNavigator';
+import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import Login from '../features/NotAuthenticated/pages/Login';
 import Signup from '../features/NotAuthenticated/pages/Signup';
@@ -477,6 +478,26 @@ const HomeStackNavigator: React.FC = (props) => {
                   </TouchableOpacity>
                 ),
                 headerTitle: 'SPInfo',
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  color: 'white',
+                },
+              })}
+            />
+            <Stack.Screen
+              name='DeleteMyAccount'
+              component={DeleteMyAccount}
+              options={({ navigation }) => ({
+                headerShown: true,
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                  </TouchableOpacity>
+                ),
+                headerTitle: '',
                 headerStyle: {
                   backgroundColor: 'black',
                 },

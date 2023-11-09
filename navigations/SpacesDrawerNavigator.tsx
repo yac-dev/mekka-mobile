@@ -47,9 +47,7 @@ const SpacesDrawerNavigator = (props) => {
               <ExpoImage
                 style={{ width: 35, height: 35, marginBottom: 10 }}
                 source={{ uri: authData.avatar }}
-                // placeholder={blurhash}
                 contentFit='cover'
-                transition={1000}
               />
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginRight: 10 }}>
@@ -167,7 +165,7 @@ const SpacesDrawerNavigator = (props) => {
                 >
                   <Ionicons name='key' color={'black'} size={25} />
                 </View>
-                <Text style={{ color: 'white' }}>Enter key</Text>
+                <Text style={{ color: 'white' }}>Private key</Text>
               </TouchableOpacity>
             </View>
             {state.routes.map((route, index) => {

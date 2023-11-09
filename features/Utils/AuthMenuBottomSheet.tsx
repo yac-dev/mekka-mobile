@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import GorhomBottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import * as SecureStore from 'expo-secure-store';
 import { GlobalContext } from '../../contexts/GlobalContext';
@@ -7,7 +7,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 const AuthMenuBottomSheet = (props) => {
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['35%'], []);
+  const iconWidth = Dimensions.get('window').width / 3;
+
   const {
     authData,
     isAuthenticated,
@@ -40,11 +42,19 @@ const AuthMenuBottomSheet = (props) => {
   };
 
   const onEditMyAccountPress = () => {
+    authMenuBottomSheetRef.current.close();
     props.navigation.navigate({
       name: 'EditAccountStackNavigator',
       params: {
         screen: 'EditAccount',
       },
+    });
+  };
+
+  const onDeleteMyAccountPress = () => {
+    authMenuBottomSheetRef.current.close();
+    props.navigation.navigate({
+      name: 'DeleteMyAccount',
     });
   };
 
@@ -64,51 +74,91 @@ const AuthMenuBottomSheet = (props) => {
         // onClose={() => onSelectedItemBottomSheetClose()}
       >
         <BottomSheetView style={{ flex: 1 }}>
-          <TouchableOpacity
-            style={{
-              // flexDirection: 'row',
-              // alignItems: 'center',
-              // backgroundColor: 'white',
-              // borderRadius: 20,
-              // padding: 5,
-              alignSelf: 'flex-start',
-              marginLeft: 10,
-              marginBottom: 20,
-            }}
-            onPress={() => onClosePress()}
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}
           >
-            <Ionicons name='close-circle' color='white' size={30} style={{ marginRight: 5 }} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => onEditMyAccountPress()}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-              <MaterialCommunityIcons name='logout' color='white' size={25} style={{ marginRight: 10 }} />
-              <Text style={{ color: 'white', fontSize: 18 }}>Edit my account</Text>
+            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 23, marginLeft: 20 }}>My account</Text>
+            <TouchableOpacity
+              style={{
+                // alignSelf: 'flex-end',
+                marginRight: 20,
+              }}
+              onPress={() => onClosePress()}
+            >
+              <Ionicons name='close-circle' color='white' size={30} style={{ marginRight: 5 }} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: iconWidth,
+                aspectRatio: 1,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  width: iconWidth * 0.65,
+                  aspectRatio: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                  borderRadius: (iconWidth * 0.65) / 2,
+                  backgroundColor: 'white',
+                }}
+                onPress={() => onEditMyAccountPress()}
+              >
+                <Ionicons name='settings' color='black' size={35} />
+              </TouchableOpacity>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>Edit</Text>
             </View>
-            <MaterialCommunityIcons name='chevron-right' size={20} color='white' style={{ marginRight: 10 }} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => onLogoutPress()}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-              <MaterialCommunityIcons name='logout' color='white' size={25} style={{ marginRight: 10 }} />
-              <Text style={{ color: 'white', fontSize: 18 }}>Logout</Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: iconWidth,
+                aspectRatio: 1,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  width: iconWidth * 0.65,
+                  aspectRatio: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                  borderRadius: (iconWidth * 0.65) / 2,
+                  backgroundColor: 'white',
+                }}
+                onPress={() => {
+                  onLogoutPress();
+                }}
+              >
+                <MaterialCommunityIcons name='logout' color='black' size={35} />
+              </TouchableOpacity>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
             </View>
-            <MaterialCommunityIcons name='chevron-right' size={20} color='white' style={{ marginRight: 10 }} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => console.log('delete')}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-              <MaterialCommunityIcons name='logout' color='white' size={25} style={{ marginRight: 10 }} />
-              <Text style={{ color: 'white', fontSize: 18 }}>Delete my account</Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
+              <TouchableOpacity
+                style={{
+                  width: iconWidth * 0.65,
+                  aspectRatio: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                  borderRadius: (iconWidth * 0.65) / 2,
+                  backgroundColor: 'white',
+                }}
+                onPress={() => {
+                  onDeleteMyAccountPress();
+                }}
+              >
+                <MaterialCommunityIcons name='delete-alert' size={35} color='black' style={{}} />
+              </TouchableOpacity>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
             </View>
-            <MaterialCommunityIcons name='chevron-right' size={20} color='white' style={{ marginRight: 10 }} />
-          </TouchableOpacity>
+          </View>
         </BottomSheetView>
       </GorhomBottomSheet>
     );

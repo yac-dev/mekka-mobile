@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback } from 'react-native';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
@@ -16,6 +16,24 @@ const Signup = (props) => {
   const [password, setPassword] = useState('');
   const [isValidated, setIsValidated] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <TouchableWithoutFeedback onPress={() => onSubmitPress()} disabled={isValidated ? false : true}>
+          <Text
+            style={{
+              color: isValidated ? 'white' : 'rgb(117,117, 117)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Submit
+          </Text>
+        </TouchableWithoutFeedback>
+      ),
+    });
+  }, [isValidated]);
 
   const onSubmitPress = async () => {
     const payload = {
@@ -76,7 +94,7 @@ const Signup = (props) => {
             marginRight: 10,
           }}
         >
-          <TouchableOpacity
+          <View
             style={{
               width: 50,
               height: 50,
@@ -88,7 +106,7 @@ const Signup = (props) => {
             }}
           >
             <MaterialCommunityIcons name='account' color='white' size={20} />
-          </TouchableOpacity>
+          </View>
           <TextInput
             placeholder='Name'
             placeholderTextColor={'rgb(170,170,170)'}
@@ -117,7 +135,7 @@ const Signup = (props) => {
             marginRight: 10,
           }}
         >
-          <TouchableOpacity
+          <View
             style={{
               width: 50,
               height: 50,
@@ -129,7 +147,7 @@ const Signup = (props) => {
             }}
           >
             <MaterialCommunityIcons name='email' color='white' size={20} />
-          </TouchableOpacity>
+          </View>
           <TextInput
             placeholder='Email'
             placeholderTextColor={'rgb(170,170,170)'}
@@ -158,7 +176,7 @@ const Signup = (props) => {
             marginRight: 10,
           }}
         >
-          <TouchableOpacity
+          <View
             style={{
               width: 50,
               height: 50,
@@ -170,7 +188,7 @@ const Signup = (props) => {
             }}
           >
             <MaterialCommunityIcons name='key' color='white' size={20} />
-          </TouchableOpacity>
+          </View>
           <TextInput
             placeholder='Password at least 10 characters'
             placeholderTextColor={'rgb(170,170,170)'}
@@ -187,20 +205,21 @@ const Signup = (props) => {
             value={password}
             onChangeText={(text) => setPassword(text)}
           />
-          <TouchableOpacity
-            style={{
-              width: 50,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              // backgroundColor: 'rgb(80,80,80)',
-              borderTopRightRadius: 10,
-              borderBottomRightRadius: 10,
-            }}
-            onPress={() => setIsPasswordHidden((previous) => !previous)}
-          >
-            <Ionicons name={`${isPasswordHidden ? 'eye' : 'eye-off'}`} color='white' size={20} />
-          </TouchableOpacity>
+          <TouchableWithoutFeedback onPress={() => setIsPasswordHidden((previous) => !previous)}>
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // backgroundColor: 'rgb(80,80,80)',
+                borderTopRightRadius: 10,
+                borderBottomRightRadius: 10,
+              }}
+            >
+              <Ionicons name={`${isPasswordHidden ? 'eye' : 'eye-off'}`} color='white' size={20} />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
         {/* <TextInput
         placeholder='Password'
@@ -218,25 +237,6 @@ const Signup = (props) => {
         value={password}
         onChangeText={(text) => setPassword(text)}
       /> */}
-        <TouchableOpacity
-          style={{
-            padding: 10,
-            backgroundColor: isValidated ? 'white' : 'rgb(170,170,170)',
-            borderRadius: 10,
-          }}
-          onPress={() => onSubmitPress()}
-          disabled={isValidated ? false : true}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-            {isValidated ? (
-              <MaterialCommunityIcons name='check' size={25} color='black' style={{ marginRight: 10 }} />
-            ) : (
-              <Foundation name='prohibited' size={25} color='black' style={{ marginRight: 10 }} />
-            )}
-
-            <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold', fontSize: 17 }}>Submit</Text>
-          </View>
-        </TouchableOpacity>
       </View>
       <LoadingSpinner />
     </View>
