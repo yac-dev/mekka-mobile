@@ -36,46 +36,42 @@ const WelcomePage = (props) => {
       </View>
       <Text>Welcome to Mekka. Please signup or login to proceed.</Text>
       <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Login')}
-          style={{
-            padding: 10,
-            backgroundColor: 'white',
-            borderRadius: 20,
-            // marginBottom: 30,
-            flexDirection: 'row',
-            alignItems: 'center',
-            // justifyContent: 'space-between',
-            width: 120,
-            height: 40,
-            marginRight: 20,
-          }}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-            <MaterialCommunityIcons name='login' color='black' size={25} style={{ marginRight: 10 }} />
-            <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold' }}>Login</Text>
-          </View>
-          {/* <MaterialCommunityIcons name='chevron-right' size={25} color='black' /> */}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Signup')}
-          style={{
-            padding: 10,
-            backgroundColor: 'white',
-            borderRadius: 20,
-            flexDirection: 'row',
-            alignItems: 'center',
-            // justifyContent: 'space-between',
-            width: 120,
-            height: 40,
-          }}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-            <Ionicons name='create-outline' color='black' size={25} style={{ marginRight: 10 }} />
-            <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold' }}>Signup</Text>
-          </View>
-          {/* <MaterialCommunityIcons name='chevron-right' size={25} color='white' /> */}
-        </TouchableOpacity>
+        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Login')}
+            style={{
+              padding: 10,
+              backgroundColor: 'white',
+              borderRadius: 40,
+              alignItems: 'center',
+              width: 80,
+              height: 80,
+              justifyContent: 'center',
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name='login' color='black' size={30} />
+          </TouchableOpacity>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Login</Text>
+        </View>
+        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Signup')}
+            style={{
+              padding: 10,
+              backgroundColor: 'white',
+              borderRadius: 40,
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 80,
+              height: 80,
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
+          </TouchableOpacity>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Get started</Text>
+        </View>
       </View>
       <SnackBar />
     </SafeAreaView>

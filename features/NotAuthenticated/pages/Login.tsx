@@ -8,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import SnackBar from '../../../components/SnackBar';
 
 const Login = (props) => {
   const { setAuthData, setIsAuthenticated, setLoading, setSnackBar } = useContext(GlobalContext);
@@ -48,15 +49,25 @@ const Login = (props) => {
       password,
     };
     setLoading(true);
-    console.log(payload);
-    const result = await backendAPI.post('/auth/login', payload);
-    const { user, jwt } = result.data;
-    setAuthData(user);
-    setIsAuthenticated(true);
-    setLoading(false);
-    setSnackBar({ isVisible: true, message: 'Logged in successfully.', barType: 'success', duration: 5000 });
-    await SecureStore.setItemAsync('secure_token', jwt);
-    props.navigation?.navigate('SpacesDrawerNavigator');
+    try {
+      console.log(payload);
+      const result = await backendAPI.post('/auth/login', payload);
+      const { user, jwt } = result.data;
+      setAuthData(user);
+      setIsAuthenticated(true);
+      setLoading(false);
+      setSnackBar({ isVisible: true, message: 'Logged in successfully.', barType: 'success', duration: 5000 });
+      await SecureStore.setItemAsync('secure_token', jwt);
+      props.navigation?.navigate('SpacesDrawerNavigator');
+    } catch (error) {
+      setLoading(false);
+      setSnackBar({
+        isVisible: true,
+        message: 'OOPS. Something went wrong. Please try again.',
+        barType: 'error',
+        duration: 5000,
+      });
+    }
     // ここで、secureeをさらにsetする感じか。
   };
 
@@ -89,7 +100,7 @@ const Login = (props) => {
           marginRight: 10,
         }}
       >
-        <TouchableOpacity
+        <View
           style={{
             width: 50,
             height: 50,
@@ -101,7 +112,7 @@ const Login = (props) => {
           }}
         >
           <MaterialCommunityIcons name='email' color='white' size={20} />
-        </TouchableOpacity>
+        </View>
         <TextInput
           placeholder='Email'
           placeholderTextColor={'rgb(170,170,170)'}
@@ -130,7 +141,7 @@ const Login = (props) => {
           marginRight: 10,
         }}
       >
-        <TouchableOpacity
+        <View
           style={{
             width: 50,
             height: 50,
@@ -142,7 +153,7 @@ const Login = (props) => {
           }}
         >
           <MaterialCommunityIcons name='key' color='white' size={20} />
-        </TouchableOpacity>
+        </View>
         <TextInput
           placeholder='Password'
           placeholderTextColor={'rgb(170,170,170)'}
@@ -195,6 +206,7 @@ const Login = (props) => {
         </View>
       </TouchableOpacity> */}
       <LoadingSpinner />
+      <SnackBar />
     </View>
   );
 };
