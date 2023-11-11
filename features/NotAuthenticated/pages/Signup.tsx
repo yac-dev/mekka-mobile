@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
+import SnackBar from '../../../components/SnackBar';
 
 const Signup = (props) => {
   const { setAuthData, setIsAuthenticated, setLoading, setSnackBar } = useContext(GlobalContext);
@@ -16,6 +17,11 @@ const Signup = (props) => {
   const [password, setPassword] = useState('');
   const [isValidated, setIsValidated] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  // const v = async () => {
+  //   await SecureStore.deleteItemAsync('secure_token');
+  // };
+  // v();
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -42,14 +48,44 @@ const Signup = (props) => {
       password,
     };
     setLoading(true);
-    const result = await backendAPI.post('/auth/signup', payload);
-    const { user, jwt } = result.data;
-    setAuthData(user);
-    setIsAuthenticated(true);
-    setLoading(false);
-    setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
-    await SecureStore.setItemAsync('secure_token', jwt);
-    props.navigation?.navigate('SpacesDrawerNavigator');
+    try {
+      const result = await backendAPI.post('/auth/signup', payload);
+      const { status, data } = result.data;
+      const { user, jwt } = data;
+      setAuthData(user);
+      setIsAuthenticated(true);
+      setLoading(false);
+      setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
+      await SecureStore.setItemAsync('secure_token', jwt);
+      props.navigation?.navigate('SpacesDrawerNavigator');
+    } catch (error) {
+      setLoading(false);
+      setSnackBar({
+        isVisible: true,
+        message: 'OOPS. Something went wrong. Please try again.',
+        barType: 'warning',
+        duration: 5000,
+      });
+    }
+    // const { status, data } = result.data;
+    // console.log('status', status, 'data', data);
+    // if (status === 'success') {
+    //   const { user, jwt } = data;
+    //   setAuthData(user);
+    //   setIsAuthenticated(true);
+    //   setLoading(false);
+    //   setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
+    //   await SecureStore.setItemAsync('secure_token', jwt);
+    //   props.navigation?.navigate('SpacesDrawerNavigator');
+    // } else if (status === 'error') {
+    //   setLoading(false);
+    //   setSnackBar({
+    //     isVisible: true,
+    //     message: 'OOPS. Something went wrong. Please try again.',
+    //     barType: 'success',
+    //     duration: 5000,
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -239,6 +275,7 @@ const Signup = (props) => {
       /> */}
       </View>
       <LoadingSpinner />
+      <SnackBar />
     </View>
   );
 };
