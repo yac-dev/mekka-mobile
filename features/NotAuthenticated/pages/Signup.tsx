@@ -42,14 +42,17 @@ const Signup = (props) => {
       password,
     };
     setLoading(true);
+    console.log('tesssset');
     const result = await backendAPI.post('/auth/signup', payload);
     const { user, jwt } = result.data;
     setAuthData(user);
     setIsAuthenticated(true);
     setLoading(false);
+    console.log('tesssset');
     setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
     await SecureStore.setItemAsync('secure_token', jwt);
     props.navigation?.navigate('SpacesDrawerNavigator');
+    console.log('tesssset');
   };
 
   useEffect(() => {
