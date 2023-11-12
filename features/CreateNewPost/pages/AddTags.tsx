@@ -95,9 +95,7 @@ const AddTags = (props) => {
           <ExpoImage
             style={{ width: 20, height: 20, marginRight: 10 }}
             source={{ uri: tag.icon }}
-            placeholder={blurhash}
             contentFit='cover'
-            transition={1000}
             tintColor={tag.iconType === 'icon' ? tag.color : null}
           />
           <Text style={{ color: 'white' }}>{tag.name}</Text>

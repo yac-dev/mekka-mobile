@@ -30,9 +30,10 @@ const Form = (props) => {
   }, [secretKey]);
 
   const onDonePress = async () => {
+    // ここでsecretKeyを全部大文字にするようにする。
     const payload = {
       userId: authData._id,
-      secretKey,
+      secretKey: secretKey.toUpperCase(),
     };
     setLoading(true);
     const result = await backendAPI.post('/spaces/private', payload);
@@ -58,10 +59,10 @@ const Form = (props) => {
           Join private Space
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Do you have a secret key? Copy it and paste down below to enter private space.
+          Got secret key? Copy and paste it or type passcode down below to enter private space.
         </Text>
       </View>
-      <TextInput
+      {/* <TextInput
         placeholder='e.g) CP3W2LFMD9EIF6RNZL47'
         placeholderTextColor={'rgb(170,170,170)'}
         style={{
@@ -74,7 +75,35 @@ const Form = (props) => {
         autoCapitalize='characters'
         value={secretKey}
         onChangeText={(text) => setSecretKey(text)}
-      />
+      /> */}
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 30,
+          borderBottomWidth: 0.3,
+          borderBottomColor: 'rgb(170,170,170)',
+          marginLeft: 10,
+          marginRight: 10,
+        }}
+      >
+        <TextInput
+          placeholder='e.g.) CP3W2LFMD9EIF6RNZL47'
+          placeholderTextColor={'rgb(170,170,170)'}
+          style={{
+            // backgroundColor: 'rgb(80,80,80)',
+            height: 50,
+            padding: 10,
+            flex: 1,
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
+            color: 'white',
+          }}
+          autoCapitalize='characters'
+          value={secretKey}
+          onChangeText={(text) => setSecretKey(text)}
+        />
+      </View>
       <LoadingSpinner />
     </View>
   );

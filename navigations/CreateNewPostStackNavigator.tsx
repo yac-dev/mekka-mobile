@@ -87,6 +87,7 @@ const CreateNewPostStackNavigator = (props) => {
       //   params: { createdPost: true }, // 作ったtagをSpaceRootに入れる。
       //   merge: true,
       // },
+      // これ、もうシンプルにcreateに関するstateをここでやれば良いんじゃないの？？なんでこんな回りくどいやり方をしている？？
       name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
       // name: 'HomeStackNavigator',
       params: { createdPost: true }, // 作ったtagをSpaceRootに入れる。

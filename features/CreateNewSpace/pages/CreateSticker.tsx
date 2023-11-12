@@ -13,11 +13,12 @@ const CreateCustomEmoji = (props) => {
   const [previewEmoji, setPreviewEmoji] = useState('');
   const [fileName, setFileName] = useState('');
   // const [stickerName, setStickerName] = useState('');
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const onClose = async () => {
     if (fileName) {
       setLoading(true);
-      const result = await backendAPI.patch('/customemojis/preview', { fileName });
+      const result = await backendAPI.patch('/stickers/preview', { fileName });
       setLoading(false);
       props.navigation.goBack();
     } else {
@@ -60,7 +61,7 @@ const CreateCustomEmoji = (props) => {
       allowsEditing: true,
       aspect: [1, 1],
     });
-    let creatingFileName = `${authData._id}-${Date.now()}`;
+    let creatingFileName = `${pickedImage.assets[0].uri.split('/').pop().split('.')[0]}.png`;
     if (!pickedImage.canceled && pickedImage.assets[0].uri) {
       const payload = new FormData();
 
@@ -68,14 +69,16 @@ const CreateCustomEmoji = (props) => {
       if (fileName) {
         payload.append('exFileName', fileName);
       }
+      // const fileName = pickedImage.assets[0].uri;
+      // const fileName = `${pickedImage.assets[0].uri.split('/').pop().split('.')[0]}.png`;
       const iconData = {
         name: creatingFileName,
         uri: pickedImage.assets[0].uri,
         type: 'image/jpeg',
       };
-      payload.append('originalEmojiImage', JSON.parse(JSON.stringify(iconData)));
+      payload.append('originalStickerImage', JSON.parse(JSON.stringify(iconData)));
       setLoading(true);
-      const result = await backendAPI.post('/customemojis/preview', payload, {
+      const result = await backendAPI.post('/stickers/preview', payload, {
         headers: { 'Content-type': 'multipart/form-data' },
       });
       setLoading(false);
@@ -95,14 +98,15 @@ const CreateCustomEmoji = (props) => {
     const result = await backendAPI.post('/stickers', { fileName, userId: authData._id });
     setLoading(false);
     const { sticker } = result.data;
-    props.navigation.navigate('CreateNewSpace');
     props.navigation.navigate({
-      name: 'CreateNewSpace',
-      params: { generatedReaction: { type: 'sticker', emoji: undefined, sticker } },
+      name: 'Stickers',
+      params: { createdSticker: { type: 'sticker', emoji: undefined, sticker } },
       merge: true,
     });
   };
 
+  console.log(fileName);
+  console.log('source', `${baseURL}/buffer/removed-${fileName}`);
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, marginBottom: 20 }}>
@@ -118,16 +122,28 @@ const CreateCustomEmoji = (props) => {
           source={require('../../../assets/forApp/elon-wtf-original.png')}
           style={{ width: 100, height: 70, marginRight: 20 }}
         />
-        <Ionicons name='arrow-forward-circle' color='rgb(170,170, 170)' size={25} style={{ marginRight: 20 }} />
-        <Image source={require('../../../assets/forApp/elon-wtf.png')} style={{ width: 70, height: 70 }} />
+        <MaterialCommunityIcons name='chevron-right' color='white' size={25} style={{ marginRight: 20 }} />
+        <Image
+          source={require('../../../assets/forApp/elon-wtf.png')}
+          style={{ width: 70, height: 70, marginRight: 20 }}
+        />
       </View>
       <TouchableOpacity
-        style={{ backgroundColor: 'rgb(88,88,88)', padding: 10, borderRadius: 5, marginBottom: 30 }}
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 40,
+          marginBottom: 30,
+          width: 80,
+          height: 80,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}
         onPress={() => pickImage()}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-          <MaterialCommunityIcons name='plus' size={25} color={'white'} />
-          <Text style={{ color: 'white' }}>Choose from library</Text>
+        <View style={{ alignItems: 'center', alignSelf: 'center' }}>
+          <MaterialCommunityIcons name='plus' size={35} color={'black'} />
+          <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold' }}>Choose</Text>
         </View>
       </TouchableOpacity>
 
@@ -137,13 +153,15 @@ const CreateCustomEmoji = (props) => {
             width: 80,
             height: 80,
             alignSelf: 'center',
+            // backgroundColor: 'white',
           }}
           source={{
-            uri: `${baseURL}/buffer/customemojis/removed-${fileName}.png`,
+            uri: `${baseURL}/buffer/removed-${fileName}`,
           }}
+          onLoad={() => setImageLoaded(true)}
+          // tintColor={'red'}
         />
       ) : null}
-
       {/* <TextInput
         placeholder='Sticker name...'
         placeholderTextColor='rgb(170,170,170)'

@@ -98,7 +98,7 @@ const Moment = () => {
   };
 
   const renderMinPickerItemsFromFiveToFiftyNine = () => {
-    const fromFiveToFityNine = Array.from({ length: 56 }, (x, i) => i + 5);
+    const fromFiveToFityNine = Array.from({ length: 55 }, (x, i) => i + 5);
     const list = fromFiveToFityNine.map((min, index) => {
       return <Picker.Item key={index} label={min.toString()} value={min.toString()} color='white' />;
     });
@@ -132,8 +132,8 @@ const Moment = () => {
           Set Moment time
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Moment is like a story of Instagram. You can have posts that automatically disappear. Instead of 24 hours
-          restriction, you can set any disappearing time you want.
+          The "Moment" is like a Instagram story.{'\n'}By using this feature, your post will automatically disappear
+          after a certain period of time. You can set any disappearing time you want.
         </Text>
       </View>
       <View style={{ flexDirection: 'row', alignSelf: 'center' }}>

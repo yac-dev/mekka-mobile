@@ -5,6 +5,7 @@ import { Video, ResizeMode } from 'expo-av';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import * as VideoThumbnail from 'expo-video-thumbnails';
 
@@ -104,7 +105,7 @@ const ContentThumbnail = (props) => {
           // })
         }
       >
-        <Ionicons name='trash' size={20} color={'white'} />
+        <Fontisto name='minus-a' size={20} color={'white'} />
       </TouchableOpacity>
     </View>
   );
