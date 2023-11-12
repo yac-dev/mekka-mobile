@@ -200,9 +200,7 @@ const AddLocationTag = (props) => {
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10, borderRadius: 8 }}
               source={{ uri: locationTag.icon }}
-              placeholder={blurhash}
               contentFit='cover'
-              transition={1000}
               tintColor={locationTag.iconType === 'icon' ? locationTag.color : null}
             />
             <Text style={{ color: 'white' }}>{locationTag.name}</Text>

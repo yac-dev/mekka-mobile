@@ -86,6 +86,7 @@ const TagsTopTabNavigator = (props) => {
   // };
 
   // createしたtagを
+  console.log('tags list', tags);
 
   const getTags = async () => {
     // setIsLoadingTags(true);
@@ -150,7 +151,7 @@ const TagsTopTabNavigator = (props) => {
       setTags((previous) => {
         const updating = { ...previous };
         createNewPostResult.responseData.createdTags.forEach((tag, index) => {
-          previous[tag._id] = {
+          updating[tag._id] = {
             tag,
             hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
           };
