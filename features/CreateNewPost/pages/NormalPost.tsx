@@ -34,7 +34,7 @@ const NormalPost = () => {
 
   const renderContents = () => {
     const list = createNewPostFormData.contents.map((content, index) => {
-      return <ContentThumbnail content={content} index={index} />;
+      return <ContentThumbnail key={index} content={content} index={index} />;
     });
 
     return (
@@ -144,8 +144,8 @@ const NormalPost = () => {
     <KeyboardAvoidingView
       // これ動かねーな。
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1, backgroundColor: 'black' }}
       keyboardVerticalOffset={120}
+      style={{ flex: 1, backgroundColor: 'black' }}
       // keyboardVerticalOffset={Platform.select({
       //   ios: Header.HEIGHT, // iOS
       //   android:Header.HEIGHT + StatusBar.currentHeight, // android

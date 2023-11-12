@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
@@ -7,6 +7,7 @@ import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import SnackBar from '../../../components/SnackBar';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import { FlashList } from '@shopify/flash-list';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -19,20 +20,16 @@ const Stickers = (props) => {
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 15 : Dimensions.get('window').width / 9;
 
   useEffect(() => {
-    if (props.route?.params?.createdReaction) {
+    if (props.route?.params?.createdSticker) {
       setSelectedReactions((previous) => {
         return {
           ...previous,
-          [props.route?.params?.createdReaction._id]: {
-            type: 'sticker',
-            emoji: undefined,
-            sticker: props.route?.params?.createdReaction,
-          },
+          [props.route?.params?.createdSticker.sticker._id]: props.route?.params.createdSticker,
         };
       });
-      setStickers((previous) => [...previous, props.route?.params.createdReaction]);
+      setStickers((previous) => [...previous, props.route?.params.createdSticker.sticker]);
     }
-  }, [props.route?.params?.createdReaction]);
+  }, [props.route?.params?.createdSticker]);
 
   const getStickers = async () => {
     const result = await backendAPI.get('/stickers');
@@ -88,18 +85,13 @@ const Stickers = (props) => {
               }
             }}
           >
-            <ExpoImage
-              style={{ width: 30, height: 30 }}
-              source={{ uri: item.url }}
-              placeholder={blurhash}
-              contentFit='cover'
-              transition={1000}
-            />
+            <ExpoImage style={{ width: 30, height: 30 }} source={{ uri: item.url }} contentFit='cover' />
           </TouchableOpacity>
         </View>
       );
     },
-    [selectedReactions]
+    // [selectedReactions]
+    []
   );
 
   return (
@@ -112,12 +104,13 @@ const Stickers = (props) => {
           <Text style={{ color: 'black', alignSelf: 'center', fontWeight: 'bold' }}>Create new reaction</Text>
         </TouchableOpacity>
       </View>
-      <FlatList
+      <FlashList
         data={stickers}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}`}
         numColumns={9}
         contentContainerStyle={{ paddingTop: 5 }}
+        estimatedItemSize={200}
       />
     </View>
   );

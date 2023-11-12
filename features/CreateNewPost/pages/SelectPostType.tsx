@@ -84,9 +84,7 @@ const SelectPostType = (props) => {
           <ExpoImage
             style={{ width: 25, height: 25, marginBottom: 5 }}
             source={require('../../../assets/forApp/ghost.png')}
-            placeholder={blurhash}
             contentFit='cover'
-            transition={1000}
             tintColor={'black'}
           />
           <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>

@@ -1,4 +1,4 @@
-import React, { useState, useContext, memo, useEffect } from 'react';
+import React, { useState, useContext, memo, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions } from 'react-native';
 import { emojis } from '../../../utils/emojis';
 import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
@@ -17,9 +17,6 @@ import SnackBar from '../../../components/SnackBar';
 import Stickers from './Stickers';
 import { Image as ExpoImage } from 'expo-image';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
 const Tab = createBottomTabNavigator();
 
 const ReactionPicker = (props) => {
@@ -30,10 +27,16 @@ const ReactionPicker = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => onAddPress()} disabled={Object.keys(selectedReactions).length ? false : true}>
+        <TouchableOpacity
+          onPress={() => onAddPress()}
+          disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length <= 6 ? false : true}
+        >
           <Text
             style={{
-              color: Object.keys(selectedReactions).length ? 'white' : 'rgb(117,117, 117)',
+              color:
+                Object.keys(selectedReactions).length && Object.keys(selectedReactions).length <= 6
+                  ? 'white'
+                  : 'rgb(117,117, 117)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -60,6 +63,15 @@ const ReactionPicker = (props) => {
       });
     }
   }, [props.route.params.reactions]);
+
+  // useEffect(() => {
+  //   if(props.route.params.generatedSticker){
+  //     setSelectedReactions((previous) => {
+  //       const updating = { ...previous };
+  //       updating[]
+  //     });
+  //   }
+  // },[props.route.params.generatedSticker])
 
   const onAddPress = () => {
     props.navigation.navigate('Reaction', { selectedReactions: Object.values(selectedReactions) });
@@ -89,9 +101,7 @@ const ReactionPicker = (props) => {
                 <ExpoImage
                   style={{ width: 40, height: 40 }}
                   source={{ uri: reactionObject.sticker.url }}
-                  placeholder={blurhash}
                   contentFit='cover'
-                  transition={1000}
                 />
               )}
               <TouchableOpacity
@@ -139,6 +149,75 @@ const ReactionPicker = (props) => {
     }
   };
 
+  console.log(selectedReactions);
+
+  const renderSelectedReaction = useCallback(({ item }) => {
+    return (
+      <View
+        style={{
+          width: 50,
+          height: 50,
+          backgroundColor: 'rgb(80, 80, 80)',
+          borderRadius: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 8,
+          marginBottom: 8,
+        }}
+      >
+        {item.type === 'emoji' ? (
+          <Text style={{ fontSize: 40 }}>{item.emoji}</Text>
+        ) : (
+          <ExpoImage style={{ width: 40, height: 40 }} source={{ uri: item.sticker.url }} contentFit='cover' />
+        )}
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'red',
+            borderRadius: 10,
+            width: 20,
+            height: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            top: -7,
+            right: -7,
+          }}
+          onPress={() => {
+            setSelectedReactions((previous) => {
+              const updating = { ...previous };
+              if (item.type === 'emoji') {
+                delete updating[item.emoji];
+              } else if (item.type === 'sticker') {
+                delete updating[item.sticker._id];
+              }
+              return updating;
+            });
+          }}
+        >
+          <MaterialCommunityIcons name='minus' color={'white'} size={20} />
+        </TouchableOpacity>
+      </View>
+    );
+  }, []);
+
+  const renderSelectedReactions = () => {
+    if (Object.values(selectedReactions).length) {
+      return (
+        <View>
+          <FlatList
+            data={Object.values(selectedReactions)}
+            renderItem={renderSelectedReaction}
+            keyExtractor={(item, index) => `${item.id}-${index}`}
+            contentContainerStyle={{ alignSelf: 'center', padding: 20 }}
+            numColumns={6}
+          />
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <ReactionPickerContext.Provider value={{ selectedReactions, setSelectedReactions }}>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -158,7 +237,8 @@ const ReactionPicker = (props) => {
             Please choose at most 6 reaction options.
           </Text>
         </View>
-        {renderSelectedEmojis()}
+        {/* {renderSelectedEmojis()} */}
+        {renderSelectedReactions()}
         <Tab.Navigator
           initialRouteName='People'
           screenOptions={{

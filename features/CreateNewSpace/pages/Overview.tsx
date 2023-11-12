@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useCallback, useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,6 +11,7 @@ const blurhash =
 
 const Overview = () => {
   const { formData, setFormData } = useContext(CreateNewSpaceContext);
+  const [count, setCount] = useState<number>(0);
 
   const pickImage = async () => {
     let pickedImage = await ImagePicker.launchImageLibraryAsync({
@@ -20,7 +21,7 @@ const Overview = () => {
       quality: 1,
     });
     if (!pickedImage.canceled && pickedImage.assets[0].uri) {
-      console.log(pickedImage);
+      // console.log(pickedImage);
       setFormData((previous) => {
         return {
           ...previous,
@@ -29,10 +30,35 @@ const Overview = () => {
       });
     }
   };
+  // シンプルなこのarrow functionであると、毎度このfunctionが実行される。componentがrerenderされるたびにこれが実行される。
+  // const renderTextInputLength = () => {
+  //   console.log('hello');
+  //   return (
+  //     <Text style={{ color: formData.name.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>{formData.name.length}</Text>
+  //   );
+  // };
+
+  // これだと、最初のrender時のみのrender。だから、formDataのstateが変わってもここのfunction componentのrenderは更新されない。
+  // const renderTex = useCallback(() => {
+  //   console.log('hello');
+  //   return (
+  //     <Text style={{ color: formData.name.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>{formData.name.length}</Text>
+  //   );
+  // }, []);
+
+  const renderText = () => {
+    return (
+      <Text style={{ color: formData.name.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>{formData.name.length}</Text>
+    );
+  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
-      <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={150}
+      style={{ flex: 1, backgroundColor: 'black', padding: 10 }}
+    >
+      <ScrollView>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
         <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 30 }}>
           <Text
@@ -70,9 +96,7 @@ const Overview = () => {
             <ExpoImage
               style={{ width: 120, height: 120, borderRadius: 120 / 2, alignSelf: 'center' }}
               source={{ uri: formData.icon }}
-              placeholder={blurhash}
               contentFit='cover'
-              transition={1000}
             />
           ) : (
             <>
@@ -81,11 +105,44 @@ const Overview = () => {
             </>
           )}
         </TouchableOpacity>
-
-        <View style={{ borderBottomColor: 'rgb(88, 88, 88)', borderBottomWidth: 1, padding: 10 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 30,
+            borderBottomWidth: 0.3,
+            borderBottomColor: 'rgb(88, 88, 88)',
+          }}
+        >
           <TextInput
             style={{
-              padding: 0,
+              fontSize: 18,
+              color: 'white',
+              flex: 1,
+              padding: 10,
+            }}
+            placeholder='Space name'
+            placeholderTextColor={'rgb(170,170,170)'}
+            autoCapitalize='none'
+            value={formData.name}
+            onChangeText={(text) =>
+              setFormData((previous) => {
+                return {
+                  ...previous,
+                  name: text,
+                };
+              })
+            }
+          />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {renderText()}
+            <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
+          </View>
+        </View>
+
+        {/* <View style={{ borderBottomColor: 'rgb(88, 88, 88)', borderBottomWidth: 1 }}>
+          <TextInput
+            style={{
               fontSize: 18,
               color: 'white',
             }}
@@ -102,9 +159,12 @@ const Overview = () => {
               })
             }
           />
-        </View>
-      </View>
-    </View>
+          <Text style={{ marginRight: 10, alignSelf: 'flex-end', color: 'rgb(170,170,170)' }}>
+            {formData.name.length}
+          </Text>
+        </View> */}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

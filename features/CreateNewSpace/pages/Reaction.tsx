@@ -44,9 +44,7 @@ const Reaction = (props) => {
               <ExpoImage
                 style={{ width: 40, height: 40 }}
                 source={{ uri: reactionObject.sticker.url }}
-                placeholder={blurhash}
                 contentFit='cover'
-                transition={1000}
               />
             )}
           </TouchableOpacity>
@@ -99,7 +97,8 @@ const Reaction = (props) => {
           Reaction
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          You can set reaction options. you can disable any reactions.
+          You can set reaction options that can be used for each post. If you don't want to, please set it to
+          "Disabled".
         </Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>

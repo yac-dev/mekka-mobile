@@ -13,15 +13,19 @@ const SelectSpaceVisibility = () => {
         return (
           <View style={{ padding: 20 }}>
             <Text style={{ color: 'white', textAlign: 'center' }}>
-              By setting public, everybody in this app can join here
+              By setting it to public, this space will be open to everyone, allowing anyone to join and share
+              photos/videos freely.
             </Text>
           </View>
         );
       } else {
         return (
           <View style={{ padding: 20 }}>
+            {/* <Text style={{ color: 'white', textAlign: 'center' }}>
+              By setting to private, you can enjoy sharing only with people you know.
+            </Text> */}
             <Text style={{ color: 'white', textAlign: 'center' }}>
-              By setting private, it is only accessible to people who you know.
+              By setting it to private, this space will be closed, allowing sharing only with people you know.
             </Text>
           </View>
         );
@@ -75,9 +79,9 @@ const SelectSpaceVisibility = () => {
           {formData.isPublic === undefined ? null : formData.isPublic ? null : (
             <Ionicons
               name='checkmark-circle'
-              size={20}
+              size={30}
               color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: 0, right: 0 }}
+              style={{ position: 'absolute', top: -5, right: -5 }}
             />
           )}
         </TouchableOpacity>
@@ -107,9 +111,9 @@ const SelectSpaceVisibility = () => {
           {formData.isPublic === undefined ? null : formData.isPublic ? (
             <Ionicons
               name='checkmark-circle'
-              size={20}
+              size={30}
               color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: 0, right: 0 }}
+              style={{ position: 'absolute', top: -5, right: -5 }}
             />
           ) : null}
         </TouchableOpacity>

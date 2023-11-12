@@ -55,8 +55,9 @@ const CreateNewSpaceStackNavigator = (props) => {
     payload.append('disappearAfter', formData.disappearAfter.toString());
     payload.append('description', formData.description);
     payload.append('createdBy', JSON.stringify(userData));
+    const fileName = `${formData.icon.split('/').pop().split('.')[0]}.png`;
     const iconData = {
-      name: `${authData._id}-${Date.now()}`,
+      name: fileName,
       uri: formData.icon,
       type: 'image/jpeg',
     };
@@ -98,11 +99,14 @@ const CreateNewSpaceStackNavigator = (props) => {
               headerRight: () => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('SelectSpaceVisibility')}
-                  disabled={formData.name.length && formData.icon.length ? false : true}
+                  disabled={formData.icon.length && formData.name.length && formData.name.length <= 40 ? false : true}
                 >
                   <Text
                     style={{
-                      color: formData.name.length && formData.icon.length ? 'white' : 'rgb(170,170,170)',
+                      color:
+                        formData.name.length && formData.icon.length && formData.name.length <= 40
+                          ? 'white'
+                          : 'rgb(170,170,170)',
                       fontSize: 20,
                       fontWeight: 'bold',
                     }}

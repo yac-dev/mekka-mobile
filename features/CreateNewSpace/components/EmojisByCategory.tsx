@@ -6,6 +6,7 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FlashList } from '@shopify/flash-list';
 
 const EmojisByCategory = ({ category }) => {
   const { isIpad, setSnackBar } = useContext(GlobalContext);
@@ -46,7 +47,8 @@ const EmojisByCategory = ({ category }) => {
                   return updating;
                 });
               } else {
-                if (Object.keys(selectedReactions).length >= 6) {
+                // ここ。snackbarが動かないな。。。なんでだろ。falshlistの使い方おかしいのかな。。。
+                if (Object.keys(selectedReactions).length >= 7) {
                   setSnackBar({
                     isVisible: true,
                     barType: 'warning',
@@ -73,17 +75,20 @@ const EmojisByCategory = ({ category }) => {
         </View>
       );
     },
-    [selectedReactions]
+    // [selectedReactions]
+    []
   );
 
+  // flashlistすごいな。なんか早くなったぞ。。。
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <FlatList
+      <FlashList
         data={emojisByCategory[category]}
         renderItem={renderItem}
         keyExtractor={(item) => item}
         numColumns={9}
         contentContainerStyle={{ paddingTop: 5 }}
+        estimatedItemSize={300}
       />
     </View>
   );

@@ -34,7 +34,7 @@ const SpacesDrawerNavigator = (props) => {
   function CustomDrawerContent(props) {
     const { state, descriptors, navigation } = props;
     return (
-      <DrawerContentScrollView {...props} style={{ paddingTop: 10 }}>
+      <View {...props} style={{ paddingTop: 30 }}>
         {isAuthenticated ? (
           <>
             <TouchableOpacity
@@ -168,58 +168,60 @@ const SpacesDrawerNavigator = (props) => {
                 <Text style={{ color: 'white' }}>Private key</Text>
               </TouchableOpacity>
             </View>
-            {state.routes.map((route, index) => {
-              const { options } = descriptors[route.key];
-              const label = options.tabBarLabel !== undefined ? options.tabBarLabel : route.name;
+            <ScrollView>
+              {state.routes.map((route, index) => {
+                const { options } = descriptors[route.key];
+                const label = options.tabBarLabel !== undefined ? options.tabBarLabel : route.name;
 
-              const isFocused = state.index === index;
+                const isFocused = state.index === index;
 
-              const onPress = () => {
-                const event = navigation.emit({
-                  type: 'tabPress',
-                  target: route.key,
-                  canPreventDefault: true,
-                });
+                const onPress = () => {
+                  const event = navigation.emit({
+                    type: 'tabPress',
+                    target: route.key,
+                    canPreventDefault: true,
+                  });
 
-                setCurrentSpaceAndUserRelationship(route.params?.spaceAndUserRelationship);
+                  setCurrentSpaceAndUserRelationship(route.params?.spaceAndUserRelationship);
 
-                if (!isFocused && !event.defaultPrevented) {
-                  navigation.navigate(route.name);
-                }
-              };
+                  if (!isFocused && !event.defaultPrevented) {
+                    navigation.navigate(route.name);
+                  }
+                };
 
-              return (
-                <TouchableOpacity
-                  key={route.key}
-                  style={{
-                    padding: 5,
-                    // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
-                  }}
-                  onPress={onPress}
-                >
-                  <View
+                return (
+                  <TouchableOpacity
+                    key={route.key}
                     style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      padding: 10,
-                      backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
-                      borderRadius: 10,
+                      padding: 5,
+                      // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
                     }}
+                    onPress={onPress}
                   >
-                    <ExpoImage
-                      style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
-                      source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
-                      // placeholder={blurhash}
-                      contentFit='cover'
-                      transition={200}
-                    />
-                    <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
-                      {route.params?.spaceAndUserRelationship.space.name}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 10,
+                        backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
+                        borderRadius: 10,
+                      }}
+                    >
+                      <ExpoImage
+                        style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
+                        source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
+                        // placeholder={blurhash}
+                        contentFit='cover'
+                        transition={200}
+                      />
+                      <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
+                        {route.params?.spaceAndUserRelationship.space.name}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
             {/* ↓これあると、screenのtabもrenderするようになる。 */}
             {/* <DrawerItemList {...props} /> */}
           </>
@@ -248,7 +250,7 @@ const SpacesDrawerNavigator = (props) => {
             </Text>
           </>
         )}
-      </DrawerContentScrollView>
+      </View>
     );
   }
 

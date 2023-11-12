@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 
 const Description = () => {
@@ -22,7 +22,11 @@ const Description = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: 'black', padding: 10 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={120}
+    >
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
         <Text
           style={{
@@ -40,35 +44,37 @@ const Description = () => {
         </Text>
       </View>
       {renderDescriptionLength()}
-      <View style={{ height: '100%', flexDirection: 'row' }}>
-        <TextInput
-          ref={textInputRef}
-          multiline={true}
-          placeholder={'Write in here...'}
-          placeholderTextColor={'rgb(170,170,170)'}
-          // inputAccessoryViewID={inputAccessoryViewID}
-          style={{
-            borderRadius: 10,
-            height: '100%',
-            // padding: 10,
-            // backgroundColor: 'rgb(235, 235, 235)',
-            width: '100%', // ここも、下の修正に沿って80 90%に変える。
-            fontSize: 18,
-            color: 'white',
-          }}
-          value={formData.description}
-          onChangeText={(text) => {
-            setFormData((previous) => {
-              return {
-                ...previous,
-                description: text,
-              };
-            });
-          }}
-          autoCapitalize='none'
-        />
-      </View>
-    </View>
+      <ScrollView>
+        <View style={{ height: '100%', flexDirection: 'row' }}>
+          <TextInput
+            ref={textInputRef}
+            multiline={true}
+            placeholder={'Write in here...'}
+            placeholderTextColor={'rgb(170,170,170)'}
+            // inputAccessoryViewID={inputAccessoryViewID}
+            style={{
+              borderRadius: 10,
+              height: '100%',
+              // padding: 10,
+              // backgroundColor: 'rgb(235, 235, 235)',
+              width: '100%', // ここも、下の修正に沿って80 90%に変える。
+              fontSize: 18,
+              color: 'white',
+            }}
+            value={formData.description}
+            onChangeText={(text) => {
+              setFormData((previous) => {
+                return {
+                  ...previous,
+                  description: text,
+                };
+              });
+            }}
+            autoCapitalize='none'
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

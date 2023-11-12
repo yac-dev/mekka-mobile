@@ -136,7 +136,7 @@ const ContentType = () => {
           Content type
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          What kind of snap can share in this space?
+          What kind of content can be shared in this space?
         </Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
@@ -161,7 +161,7 @@ const ContentType = () => {
             })
           }
         >
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Photo</Text>
+          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>only{'\n'}Photos</Text>
           {formData.contentType === 'photo' ? (
             <Ionicons
               name='checkmark-circle'
@@ -192,7 +192,7 @@ const ContentType = () => {
             })
           }
         >
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Video</Text>
+          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}> only Videos</Text>
           {formData.contentType === 'video' ? (
             <Ionicons
               name='checkmark-circle'
@@ -222,7 +222,7 @@ const ContentType = () => {
             })
           }
         >
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Photo & Video</Text>
+          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Photos & Videos</Text>
           {formData.contentType === 'photoAndVideo' ? (
             <Ionicons
               name='checkmark-circle'
@@ -236,8 +236,9 @@ const ContentType = () => {
       {formData.contentType === 'video' || formData.contentType === 'photoAndVideo' ? (
         <View>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            Just as there are limits on video length on other platforms, you can put limits on the length of videos you
-            can post here.
+            {/* Just as there are limits on video length on other platforms, you can put limits on the length of videos you
+            can post here. */}
+            You can limit the video length that space members post{'\n'}from 5 seconds to 3 minutes.
           </Text>
           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
             {renderMinPickerItems()}
