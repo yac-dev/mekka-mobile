@@ -108,6 +108,7 @@ const SpaceRootBottomTabNavigator = (props) => {
     createNewPostFormData,
     setCreateNewPostFormData,
     setCreateNewPostResult,
+    createNewPostResult,
     setSnackBar,
     authData,
   } = useContext(GlobalContext);
@@ -124,6 +125,13 @@ const SpaceRootBottomTabNavigator = (props) => {
   const [viewPostsType, setViewPostsType] = useState('tags'); // grid, map, people
   const [isAfterPosted, setIsAfterPosted] = useState(false);
   const [screenLoaded, setScreenLoaded] = useState({});
+
+  useEffect(() => {
+    // isCreating状態ならここのcreateを起こすと。
+    if (createNewPostResult.isCreating) {
+      createPost();
+    }
+  }, [createNewPostResult.isCreating]);
 
   const createPost = async () => {
     const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
@@ -200,12 +208,12 @@ const SpaceRootBottomTabNavigator = (props) => {
       }
       // console.log('buffer contents', JSON.stringify(createNewPostFormData.contents, null, 4));
       // setLoading(true);
-      setCreateNewPostResult((previous) => {
-        return {
-          ...previous,
-          isCreating: true,
-        };
-      });
+      // setCreateNewPostResult((previous) => {
+      //   return {
+      //     ...previous,
+      //     isCreating: true,
+      //   };
+      // });
       setSnackBar({
         isVisible: true,
         barType: 'success',
@@ -216,6 +224,7 @@ const SpaceRootBottomTabNavigator = (props) => {
         headers: { 'Content-type': 'multipart/form-data' },
       });
       // setLoading(false);
+      // ここのuseEffectを反応させれば良いのかね多分。
       setCreateNewPostResult((previous) => {
         return {
           ...previous,
@@ -245,13 +254,13 @@ const SpaceRootBottomTabNavigator = (props) => {
   };
 
   // というよりも、シンプルにsetCreatePostResultの更新じゃないかなー。。？paramsを使うと、その後のstate更新ができなくなるよね。。。
-  useEffect(() => {
-    if (props.route?.params?.createdPost) {
-      // ここでapiを起こして、setCreateとかのstate更新をしていく感じかな。。
-      createPost();
-      console.log('create post!!');
-    }
-  }, [props.route?.params?.createdPost]);
+  // useEffect(() => {
+  //   if (props.route?.params?.createdPost) {
+  //     // ここでapiを起こして、setCreateとかのstate更新をしていく感じかな。。
+  //     createPost();
+  //     console.log('create post!!');
+  //   }
+  // }, [props.route?.params?.createdPost]);
 
   // const getSpaceById = async () => {
   //   setHasSpaceBeenFetched(false);

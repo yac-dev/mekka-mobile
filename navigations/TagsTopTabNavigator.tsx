@@ -143,12 +143,22 @@ const TagsTopTabNavigator = (props) => {
     getTags();
   }, []);
 
+  // createされたtagがあるなら、直接追加してあげる。
   useEffect(() => {
-    if (isAfterPosted) {
-      getTags();
-      setIsAfterPosted(false);
+    if (createNewPostResult.isSuccess && createNewPostResult.responseData?.createdTags) {
+      console.log('created tags', createNewPostResult.responseData?.createdTags);
+      setTags((previous) => {
+        const updating = { ...previous };
+        createNewPostResult.responseData.createdTags.forEach((tag, index) => {
+          previous[tag._id] = {
+            tag,
+            hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
+          };
+        });
+        return updating;
+      });
     }
-  }, [isAfterPosted]);
+  }, [createNewPostResult]);
 
   const passCreatedPostToTags = () => {
     createNewPostResult.responseData?.addedTags.forEach((tag) => {

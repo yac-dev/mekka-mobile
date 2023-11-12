@@ -86,9 +86,7 @@ const AddLocationTag = (props) => {
           <ExpoImage
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
             source={{ uri: addedLocationTag.icon }}
-            placeholder={blurhash}
             contentFit='cover'
-            transition={1000}
           />
           <Text style={{ color: 'white', marginRight: 10 }}>{addedLocationTag.name}</Text>
           {/* <TouchableOpacity
@@ -129,9 +127,7 @@ const AddLocationTag = (props) => {
           <ExpoImage
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 8 }}
             source={{ uri: createdLocationTag.icon }}
-            placeholder={blurhash}
             contentFit='cover'
-            transition={1000}
             tintColor={'white'}
           />
           <Text style={{ color: 'white', marginRight: 10 }}>{createdLocationTag.name}</Text>

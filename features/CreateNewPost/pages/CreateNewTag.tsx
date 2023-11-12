@@ -99,9 +99,7 @@ const CreateNewTag = (props) => {
         <ExpoImage
           style={{ width: 25, height: 25 }}
           source={require('../../../assets/forApp/hashtag-normal.png')}
-          placeholder={blurhash}
           contentFit='cover'
-          transition={1000}
           tintColor={'rgb(170,170,170)'}
         />
         <TextInput
