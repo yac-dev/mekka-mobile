@@ -65,12 +65,12 @@ const ViewPostsTopTabNavigator = () => {
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.3,
-              shadowRadius: 2,
+              shadowOffset: { width: 4, height: 4 },
+              shadowOpacity: 0.4,
+              shadowRadius: 5,
             },
             android: {
-              elevation: 2, // Works on Android
+              elevation: 5,
             },
           }),
         }}

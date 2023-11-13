@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { GlobalContext } from '../contexts/GlobalContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Platform } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Platform, Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import backendAPI from '../apis/backend';
 import GalleryNew from '../features/Space/components/GalleryNew';
@@ -232,7 +232,7 @@ const TagsTopTabNavigator = (props) => {
                 // onLongPress={() => console.log('long press')} edit画面をここに出す。
               >
                 {/* rgb(100, 100, 100) */}
-                <ExpoImage
+                <Image
                   style={{ width: 25, height: 25, marginBottom: 5 }}
                   source={{ uri: route.params?.tagObject.tag.icon }}
                   // placeholder={blurhash}

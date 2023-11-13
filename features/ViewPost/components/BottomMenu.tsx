@@ -71,9 +71,7 @@ const BottomMenu = (props) => {
               // bottom: index === 0 ? null : -5,
             }}
             source={{ uri: reaction.sticker.url }}
-            placeholder={blurhash}
             contentFit='contain'
-            transition={1000}
           />
         );
       }
@@ -123,9 +121,11 @@ const BottomMenu = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
           // backgroundColor: 'red',
+          flexDirection: 'row',
         }}
       >
         {renderReactionIcons()}
+        <Text style={{ color: 'white' }}>{currentPost.totalReactions}</Text>
       </View>
       <View
         style={{
@@ -134,6 +134,7 @@ const BottomMenu = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
           // backgroundColor: 'red',
+          flexDirection: 'row',
         }}
       >
         <TouchableOpacity
@@ -151,6 +152,7 @@ const BottomMenu = (props) => {
           {/* <Entypo name='feather' size={20} color={'white'} style={{ marginBottom: 5 }} /> */}
           <MaterialCommunityIcons name='comment-multiple' size={20} color={'white'} style={{ marginBottom: 5 }} />
         </TouchableOpacity>
+        <Text style={{ color: 'white' }}>{currentPost.totalComments}</Text>
       </View>
       <View
         style={{

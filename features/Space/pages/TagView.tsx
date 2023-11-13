@@ -7,6 +7,7 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 import { PostsContext } from '../../../contexts/PostsContext';
 import { TagViewContext } from '../contexts/TagViewContext';
 import ContentThumbnail from '../components/ContentThumbnail';
+import { FlashList } from '@shopify/flash-list';
 
 const TagView = (props) => {
   const { isIpad } = useContext(GlobalContext);
@@ -38,7 +39,7 @@ const TagView = (props) => {
   const renderLoader = () => {
     if (hasMoreItems) {
       return isLoading ? (
-        <View>
+        <View style={{ paddingTop: 30, flexDirection: 'row' }}>
           <ActivityIndicator />
         </View>
       ) : null;
@@ -51,10 +52,18 @@ const TagView = (props) => {
     return <ContentThumbnail post={post} index={index} navigation={props.navigation} />;
   }, []);
 
+  const renderFooter = () => {
+    return (
+      <View>
+        <Text>Helllo</Text>
+      </View>
+    );
+  };
+
   if (posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <FlatList
+        <FlashList
           style={{ paddingTop: 10 }}
           numColumns={3}
           data={posts}
@@ -66,6 +75,8 @@ const TagView = (props) => {
           onEndReached={loadMoreItem}
           ListFooterComponent={renderLoader}
           onEndReachedThreshold={0}
+          contentContainerStyle={{ paddingBottom: 30 }}
+          // estimatedListSize={125}
         />
         {/* ここにnavigatorを入れるのもいいかもね。。。 */}
       </View>

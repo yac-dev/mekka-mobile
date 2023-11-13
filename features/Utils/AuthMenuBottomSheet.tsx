@@ -99,7 +99,7 @@ const AuthMenuBottomSheet = (props) => {
             >
               <TouchableOpacity
                 style={{
-                  width: iconWidth * 0.65,
+                  width: iconWidth * 0.55,
                   aspectRatio: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -109,7 +109,7 @@ const AuthMenuBottomSheet = (props) => {
                 }}
                 onPress={() => onEditMyAccountPress()}
               >
-                <Ionicons name='settings' color='black' size={35} />
+                <Ionicons name='settings' color='black' size={25} />
               </TouchableOpacity>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>Edit</Text>
             </View>
@@ -123,7 +123,7 @@ const AuthMenuBottomSheet = (props) => {
             >
               <TouchableOpacity
                 style={{
-                  width: iconWidth * 0.65,
+                  width: iconWidth * 0.55,
                   aspectRatio: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -135,14 +135,14 @@ const AuthMenuBottomSheet = (props) => {
                   onLogoutPress();
                 }}
               >
-                <MaterialCommunityIcons name='logout' color='black' size={35} />
+                <MaterialCommunityIcons name='logout' color='black' size={25} />
               </TouchableOpacity>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
               <TouchableOpacity
                 style={{
-                  width: iconWidth * 0.65,
+                  width: iconWidth * 0.55,
                   aspectRatio: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -154,7 +154,7 @@ const AuthMenuBottomSheet = (props) => {
                   onDeleteMyAccountPress();
                 }}
               >
-                <MaterialCommunityIcons name='delete-alert' size={35} color='black' style={{}} />
+                <MaterialCommunityIcons name='delete-alert' size={25} color='black' style={{}} />
               </TouchableOpacity>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
             </View>

@@ -418,9 +418,7 @@ const SpaceRootBottomTabNavigator = (props) => {
                 <ExpoImage
                   style={{ width: 25, height: 25, marginBottom: 5 }}
                   source={require('../assets/forApp/ghost.png')}
-                  placeholder={blurhash}
                   contentFit='contain'
-                  transition={1000}
                   tintColor={focused ? 'white' : 'rgb(100, 100, 100)'}
                 />
               ),
