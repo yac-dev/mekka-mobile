@@ -17,16 +17,24 @@ const Skeleton = () => {
   }, [opacity]);
 
   return (
-    <Animated.View
+    <View
       style={{
-        opacity: opacity.current,
-        backgroundColor: 'gray',
         width: oneAssetWidth,
         aspectRatio: 1,
-        borderRadius: 5,
+
         padding: 2,
       }}
-    ></Animated.View>
+    >
+      <Animated.View
+        style={{
+          opacity: opacity.current,
+          backgroundColor: 'gray',
+          width: '100%',
+          height: '100%',
+          borderRadius: 5,
+        }}
+      ></Animated.View>
+    </View>
   );
 };
 
