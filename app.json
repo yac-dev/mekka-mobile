@@ -4,19 +4,18 @@
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appLogos/mekka-logo-development.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mekka.mekka"
+      "bundleIdentifier": "com.mekka.mekka",
+      "buildNumber": "3"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +26,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d8e55ba5-09a2-4351-a734-945eef674b4a"
+      }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/d8e55ba5-09a2-4351-a734-945eef674b4a"
     }
   }
 }

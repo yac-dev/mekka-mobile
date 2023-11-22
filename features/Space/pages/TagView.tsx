@@ -62,7 +62,7 @@ const TagView = (props) => {
 
   if (posts.length) {
     return (
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
         <FlashList
           style={{ paddingTop: 10 }}
           numColumns={3}

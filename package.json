@@ -13,7 +13,10 @@
     "build_android:dev": "APP_VARIANT=dev npx expo run:android --device",
     "release_android:staging": "APP_VARIANT=staging npx expo run:ios --device",
     "release_android:production": "APP_VARIANT=production npx expo run:ios --device",
-    "build_": ""
+    "build_": "",
+    "prebuild": "npx expo prebuild",
+    "easBuild:ios": "eas build --platform ios",
+    "easSubmit:ios": "eas submit -p ios --latest"
   },
   "dependencies": {
     "@babel/core": "^7.23.2",
@@ -55,7 +58,8 @@
     "react-native-safe-area-context": "^4.7.4",
     "react-native-screens": "~3.27.0",
     "react-native-svg": "13.14.0",
-    "react-native-tab-view": "^3.5.2"
+    "react-native-tab-view": "^3.5.2",
+    "expo-updates": "~0.18.17"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",

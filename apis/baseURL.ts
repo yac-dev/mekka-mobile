@@ -4,10 +4,10 @@
 // const endpoint = Constants.expoConfig.extra.apiEndpoint;
 // console.log(endpoint);
 
-const baseURL = 'http://http://192.168.11.4:3500'; // local
+// const baseURL = 'http://http://192.168.11.4:3500'; // local
 // const baseURL = endpoint; // local
 // const baseURL = 'https://mekka-backend-staging.onrender.com'; // staging
-// const baseURL = 'https://mekka-production-server.onrender.com'; // production
+const baseURL = 'https://mekka-production-server.onrender.com'; // production
 // const baseURL = 'http://localhost:3500'; // local
 
 export default baseURL;
