@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mekka.mekka",
@@ -35,6 +37,9 @@
     "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/d8e55ba5-09a2-4351-a734-945eef674b4a"
-    }
+    },
+    "plugins": [
+      "react-native-compressor"
+    ]
   }
 }
