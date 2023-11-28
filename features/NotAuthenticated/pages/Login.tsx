@@ -95,7 +95,7 @@ const Login = (props) => {
           alignItems: 'center',
           marginBottom: 30,
           borderBottomWidth: 0.3,
-          borderBottomColor: 'white',
+          borderBottomColor: 'rgb(170,170,170)',
           marginLeft: 10,
           marginRight: 10,
         }}
@@ -134,9 +134,9 @@ const Login = (props) => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginBottom: 30,
+          marginBottom: 50,
           borderBottomWidth: 0.3,
-          borderBottomColor: 'white',
+          borderBottomColor: 'rgb(170,170,170)',
           marginLeft: 10,
           marginRight: 10,
         }}
@@ -170,7 +170,7 @@ const Login = (props) => {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
-        <TouchableWithoutFeedback onPress={() => setIsPasswordHidden((previous) => !previous)}>
+        <TouchableOpacity activeOpacity={1} onPress={() => setIsPasswordHidden((previous) => !previous)}>
           <View
             style={{
               width: 50,
@@ -184,27 +184,66 @@ const Login = (props) => {
           >
             <Ionicons name={`${isPasswordHidden ? 'eye' : 'eye-off'}`} color='white' size={20} />
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-        style={{
-          padding: 10,
-          backgroundColor: isValidated ? 'white' : 'rgb(170,170,170)',
-          borderRadius: 10,
-        }}
-        onPress={() => onDonePress()}
-        disabled={isValidated ? false : true}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-          {isValidated ? (
-            <MaterialCommunityIcons name='check' size={25} color='black' style={{ marginRight: 10 }} />
-          ) : (
-            <Foundation name='prohibited' size={25} color='black' style={{ marginRight: 10 }} />
-          )}
-
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold', fontSize: 17 }}>Continue</Text>
+      {/* ここの実装後でね。。。。 */}
+      {/* <Text style={{ color: 'white', textAlign: 'center', fontSize: 17 }}>Or continue with...</Text>
+      <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Login')}
+            style={{
+              padding: 10,
+              backgroundColor: 'white',
+              borderRadius: 35,
+              alignItems: 'center',
+              width: 70,
+              height: 70,
+              justifyContent: 'center',
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name='login' color='black' size={30} />
+          </TouchableOpacity>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Google</Text>
         </View>
-      </TouchableOpacity> */}
+        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Signup')}
+            style={{
+              padding: 10,
+              backgroundColor: 'white',
+              borderRadius: 35,
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 70,
+              height: 70,
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
+          </TouchableOpacity>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Apple</Text>
+        </View>
+        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Signup')}
+            style={{
+              padding: 10,
+              backgroundColor: 'white',
+              borderRadius: 35,
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 70,
+              height: 70,
+              marginBottom: 10,
+            }}
+          >
+            <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
+          </TouchableOpacity>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Facebook</Text>
+        </View>
+      </View> */}
       <LoadingSpinner />
       <SnackBar />
     </View>

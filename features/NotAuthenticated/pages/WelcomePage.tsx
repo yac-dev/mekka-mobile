@@ -42,10 +42,10 @@ const WelcomePage = (props) => {
             style={{
               padding: 10,
               backgroundColor: 'white',
-              borderRadius: 40,
+              borderRadius: 35,
               alignItems: 'center',
-              width: 80,
-              height: 80,
+              width: 70,
+              height: 70,
               justifyContent: 'center',
               marginBottom: 10,
             }}
@@ -60,17 +60,17 @@ const WelcomePage = (props) => {
             style={{
               padding: 10,
               backgroundColor: 'white',
-              borderRadius: 40,
+              borderRadius: 35,
               alignItems: 'center',
               justifyContent: 'center',
-              width: 80,
-              height: 80,
+              width: 70,
+              height: 70,
               marginBottom: 10,
             }}
           >
             <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
           </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Get started</Text>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Signup</Text>
         </View>
       </View>
       <SnackBar />

@@ -125,7 +125,7 @@ const Signup = (props) => {
             alignItems: 'center',
             marginBottom: 30,
             borderBottomWidth: 0.3,
-            borderBottomColor: 'white',
+            borderBottomColor: 'rgb(140,140,140)',
             marginLeft: 10,
             marginRight: 10,
           }}
@@ -166,7 +166,7 @@ const Signup = (props) => {
             alignItems: 'center',
             marginBottom: 30,
             borderBottomWidth: 0.3,
-            borderBottomColor: 'white',
+            borderBottomColor: 'rgb(140,140,140)',
             marginLeft: 10,
             marginRight: 10,
           }}
@@ -207,7 +207,7 @@ const Signup = (props) => {
             alignItems: 'center',
             marginBottom: 30,
             borderBottomWidth: 0.3,
-            borderBottomColor: 'white',
+            borderBottomColor: 'rgb(140,140,140)',
             marginLeft: 10,
             marginRight: 10,
           }}
@@ -241,7 +241,7 @@ const Signup = (props) => {
             value={password}
             onChangeText={(text) => setPassword(text)}
           />
-          <TouchableWithoutFeedback onPress={() => setIsPasswordHidden((previous) => !previous)}>
+          <TouchableOpacity activeOpacity={1} onPress={() => setIsPasswordHidden((previous) => !previous)}>
             <View
               style={{
                 width: 50,
@@ -255,7 +255,7 @@ const Signup = (props) => {
             >
               <Ionicons name={`${isPasswordHidden ? 'eye' : 'eye-off'}`} color='white' size={20} />
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
         {/* <TextInput
         placeholder='Password'

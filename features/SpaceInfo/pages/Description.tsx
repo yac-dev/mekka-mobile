@@ -47,7 +47,6 @@ const Description = () => {
               <ExpoImage
                 style={{ width: 30, height: 30, borderRadius: 20, marginRight: 10 }}
                 source={{ uri: spaceAndUserRelationship.space.createdBy.avatar }}
-                placeholder={blurhash}
                 contentFit='contain'
                 transition={1000}
               />

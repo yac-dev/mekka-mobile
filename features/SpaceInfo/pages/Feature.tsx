@@ -41,7 +41,7 @@ const Feature = () => {
       if (reaction) {
         if (reaction.type === 'emoji') {
           return (
-            <Text key={index} style={{ fontSize: 20 }}>
+            <Text key={index} style={{ fontSize: 25, marginRight: 5 }}>
               {reaction.emoji}
             </Text>
           );
@@ -49,11 +49,9 @@ const Feature = () => {
           return (
             <ExpoImage
               key={index}
-              style={{ width: 20, height: 20 }}
+              style={{ width: 25, height: 25, marginRight: 5 }}
               source={{ uri: reaction.sticker.url }}
-              placeholder={blurhash}
               contentFit='contain'
-              transition={1000}
             />
           );
         }
@@ -64,33 +62,32 @@ const Feature = () => {
 
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ color: 'white' }}>You'll use </Text>
+        <Text style={{ color: 'white' }}>Reaction options: </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>{list}</View>
-        <Text style={{ color: 'white' }}>to react each post.</Text>
       </View>
     );
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)', padding: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)', paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
       <ScrollView>
         <View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <MaterialIcons name='photo-library' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
-            <Text style={{ color: 'white' }}>{`You can post ${
+            <Text style={{ color: 'white' }}>{`Media type:  ${
               spaceAndUserRelationship.space.contentType === 'photo'
-                ? 'only Photos'
+                ? 'Photos'
                 : spaceAndUserRelationship.space.contentType === 'video'
                 ? 'Videos'
                 : 'Photos and Videos'
-            }.`}</Text>
+            }`}</Text>
           </View>
           {spaceAndUserRelationship.space.videoLength ? (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
               <Ionicons name='play-circle-sharp' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
               <Text
                 style={{ color: 'white' }}
-              >{`You can post at most ${spaceAndUserRelationship.space.videoLength} seconds length videos.`}</Text>
+              >{`Video length limit: ${spaceAndUserRelationship.space.videoLength} seconds`}</Text>
             </View>
           ) : null}
 
@@ -101,24 +98,20 @@ const Feature = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <Foundation name='comments' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
             <Text style={{ color: 'white' }}>
-              {spaceAndUserRelationship.space.isCommentAvailable
-                ? 'Comments are available.'
-                : 'Comments are not available.'}
+              {spaceAndUserRelationship.space.isCommentAvailable ? 'Comments: Available' : 'Comments: Turned off'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <ExpoImage
               style={{ width: 25, height: 25, marginRight: 15 }}
               source={require('../../../assets/forApp/ghost.png')}
-              placeholder={blurhash}
               contentFit='contain'
-              transition={1000}
               tintColor={'rgb(130,130,130)'}
             />
             <Text style={{ color: 'white' }}>
               {spaceAndUserRelationship.space.disappearAfter
-                ? `Momento will be disappeared after ${spaceAndUserRelationship.space.disappearAfter} minutes`
-                : 'Comments are not available.'}
+                ? `Moments time: ${spaceAndUserRelationship.space.disappearAfter} minutes`
+                : null}
             </Text>
           </View>
         </View>
