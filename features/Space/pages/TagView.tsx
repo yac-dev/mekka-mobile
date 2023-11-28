@@ -64,7 +64,6 @@ const TagView = (props) => {
     return (
       <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
         <FlashList
-          style={{ paddingTop: 10 }}
           numColumns={3}
           data={posts}
           renderItem={({ item, index }) => renderItem(item, index)}
@@ -72,11 +71,11 @@ const TagView = (props) => {
           // refreshControl={
           //   <RefreshControl colors={['#FF0000', '#00FF00']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />
           // }
+          estimatedItemSize={125}
           onEndReached={loadMoreItem}
           ListFooterComponent={renderLoader}
           onEndReachedThreshold={0}
-          contentContainerStyle={{ paddingBottom: 30 }}
-          // estimatedListSize={125}
+          contentContainerStyle={{ paddingBottom: 30, paddingTop: 10 }}
         />
         {/* ここにnavigatorを入れるのもいいかもね。。。 */}
       </View>

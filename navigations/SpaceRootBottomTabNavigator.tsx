@@ -71,9 +71,7 @@ const getViewTypeObject = (isFocused, viewPostsType) => {
       <ExpoImage
         style={{ width: 25, height: 25 }}
         source={require('../assets/forApp/globe.png')}
-        placeholder={blurhash}
         contentFit='contain'
-        transition={1000}
         tintColor='white'
       />
     ),
