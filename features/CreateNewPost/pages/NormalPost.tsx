@@ -100,18 +100,18 @@ const NormalPost = () => {
         if (asset.type === 'video') {
           // 基本は, videoの時はdurationがspaceのvideo length以下の時だけ入れる様にする。
           if (asset.duration / 1000 <= space.videoLength) {
-            const compressed = await VideoCompressor.compress(
-              asset.uri,
-              {
-                compressionMethod: 'manual',
-              },
-              (progress) => {
-                // 本当は、ここでprogress使ってsnakcbarを出したりしたいよね。。。
-              }
-            );
+            // const compressed = await VideoCompressor.compress(
+            //   asset.uri,
+            //   {
+            //     compressionMethod: 'manual',
+            //   },
+            //   (progress) => {
+            //     // 本当は、ここでprogress使ってsnakcbarを出したりしたいよね。。。
+            //   }
+            // );
             // console.log('compressed result', compressed);
             // console.log('asset url', asset.uri);
-            adding.push({ uri: compressed, type: 'video', duration: asset.duration ? asset.duration : null });
+            adding.push({ uri: asset.uri, type: 'video', duration: asset.duration ? asset.duration : null });
             console.log('adding this', adding);
           } else {
             setSnackBar({
@@ -122,8 +122,8 @@ const NormalPost = () => {
             });
           }
         } else if (asset.type === 'image') {
-          const compressed = await ImageCompressor.compress(asset.uri, { quality: 0.3 });
-          adding.push({ uri: compressed, type: 'photo', duration: asset.duration ? asset.duration : null });
+          // const compressed = await ImageCompressor.compress(asset.uri, { quality: 0.3 });
+          adding.push({ uri: asset.uri, type: 'photo', duration: asset.duration ? asset.duration : null });
         }
       }
       // result assets それぞれのassetに対して、dataを作る様にすると。

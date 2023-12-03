@@ -38,9 +38,7 @@ const Members = () => {
         <ExpoImage
           style={{ width: 35, height: 35, marginRight: 15 }}
           source={{ uri: user.avatar }}
-          placeholder={blurhash}
           contentFit='cover'
-          transition={1000}
         />
         <Text style={{ color: 'white', fontSize: 17 }}>{user.name}</Text>
       </TouchableOpacity>

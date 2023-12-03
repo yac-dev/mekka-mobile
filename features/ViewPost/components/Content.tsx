@@ -50,9 +50,7 @@ const Content = forwardRef(({ post }, parentRef) => {
                 key={index}
                 style={{ width: '100%', height: '100%', borderRadius: 5 }}
                 source={{ uri: content.data }}
-                placeholder={blurhash}
                 contentFit='contain'
-                transition={1000}
               />
             </TouchableOpacity>
           );
@@ -94,9 +92,7 @@ const Content = forwardRef(({ post }, parentRef) => {
           <ExpoImage
             style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
             source={{ uri: viewingContent.data }}
-            placeholder={blurhash}
             contentFit='cover'
-            transition={1000}
           />
         </View>
         <View style={{ position: 'absolute', bottom: 60 }}>{renderContentOptions()}</View>

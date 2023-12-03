@@ -15,9 +15,7 @@ const WelcomePage = (props) => {
         <ExpoImage
           style={{ width: 120, height: 120, alignSelf: 'center' }}
           source={require('../../../assets/appLogos/mekka-logo.png')}
-          placeholder={blurhash}
           contentFit='contain'
-          transition={1000}
         />
         <Text
           style={{

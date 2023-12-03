@@ -19,7 +19,6 @@ const ContentThumbnail = (props) => {
 
   const handleImageLoad = () => {
     setIsLoading(false);
-    console.log('loaded');
   };
 
   const millisecondsToTime = (milliseconds) => {

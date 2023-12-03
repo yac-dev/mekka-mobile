@@ -24,6 +24,12 @@ const BottomMenu = (props) => {
     otherActionsBottomSheetRef,
     reactionStatuses,
     getReactionStatuses,
+    isReactionsBottomSheetOpen,
+    setIsReactionsBottomSheetOpen,
+    isCommentsBottomSheetOpen,
+    setIsCommentsBottomSheetOpen,
+    isOtherOptionsBottomSheetOpen,
+    setIsOtherOptionsBottomSheetOpen,
   } = useContext(ViewPostContext);
   const {
     spaceAndUserRelationship: { space },
@@ -45,12 +51,6 @@ const BottomMenu = (props) => {
             key={index}
             style={{
               fontSize: 22,
-              // marginRight: 5,
-              // position: 'absolute',
-              // top: index === 0 ? -5 : null,
-              // left: index === 0 ? -5 : null,
-              // right: index === 0 ? null : -5,
-              // bottom: index === 0 ? null : -5,
             }}
           >
             {reaction.emoji}
@@ -63,12 +63,6 @@ const BottomMenu = (props) => {
             style={{
               width: 22,
               height: 22,
-              //  marginRight: 5
-              // position: 'absolute',
-              // top: index === 0 ? -5 : null,
-              // left: index === 0 ? -5 : null,
-              // right: index === 0 ? null : -5,
-              // bottom: index === 0 ? null : -5,
             }}
             source={{ uri: reaction.sticker.url }}
             contentFit='contain'
@@ -80,8 +74,10 @@ const BottomMenu = (props) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          getReactionStatuses();
+          setIsReactionsBottomSheetOpen(true);
+          // reactionStatusesBottomSheetRef.current.snapToIndex(0);
+          // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          // getReactionStatuses();
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>{list}</View>
@@ -139,12 +135,13 @@ const BottomMenu = (props) => {
       >
         <TouchableOpacity
           onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             if (space.isCommentAvailable) {
-              commentInputBottomSheetRef?.current.snapToIndex(1);
-              textInputRef.current.focus();
+              setIsCommentsBottomSheetOpen(true);
             } else {
-              commentInputBottomSheetRef?.current.snapToIndex(0);
+              // setIsCommentsBottomSheetOpen(true)
+              // commentInputBottomSheetRef?.current.snapToIndex(0);
+              console.log('not available');
+              // iconも変えた方がいい。
             }
           }}
           style={{ justifyContent: 'center', alignItems: 'center' }}
@@ -167,9 +164,7 @@ const BottomMenu = (props) => {
           <ExpoImage
             style={{ width: 25, height: 25 }}
             source={{ uri: currentPost.createdBy.avatar }}
-            placeholder={blurhash}
             contentFit='contain'
-            transition={1000}
           />
         </TouchableOpacity>
       </View>
@@ -185,7 +180,8 @@ const BottomMenu = (props) => {
         <TouchableOpacity
           style={{ justifyContent: 'center', alignItems: 'center' }}
           onPress={() => {
-            otherActionsBottomSheetRef.current.snapToIndex(0);
+            // otherActionsBottomSheetRef.current.snapToIndex(0);
+            setIsOtherOptionsBottomSheetOpen(true);
           }}
         >
           <Feather name='more-horizontal' size={22} color={'white'} style={{ marginBottom: 5 }} />

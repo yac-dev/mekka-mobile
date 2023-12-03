@@ -18,7 +18,6 @@ const MomentThumbnail = (props) => {
 
   const handleImageLoad = () => {
     setIsLoading(false);
-    console.log('loaded');
   };
 
   const calculateLeftTime = (disappearAt) => {

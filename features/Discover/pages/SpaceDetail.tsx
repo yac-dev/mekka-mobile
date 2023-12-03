@@ -115,22 +115,11 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          onPress={() => onJoinPress()}
-          style={{
-            backgroundColor: isJoinValidated ? 'white' : 'rgb(150,150,150)',
-            borderRadius: 20,
-            padding: 5,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          disabled={isJoinValidated ? false : true}
-        >
-          <MaterialCommunityIcons name='human-greeting-variant' size={20} color='black' />
+        <TouchableOpacity activeOpacity={1} onPress={() => onJoinPress()} disabled={isJoinValidated ? false : true}>
           <Text
             style={{
-              color: 'black',
-              fontSize: 15,
+              color: isJoinValidated ? 'white' : 'rgb(150,150,150)',
+              fontSize: 20,
               fontWeight: 'bold',
             }}
           >
@@ -152,12 +141,6 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
           <>
             <Header />
             <SpaceDetailTopTabNavigator />
-            {/* <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-              <Description />
-              <ContentType />
-              <Disapper />
-              <Reactions />
-            </View> */}
           </>
         ) : (
           <ActivityIndicator />

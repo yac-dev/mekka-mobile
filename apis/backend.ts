@@ -12,6 +12,7 @@ const backendAPI = axios.create({
   // baseURL: 'https://mekka-backend-staging.onrender.com/api' // staging
   // baseURL: 'https://dull-tan-barnacle-cuff.cyclic.app/api', // production // cyclic version
   // baseURL: 'https://web-production-8152.up.railway.app/api', // production // railway version
+  // baseURL: 'https://mekka-production-1ec261d2f6ac.herokuapp.com/api', // production // heroku version
 });
 
 export default backendAPI;

@@ -9,6 +9,7 @@ import CreateNewButton from '../components/CreateNewButton';
 import { DiscoverContext } from '../contexts/DiscoverContext';
 import SnackBar from '../../../components/SnackBar';
 import { Image as ExpoImage } from 'expo-image';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -71,9 +72,7 @@ const Discover: React.FC<RouterProps> = (props) => {
           <ExpoImage
             style={{ width: 80, height: 80, borderRadius: 13, marginRight: 20 }}
             source={{ uri: space.icon }}
-            placeholder={blurhash}
             contentFit='cover'
-            transition={1000}
           />
           <View style={{ flexDirection: 'column' }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 5 }}>{space.name}</Text>
@@ -84,15 +83,23 @@ const Discover: React.FC<RouterProps> = (props) => {
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() =>
               props.navigation.navigate('SpaceDetailStackNavigator', {
                 screen: 'SpaceDetail',
                 params: { spaceId: space._id },
               })
             }
-            style={{ padding: 10, backgroundColor: 'white', borderRadius: 15 }}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 40,
+              height: 40,
+            }}
           >
-            <Text style={{ color: 'black', fontWeight: 'bold' }}>Detail</Text>
+            <MaterialCommunityIcons name='magnify' size={25} color='black' />
           </TouchableOpacity>
         </View>
         {/* <View style={{ flexDirection: 'column' }}>

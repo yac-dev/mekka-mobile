@@ -43,9 +43,7 @@ const ViewPostStackNavigator = () => {
                 <ExpoImage
                   style={{ width: 20, height: 20, marginRight: 10 }}
                   source={{ uri: currentTagObject.tag.icon }}
-                  placeholder={blurhash}
                   contentFit='contain'
-                  transition={1000}
                   tintColor={currentTagObject.tag.iconType === 'icon' ? currentTagObject.tag.color : null}
                 />
                 <Text style={{ color: 'white', fontSize: 20 }}>{currentTagObject.tag.name}</Text>

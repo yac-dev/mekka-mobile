@@ -15,9 +15,7 @@ const Header = () => {
         <ExpoImage
           style={{ width: '100%', height: '100%', borderRadius: 10 }}
           source={{ uri: space.icon }}
-          placeholder={blurhash}
           contentFit='cover'
-          transition={1000}
         />
         <View style={{ position: 'absolute', bottom: 10, left: 10 }}>
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 24, marginBottom: 10 }}>{space.name}</Text>

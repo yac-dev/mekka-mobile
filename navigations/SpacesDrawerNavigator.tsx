@@ -134,7 +134,7 @@ const SpacesDrawerNavigator = (props) => {
                     alignItems: 'center',
                   }}
                 >
-                  <MaterialCommunityIcons name='compass' color={'black'} size={25} />
+                  <MaterialCommunityIcons name='compass-outline' color={'black'} size={25} />
                 </View>
                 <Text style={{ color: 'white' }}>Discover</Text>
               </TouchableOpacity>

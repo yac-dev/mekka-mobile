@@ -29,6 +29,10 @@ const ViewPost = (props) => {
   const textInputRef = useRef(null);
   const [reactionStatuses, setReactionStatuses] = useState([]);
   const [isLoadingReactionStatuses, setIsLoadingReactionStatuses] = useState(false);
+  // gorhom bottomがfull screen modalでdefaultで開いちゃうとき用の対策。
+  const [isReactionsBottomSheetOpen, setIsReactionsBottomSheetOpen] = useState(false);
+  const [isCommentsBottomSheetOpen, setIsCommentsBottomSheetOpen] = useState(false);
+  const [isOtherOptionsBottomSheetOpen, setIsOtherOptionsBottomSheetOpen] = useState(false);
 
   const getReactionStatuses = async () => {
     // currentPostがあってこれを使う。
@@ -93,7 +97,7 @@ const ViewPost = (props) => {
   //     </GestureHandlerRootView>
   //   </ViewPostContext.Provider>
   // );
-  console.log('currentpost', currentPost);
+  // console.log('currentpost', currentPost);
 
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach((element) => {
@@ -117,6 +121,12 @@ const ViewPost = (props) => {
         setReactionStatuses,
         isLoadingReactionStatuses,
         setIsLoadingReactionStatuses,
+        isReactionsBottomSheetOpen,
+        setIsReactionsBottomSheetOpen,
+        isCommentsBottomSheetOpen,
+        setIsCommentsBottomSheetOpen,
+        isOtherOptionsBottomSheetOpen,
+        setIsOtherOptionsBottomSheetOpen,
       }}
     >
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
@@ -127,7 +137,7 @@ const ViewPost = (props) => {
           keyExtractor={(item, index) => `${item._id}-${index}`}
           decelerationRate={'normal'}
           onViewableItemsChanged={onViewableItemsChanged.current}
-          viewabilityConfig={{ viewAreaCoveragePercentThreshold: 100 }}
+          viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
           initialScrollIndex={currentIndex}
           getItemLayout={(data, index) => ({
             length: Dimensions.get('window').height, // Set the height of each item
@@ -141,8 +151,8 @@ const ViewPost = (props) => {
         // commentInputBottomSheetRef={commentInputBottomSheetRef}
         // textInputRef={textInputRef}
         />
-        <CommentInputBottomSheet />
         <ReactionOptionsBottomSheet />
+        <CommentInputBottomSheet />
         <OtherActionsBottomSheet />
         <LoadingSpinner />
         <SnackBar />

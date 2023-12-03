@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mekka",
-    "slug": "mekka",
+    "name": "mobile",
+    "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appLogos/mekka-logo-development.png",
@@ -14,7 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mekka.mekka",
+      "bundleIdentifier": "com.mekka.mekka.development",
       "buildNumber": "4"
     },
     "android": {

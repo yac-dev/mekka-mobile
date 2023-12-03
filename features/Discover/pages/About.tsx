@@ -69,7 +69,7 @@ const About = () => {
       if (reaction) {
         if (reaction.type === 'emoji') {
           return (
-            <Text key={index} style={{ fontSize: 20 }}>
+            <Text key={index} style={{ fontSize: 25, marginRight: 5 }}>
               {reaction.emoji}
             </Text>
           );
@@ -77,11 +77,9 @@ const About = () => {
           return (
             <ExpoImage
               key={index}
-              style={{ width: 20, height: 20 }}
+              style={{ width: 25, height: 25, marginRight: 5 }}
               source={{ uri: reaction.sticker.url }}
-              placeholder={blurhash}
               contentFit='cover'
-              transition={1000}
             />
           );
         }
@@ -92,9 +90,8 @@ const About = () => {
 
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ color: 'white' }}>You'll use </Text>
+        <Text style={{ color: 'white' }}>Reaction options: </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>{list}</View>
-        <Text style={{ color: 'white' }}>to react each post.</Text>
       </View>
     );
   };
@@ -107,9 +104,7 @@ const About = () => {
             <ExpoImage
               style={{ width: 30, height: 30, borderRadius: 20, marginRight: 10 }}
               source={{ uri: space.createdBy.avatar }}
-              placeholder={blurhash}
               contentFit='cover'
-              transition={1000}
             />
             <Text style={{ color: 'white', fontWeight: 'bold' }}>{space.createdBy.name}</Text>
           </View>
@@ -118,7 +113,7 @@ const About = () => {
         <Text
           onTextLayout={onTextLayout}
           numberOfLines={textShown ? undefined : 3}
-          style={{ color: 'white', lineHeight: 22, padding: 5 }}
+          style={{ color: 'white', lineHeight: 22, padding: 5, marginBottom: 15 }}
         >
           {space.description}
         </Text>
@@ -134,20 +129,14 @@ const About = () => {
           <Text style={{ fontSize: 25, fontWeight: 'bold', marginBottom: 20, color: 'white' }}>Space feature</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <MaterialIcons name='photo-library' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
-            <Text style={{ color: 'white' }}>{`You can post ${
-              space.contentType === 'photo'
-                ? 'only Photos'
-                : space.contentType === 'video'
-                ? 'Videos'
-                : 'Photos and Videos'
-            }.`}</Text>
+            <Text style={{ color: 'white' }}>{`Media type: ${
+              space.contentType === 'photo' ? 'Photos' : space.contentType === 'video' ? 'Videos' : 'Photos and Videos'
+            }`}</Text>
           </View>
           {space.videoLength ? (
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
               <Ionicons name='play-circle-sharp' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
-              <Text
-                style={{ color: 'white' }}
-              >{`You can post at most ${space.videoLength} seconds length videos.`}</Text>
+              <Text style={{ color: 'white' }}>{`Video length limit: ${space.videoLength} seconds`}</Text>
             </View>
           ) : null}
 
@@ -158,22 +147,18 @@ const About = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <Foundation name='comments' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
             <Text style={{ color: 'white' }}>
-              {space.isCommentAvailable ? 'Comments are available.' : 'Comments are not available.'}
+              {space.isCommentAvailable ? 'Comments: Available' : 'Comments: Turned off'}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
             <ExpoImage
               style={{ width: 25, height: 25, marginRight: 15 }}
               source={require('../../../assets/forApp/ghost.png')}
-              placeholder={blurhash}
               contentFit='cover'
-              transition={1000}
               tintColor={'rgb(130,130,130)'}
             />
             <Text style={{ color: 'white' }}>
-              {space.disappearAfter
-                ? `Momento will be disappeared after ${space.disappearAfter} minutes`
-                : 'Comments are not available.'}
+              {space.disappearAfter ? `Moments time: ${space.disappearAfter} minutes` : null}
             </Text>
           </View>
         </View>

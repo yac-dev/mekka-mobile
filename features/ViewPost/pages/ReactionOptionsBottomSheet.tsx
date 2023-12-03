@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useMemo, useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions, ScrollView } from 'react-native';
 import GorhomBottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { GlobalContext } from '../../../contexts/GlobalContext';
@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import backendAPI from '../../../apis/backend';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { Image as ExpoImage } from 'expo-image';
+import * as Haptics from 'expo-haptics';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -16,8 +17,15 @@ const blurhash =
 const ReactionOptionsBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['60%'], []);
   const { isIpad, setLoading, authData } = useContext(GlobalContext);
-  const { reactionStatusesBottomSheetRef, reactionStatuses, setReactionStatuses, isLoadingReactionStatuses } =
-    useContext(ViewPostContext);
+  const {
+    reactionStatusesBottomSheetRef,
+    reactionStatuses,
+    setReactionStatuses,
+    isLoadingReactionStatuses,
+    isReactionsBottomSheetOpen,
+    setIsReactionsBottomSheetOpen,
+    getReactionStatuses,
+  } = useContext(ViewPostContext);
   const {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);
@@ -37,6 +45,21 @@ const ReactionOptionsBottomSheet = (props) => {
   //     return updating;
   //   });
   // };
+
+  // const openReactionStatusBottomSheet = () => {
+  //   reactionStatusesBottomSheetRef.current.snapToIndex(0);
+  //   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  //   getReactionStatuses();
+  // };
+
+  // console.log('bottom sheet state', isReactionsBottomSheetOpen);
+  useEffect(() => {
+    if (isReactionsBottomSheetOpen) {
+      // reactionStatusesBottomSheetRef.current.snapToIndex(0);
+      // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      getReactionStatuses();
+    }
+  }, [isReactionsBottomSheetOpen]);
 
   // とりあえず、1以上のものだけ、0のものをextractする感じでいいか。
   const renderReactionStatuses = () => {
@@ -107,9 +130,7 @@ const ReactionOptionsBottomSheet = (props) => {
                       // marginRight: reactionStatus.count ? 10 : 0
                     }}
                     source={{ uri: reactionStatus.reaction.sticker.url }}
-                    placeholder={blurhash}
                     contentFit='contain'
-                    transition={1000}
                   />
                   {reactionStatus.count ? (
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{reactionStatus.count}</Text>
@@ -154,64 +175,81 @@ const ReactionOptionsBottomSheet = (props) => {
     }
   };
 
-  return (
-    <GorhomBottomSheet
-      index={-1}
-      enableOverDrag={true}
-      ref={reactionStatusesBottomSheetRef}
-      snapPoints={snapPoints}
-      backdropComponent={(backdropProps) => (
-        <BottomSheetBackdrop {...backdropProps} appearsOnIndex={0} disappearsOnIndex={-1} />
-      )}
-      enablePanDownToClose={true}
-      backgroundStyle={{ backgroundColor: 'rgb(40, 40, 40)' }}
-      handleIndicatorStyle={{ backgroundColor: 'white' }}
-      // onClose={() => onSelectedItemBottomSheetClose()}
-    >
-      <BottomSheetView style={{ flex: 1, paddingTop: 10 }}>
-        {space.isReactionAvailable ? (
-          <>
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}
-            >
-              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginLeft: 10 }}>How do you feel?</Text>
+  // if (!isReactionsBottomSheetOpen) {
+  //   return null;
+  // }
+
+  if (isReactionsBottomSheetOpen) {
+    return (
+      <GorhomBottomSheet
+        index={0}
+        enableOverDrag={true}
+        ref={reactionStatusesBottomSheetRef}
+        snapPoints={snapPoints}
+        backdropComponent={(backdropProps) => (
+          <BottomSheetBackdrop {...backdropProps} appearsOnIndex={0} disappearsOnIndex={-1} />
+        )}
+        enablePanDownToClose={true}
+        backgroundStyle={{ backgroundColor: 'rgb(40, 40, 40)' }}
+        handleIndicatorStyle={{ backgroundColor: 'white' }}
+        onClose={() => setIsReactionsBottomSheetOpen(false)}
+      >
+        <BottomSheetView style={{ flex: 1, paddingTop: 10 }}>
+          {space.isReactionAvailable ? (
+            <>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 20,
+                }}
+              >
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginLeft: 10 }}>
+                  How do you feel?
+                </Text>
+                <TouchableOpacity
+                  style={{ marginRight: 10 }}
+                  onPress={() => {
+                    reactionStatusesBottomSheetRef.current.close();
+                  }}
+                >
+                  <Ionicons name='close-circle-sharp' size={30} color='white' />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
-                style={{ marginRight: 10 }}
-                onPress={() => reactionStatusesBottomSheetRef.current.close()}
+                style={{
+                  alignSelf: 'flex-end',
+                  marginRight: 20,
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: 'white',
+                }}
+              >
+                <Text style={{ color: 'white' }}>View all reactions</Text>
+              </TouchableOpacity>
+              {isLoadingReactionStatuses ? <ActivityIndicator /> : renderReactionStatuses()}
+            </>
+          ) : (
+            <View style={{}}>
+              <TouchableOpacity
+                style={{ marginRight: 10, alignSelf: 'flex-end', marginBottom: 10 }}
+                onPress={() => {
+                  props.reactionStatusesBottomSheetRef.current.close();
+                }}
               >
                 <Ionicons name='close-circle-sharp' size={30} color='white' />
               </TouchableOpacity>
+              <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>
+                Reaction is not allowed in this space.
+              </Text>
             </View>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                marginRight: 20,
-                borderBottomWidth: 0.3,
-                borderBottomColor: 'white',
-              }}
-            >
-              <Text style={{ color: 'white' }}>View all reactions</Text>
-            </TouchableOpacity>
-            {isLoadingReactionStatuses ? <ActivityIndicator /> : renderReactionStatuses()}
-          </>
-        ) : (
-          <View style={{}}>
-            <TouchableOpacity
-              style={{ marginRight: 10, alignSelf: 'flex-end', marginBottom: 10 }}
-              onPress={() => {
-                props.reactionStatusesBottomSheetRef.current.close();
-              }}
-            >
-              <Ionicons name='close-circle-sharp' size={30} color='white' />
-            </TouchableOpacity>
-            <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>
-              Reaction is not allowed in this space.
-            </Text>
-          </View>
-        )}
-      </BottomSheetView>
-    </GorhomBottomSheet>
-  );
+          )}
+        </BottomSheetView>
+      </GorhomBottomSheet>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default ReactionOptionsBottomSheet;
