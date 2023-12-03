@@ -32,19 +32,19 @@ const ReactionOptionsBottomSheet = (props) => {
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const iconContainerWidth = oneGridWidth * 0.9;
 
-  // const upvoteReaction = async (reactionStatus, index) => {
-  //   setLoading(true);
-  //   const result = await backendAPI.post(
-  //     `/userandreactionrelationships/user/${authData._id}/post/${reactionStatus.post}`,
-  //     { reactionId: reactionStatus.reaction._id }
-  //   );
-  //   setLoading(false);
-  //   setReactionStatuses((previous) => {
-  //     const updating = [...previous];
-  //     updating[index].count++;
-  //     return updating;
-  //   });
-  // };
+  const upvoteReaction = async (reactionStatus, index) => {
+    setLoading(true);
+    const result = await backendAPI.post(
+      `/userandreactionrelationships/user/${authData._id}/post/${reactionStatus.post}`,
+      { reactionId: reactionStatus.reaction._id }
+    );
+    setLoading(false);
+    setReactionStatuses((previous) => {
+      const updating = [...previous];
+      updating[index].count++;
+      return updating;
+    });
+  };
 
   // const openReactionStatusBottomSheet = () => {
   //   reactionStatusesBottomSheetRef.current.snapToIndex(0);
@@ -90,7 +90,7 @@ const ReactionOptionsBottomSheet = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              // onPress={() => upvoteReaction(reactionStatus, index)}
+              onPress={() => upvoteReaction(reactionStatus, index)}
             >
               {reactionStatus.reaction.type === 'emoji' ? (
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
@@ -217,7 +217,7 @@ const ReactionOptionsBottomSheet = (props) => {
                   <Ionicons name='close-circle-sharp' size={30} color='white' />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   alignSelf: 'flex-end',
                   marginRight: 20,
@@ -226,7 +226,7 @@ const ReactionOptionsBottomSheet = (props) => {
                 }}
               >
                 <Text style={{ color: 'white' }}>View all reactions</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               {isLoadingReactionStatuses ? <ActivityIndicator /> : renderReactionStatuses()}
             </>
           ) : (

@@ -134,6 +134,7 @@ const ViewPost = (props) => {
           data={posts}
           renderItem={renderItem}
           pagingEnabled
+          removeClippedSubviews
           keyExtractor={(item, index) => `${item._id}-${index}`}
           decelerationRate={'normal'}
           onViewableItemsChanged={onViewableItemsChanged.current}

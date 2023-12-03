@@ -66,8 +66,24 @@ const TagViewStackNavigator: React.FC = (props) => {
     }
   };
 
+  // const onRefresh = async () => {
+  //   setIsRefreshing(true);
+  //   setCurrentPage(0);
+  //   const result = await backendAPI.get(`/posts/tag/${props.tagObject.tag._id}?page=${currentPage}`);
+  //   const { posts } = result.data;
+  //   if (posts.length === 0) {
+  //     // No more items to fetch
+  //     setHasMoreItems(false);
+  //   } else {
+  //     setPosts(posts);
+  //   }
+  //   setIsRefreshing(false);
+  // };
+
   useEffect(() => {
+    // if (!isRefreshing) {
     getPostsByTagId();
+    // }
   }, [currentPage]);
 
   // useEffect(() => {
@@ -92,6 +108,9 @@ const TagViewStackNavigator: React.FC = (props) => {
         currentIndex,
         setCurrentIndex,
         getPostsByTagId,
+        isRefreshing,
+        setIsRefreshing,
+        // onRefresh,
       }}
     >
       <View

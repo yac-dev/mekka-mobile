@@ -11,8 +11,19 @@ import { FlashList } from '@shopify/flash-list';
 
 const TagView = (props) => {
   const { isIpad } = useContext(GlobalContext);
-  const { posts, setPosts, hasMoreItems, setCurrentPage, currentPage, isLoading, setCurrentPost, getPostsByTagId } =
-    useContext(TagViewContext);
+  const {
+    posts,
+    setPosts,
+    hasMoreItems,
+    setCurrentPage,
+    currentPage,
+    isLoading,
+    setCurrentPost,
+    getPostsByTagId,
+    isRefreshing,
+    setIsRefreshing,
+    // onRefresh,
+  } = useContext(TagViewContext);
   const mediaRefs = useRef([]);
   // const { isIpad, authData } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
@@ -20,16 +31,15 @@ const TagView = (props) => {
   // // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
   // const [posts, setPosts] = useState([]);
   // const [havePostsBeenFetched, setHavePostsBeenFetched] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(0);
   // const [hasMoreItems, setHasMoreItems] = useState(true);
 
-  const onRefresh = async () => {
-    setIsRefreshing(true);
-    await getPostsByTagId();
-    setIsRefreshing(false);
-  };
+  // const onRefresh = async () => {
+  //   setIsRefreshing(true);
+  //   await getPostsByTagId();
+  //   setIsRefreshing(false);
+  // };
 
   const loadMoreItem = () => {
     if (hasMoreItems) {
@@ -39,26 +49,18 @@ const TagView = (props) => {
   const renderLoader = () => {
     if (hasMoreItems) {
       return isLoading ? (
-        <View style={{ paddingTop: 30, flexDirection: 'row' }}>
+        <View style={{ paddingTop: 30, alignItems: 'center' }}>
           <ActivityIndicator />
         </View>
       ) : null;
     } else {
-      return null;
+      return <View style={{ paddingTop: 30 }}></View>;
     }
   };
 
   const renderItem = useCallback((post, index) => {
     return <ContentThumbnail post={post} index={index} navigation={props.navigation} />;
   }, []);
-
-  const renderFooter = () => {
-    return (
-      <View>
-        <Text>Helllo</Text>
-      </View>
-    );
-  };
 
   if (posts.length) {
     return (
@@ -68,9 +70,8 @@ const TagView = (props) => {
           data={posts}
           renderItem={({ item, index }) => renderItem(item, index)}
           keyExtractor={(item, index) => `${item._id}-${index}`}
-          // refreshControl={
-          //   <RefreshControl colors={['#FF0000', '#00FF00']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />
-          // }
+          // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
+          removeClippedSubviews
           estimatedItemSize={125}
           onEndReached={loadMoreItem}
           ListFooterComponent={renderLoader}
