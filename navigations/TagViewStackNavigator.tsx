@@ -34,8 +34,11 @@ const TagViewStackNavigator: React.FC = (props) => {
 
   // console.log(props.screenLoaded);
 
+  // generalになる理由はなんだろう。。。？？
   useEffect(() => {
     if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
+      // responseDataのaddedTags、もしくはresponseData.createdTagの中にprops.tagObject.tag._idがある場合は
+      // って言うのが必要になる。
       setPosts((previous) => {
         const updating = [...previous];
         updating.unshift(createNewPostResult.responseData.post);
@@ -91,6 +94,8 @@ const TagViewStackNavigator: React.FC = (props) => {
   //     setPosts((previous) => [...previous, props.createdPost]);
   //   }
   // }, [props.createdPost]);
+  console.log('loaded screens -> ', screenLoaded);
+  console.log('tag object is this -> ', props.tagObject.tag._id);
 
   return (
     <TagViewContext.Provider

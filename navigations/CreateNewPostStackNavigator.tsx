@@ -16,6 +16,7 @@ import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
+import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
 
 const CreateNewPostStackNavigator = (props) => {
   const {
@@ -207,7 +208,12 @@ const CreateNewPostStackNavigator = (props) => {
               headerShown: true, // ここtrueにすると、,,,
               headerRight: () => null,
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.goBack();
+                    setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE);
+                  }}
+                >
                   <Ionicons name='close-circle-sharp' size={30} color={'white'} />
                 </TouchableOpacity>
               ),

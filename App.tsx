@@ -22,7 +22,7 @@ type AuthDataType = {
   avatar: string;
 };
 
-const INITIAL_CREATE_NEW_POST_STATE = {
+export const INITIAL_CREATE_NEW_POST_STATE = {
   postType: '',
   contents: [],
   caption: '',

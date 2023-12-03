@@ -12,6 +12,7 @@ import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import NoSpaces from '../features/Utils/NoSpaces';
 import { Image as ExpoImage } from 'expo-image';
+import Dummy2 from '../features/Utils/Dummy2';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -210,9 +211,7 @@ const SpacesDrawerNavigator = (props) => {
                       <ExpoImage
                         style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
                         source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
-                        // placeholder={blurhash}
                         contentFit='cover'
-                        transition={200}
                       />
                       <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
                         {route.params?.spaceAndUserRelationship.space.name}
@@ -275,6 +274,7 @@ const SpacesDrawerNavigator = (props) => {
             tabBarStyle: {
               backgroundColor: 'black',
               borderTopWidth: 0,
+              width: 'auto',
             },
             tabBarLabelStyle: {
               fontSize: 12,
@@ -330,33 +330,8 @@ const SpacesDrawerNavigator = (props) => {
                   headerRight: () => {
                     return (
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        {/* <TouchableOpacity
-                          onPress={() => {
-                            props.navigation?.navigate('CreateNewPostStackNavigator', {
-                              screen: 'SelectPostType',
-                              // params: {
-                              //   space: currentSpace,
-                              //   spaceAndUserRelationship: currentSpaceAndUserRelationship,
-                              // }, // なんで、spaceUserRelが必要？？いらなくね。。。
-                              merge: true,
-                            });
-                          }}
-                          // style={{
-                          //   backgroundColor: 'white',
-                          //   width: 36,
-                          //   height: 36,
-                          //   borderRadius: 18,
-                          //   // position: 'absolute',
-                          //   justifyContent: 'center',
-                          //   alignItems: 'center',
-                          //   marginRight: 10,
-                          // }}
-                        >
-                          <MaterialCommunityIcons name='plus' color='black' size={20} />
-                        </TouchableOpacity> */}
                         <TouchableOpacity
                           onPress={() => {
-                            // spaceMenuBottomSheetRef.current.snapToIndex(0);
                             navigation.navigate('SpaceInfoStackNavigator', { spaceAndUserRelationship });
                           }}
                         >
@@ -369,7 +344,6 @@ const SpacesDrawerNavigator = (props) => {
                             }}
                             source={{ uri: spaceAndUserRelationship.space.icon }}
                             contentFit='cover'
-                            transition={500}
                           />
                         </TouchableOpacity>
                       </View>

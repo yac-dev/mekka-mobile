@@ -26,9 +26,12 @@ const AddTags = (props) => {
   useEffect(() => {
     if (props.route?.params?.createdTag) {
       setCreateNewPostFormData((previous) => {
+        // [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
+        const updating = { ...previous.addedTags };
+        updating[props.route?.params?.createdTag._id] = props.route?.params?.createdTag;
         return {
           ...previous,
-          [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
+          addedTags: updating,
         };
       });
       // setAddedTags((previous) => {
