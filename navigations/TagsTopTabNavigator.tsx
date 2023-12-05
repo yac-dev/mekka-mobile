@@ -27,6 +27,7 @@ import { TagViewRootContext } from '../features/SpaceMenuBottomSheet/contexts/Ta
 import TagViewStackNavigator from './TagViewStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
+import Dummy from '../features/Utils/Dummy';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -69,10 +70,12 @@ const TagsTopTabNavigator = (props) => {
     isAfterPosted,
     setIsAfterPosted,
     createNewPostResult,
+    spaceAndUserRelationshipsFetchingStatus,
   } = useContext(GlobalContext);
   const route = useRoute();
   // const [space, setSpace] = useState(null);
   const [tags, setTags] = useState({});
+  const [tagsFetchingStatus, setTagsFetchingState] = useState('idling'); // 'idling','loading','success', 'error'
   const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
   const [isLoadningTags, setIsLoadingTags] = useState(false);
   const [fetchingState, setFetchingState] = useState({ isLoading: false, success: false, error: false });
@@ -98,6 +101,7 @@ const TagsTopTabNavigator = (props) => {
         success: false,
       };
     });
+    setTagsFetchingState('loading');
     const result = await backendAPI.get(`/spaces/${spaceAndUserRelationship.space._id}/tags`);
     const { tags } = result.data;
     setTags(() => {
@@ -129,6 +133,7 @@ const TagsTopTabNavigator = (props) => {
     setCurrentTagObject(defaultTagObject);
     // setIsLoadingTags(false);
     // setHaveTagsBeenFetched(true);
+    setTagsFetchingState('success');
     setFetchingState((previous) => {
       return {
         ...previous,
@@ -141,8 +146,10 @@ const TagsTopTabNavigator = (props) => {
   // ここで、新しいtagを追加していく感じか。。。
 
   useEffect(() => {
-    getTags();
-  }, []);
+    if (spaceAndUserRelationshipsFetchingStatus === 'success') {
+      getTags();
+    }
+  }, [spaceAndUserRelationshipsFetchingStatus]);
 
   // createされたtagがあるなら、直接追加してあげる。
   useEffect(() => {
@@ -233,7 +240,7 @@ const TagsTopTabNavigator = (props) => {
                 // onLongPress={() => console.log('long press')} edit画面をここに出す。
               >
                 {/* rgb(100, 100, 100) */}
-                <Image
+                <ExpoImage
                   style={{ width: 25, height: 25, marginBottom: 5 }}
                   source={{ uri: route.params?.tagObject.tag.icon }}
                   // placeholder={blurhash}
@@ -255,7 +262,7 @@ const TagsTopTabNavigator = (props) => {
     );
   };
 
-  if (fetchingState.isLoading) {
+  if (tagsFetchingStatus === 'loading') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -263,7 +270,7 @@ const TagsTopTabNavigator = (props) => {
     );
   }
 
-  if (fetchingState.success && !fetchingState.isLoading) {
+  if (tagsFetchingStatus === 'success') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <Tab.Navigator
@@ -282,11 +289,11 @@ const TagsTopTabNavigator = (props) => {
               initialParams={{ tagObject }}
             >
               {({ navigation }) => (
-                // <TagViewStackNavigator
-                //   navigation={navigation}
-                //   tagObject={tagObject}
-                // />
-                <Dummy2 />
+                <TagViewStackNavigator
+                  navigation={navigation}
+                  tagObject={tagObject}
+                  tagsFetchingStatus={tagsFetchingStatus}
+                />
               )}
             </Tab.Screen>
           ))}

@@ -27,6 +27,7 @@ const SpacesDrawerNavigator = (props) => {
     authMenuBottomSheetRef,
     authData,
     isAuthenticated,
+    spaceAndUserRelationshipsFetchingStatus,
   } = useContext(GlobalContext);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
   const oneGridHeight = isIpad ? Dimensions.get('window').height / 7.5 : Dimensions.get('window').height / 6.5;
@@ -254,13 +255,13 @@ const SpacesDrawerNavigator = (props) => {
   }
 
   if (isAuthenticated) {
-    if (!haveSpaceAndUserRelationshipsBeenFetched) {
+    if (spaceAndUserRelationshipsFetchingStatus === 'loading') {
       return (
         <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
           <ActivityIndicator />
         </View>
       );
-    } else {
+    } else if (spaceAndUserRelationshipsFetchingStatus === 'success') {
       return (
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawerContent {...props} />}

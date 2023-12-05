@@ -18,7 +18,8 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const TagViewStackNavigator: React.FC = (props) => {
-  const { isIpad, authData, createNewPostResult, setCreateNewPostResult } = useContext(GlobalContext);
+  const { isIpad, authData, createNewPostResult, setCreateNewPostResult, spaceAndUserRelationshipsFetchingStatus } =
+    useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const { spaceAndUserRelationship, navigation, screenLoaded, setScreenLoaded } = useContext(SpaceRootContext);
   // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
@@ -84,18 +85,18 @@ const TagViewStackNavigator: React.FC = (props) => {
   // };
 
   useEffect(() => {
-    // if (!isRefreshing) {
-    getPostsByTagId();
-    // }
-  }, [currentPage]);
+    if (spaceAndUserRelationshipsFetchingStatus === 'success' && props.tagsFetchingStatus === 'success') {
+      getPostsByTagId();
+    }
+  }, [currentPage, spaceAndUserRelationshipsFetchingStatus, props.tagsFetchingStatus]);
 
   // useEffect(() => {
   //   if (props.createdPost) {
   //     setPosts((previous) => [...previous, props.createdPost]);
   //   }
   // }, [props.createdPost]);
-  console.log('loaded screens -> ', screenLoaded);
-  console.log('tag object is this -> ', props.tagObject.tag._id);
+  // console.log('loaded screens -> ', screenLoaded);
+  // console.log('tag object is this -> ', props.tagObject.tag._id);
 
   return (
     <TagViewContext.Provider
