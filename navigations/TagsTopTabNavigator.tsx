@@ -2,7 +2,17 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { GlobalContext } from '../contexts/GlobalContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Platform, Image } from 'react-native';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Platform,
+  Image,
+  FlatList,
+} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import backendAPI from '../apis/backend';
 import GalleryNew from '../features/Space/components/GalleryNew';
@@ -28,6 +38,7 @@ import TagViewStackNavigator from './TagViewStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
 import Dummy from '../features/Utils/Dummy';
+import { TabView, Route, SceneMap } from 'react-native-tab-view';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -48,6 +59,24 @@ const viewTypeObject = {
   ),
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={25} />,
 };
+
+// const renderScene = ({ route }: { route: Route }) => {
+//   // ここで、TagViewをrenderする感じよね。。。
+//   // switch (route.key) {
+//   //   case HomeContentTab.WOMEN.key:
+//   //     return <HomeContentScreen tab={HomeContentTab.WOMEN} />
+//   //   case HomeContentTab.MEN.key:
+//   //     return <HomeContentScreen tab={HomeContentTab.MEN} />
+//   //   case HomeContentTab.COORDINATE.key:
+//   //     return <StylingsScreen />
+//   //   case HomeContentTab.SALE.key:
+//   //     return <HomeWebViewContent type="sale" />
+//   //   case HomeContentTab.FEATURE.key:
+//   //     return <HomeWebViewContent type="feature" />
+//   //   default:
+//   //     return null
+//   // }
+// };
 
 const TagsTopTabNavigator = (props) => {
   const {
@@ -73,6 +102,7 @@ const TagsTopTabNavigator = (props) => {
     spaceAndUserRelationshipsFetchingStatus,
   } = useContext(GlobalContext);
   const route = useRoute();
+  const scrollViewRef = useRef(null);
   // const [space, setSpace] = useState(null);
   const [tags, setTags] = useState({});
   const [tagsFetchingStatus, setTagsFetchingState] = useState('idling'); // 'idling','loading','success', 'error'
@@ -176,6 +206,58 @@ const TagsTopTabNavigator = (props) => {
     });
   };
 
+  const onTabPress = (tab) => {
+    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    setCurrentTagObject(tab);
+    navigation.navigate(`SpaceTab_${tab.tag._id}`);
+  };
+
+  const renderTab = ({ item }) => {
+    const isActive = item.tag._id === currentTagObject.tag._id;
+    console.log(isActive);
+    console.log('current tag pbject', currentTagObject);
+    return (
+      <TouchableOpacity
+        key={route.key}
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 10,
+          // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
+          padding: 5,
+          // borderRadius: 5,
+          // width: 60,
+          // height: 60,
+          maxWidth: 100,
+          // borderBottomWidth: isActive && 1,
+          // borderBottomColor: isActive && 'white',
+        }}
+        // contentTypeによって、いくnavigatorが変わるわけですよ。。。そう、つまりここでnavigatingを分ければいいわけね。
+        onPress={() => onTabPress(item)}
+        // onLongPress={() => console.log('long press')} edit画面をここに出す。
+      >
+        {/* rgb(100, 100, 100) */}
+        <ExpoImage
+          style={{ width: 25, height: 25, marginBottom: 5 }}
+          source={{ uri: item.tag.icon }}
+          // placeholder={blurhash}
+          // contentFit='fill'
+          // transition={100}
+          // tintColor={item.tag.iconType === 'icon' ? item.tag.color : 'rgb(170,170,170)'}
+          tintColor={isActive ? 'white' : 'rgb(150,150,150)'}
+        />
+        <Text numberOfLines={1} style={{ color: isActive ? 'white' : 'rgb(150,150,150)' }}>
+          {item.tag.name}
+        </Text>
+        {/* <Text style={{ color: 'rgb(170,170,170)', position: 'absolute', top: 7, right: 10 }}>
+                  {route.params?.tagObject.tag.count}
+                </Text> */}
+      </TouchableOpacity>
+    );
+  };
+
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
       <View
@@ -270,15 +352,27 @@ const TagsTopTabNavigator = (props) => {
     );
   }
 
+  // react native tab viewの実装だ。
   if (tagsFetchingStatus === 'success') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
+        <View style={{ padding: 10 }}>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={Object.values(tags)}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+          />
+        </View>
         <Tab.Navigator
-          tabBar={(props) => <CustomTabBar {...props} />}
+          // tabBar={(props) => <CustomTabBar {...props} />}
+          tabBar={() => null}
           screenOptions={({ route }) => ({
             lazy: true, // これでそれぞれのとこに足す方がいいのかな。ただな、、
-            swipeEnabled: true,
-            // animationEnabled: false,
+            swipeEnabled: false,
+            animationEnabled: true,
           })}
         >
           {Object.values(tags).map((tagObject, index) => (
@@ -298,6 +392,27 @@ const TagsTopTabNavigator = (props) => {
             </Tab.Screen>
           ))}
         </Tab.Navigator>
+        {/* <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={Object.values(tags)}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+          />
+          <TabView
+            lazy
+            renderTabBar={() => null}
+            renderScene={renderScene}
+          />
+        </View> */}
         <SnackBar />
       </View>
     );

@@ -64,7 +64,7 @@ const TagView = (props) => {
 
   if (posts.length) {
     return (
-      <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
         <FlashList
           numColumns={3}
           data={posts}
@@ -76,7 +76,7 @@ const TagView = (props) => {
           onEndReached={loadMoreItem}
           ListFooterComponent={renderLoader}
           onEndReachedThreshold={0}
-          contentContainerStyle={{ paddingBottom: 30, paddingTop: 10 }}
+          contentContainerStyle={{ paddingBottom: 30 }}
         />
         {/* ここにnavigatorを入れるのもいいかもね。。。 */}
       </View>
