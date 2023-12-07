@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "mekka_staging",
+    "slug": "mekka_staging",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/appLogos/mekka-logo-development.png",
+    "icon": "./assets/appLogos/mekka_logo_staging.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -14,15 +14,15 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mekka.mekka.development",
-      "buildNumber": "4"
+      "bundleIdentifier": "com.mekka.mekka.staging",
+      "buildNumber": "5"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mekka.mekka"
+      "package": "com.mekka.mekka.staging"
     },
     "web": {
       "favicon": "./assets/favicon.png"

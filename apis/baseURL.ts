@@ -4,11 +4,13 @@
 // const endpoint = Constants.expoConfig.extra.apiEndpoint;
 // console.log(endpoint);
 
-const baseURL = 'http://http://192.168.11.4:3500'; // local
+const baseURL = 'http://http://192.168.11.4:3500'; // local development
+// const baseURL = 'https://mekka-staging-955e17db8bae.herokuapp.com' // staging heroku version
+// const baseURL = 'https://mekka-production-1ec261d2f6ac.herokuapp.com'; // production heroku version
+
 // const baseURL = endpoint; // local
 // const baseURL = 'https://mekka-backend-staging.onrender.com'; // staging
 // const baseURL = 'https://mekka-production-server.onrender.com'; // production
 // const baseURL = 'https://web-production-8152.up.railway.app/api'; // production
-// const baseURL = 'https://mekka-production-1ec261d2f6ac.herokuapp.com'; // production heroku version
 
 export default baseURL;

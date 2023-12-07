@@ -28,6 +28,13 @@
         "ascAppId": "6472717148",
         "appleTeamId": "WMQHGJMYR8"
       }
+    },
+    "staging": {
+      "ios": {
+        "appleId": "lamposttech@gmail.com",
+        "ascAppId": "6472478592",
+        "appleTeamId": "WMQHGJMYR8"
+      }
     }
   }
 }
