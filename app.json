@@ -1,35 +1,35 @@
 {
   "expo": {
-    "name": "mekka_staging",
-    "slug": "mekka_staging",
+    "name": "mekka",
+    "slug": "mekka",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/appLogos/mekka_logo_staging.png",
+    "icon": "./assets/appLogos/mekka_logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/appLogos/mekka_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mekka.mekka.staging",
-      "buildNumber": "5"
+      "bundleIdentifier": "com.mekka.mekka",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/appLogos/mekka_logo.png",
+        "backgroundColor": "#000000"
       },
-      "package": "com.mekka.mekka.staging"
+      "package": "com.mekka.mekka"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "d8e55ba5-09a2-4351-a734-945eef674b4a"
+        "projectId": "0fb796ba-f9ef-49a1-becd-02843817e0eb"
       }
     },
     "runtimeVersion": "1.0.0",

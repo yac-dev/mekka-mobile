@@ -14,7 +14,7 @@ const WelcomePage = (props) => {
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 50, paddingBottom: 20 }}>
         <ExpoImage
           style={{ width: 120, height: 120, alignSelf: 'center' }}
-          source={require('../../../assets/appLogos/mekka-logo.png')}
+          source={require('../../../assets/appLogos/mekka_logo.png')}
           contentFit='contain'
         />
         <Text

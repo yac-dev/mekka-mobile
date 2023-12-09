@@ -15,8 +15,10 @@
     "release_android:production": "APP_VARIANT=production npx expo run:ios --device",
     "build_": "",
     "prebuild": "npx expo prebuild",
-    "easBuild:ios": "eas build --platform ios",
-    "easSubmit:ios": "eas submit -p ios --latest"
+    "easBuildStaging:ios": "eas build --platform ios --profile staging",
+    "easSubmitStaging:ios": "eas submit -p ios --profile staging --latest",
+    "easBuildProduction:ios": "eas build --platform ios",
+    "easSubmitProduction:ios": "eas submit -p ios --profile production --latest"
   },
   "dependencies": {
     "@babel/core": "^7.23.2",
