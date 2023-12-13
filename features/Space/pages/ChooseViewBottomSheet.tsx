@@ -49,7 +49,7 @@ const ChooseViewBottomSheet = (props) => {
           >
             <TouchableOpacity
               style={{
-                width: iconWidth * 0.65,
+                width: iconWidth * 0.5,
                 aspectRatio: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -63,7 +63,7 @@ const ChooseViewBottomSheet = (props) => {
                 chooseViewBottomSheetRef.current.close();
               }}
             >
-              <Octicons name='hash' color='black' size={35} />
+              <Octicons name='hash' color='black' size={30} />
             </TouchableOpacity>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>Tags</Text>
           </View>
@@ -77,7 +77,7 @@ const ChooseViewBottomSheet = (props) => {
           >
             <TouchableOpacity
               style={{
-                width: iconWidth * 0.65,
+                width: iconWidth * 0.5,
                 aspectRatio: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -92,7 +92,7 @@ const ChooseViewBottomSheet = (props) => {
               }}
             >
               <ExpoImage
-                style={{ width: 35, height: 35 }}
+                style={{ width: 30, height: 30 }}
                 source={require('../../../assets/forApp/globe.png')}
                 placeholder={blurhash}
                 contentFit='contain'
@@ -105,7 +105,7 @@ const ChooseViewBottomSheet = (props) => {
           <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
             <TouchableOpacity
               style={{
-                width: iconWidth * 0.65,
+                width: iconWidth * 0.5,
                 aspectRatio: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -119,7 +119,7 @@ const ChooseViewBottomSheet = (props) => {
                 chooseViewBottomSheetRef.current.close();
               }}
             >
-              <MaterialCommunityIcons name='account-multiple' size={35} color='black' style={{}} />
+              <MaterialCommunityIcons name='account-multiple' size={30} color='black' style={{}} />
             </TouchableOpacity>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>People</Text>
           </View>

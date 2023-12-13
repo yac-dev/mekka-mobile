@@ -274,21 +274,38 @@ const CreateNewPostStackNavigator = (props) => {
                 );
               },
               headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AddLocationTag')}
-                  disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}
-                  // disabled={validateAddedTags() ? false : true}
-                >
-                  <Text
-                    style={{
-                      color: Object.keys(createNewPostFormData.addedTags).length ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('CreateNewTag')}
+                    style={{ marginRight: 10 }}
+                    // disabled={validateAddedTags() ? false : true}
                   >
-                    Next
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      Create
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AddLocationTag')}
+                    disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}
+                    // disabled={validateAddedTags() ? false : true}
+                  >
+                    <Text
+                      style={{
+                        color: Object.keys(createNewPostFormData.addedTags).length ? 'white' : 'rgb(170,170,170)',
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      Next
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               ),
               title: '',
               headerStyle: {
@@ -310,17 +327,31 @@ const CreateNewPostStackNavigator = (props) => {
               },
               headerRight: () => {
                 return (
-                  <TouchableOpacity onPress={() => onPostPress()}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Post!
-                    </Text>
-                  </TouchableOpacity>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreateNewLocationTag')}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          marginRight: 10,
+                        }}
+                      >
+                        Create
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => onPostPress()}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        Post
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 );
               },
               title: '',

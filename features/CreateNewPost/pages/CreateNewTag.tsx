@@ -25,10 +25,13 @@ const CreateNewTag = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => onDonePress()} disabled={tag.name.length ? false : true}>
+        <TouchableOpacity
+          onPress={() => onDonePress()}
+          disabled={tag.name.length && tag.name.length <= 40 ? false : true}
+        >
           <Text
             style={{
-              color: tag.name.length <= 40 ? 'white' : 'rgb(117,117, 117)',
+              color: tag.name.length && tag.name.length <= 40 ? 'white' : 'rgb(117,117, 117)',
               fontSize: 20,
               fontWeight: 'bold',
             }}

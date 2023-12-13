@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
@@ -52,17 +52,8 @@ const AddTags = (props) => {
     // if (Object.values(tagOptions).length) {
     const list = tagOptions.map((tag, index) => {
       return (
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           key={index}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: 'rgb(80,80,80)',
-            padding: 12,
-            borderRadius: 20,
-            marginRight: 10,
-            marginBottom: 10,
-          }}
           onPress={() => {
             setCreateNewPostFormData((previous) => {
               const updating = { ...previous.addedTags };
@@ -81,37 +72,44 @@ const AddTags = (props) => {
                 };
               }
             });
-            // setAddedTags((previous) => {
-            //   const updating = { ...previous };
-            //   if (addedTags[tag._id]) {
-            //     delete updating[tag._id];
-            //     return updating;
-            //   } else {
-            //     return {
-            //       ...updating,
-            //       [tag._id]: tag,
-            //     };
-            //   }
-            // });
           }}
         >
-          <ExpoImage
-            style={{ width: 20, height: 20, marginRight: 10 }}
-            source={{ uri: tag.icon }}
-            contentFit='cover'
-            tintColor={tag.iconType === 'icon' ? tag.color : null}
-          />
-          <Text style={{ color: 'white' }}>{tag.name}</Text>
-          {createNewPostFormData.addedTags[tag._id] ? (
-            <View style={{ position: 'absolute', top: -10, right: -7 }}>
-              <Ionicons name='checkmark-circle' color='green' size={25} />
-            </View>
-          ) : null}
-        </TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'black',
+              padding: 12,
+              borderRadius: 20,
+              marginRight: 10,
+              marginBottom: 10,
+              borderWidth: 0.3,
+              borderColor: 'white',
+              borderStyle: 'solid',
+            }}
+          >
+            <ExpoImage
+              style={{ width: 20, height: 20, marginRight: 10 }}
+              source={{ uri: tag.icon }}
+              contentFit='cover'
+              tintColor={tag.iconType === 'icon' ? tag.color : null}
+            />
+            <Text style={{ color: 'white' }}>{tag.name}</Text>
+            {createNewPostFormData.addedTags[tag._id] ? (
+              <View style={{ position: 'absolute', top: -10, right: -7 }}>
+                <Ionicons name='checkmark-circle' color='green' size={25} />
+              </View>
+            ) : null}
+          </View>
+        </TouchableWithoutFeedback>
       );
     });
 
-    return <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', padding: 10 }}>{list}</View>;
+    return (
+      <ScrollView>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', padding: 10 }}>{list}</View>
+      </ScrollView>
+    );
   };
 
   return (
@@ -131,7 +129,7 @@ const AddTags = (props) => {
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Please add at least one tag.</Text>
       </View>
       {renderTagOptions()}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           backgroundColor: 'white',
           padding: 10,
@@ -143,10 +141,9 @@ const AddTags = (props) => {
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-          {/* <Ionicons name='add' color='black' size={25} style={{ marginRight: 5 }} /> */}
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Create new?</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

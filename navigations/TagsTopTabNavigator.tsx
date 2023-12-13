@@ -12,6 +12,7 @@ import {
   Platform,
   Image,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import backendAPI from '../apis/backend';
@@ -208,9 +209,12 @@ const TagsTopTabNavigator = (props) => {
 
   const onTabPress = (tab) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
     setCurrentTagObject(tab);
     navigation.navigate(`SpaceTab_${tab.tag._id}`);
+  };
+
+  const onTabLongPress = (tab) => {
+    console.log('hello');
   };
 
   const renderTab = ({ item }) => {
@@ -218,43 +222,47 @@ const TagsTopTabNavigator = (props) => {
     console.log(isActive);
     console.log('current tag pbject', currentTagObject);
     return (
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         key={route.key}
-        style={{
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginRight: 10,
-          // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
-          padding: 5,
-          // borderRadius: 5,
-          // width: 60,
-          // height: 60,
-          maxWidth: 100,
-          // borderBottomWidth: isActive && 1,
-          // borderBottomColor: isActive && 'white',
-        }}
-        // contentTypeによって、いくnavigatorが変わるわけですよ。。。そう、つまりここでnavigatingを分ければいいわけね。
         onPress={() => onTabPress(item)}
+        onLongPress={() => console.log('hello')}
         // onLongPress={() => console.log('long press')} edit画面をここに出す。
       >
-        {/* rgb(100, 100, 100) */}
-        <ExpoImage
-          style={{ width: 25, height: 25, marginBottom: 5 }}
-          source={{ uri: item.tag.icon }}
-          // placeholder={blurhash}
-          // contentFit='fill'
-          // transition={100}
-          // tintColor={item.tag.iconType === 'icon' ? item.tag.color : 'rgb(170,170,170)'}
-          tintColor={isActive ? 'white' : 'rgb(150,150,150)'}
-        />
-        <Text numberOfLines={1} style={{ color: isActive ? 'white' : 'rgb(150,150,150)' }}>
-          {item.tag.name}
-        </Text>
-        {/* <Text style={{ color: 'rgb(170,170,170)', position: 'absolute', top: 7, right: 10 }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: 10,
+            // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
+            padding: 5,
+            // borderRadius: 5,
+            // width: 60,
+            // height: 60,
+            maxWidth: 100,
+            // borderBottomWidth: isActive && 1,
+            // borderBottomColor: isActive && 'white',
+          }}
+          // contentTypeによって、いくnavigatorが変わるわけですよ。。。そう、つまりここでnavigatingを分ければいいわけね。
+        >
+          <ExpoImage
+            style={{ width: 25, height: 25, marginBottom: 5 }}
+            source={{ uri: item.tag.icon }}
+            // placeholder={blurhash}
+            // contentFit='fill'
+            // transition={100}
+            // tintColor={item.tag.iconType === 'icon' ? item.tag.color : 'rgb(170,170,170)'}
+            tintColor={isActive ? 'white' : 'rgb(150,150,150)'}
+          />
+          <Text numberOfLines={1} style={{ color: isActive ? 'white' : 'rgb(150,150,150)' }}>
+            {item.tag.name}
+          </Text>
+          {/* <Text style={{ color: 'rgb(170,170,170)', position: 'absolute', top: 7, right: 10 }}>
                   {route.params?.tagObject.tag.count}
                 </Text> */}
-      </TouchableOpacity>
+        </View>
+        {/* rgb(100, 100, 100) */}
+      </TouchableWithoutFeedback>
     );
   };
 

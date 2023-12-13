@@ -262,7 +262,7 @@ const AddLocationTag = (props) => {
       <MapView
         ref={mapRef}
         userInterfaceStyle='dark'
-        style={{ width: '100%', height: 350, marginBottom: 20 }}
+        style={{ width: '100%', height: 420, marginBottom: 20 }}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
@@ -299,7 +299,7 @@ const AddLocationTag = (props) => {
           </Marker>
         ) : null}
       </MapView>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           backgroundColor: 'white',
           padding: 10,
@@ -311,10 +311,9 @@ const AddLocationTag = (props) => {
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-          {/* <Ionicons name='add' color='black' size={25} style={{ marginRight: 5 }} /> */}
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Create new?</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* {formData.location.coordinates.length ? (
             <>
