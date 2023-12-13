@@ -3,8 +3,8 @@
 // // 基本、APP_VARIANTに依って使うapiを変える感じだ。
 // const endpoint = Constants.expoConfig.extra.apiEndpoint;
 // console.log(endpoint);
-
-const baseURL = 'http://http://192.168.11.4:3500'; // local development
+import Config from 'react-native-config';
+const baseURL = Config.BASEURL; // local development
 // const baseURL = 'https://mekka-staging-955e17db8bae.herokuapp.com'; // staging heroku version
 // const baseURL = 'https://mekka-production-1ec261d2f6ac.herokuapp.com'; // production heroku version
 

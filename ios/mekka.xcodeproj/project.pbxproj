@@ -19,7 +19,6 @@
 		3343A0612B289680008F98FF /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		3343A06F2B289683008F98FF /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		3343A0702B289683008F98FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		3343A0712B289683008F98FF /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		3343A0722B289683008F98FF /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C8496E12D64D88A56A359C /* noop-file.swift */; };
 		3343A0762B289683008F98FF /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		3343A0772B289683008F98FF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -743,7 +742,6 @@
 			files = (
 				3343A06F2B289683008F98FF /* AppDelegate.mm in Sources */,
 				3343A0702B289683008F98FF /* main.m in Sources */,
-				3343A0712B289683008F98FF /* ExpoModulesProvider.swift in Sources */,
 				3343A0722B289683008F98FF /* noop-file.swift in Sources */,
 				B4F00E37CF9DA34FA7FC1384 /* ExpoModulesProvider.swift in Sources */,
 			);
@@ -905,7 +903,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mekka/Mekka.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = WMQHGJMYR8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -913,12 +911,13 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = Info_staging.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mekka_staging;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -944,15 +943,16 @@
 				CODE_SIGN_ENTITLEMENTS = Mekka/Mekka.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = WMQHGJMYR8;
 				INFOPLIST_FILE = Info_staging.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mekka_staging;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
