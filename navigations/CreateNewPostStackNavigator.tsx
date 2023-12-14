@@ -10,12 +10,12 @@ import AddTags from '../features/CreateNewPost/pages/AddTags';
 import AddLocationTag from '../features/CreateNewPost/pages/AddLocationTag';
 import MomentPost from '../features/CreateNewPost/pages/MomentPost';
 import { GlobalContext } from '../contexts/GlobalContext';
+import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { CreateNewPostContext } from '../features/CreateNewPost/contexts/CreateNewPostContext';
 import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
 
 const CreateNewPostStackNavigator = (props) => {
@@ -25,11 +25,13 @@ const CreateNewPostStackNavigator = (props) => {
     setSnackBar,
     isAfterPosted,
     setIsAfterPosted,
-    createNewPostFormData,
-    setCreateNewPostFormData,
-    createNewPostResult,
-    setCreateNewPostResult,
+    // createNewPostFormData,
+    // setCreateNewPostFormData,
+    // createNewPostResult,
+    // setCreateNewPostResult,
   } = useContext(GlobalContext);
+  const { createNewPostFormData, setCreateNewPostFormData, createNewPostResult, setCreateNewPostResult } =
+    useContext(SpaceRootContext);
   const [postType, setPostType] = useState('');
   const [contents, setContents] = useState([]);
   const [caption, setCaption] = useState('');

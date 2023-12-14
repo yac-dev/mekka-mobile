@@ -27,9 +27,11 @@ import { Video } from 'expo-av';
 import SnackBar from '../../../components/SnackBar';
 import ContentThumbnail from '../components/Content';
 import { Video as VideoCompressor, Image as ImageCompressor } from 'react-native-compressor';
+import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 
 const NormalPost = () => {
-  const { isIpad, setSnackBar, createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
+  const { isIpad, setSnackBar } = useContext(GlobalContext);
+  const { createNewPostFormData, setCreateNewPostFormData } = useContext(SpaceRootContext);
   const { contents, setContents, caption, setCaption, space, navigation, addedTags } = useContext(CreateNewPostContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const [onProgress, setOnProgress] = useState(false);

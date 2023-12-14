@@ -15,73 +15,13 @@ import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import backendAPI from '../apis/backend';
-import { PostsContext } from '../contexts/PostsContext';
-import { Ionicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import { MaterialIcons } from '@expo/vector-icons';
-import TagViewTopTabNavigator from './TagViewTopTabNavigator';
-import PeopleViewTopTabNavigator from './PeopleViewTopTabNavigator';
-import LocationsViewTopTabNavigator from './LocationsViewTopTabNavigator';
-import MomentsView from '../features/Space/pages/MomentsView';
-import ViewPostsTopTabNavigator from './ViewPostsTopTabNavigator';
-import TagsTopTabNavigator from './TagsTopTabNavigator';
-import Projects from '../features/Space/pages/Projects';
-import ChooseViewBottomSheet from '../features/Space/pages/ChooseViewBottomSheet';
-import LocationsViewPostsBottomSheet from '../features/Space/components/LocationsViewPostsBottomSheet';
-import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-import MomentsViewStackNavigator from './MomentsViewStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
-const Tab = createBottomTabNavigator();
-const viewTypeObject = {
-  tags: (
-    <Octicons
-      name='hash'
-      // color={focused ? 'white' : 'rgb(100, 100, 100)'}
-      size={23}
-      style={{ marginBottom: 5 }}
-      color={'white'}
-    />
-  ),
-  map: (
-    <ExpoImage
-      style={{ width: 25, height: 25 }}
-      source={require('../assets/forApp/globe.png')}
-      placeholder={blurhash}
-      contentFit='contain'
-      transition={1000}
-      tintColor={'white'}
-    />
-  ),
-  people: <MaterialCommunityIcons name='account-multiple' color='white' size={25} />,
-};
-
-const getViewTypeObject = (isFocused, viewPostsType) => {
-  const viewTypeObject = {
-    tags: (
-      <Octicons name='hash' color={isFocused ? 'white' : 'rgb(100, 100, 100)'} size={23} style={{ marginBottom: 5 }} />
-    ),
-    map: (
-      <ExpoImage
-        style={{ width: 25, height: 25 }}
-        source={require('../assets/forApp/globe.png')}
-        contentFit='contain'
-        tintColor='white'
-      />
-    ),
-    people: (
-      <MaterialCommunityIcons name='account-multiple' color={isFocused ? 'white' : 'rgb(100, 100, 100)'} size={25} />
-    ),
-  };
-
-  return viewTypeObject[viewPostsType];
-};
+import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
+import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
   postType: '',
@@ -95,7 +35,7 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
   moments: [],
 };
 
-const SpaceRootBottomTabNavigator = (props) => {
+const SpaceRootStackNavigator = (props) => {
   const { spaceAndUserRelationship } = useContext(SpaceRootContext);
   const {
     isIpad,
@@ -344,142 +284,44 @@ const SpaceRootBottomTabNavigator = (props) => {
         setCreateNewPostResult,
       }}
     >
-      <View style={{ flex: 1 }}>
-        <Tab.Navigator
-          screenOptions={({ navigation, route }) => ({
-            headerShown: false,
-            tabBarStyle: {
-              backgroundColor: 'black',
-              // marginHorizontal: 90,
-              // paddingBottom: 0, // きたー。これよ。これ。
-              // borderRadius: 30,
-              height: 60,
-              borderTopWidth: 0,
-              paddingTop: 5,
-              paddingBottom: 5,
-              // position: 'absolute',
-              // bottom: 30,
-              // justifyContent: 'center',
-              // alignItems: 'center',
-            },
-            // tabBarLabel: navigation.isFocused() ? route.name : '',
-          })}
-        >
-          <Tab.Screen
-            name='ViewPostsTopTabNavigator'
-            component={ViewPostsTopTabNavigator}
-            options={({ navigation, route }) => ({
-              // tabBarShowLabel: false,
-              tabBarIcon: ({ size, color, focused }) =>
-                // <Octicons
-                //   name='hash'
-                //   color={focused ? 'white' : 'rgb(100, 100, 100)'}
-                //   size={23}
-                //   style={{ marginBottom: 5 }}
-                // />
-                // viewTypeObject[viewPostsType],
-                getViewTypeObject(focused, viewPostsType),
-              tabBarLabel: ({ focused }) => {
-                return <Text style={{ color: focused ? 'white' : 'rgb(100, 100, 100)', fontSize: 13 }}>Home</Text>;
-              },
-            })}
-          />
-          <Tab.Screen
-            name='Post'
-            component={CreateNewPostStackNavigator}
-            options={{
-              headerShown: false,
-              tabBarIcon: ({ size, color, focused }) => (
-                <MaterialCommunityIcons
-                  name='plus'
-                  color={focused ? 'white' : 'rgb(100, 100, 100)'}
-                  size={30}
-                  style={{ marginBottom: 5 }}
-                />
-              ),
-              tabBarLabel: ({ focused }) => {
-                return <Text style={{ color: focused ? 'white' : 'rgb(100, 100, 100)', fontSize: 13 }}>Post</Text>;
-              },
-            }}
-            listeners={({ navigation }) => ({
-              tabPress: (event) => {
-                event.preventDefault();
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                props.navigation?.navigate(
-                  'CreateNewPostStackNavigator',
-                  { spaceAndUserRelationship: props.spaceAndUserRelationship }
-                  // {
-                  //   screen: 'SelectPostType',
-                  //   params: {
-                  //     // space: currentSpace,
-                  //     // spaceAndUserRelationship: currentSpaceAndUserRelationship,
-                  //     spaceAndUserRelationship: props.spaceAndUserRelationship,
-                  //   }, // なんで、spaceUserRelが必要？？いらなくね。。。
-                  //   merge: true,
-                  // }
-                );
-              },
-            })}
-          />
-
-          <Tab.Screen
-            name='MomentsViewStackNavigator'
-            component={MomentsViewStackNavigator}
+      <Stack.Navigator
+        screenOptions={({ navigation }) => ({
+          headerShown: false,
+          // headerShown: true,
+        })}
+      >
+        <Stack.Group>
+          <Stack.Screen
+            name='SpaceBottomTabNavigator'
+            component={SpaceRootBottomTabNavigator}
             options={({ navigation }) => ({
-              // tabBarShowLabel: false,
-              tabBarIcon: ({ size, color, focused }) => (
-                <ExpoImage
-                  style={{ width: 25, height: 25, marginBottom: 5 }}
-                  source={require('../assets/forApp/ghost.png')}
-                  contentFit='contain'
-                  tintColor={focused ? 'white' : 'rgb(100, 100, 100)'}
-                />
-              ),
-              tabBarLabel: ({ focused }) => {
-                return <Text style={{ color: focused ? 'white' : 'rgb(100, 100, 100)', fontSize: 13 }}>Moments</Text>;
+              // headerShown: false,
+            })}
+          />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <Stack.Screen
+            name='CreateNewPostStackNavigator'
+            component={CreateNewPostStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
               },
             })}
           />
-        </Tab.Navigator>
-        {/* <TouchableOpacity もともとのpost button
-          onPress={() => {
-            props.navigation?.navigate(
-              'CreateNewPostStackNavigator',
-              { spaceAndUserRelationship: props.spaceAndUserRelationship }
-              // {
-              //   screen: 'SelectPostType',
-              //   params: {
-              //     // space: currentSpace,
-              //     // spaceAndUserRelationship: currentSpaceAndUserRelationship,
-              //     spaceAndUserRelationship: props.spaceAndUserRelationship,
-              //   }, // なんで、spaceUserRelが必要？？いらなくね。。。
-              //   merge: true,
-              // }
-            );
-          }}
-          style={{
-            backgroundColor: 'white',
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            position: 'absolute',
-            bottom: 80,
-            right: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: 10,
-          }}
-        >
-          <MaterialCommunityIcons name='plus' color='black' size={30} />
-        </TouchableOpacity> */}
-        <ChooseViewBottomSheet />
-        <LocationsViewPostsBottomSheet />
-      </View>
+        </Stack.Group>
+      </Stack.Navigator>
     </SpaceRootContext.Provider>
   );
 };
 
-export default SpaceRootBottomTabNavigator;
+export default SpaceRootStackNavigator;
 
 // tabBar={(props) => <CustomTabBar {...props} />}
 // screenOptions={({ route }) => ({

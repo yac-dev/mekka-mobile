@@ -101,7 +101,7 @@ const Overview = () => {
           ) : (
             <>
               <MaterialCommunityIcons name='camera-plus' size={30} color='black' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>Upload icon</Text>
+              <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>Space icon</Text>
             </>
           )}
         </TouchableOpacity>

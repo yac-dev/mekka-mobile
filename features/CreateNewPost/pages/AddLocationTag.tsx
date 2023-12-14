@@ -9,13 +9,15 @@ import MapView, { Marker } from 'react-native-maps';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Image as ExpoImage } from 'expo-image';
+import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // いいや、locationは、
 const AddLocationTag = (props) => {
-  const { createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
+  // const { createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
+  const { createNewPostFormData, setCreateNewPostFormData } = useContext(SpaceRootContext);
   const {
     navigation,
     route,

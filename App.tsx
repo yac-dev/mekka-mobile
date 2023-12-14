@@ -56,13 +56,13 @@ const App: React.FC = function () {
   const [appState, setAppState] = useState(AppState.currentState);
   const [afterJoined, setAfterJoined] = useState(false);
   const [isAfterPosted, setIsAfterPosted] = useState(false);
-  const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
-  const [createNewPostResult, setCreateNewPostResult] = useState({
-    isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
-    isSuccess: false,
-    isError: false,
-    responseData: null,
-  });
+  // const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
+  // const [createNewPostResult, setCreateNewPostResult] = useState({
+  //   isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
+  //   isSuccess: false,
+  //   isError: false,
+  //   responseData: null,
+  // });
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
 
@@ -192,10 +192,10 @@ const App: React.FC = function () {
         setCurrentTagObject,
         isAfterPosted,
         setIsAfterPosted,
-        createNewPostFormData,
-        setCreateNewPostFormData,
-        createNewPostResult,
-        setCreateNewPostResult,
+        // createNewPostFormData,
+        // setCreateNewPostFormData,
+        // createNewPostResult,
+        // setCreateNewPostResult,
         spaceAndUserRelationshipsFetchingStatus,
       }}
     >

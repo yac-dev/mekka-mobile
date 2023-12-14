@@ -89,6 +89,7 @@ const TagsTopTabNavigator = (props) => {
     viewPostsType,
     screenLoaded,
     setScreenLoaded,
+    createNewPostResult,
   } = useContext(SpaceRootContext);
   const {
     isIpad,
@@ -99,7 +100,6 @@ const TagsTopTabNavigator = (props) => {
     setCurrentTagObject,
     isAfterPosted,
     setIsAfterPosted,
-    createNewPostResult,
     spaceAndUserRelationshipsFetchingStatus,
   } = useContext(GlobalContext);
   const route = useRoute();
