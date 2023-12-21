@@ -183,6 +183,7 @@ const TagsTopTabNavigator = (props) => {
   }, [spaceAndUserRelationshipsFetchingStatus]);
 
   // createされたtagがあるなら、直接追加してあげる。
+  console.log('new post result...', createNewPostResult);
   useEffect(() => {
     if (createNewPostResult.isSuccess && createNewPostResult.responseData?.createdTags) {
       console.log('created tags', createNewPostResult.responseData?.createdTags);
@@ -219,8 +220,8 @@ const TagsTopTabNavigator = (props) => {
 
   const renderTab = ({ item }) => {
     const isActive = item.tag._id === currentTagObject.tag._id;
-    console.log(isActive);
-    console.log('current tag pbject', currentTagObject);
+    // console.log(isActive);
+    // console.log('current tag pbject', currentTagObject);
     return (
       <TouchableWithoutFeedback
         key={route.key}

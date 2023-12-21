@@ -36,7 +36,7 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
 };
 
 const SpaceRootStackNavigator = (props) => {
-  const { spaceAndUserRelationship } = useContext(SpaceRootContext);
+  // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
   const {
     isIpad,
     spaceMenuBottomSheetRef,

@@ -45,6 +45,7 @@ const CreateNewPostStackNavigator = (props) => {
   const {
     spaceAndUserRelationship: { space },
   } = props.route.params;
+  // console.log('navigation??', props.navigation);
 
   const getTags = async () => {
     const result = await backendAPI.get(`/spaces/${space._id}/tags`);
@@ -87,7 +88,9 @@ const CreateNewPostStackNavigator = (props) => {
         isCreating: true,
       };
     });
-    props.navigation.navigate(`Space_${props.route?.params?.spaceAndUserRelationship._id}`);
+    // ここ、なんでnavigationしてくんないんだろ。。。
+    // props.navigation.navigate(`Space_${props.route?.params?.spaceAndUserRelationship._id}`);
+    props.navigation.navigate('SpaceBottomTabNavigator');
     // const filteredCreatedTags = Object.values(addedTags).filter((element, index) => element.created);
     // const filteredAddedTags = Object.values(addedTags)
     //   .filter((element, index) => !element.created)
