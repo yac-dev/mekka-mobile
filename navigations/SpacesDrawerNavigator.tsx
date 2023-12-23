@@ -13,6 +13,7 @@ import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import NoSpaces from '../features/Utils/NoSpaces';
 import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
+import SpaceRootStackNavigator from './SpaceRootStackNavigator';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -353,7 +354,12 @@ const SpacesDrawerNavigator = (props) => {
                 })}
               >
                 {({ navigation, route }) => (
-                  <SpaceRootBottomTabNavigator
+                  // <SpaceRootBottomTabNavigator
+                  //   spaceAndUserRelationship={spaceAndUserRelationship}
+                  //   navigation={navigation}
+                  //   route={route}
+                  // />
+                  <SpaceRootStackNavigator
                     spaceAndUserRelationship={spaceAndUserRelationship}
                     navigation={navigation}
                     route={route}

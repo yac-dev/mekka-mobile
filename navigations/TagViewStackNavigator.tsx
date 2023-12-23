@@ -18,10 +18,16 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const TagViewStackNavigator: React.FC = (props) => {
-  const { isIpad, authData, createNewPostResult, setCreateNewPostResult, spaceAndUserRelationshipsFetchingStatus } =
-    useContext(GlobalContext);
+  const { isIpad, authData, spaceAndUserRelationshipsFetchingStatus } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
-  const { spaceAndUserRelationship, navigation, screenLoaded, setScreenLoaded } = useContext(SpaceRootContext);
+  const {
+    spaceAndUserRelationship,
+    navigation,
+    screenLoaded,
+    setScreenLoaded,
+    createNewPostResult,
+    setCreateNewPostResult,
+  } = useContext(SpaceRootContext);
   // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
   const [posts, setPosts] = useState([]);
   const [havePostsBeenFetched, setHavePostsBeenFetched] = useState(false);

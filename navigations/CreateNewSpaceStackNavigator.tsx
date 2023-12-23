@@ -63,14 +63,14 @@ const CreateNewSpaceStackNavigator = (props) => {
     };
 
     payload.append('icon', JSON.parse(JSON.stringify(iconData)));
-    console.log('payload', payload);
+    // console.log('payload', payload);
     setLoading(true);
     const result = await backendAPI.post('/spaces', payload, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
     setLoading(false);
     const { spaceAndUserRelationship } = result.data;
-    console.log('created!!!', spaceAndUserRelationship);
+    // console.log('created!!!', spaceAndUserRelationship);
     setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
     setSnackBar({
       isVisible: true,

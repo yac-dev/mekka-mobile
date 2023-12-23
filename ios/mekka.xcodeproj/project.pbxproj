@@ -903,7 +903,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mekka/Mekka.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = WMQHGJMYR8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -943,7 +943,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mekka/Mekka.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = WMQHGJMYR8;
 				INFOPLIST_FILE = Info_staging.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Mekka_staging;

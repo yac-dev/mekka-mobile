@@ -66,6 +66,11 @@ const App: React.FC = function () {
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
 
+  console.log(
+    `current space: ${currentSpaceAndUserRelationship?.space.name} -> `,
+    JSON.stringify(currentSpaceAndUserRelationship, null, 2)
+  );
+
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
