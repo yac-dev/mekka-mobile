@@ -183,7 +183,7 @@ const TagsTopTabNavigator = (props) => {
   }, [spaceAndUserRelationshipsFetchingStatus]);
 
   // createされたtagがあるなら、直接追加してあげる。
-  console.log('new post result...', createNewPostResult);
+  // console.log('new post result...', createNewPostResult);
   useEffect(() => {
     if (createNewPostResult.isSuccess && createNewPostResult.responseData?.createdTags) {
       console.log('created tags', createNewPostResult.responseData?.createdTags);
