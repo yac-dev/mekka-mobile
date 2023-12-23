@@ -14,14 +14,9 @@ const Stack = createNativeStackNavigator();
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
+// import { AuthDataType, SnackBarType, INITIAL_AUTH_STATE, INITIAL_SNACK_BAR_STATE }
 
-type AuthDataType = {
-  _id: string;
-  name: string;
-  email: string;
-  avatar: string;
-};
-
+import { AuthDataType, SnackBarType, INITIAL_AUTH_STATE, INITIAL_SNACK_BAR_STATE } from './App/type';
 export const INITIAL_CREATE_NEW_POST_STATE = {
   postType: '',
   contents: [],
@@ -35,12 +30,12 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
 };
 
 const App: React.FC = function () {
+  const [authData, setAuthData] = useState<AuthDataType>(INITIAL_AUTH_STATE);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isAuthDataFetched, setIsAuthDataFetched] = useState(false);
-  const [authData, setAuthData] = useState<AuthDataType>({ _id: '', name: '', email: '', avatar: '' });
+  const [isAuthDataFetched, setIsAuthDataFetched] = useState<boolean>(false);
   const [isIpad, setIsIpad] = useState<boolean>(Platform.OS === 'ios' && Platform.isPad);
   const [loading, setLoading] = useState<boolean>(false);
-  const [snackBar, setSnackBar] = useState({ isVisible: false, message: '', barType: '', duration: null });
+  const [snackBar, setSnackBar] = useState<SnackBarType>(INITIAL_SNACK_BAR_STATE);
   const [spaceAndUserRelationships, setSpaceAndUserRelationships] = useState([]);
   const [spaceAndUserRelationshipsFetchingStatus, setSpaceAndUserRelationshipsFetchingStatus] = useState('idle');
   // ここの設計を今一度考えなおしてみるか。。。
@@ -56,20 +51,6 @@ const App: React.FC = function () {
   const [appState, setAppState] = useState(AppState.currentState);
   const [afterJoined, setAfterJoined] = useState(false);
   const [isAfterPosted, setIsAfterPosted] = useState(false);
-  // const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
-  // const [createNewPostResult, setCreateNewPostResult] = useState({
-  //   isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
-  //   isSuccess: false,
-  //   isError: false,
-  //   responseData: null,
-  // });
-  // console.log(currentTagObject);
-  // console.log(currentSpaceAndUserRelationship);
-
-  console.log(
-    `current space: ${currentSpaceAndUserRelationship?.space.name} -> `,
-    JSON.stringify(currentSpaceAndUserRelationship, null, 2)
-  );
 
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
@@ -128,44 +109,6 @@ const App: React.FC = function () {
       getMySpaces();
     }
   }, [isAuthenticated]);
-
-  const renderNavigator = () => {
-    if (isAuthDataFetched) {
-      if (isAuthenticated) {
-        return (
-          <Stack.Navigator>
-            <Stack.Screen
-              name='HomwStackNavigator'
-              component={HomeStackNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true,
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        );
-      } else {
-        return (
-          <Stack.Navigator>
-            <Stack.Screen
-              name='NonAuthNavigator'
-              component={NonAuthNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true,
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        );
-      }
-    } else {
-      return (
-        <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-  };
 
   return (
     <GlobalContext.Provider
