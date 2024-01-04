@@ -101,6 +101,8 @@ const TagsTopTabNavigator = (props) => {
     isAfterPosted,
     setIsAfterPosted,
     spaceAndUserRelationshipsFetchingStatus,
+    updatesTable,
+    setUpdatesTable,
   } = useContext(GlobalContext);
   const route = useRoute();
   const scrollViewRef = useRef(null);
@@ -212,6 +214,11 @@ const TagsTopTabNavigator = (props) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setCurrentTagObject(tab);
     navigation.navigate(`SpaceTab_${tab.tag._id}`);
+    setUpdatesTable((previous) => {
+      const updatesTable = { ...previous };
+      updatesTable[spaceAndUserRelationship.space._id][tab.tag._id] = 0;
+      return updatesTable;
+    });
   };
 
   const onTabLongPress = (tab) => {
@@ -223,7 +230,7 @@ const TagsTopTabNavigator = (props) => {
     // console.log(isActive);
     // console.log('current tag pbject', currentTagObject);
     return (
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         key={route.key}
         onPress={() => onTabPress(item)}
         onLongPress={() => console.log('hello')}
@@ -262,8 +269,26 @@ const TagsTopTabNavigator = (props) => {
                   {route.params?.tagObject.tag.count}
                 </Text> */}
         </View>
+        {updatesTable[spaceAndUserRelationship.space._id][item.tag._id] ? (
+          <View
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: 9,
+              backgroundColor: 'red',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+            }}
+          >
+            <Text style={{ color: 'white' }}>{updatesTable[spaceAndUserRelationship.space._id][item.tag._id]}</Text>
+          </View>
+        ) : null}
+
         {/* rgb(100, 100, 100) */}
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
   };
 

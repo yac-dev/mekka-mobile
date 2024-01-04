@@ -29,6 +29,8 @@ const SpacesDrawerNavigator = (props) => {
     authData,
     isAuthenticated,
     spaceAndUserRelationshipsFetchingStatus,
+    updatesTable,
+    setUpdatesTable,
   } = useContext(GlobalContext);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
   const oneGridHeight = isIpad ? Dimensions.get('window').height / 7.5 : Dimensions.get('window').height / 6.5;
@@ -38,7 +40,7 @@ const SpacesDrawerNavigator = (props) => {
     const { state, descriptors, navigation } = props;
     return (
       <View {...props} style={{ paddingTop: 30 }}>
-        {isAuthenticated ? (
+        {isAuthenticated && spaceAndUserRelationshipsFetchingStatus === 'success' ? (
           <>
             <TouchableOpacity
               style={{ alignSelf: 'flex-end', marginBottom: 5, marginRight: 10 }}
@@ -173,6 +175,10 @@ const SpacesDrawerNavigator = (props) => {
             </View>
             <ScrollView>
               {state.routes.map((route, index) => {
+                const spaceUpdatesArray =
+                  updatesTable[route.params?.spaceAndUserRelationship.space._id] &&
+                  Object.values(updatesTable[route.params?.spaceAndUserRelationship.space._id]);
+                const sum = spaceUpdatesArray && spaceUpdatesArray.reduce((partialSum, a) => partialSum + a, 0);
                 const { options } = descriptors[route.key];
                 const label = options.tabBarLabel !== undefined ? options.tabBarLabel : route.name;
 
@@ -208,16 +214,37 @@ const SpacesDrawerNavigator = (props) => {
                         padding: 10,
                         backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
                         borderRadius: 10,
+                        justifyContent: 'space-between',
                       }}
                     >
-                      <ExpoImage
-                        style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
-                        source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
-                        contentFit='cover'
-                      />
-                      <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
-                        {route.params?.spaceAndUserRelationship.space.name}
-                      </Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <ExpoImage
+                          style={{ width: 40, aspectRatio: 1, borderRadius: 10, marginRight: 15 }}
+                          source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
+                          contentFit='cover'
+                        />
+                        <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
+                          {route.params?.spaceAndUserRelationship.space.name}
+                        </Text>
+                      </View>
+                      {sum ? (
+                        <View
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
+                            backgroundColor: 'green',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Text style={{ color: 'white' }}>{sum}</Text>
+                        </View>
+                      ) : null}
+                      {/* <Text>{Object.values(updatesTable[route.params?.spaceAndUserRelationship.space])}</Text> */}
+                      {/* <Text>
+                        {Object.values(updatesTable[route.params?.spaceAndUserRelationship.space._id])}
+                      </Text> */}
                     </View>
                   </TouchableOpacity>
                 );
@@ -254,6 +281,18 @@ const SpacesDrawerNavigator = (props) => {
       </View>
     );
   }
+
+  const calcurateSumUpdates = () => {
+    // Object.values(updatesTable)
+    let sum = 0;
+    for (let key in updatesTable) {
+      const objectKeySum = Object.values(updatesTable[key]).reduce((a, b) => a + b, 0);
+      console.log('key sum', objectKeySum);
+      sum += objectKeySum;
+    }
+    console.log(sum);
+    return sum;
+  };
 
   if (isAuthenticated) {
     if (spaceAndUserRelationshipsFetchingStatus === 'loading') {
@@ -313,20 +352,41 @@ const SpacesDrawerNavigator = (props) => {
 
                   headerLeft: () => {
                     return (
-                      <TouchableOpacity
-                        style={{
-                          width: 25,
-                          height: 25,
-                          borderRadius: 15,
-                          backgroundColor: 'white',
-                          marginLeft: 10,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                        onPress={() => navigation.toggleDrawer()}
-                      >
-                        <Ionicons name='list' style={{}} size={20} />
-                      </TouchableOpacity>
+                      <View>
+                        <TouchableOpacity
+                          style={{
+                            width: 30,
+                            height: 30,
+                            borderRadius: 15,
+                            backgroundColor: 'white',
+                            marginLeft: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                          onPress={() => navigation.toggleDrawer()}
+                        >
+                          <Ionicons name='list' style={{}} size={20} />
+                        </TouchableOpacity>
+                        {calcurateSumUpdates() ? (
+                          <View
+                            style={{
+                              width: 18,
+                              height: 18,
+                              borderRadius: 9,
+                              backgroundColor: 'red',
+                              position: 'absolute',
+                              top: -5,
+                              right: -5,
+                            }}
+                          >
+                            <View
+                              style={{ justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}
+                            >
+                              <Text style={{ color: 'white' }}>{calcurateSumUpdates()}</Text>
+                            </View>
+                          </View>
+                        ) : null}
+                      </View>
                     );
                   },
                   headerRight: () => {

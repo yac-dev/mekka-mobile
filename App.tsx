@@ -56,6 +56,7 @@ const App: React.FC = function () {
   const [appState, setAppState] = useState(AppState.currentState);
   const [afterJoined, setAfterJoined] = useState(false);
   const [isAfterPosted, setIsAfterPosted] = useState(false);
+  const [updatesTable, setUpdatesTable] = useState({});
   // const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
   // const [createNewPostResult, setCreateNewPostResult] = useState({
   //   isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
@@ -65,11 +66,11 @@ const App: React.FC = function () {
   // });
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
-
-  console.log(
-    `current space: ${currentSpaceAndUserRelationship?.space.name} -> `,
-    JSON.stringify(currentSpaceAndUserRelationship, null, 2)
-  );
+  console.log('updates table', updatesTable);
+  // console.log(
+  //   `current space: ${currentSpaceAndUserRelationship?.space.name} -> `,
+  //   JSON.stringify(currentSpaceAndUserRelationship, null, 2)
+  // );
 
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
@@ -88,8 +89,9 @@ const App: React.FC = function () {
   const getMySpaces = async () => {
     setSpaceAndUserRelationshipsFetchingStatus('loading');
     const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
-    const { spaceAndUserRelationships } = result.data;
+    const { spaceAndUserRelationships, updateTable } = result.data;
     setSpaceAndUserRelationships(spaceAndUserRelationships);
+    setUpdatesTable(updateTable);
     setCurrentSpaceAndUserRelationship(spaceAndUserRelationships[0]);
     setHaveSpaceAndUserRelationshipsBeenFetched(true);
     setSpaceAndUserRelationshipsFetchingStatus('success');
@@ -202,6 +204,8 @@ const App: React.FC = function () {
         // createNewPostResult,
         // setCreateNewPostResult,
         spaceAndUserRelationshipsFetchingStatus,
+        updatesTable,
+        setUpdatesTable,
       }}
     >
       <PaperProvider>
