@@ -66,7 +66,6 @@ const App: React.FC = function () {
   // });
   // console.log(currentTagObject);
   // console.log(currentSpaceAndUserRelationship);
-  console.log('updates table', updatesTable);
   // console.log(
   //   `current space: ${currentSpaceAndUserRelationship?.space.name} -> `,
   //   JSON.stringify(currentSpaceAndUserRelationship, null, 2)
@@ -101,6 +100,14 @@ const App: React.FC = function () {
     loadMe();
   }, []);
 
+  const updateSpaceCheckedInDate = async () => {
+    if (currentSpaceAndUserRelationship.space?._id) {
+      await backendAPI.patch(`/users/${authData._id}/lastcheckedin`, {
+        spaceId: currentSpaceAndUserRelationship.space._id,
+      });
+    }
+  };
+
   // auth dataがある場合は、これをそもそも起こさない。
   // そもそも、今自分がspaceのなんのtagを見ているか分からない状態で。。。
   useEffect(() => {
@@ -115,6 +122,7 @@ const App: React.FC = function () {
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。
           console.log('Became inactive...');
+          updateSpaceCheckedInDate();
         }
         console.log('Next AppState is: ', nextAppState);
         setAppState(nextAppState); // backgroundになる。
@@ -123,7 +131,7 @@ const App: React.FC = function () {
         appStateListener.remove();
       };
     }
-  }, [isAuthenticated, appState]);
+  }, [isAuthenticated, appState, currentSpaceAndUserRelationship]);
 
   useEffect(() => {
     if (isAuthenticated) {

@@ -14,7 +14,12 @@ import NoSpaces from '../features/Utils/NoSpaces';
 import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
 import SpaceRootStackNavigator from './SpaceRootStackNavigator';
+import backendAPI from '../apis/backend';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
+// というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
+//　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
+// あとは、appがcloseした時もcurrentのspaceのdate updateをする感じだね。
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
@@ -31,9 +36,18 @@ const SpacesDrawerNavigator = (props) => {
     spaceAndUserRelationshipsFetchingStatus,
     updatesTable,
     setUpdatesTable,
+    currentSpaceAndUserRelationship,
   } = useContext(GlobalContext);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
   const oneGridHeight = isIpad ? Dimensions.get('window').height / 7.5 : Dimensions.get('window').height / 6.5;
+
+  const updateLastCheckedIn = async () => {
+    const result = await backendAPI.patch(`/users/${authData._id}/lastcheckedin`, {
+      spaceId: currentSpaceAndUserRelationship.space._id,
+    });
+    // console.log('currens space -> ', currentSpaceAndUserRelationship.space._id);
+  };
+
   const iconWidth = oneGridWidth * 0.65;
 
   function CustomDrawerContent(props) {
@@ -190,7 +204,8 @@ const SpacesDrawerNavigator = (props) => {
                     target: route.key,
                     canPreventDefault: true,
                   });
-
+                  // ここでspaceのdate updateか。
+                  updateLastCheckedIn();
                   setCurrentSpaceAndUserRelationship(route.params?.spaceAndUserRelationship);
 
                   if (!isFocused && !event.defaultPrevented) {
@@ -233,7 +248,7 @@ const SpacesDrawerNavigator = (props) => {
                             width: 24,
                             height: 24,
                             borderRadius: 12,
-                            backgroundColor: 'green',
+                            backgroundColor: 'red',
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}
@@ -287,10 +302,8 @@ const SpacesDrawerNavigator = (props) => {
     let sum = 0;
     for (let key in updatesTable) {
       const objectKeySum = Object.values(updatesTable[key]).reduce((a, b) => a + b, 0);
-      console.log('key sum', objectKeySum);
       sum += objectKeySum;
     }
-    console.log(sum);
     return sum;
   };
 
@@ -352,41 +365,53 @@ const SpacesDrawerNavigator = (props) => {
 
                   headerLeft: () => {
                     return (
-                      <View>
-                        <TouchableOpacity
+                      <TouchableOpacity
+                        activeOpacity={1}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          // backgroundColor: 'blue',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        onPress={() => navigation.toggleDrawer()}
+                      >
+                        <View
                           style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: 15,
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
                             backgroundColor: 'white',
-                            marginLeft: 10,
+                            // marginLeft: 10,
                             justifyContent: 'center',
                             alignItems: 'center',
                           }}
-                          onPress={() => navigation.toggleDrawer()}
                         >
                           <Ionicons name='list' style={{}} size={20} />
-                        </TouchableOpacity>
-                        {calcurateSumUpdates() ? (
-                          <View
-                            style={{
-                              width: 18,
-                              height: 18,
-                              borderRadius: 9,
-                              backgroundColor: 'red',
-                              position: 'absolute',
-                              top: -5,
-                              right: -5,
-                            }}
-                          >
+                          {calcurateSumUpdates() ? (
                             <View
-                              style={{ justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}
+                              style={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: 5,
+                                backgroundColor: 'red',
+                                position: 'absolute',
+                                top: -3,
+                                right: -3,
+                              }}
                             >
-                              <Text style={{ color: 'white' }}>{calcurateSumUpdates()}</Text>
+                              <View
+                                style={{
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              ></View>
                             </View>
-                          </View>
-                        ) : null}
-                      </View>
+                          ) : null}
+                        </View>
+                      </TouchableOpacity>
                     );
                   },
                   headerRight: () => {

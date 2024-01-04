@@ -214,11 +214,13 @@ const TagsTopTabNavigator = (props) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setCurrentTagObject(tab);
     navigation.navigate(`SpaceTab_${tab.tag._id}`);
-    setUpdatesTable((previous) => {
-      const updatesTable = { ...previous };
-      updatesTable[spaceAndUserRelationship.space._id][tab.tag._id] = 0;
-      return updatesTable;
-    });
+    if (updatesTable[spaceAndUserRelationship.space._id][tab.tag._id]) {
+      setUpdatesTable((previous) => {
+        const updatesTable = { ...previous };
+        updatesTable[spaceAndUserRelationship.space._id][tab.tag._id] = 0;
+        return updatesTable;
+      });
+    }
   };
 
   const onTabLongPress = (tab) => {
@@ -269,7 +271,7 @@ const TagsTopTabNavigator = (props) => {
                   {route.params?.tagObject.tag.count}
                 </Text> */}
         </View>
-        {updatesTable[spaceAndUserRelationship.space._id][item.tag._id] ? (
+        {updatesTable[spaceAndUserRelationship.space._id]?.[item.tag._id] ? (
           <View
             style={{
               width: 18,
