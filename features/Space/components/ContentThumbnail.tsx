@@ -41,7 +41,7 @@ const ContentThumbnail = (props) => {
         style={{
           width: oneAssetWidth,
           height: oneAssetWidth,
-          padding: 2,
+          padding: 1,
         }}
         onPress={() => {
           setCurrentPost(props.post);
@@ -55,7 +55,7 @@ const ContentThumbnail = (props) => {
         {isLoading && <Skeleton />}
         <Video
           source={{ uri: props.post.contents[0].data }}
-          style={{ width: '100%', height: '100%', borderRadius: 5, justifyContent: 'center', alignItems: 'center' }}
+          style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
           onLoad={handleImageLoad}
           resizeMode={ResizeMode.COVER}
         />
@@ -71,7 +71,7 @@ const ContentThumbnail = (props) => {
   } else {
     return (
       <TouchableOpacity
-        style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}
+        style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 1 }}
         onPress={() => {
           setCurrentPost(props.post);
           setCurrentIndex(props.index);
@@ -83,7 +83,7 @@ const ContentThumbnail = (props) => {
       >
         {isLoading && <Skeleton />}
         <ExpoImage
-          style={{ width: '100%', height: '100%', borderRadius: 5 }}
+          style={{ width: '100%', height: '100%' }}
           source={{ uri: props.post.contents[0].data }}
           // placeholder={blurhash}
           contentFit='cover'
