@@ -64,13 +64,16 @@ const App: React.FC = function () {
   // const [createNewPostResult, setCreateNewPostResult] = useState({
   //   isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
 
+  // notifyのon offを切り替えるfunctionな。
   const registerForPushNotificationsAsync = async () => {
     let token;
     const data = { token: token, status: false };
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    const { status: existingStatus } = await Notifications.getPermissionsAsync(); // これ多分、スマホから情報をとっているのかね。
+    // 初めての場合は、allowにするかdisallowにするか聴いてくる。いずれにしても、それらの選択はスマホ側に伝えられることになる。
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
+      // ここは、あくまでpromptを出す部分ね。
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
@@ -83,7 +86,6 @@ const App: React.FC = function () {
     console.log('this is a token', token);
     data.token = token;
     data.status = true;
-    // return token;
     return data;
   };
 
@@ -138,7 +140,7 @@ const App: React.FC = function () {
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。
           console.log('Became inactive...');
-          updateSpaceCheckedInDate();
+          // updateSpaceCheckedInDate(); //一回止める
         }
         console.log('Next AppState is: ', nextAppState);
         setAppState(nextAppState); // backgroundになる。
@@ -254,6 +256,8 @@ const App: React.FC = function () {
         spaceAndUserRelationshipsFetchingStatus,
         updatesTable,
         setUpdatesTable,
+        notificationEnabled,
+        setNotificationEnabled,
       }}
     >
       <PaperProvider>
