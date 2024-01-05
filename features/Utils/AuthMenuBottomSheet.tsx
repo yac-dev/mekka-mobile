@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Switch } from 'react-native';
 import GorhomBottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import * as SecureStore from 'expo-secure-store';
 import { GlobalContext } from '../../contexts/GlobalContext';
@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 const AuthMenuBottomSheet = (props) => {
-  const snapPoints = useMemo(() => ['35%'], []);
+  const snapPoints = useMemo(() => ['60%'], []);
   const iconWidth = Dimensions.get('window').width / 3;
 
   const {
@@ -19,6 +19,8 @@ const AuthMenuBottomSheet = (props) => {
     setLoading,
     setSpaceAndUserRelationships,
     setSnackBar,
+    notificationEnabled,
+    setNotificationEnabled,
   } = useContext(GlobalContext);
 
   const onLogoutPress = async () => {
@@ -58,6 +60,10 @@ const AuthMenuBottomSheet = (props) => {
     });
   };
 
+  const onNotificationSwitchToggle = () => {
+    setNotificationEnabled((previous) => !previous);
+  };
+
   if (isAuthenticated) {
     return (
       <GorhomBottomSheet
@@ -77,7 +83,7 @@ const AuthMenuBottomSheet = (props) => {
           <View
             style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}
           >
-            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 23, marginLeft: 20 }}>My account</Text>
+            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 25, marginLeft: 20 }}>Settings</Text>
             <TouchableOpacity
               style={{
                 // alignSelf: 'flex-end',
@@ -88,8 +94,72 @@ const AuthMenuBottomSheet = (props) => {
               <Ionicons name='close-circle' color='white' size={30} style={{ marginRight: 5 }} />
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-            <View
+          <View style={{ flexDirection: 'column' }}>
+            <TouchableOpacity
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+              onPress={() => onEditMyAccountPress()}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='account' color='white' size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Edit my info</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Change your personal information.</Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+              // onPress={() => onNotificationSwitchToggle()}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name='notifications' color='white' size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Notification</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                    {notificationEnabled ? 'Allowed now.' : 'Disallowed now.'}
+                  </Text>
+                </View>
+              </View>
+              <Switch
+                trackColor={{ false: '#767577', true: 'rgb(67, 227, 59)' }}
+                thumbColor={notificationEnabled ? 'white' : '#f4f3f4'}
+                ios_backgroundColor='#3e3e3e'
+                onValueChange={onNotificationSwitchToggle}
+                value={notificationEnabled}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+              onPress={() => onLogoutPress()}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='exit-run' color='white' size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Logout</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Take a break?</Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+              onPress={() => onDeleteMyAccountPress()}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='delete-alert' color='white' size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Delete my account</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No regreats?</Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+            </TouchableOpacity>
+            {/* <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -112,8 +182,8 @@ const AuthMenuBottomSheet = (props) => {
                 <Ionicons name='settings' color='black' size={25} />
               </TouchableOpacity>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>Edit</Text>
-            </View>
-            <View
+            </View> */}
+            {/* <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -157,7 +227,7 @@ const AuthMenuBottomSheet = (props) => {
                 <MaterialCommunityIcons name='delete-alert' size={25} color='black' style={{}} />
               </TouchableOpacity>
               <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
-            </View>
+            </View> */}
           </View>
         </BottomSheetView>
       </GorhomBottomSheet>
