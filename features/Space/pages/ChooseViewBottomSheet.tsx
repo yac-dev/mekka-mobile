@@ -102,7 +102,7 @@ const ChooseViewBottomSheet = (props) => {
             </TouchableOpacity>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>Map</Text>
           </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
+          {/* <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
             <TouchableOpacity
               style={{
                 width: iconWidth * 0.5,
@@ -122,7 +122,7 @@ const ChooseViewBottomSheet = (props) => {
               <MaterialCommunityIcons name='account-multiple' size={30} color='black' style={{}} />
             </TouchableOpacity>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>People</Text>
-          </View>
+          </View> */}
         </View>
 
         {/* <TouchableOpacity
