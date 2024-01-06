@@ -106,7 +106,7 @@ const ChooseViewBottomSheet = (props) => {
                 navigation.navigate('TagsTopTabNavigator', {
                   screen: `SpaceTab_${currentTagObject.tag._id}`,
                   params: {
-                    screen: 'LocationsViewTopTabNavigator',
+                    screen: 'MavViewStackNavigator',
                   },
                 });
                 setViewPostsType('map');
