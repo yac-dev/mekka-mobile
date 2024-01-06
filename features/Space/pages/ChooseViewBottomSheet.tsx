@@ -57,8 +57,20 @@ const ChooseViewBottomSheet = (props) => {
                 borderRadius: (iconWidth * 0.65) / 2,
                 backgroundColor: 'white',
               }}
+              // onPress={() => {
+              //   navigation.navigate('ViewPostsTopTabNavigator', { screen: 'TagsTopTabNavigator' });
+              //   setViewPostsType('tags');
+              //   chooseViewBottomSheetRef.current.close();
+              // }}
+              // currentTagを使う感じかな。。。
+              // `SpaceTab_${currentTagObject.tag._id}`に行って、その中のTagViewかLocationViewかCalendarViewかにいく感じだな。か
               onPress={() => {
-                navigation.navigate('ViewPostsTopTabNavigator', { screen: 'TagsTopTabNavigator' });
+                navigation.navigate('TagsTopTabNavigator', {
+                  screen: `SpaceTab_${currentTagObject.tag._id}`,
+                  params: {
+                    screen: 'TagViewStackNavigator',
+                  },
+                });
                 setViewPostsType('tags');
                 chooseViewBottomSheetRef.current.close();
               }}
@@ -85,8 +97,18 @@ const ChooseViewBottomSheet = (props) => {
                 borderRadius: (iconWidth * 0.65) / 2,
                 backgroundColor: 'white',
               }}
+              // onPress={() => {
+              //   navigation.navigate('ViewPostsTopTabNavigator', { screen: 'LocationsViewTopTabNavigator' });
+              //   setViewPostsType('map');
+              //   chooseViewBottomSheetRef.current.close();
+              // }}
               onPress={() => {
-                navigation.navigate('ViewPostsTopTabNavigator', { screen: 'LocationsViewTopTabNavigator' });
+                navigation.navigate('TagsTopTabNavigator', {
+                  screen: `SpaceTab_${currentTagObject.tag._id}`,
+                  params: {
+                    screen: 'LocationsViewTopTabNavigator',
+                  },
+                });
                 setViewPostsType('map');
                 chooseViewBottomSheetRef.current.close();
               }}

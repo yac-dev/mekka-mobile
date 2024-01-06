@@ -7,6 +7,7 @@ import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { useContext } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import TagViewStackNavigator from './TagViewStackNavigator';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -28,8 +29,11 @@ const viewTypeObject = {
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={22} />,
 };
 
-const ViewPostsTopTabNavigator = () => {
+const ViewPostsTopTabNavigator = (parentProps) => {
   const { chooseViewBottomSheetRef, viewPostsType } = useContext(SpaceRootContext);
+  // navigation={navigation}
+  // tagObject={tagObject}
+  // tagsFetchingStatus={tagsFetchingStatus}
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
@@ -43,7 +47,16 @@ const ViewPostsTopTabNavigator = () => {
           backgroundColor: 'transparent',
         })}
       >
-        <Tab.Screen name='TagsTopTabNavigator' component={TagsTopTabNavigator} />
+        <Tab.Screen name='TagViewStackNavigator'>
+          {(props) => (
+            <TagViewStackNavigator
+              {...props}
+              navigation={parentProps.navigation}
+              tagObject={parentProps.tagObject}
+              tagsFetchingStatus={parentProps.tagsFetchingStatus}
+            />
+          )}
+        </Tab.Screen>
         <Tab.Screen name='LocationsViewTopTabNavigator' component={LocationsViewTopTabNavigator} />
         <Tab.Screen name='PeopleViewTopTabNavigator' component={PeopleViewTopTabNavigator} />
       </Tab.Navigator>

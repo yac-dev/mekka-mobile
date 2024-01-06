@@ -32,7 +32,7 @@ import SnackBar from '../components/SnackBar';
 // import Grid from '../features/Space/components/Grid';
 import TagView from '../features/Space/pages/TagView';
 import Map from '../features/Space/components/Map';
-import ViewPostsTopTabNavigator from './ViewPostsTopTabMavigator';
+import ViewPostsTopTabNavigator from './ViewPostsTopTabNavigator';
 import ChooseViewBottomSheet from '../features/Space/pages/ChooseViewBottomSheet';
 import { TagViewRootContext } from '../features/SpaceMenuBottomSheet/contexts/TagViewRootContext';
 import TagViewStackNavigator from './TagViewStackNavigator';
@@ -419,7 +419,12 @@ const TagsTopTabNavigator = (props) => {
               initialParams={{ tagObject }}
             >
               {({ navigation }) => (
-                <TagViewStackNavigator
+                // <TagViewStackNavigator
+                //   navigation={navigation}
+                //   tagObject={tagObject}
+                //   tagsFetchingStatus={tagsFetchingStatus}
+                // />
+                <ViewPostsTopTabNavigator
                   navigation={navigation}
                   tagObject={tagObject}
                   tagsFetchingStatus={tagsFetchingStatus}

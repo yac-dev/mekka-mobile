@@ -313,9 +313,10 @@ const SpaceRootBottomTabNavigator = (props) => {
           // tabBarLabel: navigation.isFocused() ? route.name : '',
         })}
       >
+        {/* ここでは、tagsのtopTabを入れていくことになるわな。。。大きなrefactorだな。。。 */}
         <Tab.Screen
-          name='ViewPostsTopTabNavigator'
-          component={ViewPostsTopTabNavigator}
+          name='TagsTopTabNavigator'
+          component={TagsTopTabNavigator}
           options={({ navigation, route }) => ({
             // tabBarShowLabel: false,
             tabBarIcon: ({ size, color, focused }) =>
