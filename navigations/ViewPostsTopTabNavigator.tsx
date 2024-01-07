@@ -79,11 +79,11 @@ const ViewPostsTopTabNavigator = (parentProps) => {
         }}
         style={{
           backgroundColor: 'white',
-          width: 50,
-          height: 50,
-          borderRadius: 25,
+          width: 44,
+          height: 44,
+          borderRadius: 22,
           position: 'absolute',
-          bottom: 90,
+          bottom: 80,
           right: 10,
           justifyContent: 'center',
           alignItems: 'center',
@@ -101,13 +101,13 @@ const ViewPostsTopTabNavigator = (parentProps) => {
           }),
         }}
       >
-        <MaterialCommunityIcons name='dots-grid' color='black' size={22} />
+        <MaterialCommunityIcons name='dots-grid' color='black' size={25} />
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          width: 50,
-          height: 50,
-          borderRadius: 25,
+          width: 44,
+          height: 44,
+          borderRadius: 22,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'white',
@@ -131,7 +131,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
           navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });
         }}
       >
-        <Ionicons name='add' size={35} color={'black'} />
+        <Ionicons name='add' size={32} color={'black'} />
       </TouchableOpacity>
     </View>
   );

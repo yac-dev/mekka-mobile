@@ -90,6 +90,8 @@ const SpaceRootStackNavigator = (props) => {
       .map((element, index) => element._id);
     try {
       const payload = new FormData();
+      payload.append('disappearAfter', currentSpaceAndUserRelationship.space.disappearAfter);
+      payload.append('type', createNewPostFormData.postType);
       payload.append('reactions', JSON.stringify(currentSpaceAndUserRelationship.space.reactions));
       payload.append('caption', createNewPostFormData.caption);
       payload.append('createdTags', JSON.stringify(filteredCreatedTags));

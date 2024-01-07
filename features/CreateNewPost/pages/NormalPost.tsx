@@ -68,6 +68,35 @@ const NormalPost = () => {
     );
   };
 
+  const calcurateMinutes = () => {
+    if (space.disappearAfter >= 60) {
+      return (
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
+          {space.disappearAfter / 60} hours.
+        </Text>
+      );
+    } else {
+      return (
+        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', fontSize: 18 }}>
+          {space.disappearAfter} minutes.
+        </Text>
+      );
+    }
+  };
+
+  function convertMinutesToHoursAndMinutes(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+      return `${minutes} minutes`;
+    } else if (remainingMinutes === 0) {
+      return `${hours} hours`;
+    } else {
+      return `${hours} hours ${remainingMinutes} minutes`;
+    }
+  }
+
   const renderContentType = useCallback(() => {
     if (space.contentType === 'photo') {
       return <Text style={{ color: 'rgb(180, 180, 180)' }}>Photos</Text>;
@@ -227,11 +256,19 @@ const NormalPost = () => {
                   marginBottom: 10,
                 }}
               >
-                Normal post
+                {createNewPostFormData.postType === 'normal' ? 'Normal Post' : 'Moment Post'}
               </Text>
               <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-                Please select at most 6 {renderContentType()} at first. {'\n'}The caption is optional.
+                Please select at most 6 {renderContentType()}.
               </Text>
+              {createNewPostFormData.postType === 'moment' ? (
+                <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+                  Your moment post will be disappeared within{'\n'}
+                  <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
+                    {convertMinutesToHoursAndMinutes(space.disappearAfter)}
+                  </Text>
+                </Text>
+              ) : null}
             </View>
             {renderContents()}
             <TextInput

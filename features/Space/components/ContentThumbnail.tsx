@@ -21,6 +21,29 @@ const ContentThumbnail = (props) => {
     setIsLoading(false);
   };
 
+  // {calculateLeftTime(props.moment.disappearAt)}
+  const calculateLeftTime = (disappearAt) => {
+    const now = new Date();
+    const last = new Date(disappearAt);
+    const timeLeftMs = last - now;
+    const hours = Math.floor(timeLeftMs / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', top: 5, alignSelf: 'center' }}>
+        <ExpoImage
+          style={{ width: 15, height: 15, marginRight: 5 }}
+          source={require('../../../assets/forApp/ghost.png')}
+          placeholder={blurhash}
+          contentFit='contain'
+          transition={1000}
+          tintColor={'white'}
+        />
+        <Text style={{ color: 'white' }}>{`${hours ? `${hours} h` : ''} ${minutes ? `${minutes} min` : ''}`}</Text>
+      </View>
+    );
+  };
+
   const millisecondsToTime = (milliseconds) => {
     // Convert milliseconds to seconds
     var seconds = Math.floor(milliseconds / 1000);
@@ -66,6 +89,7 @@ const ContentThumbnail = (props) => {
             </Text>
           </View>
         )}
+        {props.post.type === 'moment' ? calculateLeftTime(props.post.disappearAt) : null}
       </TouchableOpacity>
     );
   } else {
@@ -90,6 +114,7 @@ const ContentThumbnail = (props) => {
           // transition={1000}
           onLoad={handleImageLoad}
         />
+        {props.post.type === 'moment' ? calculateLeftTime(props.post.disappearAt) : null}
       </TouchableOpacity>
     );
   }
