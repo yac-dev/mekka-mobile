@@ -168,7 +168,7 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
     setSnackBar({
       isVisible: true,
       barType: 'success',
-      message: 'The space has been created successfully. Invite your friends, share your moments and have fun.',
+      message: `The space has been created successfully. Invite your friends, share your moments${'\n'}and have fun.`,
       duration: 7000,
     });
     props.navigation.navigate('SpacesDrawerNavigator');

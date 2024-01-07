@@ -14,42 +14,63 @@ import { Video } from 'expo-av';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
 import Map from '../features/MapView/pages/Map';
+import { MapViewStackContext } from '../features/MapView/context';
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MapViewStackNavigator: React.FC = (props) => {
+  const [posts, setPosts] = useState([]);
+  const mapRef = useRef(null);
+  const [region, setRegion] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 1.0922,
+    longitudeDelta: 1.0421,
+  });
+
+  // props.tagObject.tag._idを使ってqueryをしていくと。
+  const onRegionChangeComplete = (region) => {
+    setRegion(region);
+    // このregionを使って、apiにqueryを送る。
+  };
+
+  // const LATITUDE_DELTA = 100; // zoom levelを後でやろうか。。
+  // const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
+
   return (
-    <View style={{ flex: 1 }}>
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
-            name='Map'
-            component={Map}
-            options={({ navigation }) => ({
-              headerShown: false,
-            })}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
-            name='ViewPostStackNavigator'
-            component={ViewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              // headerTransparent: true,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'transparent',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: primaryTextColor,
-              },
-            })}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </View>
+    <MapViewStackContext.Provider value={{ posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete }}>
+      <View style={{ flex: 1 }}>
+        <Stack.Navigator>
+          <Stack.Group>
+            <Stack.Screen
+              name='Map'
+              component={Map}
+              options={({ navigation }) => ({
+                headerShown: false,
+              })}
+            />
+          </Stack.Group>
+          <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+            <Stack.Screen
+              name='ViewPostStackNavigator'
+              component={ViewPostStackNavigator}
+              options={({ navigation }) => ({
+                headerShown: false,
+                // headerTransparent: true,
+                headerTitle: '',
+                headerStyle: {
+                  backgroundColor: 'transparent',
+                },
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  color: primaryTextColor,
+                },
+              })}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </View>
+    </MapViewStackContext.Provider>
   );
 };
 

@@ -8,12 +8,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import * as VideoThumbnail from 'expo-video-thumbnails';
+import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ContentThumbnail = (props) => {
-  const { isIpad, createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
+  const { isIpad, createNewPostFormData } = useContext(GlobalContext);
+  const { setCreateNewPostFormData } = useContext(SpaceRootContext);
   const [isLoading, setIsLoading] = useState(true);
   const { setContents } = useContext(CreateNewPostContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
@@ -48,7 +50,7 @@ const ContentThumbnail = (props) => {
         <>
           {/* {isLoading && <Skeleton />} */}
           <ExpoImage
-            style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
+            style={{ width: '100%', height: '100%', borderRadius: 10, marginRight: 10 }}
             source={{ uri: props.content.uri }}
             contentFit='cover'
             // tintColor={'white'}
@@ -76,37 +78,48 @@ const ContentThumbnail = (props) => {
           /> */}
         </>
       )}
-      <TouchableOpacity
+      <View
         style={{
-          position: 'absolute',
-          top: -10,
-          right: 0,
-          backgroundColor: 'red',
-          width: 30,
-          height: 30,
-          borderRadius: 15,
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: 'black',
           justifyContent: 'center',
           alignItems: 'center',
+          position: 'absolute',
+          top: -10,
+          right: -10,
         }}
-        onPress={
-          () =>
-            setCreateNewPostFormData((previous) => {
-              const updating = [...previous.contents];
-              const updated = updating.filter((_, idx) => props.index !== idx);
-              return {
-                ...previous,
-                contents: updated,
-              };
-            })
-          // setContents((previous) => {
-          //   const updating = [...previous];
-          //   const updated = updating.filter((_, idx) => props.index !== idx);
-          //   return updated;
-          // })
-        }
       >
-        <Fontisto name='minus-a' size={20} color={'white'} />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'white',
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={
+            () =>
+              setCreateNewPostFormData((previous) => {
+                const updating = [...previous.contents];
+                const updated = updating.filter((_, idx) => props.index !== idx);
+                return {
+                  ...previous,
+                  contents: updated,
+                };
+              })
+            // setContents((previous) => {
+            //   const updating = [...previous];
+            //   const updated = updating.filter((_, idx) => props.index !== idx);
+            //   return updated;
+            // })
+          }
+        >
+          <Ionicons name='close' size={20} color={'black'} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

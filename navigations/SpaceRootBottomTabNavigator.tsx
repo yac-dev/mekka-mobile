@@ -305,6 +305,7 @@ const SpaceRootBottomTabNavigator = (props) => {
             borderTopWidth: 0,
             paddingTop: 5,
             paddingBottom: 5,
+            display: 'none', // ver1では、bottom tabを表示しない様にする。今後のupdateで少し足すかも。。。
             // position: 'absolute',
             // bottom: 30,
             // justifyContent: 'center',

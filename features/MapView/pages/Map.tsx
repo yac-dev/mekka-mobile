@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import MapView, { Marker } from 'react-native-maps';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
+import { MapViewStackContext } from '../context';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -11,10 +12,19 @@ const blurhash =
 const Tab = createMaterialTopTabNavigator();
 
 const Map = () => {
-  const { height, width } = Dimensions.get('window');
-  const LATITUDE_DELTA = 100; // zoom levelを後でやろうか。。
-  const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
-  const mapRef = useRef(null);
+  const { posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete } = useContext(MapViewStackContext);
+  // const { height, width } = Dimensions.get('window');
+  // const LATITUDE_DELTA = 100; // zoom levelを後でやろうか。。
+  // const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
+  // const mapRef = useRef(null);
+  // const [region, setRegion] = useState({
+  //   latitude: 37.78825,
+  //   longitude: -122.4324,
+  //   latitudeDelta: 1.0922,
+  //   longitudeDelta: 1.0421,
+  // });
+
+  // const [posts, setPosts] = useState([]);
 
   // useEffect(() => {
   //   getPostsByLocationTagId();
@@ -82,6 +92,10 @@ const Map = () => {
   // };
 
   // if (haveLocationTagsBeenFetched) {
+
+  // 最終的な戦略としては、今スマホの画面内に収まっている地図の範囲内のデータをとってくる手法だね。多分、airbnbはそんなかんじだと思う。
+  // 多分だけど、、、今のregionを基本として、latitudeは+-20, longitudeが+-50、みたいな感じの範囲内でqueryをする。さらにその上で、latitude deltaとlongitude deltaも考慮に入れると。
+  console.log(region);
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <MapView
@@ -92,15 +106,8 @@ const Map = () => {
         showsCompass={true}
         scrollEnabled={true}
         zoomEnabled={true}
-        // onPress={(event) => setMeetupLocation(event)}
-        // initial regionっていうのは、最初に地図がloadされたときに画面の中心にどのlatitudeとlongitudeを映すかって言うことね。
-        // これ、今のuserの場所にしたほうがいいわな。開発中は、ずっとsanfransisco中心に進めていたけど。。
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
+        initialRegion={region}
+        onRegionChangeComplete={onRegionChangeComplete}
         // mapType={'satellite'}
       >
         {/* {renderMarkers()} */}

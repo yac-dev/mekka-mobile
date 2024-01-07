@@ -52,29 +52,33 @@ const Reaction = (props) => {
       });
 
       return (
-        <View
-          style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20, marginTop: 30 }}
-        >
-          {formData.reactions.length === 6 ? null : (
-            <TouchableOpacity
-              style={{
-                alignSelf: 'center',
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 56,
-                height: 56,
-                padding: 2,
-                borderRadius: 56 / 2,
-                marginRight: 8,
-              }}
-              onPress={() => props.navigation.navigate('ReactionPicker', { reactions: formData.reactions })}
-            >
-              <Text style={{ fontSize: 23 }}>😁</Text>
-              <Text style={{ fontWeight: 'bold' }}>Add</Text>
-            </TouchableOpacity>
-          )}
-          {formData.reactions.length ? list : null}
+        <View>
+          <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center' }}>Please choose at most 6 reactions.</Text>
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20, marginTop: 30 }}
+          >
+            {formData.reactions.length === 6 ? null : (
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 56,
+                  height: 56,
+                  padding: 2,
+                  borderRadius: 56 / 2,
+                  marginRight: 8,
+                }}
+                onPress={() => props.navigation.navigate('ReactionPicker', { reactions: formData.reactions })}
+              >
+                {/* <Text style={{ fontSize: 23 }}>😁</Text> */}
+                <Ionicons name='add' size={20} color='black' />
+                <Text style={{ fontWeight: 'bold' }}>Add</Text>
+              </TouchableOpacity>
+            )}
+            {formData.reactions.length ? list : null}
+          </View>
         </View>
       );
     } else {
@@ -101,7 +105,7 @@ const Reaction = (props) => {
           "Disabled".
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
         <TouchableOpacity
           style={{
             alignSelf: 'center',
@@ -124,7 +128,7 @@ const Reaction = (props) => {
           }
         >
           {/* <MaterialCommunityIcons name='camera-plus' size={30} color='black' /> */}
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Allow</Text>
+          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Allowed</Text>
           {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? (
             <Ionicons
               name='checkmark-circle'
@@ -156,7 +160,7 @@ const Reaction = (props) => {
           }
         >
           {/* <MaterialCommunityIcons name='camera-plus' size={30} color='black' /> */}
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Disabled</Text>
+          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Not allowed</Text>
           {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? null : (
             <Ionicons
               name='checkmark-circle'

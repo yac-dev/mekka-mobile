@@ -170,32 +170,43 @@ const ReactionPicker = (props) => {
         ) : (
           <ExpoImage style={{ width: 40, height: 40 }} source={{ uri: item.sticker.url }} contentFit='cover' />
         )}
-        <TouchableOpacity
+        <View
           style={{
-            backgroundColor: 'red',
-            borderRadius: 10,
-            width: 20,
-            height: 20,
+            width: 28,
+            height: 28,
+            backgroundColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
             position: 'absolute',
-            top: -7,
-            right: -7,
-          }}
-          onPress={() => {
-            setSelectedReactions((previous) => {
-              const updating = { ...previous };
-              if (item.type === 'emoji') {
-                delete updating[item.emoji];
-              } else if (item.type === 'sticker') {
-                delete updating[item.sticker._id];
-              }
-              return updating;
-            });
+            top: -13,
+            right: -13,
+            borderRadius: 14,
           }}
         >
-          <MaterialCommunityIcons name='minus' color={'white'} size={20} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'white',
+              borderRadius: 10,
+              width: 20,
+              height: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              setSelectedReactions((previous) => {
+                const updating = { ...previous };
+                if (item.type === 'emoji') {
+                  delete updating[item.emoji];
+                } else if (item.type === 'sticker') {
+                  delete updating[item.sticker._id];
+                }
+                return updating;
+              });
+            }}
+          >
+            <Ionicons name='close' color={'black'} size={15} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }, []);
@@ -233,9 +244,9 @@ const ReactionPicker = (props) => {
           >
             Add Reactions
           </Text>
-          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+          {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
             Please choose at most 6 reaction options.
-          </Text>
+          </Text> */}
         </View>
         {/* {renderSelectedEmojis()} */}
         {renderSelectedReactions()}
@@ -266,7 +277,7 @@ const ReactionPicker = (props) => {
               options={({ navigation, route }) => ({
                 tabBarShowLabel: false,
                 tabBarIcon: ({ size, color, focused }) => (
-                  <Ionicons name='star' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
+                  <Ionicons name='hammer' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
                 ),
               })}
             />

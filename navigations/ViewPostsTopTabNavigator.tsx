@@ -6,6 +6,7 @@ import PeopleViewTopTabNavigator from './PeopleViewTopTabNavigator';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { useContext } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import TagViewStackNavigator from './TagViewStackNavigator';
 import MavViewStackNavigator from './MapViewStackNavigator';
@@ -31,7 +32,8 @@ const viewTypeObject = {
 };
 
 const ViewPostsTopTabNavigator = (parentProps) => {
-  const { chooseViewBottomSheetRef, viewPostsType } = useContext(SpaceRootContext);
+  const { chooseViewBottomSheetRef, viewPostsType, navigation, spaceAndUserRelationship } =
+    useContext(SpaceRootContext);
   // navigation={navigation}
   // tagObject={tagObject}
   // tagsFetchingStatus={tagsFetchingStatus}
@@ -58,7 +60,16 @@ const ViewPostsTopTabNavigator = (parentProps) => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name='MavViewStackNavigator' component={MavViewStackNavigator} />
+        <Tab.Screen name='MavViewStackNavigator'>
+          {(props) => (
+            <MavViewStackNavigator
+              {...props}
+              navigation={parentProps.navigation}
+              tagObject={parentProps.tagObject}
+              tagsFetchingStatus={parentProps.tagsFetchingStatus}
+            />
+          )}
+        </Tab.Screen>
         <Tab.Screen name='PeopleViewTopTabNavigator' component={PeopleViewTopTabNavigator} />
       </Tab.Navigator>
       <TouchableOpacity
@@ -71,7 +82,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
           height: 40,
           borderRadius: 20,
           position: 'absolute',
-          bottom: 20,
+          bottom: 70,
           right: 10,
           justifyContent: 'center',
           alignItems: 'center',
@@ -90,6 +101,25 @@ const ViewPostsTopTabNavigator = (parentProps) => {
         }}
       >
         <MaterialCommunityIcons name='dots-grid' color='black' size={22} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'white',
+          position: 'absolute',
+          bottom: 20,
+          right: 20,
+        }}
+        onPress={() => {
+          // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });
+        }}
+      >
+        <Ionicons name='add' size={20} color={'black'} />
       </TouchableOpacity>
     </View>
   );

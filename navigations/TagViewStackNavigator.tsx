@@ -42,25 +42,25 @@ const TagViewStackNavigator: React.FC = (props) => {
   // console.log(props.screenLoaded);
 
   // generalになる理由はなんだろう。。。？？
-  // useEffect(() => {
-  //   if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
-  //     // responseDataのaddedTags、もしくはresponseData.createdTagの中にprops.tagObject.tag._idがある場合は
-  //     // って言うのが必要になる。
-  //     setPosts((previous) => {
-  //       const updating = [...previous];
-  //       updating.unshift(createNewPostResult.responseData.post);
-  //       return updating;
-  //     });
-  //     setCreateNewPostResult((previous) => {
-  //       return {
-  //         ...previous,
-  //         isCreating: false,
-  //         isSuccess: false,
-  //         responseData: null,
-  //       };
-  //     });
-  //   }
-  // }, [createNewPostResult]);
+  useEffect(() => {
+    if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
+      // responseDataのaddedTags、もしくはresponseData.createdTagの中にprops.tagObject.tag._idがある場合は
+      // って言うのが必要になる。
+      setPosts((previous) => {
+        const updating = [...previous];
+        updating.unshift(createNewPostResult.responseData.post);
+        return updating;
+      });
+      setCreateNewPostResult((previous) => {
+        return {
+          ...previous,
+          isCreating: false,
+          isSuccess: false,
+          responseData: null,
+        };
+      });
+    }
+  }, [createNewPostResult]);
 
   const getPostsByTagId = async () => {
     setIsLoading(true);
@@ -127,14 +127,14 @@ const TagViewStackNavigator: React.FC = (props) => {
     >
       <View
         style={{ flex: 1 }}
-        // onLayout={() =>
-        //   setScreenLoaded((previous) => {
-        //     return {
-        //       ...previous,
-        //       [props.tagObject.tag._id]: true,
-        //     };
-        //   })
-        // }
+        onLayout={() =>
+          setScreenLoaded((previous) => {
+            return {
+              ...previous,
+              [props.tagObject.tag._id]: true,
+            };
+          })
+        }
       >
         <Stack.Navigator>
           <Stack.Group>

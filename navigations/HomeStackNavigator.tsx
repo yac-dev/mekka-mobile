@@ -223,7 +223,7 @@ const HomeStackNavigator: React.FC = (props) => {
                 },
               })}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name='CreateNewPostStackNavigator'
               component={CreateNewPostStackNavigator}
               options={({ navigation }) => ({
@@ -237,7 +237,7 @@ const HomeStackNavigator: React.FC = (props) => {
                   color: 'white',
                 },
               })}
-            />
+            /> */}
             <Stack.Screen
               name='SpaceDetailStackNavigator'
               component={SpaceDetailStackNavigator}
