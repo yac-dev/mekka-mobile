@@ -34,12 +34,76 @@ const ChooseViewBottomSheet = (props) => {
       // onClose={() => onSelectedItemBottomSheetClose()}
     >
       {/* `SpaceTab_${currentTagObject.tag._id}`, params: { screen: 'Grid' }  */}
-      <BottomSheetView style={{ flex: 1, paddingTop: 10 }}>
-        <View style={{ marginBottom: 10, paddingLeft: 20, paddingRight: 10 }}>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 23 }}>Choose View</Text>
+      <BottomSheetView style={{ flex: 1 }}>
+        {/* <View style={{ marginBottom: 10, paddingLeft: 20, paddingRight: 10 }}></View> */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 23, marginLeft: 20 }}>Choose View</Text>
+          <TouchableOpacity
+            style={{
+              // alignSelf: 'flex-end',
+              marginRight: 20,
+            }}
+            onPress={() => {
+              chooseViewBottomSheetRef.current.close();
+            }}
+          >
+            <Ionicons name='close-circle' color='white' size={30} style={{ marginRight: 5 }} />
+          </TouchableOpacity>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-          <View
+        <View style={{ flexDirection: 'column' }}>
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => {
+              navigation.navigate('TagsTopTabNavigator', {
+                screen: `SpaceTab_${currentTagObject.tag._id}`,
+                params: {
+                  screen: 'TagViewStackNavigator',
+                },
+              });
+              setViewPostsType('tags');
+              chooseViewBottomSheetRef.current.close();
+            }}
+            activeOpacity={1}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialCommunityIcons name='dots-grid' color='white' size={25} style={{ marginRight: 20 }} />
+              <View>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Grid</Text>
+              </View>
+            </View>
+            <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => {
+              navigation.navigate('TagsTopTabNavigator', {
+                screen: `SpaceTab_${currentTagObject.tag._id}`,
+                params: {
+                  screen: 'MavViewStackNavigator',
+                },
+              });
+              setViewPostsType('map');
+              chooseViewBottomSheetRef.current.close();
+            }}
+            activeOpacity={1}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <ExpoImage
+                style={{ width: 25, height: 25, marginRight: 20 }}
+                source={require('../../../assets/forApp/globe.png')}
+                placeholder={blurhash}
+                contentFit='contain'
+                transition={1000}
+                tintColor={'white'}
+              />
+              <View>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Map</Text>
+              </View>
+            </View>
+            <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+          </TouchableOpacity>
+
+          {/* <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -78,8 +142,9 @@ const ChooseViewBottomSheet = (props) => {
               <Octicons name='hash' color='black' size={30} />
             </TouchableOpacity>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>Tags</Text>
-          </View>
-          <View
+          </View> */}
+          {/* ----- */}
+          {/* <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -123,7 +188,7 @@ const ChooseViewBottomSheet = (props) => {
               />
             </TouchableOpacity>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>Map</Text>
-          </View>
+          </View> */}
           {/* <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
             <TouchableOpacity
               style={{
