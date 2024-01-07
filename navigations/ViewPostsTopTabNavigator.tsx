@@ -79,11 +79,11 @@ const ViewPostsTopTabNavigator = (parentProps) => {
         }}
         style={{
           backgroundColor: 'white',
-          width: 40,
-          height: 40,
-          borderRadius: 20,
+          width: 50,
+          height: 50,
+          borderRadius: 25,
           position: 'absolute',
-          bottom: 70,
+          bottom: 90,
           right: 10,
           justifyContent: 'center',
           alignItems: 'center',
@@ -91,9 +91,9 @@ const ViewPostsTopTabNavigator = (parentProps) => {
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 4, height: 4 },
-              shadowOpacity: 0.4,
-              shadowRadius: 5,
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
             },
             android: {
               elevation: 5,
@@ -105,22 +105,33 @@ const ViewPostsTopTabNavigator = (parentProps) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          width: 40,
-          height: 40,
-          borderRadius: 20,
+          width: 50,
+          height: 50,
+          borderRadius: 25,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'white',
           position: 'absolute',
           bottom: 20,
           right: 20,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
         }}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
           navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });
         }}
       >
-        <Ionicons name='add' size={30} color={'black'} />
+        <Ionicons name='add' size={35} color={'black'} />
       </TouchableOpacity>
     </View>
   );

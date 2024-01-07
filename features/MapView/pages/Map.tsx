@@ -12,7 +12,8 @@ const blurhash =
 const Tab = createMaterialTopTabNavigator();
 
 const Map = () => {
-  const { posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete } = useContext(MapViewStackContext);
+  const { posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete, fetchingStatus } =
+    useContext(MapViewStackContext);
   // const { height, width } = Dimensions.get('window');
   // const LATITUDE_DELTA = 100; // zoom levelを後でやろうか。。
   // const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
@@ -43,59 +44,52 @@ const Map = () => {
   //   }
   // }, [selectedLocationTag]);
 
-  // const renderMarkers = () => {
-  //   if (locationTags.length) {
-  //     const list = locationTags.map((locationTag, index) => {
-  //       return (
-  //         <Marker
-  //           key={index}
-  //           tracksViewChanges={false}
-  //           coordinate={{
-  //             latitude: locationTag.point.coordinates[1],
-  //             longitude: locationTag.point.coordinates[0],
-  //           }}
-  //           pinColor='black'
-  //           onPress={() => {
-  //             // onPress();
-  //             console.log(locationTag._id);
-  //             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-  //             locationsViewPostsBottomSheetRef.current.snapToIndex(0);
-  //             getPostsByLocationTagId(locationTag);
-  //           }}
-  //         >
-  //           <TouchableOpacity
-  //             style={{ width: 45, height: 45 }}
-  //             // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
-  //           >
-  //             <ExpoImage
-  //               style={{
-  //                 width: '100%',
-  //                 height: '100%',
-  //                 borderRadius: 10,
-  //               }}
-  //               source={{ uri: locationTag.icon }}
-  //               style={{ width: 35, height: 35, borderRadius: 8, marginBottom: 5 }}
-  //               placeholder={blurhash}
-  //               contentFit='contain'
-  //               transition={1000}
-  //               tintColor={locationTag.iconType === 'icon' ? locationTag.color : null}
-  //             />
-  //           </TouchableOpacity>
-  //         </Marker>
-  //       );
-  //     });
+  const renderMarkers = () => {
+    if (posts.length) {
+      const list = posts.map((post, index) => {
+        return (
+          <Marker
+            key={index}
+            tracksViewChanges={false}
+            coordinate={{
+              latitude: post.location.coordinates[1],
+              longitude: post.location.coordinates[0],
+            }}
+            pinColor='black'
+            onPress={() => {
+              // onPress();
+            }}
+          >
+            <TouchableOpacity
+              style={{ width: 45, height: 45 }}
+              // onPress={() => locationsViewPostsBottomSheetRef.current.snapToIndex(1)}
+            >
+              <ExpoImage
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 10,
+                }}
+                source={{ uri: post.contents[0].data }}
+                contentFit='contain'
+                transition={500} // ふつくしい。。。//  loadingだけは今惜しいが笑　とにかくポジティブに！！できたことをとにかく認めよう！！
+              />
+            </TouchableOpacity>
+          </Marker>
+        );
+      });
 
-  //     return <>{list}</>;
-  //   } else {
-  //     return null;
-  //   }
-  // };
+      return <>{list}</>;
+    } else {
+      return null;
+    }
+  };
 
   // if (haveLocationTagsBeenFetched) {
 
   // 最終的な戦略としては、今スマホの画面内に収まっている地図の範囲内のデータをとってくる手法だね。多分、airbnbはそんなかんじだと思う。
   // 多分だけど、、、今のregionを基本として、latitudeは+-20, longitudeが+-50、みたいな感じの範囲内でqueryをする。さらにその上で、latitude deltaとlongitude deltaも考慮に入れると。
-  console.log(region);
+  console.log(posts);
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <MapView
@@ -110,7 +104,12 @@ const Map = () => {
         onRegionChangeComplete={onRegionChangeComplete}
         // mapType={'satellite'}
       >
-        {/* {renderMarkers()} */}
+        {/* {fetchingStatus === 'loading' ? (
+          <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
+            <ActivityIndicator size='large' color='white' />
+          </View>
+        ) : null} */}
+        {renderMarkers()}
         {/* <Tab.Navigator
           tabBar={(props) => <CustomTabBar {...props} />}
           screenOptions={({ route }) => ({

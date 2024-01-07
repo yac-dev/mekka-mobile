@@ -19,27 +19,56 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MapViewStackNavigator: React.FC = (props) => {
+  const [fetchingStatus, setFetchingStatus] = useState('idle');
   const [posts, setPosts] = useState([]);
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
-    latitudeDelta: 1.0922,
-    longitudeDelta: 1.0421,
+    latitudeDelta: 100.0922,
+    longitudeDelta: 100.0421,
   });
+  const [fetchingPosts, setFetchingPosts] = useState({
+    status: 'idle', // 'idle', 'loading', 'success', 'error'かな。
+    data: [],
+    error: '',
+  });
+
+  const getPostsByTagIdAndRegion = async () => {
+    setFetchingStatus('loading');
+    const result = await backendAPI.post(`/posts/tag/${props.tagObject.tag._id}/region`, { region });
+    const { posts } = result.data;
+    setPosts(posts);
+    setFetchingStatus('success');
+  };
+  console.log('fetching state -> ', fetchingStatus);
 
   // props.tagObject.tag._idを使ってqueryをしていくと。
   const onRegionChangeComplete = (region) => {
     setRegion(region);
-    // このregionを使って、apiにqueryを送る。
   };
+
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      getPostsByTagIdAndRegion();
+    }, 500);
+
+    return () => clearTimeout(delaySearch);
+  }, [region]);
 
   // const LATITUDE_DELTA = 100; // zoom levelを後でやろうか。。
   // const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
   return (
-    <MapViewStackContext.Provider value={{ posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete }}>
+    <MapViewStackContext.Provider
+      value={{ posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete, fetchingStatus }}
+    >
       <View style={{ flex: 1 }}>
+        {fetchingStatus === 'loading' ? (
+          <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
+            <Text style={{ color: 'red' }}>Loading...</Text>
+          </View>
+        ) : null}
         <Stack.Navigator>
           <Stack.Group>
             <Stack.Screen
