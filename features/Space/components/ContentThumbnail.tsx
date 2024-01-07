@@ -7,6 +7,7 @@ import { TagViewContext } from '../contexts/TagViewContext';
 import Skeleton from './Skeleton';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import LinearGradient from 'react-native-linear-gradient';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -30,7 +31,9 @@ const ContentThumbnail = (props) => {
     const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
 
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', top: 5, alignSelf: 'center' }}>
+      <View
+        style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 5, alignSelf: 'center' }}
+      >
         <ExpoImage
           style={{ width: 15, height: 15, marginRight: 5 }}
           source={require('../../../assets/forApp/ghost.png')}
@@ -83,7 +86,7 @@ const ContentThumbnail = (props) => {
           resizeMode={ResizeMode.COVER}
         />
         {props.post.contents[0].duration && (
-          <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
+          <View style={{ position: 'absolute', right: 10, top: 10 }}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>
               {millisecondsToTime(props.post.contents[0].duration)}
             </Text>
@@ -114,7 +117,15 @@ const ContentThumbnail = (props) => {
           // transition={1000}
           onLoad={handleImageLoad}
         />
-        {props.post.type === 'moment' ? calculateLeftTime(props.post.disappearAt) : null}
+        {props.post.type === 'moment' ? (
+          <>
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.7)']}
+              style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 30 }}
+            />
+            {calculateLeftTime(props.post.disappearAt)}
+          </>
+        ) : null}
       </TouchableOpacity>
     );
   }
