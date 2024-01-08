@@ -101,7 +101,16 @@ const ViewPostsTopTabNavigator = (parentProps) => {
           }),
         }}
       >
-        <MaterialCommunityIcons name='dots-grid' color='black' size={25} />
+        {viewPostsType === 'grid' ? (
+          <MaterialCommunityIcons name='dots-grid' color='black' size={25} />
+        ) : (
+          <ExpoImage
+            style={{ width: 25, height: 25 }}
+            source={require('../assets/forApp/globe.png')}
+            contentFit='contain'
+            tintColor={'black'}
+          />
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         style={{

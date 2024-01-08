@@ -61,7 +61,7 @@ const SpaceRootStackNavigator = (props) => {
   const [haveLocationsViewPostsBeenFetched, setHaveLocationsViewPostsBeenFetched] = useState(false);
   const [isFetchingLocationsViewPosts, setIsFetchingLocationsViewPosts] = useState(false);
   const [selectedLocationTag, setSelectedLocationTag] = useState(null);
-  const [viewPostsType, setViewPostsType] = useState('tags'); // grid, map, people
+  const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
   const [isAfterPosted, setIsAfterPosted] = useState(false);
   const [screenLoaded, setScreenLoaded] = useState({});
   // ここでstateでいいんじゃないかな。。。

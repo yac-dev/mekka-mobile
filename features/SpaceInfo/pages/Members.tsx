@@ -59,21 +59,6 @@ const Members = () => {
     });
   };
 
-  // <TouchableOpacity
-  //             activeOpacity={1}
-  //             style={{
-  //               width: 30,
-  //               height: 30,
-  //               justifyContent: 'center',
-  //               alignItems: 'center',
-  //               backgroundColor: 'white',
-  //               borderRadius: 15,
-  //             }}
-  //             onPress={() => handleShare()}
-  //           >
-  //             <Ionicons name='share-social' size={20} color='black' />
-  //           </TouchableOpacity>
-
   const renderMembers = useCallback(() => {
     if (haveMembersBeenFetched) {
       if (members.length) {
@@ -96,25 +81,6 @@ const Members = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)' }}>
-      {/* <TouchableOpacity
-                style={{
-                  padding: 15,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 15,
-                }}
-                onPress={() => pickContents()}
-                activeOpacity={1}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
-                  <View>
-                    <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
-                  </View>
-                </View>
-                <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
-              </TouchableOpacity> */}
       <TouchableOpacity
         style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
         onPress={() => {

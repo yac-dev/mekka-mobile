@@ -85,6 +85,17 @@ const SpaceInfo = (props) => {
                 backgroundColor: 'white',
                 borderRadius: 15,
                 marginRight: 10,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 5, height: 5 },
+                    shadowOpacity: 0.5,
+                    shadowRadius: 8,
+                  },
+                  android: {
+                    elevation: 5,
+                  },
+                }),
               }}
               onPress={() =>
                 props.navigation.navigate('ReportSpace', {

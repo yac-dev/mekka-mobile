@@ -60,7 +60,7 @@ const ChooseViewBottomSheet = (props) => {
                   screen: 'TagViewStackNavigator',
                 },
               });
-              setViewPostsType('tags');
+              setViewPostsType('grid');
               chooseViewBottomSheetRef.current.close();
             }}
             activeOpacity={1}
@@ -71,7 +71,9 @@ const ChooseViewBottomSheet = (props) => {
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Grid</Text>
               </View>
             </View>
-            <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+            {viewPostsType === 'grid' ? (
+              <Ionicons name='checkmark' color='white' size={20} style={{ marginRight: 10 }} />
+            ) : null}
           </TouchableOpacity>
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
@@ -100,7 +102,9 @@ const ChooseViewBottomSheet = (props) => {
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Map</Text>
               </View>
             </View>
-            <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+            {viewPostsType === 'map' ? (
+              <Ionicons name='checkmark' color='white' size={20} style={{ marginRight: 10 }} />
+            ) : null}
           </TouchableOpacity>
 
           {/* <View
