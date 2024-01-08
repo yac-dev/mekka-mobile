@@ -10,7 +10,7 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const SelectPostType = (props) => {
-  const { navigation, setPostType } = useContext(CreateNewPostContext);
+  const { navigation, setPostType, space } = useContext(CreateNewPostContext);
   const { setCreateNewPostFormData } = useContext(SpaceRootContext);
 
   // useEffect(() => {
@@ -36,13 +36,69 @@ const SelectPostType = (props) => {
             marginBottom: 10,
           }}
         >
-          Create new Post
+          Post {space.name}
         </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Post your photo/video and share your moments with your peers.
-        </Text>
+        {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+          Share your photos/videos with your peers from here.
+        </Text> */}
       </View>
-      <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 40 }}>
+      <View style={{}}>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => {
+            setCreateNewPostFormData((previous) => {
+              return {
+                ...previous,
+                postType: 'normal',
+              };
+            });
+            navigation?.navigate('NormalPost');
+          }}
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name='images' color='white' size={20} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Normal</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Share your photos/videos with your peers.</Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          activeOpacity={1}
+          onPress={() => {
+            // setPostType('moment');
+            // navigation?.navigate('MomentPost');
+            setCreateNewPostFormData((previous) => {
+              return {
+                ...previous,
+                postType: 'moment',
+              };
+            });
+            navigation?.navigate('NormalPost');
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', width: 250 }}>
+            <ExpoImage
+              style={{ width: 20, height: 20, marginRight: 20 }}
+              source={require('../../../assets/forApp/ghost.png')}
+              contentFit='cover'
+              tintColor={'white'}
+            />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Moment</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                Similar to IG Stories, where your photos/videos will disappear after a certain time instead of the
+                24-hour limit.
+              </Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+        </TouchableOpacity>
+      </View>
+      {/* <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 40 }}>
         <TouchableOpacity
           style={{
             padding: 20,
@@ -93,8 +149,6 @@ const SelectPostType = (props) => {
             navigation?.navigate('NormalPost');
           }}
         >
-          {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}></View>
-          <MaterialCommunityIcons name='chevron-right' color='black' size={25} /> */}
           <ExpoImage
             style={{ width: 25, height: 25, marginBottom: 5 }}
             source={require('../../../assets/forApp/ghost.png')}
@@ -105,7 +159,7 @@ const SelectPostType = (props) => {
             Moment{'\n'}post
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

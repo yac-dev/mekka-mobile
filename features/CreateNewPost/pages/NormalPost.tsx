@@ -22,6 +22,7 @@ import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/nati
 import backendAPI from '../../../apis/backend';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import SnackBar from '../../../components/SnackBar';
@@ -43,7 +44,7 @@ const NormalPost = () => {
 
     return (
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-        {createNewPostFormData.contents.length >= 6 ? null : (
+        {/* {createNewPostFormData.contents.length >= 6 ? null : (
           <TouchableOpacity
             style={{
               backgroundColor: 'white',
@@ -59,7 +60,7 @@ const NormalPost = () => {
             <AntDesign name='plus' size={30} color='black' style={{ marginBottom: 10 }} />
             <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Add</Text>
           </TouchableOpacity>
-        )}
+        )} */}
 
         {/* {contents.length && list} この記法、react native ではダメらしい。reactではいいんだけど。。。 */}
         {/* Error: Text strings must be rendered within a <Text> component.って言われる。 */}
@@ -159,76 +160,11 @@ const NormalPost = () => {
       }
       // result assets それぞれのassetに対して、dataを作る様にすると。
       setCreateNewPostFormData((previous) => {
-        // const adding = [];
-        // for (const asset of result.assets) {
-        //   if (asset.type === 'video') {
-        //     // 基本は, videoの時はdurationがspaceのvideo length以下の時だけ入れる様にする。
-        //     if (asset.duration / 1000 <= space.videoLength) {
-        //       const compressed = await VideoCompressor.compress(asset.uri);
-        //       console.log('compressed result', compressed);
-        //       console.log('asset url', asset.uri);
-        //       adding.push({ uri: asset.uri, type: 'video', duration: asset.duration ? asset.duration : null });
-        //       console.log('adding this', adding);
-        //     } else {
-        //       // addingのarrayに入れないで、snacbarを出してあげる。無理ですって。
-        //       setSnackBar({
-        //         isVisible: true,
-        //         barType: 'warning',
-        //         message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
-        //         duration: 5000,
-        //       });
-        //     }
-        //   } else if (asset.type === 'image') {
-        //     adding.push({ uri: asset.uri, type: 'photo', duration: asset.duration ? asset.duration : null });
-        //   }
-        // }
-        // result.assets.forEach(async (asset) => {
-        //   if (asset.type === 'video') {
-        //     // 基本は, videoの時はdurationがspaceのvideo length以下の時だけ入れる様にする。
-        //     if (asset.duration / 1000 <= space.videoLength) {
-        //       const compressed = await VideoCompressor.compress(asset.uri);
-        //       console.log('compressed result', compressed);
-        //       console.log('asset url', asset.uri);
-        //       adding.push({ uri: asset.uri, type: 'video', duration: asset.duration ? asset.duration : null });
-        //       console.log('adding this', adding);
-        //     } else {
-        //       // addingのarrayに入れないで、snacbarを出してあげる。無理ですって。
-        //       setSnackBar({
-        //         isVisible: true,
-        //         barType: 'warning',
-        //         message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
-        //         duration: 5000,
-        //       });
-        //     }
-        //   } else if (asset.type === 'image') {
-        //     adding.push({ uri: asset.uri, type: 'photo', duration: asset.duration ? asset.duration : null });
-        //   }
-        // });
-
-        // return [...previous, ...adding];
         return {
           ...previous,
           contents: [...previous.contents, ...adding],
         };
       });
-
-      // Determine media type based on file extension
-      // if (uri.endsWith('.jpg') || uri.endsWith('.png')) {
-      //   // The picked content is a photo.
-      //   console.log('Picked photo:', uri);
-      // } else if (uri.endsWith('.mp4') || uri.endsWith('.mov')) {
-      //   // The picked content is a video.
-      //   console.log('Picked video:', uri);
-      // } else {
-      //   console.log('Unknown media type:', uri);
-      // }
-
-      // setFormData((previous) => {
-      //   return {
-      //     ...previous,
-      //     photos: [...previous.photos, result.assets[0].uri],
-      //   };
-      // });
     }
   };
 
@@ -263,13 +199,34 @@ const NormalPost = () => {
               </Text>
               {createNewPostFormData.postType === 'moment' ? (
                 <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-                  Your moment post will be disappeared within{'\n'}
+                  Your moment post will disappear within{'\n'}
                   <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
                     {convertMinutesToHoursAndMinutes(space.disappearAfter)}
                   </Text>
                 </Text>
               ) : null}
             </View>
+            {createNewPostFormData.contents.length >= 6 ? null : (
+              <TouchableOpacity
+                style={{
+                  padding: 15,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 15,
+                }}
+                onPress={() => pickContents()}
+                activeOpacity={1}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
+                  <View>
+                    <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
+                  </View>
+                </View>
+                <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+              </TouchableOpacity>
+            )}
             {renderContents()}
             <TextInput
               style={{

@@ -2,6 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
@@ -80,14 +82,14 @@ const AddTags = (props) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: 'black',
+              backgroundColor: 'rgb(60,60,60)',
               padding: 12,
               borderRadius: 20,
               marginRight: 10,
               marginBottom: 10,
-              borderWidth: 0.3,
-              borderColor: 'white',
-              borderStyle: 'solid',
+              // borderWidth: 0.3,
+              // borderColor: 'white',
+              // borderStyle: 'solid',
             }}
           >
             <ExpoImage
@@ -98,8 +100,31 @@ const AddTags = (props) => {
             />
             <Text style={{ color: 'white' }}>{tag.name}</Text>
             {createNewPostFormData.addedTags[tag._id] ? (
-              <View style={{ position: 'absolute', top: -10, right: -7 }}>
-                <Ionicons name='checkmark-circle' color='green' size={25} />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -12,
+                  right: -15,
+                  backgroundColor: 'black',
+                  width: 30,
+                  height: 30,
+                  borderRadius: 15,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 20,
+                    height: 20,
+                    borderRadius: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={15} />
+                </View>
               </View>
             ) : null}
           </View>
@@ -108,8 +133,10 @@ const AddTags = (props) => {
     });
 
     return (
-      <ScrollView>
-        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', padding: 10 }}>{list}</View>
+      <ScrollView contentContainerStyle={{ height: 250 }} showsVerticalScrollIndicator={true}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', padding: 10, height: 250 }}>
+          {list}
+        </View>
       </ScrollView>
     );
   };
@@ -126,26 +153,28 @@ const AddTags = (props) => {
             marginBottom: 10,
           }}
         >
-          # Add tags
+          Add tags
         </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Please add at least one tag.</Text>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+          Please add at least one tag down below.
+        </Text>
       </View>
-      {renderTagOptions()}
-      {/* <TouchableOpacity
-        style={{
-          backgroundColor: 'white',
-          padding: 10,
-          borderRadius: 25,
-          marginTop: 30,
-        }}
+      <TouchableOpacity
+        style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
         onPress={() => {
           navigation.navigate('CreateNewTag');
         }}
+        activeOpacity={1}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Create new?</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <AntDesign name='edit' color='white' size={20} style={{ marginRight: 20 }} />
+          <View>
+            <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Create new one?</Text>
+          </View>
         </View>
-      </TouchableOpacity> */}
+        <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+      </TouchableOpacity>
+      {renderTagOptions()}
     </View>
   );
 };

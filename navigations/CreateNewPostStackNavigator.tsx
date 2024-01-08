@@ -280,7 +280,7 @@ const CreateNewPostStackNavigator = (props) => {
               },
               headerRight: () => (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => navigation.navigate('CreateNewTag')}
                     style={{ marginRight: 10 }}
                     // disabled={validateAddedTags() ? false : true}
@@ -294,7 +294,7 @@ const CreateNewPostStackNavigator = (props) => {
                     >
                       Create
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <TouchableOpacity
                     onPress={() => navigation.navigate('AddLocationTag')}
                     disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}

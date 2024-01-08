@@ -37,9 +37,7 @@ const ContentThumbnail = (props) => {
         <ExpoImage
           style={{ width: 15, height: 15, marginRight: 5 }}
           source={require('../../../assets/forApp/ghost.png')}
-          placeholder={blurhash}
           contentFit='contain'
-          transition={1000}
           tintColor={'white'}
         />
         <Text style={{ color: 'white' }}>{`${hours ? `${hours} h` : ''} ${minutes ? `${minutes} min` : ''}`}</Text>
@@ -92,7 +90,15 @@ const ContentThumbnail = (props) => {
             </Text>
           </View>
         )}
-        {props.post.type === 'moment' ? calculateLeftTime(props.post.disappearAt) : null}
+        {props.post.type === 'moment' ? (
+          <>
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.7)']}
+              style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 30 }}
+            />
+            {calculateLeftTime(props.post.disappearAt)}
+          </>
+        ) : null}
       </TouchableOpacity>
     );
   } else {
