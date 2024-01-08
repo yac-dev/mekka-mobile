@@ -1,5 +1,5 @@
-import React, { useContext, useCallback, useState } from 'react';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Share } from 'react-native';
+import React, { useContext, useCallback, useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Share, Platform } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import SpaceInfoTopTabNavigator from '../../../navigations/SpaceInfoTopTabNaviga
 import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -28,28 +29,50 @@ const SpaceInfo = (props) => {
     // console.log(e.nativeEvent);
   }, []);
 
-  const handleShare = async () => {
-    Share.share({
-      title: 'Share Mekka',
-      message: `Access here to download Mekka: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
-        spaceAndUserRelationship.space.secretKey
-      }`,
-    });
-  };
-
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)', padding: 10 }}>
-      <View style={{ height: 200, width: '100%', marginBottom: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)' }}>
+      <View style={{ height: 250, width: '100%', marginBottom: 10 }}>
         <ExpoImage
-          style={{ width: '100%', height: '100%', borderRadius: 10 }}
+          style={{ width: '100%', height: '100%' }}
           source={{ uri: spaceAndUserRelationship.space.icon }}
           placeholder={blurhash}
           contentFit='cover'
         />
         {/* これ、下に影入れた方がいいな。 */}
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.7)']}
+          style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 80 }}
+        />
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, position: 'absolute', bottom: 10, left: 10 }}>
           {spaceAndUserRelationship.space.name}
         </Text>
+        <TouchableOpacity
+          onPress={() => props.navigation.goBack()}
+          style={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            backgroundColor: 'white',
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
+            ...Platform.select({
+              ios: {
+                shadowColor: 'black',
+                shadowOffset: { width: 5, height: 5 },
+                shadowOpacity: 0.5,
+                shadowRadius: 8,
+              },
+              android: {
+                elevation: 5,
+              },
+            }),
+          }}
+        >
+          <Ionicons name='close' size={20} color={'black'} />
+        </TouchableOpacity>
         <View style={{ position: 'absolute', bottom: 10, right: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
@@ -71,20 +94,6 @@ const SpaceInfo = (props) => {
             >
               {/* <Feather name='more-horizontal' color='black' size={20} /> */}
               <MaterialCommunityIcons name='exclamation' color='black' size={20} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                width: 30,
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-                borderRadius: 15,
-              }}
-              onPress={() => handleShare()}
-            >
-              <Ionicons name='share-social' size={20} color='black' />
             </TouchableOpacity>
           </View>
         </View>

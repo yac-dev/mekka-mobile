@@ -21,7 +21,7 @@ const SpaceInfoStackNavigator: React.FC = (props) => {
                 <Ionicons name='close-circle-sharp' size={30} color={'white'} />
               </TouchableOpacity>
             ),
-            headerShown: true,
+            headerShown: false,
             headerTitle: '',
             headerStyle: {
               backgroundColor: 'rgb(30, 30, 30)',
