@@ -31,6 +31,7 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
   addedTags: {},
   tagOptions: [],
   addedLocationTag: null,
+  location: null,
   locationTagOptions: [],
   moments: [],
 };

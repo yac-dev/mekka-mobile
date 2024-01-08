@@ -7,6 +7,7 @@ import SelectPostType from '../features/CreateNewPost/pages/SelectPostType';
 import { Ionicons } from '@expo/vector-icons';
 import NormalPost from '../features/CreateNewPost/pages/NormalPost';
 import AddTags from '../features/CreateNewPost/pages/AddTags';
+import AddLocation from '../features/CreateNewPost/pages/AddLocation';
 import AddLocationTag from '../features/CreateNewPost/pages/AddLocationTag';
 import MomentPost from '../features/CreateNewPost/pages/MomentPost';
 import { GlobalContext } from '../contexts/GlobalContext';
@@ -296,7 +297,7 @@ const CreateNewPostStackNavigator = (props) => {
                     </Text>
                   </TouchableOpacity> */}
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('AddLocationTag')}
+                    onPress={() => navigation.navigate('AddLocation')}
                     disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}
                     // disabled={validateAddedTags() ? false : true}
                   >
@@ -319,8 +320,8 @@ const CreateNewPostStackNavigator = (props) => {
             })}
           />
           <Stack.Screen
-            name='AddLocationTag'
-            component={AddLocationTag}
+            name='AddLocation'
+            component={AddLocation}
             options={({ navigation }) => ({
               headerShown: true,
               headerLeft: () => {
@@ -333,7 +334,7 @@ const CreateNewPostStackNavigator = (props) => {
               headerRight: () => {
                 return (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('CreateNewLocationTag')}>
+                    {/* <TouchableOpacity onPress={() => navigation.navigate('CreateNewLocationTag')}>
                       <Text
                         style={{
                           color: 'white',
@@ -344,7 +345,7 @@ const CreateNewPostStackNavigator = (props) => {
                       >
                         Create
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={() => onPostPress()}>
                       <Text
                         style={{
