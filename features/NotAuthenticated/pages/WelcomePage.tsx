@@ -33,43 +33,33 @@ const WelcomePage = (props) => {
         </Text>
       </View>
       <Text>Welcome to Mekka. Please signup or login to proceed.</Text>
-      <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Login')}
-            style={{
-              padding: 10,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              alignItems: 'center',
-              width: 70,
-              height: 70,
-              justifyContent: 'center',
-              marginBottom: 10,
-            }}
-          >
-            <MaterialCommunityIcons name='login' color='black' size={30} />
-          </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Login</Text>
-        </View>
-        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Signup')}
-            style={{
-              padding: 10,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 70,
-              height: 70,
-              marginBottom: 10,
-            }}
-          >
-            <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
-          </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Signup</Text>
-        </View>
+      <View style={{ flexDirection: 'column' }}>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => props.navigation.navigate('Login')}
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <MaterialCommunityIcons name='login' color='white' size={25} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Login</Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name='chevron-down' color='white' size={25} style={{ marginRight: 10 }} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => props.navigation.navigate('Signup')}
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <MaterialCommunityIcons name='rocket-launch' color='white' size={25} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Sign up</Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name='chevron-down' color='white' size={25} style={{ marginRight: 10 }} />
+        </TouchableOpacity>
       </View>
       <SnackBar />
     </SafeAreaView>
