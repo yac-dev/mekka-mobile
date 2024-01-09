@@ -72,7 +72,7 @@ const Map = () => {
                 }}
                 source={{ uri: post.contents[0].data }}
                 contentFit='contain'
-                transition={500} // ふつくしい。。。//  loadingだけは今惜しいが笑　とにかくポジティブに！！できたことをとにかく認めよう！！
+                transition={500} // ふつくしい。。。
               />
             </TouchableOpacity>
           </Marker>
@@ -89,9 +89,9 @@ const Map = () => {
 
   // 最終的な戦略としては、今スマホの画面内に収まっている地図の範囲内のデータをとってくる手法だね。多分、airbnbはそんなかんじだと思う。
   // 多分だけど、、、今のregionを基本として、latitudeは+-20, longitudeが+-50、みたいな感じの範囲内でqueryをする。さらにその上で、latitude deltaとlongitude deltaも考慮に入れると。
-  console.log(posts);
+
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <MapView
         userInterfaceStyle='dark'
         ref={mapRef}
@@ -104,46 +104,15 @@ const Map = () => {
         onRegionChangeComplete={onRegionChangeComplete}
         // mapType={'satellite'}
       >
-        {/* {fetchingStatus === 'loading' ? (
-          <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
-            <ActivityIndicator size='large' color='white' />
-          </View>
-        ) : null} */}
         {renderMarkers()}
-        {/* <Tab.Navigator
-          tabBar={(props) => <CustomTabBar {...props} />}
-          screenOptions={({ route }) => ({
-            lazy: true,
-            swipeEnabled: false,
-          })}
-        >
-          {locationTags.map((locationTag, index) => (
-            <Tab.Screen
-              key={index}
-              name={`LocationTag-${locationTag._id}`}
-              // options={{ title: tagObject.tag.name }} // Set the tab title to the space name
-              initialParams={{ locationTag }}
-            >
-              {({ navigation, route }) => (
-                <LocationsView
-                  navigation={navigation}
-                  locationTag={locationTag}
-                  selectedLocationTag={selectedLocationTag}
-                />
-              )}
-            </Tab.Screen>
-          ))}
-        </Tab.Navigator> */}
       </MapView>
+      {fetchingStatus === 'loading' ? (
+        <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
+          <ActivityIndicator size={'small'} color={'white'} />
+        </View>
+      ) : null}
     </View>
   );
-  // } else {
-  //   return (
-  //     <View style={{ flex: 1, backgroundColor: 'black' }}>
-  //       <ActivityIndicator />
-  //     </View>
-  //   );
-  // }
 };
 
 export default Map;

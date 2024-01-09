@@ -42,6 +42,7 @@ const MapViewStackNavigator: React.FC = (props) => {
     setFetchingStatus('success');
   };
   console.log('fetching state -> ', fetchingStatus);
+  console.log('posts -> ', posts);
 
   // props.tagObject.tag._idを使ってqueryをしていくと。
   const onRegionChangeComplete = (region) => {
@@ -63,42 +64,35 @@ const MapViewStackNavigator: React.FC = (props) => {
     <MapViewStackContext.Provider
       value={{ posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete, fetchingStatus }}
     >
-      <View style={{ flex: 1 }}>
-        {fetchingStatus === 'loading' ? (
-          <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
-            <Text style={{ color: 'red' }}>Loading...</Text>
-          </View>
-        ) : null}
-        <Stack.Navigator>
-          <Stack.Group>
-            <Stack.Screen
-              name='Map'
-              component={Map}
-              options={({ navigation }) => ({
-                headerShown: false,
-              })}
-            />
-          </Stack.Group>
-          <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-            <Stack.Screen
-              name='ViewPostStackNavigator'
-              component={ViewPostStackNavigator}
-              options={({ navigation }) => ({
-                headerShown: false,
-                // headerTransparent: true,
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'transparent',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: primaryTextColor,
-                },
-              })}
-            />
-          </Stack.Group>
-        </Stack.Navigator>
-      </View>
+      <Stack.Navigator>
+        <Stack.Group>
+          <Stack.Screen
+            name='Map'
+            component={Map}
+            options={({ navigation }) => ({
+              headerShown: false,
+            })}
+          />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <Stack.Screen
+            name='ViewPostStackNavigator'
+            component={ViewPostStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              // headerTransparent: true,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'transparent',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: primaryTextColor,
+              },
+            })}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
     </MapViewStackContext.Provider>
   );
 };
