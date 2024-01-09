@@ -22,7 +22,7 @@ const Skeleton = () => {
         width: oneAssetWidth,
         aspectRatio: 1,
 
-        padding: 2,
+        padding: 1,
       }}
     >
       <Animated.View

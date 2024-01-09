@@ -100,7 +100,7 @@ const CreateNewTag = (props) => {
         }}
       >
         <ExpoImage
-          style={{ width: 25, height: 25 }}
+          style={{ width: 20, height: 20 }}
           source={require('../../../assets/forApp/hashtag-normal.png')}
           contentFit='cover'
           tintColor={'rgb(170,170,170)'}

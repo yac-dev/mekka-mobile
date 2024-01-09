@@ -44,13 +44,13 @@ const ContentThumbnail = (props) => {
   // console.log(props.content);
 
   return (
-    <View key={props.index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}>
+    <View key={props.index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 1 }}>
       {/* {isLoading && <Skeleton />} */}
       {props.content.type === 'photo' ? (
         <>
           {/* {isLoading && <Skeleton />} */}
           <ExpoImage
-            style={{ width: '100%', height: '100%', borderRadius: 10, marginRight: 10 }}
+            style={{ width: '100%', height: '100%', marginRight: 10 }}
             source={{ uri: props.content.uri }}
             contentFit='cover'
             // tintColor={'white'}
@@ -63,7 +63,7 @@ const ContentThumbnail = (props) => {
           {/* {isLoading && <Skeleton />} */}
           <Video
             source={{ uri: props.content.uri }}
-            style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
+            style={{ width: '100%', height: '100%', marginRight: 10 }}
             onLoad={handleImageLoad}
             resizeMode={ResizeMode.COVER}
           />

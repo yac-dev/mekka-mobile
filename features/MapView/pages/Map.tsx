@@ -72,7 +72,7 @@ const Map = () => {
                 }}
                 source={{ uri: post.contents[0].data }}
                 contentFit='contain'
-                transition={500} // ふつくしい。。。
+                transition={200} // ふつくしい。。。
               />
             </TouchableOpacity>
           </Marker>

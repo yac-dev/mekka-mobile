@@ -103,6 +103,8 @@ const TagsTopTabNavigator = (props) => {
     spaceAndUserRelationshipsFetchingStatus,
     updatesTable,
     setUpdatesTable,
+    setCurrentSpaceAndUserRelationship,
+    currentSpaceAndUserRelationship,
   } = useContext(GlobalContext);
   const route = useRoute();
   const scrollViewRef = useRef(null);
@@ -199,8 +201,17 @@ const TagsTopTabNavigator = (props) => {
         });
         return updating;
       });
+      setUpdatesTable((previous) => {
+        const updating = { ...previous };
+        createNewPostResult.responseData.createdTags.forEach((tag, index) => {
+          updating[tag.space][tag._id] = 0;
+        });
+
+        return updating;
+      });
     }
   }, [createNewPostResult]);
+  console.log('table', updatesTable);
 
   const passCreatedPostToTags = () => {
     createNewPostResult.responseData?.addedTags.forEach((tag) => {
