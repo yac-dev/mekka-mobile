@@ -106,7 +106,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
       </TouchableOpacity>
       <View
         style={{
-          borderRadius: 25,
+          borderRadius: 30,
           backgroundColor: 'rgb(50,50,50)',
           flexDirection: 'row',
           alignItems: 'center',
