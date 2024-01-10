@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Switch } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Switch, Linking } from 'react-native';
 import GorhomBottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import * as SecureStore from 'expo-secure-store';
 import { GlobalContext } from '../../contexts/GlobalContext';
@@ -111,7 +111,7 @@ const AuthMenuBottomSheet = (props) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-              // onPress={() => onNotificationSwitchToggle()}
+              onPress={() => Linking.openSettings()}
               activeOpacity={1}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -123,13 +123,14 @@ const AuthMenuBottomSheet = (props) => {
                   </Text>
                 </View>
               </View>
-              <Switch
+              {/* <Switch
                 trackColor={{ false: '#767577', true: 'rgb(67, 227, 59)' }}
                 thumbColor={notificationEnabled ? 'white' : '#f4f3f4'}
                 ios_backgroundColor='#3e3e3e'
                 onValueChange={onNotificationSwitchToggle}
                 value={notificationEnabled}
-              />
+              /> */}
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
             </TouchableOpacity>
             <TouchableOpacity
               style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}

@@ -94,7 +94,7 @@ const Members = () => {
             <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Invite friends</Text>
           </View>
         </View>
-        <MaterialCommunityIcons name='chevron-right' color='white' size={20} />
+        <MaterialCommunityIcons name='chevron-down' color='white' size={20} />
       </TouchableOpacity>
       {renderMembers()}
     </View>
