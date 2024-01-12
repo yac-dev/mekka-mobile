@@ -223,8 +223,12 @@ const TagsTopTabNavigator = (props) => {
 
   const onTabPress = (tab) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    // viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator'
     setCurrentTagObject(tab);
-    navigation.navigate(`SpaceTab_${tab.tag._id}`);
+    navigation.navigate({
+      name: `SpaceTab_${tab.tag._id}`,
+      params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
+    });
     if (updatesTable[spaceAndUserRelationship.space._id][tab.tag._id]) {
       setUpdatesTable((previous) => {
         const updatesTable = { ...previous };
