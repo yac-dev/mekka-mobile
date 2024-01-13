@@ -132,8 +132,8 @@ const Moment = () => {
           Set Moment time
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          The "Moment" is like a Instagram story.{'\n'}By using this feature, your post will automatically disappear
-          after a certain period of time. You can set any disappearing time you want.
+          Like IG stories, you can share not only regular posts, but also posts that disappear after a certain amount of
+          time, which does not have to be 24 hours.
         </Text>
       </View>
       <View style={{ flexDirection: 'row', alignSelf: 'center' }}>

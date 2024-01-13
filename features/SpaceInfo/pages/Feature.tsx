@@ -118,7 +118,8 @@ const Feature = () => {
 
           <View
             style={{
-              padding: 15,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -141,7 +142,8 @@ const Feature = () => {
           {spaceAndUserRelationship.space.videoLength ? (
             <View
               style={{
-                padding: 15,
+                paddingVertical: 10,
+                paddingHorizontal: 15,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -161,7 +163,8 @@ const Feature = () => {
 
           <View
             style={{
-              padding: 15,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -181,7 +184,8 @@ const Feature = () => {
 
           <View
             style={{
-              padding: 15,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -200,7 +204,8 @@ const Feature = () => {
 
           <View
             style={{
-              padding: 15,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',

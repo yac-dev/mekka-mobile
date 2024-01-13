@@ -293,7 +293,8 @@ const CreateNewSpaceStackNavigator = (props) => {
                 >
                   <Text
                     style={{
-                      color: formData.name.length ? 'white' : 'rgb(170,170,170)',
+                      color:
+                        formData.description.length && formData.description.length >= 10 ? 'white' : 'rgb(170,170,170)',
                       fontSize: 20,
                       fontWeight: 'bold',
                     }}

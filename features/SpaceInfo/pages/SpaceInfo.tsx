@@ -43,7 +43,7 @@ const SpaceInfo = (props) => {
           colors={['transparent', 'rgba(0,0,0,0.7)']}
           style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 80 }}
         />
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, position: 'absolute', bottom: 10, left: 10 }}>
+        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, position: 'absolute', bottom: 10, left: 20 }}>
           {spaceAndUserRelationship.space.name}
         </Text>
         <TouchableOpacity

@@ -17,7 +17,7 @@ const Form = (props) => {
         >
           <Text
             style={{
-              color: secretKey.length && secretKey.length === 20 ? 'white' : 'rgb(70,70,70)',
+              color: secretKey.length && secretKey.length === 20 ? 'white' : 'rgb(90,90,90)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -59,7 +59,7 @@ const Form = (props) => {
           Join private Space
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Got secret key? Copy and paste it or type passcode down below to enter private space.
+          Already have a private key? Copy and paste it down below.
         </Text>
       </View>
       {/* <TextInput

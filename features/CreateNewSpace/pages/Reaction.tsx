@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 
 const blurhash =
@@ -53,30 +55,31 @@ const Reaction = (props) => {
 
       return (
         <View>
-          <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center' }}>Please choose at most 6 reactions.</Text>
-          <View
-            style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20, marginTop: 30 }}
-          >
-            {formData.reactions.length === 6 ? null : (
-              <TouchableOpacity
-                style={{
-                  alignSelf: 'center',
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: 56,
-                  height: 56,
-                  padding: 2,
-                  borderRadius: 56 / 2,
-                  marginRight: 8,
-                }}
-                onPress={() => props.navigation.navigate('ReactionPicker', { reactions: formData.reactions })}
-              >
-                {/* <Text style={{ fontSize: 23 }}>😁</Text> */}
-                <Ionicons name='add' size={20} color='black' />
-                <Text style={{ fontWeight: 'bold' }}>Add</Text>
-              </TouchableOpacity>
-            )}
+          {formData.reactions.length === 6 ? null : (
+            <TouchableOpacity
+              style={{
+                padding: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: 15,
+              }}
+              onPress={() => props.navigation.navigate('ReactionPicker', { reactions: formData.reactions })}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Add</Text>
+                  <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center' }}>
+                    Please choose at most 6 reaction options.
+                  </Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+            </TouchableOpacity>
+          )}
+          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20 }}>
             {formData.reactions.length ? list : null}
           </View>
         </View>
@@ -88,7 +91,7 @@ const Reaction = (props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 50 }}>
+      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 30 }}>
         <Text
           style={{
             color: 'white',
@@ -101,11 +104,70 @@ const Reaction = (props) => {
           Reaction
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          You can set reaction options that can be used for each post. If you don't want to, please set it to
-          "Disabled".
+          You can set reaction options that can be used for each post.
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
+      <View style={{ marginBottom: 30 }}>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() =>
+            setFormData((previous) => {
+              return {
+                ...previous,
+                isReactionAvailable: true,
+              };
+            })
+          }
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name='thumbs-up' color='white' size={20} style={{ marginRight: 20 }} />
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Allowed</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Enjoy giving reactions with each other.</Text>
+            </View>
+          </View>
+          {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
+          {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() =>
+            setFormData((previous) => {
+              return {
+                ...previous,
+                isReactionAvailable: false,
+              };
+            })
+          }
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ marginRight: 20 }}>
+              <Ionicons name='thumbs-up' color='white' size={20} />
+              <Foundation
+                name='prohibited'
+                color='white'
+                size={20}
+                style={{ position: 'absolute', top: -10, right: -10 }}
+              />
+            </View>
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Disabled</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                Enjoy sharing without worrying about upvotes from others.
+              </Text>
+            </View>
+          </View>
+          {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
+          {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? null : (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          )}
+        </TouchableOpacity>
+      </View>
+      {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
         <TouchableOpacity
           style={{
             alignSelf: 'center',
@@ -127,7 +189,6 @@ const Reaction = (props) => {
             })
           }
         >
-          {/* <MaterialCommunityIcons name='camera-plus' size={30} color='black' /> */}
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Allowed</Text>
           {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? (
             <Ionicons
@@ -159,7 +220,6 @@ const Reaction = (props) => {
             })
           }
         >
-          {/* <MaterialCommunityIcons name='camera-plus' size={30} color='black' /> */}
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Not allowed</Text>
           {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? null : (
             <Ionicons
@@ -170,7 +230,7 @@ const Reaction = (props) => {
             />
           )}
         </TouchableOpacity>
-      </View>
+      </View> */}
       {renderSelectedReactions()}
     </View>
   );

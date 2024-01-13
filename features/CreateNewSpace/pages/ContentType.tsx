@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 
 const ContentType = () => {
@@ -139,7 +142,79 @@ const ContentType = () => {
           What kind of content can be shared in this space?
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
+      <View style={{ marginBottom: 30 }}>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() =>
+            setFormData((previous) => {
+              return {
+                ...previous,
+                contentType: 'photo',
+              };
+            })
+          }
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name='image' color='white' size={20} style={{ marginRight: 20 }} />
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Photos</Text>
+            </View>
+          </View>
+          {formData.contentType === 'photo' ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() =>
+            setFormData((previous) => {
+              return {
+                ...previous,
+                contentType: 'video',
+              };
+            })
+          }
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Entypo name='video' color='white' size={20} style={{ marginRight: 20 }} />
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Videos</Text>
+            </View>
+          </View>
+          {formData.contentType === 'video' ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() =>
+            setFormData((previous) => {
+              return {
+                ...previous,
+                contentType: 'photoAndVideo',
+              };
+            })
+          }
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ marginRight: 20 }}>
+              <Ionicons name='image' color='white' size={20} />
+
+              <Entypo name='video' color='white' size={20} style={{ position: 'absolute', top: -10, right: -10 }} />
+            </View>
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photos & Videos</Text>
+            </View>
+          </View>
+          {formData.contentType === 'photoAndVideo' ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+      </View>
+      {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
         <TouchableOpacity
           style={{
             alignSelf: 'center',
@@ -232,13 +307,13 @@ const ContentType = () => {
             />
           ) : null}
         </TouchableOpacity>
-      </View>
+      </View> */}
       {formData.contentType === 'video' || formData.contentType === 'photoAndVideo' ? (
         <View>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
             {/* Just as there are limits on video length on other platforms, you can put limits on the length of videos you
             can post here. */}
-            You can limit the video length that space members post{'\n'}from 5 seconds to 3 minutes.
+            You can limit the length of videos that can be posted.
           </Text>
           <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
             {renderMinPickerItems()}

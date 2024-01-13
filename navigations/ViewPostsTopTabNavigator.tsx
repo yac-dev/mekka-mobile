@@ -35,8 +35,14 @@ const viewTypeObject = {
 };
 
 const ViewPostsTopTabNavigator = (parentProps) => {
-  const { chooseViewBottomSheetRef, viewPostsType, setViewPostsType, navigation, spaceAndUserRelationship } =
-    useContext(SpaceRootContext);
+  const {
+    chooseViewBottomSheetRef,
+    viewPostsType,
+    setViewPostsType,
+    navigation,
+    spaceAndUserRelationship,
+    createNewPostResult,
+  } = useContext(SpaceRootContext);
   const [posts, setPosts] = useState([]);
   const [isRefreshingGridViewPosts, setIsRefreshingGridViewPosts] = useState(false);
   const [isLoadingGridViewPosts, setIsLoadingGridViewPosts] = useState(false);
@@ -116,7 +122,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
             borderRadius: 22,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'white',
+            backgroundColor: createNewPostResult.isCreating ? 'rgb(90,90,90)' : 'white',
             position: 'absolute',
             bottom: 40,
             right: 20,
@@ -132,6 +138,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
               },
             }),
           }}
+          disabled={createNewPostResult.isCreating}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
             navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });

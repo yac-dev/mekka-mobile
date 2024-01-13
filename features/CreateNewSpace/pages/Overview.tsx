@@ -73,7 +73,7 @@ const Overview = () => {
             Create new Space
           </Text>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            The space is where you and your friends get together and share photos/videos. {'\n'}Make yours and start
+            The space is where you and your friends get together and share photos/videos. {'\n'}Design yours and start
             sharing.
           </Text>
         </View>

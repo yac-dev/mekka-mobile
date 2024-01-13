@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const SelectSpaceVisibility = () => {
   const { formData, setFormData } = useContext(CreateNewSpaceContext);
@@ -52,7 +53,60 @@ const SelectSpaceVisibility = () => {
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Is your space private or public?</Text>
       </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+      <TouchableOpacity
+        style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+        onPress={() =>
+          setFormData((previous) => {
+            return {
+              ...previous,
+              isPublic: false,
+            };
+          })
+        }
+        activeOpacity={1}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <MaterialIcons name='public-off' color='white' size={20} style={{ marginRight: 20 }} />
+          <View style={{ width: 250 }}>
+            <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Private</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+              The space will be secret, accessible only to people you know through an invitation code.
+            </Text>
+          </View>
+        </View>
+        {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
+        {formData.isPublic === undefined ? null : formData.isPublic ? null : (
+          <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+        )}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+        onPress={() =>
+          setFormData((previous) => {
+            return {
+              ...previous,
+              isPublic: true,
+            };
+          })
+        }
+        activeOpacity={1}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <MaterialIcons name='public' color='white' size={20} style={{ marginRight: 20 }} />
+          <View style={{ width: 250 }}>
+            <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Public</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+              The space will be open to everyone. People can find your space from 🧭"Discover" tab and join here.
+            </Text>
+          </View>
+        </View>
+        {formData.isPublic === undefined ? null : formData.isPublic ? (
+          <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+        ) : null}
+      </TouchableOpacity>
+
+      {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
         <TouchableOpacity
           style={{
             alignSelf: 'center',
@@ -74,7 +128,6 @@ const SelectSpaceVisibility = () => {
             })
           }
         >
-          {/* <MaterialCommunityIcons name='camera-plus' size={30} color='black' /> */}
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Private</Text>
           {formData.isPublic === undefined ? null : formData.isPublic ? null : (
             <Ionicons
@@ -106,7 +159,6 @@ const SelectSpaceVisibility = () => {
             })
           }
         >
-          {/* <MaterialCommunityIcons name='camera-plus' size={30} color='black' /> */}
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Public</Text>
           {formData.isPublic === undefined ? null : formData.isPublic ? (
             <Ionicons
@@ -117,8 +169,8 @@ const SelectSpaceVisibility = () => {
             />
           ) : null}
         </TouchableOpacity>
-      </View>
-      {renderVisibilityDescription()}
+      </View> */}
+      {/* {renderVisibilityDescription()} */}
     </View>
   );
 };
