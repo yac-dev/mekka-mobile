@@ -21,6 +21,8 @@ const blurhash =
 const MapViewStackNavigator: React.FC = (props) => {
   const [fetchingStatus, setFetchingStatus] = useState('idle');
   const [posts, setPosts] = useState([]);
+  const [currentPost, setCurrentPost] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 37.78825,
@@ -62,7 +64,19 @@ const MapViewStackNavigator: React.FC = (props) => {
 
   return (
     <MapViewStackContext.Provider
-      value={{ posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete, fetchingStatus }}
+      value={{
+        posts,
+        setPosts,
+        mapRef,
+        region,
+        setRegion,
+        onRegionChangeComplete,
+        fetchingStatus,
+        currentPost,
+        setCurrentPost,
+        currentIndex,
+        setCurrentIndex,
+      }}
     >
       <Stack.Navigator>
         <Stack.Group>

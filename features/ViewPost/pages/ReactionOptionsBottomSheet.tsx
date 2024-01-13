@@ -30,7 +30,7 @@ const ReactionOptionsBottomSheet = (props) => {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
-  const iconContainerWidth = oneGridWidth * 0.9;
+  const iconContainerWidth = oneGridWidth * 0.7;
 
   const upvoteReaction = async (reactionStatus, index) => {
     setLoading(true);
@@ -69,7 +69,7 @@ const ReactionOptionsBottomSheet = (props) => {
           <View
             key={index}
             style={{
-              // backgroundColor: 'red',
+              // backgroundColor: 'blue',
               // backgroundColor: 'rgb(70, 70, 70)',
               // borderRadius: 10,
               justifyContent: 'center',
@@ -89,6 +89,7 @@ const ReactionOptionsBottomSheet = (props) => {
                 borderRadius: 15,
                 justifyContent: 'center',
                 alignItems: 'center',
+                // backgroundColor: 'red',
               }}
               onPress={() => upvoteReaction(reactionStatus, index)}
             >
@@ -96,14 +97,19 @@ const ReactionOptionsBottomSheet = (props) => {
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <Text
                     style={{
-                      fontSize: 60,
-                      marginBottom: 10,
+                      fontSize: 50,
+                      // marginBottom: 10,
                       //  marginRight: reactionStatus.count ? 10 : 0
                     }}
                   >
                     {reactionStatus.reaction.emoji}
                   </Text>
-                  {reactionStatus.count ? (
+                  <View>
+                    <Text style={{ color: 'rgb(150,150,150)', fontWeight: 'bold', fontSize: 16 }}>
+                      {reactionStatus.reaction.caption}
+                    </Text>
+                  </View>
+                  {/* {reactionStatus.count ? (
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{reactionStatus.count}</Text>
                   ) : (
                     <View
@@ -118,7 +124,7 @@ const ReactionOptionsBottomSheet = (props) => {
                     >
                       <MaterialCommunityIcons name='plus' size={15} color='white' />
                     </View>
-                  )}
+                  )} */}
                 </View>
               ) : (
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
@@ -132,7 +138,12 @@ const ReactionOptionsBottomSheet = (props) => {
                     source={{ uri: reactionStatus.reaction.sticker.url }}
                     contentFit='contain'
                   />
-                  {reactionStatus.count ? (
+                  <View>
+                    <Text style={{ color: 'rgb(150,150,150)', fontWeight: 'bold', fontSize: 16 }}>
+                      {reactionStatus.reaction.caption}
+                    </Text>
+                  </View>
+                  {/* {reactionStatus.count ? (
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{reactionStatus.count}</Text>
                   ) : (
                     <View
@@ -147,7 +158,7 @@ const ReactionOptionsBottomSheet = (props) => {
                     >
                       <MaterialCommunityIcons name='plus' size={15} color='white' />
                     </View>
-                  )}
+                  )} */}
                 </View>
               )}
             </TouchableOpacity>

@@ -21,6 +21,7 @@ import { Image as ExpoImage } from 'expo-image';
 import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ViewPostStackNavigator from './ViewPostStackNavigator';
 const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -64,6 +65,8 @@ const SpaceRootStackNavigator = (props) => {
   const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
   const [isAfterPosted, setIsAfterPosted] = useState(false);
   const [screenLoaded, setScreenLoaded] = useState({});
+  const [currentPost, setCurrentPost] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
   // ここでstateでいいんじゃないかな。。。
   const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
   const [createNewPostResult, setCreateNewPostResult] = useState({
@@ -285,6 +288,10 @@ const SpaceRootStackNavigator = (props) => {
         setCreateNewPostFormData,
         createNewPostResult,
         setCreateNewPostResult,
+        currentPost,
+        setCurrentPost,
+        currentIndex,
+        setCurrentIndex,
       }}
     >
       <Stack.Navigator
@@ -318,6 +325,21 @@ const SpaceRootStackNavigator = (props) => {
               },
             })}
           />
+          {/* <Stack.Screen
+            name='ViewPostStackNavigator'
+            component={ViewPostStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          /> */}
         </Stack.Group>
       </Stack.Navigator>
     </SpaceRootContext.Provider>

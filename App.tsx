@@ -162,18 +162,10 @@ const App: React.FC = function () {
       registerForPushNotificationsAsync().then(async (data) => {
         if (data.status) {
           setNotificationEnabled(true);
-          console.log(data.token);
-          // if (!auth.data.pushToken) {
-          //   const result = await lampostAPI.patch(`/users/${auth.data._id}/pushToken`, { pushToken: data.token });
-          //   const { pushToken } = result.data;
-          //   setExpoPushToken(data.token);
-          //   setAuth((previous) => {
-          //     return {
-          //       ...previous,
-          //       pushToken,
-          //     };
-          //   });
-          // }
+          if (!authData.pushToken) {
+            const result = await backendAPI.patch(`/auth/${authData._id}/pushToken`, { pushToken: data.token });
+            // const { pushToken } = result.data;
+          }
         } else {
           setNotificationEnabled(false);
         }

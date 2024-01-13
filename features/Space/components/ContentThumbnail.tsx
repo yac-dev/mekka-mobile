@@ -16,6 +16,7 @@ const ContentThumbnail = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const { isIpad } = useContext(GlobalContext);
   const { setCurrentPost, setCurrentIndex, currentIndex } = useContext(TagViewContext);
+  // const { currentPost, setCurrentPost, currentIndex, setCurrentIndex } = useContext(SpaceRootContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
 
   const handleImageLoad = () => {

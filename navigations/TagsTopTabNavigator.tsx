@@ -114,6 +114,10 @@ const TagsTopTabNavigator = (props) => {
   const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
   const [isLoadningTags, setIsLoadingTags] = useState(false);
   const [fetchingState, setFetchingState] = useState({ isLoading: false, success: false, error: false });
+  const [posts, setPosts] = useState([]);
+  const [mapPosts, setMapPosts] = useState([]);
+  const [currentPost, setCurrentPost] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0); // ここで全部持っておこう。
   // const spaceMenuBottomSheetRef = useRef(null);
   // const getSpaceById = async () => {
   //   setHasSpaceBeenFetched(false);
