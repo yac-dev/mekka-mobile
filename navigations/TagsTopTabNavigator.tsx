@@ -40,6 +40,7 @@ import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
 import Dummy from '../features/Utils/Dummy';
 import { TabView, Route, SceneMap } from 'react-native-tab-view';
+import { TagRootContext } from '../contexts/TagRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -114,10 +115,7 @@ const TagsTopTabNavigator = (props) => {
   const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
   const [isLoadningTags, setIsLoadingTags] = useState(false);
   const [fetchingState, setFetchingState] = useState({ isLoading: false, success: false, error: false });
-  const [posts, setPosts] = useState([]);
-  const [mapPosts, setMapPosts] = useState([]);
-  const [currentPost, setCurrentPost] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0); // ここで全部持っておこう。
+  // ここで全部持っておこう。
   // const spaceMenuBottomSheetRef = useRef(null);
   // const getSpaceById = async () => {
   //   setHasSpaceBeenFetched(false);

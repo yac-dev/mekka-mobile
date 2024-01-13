@@ -8,6 +8,7 @@ import Skeleton from './Skeleton';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import LinearGradient from 'react-native-linear-gradient';
+import { TagRootContext } from '../../../contexts/TagRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -15,7 +16,8 @@ const blurhash =
 const ContentThumbnail = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const { isIpad } = useContext(GlobalContext);
-  const { setCurrentPost, setCurrentIndex, currentIndex } = useContext(TagViewContext);
+  // const { setCurrentPost, setCurrentIndex, currentIndex } = useContext(TagViewContext);
+  const { setCurrentPost, setCurrentIndex, currentIndex } = useContext(TagRootContext);
   // const { currentPost, setCurrentPost, currentIndex, setCurrentIndex } = useContext(SpaceRootContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
 

@@ -17,12 +17,15 @@ import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { TagRootContext } from '../../../contexts/TagRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const ViewPost = (props) => {
-  const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
+  // const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
+  const { viewPostsType } = useContext(SpaceRootContext);
+  const { currentPost, setCurrentPost, posts, currentIndex, mapPosts } = useContext(TagRootContext);
   const mediaRefs = useRef([]);
   const reactionStatusesBottomSheetRef = useRef(null);
   const commentInputBottomSheetRef = useRef(null);
@@ -132,7 +135,7 @@ const ViewPost = (props) => {
     >
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
         <FlatList
-          data={posts}
+          data={viewPostsType === 'grid' ? posts : mapPosts}
           renderItem={renderItem}
           pagingEnabled
           removeClippedSubviews

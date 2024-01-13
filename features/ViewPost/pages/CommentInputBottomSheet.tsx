@@ -17,6 +17,7 @@ import backendAPI from '../../../apis/backend';
 import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import * as Haptics from 'expo-haptics';
+import { TagRootContext } from '../../../contexts/TagRootContext';
 
 // rgb(35, 35, 35)
 const CommentInputBottomSheet = (props) => {
@@ -32,7 +33,8 @@ const CommentInputBottomSheet = (props) => {
     isCommentsBottomSheetOpen,
     setIsCommentsBottomSheetOpen,
   } = useContext(ViewPostContext);
-  const { currentIndex, posts } = useContext(TagViewContext);
+  // const { currentIndex, posts } = useContext(TagViewContext);
+  const { currentIndex, posts } = useContext(TagRootContext);
   // const { commentInputBottomSheetRef, textInputRef, post, navigation } = useContext(ViewPostContext);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const iconContainerWidth = oneGridWidth * 0.9;

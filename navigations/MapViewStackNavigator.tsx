@@ -15,14 +15,15 @@ import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
 import Map from '../features/MapView/pages/Map';
 import { MapViewStackContext } from '../features/MapView/context';
+import { TagRootContext } from '../contexts/TagRootContext';
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MapViewStackNavigator: React.FC = (props) => {
+  const { setMapPosts, setCurrentPost, setCurrentIndex, mapViewPostsFetchingStatus, setMapViewPostsFetchingStatus } =
+    useContext(TagRootContext);
   const [fetchingStatus, setFetchingStatus] = useState('idle');
   const [posts, setPosts] = useState([]);
-  const [currentPost, setCurrentPost] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
   const mapRef = useRef(null);
   const [region, setRegion] = useState({
     latitude: 37.78825,
@@ -37,11 +38,11 @@ const MapViewStackNavigator: React.FC = (props) => {
   });
 
   const getPostsByTagIdAndRegion = async () => {
-    setFetchingStatus('loading');
+    setMapViewPostsFetchingStatus('loading');
     const result = await backendAPI.post(`/posts/tag/${props.tagObject.tag._id}/region`, { region });
     const { posts } = result.data;
-    setPosts(posts);
-    setFetchingStatus('success');
+    setMapPosts(posts);
+    setMapViewPostsFetchingStatus('success');
   };
   console.log('fetching state -> ', fetchingStatus);
   console.log('posts -> ', posts);
@@ -72,9 +73,7 @@ const MapViewStackNavigator: React.FC = (props) => {
         setRegion,
         onRegionChangeComplete,
         fetchingStatus,
-        currentPost,
         setCurrentPost,
-        currentIndex,
         setCurrentIndex,
       }}
     >

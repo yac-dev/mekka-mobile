@@ -7,6 +7,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { MapViewStackContext } from '../context';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { TagRootContext } from '../../../contexts/TagRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -17,7 +18,7 @@ const Map = (props) => {
   const { posts, setPosts, mapRef, region, setRegion, onRegionChangeComplete, fetchingStatus } =
     useContext(MapViewStackContext);
 
-  const { currentPost, setCurrentPost, currentIndex, setCurrentIndex } = useContext(SpaceRootContext);
+  const { mapPosts, mapViewPostsFetchingStatus, setCurrentPost, setCurrentIndex } = useContext(TagRootContext);
   // const { setCurrentPost, setCurrentIndex } = useContext();
   // const { height, width } = Dimensions.get('window');
   // const LATITUDE_DELTA = 100; // zoom levelを後でやろうか。。
@@ -50,8 +51,8 @@ const Map = (props) => {
   // }, [selectedLocationTag]);
 
   const renderMarkers = () => {
-    if (posts.length) {
-      const list = posts.map((post, index) => {
+    if (mapPosts.length) {
+      const list = mapPosts.map((post, index) => {
         return (
           <Marker
             key={index}
@@ -67,7 +68,7 @@ const Map = (props) => {
           >
             <TouchableOpacity
               style={{ width: 45, height: 45 }}
-              disabled={fetchingStatus === 'loading'}
+              disabled={mapViewPostsFetchingStatus === 'loading'}
               onPress={() => {
                 setCurrentPost(post);
                 setCurrentIndex(index);
@@ -120,7 +121,7 @@ const Map = (props) => {
       >
         {renderMarkers()}
       </MapView>
-      {fetchingStatus === 'loading' ? (
+      {mapViewPostsFetchingStatus === 'loading' ? (
         <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
           <ActivityIndicator size={'small'} color={'white'} />
         </View>

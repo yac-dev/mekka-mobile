@@ -13,6 +13,7 @@ import { TagViewContext } from '../features/Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
+import { TagRootContext } from '../contexts/TagRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -28,8 +29,21 @@ const TagViewStackNavigator: React.FC = (props) => {
     createNewPostResult,
     setCreateNewPostResult,
   } = useContext(SpaceRootContext);
+
+  const {
+    posts,
+    setPosts,
+    isRefreshingGridViewPosts,
+    setIsRefreshingGridViewPosts,
+    isLoadingGridViewPosts,
+    setIsLoadingGridViewPosts,
+    currentGridViewPostsPage,
+    setCurrentGridViewPostsPage,
+    hasMoreGridViewPosts,
+    setHasMoreGridViewPosts,
+  } = useContext(TagRootContext);
   // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [havePostsBeenFetched, setHavePostsBeenFetched] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,16 +77,16 @@ const TagViewStackNavigator: React.FC = (props) => {
   }, [createNewPostResult]);
 
   const getPostsByTagId = async () => {
-    setIsLoading(true);
+    setIsLoadingGridViewPosts(true);
     const result = await backendAPI.get(`/posts/tag/${props.tagObject.tag._id}?page=${currentPage}`);
     const { posts } = result.data;
 
     if (posts.length === 0) {
       // No more items to fetch
-      setHasMoreItems(false);
+      setHasMoreGridViewPosts(false);
     } else {
       setPosts((previous) => [...previous, ...posts]);
-      setIsLoading(false);
+      setIsLoadingGridViewPosts(false);
     }
   };
 

@@ -8,12 +8,13 @@ import { PostsContext } from '../../../contexts/PostsContext';
 import { TagViewContext } from '../contexts/TagViewContext';
 import ContentThumbnail from '../components/ContentThumbnail';
 import { FlashList } from '@shopify/flash-list';
+import { TagRootContext } from '../../../contexts/TagRootContext';
 
 const TagView = (props) => {
   const { isIpad } = useContext(GlobalContext);
   const {
-    posts,
-    setPosts,
+    // posts,
+    // setPosts,
     hasMoreItems,
     setCurrentPage,
     currentPage,
@@ -24,6 +25,8 @@ const TagView = (props) => {
     setIsRefreshing,
     // onRefresh,
   } = useContext(TagViewContext);
+
+  const { posts, setPosts, isLoadingGridViewPosts, hasMoreGridViewPosts } = useContext(TagRootContext);
   const mediaRefs = useRef([]);
   // const { isIpad, authData } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
@@ -42,13 +45,13 @@ const TagView = (props) => {
   // };
 
   const loadMoreItem = () => {
-    if (hasMoreItems) {
+    if (hasMoreGridViewPosts) {
       setCurrentPage(currentPage + 1);
     }
   };
   const renderLoader = () => {
-    if (hasMoreItems) {
-      return isLoading ? (
+    if (hasMoreGridViewPosts) {
+      return isLoadingGridViewPosts ? (
         <View style={{ paddingTop: 30, alignItems: 'center' }}>
           <ActivityIndicator />
         </View>

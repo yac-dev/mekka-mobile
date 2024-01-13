@@ -10,6 +10,7 @@ import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
+import { TagRootContext } from '../../../contexts/TagRootContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -34,7 +35,8 @@ const BottomMenu = (props) => {
   const {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);
-  const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
+
+  const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagRootContext);
   // const { currentPost } = useContext(TagViewContext);
 
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
