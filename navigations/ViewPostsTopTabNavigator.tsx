@@ -13,6 +13,7 @@ import TagViewStackNavigator from './TagViewStackNavigator';
 import MavViewStackNavigator from './MapViewStackNavigator';
 import * as Haptics from 'expo-haptics';
 import { TagRootContext } from '../contexts/TagRootContext';
+import { GlobalContext } from '../contexts/GlobalContext';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -43,6 +44,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
     spaceAndUserRelationship,
     createNewPostResult,
   } = useContext(SpaceRootContext);
+  const { currentTagObject } = useContext(GlobalContext);
   const [posts, setPosts] = useState([]);
   const [isRefreshingGridViewPosts, setIsRefreshingGridViewPosts] = useState(false);
   const [isLoadingGridViewPosts, setIsLoadingGridViewPosts] = useState(false);
@@ -168,7 +170,15 @@ const ViewPostsTopTabNavigator = (parentProps) => {
             }}
             onPress={() => {
               setViewPostsType('grid');
-              navigation.navigate('TagViewStackNavigator');
+              // navigation.navigate('TagViewStackNavigator');
+              // currentTagObject
+              //         name: `SpaceTab_${tab.tag._id}`,
+              // params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
+              // 'TagViewStackNavigator'
+              navigation.navigate({
+                name: `SpaceTab_${currentTagObject.tag._id}`,
+                params: { screen: 'TagViewStackNavigator' },
+              });
             }}
           >
             <MaterialCommunityIcons name='dots-grid' color='white' size={25} />
@@ -182,7 +192,11 @@ const ViewPostsTopTabNavigator = (parentProps) => {
             // 'MavViewStackNavigator'
             onPress={() => {
               setViewPostsType('map');
-              navigation.navigate('MavViewStackNavigator');
+              // navigation.navigate('MavViewStackNavigator');
+              navigation.navigate({
+                name: `SpaceTab_${currentTagObject.tag._id}`,
+                params: { screen: 'MavViewStackNavigator' },
+              });
             }}
           >
             <ExpoImage
