@@ -22,7 +22,7 @@ import * as Haptics from 'expo-haptics';
 
 // rgb(35, 35, 35)
 const OtherActionsBottomSheet = (props) => {
-  const snapPoints = useMemo(() => ['30%'], []);
+  const snapPoints = useMemo(() => ['50%'], []);
   const { isIpad, setLoading, authData, setSnackBar } = useContext(GlobalContext);
   const {
     spaceAndUserRelationship: { space },
@@ -75,117 +75,70 @@ const OtherActionsBottomSheet = (props) => {
               <Ionicons name='close-circle-sharp' size={30} color='white' />
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+          <View>
             <TouchableOpacity
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 80,
-                height: 80,
-              }}
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
               onPress={() => {
-                console.log('save this.');
-              }}
-            >
-              <View
-                style={{
-                  width: 50,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  marginBottom: 10,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <MaterialCommunityIcons name='bookmark-outline' color={'black'} size={25} />
-              </View>
-              <Text style={{ color: 'white' }}>Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 80,
-                height: 80,
-              }}
-              onPress={() => {
-                console.log('edit this');
+                console.log('save');
                 otherActionsBottomSheetRef.current.close();
               }}
+              activeOpacity={1}
             >
-              <View
-                style={{
-                  width: 50,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  marginBottom: 10,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <MaterialCommunityIcons name='file-edit-outline' color={'black'} size={25} />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='image-edit' color={'white'} size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Edit</Text>
+                </View>
               </View>
-              <Text style={{ color: 'white' }}>Edit</Text>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 80,
-                height: 80,
-              }}
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
               onPress={() => {
-                console.log('delete this');
+                console.log('save');
                 otherActionsBottomSheetRef.current.close();
               }}
+              activeOpacity={1}
             >
-              <View
-                style={{
-                  width: 50,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  marginBottom: 10,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <MaterialCommunityIcons name='delete-empty-outline' color={'black'} size={25} />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='bookmark' color={'white'} size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Save</Text>
+                </View>
               </View>
-              <Text style={{ color: 'white' }}>Delete</Text>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
             </TouchableOpacity>
-
             <TouchableOpacity
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 80,
-                height: 80,
-              }}
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
               onPress={() => {
-                viewPostStackNavigatorNavigation.navigate('ReportPost');
+                console.log('save');
+                otherActionsBottomSheetRef.current.close();
               }}
+              activeOpacity={1}
             >
-              <View
-                style={{
-                  width: 50,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  marginBottom: 10,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <MaterialCommunityIcons name='exclamation' color={'black'} size={25} />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='delete-empty' color={'white'} size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Delete</Text>
+                </View>
               </View>
-              <Text style={{ color: 'white' }}>Report</Text>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+              onPress={() => {
+                console.log('save');
+                otherActionsBottomSheetRef.current.close();
+              }}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialCommunityIcons name='exclamation' color={'white'} size={20} style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Report</Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
             </TouchableOpacity>
           </View>
         </BottomSheetView>

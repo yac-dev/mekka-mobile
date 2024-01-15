@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Platform } from 'react-native';
+import { View, TouchableOpacity, Platform, Alert, Text } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TagsTopTabNavigator from './TagsTopTabNavigator';
 import LocationsViewTopTabNavigator from './LocationsViewTopTabNavigator';
