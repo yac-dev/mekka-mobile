@@ -102,9 +102,19 @@ const NormalPost = () => {
     if (space.contentType === 'photo') {
       return <Text style={{ color: 'rgb(180, 180, 180)' }}>Photos</Text>;
     } else if (space.contentType === 'video') {
-      return <Text style={{ color: 'rgb(180, 180, 180)' }}>Videos</Text>;
+      return (
+        <Text style={{ color: 'rgb(180, 180, 180)' }}>
+          Videos.{'\n'}Video length is limited to {space.videoLength} seconds
+        </Text>
+      );
     } else {
-      return <Text style={{ color: 'rgb(180, 180, 180)' }}>Photos or Videos</Text>;
+      return (
+        <Text style={{ color: 'rgb(180, 180, 180)' }}>
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>Photos or Videos</Text>.{'\n'}Video length
+          is limited to&nbsp;
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>{space.videoLength} seconds</Text>
+        </Text>
+      );
     }
   }, []);
 

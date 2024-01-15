@@ -224,7 +224,7 @@ const TagsTopTabNavigator = (props) => {
   };
 
   const onTabPress = (tab) => {
-    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     // viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator'
     setCurrentTagObject(tab);
     navigation.navigate({
@@ -281,7 +281,10 @@ const TagsTopTabNavigator = (props) => {
             // tintColor={item.tag.iconType === 'icon' ? item.tag.color : 'rgb(170,170,170)'}
             tintColor={isActive ? 'white' : 'rgb(150,150,150)'}
           />
-          <Text numberOfLines={1} style={{ color: isActive ? 'white' : 'rgb(150,150,150)' }}>
+          <Text
+            numberOfLines={1}
+            style={{ color: isActive ? 'white' : 'rgb(150,150,150)', fontWeight: isActive ? 'bold' : 'normal' }}
+          >
             {item.tag.name}
           </Text>
           {/* <Text style={{ color: 'rgb(170,170,170)', position: 'absolute', top: 7, right: 10 }}>

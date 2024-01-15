@@ -59,7 +59,7 @@ const SelectPostType = (props) => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name='images' color='white' size={20} style={{ marginRight: 20 }} />
             <View>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Normal</Text>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Regular</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Share your photos/videos with your peers.</Text>
             </View>
           </View>
@@ -98,68 +98,6 @@ const SelectPostType = (props) => {
           <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
         </TouchableOpacity>
       </View>
-      {/* <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginTop: 40 }}>
-        <TouchableOpacity
-          style={{
-            padding: 20,
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'white',
-            borderRadius: 60,
-            marginRight: 20,
-            width: 120,
-            height: 120,
-          }}
-          onPress={() => {
-            setCreateNewPostFormData((previous) => {
-              return {
-                ...previous,
-                postType: 'normal',
-              };
-            });
-            navigation?.navigate('NormalPost');
-          }}
-        >
-          <Ionicons name='images' color='black' size={25} style={{ marginBottom: 5 }} />
-          <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>
-            Normal{'\n'}post
-          </Text>
-        </TouchableOpacity>
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 23, marginRight: 20 }}>Or</Text>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'white',
-            borderRadius: 60,
-            width: 120,
-            height: 120,
-          }}
-          onPress={() => {
-            // setPostType('moment');
-            // navigation?.navigate('MomentPost');
-            setCreateNewPostFormData((previous) => {
-              return {
-                ...previous,
-                postType: 'moment',
-              };
-            });
-            navigation?.navigate('NormalPost');
-          }}
-        >
-          <ExpoImage
-            style={{ width: 25, height: 25, marginBottom: 5 }}
-            source={require('../../../assets/forApp/ghost.png')}
-            contentFit='cover'
-            tintColor={'black'}
-          />
-          <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>
-            Moment{'\n'}post
-          </Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };
