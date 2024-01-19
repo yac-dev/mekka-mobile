@@ -5,19 +5,24 @@ import backendAPI from '../../../apis/backend';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const Form = (props) => {
-  const { authData, setSpaceAndUserRelationships, setLoading, setSnackBar } = useContext(GlobalContext);
+  const {
+    authData,
+    setSpaceAndUserRelationships,
+    spaceAndUserRelationships,
+    setLoading,
+    setSnackBar,
+    setUpdatesTable,
+    setCurrentSpaceAndUserRelationship,
+  } = useContext(GlobalContext);
   const [secretKey, setSecretKey] = useState('');
 
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          onPress={() => onDonePress()}
-          disabled={secretKey.length && secretKey.length === 20 ? false : true}
-        >
+        <TouchableOpacity onPress={() => onDonePress()} disabled={secretKey.length ? false : true}>
           <Text
             style={{
-              color: secretKey.length && secretKey.length === 20 ? 'white' : 'rgb(90,90,90)',
+              color: secretKey.length ? 'white' : 'rgb(90,90,90)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -39,6 +44,15 @@ const Form = (props) => {
     const result = await backendAPI.post('/spaces/private', payload);
     const { spaceAndUserRelationship } = result.data;
     setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
+    if (!spaceAndUserRelationships.length) {
+      setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
+    }
+    setUpdatesTable((previous) => {
+      return {
+        ...previous,
+        [spaceAndUserRelationship.space._id]: {},
+      };
+    });
     setLoading(false);
     setSnackBar({ isVisible: true, message: 'Joined private space successfully.', barType: 'success', duration: 5000 });
     props.navigation?.navigate('SpacesDrawerNavigator');

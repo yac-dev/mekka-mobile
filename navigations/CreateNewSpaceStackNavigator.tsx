@@ -20,7 +20,15 @@ import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocat
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const CreateNewSpaceStackNavigator = (props) => {
-  const { authData, setLoading, setSnackBar, setSpaceAndUserRelationships } = useContext(GlobalContext);
+  const {
+    authData,
+    setLoading,
+    setSnackBar,
+    setSpaceAndUserRelationships,
+    spaceAndUserRelationships,
+    setUpdatesTable,
+    setCurrentSpaceAndUserRelationship,
+  } = useContext(GlobalContext);
   const [formData, setFormData] = useState({
     name: '',
     icon: '',
@@ -72,6 +80,16 @@ const CreateNewSpaceStackNavigator = (props) => {
     const { spaceAndUserRelationship } = result.data;
     // console.log('created!!!', spaceAndUserRelationship);
     setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
+    // もし、ユーザーが何もspaceを持っていなかったら、currentSpaceAndUserに入れる。その後すぐにpostできる様に。
+    if (!spaceAndUserRelationships.length) {
+      setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
+    }
+    setUpdatesTable((previous) => {
+      return {
+        ...previous,
+        [spaceAndUserRelationship.space._id]: {},
+      };
+    });
     setSnackBar({
       isVisible: true,
       barType: 'success',

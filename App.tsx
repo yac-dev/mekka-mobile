@@ -89,6 +89,8 @@ const App: React.FC = function () {
     return data;
   };
 
+  console.log('update table', updatesTable);
+
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
@@ -105,6 +107,16 @@ const App: React.FC = function () {
 
   const getMySpaces = async () => {
     setSpaceAndUserRelationshipsFetchingStatus('loading');
+    const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
+    const { spaceAndUserRelationships, updateTable } = result.data;
+    setSpaceAndUserRelationships(spaceAndUserRelationships);
+    setUpdatesTable(updateTable);
+    setCurrentSpaceAndUserRelationship(spaceAndUserRelationships[0]);
+    setHaveSpaceAndUserRelationshipsBeenFetched(true);
+    setSpaceAndUserRelationshipsFetchingStatus('success');
+  };
+
+  const getMySpacesFromInactive = async () => {
     const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
     const { spaceAndUserRelationships, updateTable } = result.data;
     setSpaceAndUserRelationships(spaceAndUserRelationships);
@@ -136,6 +148,7 @@ const App: React.FC = function () {
           // appが再び開かれたらここを起こす。
           // というか、stateを一回resetしたいんだよね。loadするなりなんなりで。。。。
           getMySpaces();
+          // getMySpacesFromInactive();
           console.log('App has come to the foreground!');
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。
