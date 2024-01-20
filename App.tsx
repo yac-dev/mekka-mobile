@@ -153,7 +153,7 @@ const App: React.FC = function () {
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。
           console.log('Became inactive...');
-          updateSpaceCheckedInDate(); //一回止める
+          // updateSpaceCheckedInDate(); //一回止める
         }
         console.log('Next AppState is: ', nextAppState);
         setAppState(nextAppState); // backgroundになる。

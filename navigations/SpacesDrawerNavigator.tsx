@@ -207,7 +207,7 @@ const SpacesDrawerNavigator = (props) => {
                     canPreventDefault: true,
                   });
                   // ここでspaceのdate updateか。
-                  updateLastCheckedIn();
+                  // updateLastCheckedIn(); //一時的に停止。
                   setCurrentSpaceAndUserRelationship(route.params?.spaceAndUserRelationship);
 
                   if (!isFocused && !event.defaultPrevented) {
@@ -240,9 +240,14 @@ const SpacesDrawerNavigator = (props) => {
                           source={{ uri: route.params?.spaceAndUserRelationship.space.icon }}
                           contentFit='cover'
                         />
-                        <Text numberOfLines={1} style={{ color: 'white', fontSize: 17 }}>
-                          {route.params?.spaceAndUserRelationship.space.name}
-                        </Text>
+                        <View>
+                          <Text numberOfLines={1} style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>
+                            {route.params?.spaceAndUserRelationship.space.name}
+                          </Text>
+                          <Text style={{ color: 'rgb(150,150,150))', fontSize: 13 }}>
+                            {route.params?.spaceAndUserRelationship.space.isPublic ? 'Public' : 'Private'}
+                          </Text>
+                        </View>
                       </View>
                       {sum ? (
                         <View

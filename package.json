@@ -18,7 +18,8 @@
     "easSubmitStaging:ios": "eas submit -p ios --profile staging --latest",
     "easBuildProduction:ios": "eas build --platform ios",
     "easSubmitProduction:ios": "eas submit -p ios --profile production --latest",
-    "ios:device_development": "npx react-native run-ios --device yphone --scheme 'Mekka_development'"
+    "ios:device_development": "npx react-native run-ios --device yphone --scheme 'Mekka_development'",
+    "ios:simulator_development": "npx react-native run-ios --scheme 'Mekka_development'"
   },
   "dependencies": {
     "@babel/core": "^7.23.2",

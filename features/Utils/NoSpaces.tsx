@@ -40,7 +40,7 @@ const NoSpaces = (props) => {
             <View style={{ width: 250 }}>
               <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Enter private space</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                If you have already an invitation code, start from here.
+                If you already have an invitation code, start from here.
               </Text>
             </View>
           </View>
