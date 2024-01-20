@@ -55,7 +55,7 @@ const CreateNewSpaceStackNavigator = (props) => {
     const payload = new FormData();
     payload.append('name', formData.name);
     payload.append('contentType', formData.contentType);
-    payload.append('isPublic', formData.isPublic.toString());
+    payload.append('isPublic', formData.isPublic.toString()); // ここ、booleanのdata送るのも大変だよな。。。
     payload.append('isCommentAvailable', formData.isCommentAvailable.toString());
     payload.append('isReactionAvailable', formData.isReactionAvailable.toString());
     payload.append('reactions', JSON.stringify(formData.reactions));

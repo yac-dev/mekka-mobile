@@ -75,6 +75,7 @@ const BottomMenu = (props) => {
 
     return (
       <TouchableOpacity
+        style={{ marginRight: 10 }}
         onPress={() => {
           setIsReactionsBottomSheetOpen(true);
           // reactionStatusesBottomSheetRef.current.snapToIndex(0);
@@ -123,7 +124,7 @@ const BottomMenu = (props) => {
         }}
       >
         {renderReactionIcons()}
-        <Text style={{ color: 'white' }}>{currentPost.totalReactions}</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{currentPost.totalReactions}</Text>
       </View>
       <View
         style={{
@@ -146,12 +147,12 @@ const BottomMenu = (props) => {
               // iconも変えた方がいい。
             }
           }}
-          style={{ justifyContent: 'center', alignItems: 'center' }}
+          style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}
         >
           {/* <Entypo name='feather' size={20} color={'white'} style={{ marginBottom: 5 }} /> */}
-          <MaterialCommunityIcons name='comment-multiple' size={20} color={'white'} style={{ marginBottom: 5 }} />
+          <MaterialCommunityIcons name='comment-multiple' size={20} color={'white'} />
         </TouchableOpacity>
-        <Text style={{ color: 'white' }}>{currentPost.totalComments}</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{currentPost.totalComments}</Text>
       </View>
       <View
         style={{

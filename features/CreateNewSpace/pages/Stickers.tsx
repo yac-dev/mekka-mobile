@@ -8,6 +8,8 @@ import SnackBar from '../../../components/SnackBar';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -96,12 +98,27 @@ const Stickers = (props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ paddingLeft: 20, paddingRight: 20 }}>
-        <TouchableOpacity
+      <View style={{}}>
+        {/* <TouchableOpacity
           style={{ backgroundColor: 'white', padding: 10, borderRadius: 20 }}
           onPress={() => navigation.navigate('CreateNewSticker')}
         >
           <Text style={{ color: 'black', alignSelf: 'center', fontWeight: 'bold' }}>Create new reaction</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => {
+            navigation.navigate('CreateNewSticker');
+          }}
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <AntDesign name='edit' color='white' size={20} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Create new one?</Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
         </TouchableOpacity>
       </View>
       <FlashList

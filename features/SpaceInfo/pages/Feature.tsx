@@ -38,34 +38,38 @@ const Feature = () => {
   }, []);
 
   const renderReactions = (space) => {
-    const list = spaceAndUserRelationship.space.reactions.map((reaction, index) => {
-      if (reaction) {
-        if (reaction.type === 'emoji') {
-          return (
-            <Text key={index} style={{ fontSize: 25, marginRight: 5 }}>
-              {reaction.emoji}
-            </Text>
-          );
-        } else if (reaction.type === 'sticker') {
-          return (
-            <ExpoImage
-              key={index}
-              style={{ width: 25, height: 25, marginRight: 5 }}
-              source={{ uri: reaction.sticker.url }}
-              contentFit='contain'
-            />
-          );
+    if (space.isReactionAvailable) {
+      const list = spaceAndUserRelationship.space.reactions.map((reaction, index) => {
+        if (reaction) {
+          if (reaction.type === 'emoji') {
+            return (
+              <Text key={index} style={{ fontSize: 25, marginRight: 5 }}>
+                {reaction.emoji}
+              </Text>
+            );
+          } else if (reaction.type === 'sticker') {
+            return (
+              <ExpoImage
+                key={index}
+                style={{ width: 25, height: 25, marginRight: 5 }}
+                source={{ uri: reaction.sticker.url }}
+                contentFit='contain'
+              />
+            );
+          }
+        } else {
+          return null;
         }
-      } else {
-        return null;
-      }
-    });
+      });
 
-    return (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>{list}</View>
-      </View>
-    );
+      return (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>{list}</View>
+        </View>
+      );
+    } else {
+      return <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Turned off</Text>;
+    }
   };
 
   function convertMinutesToHoursAndMinutes(minutes) {

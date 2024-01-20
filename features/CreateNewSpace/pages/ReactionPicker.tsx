@@ -29,12 +29,12 @@ const ReactionPicker = (props) => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => onAddPress()}
-          disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length <= 6 ? false : true}
+          disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7 ? false : true}
         >
           <Text
             style={{
               color:
-                Object.keys(selectedReactions).length && Object.keys(selectedReactions).length <= 6
+                Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7
                   ? 'white'
                   : 'rgb(117,117, 117)',
               fontSize: 20,

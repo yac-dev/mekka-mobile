@@ -41,6 +41,8 @@ const SpacesDrawerNavigator = (props) => {
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
   const oneGridHeight = isIpad ? Dimensions.get('window').height / 7.5 : Dimensions.get('window').height / 6.5;
 
+  // これ、spaceRootで実行するのがいいのかも。。。
+  // console.logで見てみるか、currentSpaceをlogしてみる的な。。。
   const updateLastCheckedIn = async () => {
     const result = await backendAPI.patch(`/users/${authData._id}/lastcheckedin`, {
       spaceId: currentSpaceAndUserRelationship.space._id,

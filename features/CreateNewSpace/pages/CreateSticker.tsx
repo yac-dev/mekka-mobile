@@ -7,6 +7,7 @@ import backendAPI from '../../../apis/backend';
 import baseURL from '../../../apis/baseURL';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { AntDesign } from '@expo/vector-icons';
 
 const CreateCustomEmoji = (props) => {
   const { authData, setLoading } = useContext(GlobalContext);
@@ -14,6 +15,7 @@ const CreateCustomEmoji = (props) => {
   const [fileName, setFileName] = useState('');
   // const [stickerName, setStickerName] = useState('');
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
 
   const onClose = async () => {
     if (fileName) {
@@ -29,8 +31,11 @@ const CreateCustomEmoji = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       headerLeft: () => (
+        // <TouchableOpacity onPress={() => onClose()}>
+        //   <Text style={{ color: 'white', fontSize: 20 }}>Close</Text>
+        // </TouchableOpacity>
         <TouchableOpacity onPress={() => onClose()}>
-          <Text style={{ color: 'white', fontSize: 20 }}>Close</Text>
+          <Ionicons name='close-circle-sharp' size={30} color={'white'} />
         </TouchableOpacity>
       ),
     });
@@ -66,6 +71,7 @@ const CreateCustomEmoji = (props) => {
       const payload = new FormData();
 
       payload.append('createdBy', authData._id);
+      // payload.append('isPublic', '')
       if (fileName) {
         payload.append('exFileName', fileName);
       }
@@ -108,13 +114,14 @@ const CreateCustomEmoji = (props) => {
   console.log(fileName);
   console.log('source', `${baseURL}/buffer/removed-${fileName}`);
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, marginBottom: 20 }}>
         <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 20, marginBottom: 10 }}>
           Create sticker
         </Text>
         <Text style={{ color: 'rgb(170, 170, 170)', textAlign: 'center' }}>
-          Couldn't find the sticker you want to use? Now create one from an image easily and quickly.
+          Couldn't find the sticker you want to use?{'\n'}Create one from an image easily and quickly.{'\n'}This sticker
+          will be only usable to space members.
         </Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 30, alignSelf: 'center' }}>
@@ -129,22 +136,17 @@ const CreateCustomEmoji = (props) => {
         />
       </View>
       <TouchableOpacity
-        style={{
-          backgroundColor: 'white',
-          borderRadius: 40,
-          marginBottom: 30,
-          width: 80,
-          height: 80,
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}
+        style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
         onPress={() => pickImage()}
+        activeOpacity={1}
       >
-        <View style={{ alignItems: 'center', alignSelf: 'center' }}>
-          <MaterialCommunityIcons name='plus' size={35} color={'black'} />
-          <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold' }}>Choose</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Ionicons name='add' color='white' size={20} style={{ marginRight: 20 }} />
+          <View>
+            <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Choose</Text>
+          </View>
         </View>
+        <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
       </TouchableOpacity>
 
       {fileName ? (
@@ -153,6 +155,7 @@ const CreateCustomEmoji = (props) => {
             width: 80,
             height: 80,
             alignSelf: 'center',
+            marginBottom: 20,
             // backgroundColor: 'white',
           }}
           source={{
@@ -162,13 +165,27 @@ const CreateCustomEmoji = (props) => {
           // tintColor={'red'}
         />
       ) : null}
-      {/* <TextInput
-        placeholder='Sticker name...'
-        placeholderTextColor='rgb(170,170,170)'
-        style={{ color: 'white', padding: 10, backgroundColor: 'rgb(88,88,88)', borderRadius: 5 }}
-        onChangeText={(text) => setStickerName(text)}
-        value={stickerName}
-      /> */}
+
+      {/* {fileName ? (
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => console.log('isPublic')}
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name='add' color='white' size={20} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Sticker visibility</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                {isPublic
+                  ? 'This sticker will be publicly accessible to everybody'
+                  : 'This sticker is only availbale to this space.'}
+              </Text>
+            </View>
+          </View>
+          <Text style={{ color: 'white', fontSize: 17, marginRight: 10 }}>{isPublic ? 'Public' : 'Private'}</Text>
+        </TouchableOpacity>
+      ) : null} */}
       <LoadingSpinner />
     </View>
   );

@@ -37,7 +37,7 @@ const Members = () => {
           alignItems: 'center',
           padding: 15,
           borderBottomWidth: 0.3,
-          borderBottomColor: 'rgb(150,150,150)',
+          borderBottomColor: 'rgb(90,90,90)',
         }}
       >
         <ExpoImage
@@ -80,7 +80,7 @@ const Members = () => {
   }, [haveMembersBeenFetched]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)' }}>
+    <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)', paddingHorizontal: 10 }}>
       <TouchableOpacity
         style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
         onPress={() => {
