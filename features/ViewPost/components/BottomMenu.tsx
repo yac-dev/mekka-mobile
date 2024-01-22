@@ -105,7 +105,7 @@ const BottomMenu = (props) => {
         // alignSelf: 'center',
         backgroundColor: 'black',
         position: 'absolute',
-        bottom: 0,
+        bottom: 20,
         // marginHorizontal: 100,
         height: 60,
         paddingTop: 5,

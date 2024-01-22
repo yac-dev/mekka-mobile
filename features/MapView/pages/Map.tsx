@@ -67,7 +67,7 @@ const Map = (props) => {
             }}
           >
             <TouchableOpacity
-              style={{ width: 45, height: 45 }}
+              style={{ width: 54, height: 54, padding: 3, borderRadius: 8, backgroundColor: 'white' }}
               disabled={mapViewPostsFetchingStatus === 'loading'}
               onPress={() => {
                 setCurrentPost(post);
@@ -78,17 +78,19 @@ const Map = (props) => {
                 });
               }}
             >
-              {/* videoに関してもやらんといかん。 */}
-              <ExpoImage
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: 10,
-                }}
-                source={{ uri: post.contents[0].data }}
-                contentFit='contain'
-                transition={200} // ふつくしい。。。
-              />
+              <View style={{ width: '100%', height: '100%' }}>
+                {/* videoに関してもやらんといかん。 */}
+                <ExpoImage
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 9,
+                  }}
+                  source={{ uri: post.contents[0].data }}
+                  contentFit='cover'
+                  transition={200} // ふつくしい。。。
+                />
+              </View>
             </TouchableOpacity>
           </Marker>
         );

@@ -126,7 +126,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
             alignItems: 'center',
             backgroundColor: createNewPostResult.isCreating ? 'rgb(90,90,90)' : 'white',
             position: 'absolute',
-            bottom: 40,
+            bottom: 50,
             right: 20,
             ...Platform.select({
               ios: {
@@ -159,7 +159,7 @@ const ViewPostsTopTabNavigator = (parentProps) => {
             flexDirection: 'row',
             alignItems: 'center',
             position: 'absolute',
-            bottom: 5,
+            bottom: 30,
             alignSelf: 'center',
             paddingHorizontal: 15,
             paddingVertical: 10,

@@ -237,7 +237,7 @@ const TagsTopTabNavigator = (props) => {
         updatesTable[spaceAndUserRelationship.space._id][tab.tag._id] = 0;
         return updatesTable;
       });
-    }
+    } // 一時停止。
   };
 
   const onTabLongPress = (tab) => {

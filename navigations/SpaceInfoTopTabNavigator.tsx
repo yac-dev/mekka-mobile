@@ -62,7 +62,7 @@ const SpaceInfoTopTabNavigator = () => {
       })}
     >
       <Tab.Screen name={'Feature'} component={Feature} />
-      <Tab.Screen name={'Members'} component={Members} />
+      <Tab.Screen name={'Members (7)'} component={Members} />
       <Tab.Screen name={'Description'} component={Description} />
     </Tab.Navigator>
   );

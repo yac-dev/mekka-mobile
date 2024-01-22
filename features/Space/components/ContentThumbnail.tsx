@@ -86,12 +86,34 @@ const ContentThumbnail = (props) => {
           onLoad={handleImageLoad}
           resizeMode={ResizeMode.COVER}
         />
+        {/* 一時停止 */}
+        {/* <ExpoImage
+          style={{ width: '100%', height: '100%' }}
+          source={{ uri: props.post.contents[0].data }}
+          // placeholder={blurhash}
+          contentFit='cover'
+          // transition={1000}
+          onLoad={handleImageLoad}
+        /> */}
         {props.post.contents[0].duration && (
-          <View style={{ position: 'absolute', right: 10, top: 10 }}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              {millisecondsToTime(props.post.contents[0].duration)}
-            </Text>
-          </View>
+          <>
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.5)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{ position: 'absolute', right: 0, left: 0, top: 0, height: 30 }}
+            />
+            <View style={{ position: 'absolute', right: 5, top: 5 }}>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                {millisecondsToTime(props.post.contents[0].duration)}
+              </Text>
+            </View>
+          </>
+          // <View style={{ position: 'absolute', right: 10, top: 10 }}>
+          //   <Text style={{ color: 'white', fontWeight: 'bold' }}>
+          //     {millisecondsToTime(props.post.contents[0].duration)}
+          //   </Text>
+          // </View>
         )}
         {props.post.type === 'moment' ? (
           <>

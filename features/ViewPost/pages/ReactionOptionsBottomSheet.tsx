@@ -15,7 +15,7 @@ const blurhash =
 
 // rgb(35, 35, 35)
 const ReactionOptionsBottomSheet = (props) => {
-  const snapPoints = useMemo(() => ['60%'], []);
+  const snapPoints = useMemo(() => ['47%'], []);
   const { isIpad, setLoading, authData } = useContext(GlobalContext);
   const {
     reactionStatusesBottomSheetRef,

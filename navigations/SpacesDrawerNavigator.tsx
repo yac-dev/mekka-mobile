@@ -207,7 +207,7 @@ const SpacesDrawerNavigator = (props) => {
                     canPreventDefault: true,
                   });
                   // ここでspaceのdate updateか。
-                  // updateLastCheckedIn(); //一時的に停止。
+                  updateLastCheckedIn(); //一時停止。
                   setCurrentSpaceAndUserRelationship(route.params?.spaceAndUserRelationship);
 
                   if (!isFocused && !event.defaultPrevented) {
