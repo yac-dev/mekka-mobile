@@ -29,7 +29,6 @@
 		453566A5BDE48D09E347459A /* libPods-MekkaCommonPods-Mekka.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD10D355C1DBD5F305E80281 /* libPods-MekkaCommonPods-Mekka.a */; };
 		54ED9929369D14ABA0A29C04 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68240CA0E889949335F2325 /* ExpoModulesProvider.swift */; };
 		9A26875FE075BAD71840D361 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522956D3A34E81B29294973E /* ExpoModulesProvider.swift */; };
-		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		B4F00E37CF9DA34FA7FC1384 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77441730CABB10F7C8F1F64A /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
@@ -719,7 +718,6 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 				43C220A11A734A76A5EDD3E3 /* noop-file.swift in Sources */,
 				9A26875FE075BAD71840D361 /* ExpoModulesProvider.swift in Sources */,
 			);
@@ -759,7 +757,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mekka/Mekka.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = WMQHGJMYR8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -800,7 +798,7 @@
 				CODE_SIGN_ENTITLEMENTS = Mekka/Mekka.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = WMQHGJMYR8;
 				INFOPLIST_FILE = Mekka/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

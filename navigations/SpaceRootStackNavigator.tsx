@@ -100,6 +100,7 @@ const SpaceRootStackNavigator = (props) => {
       payload.append('caption', createNewPostFormData.caption);
       payload.append('createdTags', JSON.stringify(filteredCreatedTags));
       payload.append('addedTags', JSON.stringify(filteredAddedTags));
+      payload.append('location', JSON.stringify(createNewPostFormData.location));
 
       // えーと。。。何したいんだっけ？？buffer側は
       const contents = [],
