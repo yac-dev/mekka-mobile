@@ -5,10 +5,14 @@ import backendAPI from '../apis/backend';
 import Feature from '../features/SpaceInfo/pages/Feature';
 import Description from '../features/SpaceInfo/pages/Description';
 import Members from '../features/SpaceInfo/pages/Members';
+import ReportBottomSheet from '../features/SpaceInfo/components/ReportBottomSheet';
+import SnackBar from '../components/SnackBar';
 
 const Tab = createMaterialTopTabNavigator();
 
 const SpaceInfoTopTabNavigator = () => {
+  const reportBottomSheetRef = useRef(null);
+
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
       <View style={{ alignItems: 'center', marginBottom: 15 }}>
@@ -54,17 +58,21 @@ const SpaceInfoTopTabNavigator = () => {
   };
 
   return (
-    <Tab.Navigator
-      tabBar={(props) => <CustomTabBar {...props} />}
-      screenOptions={({ route }) => ({
-        lazy: true,
-        swipeEnabled: false,
-      })}
-    >
-      <Tab.Screen name={'Feature'} component={Feature} />
-      <Tab.Screen name={'Members (7)'} component={Members} />
-      <Tab.Screen name={'Description'} component={Description} />
-    </Tab.Navigator>
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        tabBar={(props) => <CustomTabBar {...props} />}
+        screenOptions={({ route }) => ({
+          lazy: true,
+          swipeEnabled: false,
+        })}
+      >
+        {/* bottomrefをpropsで渡して、user tapでbottomを出す。 */}
+        <Tab.Screen name={'Feature'} component={Feature} />
+        <Tab.Screen name={'Members'}>{() => <Members reportBottomSheetRef={reportBottomSheetRef} />}</Tab.Screen>
+        <Tab.Screen name={'Description'} component={Description} />
+      </Tab.Navigator>
+      <ReportBottomSheet reportBottomSheetRef={reportBottomSheetRef} />
+    </View>
   );
 };
 

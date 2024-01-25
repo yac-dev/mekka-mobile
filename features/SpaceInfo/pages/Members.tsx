@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Share } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Share, Alert } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { FadingTransition } from 'react-native-reanimated';
@@ -11,7 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
-const Members = () => {
+const Members = (props) => {
   const { currentSpace } = useContext(GlobalContext);
   const { spaceAndUserRelationship } = useContext(SpaceInfoContext);
   const { space } = spaceAndUserRelationship;
@@ -38,6 +38,9 @@ const Members = () => {
           padding: 15,
           borderBottomWidth: 0.3,
           borderBottomColor: 'rgb(90,90,90)',
+        }}
+        onPress={() => {
+          props.reportBottomSheetRef.current.snapToIndex(0);
         }}
       >
         <ExpoImage
