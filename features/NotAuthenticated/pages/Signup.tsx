@@ -274,6 +274,17 @@ const Signup = (props) => {
         onChangeText={(text) => setPassword(text)}
       /> */}
       </View>
+      <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+          <Text style={{ color: 'rgb(150,150,150)' }}>By signing up, you accept and read Mekka's&nbsp;</Text>
+          <TouchableOpacity
+            style={{ borderBottomWidth: 0.5, borderBottomColor: 'rgb(150, 150,150)' }}
+            onPress={() => props.navigation.navigate('EULA')}
+          >
+            <Text style={{ color: 'rgb(150,150,150)' }}>EULA.</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       <LoadingSpinner />
       <SnackBar />
     </View>

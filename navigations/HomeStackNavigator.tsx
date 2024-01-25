@@ -44,6 +44,7 @@ import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import Login from '../features/NotAuthenticated/pages/Login';
 import Signup from '../features/NotAuthenticated/pages/Signup';
+import EULA from '../features/NotAuthenticated/pages/EULA';
 
 import EditTag from '../features/EditTag/pages/Form';
 import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
@@ -325,6 +326,39 @@ const HomeStackNavigator: React.FC = (props) => {
             />
           </Stack.Group>
           <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+            {/* EULA */}
+            <Stack.Screen
+              name='EULA'
+              component={EULA}
+              options={({ navigation }) => ({
+                headerShown: true,
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    // style={{
+                    //   flexDirection: 'row',
+                    //   alignItems: 'center',
+                    //   paddingTop: 5,
+                    //   paddingBottom: 5,
+                    //   paddingLeft: 10,
+                    //   paddingRight: 10,
+                    //   backgroundColor: 'white',
+                    //   borderRadius: 20,
+                    // }}
+                  >
+                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                  </TouchableOpacity>
+                ),
+                headerTitle: '',
+                headerStyle: {
+                  backgroundColor: 'black',
+                },
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  color: 'white',
+                },
+              })}
+            />
             <Stack.Screen
               name='EditAccountStackNavigator'
               component={EditAccountStackNavigator}
