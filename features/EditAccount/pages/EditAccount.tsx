@@ -1,65 +1,83 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { AppTextInput } from '../../../components';
 import { useEditAccount, useUpdateUser } from '../hooks';
+import { UpdateUserInputType } from '../types';
+import { TextColor } from '../../../themes';
 
-const EditAccount = () => {
+export const EditAccount = (props) => {
   const {
     formData,
+    isFormValidated,
     isPasswordVisible,
     onAvatarPress,
     onNameChange,
     onEmailChange,
     onPasswordChange,
     onPasswordVisibilityChange,
+    validateForm,
   } = useEditAccount();
   const { apiResult, requestApi } = useUpdateUser();
 
-  // useEffect(() => {
-  //   if (editingName.length && editingEmail.length && editingPassword.length) {
-  //     if (editingPassword.length >= 10) {
-  //       setIsValidated(true);
-  //     } else {
-  //       setIsValidated(false);
-  //     }
-  //   } else {
-  //     setIsValidated(false);
-  //   }
-  // }, [editingName, editingEmail, editingPassword]);
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => onDonePress()} disabled={isFormValidated ? false : true}>
+          <Text
+            style={{
+              color: isFormValidated ? TextColor.primary : 'rgb(117,117, 117)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Done
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [isFormValidated]);
+
+  useEffect(() => {
+    validateForm();
+  }, [formData]);
+
+  const onDonePress = () => {
+    const input: UpdateUserInputType = {
+      name: formData.name.value,
+      email: formData.email.value,
+      password: formData.password.value,
+      avatar: formData.avatar.value,
+    };
+    requestApi(input);
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView>
-        <TouchableOpacity
-          onPress={() => onAvatarPress()}
-          style={{ width: 70, height: 70, alignSelf: 'center', marginBottom: 30 }}
-        >
-          <ExpoImage style={{ width: '100%', height: '100%' }} source={{ uri: formData.avatar }} contentFit='cover' />
+        <TouchableOpacity onPress={() => onAvatarPress()} style={styles.avatarContainer}>
+          <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
         </TouchableOpacity>
         <View>
           <AppTextInput.BorderStyle
-            value={formData.name}
+            value={formData.name.value}
             placeholder='Name here...'
             labelIcon={<VectorIcon.MCI name='account' color='white' size={20} />}
             onTextChange={onNameChange}
             keyboardType={'default'}
           />
           <AppTextInput.BorderStyle
-            value={formData.email}
+            value={formData.email.value}
             placeholder='Email here...'
             labelIcon={<VectorIcon.MCI name='email' color='white' size={20} />}
             onTextChange={onEmailChange}
             keyboardType={'default'}
           />
           <AppTextInput.BorderStyle
-            value={formData.password}
+            value={formData.password.value}
             placeholder='Password here...'
             labelIcon={<VectorIcon.II name='eye' color='white' size={20} />}
             onTextChange={onPasswordChange}
@@ -74,4 +92,15 @@ const EditAccount = () => {
   );
 };
 
-export default EditAccount;
+const styles = StyleSheet.create({
+  avatarContainer: {
+    width: 70,
+    height: 70,
+    alignSelf: 'center',
+    marginBottom: 30,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+  },
+});

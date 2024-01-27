@@ -21,11 +21,40 @@ export type UserType = {
   password: string;
 };
 
+export type FormType<T> = {
+  hasChanged: boolean;
+  isValidated: boolean;
+  value: T;
+};
+
 export type EditAccountFormType = {
-  name: string;
-  email: string;
-  password: string;
-  avatar: string;
+  name: FormType<string>;
+  email: FormType<string>;
+  password: FormType<string>;
+  avatar: FormType<string>;
+};
+
+export const INITIAL_EDIT_ACCOUNT_FORM = {
+  name: {
+    hasChanged: false,
+    isValidated: true,
+    value: auth.name,
+  },
+  email: {
+    hasChanged: false,
+    isValidated: true,
+    value: auth.email,
+  },
+  password: {
+    hasChanged: false,
+    isValidated: true,
+    value: auth.password,
+  },
+  avatar: {
+    hasChanged: false,
+    isValidated: true,
+    value: auth.avatar,
+  },
 };
 
 export type StatusType = 'idling' | 'loading' | 'success' | 'error' | 'paging';

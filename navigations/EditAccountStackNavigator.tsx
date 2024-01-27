@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-import EditAccount from '../features/EditAccount/pages/EditAccount';
 import { Ionicons } from '@expo/vector-icons';
+import { EditAccount } from '../features/EditAccount/pages/EditAccount';
 
 const EditAccountStackNavigator: React.FC = () => {
   return (

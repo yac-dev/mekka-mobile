@@ -7,11 +7,28 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 export const useEditAccount = () => {
   const { auth } = useContext(AuthContext);
   const [formData, setFormData] = useState<EditAccountFormType>({
-    name: auth.name,
-    email: auth.email,
-    password: auth.password,
-    avatar: auth.avatar,
+    name: {
+      hasChanged: false,
+      isValidated: true,
+      value: auth.name,
+    },
+    email: {
+      hasChanged: false,
+      isValidated: true,
+      value: auth.email,
+    },
+    password: {
+      hasChanged: false,
+      isValidated: true,
+      value: auth.password,
+    },
+    avatar: {
+      hasChanged: false,
+      isValidated: true,
+      value: auth.avatar,
+    },
   }); // userのauthDataをまんま当てはめる。ここで。
+  const [isFormValidated, setIsFormValidates] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const onAvatarPress = async () => {
@@ -25,35 +42,51 @@ export const useEditAccount = () => {
       setFormData((previous) => {
         return {
           ...previous,
-          avatar: pickedImage.assets[0].uri,
+          avatar: {
+            hasChanged: true,
+            isValidated: true,
+            value: pickedImage.assets[0].uri,
+          },
         };
       });
     }
   };
 
-  const onNameChange = (text: string) => {
+  const onNameChange = (newText: string) => {
     setFormData((previous) => {
       return {
         ...previous,
-        name: text,
+        name: {
+          hasChanged: newText === auth.name ? false : true,
+          isValidated: newText.length ? true : false,
+          value: newText,
+        },
       };
     });
   };
 
-  const onEmailChange = (text: string) => {
+  const onEmailChange = (newText: string) => {
     setFormData((previous) => {
       return {
         ...previous,
-        email: text,
+        email: {
+          hasChanged: newText === auth.email ? false : true,
+          isValidated: newText.length ? true : false,
+          value: newText,
+        },
       };
     });
   };
 
-  const onPasswordChange = (text: string) => {
+  const onPasswordChange = (newText: string) => {
     setFormData((previous) => {
       return {
         ...previous,
-        password: text,
+        password: {
+          hasChanged: newText === auth.password ? false : true,
+          isValidated: newText.length ? true : false,
+          value: newText,
+        },
       };
     });
   };
@@ -62,13 +95,35 @@ export const useEditAccount = () => {
     setIsPasswordVisible((previous) => !previous);
   };
 
+  const validateForm = () => {
+    if (
+      formData.name.hasChanged ||
+      formData.email.hasChanged ||
+      formData.password.hasChanged ||
+      formData.avatar.hasChanged
+    ) {
+      if (
+        formData.name.isValidated &&
+        formData.email.isValidated &&
+        formData.password.isValidated &&
+        formData.avatar.isValidated
+      ) {
+        setIsFormValidates(true);
+      }
+    } else {
+      setIsFormValidates(false);
+    }
+  };
+
   return {
     formData,
+    isFormValidated,
     isPasswordVisible,
     onAvatarPress,
     onNameChange,
     onEmailChange,
     onPasswordChange,
     onPasswordVisibilityChange,
+    validateForm,
   };
 };

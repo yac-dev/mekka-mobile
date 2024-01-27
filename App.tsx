@@ -16,7 +16,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
 import * as Notifications from 'expo-notifications';
-import { AuthDataProvider } from './providers'
+import { AuthDataProvider } from './providers';
+import { Booting } from './features';
 
 type AuthDataType = {
   _id: string;
@@ -218,7 +219,7 @@ const App: React.FC = function () {
       <AuthDataProvider>
         <PaperProvider>
           <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-          <NavigationContainer>
+          {/* <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen
                 name='HomeStackNavigator'
@@ -229,7 +230,9 @@ const App: React.FC = function () {
                 })}
               />
             </Stack.Navigator>
-          </NavigationContainer>
+          </NavigationContainer> */}
+          <Booting />
+          {/* authのありinit component */}
         </PaperProvider>
       </AuthDataProvider>
       <LoadingSpinner />
