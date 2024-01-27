@@ -16,6 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
 import * as Notifications from 'expo-notifications';
+import { AuthDataProvider } from './providers'
 
 type AuthDataType = {
   _id: string;
@@ -116,16 +117,6 @@ const App: React.FC = function () {
     setSpaceAndUserRelationshipsFetchingStatus('success');
   };
 
-  const getMySpacesFromInactive = async () => {
-    const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
-    const { spaceAndUserRelationships, updateTable } = result.data;
-    setSpaceAndUserRelationships(spaceAndUserRelationships);
-    setUpdatesTable(updateTable);
-    setCurrentSpaceAndUserRelationship(spaceAndUserRelationships[0]);
-    setHaveSpaceAndUserRelationshipsBeenFetched(true);
-    setSpaceAndUserRelationshipsFetchingStatus('success');
-  };
-
   useEffect(() => {
     loadMe();
   }, []);
@@ -139,7 +130,6 @@ const App: React.FC = function () {
   };
 
   // auth dataがある場合は、これをそもそも起こさない。
-  // そもそも、今自分がspaceのなんのtagを見ているか分からない状態で。。。
   useEffect(() => {
     // 最初のrenderで、このsubscription functionが登録される。
     if (isAuthenticated) {
@@ -186,44 +176,6 @@ const App: React.FC = function () {
     }
   }, [isAuthenticated]);
 
-  const renderNavigator = () => {
-    if (isAuthDataFetched) {
-      if (isAuthenticated) {
-        return (
-          <Stack.Navigator>
-            <Stack.Screen
-              name='HomwStackNavigator'
-              component={HomeStackNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true,
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        );
-      } else {
-        return (
-          <Stack.Navigator>
-            <Stack.Screen
-              name='NonAuthNavigator'
-              component={NonAuthNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true,
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        );
-      }
-    } else {
-      return (
-        <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-  };
-
   return (
     <GlobalContext.Provider
       value={{
@@ -254,10 +206,7 @@ const App: React.FC = function () {
         setCurrentTagObject,
         isAfterPosted,
         setIsAfterPosted,
-        // createNewPostFormData,
-        // setCreateNewPostFormData,
-        // createNewPostResult,
-        // setCreateNewPostResult,
+
         spaceAndUserRelationshipsFetchingStatus,
         updatesTable,
         setUpdatesTable,
@@ -265,21 +214,24 @@ const App: React.FC = function () {
         setNotificationEnabled,
       }}
     >
-      <PaperProvider>
-        <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name='HomeStackNavigator'
-              component={HomeStackNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true,
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
+      {/* globalなcontextだけをここでもっておく感じかな。。。 */}
+      <AuthDataProvider>
+        <PaperProvider>
+          <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name='HomeStackNavigator'
+                component={HomeStackNavigator}
+                options={({ navigation }) => ({
+                  // headerShown: true,
+                  headerShown: false,
+                })}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </AuthDataProvider>
       <LoadingSpinner />
     </GlobalContext.Provider>
   );

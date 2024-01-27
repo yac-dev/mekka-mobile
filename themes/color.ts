@@ -1,4 +1,20 @@
+export namespace Color {
+  export const primary = 'white';
+}
+
+export namespace BackgroundColor {
+  export const primary = 'black';
+  export const secondary = 'rgb(50,50,50)';
+  export const badge = 'red';
+}
+
+export namespace TextColor {
+  export const primary = 'white';
+  export const secondary = 'rgb(170,170,170)';
+}
+
 export const primaryBackgroundColor = 'black';
+export const secondaryBackgroundColor = 'rgb(50,50,50)';
 export const spaceBackgroundColor = 'rgb(57, 57, 57)';
 export const secondaryBaackgroundColor = 'rgb(44, 47, 51)';
 export const modalBackgroundColor = 'rgb(35, 35, 35)';
