@@ -15,7 +15,7 @@ const blurhash =
 
 // rgb(35, 35, 35)
 const ReactionOptionsBottomSheet = (props) => {
-  const snapPoints = useMemo(() => ['47%'], []);
+  const snapPoints = useMemo(() => ['57%'], []);
   const { isIpad, setLoading, authData } = useContext(GlobalContext);
   const {
     reactionStatusesBottomSheetRef,
@@ -77,7 +77,7 @@ const ReactionOptionsBottomSheet = (props) => {
               // marginRight: 10,
               width: oneGridWidth,
               aspectRatio: 1,
-              padding: 10,
+              padding: 5,
               // marginBottom: 10,
             }}
           >
@@ -95,73 +95,81 @@ const ReactionOptionsBottomSheet = (props) => {
             >
               {reactionStatus.reaction.type === 'emoji' ? (
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                  <Text
+                  <View
                     style={{
-                      fontSize: 50,
-                      // marginBottom: 10,
-                      //  marginRight: reactionStatus.count ? 10 : 0
+                      width: iconContainerWidth * 0.6,
+                      aspectRatio: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginBottom: 5,
                     }}
                   >
-                    {reactionStatus.reaction.emoji}
-                  </Text>
-                  <View>
-                    <Text style={{ color: 'rgb(150,150,150)', fontWeight: 'bold', fontSize: 16 }}>
-                      {reactionStatus.reaction.caption}
-                    </Text>
-                  </View>
-                  {/* {reactionStatus.count ? (
-                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{reactionStatus.count}</Text>
-                  ) : (
-                    <View
+                    <Text
                       style={{
-                        width: 26,
-                        height: 26,
-                        backgroundColor: 'rgba(45, 209, 40, 0.85)',
-                        borderRadius: 13,
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        fontSize: 60,
                       }}
                     >
-                      <MaterialCommunityIcons name='plus' size={15} color='white' />
-                    </View>
-                  )} */}
+                      {reactionStatus.reaction.emoji}
+                    </Text>
+                  </View>
                 </View>
               ) : (
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                  <ExpoImage
+                  <View
                     style={{
-                      width: 60,
-                      height: 60,
-                      marginBottom: 10,
-                      // marginRight: reactionStatus.count ? 10 : 0
+                      width: iconContainerWidth * 0.6,
+                      aspectRatio: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginBottom: 5,
                     }}
-                    source={{ uri: reactionStatus.reaction.sticker.url }}
-                    contentFit='contain'
-                  />
-                  <View>
-                    <Text style={{ color: 'rgb(150,150,150)', fontWeight: 'bold', fontSize: 16 }}>
-                      {reactionStatus.reaction.caption}
-                    </Text>
-                  </View>
-                  {/* {reactionStatus.count ? (
-                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{reactionStatus.count}</Text>
-                  ) : (
-                    <View
+                  >
+                    <ExpoImage
                       style={{
-                        width: 26,
-                        height: 26,
-                        backgroundColor: 'rgba(45, 209, 40, 0.85)',
-                        borderRadius: 13,
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: '100%',
+                        height: '100%',
                       }}
-                    >
-                      <MaterialCommunityIcons name='plus' size={15} color='white' />
-                    </View>
-                  )} */}
+                      source={{ uri: reactionStatus.reaction.sticker.url }}
+                      contentFit='contain'
+                    />
+                  </View>
                 </View>
               )}
             </TouchableOpacity>
+            {reactionStatus.reaction.caption.length ? (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: 'rgb(70,70,70)',
+                  padding: 5,
+                  borderRadius: 10,
+                  maxWidth: oneGridWidth,
+                }}
+              >
+                <View
+                  style={{
+                    marginRight: 5,
+                    borderRightWidth: 1,
+                    borderColor: 'rgb(150,150,150)',
+                    paddingLeft: 3,
+                    paddingRight: 3,
+                    flex: 9,
+                  }}
+                >
+                  <Text numberOfLines={1} style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>
+                    {reactionStatus.reaction.caption}
+                  </Text>
+                </View>
+                <View style={{ paddingLeft: 3, paddingRight: 3, flex: 1 }}>
+                  <Text style={{ color: 'white' }}>{reactionStatus.count}</Text>
+                </View>
+              </View>
+            ) : (
+              <View style={{ backgroundColor: 'rgb(70,70,70)', padding: 5, borderRadius: 10 }}>
+                <Text style={{ color: 'white' }}>{reactionStatus.count}</Text>
+              </View>
+            )}
           </View>
         );
       });
