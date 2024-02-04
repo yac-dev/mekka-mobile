@@ -274,7 +274,7 @@ const TagsTopTabNavigator = (props) => {
         >
           <ExpoImage
             style={{ width: 25, height: 25, marginBottom: 5 }}
-            source={{ uri: item.tag.icon }}
+            source={{ uri: item.tag.icon.url }}
             // placeholder={blurhash}
             // contentFit='fill'
             // transition={100}
