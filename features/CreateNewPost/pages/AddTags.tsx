@@ -94,9 +94,9 @@ const AddTags = (props) => {
           >
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10 }}
-              source={{ uri: tag.icon }}
+              source={{ uri: tag.icon.url }}
               contentFit='cover'
-              tintColor={tag.iconType === 'icon' ? tag.color : null}
+              tintColor={tag.icon ? tag.color : null}
             />
             <Text style={{ color: 'white' }}>{tag.name}</Text>
             {createNewPostFormData.addedTags[tag._id] ? (

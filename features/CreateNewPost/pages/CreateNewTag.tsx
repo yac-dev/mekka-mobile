@@ -8,19 +8,20 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const CreateNewTag = (props) => {
-  const { navigation } = useContext(CreateNewPostContext);
+  const { navigation, defaultTagIcon } = useContext(CreateNewPostContext);
   const [tagName, setTagName] = useState('');
   const inputRef = useRef(null);
   const [tag, setTag] = useState({
     _id: new Date(),
     iconType: 'icon',
-    icon: 'https://mekka-dev.s3.us-east-2.amazonaws.com/tagIcons/hashtag-normal.png',
+    icon: defaultTagIcon,
     image: '',
     name: '',
     color: 'white',
     added: true,
     created: true,
   });
+  console.log('default icon ', defaultTagIcon);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -101,7 +102,7 @@ const CreateNewTag = (props) => {
       >
         <ExpoImage
           style={{ width: 20, height: 20 }}
-          source={require('../../../assets/forApp/hashtag-normal.png')}
+          source={defaultTagIcon.url}
           contentFit='cover'
           tintColor={'rgb(170,170,170)'}
         />

@@ -42,6 +42,7 @@ const CreateNewPostStackNavigator = (props) => {
   const [addedLocationTag, setAddedLocationTag] = useState(null);
   const [locationTagOptions, setLocationTagOptions] = useState([]);
   const [moments, setMoments] = useState([]);
+  const [defaultTagIcon, setDefaultTagIcon] = useState({});
 
   const {
     spaceAndUserRelationship: { space },
@@ -76,9 +77,16 @@ const CreateNewPostStackNavigator = (props) => {
     });
   };
 
+  const getDefaultTagIcon = async () => {
+    const result = await backendAPI.get('/icons?name=hash');
+    const { icon } = result.data;
+    setDefaultTagIcon(icon);
+  };
+
   useEffect(() => {
     getTags();
     getLocationTags();
+    getDefaultTagIcon();
   }, []);
 
   const onPostPress = async () => {
@@ -203,6 +211,7 @@ const CreateNewPostStackNavigator = (props) => {
         setDummyCreatedTagId,
         moments,
         setMoments,
+        defaultTagIcon,
       }}
     >
       <Stack.Navigator>

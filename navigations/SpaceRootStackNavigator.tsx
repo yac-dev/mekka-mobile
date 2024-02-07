@@ -151,7 +151,9 @@ const SpaceRootStackNavigator = (props) => {
       payload.append('createdBy', authData._id);
       payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
       payload.append('contents', JSON.stringify(contents));
-      // payload.append('bufferContents', JSON.parse(JSON.stringify(bufferContents)));
+      console.log('createdTags -> ', filteredCreatedTags);
+      console.log('addedTags -> ', filteredAddedTags);
+      //  ----- 一回ここdebuggingでコメントアウト
       for (let content of createNewPostFormData.contents) {
         const fileName = `${content.uri.split('/').pop().split('.')[0]}.${content.type === 'photo' ? 'png' : 'mp4'}`;
         const obj = {
@@ -161,14 +163,6 @@ const SpaceRootStackNavigator = (props) => {
         };
         payload.append('bufferContents', JSON.parse(JSON.stringify(obj)));
       }
-      // console.log('buffer contents', JSON.stringify(createNewPostFormData.contents, null, 4));
-      // setLoading(true);
-      // setCreateNewPostResult((previous) => {
-      //   return {
-      //     ...previous,
-      //     isCreating: true,
-      //   };
-      // });
       setSnackBar({
         isVisible: true,
         barType: 'success',
@@ -178,8 +172,6 @@ const SpaceRootStackNavigator = (props) => {
       const result = await backendAPI.post('/posts', payload, {
         headers: { 'Content-type': 'multipart/form-data' },
       });
-      // setLoading(false);
-      // ここのuseEffectを反応させれば良いのかね多分。
       setCreateNewPostResult((previous) => {
         return {
           ...previous,
@@ -195,14 +187,6 @@ const SpaceRootStackNavigator = (props) => {
         message: 'Post has been created successfully.',
         duration: 5000,
       });
-      // なるほど、戻る時に必要になるのか。。。でもなーーーー。
-      // props.navigation.navigate({
-      //   name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
-      //   params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
-      //   merge: true,
-      // });
-      // setIsAfterPosted(true);
-      // ここで、pageに戻った後に今いるこのspaceをrefreshすればいいんだけど。。。
     } catch (error) {
       console.log(error);
     }
