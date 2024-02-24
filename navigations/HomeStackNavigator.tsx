@@ -40,7 +40,8 @@ import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocat
 import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
 import EditAccountStackNavigator from './EditAccountStackNavigator';
-import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
+// import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
+import { DeleteMyAccount } from '../features';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import Login from '../features/NotAuthenticated/pages/Login';
 import Signup from '../features/NotAuthenticated/pages/Signup';

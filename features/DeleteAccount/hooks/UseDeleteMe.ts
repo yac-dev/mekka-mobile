@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { deleteMe } from '../apis';
 import { ApiResultType, DeleteMeInput } from '../types';
 
-export const useDeleteMe = (input: DeleteMeInput) => {
+export const useDeleteMe = () => {
   const [apiResult, setApiResult] = useState<ApiResultType>({
     status: 'idling',
     data: void 0,
     message: '',
   });
 
-  const requestApi = async () => {
+  const requestApi = async (input: DeleteMeInput) => {
     try {
       setApiResult((previous) => {
         return {

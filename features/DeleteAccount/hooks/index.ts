@@ -1,1 +1,2 @@
-export * from './UseDeleteMe';
+export * from './useDeleteMe';
+export * from './useForm';
