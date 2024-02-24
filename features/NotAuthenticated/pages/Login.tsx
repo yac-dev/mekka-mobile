@@ -52,12 +52,12 @@ const Login = (props) => {
     try {
       console.log(payload);
       const result = await backendAPI.post('/auth/login', payload);
-      const { user, jwt } = result.data;
-      setAuthData(user);
+      const response = result.data.data;
+      setAuthData(response.user);
       setIsAuthenticated(true);
       setLoading(false);
       setSnackBar({ isVisible: true, message: 'Logged in successfully.', barType: 'success', duration: 5000 });
-      await SecureStore.setItemAsync('secure_token', jwt);
+      await SecureStore.setItemAsync('secure_token', response.jwt);
       props.navigation?.navigate('SpacesDrawerNavigator');
     } catch (error) {
       setLoading(false);

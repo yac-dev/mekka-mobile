@@ -20,7 +20,7 @@ export type GetSpacesOutputType = {
   spaces: SpaceType[];
 };
 
-export type StatusType = 'idling' | 'loading' | 'success' | 'error' | 'paging';
+export type StatusType = 'idling' | 'loading' | 'success' | 'fail' | 'error' | 'paging';
 
 export type ApiResultType = {
   status: StatusType;

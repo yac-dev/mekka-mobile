@@ -97,7 +97,7 @@ const App: React.FC = function () {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
       const result = await backendAPI.get('/auth/loadMe', { headers: { authorization: `Bearer ${jwt}` } });
-      const { user } = result.data;
+      const user = result.data.data;
       setAuthData(user);
       setIsAuthDataFetched(true);
       setIsAuthenticated(true);

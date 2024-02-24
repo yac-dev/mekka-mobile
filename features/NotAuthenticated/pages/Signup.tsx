@@ -51,13 +51,12 @@ const Signup = (props) => {
     setLoading(true);
     try {
       const result = await backendAPI.post('/auth/signup', payload);
-      const { status, data } = result.data;
-      const { user, jwt } = data;
-      setAuthData(user);
+      const response = result.data.data;
+      setAuthData(response.user);
       setIsAuthenticated(true);
       setLoading(false);
       setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
-      await SecureStore.setItemAsync('secure_token', jwt);
+      await SecureStore.setItemAsync('secure_token', response.jwt);
       props.navigation?.navigate('SpacesDrawerNavigator');
     } catch (error) {
       setLoading(false);
