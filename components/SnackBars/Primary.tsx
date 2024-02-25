@@ -3,16 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { FD, II } from '../../Icons';
 import { BackgroundColor, TextColor } from '../../themes';
-
-type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error';
-
-type PrimarySnackBarProps = {
-  isVisible: boolean;
-  status: SnackBarStatusType;
-  message: string;
-  duration: number;
-  hideSnackBar: () => void;
-};
+import { SnackBarStatusType } from '../../types';
 
 type SnackBarStatusTableType = {
   [key in SnackBarStatusType]: {
@@ -38,6 +29,14 @@ const SnackBarStatusTable: SnackBarStatusTableType = {
     backgroundColor: BackgroundColor.red,
     Node: <FD name='prohibited' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
+};
+
+type PrimarySnackBarProps = {
+  isVisible: boolean;
+  status: SnackBarStatusType;
+  message: string;
+  duration: number;
+  hideSnackBar: () => void;
 };
 
 // snackbarの表示stateは親で、それを隠すfunctionも渡してくればいい。

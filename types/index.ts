@@ -36,15 +36,18 @@ export type TagType = {
   createdBy: UserType;
 };
 
-// export const INITIAL_SNACK_BAR = {
-//   isVisible,
-// };
+export type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error' | undefined;
 
-// export type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error';
+export type SnackBarType = {
+  isVisible: boolean;
+  status: SnackBarStatusType;
+  message: string | undefined;
+  duration: number;
+};
 
-// export type SnackBarType = {
-//   isVisible: boolean;
-//   status: SnackBarStatusType;
-//   message: string;
-//   duration: number;
-// };
+export const INITIAL_STATUS_BAR: SnackBarType = {
+  isVisible: false,
+  status: void 0,
+  message: undefined,
+  duration: undefined,
+};

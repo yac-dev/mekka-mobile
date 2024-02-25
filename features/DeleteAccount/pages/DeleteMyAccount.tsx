@@ -5,10 +5,14 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 import * as SecureStore from 'expo-secure-store';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { useDeleteMe, useForm } from '../hooks';
-import { Underline as AppTextInputUnderline } from '../../../components';
+import {
+  Underline as AppTextInputUnderline,
+  WithTitle as PageScreenWithTitle,
+  Spinning as LoadingSpinning,
+  Primary as PrimarySnackBar,
+} from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
-import { WithTitle as PageScreenWithTitle } from '../../../components';
 
 // routingのprops用意な。。。
 
