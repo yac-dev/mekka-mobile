@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
-import { yellow, red, lightGreen, blue } from '../../themes';
+import { FD, II } from '../../Icons';
+import { BackgroundColor, TextColor } from '../../themes';
 
 type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error';
 
@@ -24,20 +23,20 @@ type SnackBarStatusTableType = {
 
 const SnackBarStatusTable: SnackBarStatusTableType = {
   success: {
-    backgroundColor: lightGreen,
-    Node: <Ionicons name='checkmark-circle' size={20} color={'white'} style={{ marginRight: 10 }} />,
+    backgroundColor: BackgroundColor.lightGreen,
+    Node: <II name='checkmark-circle' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
   info: {
-    backgroundColor: blue,
-    Node: <Ionicons name='information-circle-sharp' size={20} color={'white'} style={{ marginRight: 10 }} />,
+    backgroundColor: BackgroundColor.blue,
+    Node: <II name='information-circle-sharp' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
   warning: {
-    backgroundColor: yellow,
-    Node: <Ionicons name='ios-warning-sharp' size={20} color={'white'} style={{ marginRight: 10 }} />,
+    backgroundColor: BackgroundColor.yellow,
+    Node: <II name='ios-warning-sharp' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
   error: {
-    backgroundColor: red,
-    Node: <Foundation name='prohibited' size={20} color={'white'} style={{ marginRight: 10 }} />,
+    backgroundColor: BackgroundColor.red,
+    Node: <FD name='prohibited' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
 };
 
@@ -57,7 +56,7 @@ export const Primary: React.FC<PrimarySnackBarProps> = ({ isVisible, status, mes
 
   return (
     <Snackbar
-      wrapperStyle={{ top: 5, alignSelf: 'center' }}
+      wrapperStyle={styles.wrapperStyle}
       style={{
         backgroundColor: SnackBarStatusTable[status].backgroundColor,
       }}
@@ -68,10 +67,21 @@ export const Primary: React.FC<PrimarySnackBarProps> = ({ isVisible, status, mes
         onPress: () => hideSnackBar(),
       }}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={styles.contentContainer}>
         {SnackBarStatusTable[status].Node}
-        <Text style={{ color: 'white' }}>{message}</Text>
+        <Text style={styles.message}>{message}</Text>
       </View>
     </Snackbar>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapperStyle: {
+    top: 5,
+    alignSelf: 'center',
+  },
+  contentContainer: { flexDirection: 'row', alignItems: 'center' },
+  message: {
+    color: TextColor.primary,
+  },
+});

@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TextColor, Color } from '../../themes';
+import { TextColor } from '../../themes';
 import { VectorIcon } from '../../Icons';
 
 type KeyBoardType = 'default' | 'numeric' | 'email-address' | 'number-pad';
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
     borderBottomWidth: 0.3,
-    borderBottomColor: Color.primary,
+    borderBottomColor: TextColor.primary,
     marginLeft: 10,
     marginRight: 10,
   },
