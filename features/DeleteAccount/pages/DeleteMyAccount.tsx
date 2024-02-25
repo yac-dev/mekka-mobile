@@ -73,7 +73,7 @@ export const DeleteMyAccount = (props) => {
     setSnackBar({
       isVisible: true,
       barType: 'success',
-      message: 'Successfully deleted your account. Bye bye.',
+      message: `Successfully deleted your account.${'\n'}Bye bye.`,
       duration: 5000,
     });
     props.navigation.goBack();
@@ -134,7 +134,7 @@ export const DeleteMyAccount = (props) => {
         secureTextEntry={isPasswordHidden}
         onTextEntryVisibilityChange={onPasswordHiddenChange}
       />
-      <LoadingSpinner />
+      {apiResult.status === 'loading' && <LoadingSpinner />}
     </View>
   );
 };
