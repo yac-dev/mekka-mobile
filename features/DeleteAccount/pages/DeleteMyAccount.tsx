@@ -8,6 +8,7 @@ import { useDeleteMe, useForm } from '../hooks';
 import { Underline as AppTextInputUnderline } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
+import { WithTitle as PageScreenWithTitle } from '../../../components';
 
 // routingのprops用意な。。。
 
@@ -23,14 +24,16 @@ export const DeleteMyAccount = (props) => {
     setCurrentSpace,
     setCurrentTagObject,
   } = useContext(GlobalContext);
-  const { apiResult, requestApi } = useDeleteMe();
+  const { apiResult, requestApi, exec } = useDeleteMe();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
+
+  console.log('api status', apiResult.status);
 
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
         <TouchableWithoutFeedback
-          onPress={() => onDeletePressNew()}
+          onPress={() => exec()}
           disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
         >
           <Text
@@ -58,6 +61,13 @@ export const DeleteMyAccount = (props) => {
   useEffect(() => {
     if (apiResult.status === 'success') {
       onDeleteMeSuccess();
+    } else if (apiResult.status === 'fail') {
+      setSnackBar({
+        isVisible: true,
+        barType: 'error',
+        message: 'fail',
+        duration: 5000,
+      });
     }
   }, [apiResult]);
 
@@ -100,24 +110,10 @@ export const DeleteMyAccount = (props) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20, marginBottom: 40 }}>
-        <Text
-          style={{
-            color: 'white',
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 20,
-            marginBottom: 10,
-          }}
-        >
-          Delete my account
-        </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Are you sure you want to delete your account? {'\n'}To terminate your account, please enter your email and
-          password.
-        </Text>
-      </View>
+    <PageScreenWithTitle
+      title={'Delete my account'}
+      subTitle={`Are you sure you want to delete your account? ${'\n'}To terminate your account, please enter your email and password.`}
+    >
       <AppTextInputUnderline
         placeholder='Email'
         value={formData.email.value}
@@ -134,7 +130,9 @@ export const DeleteMyAccount = (props) => {
         secureTextEntry={isPasswordHidden}
         onTextEntryVisibilityChange={onPasswordHiddenChange}
       />
-      {apiResult.status === 'loading' && <LoadingSpinner />}
-    </View>
+      {apiResult.status === 'loading' ? <LoadingSpinner /> : null}
+    </PageScreenWithTitle>
   );
 };
+
+// loading spinnerが出ないよね。。。

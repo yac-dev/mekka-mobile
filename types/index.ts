@@ -35,3 +35,16 @@ export type TagType = {
   icon: IconType;
   createdBy: UserType;
 };
+
+// export const INITIAL_SNACK_BAR = {
+//   isVisible,
+// };
+
+// export type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error';
+
+// export type SnackBarType = {
+//   isVisible: boolean;
+//   status: SnackBarStatusType;
+//   message: string;
+//   duration: number;
+// };
