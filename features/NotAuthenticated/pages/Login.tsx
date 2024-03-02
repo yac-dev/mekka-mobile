@@ -186,64 +186,9 @@ const Login = (props) => {
           </View>
         </TouchableOpacity>
       </View>
-      {/* ここの実装後でね。。。。 */}
-      {/* <Text style={{ color: 'white', textAlign: 'center', fontSize: 17 }}>Or continue with...</Text>
-      <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Login')}
-            style={{
-              padding: 10,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              alignItems: 'center',
-              width: 70,
-              height: 70,
-              justifyContent: 'center',
-              marginBottom: 10,
-            }}
-          >
-            <MaterialCommunityIcons name='login' color='black' size={30} />
-          </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Google</Text>
-        </View>
-        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Signup')}
-            style={{
-              padding: 10,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 70,
-              height: 70,
-              marginBottom: 10,
-            }}
-          >
-            <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
-          </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Apple</Text>
-        </View>
-        <View style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Signup')}
-            style={{
-              padding: 10,
-              backgroundColor: 'white',
-              borderRadius: 35,
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 70,
-              height: 70,
-              marginBottom: 10,
-            }}
-          >
-            <MaterialCommunityIcons name='rocket-launch' color='black' size={30} />
-          </TouchableOpacity>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Facebook</Text>
-        </View>
-      </View> */}
+      <TouchableOpacity activeOpacity={1}>
+        <Text style={{ color: 'white' }}>Forgot my password...</Text>
+      </TouchableOpacity>
       <LoadingSpinner />
       <SnackBar />
     </View>

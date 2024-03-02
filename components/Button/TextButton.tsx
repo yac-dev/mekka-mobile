@@ -1,0 +1,21 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
+type TextButtonProps = {
+  text: string;
+  onTextPress: () => void;
+};
+
+export const TextButton: React.FC<TextButtonProps> = ({ text, onTextPress }) => {
+  return (
+    <TouchableOpacity activeOpacity={1} onPress={() => onTextPress()}>
+      <Text>{text}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  text: {
+    color: '',
+  },
+});
