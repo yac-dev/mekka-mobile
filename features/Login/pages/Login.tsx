@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { PageScreen } from '../../../components';
-import { AppTextInput } from '../../../components';
+import { PageScreen, AppTextInput } from '../../../components';
+import { useForm } from '../hooks';
+import { VectorIcon } from '../../../Icons';
 
 export const Login = () => {
+  const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
   return (
     <PageScreen.WithTitle
       title={'Login'}
@@ -25,6 +27,6 @@ export const Login = () => {
         secureTextEntry={isPasswordHidden}
         onTextEntryVisibilityChange={onPasswordHiddenChange}
       />
-    </PageScreenWithTitle>
+    </PageScreen.WithTitle>
   );
 };
