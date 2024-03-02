@@ -8,7 +8,7 @@ type PageScreenWithTitleProps = {
   children: React.ReactNode;
 };
 
-export const WithTitle: React.FC<PageScreenWithTitleProps> = ({ title, subTitle, children }) => {
+export const PageScreenWithTitle: React.FC<PageScreenWithTitleProps> = ({ title, subTitle, children }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>

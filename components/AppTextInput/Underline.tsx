@@ -16,7 +16,7 @@ type UnderlineTextInputProps = {
   onTextEntryVisibilityChange?: () => void;
 };
 
-export const Underline: React.FC<UnderlineTextInputProps> = ({
+export const UnderlineTextInput: React.FC<UnderlineTextInputProps> = ({
   placeholder,
   value,
   onTextChange,

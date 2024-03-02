@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import SnackBar from '../../../components/SnackBar';
+import { TextColor } from '../../../themes';
+import { TextButton } from '../../../components';
 
 const Login = (props) => {
   const { setAuthData, setIsAuthenticated, setLoading, setSnackBar } = useContext(GlobalContext);
@@ -69,6 +71,10 @@ const Login = (props) => {
       });
     }
     // ここで、secureeをさらにsetする感じか。
+  };
+
+  const forgotMyPassword = () => {
+    // ここで、page移動する。
   };
 
   return (
@@ -186,9 +192,9 @@ const Login = (props) => {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity activeOpacity={1}>
-        <Text style={{ color: 'white' }}>Forgot my password...</Text>
-      </TouchableOpacity>
+      <View style={{ marginLeft: 10 }}>
+        <TextButton text='Forgot my password...' onTextPress={() => console.log('hello')} />
+      </View>
       <LoadingSpinner />
       <SnackBar />
     </View>
