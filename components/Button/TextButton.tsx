@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 import { TextColor } from '../../themes';
 
 type TextButtonProps = {
   text: string;
   onTextPress: () => void;
+  style?: ViewStyle;
 };
 
 export const TextButton: React.FC<TextButtonProps> = ({ text, onTextPress }) => {
@@ -18,6 +19,7 @@ export const TextButton: React.FC<TextButtonProps> = ({ text, onTextPress }) => 
 const styles = StyleSheet.create({
   text: {
     color: TextColor.primary,
+    textAlign: 'center',
   },
 });
 

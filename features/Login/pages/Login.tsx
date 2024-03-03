@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { PageScreen, AppTextInput } from '../../../components';
 import { useForm } from '../hooks';
 import { VectorIcon } from '../../../Icons';
+import { AppButton } from '../../../components';
 
-export const Login = () => {
+export const Login = ({ navigation }) => {
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
+
+  const onTextPress = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
   return (
     <PageScreen.WithTitle
       title={'Login'}
@@ -29,6 +35,9 @@ export const Login = () => {
           onTextEntryVisibilityChange={onPasswordHiddenChange}
         />
       </View>
+      <AppButton.Text text='Forgot my password...' onTextPress={() => onTextPress()} style={{}} />
     </PageScreen.WithTitle>
   );
 };
+
+const styles = StyleSheet.create({});
