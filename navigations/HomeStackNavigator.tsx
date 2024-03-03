@@ -51,6 +51,7 @@ import EditTag from '../features/EditTag/pages/Form';
 import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
 import backendAPI from '../apis/backend';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
+import { LoginStackNavigator } from './LoginStackNavigator';
 
 const HomeStackNavigator: React.FC = (props) => {
   const {
@@ -262,10 +263,10 @@ const HomeStackNavigator: React.FC = (props) => {
               })}
             />
             <Stack.Screen
-              name='Login'
-              component={Login}
+              name='LoginStackNavigator'
+              component={LoginStackNavigator}
               options={({ navigation }) => ({
-                headerShown: true,
+                headerShown: false,
                 headerLeft: () => (
                   <TouchableOpacity
                     onPress={() => navigation.goBack()}

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import { VectorIcon } from '../Icons';
 import { BackgroundColor } from '../themes';
+import { Login } from '../features';
 
 export const LoginStackNavigator = () => {
   return (
@@ -11,15 +12,15 @@ export const LoginStackNavigator = () => {
       <Stack.Group>
         <Stack.Screen
           name='Login'
-          component={EditAccount}
+          component={Login}
           options={({ navigation }) => ({
             headerShown: true,
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <VectorIcon.II name='close-circle-sharp' size={30} color={BackgroundColor.primary} />
+                <VectorIcon.II name='close-circle-sharp' size={30} color={BackgroundColor.white} />
               </TouchableOpacity>
             ),
-            headerTitle: 'Login',
+            headerTitle: '',
             headerStyle: {
               backgroundColor: 'black',
             },
