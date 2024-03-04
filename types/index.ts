@@ -51,3 +51,12 @@ export const INITIAL_STATUS_BAR: SnackBarType = {
   message: undefined,
   duration: undefined,
 };
+
+export type StatusType = 'idling' | 'loading' | 'success' | 'fail' | 'error' | 'paging';
+
+// 最初はdata voidだから、?...　genericはあくまでdata用。
+export type ApiResultType<T> = {
+  status: StatusType;
+  data?: T;
+  message: '';
+};

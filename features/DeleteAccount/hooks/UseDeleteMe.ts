@@ -3,7 +3,7 @@ import { deleteMe } from '../apis';
 import { ApiResultType, DeleteMeInput } from '../types';
 
 export const useDeleteMe = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType>({
+  const [apiResult, setApiResult] = useState<ApiResultType<void>>({
     status: 'idling',
     data: void 0,
     message: '',

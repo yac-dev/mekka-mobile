@@ -27,8 +27,8 @@ export type FormDataType = {
 export type StatusType = 'idling' | 'loading' | 'success' | 'fail' | 'error' | 'paging';
 
 // dataはTにすべきよね。
-export type ApiResultType = {
+export type ApiResultType<T> = {
   status: StatusType;
-  data?: void;
+  data: T;
   message: '';
 };
