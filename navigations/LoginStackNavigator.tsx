@@ -14,9 +14,9 @@ export const LoginStackNavigator = ({ navigation }) => {
           name='Login'
           component={Login}
           options={({}) => ({
-            headerShown: false,
+            headerShown: true,
             headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('HomeStackNavigator')}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
                 <VectorIcon.II name='close-circle-sharp' size={30} color={BackgroundColor.white} />
               </TouchableOpacity>
             ),
@@ -34,9 +34,9 @@ export const LoginStackNavigator = ({ navigation }) => {
           name='ForgotPassword'
           component={ForgotPassword}
           options={({}) => ({
-            headerShown: false,
+            headerShown: true,
             headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('HomeStackNavigator')}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
                 <VectorIcon.II name='close-circle-sharp' size={30} color={BackgroundColor.white} />
               </TouchableOpacity>
             ),

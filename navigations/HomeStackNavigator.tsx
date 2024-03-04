@@ -266,7 +266,7 @@ const HomeStackNavigator: React.FC = (props) => {
               name='LoginStackNavigator'
               component={LoginStackNavigator}
               options={({ navigation }) => ({
-                headerShown: true,
+                headerShown: false,
                 headerLeft: () => (
                   <TouchableOpacity
                     onPress={() => navigation.goBack()}

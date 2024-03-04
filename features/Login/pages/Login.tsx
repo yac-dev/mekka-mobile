@@ -1,12 +1,36 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { PageScreen, AppTextInput } from '../../../components';
-import { useForm } from '../hooks';
+import { useForm, useLogin } from '../hooks';
 import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
+import { TextColor } from '../../../themes';
 
 export const Login = ({ navigation }) => {
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
+  const { apiResult, requestApi } = useLogin();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => requestApi({ email: formData.email.value, password: formData.password.value })}
+          disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color:
+                formData.email.isValidated && formData.password.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Continue
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData]);
 
   const onTextPress = () => {
     navigation.navigate('ForgotPassword');
