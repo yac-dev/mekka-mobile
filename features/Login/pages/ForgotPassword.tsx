@@ -5,16 +5,19 @@ import { AppTextInput } from '../../../components';
 import { useEmailForm } from '../hooks';
 import { VectorIcon } from '../../../Icons';
 import { TextColor } from '../../../themes';
+import { useForgotPassword } from '../hooks';
+import { LoadingIndicator } from '../../../components';
 
 // ここでemailを入力させて、emailに送る。そんで、indicator出して、pageをenter pin pageへnavigateする。
 export const ForgotPassword = ({ navigation }) => {
   const { emailForm, onEmailChange } = useEmailForm();
+  const { apiResult, requestApi } = useForgotPassword();
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => console.log('forgot password')}
+          onPress={() => requestApi({ email: emailForm.value })}
           disabled={emailForm.isValidated ? false : true}
         >
           <Text
@@ -31,9 +34,11 @@ export const ForgotPassword = ({ navigation }) => {
     });
   }, [emailForm]);
 
-  // const onSubmitPress = () => {
-
-  // }
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      navigation.navigate('EnterPIN');
+    }
+  }, [apiResult]);
 
   return (
     <PageScreen.WithTitle
@@ -49,6 +54,7 @@ export const ForgotPassword = ({ navigation }) => {
           keyboardType='email-address'
         />
       </View>
+      <LoadingIndicator.Spin isVisible={apiResult.status === 'loading'} message='Processing⏱️⏱️⏱️' />
     </PageScreen.WithTitle>
   );
 };
