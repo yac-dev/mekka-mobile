@@ -31,6 +31,10 @@ export const ForgotPassword = ({ navigation }) => {
     });
   }, [emailForm]);
 
+  // const onSubmitPress = () => {
+
+  // }
+
   return (
     <PageScreen.WithTitle
       title='Reset password'
