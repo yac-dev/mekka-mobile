@@ -21,10 +21,8 @@ export const useEmailForm = (): UseEmailFormOutput => {
     setEmailForm((previous) => {
       return {
         ...previous,
-        email: {
-          value: text,
-          isValidated: text.length ? true : false,
-        },
+        value: text,
+        isValidated: text.length ? true : false,
       };
     });
   };

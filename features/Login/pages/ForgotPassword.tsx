@@ -54,7 +54,11 @@ export const ForgotPassword = ({ navigation }) => {
           keyboardType='email-address'
         />
       </View>
-      <LoadingIndicator.Spin isVisible={apiResult.status === 'loading'} message='Processing⏱️⏱️⏱️' />
+      <LoadingIndicator.Spin
+        isVisible={apiResult.status === 'loading'}
+        message='Processing⏱️⏱️⏱️'
+        textColor={TextColor.primary}
+      />
     </PageScreen.WithTitle>
   );
 };

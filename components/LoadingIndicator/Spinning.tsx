@@ -5,9 +5,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 type SpinningIndicatorProps = {
   isVisible: boolean;
   message: string;
-  textStyle?: ViewStyle;
+  textColor?: string;
 };
 
-export const SpinningIndicator: React.FC<SpinningIndicatorProps> = ({ isVisible, message, textStyle }) => {
-  return <Spinner visible={isVisible} textContent={message} textStyle={textStyle} />;
+export const SpinningIndicator: React.FC<SpinningIndicatorProps> = ({ isVisible, message, textColor }) => {
+  return <Spinner visible={isVisible} textContent={message} textStyle={{ color: textColor }} />;
 };
