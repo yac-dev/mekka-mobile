@@ -19,3 +19,13 @@ export type UseForgotPasswordOutput = {
   apiResult: ApiResultType<void>;
   requestApi: (input: ForgotPasswordInput) => void;
 };
+
+export type PINCodeFormType = {
+  value: string;
+  isValidated: boolean;
+};
+
+export type UsePINCodeOutput = {
+  PINCodeForm: PINCodeFormType;
+  onPINCodeChange: (text: string) => void;
+};
