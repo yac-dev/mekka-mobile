@@ -39,7 +39,13 @@ export type PasswordFormType = {
   isValidated: boolean;
 };
 
-export type UseNewPasswordFormOutputType = {
+export type UsePasswordFormOutputType = {
   passwordForm: PasswordFormType;
   onPasswordChange: (text: string) => void;
+  isPasswordHidden: boolean;
+  onPasswordVisibilityChange: () => void;
+};
+
+export type SetNewPasswordInputType = {
+  password: string;
 };

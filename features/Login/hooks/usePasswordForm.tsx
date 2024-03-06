@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { PasswordFormType, UseNewPasswordFormOutputType } from '../types';
+import { PasswordFormType, UsePasswordFormOutputType } from '../types';
 
-export const useNewPasswordForm = (): UseNewPasswordFormOutputType => {
+export const usePasswordForm = (): UsePasswordFormOutputType => {
   const [passwordForm, setPasswordForm] = useState<PasswordFormType>({
     value: '',
     isValidated: false,
   });
+  const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
 
   const onPasswordChange = (text: string) => {
     setPasswordForm((previous) => {
@@ -17,8 +18,14 @@ export const useNewPasswordForm = (): UseNewPasswordFormOutputType => {
     });
   };
 
+  const onPasswordVisibilityChange = () => {
+    setIsPasswordHidden((previous) => !previous);
+  };
+
   return {
     passwordForm,
     onPasswordChange,
+    isPasswordHidden,
+    onPasswordVisibilityChange,
   };
 };
