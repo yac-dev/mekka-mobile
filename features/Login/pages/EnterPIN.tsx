@@ -6,15 +6,19 @@ import { LoadingIndicator } from '../../../components';
 import { usePINcode } from '../hooks/usePINcode';
 import { VectorIcon } from '../../../Icons';
 import { TextColor } from '../../../themes';
-import { checkPINCode } from '../apis';
+import { useCheckPINCode } from '../hooks/useCheckPINCode';
 
 export const EnterPIN = ({ navigation }) => {
   const { PINCodeForm, onPINCodeChange } = usePINcode();
+  const { apiResult, requestApi } = useCheckPINCode();
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => console.log('Hello')} disabled={PINCodeForm.isValidated ? false : true}>
+        <TouchableOpacity
+          onPress={() => requestApi({ PINCode: Number(PINCodeForm.value) })}
+          disabled={PINCodeForm.isValidated ? false : true}
+        >
           <Text
             style={{
               color: PINCodeForm.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
@@ -28,6 +32,13 @@ export const EnterPIN = ({ navigation }) => {
       ),
     });
   }, [PINCodeForm]);
+
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      navigation.navigate('SetNewPassword');
+    }
+    // apiで成功したら、new passwordのpageに移動する。
+  }, [apiResult]);
 
   return (
     <PageScreen.WithTitle
@@ -43,11 +54,11 @@ export const EnterPIN = ({ navigation }) => {
           keyboardType='number-pad'
         />
       </View>
-      {/* <LoadingIndicator.Spin
+      <LoadingIndicator.Spin
         isVisible={apiResult.status === 'loading'}
-        message='Processing⏱️⏱️⏱️'
+        message='Processing now...'
         textColor={TextColor.primary}
-      /> */}
+      />
     </PageScreen.WithTitle>
   );
 };

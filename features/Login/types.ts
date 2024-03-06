@@ -33,3 +33,13 @@ export type UsePINCodeOutput = {
 export type CheckPINCodeInputType = {
   PINCode: number;
 };
+
+export type PasswordFormType = {
+  value: string;
+  isValidated: boolean;
+};
+
+export type UseNewPasswordFormOutputType = {
+  passwordForm: PasswordFormType;
+  onPasswordChange: (text: string) => void;
+};

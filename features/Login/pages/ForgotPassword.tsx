@@ -56,7 +56,7 @@ export const ForgotPassword = ({ navigation }) => {
       </View>
       <LoadingIndicator.Spin
         isVisible={apiResult.status === 'loading'}
-        message='Processing⏱️⏱️⏱️'
+        message='Processing now...'
         textColor={TextColor.primary}
       />
     </PageScreen.WithTitle>
