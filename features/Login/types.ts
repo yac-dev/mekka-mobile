@@ -29,3 +29,7 @@ export type UsePINCodeOutput = {
   PINCodeForm: PINCodeFormType;
   onPINCodeChange: (text: string) => void;
 };
+
+export type CheckPINCodeInputType = {
+  PINCode: number;
+};
