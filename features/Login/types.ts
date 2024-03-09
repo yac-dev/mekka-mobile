@@ -34,6 +34,12 @@ export type CheckPINCodeInputType = {
   PINCode: number;
 };
 
+export type CheckPINCodeOutputType = {
+  data: {
+    email: string;
+  };
+};
+
 export type PasswordFormType = {
   value: string;
   isValidated: boolean;

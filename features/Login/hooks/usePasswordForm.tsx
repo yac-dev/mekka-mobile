@@ -13,7 +13,7 @@ export const usePasswordForm = (): UsePasswordFormOutputType => {
       return {
         ...previous,
         value: text,
-        isValidated: text.length ? true : false,
+        isValidated: text.length && text.length >= 10 ? true : false,
       };
     });
   };

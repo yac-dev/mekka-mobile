@@ -19,7 +19,6 @@ export const TextButton: React.FC<TextButtonProps> = ({ text, onTextPress }) => 
 const styles = StyleSheet.create({
   text: {
     color: TextColor.primary,
-    textAlign: 'center',
   },
 });
 

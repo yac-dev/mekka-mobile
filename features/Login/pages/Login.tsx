@@ -59,7 +59,9 @@ export const Login = ({ navigation }) => {
           onTextEntryVisibilityChange={onPasswordHiddenChange}
         />
       </View>
-      <AppButton.Text text='Forgot my password...' onTextPress={() => onTextPress()} style={{}} />
+      <View style={{ paddingHorizontal: 20 }}>
+        <AppButton.Text text='Forgot my password' onTextPress={() => onTextPress()} style={{}} />
+      </View>
     </PageScreen.WithTitle>
   );
 };

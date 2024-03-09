@@ -13,7 +13,7 @@ export const usePINcode = (): UsePINCodeOutput => {
       return {
         ...previous,
         value: text,
-        isValidated: text.length ? true : false,
+        isValidated: text.length && text.length === 6 ? true : false,
       };
     });
   };

@@ -47,7 +47,7 @@ export const EnterPIN = ({ navigation }) => {
     >
       <View style={{ paddingHorizontal: 10 }}>
         <AppTextInput.Underline
-          placeholder='Email'
+          placeholder='6-digit code'
           value={PINCodeForm.value}
           onTextChange={onPINCodeChange}
           labelIcon={<VectorIcon.OI name='number' color={'white'} size={25} />}
