@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { deleteMe } from '../apis';
-import { ApiResultType, DeleteMeInput } from '../types';
+import { login } from '../apis';
+import { View, Text } from 'react-native';
+import { ApiResultType, UserType } from '../../../types';
+import { LoginInput, UseLoginOutput } from '../types';
 
-export const useDeleteMe = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType<void>>({
+export const useLogin = (): UseLoginOutput => {
+  const [apiResult, setApiResult] = useState<ApiResultType<UserType>>({
     status: 'idling',
     data: void 0,
     message: '',
   });
 
-  // これさ、stateが変わらない？？？分かんね。。。なぜか。。。
-  const requestApi = async (input: DeleteMeInput) => {
+  const requestApi = async (input: LoginInput) => {
     try {
       setApiResult((previous) => {
         return {
@@ -19,16 +20,15 @@ export const useDeleteMe = () => {
         };
       });
 
-      await deleteMe(input);
+      const result = await login(input);
       setApiResult((previous) => {
         return {
           ...previous,
           status: 'success',
-          data: void 0,
+          data: result,
         };
       });
     } catch (error) {
-      // 本当は、これapiからきたerror objectを使いたいが。。。分からん。
       setApiResult((previous) => {
         return {
           ...previous,
@@ -45,18 +45,8 @@ export const useDeleteMe = () => {
     }
   };
 
-  const exec = () => {
-    setApiResult((previous) => {
-      return {
-        ...previous,
-        status: 'loading',
-      };
-    });
-  };
-
   return {
     apiResult,
     requestApi,
-    exec,
   };
 };

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { deleteMe } from '../apis';
-import { ApiResultType, DeleteMeInput } from '../types';
+import { ApiResultType } from '../../../types';
+import { ForgotPasswordInput, UseForgotPasswordOutput } from '../types';
+import { forgotPassword } from '../apis';
 
-export const useDeleteMe = () => {
+export const useForgotPassword = (): UseForgotPasswordOutput => {
   const [apiResult, setApiResult] = useState<ApiResultType<void>>({
     status: 'idling',
     data: void 0,
     message: '',
   });
 
-  // これさ、stateが変わらない？？？分かんね。。。なぜか。。。
-  const requestApi = async (input: DeleteMeInput) => {
+  const requestApi = async (input: ForgotPasswordInput) => {
     try {
       setApiResult((previous) => {
         return {
@@ -19,7 +19,7 @@ export const useDeleteMe = () => {
         };
       });
 
-      await deleteMe(input);
+      await forgotPassword(input);
       setApiResult((previous) => {
         return {
           ...previous,
@@ -28,7 +28,6 @@ export const useDeleteMe = () => {
         };
       });
     } catch (error) {
-      // 本当は、これapiからきたerror objectを使いたいが。。。分からん。
       setApiResult((previous) => {
         return {
           ...previous,
@@ -45,18 +44,8 @@ export const useDeleteMe = () => {
     }
   };
 
-  const exec = () => {
-    setApiResult((previous) => {
-      return {
-        ...previous,
-        status: 'loading',
-      };
-    });
-  };
-
   return {
     apiResult,
     requestApi,
-    exec,
   };
 };

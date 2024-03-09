@@ -36,7 +36,7 @@ const WelcomePage = (props) => {
       <View style={{ flexDirection: 'column' }}>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => props.navigation.navigate('Login')}
+          onPress={() => props.navigation.navigate('LoginStackNavigator')}
           activeOpacity={1}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
