@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
     borderBottomColor: TextColor.primary,
   },
   text: {
-    color: TextColor.secondary,
+    color: TextColor.primary,
   },
 });
-
-// namespace使うには、ここでもう定義するしかないよね多分。
