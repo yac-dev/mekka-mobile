@@ -3,8 +3,8 @@ import { SetNewPasswordInputType } from '../types';
 
 export const setNewPassword = async (input: SetNewPasswordInputType) => {
   try {
-    const response = await backendAPI.post('/auth/newpassword', { password: input.password });
-    // ここ、特に返す必要ないね。。。
+    const response = await backendAPI.post('/auth/newpassword', { email: input.email, password: input.password });
+    return void 0;
   } catch (error) {
     console.log(error);
   }

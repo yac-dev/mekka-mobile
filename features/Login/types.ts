@@ -35,9 +35,7 @@ export type CheckPINCodeInputType = {
 };
 
 export type CheckPINCodeOutputType = {
-  data: {
-    email: string;
-  };
+  email: string;
 };
 
 export type PasswordFormType = {
@@ -53,5 +51,11 @@ export type UsePasswordFormOutputType = {
 };
 
 export type SetNewPasswordInputType = {
+  email: string;
   password: string;
+};
+
+export type UseSetNewPasswordOutputType = {
+  apiResult: ApiResultType<void>;
+  requestApi: (input: SetNewPasswordInputType) => void;
 };

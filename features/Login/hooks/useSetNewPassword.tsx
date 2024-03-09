@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import { ApiResultType } from '../../../types';
-import { CheckPINCodeInputType, CheckPINCodeOutputType } from '../types';
-import { checkPINCode } from '../apis';
+import { setNewPassword } from '../apis';
+import { SetNewPasswordInputType } from '../types';
+import { UseSetNewPasswordOutputType } from '../types';
 
-export const useCheckPINCode = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType<CheckPINCodeOutputType>>({
+export const useSetNewPassword = (): UseSetNewPasswordOutputType => {
+  const [apiResult, setApiResult] = useState<ApiResultType<void>>({
     status: 'idling',
     data: void 0,
     message: '',
   });
 
-  const requestApi = async (input: CheckPINCodeInputType) => {
+  const requestApi = async (input: SetNewPasswordInputType) => {
     try {
       setApiResult((previous) => {
         return {
@@ -19,7 +21,7 @@ export const useCheckPINCode = () => {
         };
       });
 
-      const result = await checkPINCode(input);
+      const result = await setNewPassword(input);
       setApiResult((previous) => {
         return {
           ...previous,
@@ -31,14 +33,8 @@ export const useCheckPINCode = () => {
       setApiResult((previous) => {
         return {
           ...previous,
-          status: 'fail',
-        };
-      });
-    } finally {
-      setApiResult((previous) => {
-        return {
-          ...previous,
-          status: 'idling',
+          status: 'error',
+          data: void 0,
         };
       });
     }
