@@ -8,15 +8,16 @@ import { VectorIcon } from '../../../Icons';
 import { TextColor } from '../../../themes';
 import { useCheckPINCode } from '../hooks/useCheckPINCode';
 
-export const EnterPIN = ({ navigation }) => {
+export const EnterPIN = ({ navigation, route }) => {
   const { PINCodeForm, onPINCodeChange } = usePINcode();
   const { apiResult, requestApi } = useCheckPINCode();
+  // console.log(route.params.email);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => requestApi({ PINCode: Number(PINCodeForm.value) })}
+          onPress={() => requestApi({ email: route.params.email, PINCode: Number(PINCodeForm.value) })}
           disabled={PINCodeForm.isValidated ? false : true}
         >
           <Text
@@ -35,9 +36,8 @@ export const EnterPIN = ({ navigation }) => {
 
   useEffect(() => {
     if (apiResult.status === 'success') {
-      navigation.navigate('SetNewPassword');
+      navigation.navigate('SetNewPassword', { email: apiResult.data.email });
     }
-    // apiで成功したら、new passwordのpageに移動する。
   }, [apiResult]);
 
   return (

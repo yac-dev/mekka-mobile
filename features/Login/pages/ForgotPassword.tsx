@@ -9,7 +9,7 @@ import { useForgotPassword } from '../hooks';
 import { LoadingIndicator } from '../../../components';
 
 // ここでemailを入力させて、emailに送る。そんで、indicator出して、pageをenter pin pageへnavigateする。
-export const ForgotPassword = ({ navigation }) => {
+export const ForgotPassword = ({ navigation, route }) => {
   const { emailForm, onEmailChange } = useEmailForm();
   const { apiResult, requestApi } = useForgotPassword();
 
@@ -36,7 +36,7 @@ export const ForgotPassword = ({ navigation }) => {
 
   useEffect(() => {
     if (apiResult.status === 'success') {
-      navigation.navigate('EnterPIN');
+      navigation.navigate('EnterPIN', { email: emailForm.value });
     }
   }, [apiResult]);
 

@@ -2,17 +2,21 @@ import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { PageScreen, AppTextInput, LoadingIndicator } from '../../../components';
 import { VectorIcon } from '../../../Icons';
-import { usePasswordForm } from '../hooks';
+import { usePasswordForm, useSetNewPassword } from '../hooks';
 import { TextColor } from '../../../themes';
 
-// ここ、emailもないといかんわ。。。
-export const SetNewPassword = ({ navigation }) => {
+export const SetNewPassword = ({ navigation, route }) => {
   const { passwordForm, onPasswordChange, isPasswordHidden, onPasswordVisibilityChange } = usePasswordForm();
+  const { apiResult, requestApi } = useSetNewPassword();
 
+  console.log('route params -> ', route.params);
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => console.log('hello')} disabled={passwordForm.isValidated ? false : true}>
+        <TouchableOpacity
+          onPress={() => requestApi({ email: route.params.email, password: passwordForm.value })}
+          disabled={passwordForm.isValidated ? false : true}
+        >
           <Text
             style={{
               color: passwordForm.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
@@ -27,6 +31,13 @@ export const SetNewPassword = ({ navigation }) => {
     });
   }, [passwordForm]);
 
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      console.log('statusa after set new password', apiResult);
+      navigation.navigate('WelcomPage'); // この後に、snackbarを出す感じにしたい。だから、snackbar自体は、appでglobalにcomponentをもっておく方がいいかも。。
+    }
+  }, [apiResult.status]);
+
   return (
     <PageScreen.WithTitle title='Set new password' subTitle={`Please set a new password.`}>
       <View style={{ paddingHorizontal: 10 }}>
@@ -40,11 +51,11 @@ export const SetNewPassword = ({ navigation }) => {
           onTextEntryVisibilityChange={onPasswordVisibilityChange}
         />
       </View>
-      {/* <LoadingIndicator.Spin
+      <LoadingIndicator.Spin
         isVisible={apiResult.status === 'loading'}
         message='Processing now...'
         textColor={TextColor.primary}
-      /> */}
+      />
     </PageScreen.WithTitle>
   );
 };

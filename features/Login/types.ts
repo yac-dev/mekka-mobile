@@ -31,6 +31,7 @@ export type UsePINCodeOutput = {
 };
 
 export type CheckPINCodeInputType = {
+  email: string;
   PINCode: number;
 };
 

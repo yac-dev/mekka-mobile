@@ -3,10 +3,12 @@ import { CheckPINCodeInputType, CheckPINCodeOutputType } from '../types';
 
 export const checkPINCode = async (input: CheckPINCodeInputType): Promise<CheckPINCodeOutputType> => {
   try {
-    const response = await backendAPI.post('/auth/checkpin', { PINCode: input.PINCode });
-    const { data } = response.data.data;
+    console.log('pin here', input.PINCode);
+    const response = await backendAPI.post('/auth/checkpin', { email: input.email, PINCode: input.PINCode });
+
+    const { data } = response.data;
     return data;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
