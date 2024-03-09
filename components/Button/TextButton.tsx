@@ -10,15 +10,21 @@ type TextButtonProps = {
 
 export const TextButton: React.FC<TextButtonProps> = ({ text, onTextPress }) => {
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={() => onTextPress()}>
-      <Text style={styles.text}>{text}</Text>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <TouchableOpacity activeOpacity={0.5} onPress={() => onTextPress()}>
+        <Text style={styles.text}>{text}</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    borderWidth: 0.3,
+    borderBottomColor: TextColor.primary,
+  },
   text: {
-    color: TextColor.primary,
+    color: TextColor.secondary,
   },
 });
 

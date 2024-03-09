@@ -42,7 +42,7 @@ export const ForgotPassword = ({ navigation, route }) => {
 
   return (
     <PageScreen.WithTitle
-      title='Reset password'
+      title='Forgot your password?'
       subTitle={`Please write your account's email and tap "Send".${'\n'}We'll send you a verification code to this email${'\n'}if it matches an existing Mekka account.`}
     >
       <View style={{ paddingHorizontal: 10 }}>

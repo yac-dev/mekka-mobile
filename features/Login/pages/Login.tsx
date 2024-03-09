@@ -41,7 +41,7 @@ export const Login = ({ navigation }) => {
       title={'Login'}
       subTitle={`Already signed up? Please fill out your email, password and then tap Continue.`}
     >
-      <View style={{ paddingHorizontal: 10 }}>
+      <View style={{ paddingHorizontal: 10, marginBottom: 40 }}>
         <AppTextInput.Underline
           placeholder='Email'
           value={formData.email.value}
@@ -59,7 +59,7 @@ export const Login = ({ navigation }) => {
           onTextEntryVisibilityChange={onPasswordHiddenChange}
         />
       </View>
-      <View style={{ paddingHorizontal: 20 }}>
+      <View style={{ paddingHorizontal: 20, alignSelf: 'flex-start' }}>
         <AppButton.Text text='Forgot my password' onTextPress={() => onTextPress()} style={{}} />
       </View>
     </PageScreen.WithTitle>
