@@ -40,7 +40,7 @@ type PrimarySnackBarProps = {
 };
 
 // snackbarの表示stateは親で、それを隠すfunctionも渡してくればいい。
-export const Primary: React.FC<PrimarySnackBarProps> = ({ isVisible, status, message, duration, hideSnackBar }) => {
+export const TopSnackbar: React.FC<PrimarySnackBarProps> = ({ isVisible, status, message, duration, hideSnackBar }) => {
   useEffect(() => {
     if (isVisible) {
       setTimeout(() => {
