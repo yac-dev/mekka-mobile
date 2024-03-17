@@ -3,10 +3,11 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { AuthContext } from '../../../providers';
 
 const Form = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   const {
-    authData,
     setSpaceAndUserRelationships,
     spaceAndUserRelationships,
     setLoading,
@@ -37,7 +38,7 @@ const Form = (props) => {
   const onDonePress = async () => {
     // ここでsecretKeyを全部大文字にするようにする。
     const payload = {
-      userId: authData._id,
+      userId: auth._id,
       secretKey: secretKey.toUpperCase(),
     };
     setLoading(true);

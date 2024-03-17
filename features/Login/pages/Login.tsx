@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { PageScreen, AppTextInput } from '../../../components';
 import { useForm, useLogin } from '../hooks';
@@ -32,9 +32,17 @@ export const Login = ({ navigation }) => {
     });
   }, [formData]);
 
-  const onTextPress = () => {
+  useEffect(() => {
+    if (apiResult.status === 'fail') {
+      // ここでsnackbarを出すようにする。
+      console.log('Failed');
+      // snackbarもな。。　どうしよ。アプリ全体で持っておくか。。。
+    }
+  }, [apiResult]);
+
+  const onTextPress = useCallback(() => {
     navigation.navigate('ForgotPassword');
-  };
+  }, []);
 
   return (
     <PageScreen.WithTitle

@@ -11,7 +11,6 @@ const AuthMenuBottomSheet = (props) => {
   const iconWidth = Dimensions.get('window').width / 3;
 
   const {
-    authData,
     isAuthenticated,
     authMenuBottomSheetRef,
     setAuthData,

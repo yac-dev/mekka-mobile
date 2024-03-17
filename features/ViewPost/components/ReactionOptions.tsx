@@ -6,6 +6,7 @@ import { RouteProp, ParamListBase } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import backendAPI from '../../apis/backend';
 import { Image as ExpoImage } from 'expo-image';
+import { AuthContext } from '../../../providers';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -35,16 +36,16 @@ type ReactionStatusType = {
 };
 
 const ReactionOptions = () => {
-  const { authData, setLoading } = useContext(GlobalContext);
+  const { auth, setAuth } = useContext(AuthContext);
+  const { setLoading } = useContext(GlobalContext);
   const { reactionStatuses, setReactionStatuses, areReactionStatusesFetched } = useContext(ViewPostContext);
   // console.log(JSON.stringify(reactionStatuses, null, 4));
 
   const upvoteReaction = async (reactionStatus: ReactionStatusType, index: number) => {
     setLoading(true);
-    const result = await backendAPI.post(
-      `/userandreactionrelationships/user/${authData._id}/post/${reactionStatus.post}`,
-      { reactionId: reactionStatus.reaction._id }
-    );
+    const result = await backendAPI.post(`/userandreactionrelationships/user/${auth._id}/post/${reactionStatus.post}`, {
+      reactionId: reactionStatus.reaction._id,
+    });
     setLoading(false);
     setReactionStatuses((previous) => {
       const updating = [...previous];

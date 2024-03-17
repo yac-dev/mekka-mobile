@@ -13,15 +13,16 @@ import {
 } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
+import { AuthContext } from '../../../providers';
+import { INITIAL_AUTH } from '../../../types';
 
 // routingのprops用意な。。。
 
 export const DeleteMyAccount = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   const {
-    authData,
     setLoading,
     setSnackBar,
-    setAuthData,
     setIsAuthenticated,
     setSpaceAndUserRelationships,
     setCurrentSpaceAndUserRelationship,
@@ -30,8 +31,6 @@ export const DeleteMyAccount = (props) => {
   } = useContext(GlobalContext);
   const { apiResult, requestApi, exec } = useDeleteMe();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
-
-  console.log('api status', apiResult.status);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -77,7 +76,7 @@ export const DeleteMyAccount = (props) => {
 
   const onDeleteMeSuccess = async () => {
     await SecureStore.deleteItemAsync('secure_token');
-    setAuthData({ _id: '', name: '', email: '', avatar: '' });
+    setAuth(INITIAL_AUTH);
     setIsAuthenticated(false);
     setSpaceAndUserRelationships([]);
     setCurrentSpaceAndUserRelationship(null);
@@ -93,25 +92,26 @@ export const DeleteMyAccount = (props) => {
     props.navigation.goBack();
   };
 
-  const onDeletePress = async () => {
-    setLoading(true);
-    await SecureStore.deleteItemAsync('secure_token');
-    const result = await backendAPI.delete(`/auth/${authData._id}`);
-    setAuthData({ _id: '', name: '', email: '', avatar: '' });
-    setIsAuthenticated(false);
-    setSpaceAndUserRelationships([]);
-    setCurrentSpaceAndUserRelationship(null);
-    setCurrentTagObject(null);
-    setCurrentSpace(null);
-    setLoading(false);
-    setSnackBar({
-      isVisible: true,
-      barType: 'success',
-      message: 'Successfully deleted your account. Bye bye.',
-      duration: 5000,
-    });
-    props.navigation.goBack();
-  };
+  // const onDeletePress = async () => {
+  //   setLoading(true);
+  //   await SecureStore.deleteItemAsync('secure_token');
+  //   const result = await backendAPI.delete(`/auth/${auth._id}`);
+  //   setAuth(INITIAL_AUTH);
+  //   // ここの型一致させる。
+  //   setIsAuthenticated(false);
+  //   setSpaceAndUserRelationships([]);
+  //   setCurrentSpaceAndUserRelationship(null);
+  //   setCurrentTagObject(null);
+  //   setCurrentSpace(null);
+  //   setLoading(false);
+  //   setSnackBar({
+  //     isVisible: true,
+  //     barType: 'success',
+  //     message: 'Successfully deleted your account. Bye bye.',
+  //     duration: 5000,
+  //   });
+  //   props.navigation.goBack();
+  // };
 
   return (
     <PageScreenWithTitle
@@ -138,5 +138,3 @@ export const DeleteMyAccount = (props) => {
     </PageScreenWithTitle>
   );
 };
-
-// loading spinnerが出ないよね。。。

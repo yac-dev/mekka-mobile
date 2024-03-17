@@ -16,7 +16,7 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MomentPost = (props) => {
-  const { isIpad, setLoading, setSnackBar, authData } = useContext(GlobalContext);
+  const { isIpad, setLoading, setSnackBar } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const [contents, setContets] = useState([]);
   // const { space } = props.route.params;

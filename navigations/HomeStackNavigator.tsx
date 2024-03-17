@@ -61,7 +61,6 @@ const HomeStackNavigator: React.FC = (props) => {
     currentSpaceAndUserRelationship,
     setCreateNewPostResult,
     setSnackBar,
-    authData,
   } = useContext(GlobalContext);
 
   return (

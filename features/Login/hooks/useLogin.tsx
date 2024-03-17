@@ -29,17 +29,11 @@ export const useLogin = (): UseLoginOutput => {
         };
       });
     } catch (error) {
+      // login  api側でthrow errorされて、こっちがわに流れてくるっていうことね。
       setApiResult((previous) => {
         return {
           ...previous,
           status: 'fail',
-        };
-      });
-    } finally {
-      setApiResult((previous) => {
-        return {
-          ...previous,
-          status: 'idling',
         };
       });
     }

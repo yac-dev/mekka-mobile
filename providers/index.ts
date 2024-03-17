@@ -1,1 +1,2 @@
-export * from './AuthDataProvider';
+export * from './AuthProvider';
+export * from './SnackBarProvider';

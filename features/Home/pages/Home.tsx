@@ -35,7 +35,7 @@ type SpaceAndMeRelationshipType = {
 // homeは、authされている状態、されていない状態でrenderを分けなきゃいけない。
 // authなら、自分が参加しているlibraryを全部renderするし、authじゃないならlogin or signupを表示する感じ。
 const MySpaces: React.FC<RouterProps> = (props) => {
-  const { authData, isIpad, isAuthenticated, setSpaceAndUserRelationships, setSnackBar } = useContext(GlobalContext);
+  const { isIpad, isAuthenticated, setSpaceAndUserRelationships, setSnackBar } = useContext(GlobalContext);
   const [spaceAndMeRelationships, setSpaceAndMeRelationships] = useState<SpaceAndMeRelationshipType[]>([]);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
   const oneGridHeight = isIpad ? Dimensions.get('window').height / 7.5 : Dimensions.get('window').height / 7;
@@ -46,19 +46,6 @@ const MySpaces: React.FC<RouterProps> = (props) => {
       setSpaceAndUserRelationships((previous) => [...previous, props.route?.params?.createdSpace]);
     }
   }, [props.route?.params?.createdSpace]);
-
-  // const getMySpaces = async () => {
-  //   const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
-  //   const { spaceAndUserRelationships } = result.data;
-  //   setSpaceAndMeRelationships(spaceAndUserRelationships);
-  // };
-
-  // // ここのauthDataの部分だね。ダメなのは。
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     getMySpaces();
-  //   }
-  // }, [isAuthenticated]);
 
   if (isAuthenticated) {
     return (

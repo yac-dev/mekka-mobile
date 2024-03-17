@@ -22,6 +22,7 @@ import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
+import { AuthContext } from '../providers';
 const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -38,6 +39,7 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
 };
 
 const SpaceRootStackNavigator = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
   const {
     isIpad,
@@ -50,7 +52,6 @@ const SpaceRootStackNavigator = (props) => {
     // setCreateNewPostResult,
     // createNewPostResult,
     setSnackBar,
-    authData,
   } = useContext(GlobalContext);
   const [space, setSpace] = useState(null);
   const [hasSpaceBeenFetched, setHasSpaceBeenFetched] = useState(false);
@@ -148,7 +149,7 @@ const SpaceRootStackNavigator = (props) => {
       } else {
         payload.append('addedLocationTag', '');
       }
-      payload.append('createdBy', authData._id);
+      payload.append('createdBy', auth._id);
       payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
       payload.append('contents', JSON.stringify(contents));
       console.log('createdTags -> ', filteredCreatedTags);

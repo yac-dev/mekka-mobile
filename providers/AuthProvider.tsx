@@ -1,12 +1,5 @@
 import React, { useState, createContext } from 'react';
-
-type AuthType = {
-  name: string;
-  email: string;
-  password: string;
-  avatar: string;
-  pushToken?: string;
-};
+import { AuthType } from '../types';
 
 type AuthContextType = {
   auth: AuthType;
@@ -22,7 +15,7 @@ type AuthProviderProps = {
   children: React.ReactNode;
 };
 
-export const AuthDataProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [auth, setAuth] = useState<AuthType | undefined>(void 0);
   return <AuthContext.Provider value={{ auth, setAuth }}>{children}</AuthContext.Provider>;
 };

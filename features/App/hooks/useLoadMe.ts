@@ -27,8 +27,14 @@ export const useLoadMe = () => {
         };
       });
     } catch (error) {
-      console.log(error);
       //ここ、snackbarを毎回出す感じかな。
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'fail',
+          data: void 0,
+        };
+      });
     }
   };
 

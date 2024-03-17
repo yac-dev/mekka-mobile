@@ -18,11 +18,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import * as Haptics from 'expo-haptics';
 import { TagRootContext } from '../../../contexts/TagRootContext';
+import { AuthContext } from '../../../providers';
 
 // rgb(35, 35, 35)
 const CommentInputBottomSheet = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   const snapPoints = useMemo(() => ['30%', '85%'], []);
-  const { isIpad, setLoading, authData, setSnackBar } = useContext(GlobalContext);
+  const { isIpad, setLoading, setSnackBar } = useContext(GlobalContext);
   const {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);
@@ -45,7 +47,7 @@ const CommentInputBottomSheet = (props) => {
     const payload = {
       content: commentInput,
       postId: posts[currentIndex]._id,
-      userId: authData._id,
+      userId: auth._id,
     };
     setLoading(true);
     const result = await backendAPI.post(`/comments/`, payload);

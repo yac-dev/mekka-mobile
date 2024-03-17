@@ -10,7 +10,7 @@ import Moments from '../features/Moments/pages/Moments';
 import ViewMomentStackNavigator from './ViewMomentStackNavigator';
 
 const MomentsViewStackNavigator: React.FC = (props) => {
-  const { isIpad, authData } = useContext(GlobalContext);
+  const { isIpad } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const { spaceAndUserRelationship, navigation, space, hasSpaceBeenFetched, setHasSpaceBeenFetched } =
     useContext(SpaceRootContext);

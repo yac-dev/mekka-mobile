@@ -8,9 +8,11 @@ import baseURL from '../../../apis/baseURL';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AntDesign } from '@expo/vector-icons';
+import { AuthContext } from '../../../providers';
 
 const CreateCustomEmoji = (props) => {
-  const { authData, setLoading } = useContext(GlobalContext);
+  const { setLoading } = useContext(GlobalContext);
+  const { auth } = useContext(AuthContext);
   const [previewEmoji, setPreviewEmoji] = useState('');
   const [fileName, setFileName] = useState('');
   // const [stickerName, setStickerName] = useState('');
@@ -70,7 +72,7 @@ const CreateCustomEmoji = (props) => {
     if (!pickedImage.canceled && pickedImage.assets[0].uri) {
       const payload = new FormData();
 
-      payload.append('createdBy', authData._id);
+      payload.append('createdBy', auth._id);
       // payload.append('isPublic', '')
       if (fileName) {
         payload.append('exFileName', fileName);
@@ -101,7 +103,7 @@ const CreateCustomEmoji = (props) => {
 
   const createSticker = async () => {
     setLoading(true);
-    const result = await backendAPI.post('/stickers', { fileName, userId: authData._id });
+    const result = await backendAPI.post('/stickers', { fileName, userId: auth._id });
     setLoading(false);
     const { sticker } = result.data;
     props.navigation.navigate({

@@ -1,4 +1,4 @@
-export type AuthData = {
+export type AuthType = {
   _id: string;
   name: string;
   email: string;
@@ -7,7 +7,7 @@ export type AuthData = {
   pushToken?: string;
 };
 
-export const INITIAL_AUTH_DATA = {
+export const INITIAL_AUTH = {
   _id: '',
   name: '',
   email: '',
@@ -45,7 +45,7 @@ export type SnackBarType = {
   duration: number;
 };
 
-export const INITIAL_STATUS_BAR: SnackBarType = {
+export const INITIAL_SNACK_BAR: SnackBarType = {
   isVisible: false,
   status: void 0,
   message: undefined,
@@ -60,3 +60,5 @@ export type ApiResultType<T> = {
   data?: T;
   message: '';
 };
+
+export type LoadingType = boolean;

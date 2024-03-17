@@ -16,6 +16,7 @@ import Dummy2 from '../features/Utils/Dummy2';
 import SpaceRootStackNavigator from './SpaceRootStackNavigator';
 import backendAPI from '../apis/backend';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { AuthContext } from '../providers';
 
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
@@ -24,6 +25,7 @@ const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const SpacesDrawerNavigator = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   const {
     isIpad,
     spaceAndUserRelationships,
@@ -31,7 +33,6 @@ const SpacesDrawerNavigator = (props) => {
     setCurrentSpaceAndUserRelationship,
     spaceMenuBottomSheetRef,
     authMenuBottomSheetRef,
-    authData,
     isAuthenticated,
     spaceAndUserRelationshipsFetchingStatus,
     updatesTable,
@@ -44,7 +45,7 @@ const SpacesDrawerNavigator = (props) => {
   // これ、spaceRootで実行するのがいいのかも。。。
   // console.logで見てみるか、currentSpaceをlogしてみる的な。。。
   const updateLastCheckedIn = async () => {
-    const result = await backendAPI.patch(`/users/${authData._id}/lastcheckedin`, {
+    const result = await backendAPI.patch(`/users/${auth._id}/lastcheckedin`, {
       spaceId: currentSpaceAndUserRelationship.space._id,
     });
     // console.log('currens space -> ', currentSpaceAndUserRelationship.space._id);
@@ -67,13 +68,11 @@ const SpacesDrawerNavigator = (props) => {
             <View style={{ flexDirection: 'column', alignItems: 'center', marginBottom: 10 }}>
               <ExpoImage
                 style={{ width: 35, height: 35, marginBottom: 10 }}
-                source={{ uri: authData.avatar }}
+                source={{ uri: auth.avatar }}
                 contentFit='cover'
               />
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginRight: 10 }}>
-                  {authData.name}
-                </Text>
+                <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginRight: 10 }}>{auth.name}</Text>
                 <TouchableOpacity
                   style={{
                     width: 20,

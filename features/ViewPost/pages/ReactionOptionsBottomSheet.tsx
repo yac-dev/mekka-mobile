@@ -9,14 +9,16 @@ import backendAPI from '../../../apis/backend';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { Image as ExpoImage } from 'expo-image';
 import * as Haptics from 'expo-haptics';
+import { AuthContext } from '../../../providers';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 // rgb(35, 35, 35)
 const ReactionOptionsBottomSheet = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   const snapPoints = useMemo(() => ['57%'], []);
-  const { isIpad, setLoading, authData } = useContext(GlobalContext);
+  const { isIpad, setLoading } = useContext(GlobalContext);
   const {
     reactionStatusesBottomSheetRef,
     reactionStatuses,
@@ -34,10 +36,9 @@ const ReactionOptionsBottomSheet = (props) => {
 
   const upvoteReaction = async (reactionStatus, index) => {
     setLoading(true);
-    const result = await backendAPI.post(
-      `/userandreactionrelationships/user/${authData._id}/post/${reactionStatus.post}`,
-      { reactionId: reactionStatus.reaction._id }
-    );
+    const result = await backendAPI.post(`/userandreactionrelationships/user/${auth._id}/post/${reactionStatus.post}`, {
+      reactionId: reactionStatus.reaction._id,
+    });
     setLoading(false);
     setReactionStatuses((previous) => {
       const updating = [...previous];

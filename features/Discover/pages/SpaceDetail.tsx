@@ -13,6 +13,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import SpaceDetailTopTabNavigator from '../../../navigations/SpaceDetailTopTabNavigator';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { AuthContext } from '../../../providers';
 
 // props.route.params.spaceIdでくるよね。
 interface RouterProps {
@@ -59,7 +60,8 @@ type SpaceType = {
 
 // ここに、spaceのthumbnailから始まり、
 const SpaceDetail: React.FC<RouterProps> = (props) => {
-  const { spaceAndUserRelationships, setSpaceAndUserRelationships, setLoading, setSnackBar, authData } =
+  const {auth, setAuth} = useContext(AuthContext)
+  const { spaceAndUserRelationships, setSpaceAndUserRelationships, setLoading, setSnackBar } =
     useContext(GlobalContext);
   const [space, setSpace] = useState(null);
   const [isSpaceFetched, setIsSpaceFetched] = useState(false);
@@ -90,7 +92,7 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
 
   const onJoinPress = async () => {
     const payload = {
-      userId: authData._id,
+      userId: auth._id,
       space: {
         _id: space._id,
         name: space.name,

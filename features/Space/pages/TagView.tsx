@@ -28,7 +28,6 @@ const TagView = (props) => {
 
   const { posts, setPosts, isLoadingGridViewPosts, hasMoreGridViewPosts } = useContext(TagRootContext);
   const mediaRefs = useRef([]);
-  // const { isIpad, authData } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   // const { spaceAndUserRelationship, navigation } = useContext(SpaceRootContext);
   // // const { posts, havePostsBeenFetched, setHavePostsBeenFetched, onRefresh, isRefreshing } = useContext(PostsContext);

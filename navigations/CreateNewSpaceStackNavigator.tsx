@@ -18,10 +18,11 @@ import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { AuthContext } from '../providers';
 
 const CreateNewSpaceStackNavigator = (props) => {
+  const { auth, setAuth } = useContext(AuthContext);
   const {
-    authData,
     setLoading,
     setSnackBar,
     setSpaceAndUserRelationships,
@@ -48,9 +49,9 @@ const CreateNewSpaceStackNavigator = (props) => {
 
   const onCreatePress = async () => {
     const userData = {
-      _id: authData._id,
-      name: authData.name,
-      avatar: authData.avatar,
+      _id: auth._id,
+      name: auth.name,
+      avatar: auth.avatar,
     };
     const payload = new FormData();
     payload.append('name', formData.name);

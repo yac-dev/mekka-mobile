@@ -27,7 +27,7 @@ export const useEditAccount = () => {
       isValidated: true,
       value: auth.avatar,
     },
-  }); // userのauthDataをまんま当てはめる。ここで。
+  }); 
   const [isFormValidated, setIsFormValidates] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 

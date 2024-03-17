@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 type FormType<T> = {
   value: T;
@@ -33,7 +33,8 @@ export const useForm = (): useFormOutput => {
   const [formData, setFormData] = useState<FormDataType>(INITIAL_FORM_DATA);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
 
-  const onEmailChange = (text: string) => {
+  // dependencyに入れたものが変わらないかぎり、このfunctionは新しいものにはならない。
+  const onEmailChange = useCallback((text: string) => {
     setFormData((previous) => {
       return {
         ...previous,
@@ -43,9 +44,9 @@ export const useForm = (): useFormOutput => {
         },
       };
     });
-  };
+  }, []);
 
-  const onPasswordChange = (text: string) => {
+  const onPasswordChange = useCallback((text: string) => {
     setFormData((previous) => {
       return {
         ...previous,
@@ -55,11 +56,11 @@ export const useForm = (): useFormOutput => {
         },
       };
     });
-  };
+  }, []);
 
-  const onPasswordHiddenChange = () => {
+  const onPasswordHiddenChange = useCallback(() => {
     setIsPasswordHidden((previous) => !previous);
-  };
+  }, []);
 
   return {
     formData,

@@ -9,6 +9,7 @@ import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import backendAPI from '../../../apis/backend';
 import Form from '../components/Form';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { AuthContext } from '../../../providers';
 
 type StickerType = {
   _id: string;
@@ -41,7 +42,8 @@ type RouterProps = {
 };
 
 const CreateNewSpace: React.FC<RouterProps> = (props) => {
-  const { authData, setLoading, setSnackBar, setSpaceAndUserRelationships } = useContext(GlobalContext);
+  const { auth } = useContext(AuthContext);
+  const { setLoading, setSnackBar, setSpaceAndUserRelationships } = useContext(GlobalContext);
   const [formData, setFormData] = useState<FormDataStateType>({
     name: '',
     icon: '',
@@ -128,18 +130,6 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
   }, [formData, validation]);
 
   const onDonePress = async () => {
-    // const payload = {
-    //   name: formData.name,
-    //   // icon: formData.icon,
-    //   contentType: formData.contentType,
-    //   isPublic: formData.isPublic,
-    //   isCommentAvailable: formData.isCommentAvailable,
-    //   isReactionAvailable: formData.isReactionAvailable,
-    //   createdBy: authData._id,
-    //   reactions: formData.reactions,
-    //   tags: formData.tags,
-    // };
-    // console.log(payload);
     const payload = new FormData();
     payload.append('name', formData.name);
     payload.append('contentType', formData.contentType);
@@ -150,9 +140,9 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
     payload.append('videoLength', formData.videoLength.toString());
     payload.append('disappearAfter', formData.disappearAfter.toString());
     payload.append('description', formData.description);
-    payload.append('createdBy', authData._id);
+    payload.append('createdBy', auth._id);
     const iconData = {
-      name: `${authData._id}-${Date.now()}`,
+      name: `${auth._id}-${Date.now()}`,
       uri: formData.icon,
       type: 'image/jpeg',
     };

@@ -18,10 +18,11 @@ import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
+import { AuthContext } from '../providers';
 
 const CreateNewPostStackNavigator = (props) => {
+  const {auth, setAuth} = useContext(AuthContext)
   const {
-    authData,
     setLoading,
     setSnackBar,
     isAfterPosted,
@@ -100,64 +101,12 @@ const CreateNewPostStackNavigator = (props) => {
     // ここ、なんでnavigationしてくんないんだろ。。。
     // props.navigation.navigate(`Space_${props.route?.params?.spaceAndUserRelationship._id}`);
     props.navigation.navigate('SpaceBottomTabNavigator');
-    // const filteredCreatedTags = Object.values(addedTags).filter((element, index) => element.created);
-    // const filteredAddedTags = Object.values(addedTags)
-    //   .filter((element, index) => !element.created)
-    //   .map((element, index) => element._id);
-    // try {
-    //   const payload = new FormData();
-    //   payload.append('reactions', JSON.stringify(space.reactions));
-    //   payload.append('caption', caption);
-    //   payload.append('createdTags', JSON.stringify(filteredCreatedTags));
-    //   payload.append('addedTags', JSON.stringify(filteredAddedTags));
-    //   if (addedLocationTag) {
-    //     if (addedLocationTag.created) {
-    //       payload.append('createdLocationTag', JSON.stringify(addedLocationTag)); // これがない場合もある。
-    //     } else {
-    //       payload.append('addedLocationTag', JSON.stringify(addedLocationTag._id)); // これがない場合もある。
-    //     }
-    //   } else {
-    //     payload.append('addedLocationTag', '');
-    //   }
-    //   payload.append('createdBy', authData._id);
-    //   payload.append('spaceId', space._id);
-    //   for (let content of contents) {
-    //     const obj = {
-    //       name: content.uri.split('/').pop(),
-    //       uri: content.uri,
-    //       type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
-    //     };
-    //     payload.append('contents', JSON.parse(JSON.stringify(obj)));
-    //   }
-    //   console.log(payload);
-    //   setLoading(true);
-    //   const result = await backendAPI.post('/posts', payload, {
-    //     headers: { 'Content-type': 'multipart/form-data' },
-    //   });
-    //   setLoading(false);
-    //   setSnackBar({
-    //     isVisible: true,
-    //     barType: 'success',
-    //     message: 'Post has been created successfully.',
-    //     duration: 7000,
-    //   });
-    //   // なるほど、戻る時に必要になるのか。。。でもなーーーー。
-    //   props.navigation.navigate({
-    //     name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
-    //     params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
-    //     merge: true,
-    //   });
-    //   setIsAfterPosted(true);
-    //   // ここで、pageに戻った後に今いるこのspaceをrefreshすればいいんだけど。。。
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   const onMomentPostPress = async () => {
     const payload = new FormData();
     payload.append('disappearAfter', space.disappearAfter);
-    payload.append('createdBy', authData._id);
+    payload.append('createdBy', auth._id);
     payload.append('spaceId', space._id);
     for (let content of moments) {
       const obj = {

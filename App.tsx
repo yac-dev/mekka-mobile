@@ -16,8 +16,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
 import * as Notifications from 'expo-notifications';
-import { AuthDataProvider } from './providers';
+import { AuthProvider } from './providers';
 import { Booting } from './features';
+import { buildProvidersTree } from './providers/Providers';
+import { useLoadMe } from './features';
 
 type AuthDataType = {
   _id: string;
@@ -39,6 +41,7 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
 };
 
 const App: React.FC = function () {
+  const { apiResult: authApiResult, requestApi: requestAuth } = useLoadMe();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAuthDataFetched, setIsAuthDataFetched] = useState(false);
   const [authData, setAuthData] = useState<AuthDataType>({ _id: '', name: '', email: '', avatar: '' });
@@ -47,7 +50,6 @@ const App: React.FC = function () {
   const [snackBar, setSnackBar] = useState({ isVisible: false, message: '', barType: '', duration: null });
   const [spaceAndUserRelationships, setSpaceAndUserRelationships] = useState([]);
   const [spaceAndUserRelationshipsFetchingStatus, setSpaceAndUserRelationshipsFetchingStatus] = useState('idle');
-  // ここの設計を今一度考えなおしてみるか。。。
   const [spaceAndUserRelationshipsFetchingState, setSpaceAndUserRelationshipsFetchingState] = useState({});
   const [haveSpaceAndUserRelationshipsBeenFetched, setHaveSpaceAndUserRelationshipsBeenFetched] = useState(false);
   const [currentSpaceAndUserRelationship, setCurrentSpaceAndUserRelationship] = useState(null);
@@ -67,6 +69,16 @@ const App: React.FC = function () {
   //   isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
 
   // notifyのon offを切り替えるfunctionな。
+  useEffect(() => {
+    requestAuth();
+  }, []);
+
+  useEffect(() => {
+    if (authApiResult.status === 'success') {
+      // ここでgetMySpacesとかやんだっけ。たしか。
+    }
+  }, [authApiResult.status]);
+
   const registerForPushNotificationsAsync = async () => {
     let token;
     const data = { token: token, status: false };
@@ -177,6 +189,13 @@ const App: React.FC = function () {
     }
   }, [isAuthenticated]);
 
+  //   const ProvidersTree = buildProvidersTree([
+  //   [Provider],
+  //   [ThemeProvider, { theme: AppTheme }],
+  //   [ApolloProvider, { client }],
+  //   [PersistGate, { loading: null,persistor }]
+  // ]);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -215,11 +234,10 @@ const App: React.FC = function () {
         setNotificationEnabled,
       }}
     >
-      {/* globalなcontextだけをここでもっておく感じかな。。。 */}
-      <AuthDataProvider>
+      <AuthProvider>
         <PaperProvider>
           <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-          {/* <NavigationContainer>
+          <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen
                 name='HomeStackNavigator'
@@ -230,11 +248,11 @@ const App: React.FC = function () {
                 })}
               />
             </Stack.Navigator>
-          </NavigationContainer> */}
-          <Booting />
+          </NavigationContainer>
+          {/* <Booting /> */}
           {/* authのありinit component */}
         </PaperProvider>
-      </AuthDataProvider>
+      </AuthProvider>
       <LoadingSpinner />
     </GlobalContext.Provider>
   );
