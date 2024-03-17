@@ -10,12 +10,15 @@ import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Video } from 'expo-av';
 import { AntDesign } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import { SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MomentPost = (props) => {
-  const { isIpad, setLoading, setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { isIpad, setLoading } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const [contents, setContets] = useState([]);
   // const { space } = props.route.params;
@@ -80,7 +83,7 @@ const MomentPost = (props) => {
               // addingのarrayに入れないで、snacbarを出してあげる。無理ですって。
               setSnackBar({
                 isVisible: true,
-                barType: 'warning',
+                status: 'warning',
                 message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
                 duration: 5000,
               });
@@ -207,6 +210,7 @@ const MomentPost = (props) => {
         </View>
       </View> */}
       <LoadingSpinner />
+      <SnackBar.Primary />
     </View>
   );
 };

@@ -6,6 +6,7 @@ import { GlobalContext } from '../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { SnackBarContext } from '../../providers';
+import { SnackBar } from '../../components';
 
 const AuthMenuBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['60%'], []);

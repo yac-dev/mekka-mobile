@@ -18,8 +18,8 @@ import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { AuthContext } from '../providers';
-import { SnackBarContext } from '../providers';
+import { AuthContext, SnackBarContext } from '../providers';
+import { SnackBar } from '../components';
 
 const CreateNewSpaceStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -456,6 +456,7 @@ const CreateNewSpaceStackNavigator = (props) => {
           />
         </Stack.Group>
       </Stack.Navigator>
+      <SnackBar.Primary />
       <LoadingSpinner />
     </CreateNewSpaceContext.Provider>
   );

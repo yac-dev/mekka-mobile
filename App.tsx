@@ -11,23 +11,13 @@ import Config from 'react-native-config';
 import BottomTab from './navigations/BottomTab';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
 import * as Notifications from 'expo-notifications';
-import { AuthProvider } from './providers';
-import { SnackBarProvider } from './providers';
+import { AuthProvider, SnackBarProvider } from './providers';
 import { Composer } from './providers/Providers';
 import { Booting } from './features';
 import { useLoadMe } from './features';
-import { SnackBar } from './components';
-
-type AuthDataType = {
-  _id: string;
-  name: string;
-  email: string;
-  avatar: string;
-};
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
   postType: '',
@@ -104,21 +94,19 @@ const App: React.FC = function () {
     return data;
   };
 
-  console.log('update table', updatesTable);
-
-  const loadMe = async () => {
-    const jwt = await SecureStore.getItemAsync('secure_token');
-    if (jwt) {
-      const result = await backendAPI.get('/auth/loadMe', { headers: { authorization: `Bearer ${jwt}` } });
-      const user = result.data.data;
-      setAuthData(user);
-      setIsAuthDataFetched(true);
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthDataFetched(true);
-      setIsAuthenticated(false);
-    }
-  };
+  // const loadMe = async () => {
+  //   const jwt = await SecureStore.getItemAsync('secure_token');
+  //   if (jwt) {
+  //     const result = await backendAPI.get('/auth/loadMe', { headers: { authorization: `Bearer ${jwt}` } });
+  //     const user = result.data.data;
+  //     setAuthData(user);
+  //     setIsAuthDataFetched(true);
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     setIsAuthDataFetched(true);
+  //     setIsAuthenticated(false);
+  //   }
+  // };
 
   const getMySpaces = async () => {
     setSpaceAndUserRelationshipsFetchingStatus('loading');
@@ -131,9 +119,10 @@ const App: React.FC = function () {
     setSpaceAndUserRelationshipsFetchingStatus('success');
   };
 
-  useEffect(() => {
-    loadMe();
-  }, []);
+  // useEffect(() => {
+  //   loadMe();
+  // }, []);
+  // loadingにしても、snackbarにしても個々のpageで使うんだったらglobalで持っておく必要ないよね。。。。結局。。。
 
   const updateSpaceCheckedInDate = async () => {
     if (currentSpaceAndUserRelationship.space?._id) {
@@ -189,13 +178,6 @@ const App: React.FC = function () {
       });
     }
   }, [isAuthenticated]);
-
-  //   const ProvidersTree = buildProvidersTree([
-  //   [Provider],
-  //   [ThemeProvider, { theme: AppTheme }],
-  //   [ApolloProvider, { client }],
-  //   [PersistGate, { loading: null,persistor }]
-  // ]);
 
   return (
     <GlobalContext.Provider

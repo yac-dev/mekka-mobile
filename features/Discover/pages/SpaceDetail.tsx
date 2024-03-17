@@ -14,6 +14,7 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 import SpaceDetailTopTabNavigator from '../../../navigations/SpaceDetailTopTabNavigator';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 // props.route.params.spaceIdでくるよね。
 interface RouterProps {
@@ -148,6 +149,7 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
           <ActivityIndicator />
         )}
       </View>
+      <SnackBar.Primary />
       <LoadingSpinner />
     </SpaceDetailContext.Provider>
   );

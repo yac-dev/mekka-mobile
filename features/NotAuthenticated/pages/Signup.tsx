@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 const Signup = (props) => {
   const { setSnackBar } = useContext(SnackBarContext);
@@ -270,6 +271,7 @@ const Signup = (props) => {
           </TouchableOpacity>
         </View>
       </View>
+      <SnackBar.Primary />
     </View>
   );
 };

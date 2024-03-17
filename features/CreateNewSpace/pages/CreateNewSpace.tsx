@@ -8,7 +8,8 @@ import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import backendAPI from '../../../apis/backend';
 import Form from '../components/Form';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { AuthContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 type StickerType = {
   _id: string;
@@ -42,7 +43,8 @@ type RouterProps = {
 
 const CreateNewSpace: React.FC<RouterProps> = (props) => {
   const { auth } = useContext(AuthContext);
-  const { setLoading, setSnackBar, setSpaceAndUserRelationships } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { setLoading, setSpaceAndUserRelationships } = useContext(GlobalContext);
   const [formData, setFormData] = useState<FormDataStateType>({
     name: '',
     icon: '',
@@ -156,7 +158,7 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
     setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: `The space has been created successfully. Invite your friends, share your moments${'\n'}and have fun.`,
       duration: 7000,
     });
@@ -189,6 +191,7 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
           <Form />
         </View>
       </SafeAreaView>
+      <SnackBar.Primary />
       <LoadingSpinner />
     </CreateNewSpaceContext.Provider>
   );

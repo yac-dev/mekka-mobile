@@ -19,6 +19,7 @@ import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocat
 import LoadingSpinner from '../components/LoadingSpinner';
 import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
 import { AuthContext, SnackBarContext } from '../providers';
+import { SnackBar } from '../components';
 
 const CreateNewPostStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -412,6 +413,7 @@ const CreateNewPostStackNavigator = (props) => {
           />
         </Stack.Group>
       </Stack.Navigator>
+      <SnackBar.Primary />
       <LoadingSpinner />
     </CreateNewPostContext.Provider>
   );

@@ -4,6 +4,7 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 const Form = (props) => {
   const { auth } = useContext(AuthContext);
@@ -119,6 +120,7 @@ const Form = (props) => {
           onChangeText={(text) => setSecretKey(text)}
         />
       </View>
+      <SnackBar.Primary />
       <LoadingSpinner />
     </View>
   );

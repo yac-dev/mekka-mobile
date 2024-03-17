@@ -28,9 +28,12 @@ import { Video } from 'expo-av';
 import ContentThumbnail from '../components/Content';
 import { Video as VideoCompressor, Image as ImageCompressor } from 'react-native-compressor';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 const NormalPost = () => {
-  const { isIpad, setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { isIpad } = useContext(GlobalContext);
   const { createNewPostFormData, setCreateNewPostFormData } = useContext(SpaceRootContext);
   const { contents, setContents, caption, setCaption, space, navigation, addedTags } = useContext(CreateNewPostContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
@@ -157,7 +160,7 @@ const NormalPost = () => {
           } else {
             setSnackBar({
               isVisible: true,
-              barType: 'warning',
+              status: 'warning',
               message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
               duration: 5000,
             });
@@ -263,6 +266,7 @@ const NormalPost = () => {
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
+      <SnackBar.Primary />
     </KeyboardAvoidingView>
   );
 };
