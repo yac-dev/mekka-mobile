@@ -17,13 +17,14 @@ import { CreateNewSpaceContext } from '../features/CreateNewSpace/contexts/Creat
 import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { AuthContext, SnackBarContext } from '../providers';
-import { SnackBar } from '../components';
+import { SnackBar, LoadingSpinner } from '../components';
+import { useLoadingSpinner } from '../hooks';
 
 const CreateNewSpaceStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const {
     setLoading,
     setSpaceAndUserRelationships,
@@ -457,7 +458,7 @@ const CreateNewSpaceStackNavigator = (props) => {
         </Stack.Group>
       </Stack.Navigator>
       <SnackBar.Primary />
-      <LoadingSpinner />
+      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
     </CreateNewSpaceContext.Provider>
   );
 };

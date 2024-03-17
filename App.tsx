@@ -4,7 +4,6 @@ import { GlobalContext } from './contexts/GlobalContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
-import LoadingSpinner from './components/LoadingSpinner';
 // import RootStack from './navigations/RootStack';
 import backendAPI from './apis/backend';
 import Config from 'react-native-config';
@@ -250,7 +249,6 @@ const App: React.FC = function () {
           </PaperProvider>
         </SnackBarProvider>
       </AuthProvider> */}
-      <LoadingSpinner />
     </GlobalContext.Provider>
   );
 };

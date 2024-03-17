@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback } from 'react-native';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
 import * as SecureStore from 'expo-secure-store';
@@ -10,11 +10,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SnackBarContext } from '../../../providers';
-import { SnackBar } from '../../../components';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { useLoadingSpinner } from '../../../hooks';
 
 const Signup = (props) => {
   const { setSnackBar } = useContext(SnackBarContext);
   const { setAuthData, setIsAuthenticated, setLoading } = useContext(GlobalContext);
+  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,18 +52,18 @@ const Signup = (props) => {
       email,
       password,
     };
-    setLoading(true);
+    showLoadingSpinner();
     try {
       const result = await backendAPI.post('/auth/signup', payload);
       const response = result.data.data;
       setAuthData(response.user);
       setIsAuthenticated(true);
-      setLoading(false);
+      hideLoadingSpinner();
       setSnackBar({ isVisible: true, message: 'Welcome to Mekka', status: 'success', duration: 5000 });
       await SecureStore.setItemAsync('secure_token', response.jwt);
       props.navigation?.navigate('SpacesDrawerNavigator');
     } catch (error) {
-      setLoading(false);
+      hideLoadingSpinner();
       setSnackBar({
         isVisible: true,
         status: 'warning',
@@ -258,7 +260,7 @@ const Signup = (props) => {
         onChangeText={(text) => setPassword(text)}
       /> */}
         </View>
-        <LoadingSpinner />
+        <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' />
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>

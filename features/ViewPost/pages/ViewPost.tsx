@@ -11,7 +11,6 @@ import OtherActionsBottomSheet from './OtherActionsBottomSheet';
 import BottomMenu from '../components/BottomMenu';
 // import ReactionOptions from '../compoReactionOptions';
 import Comments from './Comments';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
@@ -93,7 +92,6 @@ const ViewPost = (props) => {
   //       <BottomMenu />
   //       <ReactionOptionsBottomSheet />
   //       <CommentInputBottomSheet />
-  //       <LoadingSpinner /> */}
   //       <View>
   //         <Text style={{ color: 'red' }}>{currentPost._id}</Text>
   //       </View>
@@ -158,7 +156,6 @@ const ViewPost = (props) => {
         <ReactionOptionsBottomSheet />
         <CommentInputBottomSheet />
         <OtherActionsBottomSheet />
-        <LoadingSpinner />
       </GestureHandlerRootView>
     </ViewPostContext.Provider>
   );

@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { GlobalContext } from '../contexts/GlobalContext';
+import { ViewStyle } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const LoadingSpinner = (props) => {
-  const { loading } = useContext(GlobalContext);
-
-  return <Spinner visible={loading} textContent={'Processing now...'} textStyle={{ color: 'white' }} />;
+type LoadingSpinnerProps = {
+  isVisible: boolean;
+  message: string;
+  textColor?: string;
 };
 
-export default LoadingSpinner;
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isVisible, message, textColor }) => {
+  return <Spinner visible={isVisible} textContent={message} textStyle={{ color: textColor }} />;
+};

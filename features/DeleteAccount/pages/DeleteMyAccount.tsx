@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-na
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import * as SecureStore from 'expo-secure-store';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { useDeleteMe, useForm } from '../hooks';
 import {
   Underline as AppTextInputUnderline,
@@ -15,7 +14,8 @@ import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
 import { AuthContext, SnackBarContext } from '../../../providers';
 import { INITIAL_AUTH } from '../../../types';
-import { SnackBar } from '../../../components';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { useLoadingSpinner } from '../../../hooks';
 
 // routingのprops用意な。。。
 
@@ -114,7 +114,7 @@ export const DeleteMyAccount = (props) => {
         secureTextEntry={isPasswordHidden}
         onTextEntryVisibilityChange={onPasswordHiddenChange}
       />
-      {apiResult.status === 'loading' ? <LoadingSpinner /> : null}
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message={'Processing now'} />
       <SnackBar.Primary />
     </PageScreenWithTitle>
   );

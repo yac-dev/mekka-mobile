@@ -20,7 +20,6 @@ import AddLocation from '../components/AddLocation';
 import AddTags from '../components/AddTags';
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
 import backendAPI from '../../../apis/backend';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';

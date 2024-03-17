@@ -16,14 +16,15 @@ import { CreateNewPostContext } from '../features/CreateNewPost/contexts/CreateN
 import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
 import { AuthContext, SnackBarContext } from '../providers';
-import { SnackBar } from '../components';
+import { SnackBar, LoadingSpinner } from '../components';
+import { useLoadingSpinner } from '../hooks';
 
 const CreateNewPostStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { showLoadingSpinner, hideLoadingSpinner, isVisibleLoadingSpinner } = useLoadingSpinner();
   const {
     setLoading,
     isAfterPosted,
@@ -118,11 +119,11 @@ const CreateNewPostStackNavigator = (props) => {
       payload.append('contents', JSON.parse(JSON.stringify(obj)));
     }
     console.log(payload);
-    setLoading(true);
+    showLoadingSpinner();
     const result = await backendAPI.post('/moments', payload, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
-    setLoading(false);
+    hideLoadingSpinner();
     const { post } = result.data;
     setSnackBar({
       isVisible: true,
@@ -414,7 +415,7 @@ const CreateNewPostStackNavigator = (props) => {
         </Stack.Group>
       </Stack.Navigator>
       <SnackBar.Primary />
-      <LoadingSpinner />
+      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' />
     </CreateNewPostContext.Provider>
   );
 };
