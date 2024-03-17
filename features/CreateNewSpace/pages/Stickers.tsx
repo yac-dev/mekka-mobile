@@ -4,7 +4,6 @@ import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
-import SnackBar from '../../../components/SnackBar';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';

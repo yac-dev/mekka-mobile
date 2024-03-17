@@ -10,23 +10,8 @@ export const login = async (input: LoginInput): Promise<LoginOutput> => {
     console.log('response', response);
     // response きてへんな。。。。なんでだ？？
     return response.user;
-
-    // setAuthData(response.user);
-    // setIsAuthenticated(true);
-    // setLoading(false);
-    // setSnackBar({ isVisible: true, message: 'Logged in successfully.', barType: 'success', duration: 5000 });
-    // await SecureStore.setItemAsync('secure_token', response.jwt);
-    // props.navigation?.navigate('SpacesDrawerNavigator');
   } catch (error) {
     throw error;
-    // なるほど。errorの時はここでthrow error出して、それがapi側にも行くのね。。。
-    // setLoading(false);
-    // setSnackBar({
-    //   isVisible: true,
-    //   message: 'OOPS. Something went wrong. Please try again.',
-    //   barType: 'error',
-    //   duration: 5000,
-    // });
   }
   // ここで、secureeをさらにsetする感じか。
 };

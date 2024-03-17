@@ -9,7 +9,6 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Video } from 'expo-av';
 import { AntDesign } from '@expo/vector-icons';
-import SnackBar from '../../../components/SnackBar';
 import { Image as ExpoImage } from 'expo-image';
 
 const blurhash =
@@ -207,7 +206,6 @@ const MomentPost = (props) => {
           {renderAddedContents()}
         </View>
       </View> */}
-      <SnackBar />
       <LoadingSpinner />
     </View>
   );

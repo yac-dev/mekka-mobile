@@ -12,9 +12,10 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
+import { SnackBarContext } from '../../../providers';
 
 const ReportPost = (props) => {
-  const { setSnackBar } = useContext(GlobalContext);
+  const {setSnackBar} = useContext(SnackBarContext)
   const inputAccessoryViewID = 'REPORT_POST';
   const [reportIssueOptions, setReportIssueOptions] = useState({
     spam: {
@@ -66,7 +67,7 @@ const ReportPost = (props) => {
   const onDonePress = () => {
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: 'Your report has been sent.',
       duration: 5000,
     });

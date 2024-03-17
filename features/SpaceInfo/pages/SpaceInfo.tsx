@@ -9,7 +9,6 @@ import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import LinearGradient from 'react-native-linear-gradient';
-import SnackBar from '../../../components/SnackBar';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -124,7 +123,6 @@ const SpaceInfo = (props) => {
         </View>
       </View>
       <SpaceInfoTopTabNavigator />
-      <SnackBar />
     </View>
   );
 };

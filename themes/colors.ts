@@ -8,7 +8,7 @@ export namespace BackgroundColor {
   export const secondary = 'rgb(50,50,50)';
   export const red = 'rgba(255, 51, 51, 0.3)';
   export const blue = 'rgba(0, 108, 255, 0.3)';
-  export const lightGreen = 'rgba(4, 151, 219, 0.3)';
+  export const lightGreen = 'rgba(87, 215, 23, 0.3)';
   export const yellow = 'rgba(229, 188, 0, 0.3)';
   export const white = 'white';
 }

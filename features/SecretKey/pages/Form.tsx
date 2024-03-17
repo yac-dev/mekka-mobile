@@ -3,15 +3,15 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { AuthContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
 
 const Form = (props) => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
   const {
     setSpaceAndUserRelationships,
     spaceAndUserRelationships,
     setLoading,
-    setSnackBar,
     setUpdatesTable,
     setCurrentSpaceAndUserRelationship,
   } = useContext(GlobalContext);
@@ -55,7 +55,7 @@ const Form = (props) => {
       };
     });
     setLoading(false);
-    setSnackBar({ isVisible: true, message: 'Joined private space successfully.', barType: 'success', duration: 5000 });
+    setSnackBar({ isVisible: true, message: 'Joined private space successfully.', status: 'success', duration: 5000 });
     props.navigation?.navigate('SpacesDrawerNavigator');
   };
 

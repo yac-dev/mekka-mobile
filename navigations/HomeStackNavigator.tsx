@@ -19,6 +19,7 @@ import CreateNewSpace from '../features/CreateNewSpace/pages/CreateNewSpace';
 import WriteDescription from '../features/CreateNewSpace/pages/WriteDescription';
 import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
 import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
+import { SnackBar } from '../components';
 
 // secret key
 import SecretKeyForm from '../features/SecretKey/pages/Form';
@@ -60,7 +61,6 @@ const HomeStackNavigator: React.FC = (props) => {
     setCreateNewPostFormData,
     currentSpaceAndUserRelationship,
     setCreateNewPostResult,
-    setSnackBar,
   } = useContext(GlobalContext);
 
   return (

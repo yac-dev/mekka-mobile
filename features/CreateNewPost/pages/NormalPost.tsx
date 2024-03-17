@@ -25,7 +25,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
-import SnackBar from '../../../components/SnackBar';
 import ContentThumbnail from '../components/Content';
 import { Video as VideoCompressor, Image as ImageCompressor } from 'react-native-compressor';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
@@ -261,7 +260,6 @@ const NormalPost = () => {
                 })
               }
             />
-            <SnackBar />
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>

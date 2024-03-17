@@ -6,10 +6,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
+import { SnackBarContext } from '../../../providers';
 
 const ReportBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['60%'], []);
-  const { setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
 
   return (
     <GorhomBottomSheet
@@ -58,7 +59,7 @@ const ReportBottomSheet = (props) => {
                     props.reportBottomSheetRef.current.close();
                     setSnackBar({
                       isVisible: true,
-                      barType: 'success',
+                      status: 'success',
                       message: 'User report request has been sent.',
                       duration: 5000,
                     });
@@ -92,7 +93,7 @@ const ReportBottomSheet = (props) => {
                     props.reportBottomSheetRef.current.close();
                     setSnackBar({
                       isVisible: true,
-                      barType: 'success',
+                      status: 'success',
                       message: 'Block request has been sent.',
                       duration: 5000,
                     });

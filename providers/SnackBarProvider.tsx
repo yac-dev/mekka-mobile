@@ -15,7 +15,9 @@ type SnackBarProviderProps = {
   children: React.ReactNode;
 };
 
+// ここでstateを持っておくのはよくて、、、
 export const SnackBarProvider: React.FC<SnackBarProviderProps> = ({ children }) => {
   const [snackBar, setSnackBar] = useState<SnackBarType>(INITIAL_SNACK_BAR);
   return <SnackBarContext.Provider value={{ snackBar, setSnackBar }}>{children}</SnackBarContext.Provider>;
+  //　いや、stateだけexportしておいて、
 };

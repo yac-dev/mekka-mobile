@@ -8,12 +8,13 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import SnackBar from '../../../components/SnackBar';
 import { TextColor } from '../../../themes';
 import { TextButton } from '../../../components';
+import { SnackBarContext } from '../../../providers';
 
 const Login = (props) => {
-  const { setAuthData, setIsAuthenticated, setLoading, setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { setAuthData, setIsAuthenticated, setLoading } = useContext(GlobalContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isValidated, setIsValidated] = useState(false);
@@ -58,7 +59,7 @@ const Login = (props) => {
       setAuthData(response.user);
       setIsAuthenticated(true);
       setLoading(false);
-      setSnackBar({ isVisible: true, message: 'Logged in successfully.', barType: 'success', duration: 5000 });
+      setSnackBar({ isVisible: true, message: 'Logged in successfully.', status: 'success', duration: 5000 });
       await SecureStore.setItemAsync('secure_token', response.jwt);
       props.navigation?.navigate('SpacesDrawerNavigator');
     } catch (error) {
@@ -66,7 +67,7 @@ const Login = (props) => {
       setSnackBar({
         isVisible: true,
         message: 'OOPS. Something went wrong. Please try again.',
-        barType: 'error',
+        status: 'error',
         duration: 5000,
       });
     }
@@ -196,7 +197,6 @@ const Login = (props) => {
         <TextButton text='Forgot my password...' onTextPress={() => console.log('hello')} />
       </View>
       <LoadingSpinner />
-      <SnackBar />
     </View>
   );
 };

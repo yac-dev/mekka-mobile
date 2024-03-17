@@ -13,7 +13,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import SpaceDetailTopTabNavigator from '../../../navigations/SpaceDetailTopTabNavigator';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { AuthContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
 
 // props.route.params.spaceIdでくるよね。
 interface RouterProps {
@@ -60,9 +60,9 @@ type SpaceType = {
 
 // ここに、spaceのthumbnailから始まり、
 const SpaceDetail: React.FC<RouterProps> = (props) => {
-  const {auth, setAuth} = useContext(AuthContext)
-  const { spaceAndUserRelationships, setSpaceAndUserRelationships, setLoading, setSnackBar } =
-    useContext(GlobalContext);
+  const { auth, setAuth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { spaceAndUserRelationships, setSpaceAndUserRelationships, setLoading } = useContext(GlobalContext);
   const [space, setSpace] = useState(null);
   const [isSpaceFetched, setIsSpaceFetched] = useState(false);
   const [isJoinValidated, setIsJoinValidated] = useState(false);
@@ -107,7 +107,7 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
     setLoading(false);
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: `You have joined ${space.name} successfully`,
       duration: 5000,
     });

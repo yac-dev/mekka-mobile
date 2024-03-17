@@ -18,13 +18,13 @@ import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
-import { AuthContext } from '../providers';
+import { AuthContext, SnackBarContext } from '../providers';
 
 const CreateNewPostStackNavigator = (props) => {
-  const {auth, setAuth} = useContext(AuthContext)
+  const { auth, setAuth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
   const {
     setLoading,
-    setSnackBar,
     isAfterPosted,
     setIsAfterPosted,
     // createNewPostFormData,
@@ -125,7 +125,7 @@ const CreateNewPostStackNavigator = (props) => {
     const { post } = result.data;
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: 'Post has been created successfully.',
       duration: 7000,
     });

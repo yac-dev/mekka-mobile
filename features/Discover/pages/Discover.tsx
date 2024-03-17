@@ -7,7 +7,6 @@ import { primaryBackgroundColor } from '../../../themes/color';
 import { primaryTextColor } from '../../../themes/text';
 import CreateNewButton from '../components/CreateNewButton';
 import { DiscoverContext } from '../contexts/DiscoverContext';
-import SnackBar from '../../../components/SnackBar';
 import { Image as ExpoImage } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -148,10 +147,7 @@ const Discover: React.FC<RouterProps> = (props) => {
 
   return (
     <DiscoverContext.Provider value={{ spaces, setSpaces, navigation: props.navigation }}>
-      <View style={{ flex: 1, backgroundColor: primaryBackgroundColor, padding: 10 }}>
-        {renderSpaces()}
-        <SnackBar />
-      </View>
+      <View style={{ flex: 1, backgroundColor: primaryBackgroundColor, padding: 10 }}>{renderSpaces()}</View>
     </DiscoverContext.Provider>
   );
 };

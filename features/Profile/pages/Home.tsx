@@ -4,19 +4,13 @@ import * as SecureStore from 'expo-secure-store';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 
 const Home = (props) => {
-  const { setAuthData, setIsAuthenticated, setSnackBar, setSpaceAndUserRelationships } = useContext(GlobalContext);
+  const { setAuthData, setIsAuthenticated, setSpaceAndUserRelationships } = useContext(GlobalContext);
 
   const logout = async () => {
     await SecureStore.deleteItemAsync('secure_token');
     setAuthData({ _id: '', name: '', email: '', avatar: '' });
     setIsAuthenticated(false);
     setSpaceAndUserRelationships([]);
-    // setSnackBar({
-    //   isVisible: true,
-    //   barType: 'success',
-    //   message: 'Logged out successfully.',
-    //   duration: 5000,
-    // });
     props.navigation.navigate('Welcome');
   };
 

@@ -12,7 +12,6 @@ import BottomMenu from '../components/BottomMenu';
 // import ReactionOptions from '../compoReactionOptions';
 import Comments from './Comments';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import SnackBar from '../../../components/SnackBar';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
@@ -160,7 +159,6 @@ const ViewPost = (props) => {
         <CommentInputBottomSheet />
         <OtherActionsBottomSheet />
         <LoadingSpinner />
-        <SnackBar />
       </GestureHandlerRootView>
     </ViewPostContext.Provider>
   );

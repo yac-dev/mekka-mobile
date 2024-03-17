@@ -18,13 +18,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import * as Haptics from 'expo-haptics';
 import { TagRootContext } from '../../../contexts/TagRootContext';
-import { AuthContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
 
 // rgb(35, 35, 35)
 const CommentInputBottomSheet = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
   const snapPoints = useMemo(() => ['30%', '85%'], []);
-  const { isIpad, setLoading, setSnackBar } = useContext(GlobalContext);
+  const { isIpad, setLoading } = useContext(GlobalContext);
   const {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);
@@ -54,7 +55,7 @@ const CommentInputBottomSheet = (props) => {
     setLoading(false);
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: 'Sent a comment successfully.',
       duration: 5000,
     });

@@ -8,11 +8,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
-import SnackBar from '../../../components/SnackBar';
 import { ScrollView } from 'react-native-gesture-handler';
+import { SnackBarContext } from '../../../providers';
 
 const Signup = (props) => {
-  const { setAuthData, setIsAuthenticated, setLoading, setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { setAuthData, setIsAuthenticated, setLoading } = useContext(GlobalContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,37 +56,18 @@ const Signup = (props) => {
       setAuthData(response.user);
       setIsAuthenticated(true);
       setLoading(false);
-      setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
+      setSnackBar({ isVisible: true, message: 'Welcome to Mekka', status: 'success', duration: 5000 });
       await SecureStore.setItemAsync('secure_token', response.jwt);
       props.navigation?.navigate('SpacesDrawerNavigator');
     } catch (error) {
       setLoading(false);
       setSnackBar({
         isVisible: true,
+        status: 'warning',
         message: 'OOPS. Something went wrong. Please try again.',
-        barType: 'warning',
         duration: 5000,
       });
     }
-    // const { status, data } = result.data;
-    // console.log('status', status, 'data', data);
-    // if (status === 'success') {
-    //   const { user, jwt } = data;
-    //   setAuthData(user);
-    //   setIsAuthenticated(true);
-    //   setLoading(false);
-    //   setSnackBar({ isVisible: true, message: 'Welcome to Mekka', barType: 'success', duration: 5000 });
-    //   await SecureStore.setItemAsync('secure_token', jwt);
-    //   props.navigation?.navigate('SpacesDrawerNavigator');
-    // } else if (status === 'error') {
-    //   setLoading(false);
-    //   setSnackBar({
-    //     isVisible: true,
-    //     message: 'OOPS. Something went wrong. Please try again.',
-    //     barType: 'success',
-    //     duration: 5000,
-    //   });
-    // }
   };
 
   useEffect(() => {
@@ -276,7 +258,6 @@ const Signup = (props) => {
       /> */}
         </View>
         <LoadingSpinner />
-        <SnackBar />
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>

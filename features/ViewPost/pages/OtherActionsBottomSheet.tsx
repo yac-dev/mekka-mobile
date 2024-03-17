@@ -23,7 +23,7 @@ import * as Haptics from 'expo-haptics';
 // rgb(35, 35, 35)
 const OtherActionsBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['50%'], []);
-  const { isIpad, setLoading,  setSnackBar } = useContext(GlobalContext);
+  const { isIpad, setLoading } = useContext(GlobalContext);
   const {
     spaceAndUserRelationship: { space },
   } = useContext(SpaceRootContext);

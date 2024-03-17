@@ -2,7 +2,6 @@ import React, { useReducer, useContext, useState, useEffect, useCallback } from 
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import SnackBar from '../../../components/SnackBar';
 import { primaryBackgroundColor, inputBackgroundColor, modalBackgroundColor } from '../../../themes/color';
 import { primaryTextColor, placeholderTextColor } from '../../../themes/text';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';

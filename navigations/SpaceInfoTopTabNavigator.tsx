@@ -6,7 +6,6 @@ import Feature from '../features/SpaceInfo/pages/Feature';
 import Description from '../features/SpaceInfo/pages/Description';
 import Members from '../features/SpaceInfo/pages/Members';
 import ReportBottomSheet from '../features/SpaceInfo/components/ReportBottomSheet';
-import SnackBar from '../components/SnackBar';
 
 const Tab = createMaterialTopTabNavigator();
 

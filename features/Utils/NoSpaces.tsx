@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import SnackBar from '../../components/SnackBar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -65,7 +64,6 @@ const NoSpaces = (props) => {
           <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
         </TouchableOpacity>
       </View>
-      <SnackBar />
     </View>
   );
 };

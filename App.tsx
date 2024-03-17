@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 import LoadingSpinner from './components/LoadingSpinner';
-import SnackBar from './components/SnackBar';
 // import RootStack from './navigations/RootStack';
 import backendAPI from './apis/backend';
 import Config from 'react-native-config';
@@ -17,9 +16,11 @@ import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
 import * as Notifications from 'expo-notifications';
 import { AuthProvider } from './providers';
+import { SnackBarProvider } from './providers';
+import { Composer } from './providers/Providers';
 import { Booting } from './features';
-import { buildProvidersTree } from './providers/Providers';
 import { useLoadMe } from './features';
+import { SnackBar } from './components';
 
 type AuthDataType = {
   _id: string;
@@ -234,28 +235,48 @@ const App: React.FC = function () {
         setNotificationEnabled,
       }}
     >
-      <AuthProvider>
-        <PaperProvider>
-          <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                name='HomeStackNavigator'
-                component={HomeStackNavigator}
-                options={({ navigation }) => ({
-                  // headerShown: true,
-                  headerShown: false,
-                })}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-          {/* <Booting /> */}
-          {/* authのありinit component */}
-        </PaperProvider>
-      </AuthProvider>
+      <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
+      <Composer components={[AuthProvider, SnackBarProvider, PaperProvider]}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name='HomeStackNavigator'
+              component={HomeStackNavigator}
+              options={({ navigation }) => ({
+                // headerShown: true,
+                headerShown: false,
+              })}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Composer>
+      {/* <AuthProvider>
+        <SnackBarProvider>
+          <PaperProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name='HomeStackNavigator'
+                  component={HomeStackNavigator}
+                  options={({ navigation }) => ({
+                    // headerShown: true,
+                    headerShown: false,
+                  })}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PaperProvider>
+        </SnackBarProvider>
+      </AuthProvider> */}
       <LoadingSpinner />
     </GlobalContext.Provider>
   );
 };
 
+{
+  /* <Booting /> */
+}
+{
+  /* authのありinit component */
+}
 export default App;

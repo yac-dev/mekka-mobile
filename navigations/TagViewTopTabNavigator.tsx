@@ -16,7 +16,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CreatePost from '../features/Space/pages/CreatePost';
 import SpaceMenuBottomSheet from '../features/Space/pages/SpaceMenuBottomSheet';
 import PostsBottomNavigator from './PostsBottomNavigator';
-import SnackBar from '../components/SnackBar';
 // import Grid from '../features/Space/components/Grid';
 import TagView from '../features/Space/pages/TagView';
 import Map from '../features/Space/components/Map';
@@ -203,7 +202,6 @@ const TagViewTopTabNavigator = (props) => {
           </Tab.Screen>
         ))}
       </Tab.Navigator>
-      <SnackBar />
     </View>
   );
 };

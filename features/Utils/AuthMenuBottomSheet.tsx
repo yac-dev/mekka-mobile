@@ -5,10 +5,12 @@ import * as SecureStore from 'expo-secure-store';
 import { GlobalContext } from '../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { SnackBarContext } from '../../providers';
 
 const AuthMenuBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['60%'], []);
   const iconWidth = Dimensions.get('window').width / 3;
+  const { setSnackBar } = useContext(SnackBarContext);
 
   const {
     isAuthenticated,
@@ -17,7 +19,6 @@ const AuthMenuBottomSheet = (props) => {
     setIsAuthenticated,
     setLoading,
     setSpaceAndUserRelationships,
-    setSnackBar,
     notificationEnabled,
     setNotificationEnabled,
   } = useContext(GlobalContext);
@@ -31,7 +32,7 @@ const AuthMenuBottomSheet = (props) => {
     setLoading(false);
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: 'Logged out successfully.',
       duration: 5000,
     });

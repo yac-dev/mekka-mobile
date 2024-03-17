@@ -19,12 +19,13 @@ import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { AuthContext } from '../providers';
+import { SnackBarContext } from '../providers';
 
 const CreateNewSpaceStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
   const {
     setLoading,
-    setSnackBar,
     setSpaceAndUserRelationships,
     spaceAndUserRelationships,
     setUpdatesTable,
@@ -93,7 +94,7 @@ const CreateNewSpaceStackNavigator = (props) => {
     });
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: 'The space has been created successfully. Invite your friends, share your moments and have fun.',
       duration: 7000,
     });

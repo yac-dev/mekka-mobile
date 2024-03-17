@@ -13,7 +13,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import SnackBar from '../../../components/SnackBar';
 import Stickers from './Stickers';
 import { Image as ExpoImage } from 'expo-image';
 
@@ -385,7 +384,6 @@ const ReactionPicker = (props) => {
           </Tab.Group> */}
           {/* <Tab.Screen name='Sticker' component={HomeScreen} /> */}
         </Tab.Navigator>
-        <SnackBar />
       </View>
     </ReactionPickerContext.Provider>
   );

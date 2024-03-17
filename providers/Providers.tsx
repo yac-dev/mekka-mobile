@@ -1,27 +1,14 @@
-type ProvidersType = [React.ElementType, Record<string, unknown>];
-type ChildrenType = {
-  children: Array<React.ElementType>;
+type ComposerProps = {
+  components: Array<React.JSXElementConstructor<React.PropsWithChildren<unknown>>>;
+  children: React.ReactNode;
 };
 
-export const buildProvidersTree = (componentsWithProps: Array<ProvidersType>) => {
-  const initialComponent = ({ children }: ChildrenType) => <>{children}</>;
-  return componentsWithProps.reduce(
-    (AccumulatedComponents: React.ElementType, [Provider, props = {}]: ProvidersType) => {
-      return ({ children }: ChildrenType) => {
-        return (
-          <AccumulatedComponents>
-            <Provider {...props}>{children}</Provider>
-          </AccumulatedComponents>
-        );
-      };
-    },
-    initialComponent
+export const Composer: React.FC<ComposerProps> = ({ components, children }) => {
+  return (
+    <>
+      {components.reduceRight((acc, Comp) => {
+        return <Comp>{acc}</Comp>;
+      }, children)}
+    </>
   );
 };
-
-// const ProvidersTree = buildProvidersTree([
-//   [Provider, { store }],
-//   [ThemeProvider, { theme: AppTheme }],
-//   [ApolloProvider, { client }],
-//   [PersistGate, { loading: null,persistor }]
-// ]);

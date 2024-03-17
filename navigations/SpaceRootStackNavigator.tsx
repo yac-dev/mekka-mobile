@@ -23,6 +23,7 @@ import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { AuthContext } from '../providers';
+import { SnackBarContext } from '../providers';
 const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -40,6 +41,7 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
 
 const SpaceRootStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
   const {
     isIpad,
@@ -51,7 +53,6 @@ const SpaceRootStackNavigator = (props) => {
     // setCreateNewPostFormData,
     // setCreateNewPostResult,
     // createNewPostResult,
-    setSnackBar,
   } = useContext(GlobalContext);
   const [space, setSpace] = useState(null);
   const [hasSpaceBeenFetched, setHasSpaceBeenFetched] = useState(false);
@@ -166,7 +167,7 @@ const SpaceRootStackNavigator = (props) => {
       }
       setSnackBar({
         isVisible: true,
-        barType: 'success',
+        status: 'success',
         message: 'It takes couple seconds to finish processing....',
         duration: 4000,
       });
@@ -184,7 +185,7 @@ const SpaceRootStackNavigator = (props) => {
       setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE); // initialのstateに戻す。
       setSnackBar({
         isVisible: true,
-        barType: 'success',
+        status: 'success',
         message: 'Post has been created successfully.',
         duration: 5000,
       });
