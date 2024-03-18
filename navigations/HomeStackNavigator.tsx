@@ -547,6 +547,7 @@ const HomeStackNavigator: React.FC = (props) => {
         <AuthMenuBottomSheet navigation={props.navigation} />
         {/* <SpaceMenuBottomSheet navigation={props.navigation} /> */}
         <ActionMenuBottomSheet navigation={props.navigation} />
+        {/* <SnackBar.Primary /> */}
       </GestureHandlerRootView>
     </HomeStackNavContext.Provider>
   );

@@ -18,9 +18,9 @@ export const INITIAL_AUTH = {
 
 export type UserType = {
   _id: string;
-  name: string;
-  email: string;
-  avatar: string;
+  name?: string;
+  email?: string;
+  avatar?: string;
   pushToken?: string;
 };
 
@@ -34,6 +34,13 @@ export type TagType = {
   _id: string;
   icon: IconType;
   createdBy: UserType;
+};
+
+export type StickerType = {
+  url: string;
+  name: string;
+  createdBy: UserType;
+  isPublic: boolean;
 };
 
 export type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error';
@@ -71,3 +78,39 @@ export type ApiResultType<T> = {
 };
 
 export type LoadingType = boolean;
+
+export type ReactionType = {
+  type: string;
+  emoji: string;
+  sticker: StickerType;
+  caption: string;
+  space: SpaceType;
+};
+
+export type SpaceType = {
+  name: string;
+  icon: string; // s3のlink
+  secretKey: string;
+  contentType: string;
+  defaultTag: TagType;
+  description: string;
+  videoLength: number;
+  disappearAfter: number; // ここはminuteでいく。5, 60, 600, 1440って感じ。
+  isPublic: boolean;
+  isCommentAvailable: boolean;
+  isReactionAvailable: boolean;
+  reactions: ReactionType[];
+  totalPosts: number;
+  totalMembers: number;
+  rate: number;
+  createdBy: UserType;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SpaceAndUserRelationshipType = {
+  user: UserType;
+  space: SpaceType;
+};
+
+export type SpaceUpdatesType = {};

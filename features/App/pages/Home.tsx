@@ -7,19 +7,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import HomeStackNavigator from '../../../navigations/HomeStackNavigator';
 
-export const Booting = () => {
+export const Home = () => {
   const { auth } = useContext(AuthContext);
-  const { apiResult, requestApi: requestLoadMe } = useLoadMe();
+  const { apiResult: authApiResult, requestApi: requestLoadMe } = useLoadMe();
 
   useEffect(() => {
     requestLoadMe();
   }, []);
 
   useEffect(() => {
-    if (auth) {
+    if (authApiResult.status === 'success') {
       // ここでgetSpacesをやる。
     }
-  }, [auth]);
+  }, [authApiResult]);
 
   return (
     <NavigationContainer>
