@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { loadMe } from '../apis/loadMe';
-import { ApiResultType } from '../types';
+import { ApiResultType, AuthType } from '../../../types';
 
 export const useLoadMe = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType>({
-    status: 'loading',
+  const [apiResult, setApiResult] = useState<ApiResultType<AuthType>>({
+    status: 'idling',
     data: void 0,
     message: '',
   });
@@ -27,7 +27,6 @@ export const useLoadMe = () => {
         };
       });
     } catch (error) {
-      //ここ、snackbarを毎回出す感じかな。
       setApiResult((previous) => {
         return {
           ...previous,

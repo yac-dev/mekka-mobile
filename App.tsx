@@ -13,7 +13,13 @@ const Stack = createNativeStackNavigator();
 import HomeStackNavigator from './navigations/HomeStackNavigator';
 import NonAuthNavigator from './navigations/NonAuthNavigator';
 import * as Notifications from 'expo-notifications';
-import { AuthProvider, SnackBarProvider, MySpacesProvider } from './providers';
+import {
+  AuthProvider,
+  SnackBarProvider,
+  MySpacesProvider,
+  SpaceUpdatesProvider,
+  CurrentSpaceProvider,
+} from './providers';
 import { Composer } from './providers/Providers';
 import { Home } from './features';
 import { useLoadMe } from './features';
@@ -217,7 +223,16 @@ const App: React.FC = function () {
       }}
     >
       <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-      <Composer components={[PaperProvider, AuthProvider, SnackBarProvider, MySpacesProvider]}>
+      <Composer
+        components={[
+          PaperProvider,
+          AuthProvider,
+          SnackBarProvider,
+          MySpacesProvider,
+          SpaceUpdatesProvider,
+          CurrentSpaceProvider,
+        ]}
+      >
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
