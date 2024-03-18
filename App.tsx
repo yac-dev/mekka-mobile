@@ -19,6 +19,7 @@ import {
   MySpacesProvider,
   SpaceUpdatesProvider,
   CurrentSpaceProvider,
+  AppStateProvider,
 } from './providers';
 import { Composer } from './providers/Providers';
 import { Home } from './features';
@@ -226,6 +227,7 @@ const App: React.FC = function () {
       <Composer
         components={[
           PaperProvider,
+          AppStateProvider,
           AuthProvider,
           SnackBarProvider,
           MySpacesProvider,
