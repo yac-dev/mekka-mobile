@@ -20,10 +20,12 @@ export const Home = () => {
   useEffect(() => {
     requestLoadMe();
   }, []);
+  console.log('auth api res', authApiResult);
 
   // 2, loadmeが終わったら、そのuserId使って自分のspaceとspaceUpdatesTableをfetch
+  // jwtがなければ、当然data voidでその場合はgetMySpacesを使わない。
   useEffect(() => {
-    if (authApiResult.status === 'success') {
+    if (authApiResult.status === 'success' && authApiResult.data) {
       setAuth(authApiResult.data);
       requestGetMySpaces({ userId: authApiResult.data._id });
     }
@@ -31,11 +33,13 @@ export const Home = () => {
 
   useEffect(() => {
     if (getMySpacesApiResult.status === 'success') {
-      setMySpaces(getMySpacesApiResult.data.spaceAndUserRelationships);
-      setCurrentSpace(getMySpacesApiResult.data.spaceAndUserRelationships[0]);
+      setMySpaces(getMySpacesApiResult.data.spaces);
+      setCurrentSpace(getMySpacesApiResult.data.spaces[0]);
     }
   }, [getMySpacesApiResult.status]);
 
+  // ここも、loadmeが終わってない限りrenderしないようにするか。。。ちょうどいいタイミングだし。。。
+  //
   return (
     <NavigationContainer>
       <Stack.Navigator>

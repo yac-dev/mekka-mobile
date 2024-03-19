@@ -16,7 +16,7 @@ import Dummy2 from '../features/Utils/Dummy2';
 import SpaceRootStackNavigator from './SpaceRootStackNavigator';
 import backendAPI from '../apis/backend';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { AuthContext } from '../providers';
+import { AuthContext, MySpacesContext } from '../providers';
 
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
@@ -26,9 +26,10 @@ const blurhash =
 
 const SpacesDrawerNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
+  const { mySpaces } = useContext(MySpacesContext);
   const {
     isIpad,
-    spaceAndUserRelationships,
+    // spaceAndUserRelationships,
     haveSpaceAndUserRelationshipsBeenFetched,
     setCurrentSpaceAndUserRelationship,
     spaceMenuBottomSheetRef,
@@ -349,15 +350,15 @@ const SpacesDrawerNavigator = (props) => {
             tabBarLabel: 'Home',
           })}
         >
-          {spaceAndUserRelationships.length ? (
-            spaceAndUserRelationships.map((spaceAndUserRelationship) => (
+          {mySpaces.length ? (
+            mySpaces.map((space) => (
               <Drawer.Screen
-                key={spaceAndUserRelationship._id}
-                name={`Space_${spaceAndUserRelationship._id}`}
-                initialParams={{ spaceAndUserRelationship }}
+                key={space._id}
+                name={`Space_${space._id}`}
+                initialParams={{ space }}
                 options={({ navigation }) => ({
                   // headerShown: false,
-                  headerTitle: spaceAndUserRelationship.space.name,
+                  headerTitle: space.name,
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: 'bold',
@@ -425,7 +426,7 @@ const SpacesDrawerNavigator = (props) => {
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity
                           onPress={() => {
-                            navigation.navigate('SpaceInfoStackNavigator', { spaceAndUserRelationship });
+                            navigation.navigate('SpaceInfoStackNavigator', { space });
                           }}
                         >
                           <ExpoImage
@@ -435,7 +436,7 @@ const SpacesDrawerNavigator = (props) => {
                               borderRadius: 8,
                               marginRight: 10,
                             }}
-                            source={{ uri: spaceAndUserRelationship.space.icon }}
+                            source={{ uri: space.icon }}
                             contentFit='cover'
                           />
                         </TouchableOpacity>
@@ -445,16 +446,15 @@ const SpacesDrawerNavigator = (props) => {
                 })}
               >
                 {({ navigation, route }) => (
-                  // <SpaceRootBottomTabNavigator
-                  //   spaceAndUserRelationship={spaceAndUserRelationship}
+                  // <SpaceRootStackNavigator
+                  //   space={space}
                   //   navigation={navigation}
                   //   route={route}
                   // />
-                  <SpaceRootStackNavigator
-                    spaceAndUserRelationship={spaceAndUserRelationship}
-                    navigation={navigation}
-                    route={route}
-                  />
+                  // 一旦、SpaceRootのrenderしないようにする。
+                  <View>
+                    <Text>Hello world</Text>
+                  </View>
                 )}
               </Drawer.Screen>
             ))

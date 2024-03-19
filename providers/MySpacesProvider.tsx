@@ -1,9 +1,9 @@
 import React, { useState, createContext } from 'react';
-import { SpaceAndUserRelationshipType } from '../types';
+import { SpaceType } from '../types';
 
 type MySpacesContextType = {
-  mySpaces: SpaceAndUserRelationshipType[];
-  setMySpaces: React.Dispatch<React.SetStateAction<SpaceAndUserRelationshipType[]>>;
+  mySpaces: SpaceType[];
+  setMySpaces: React.Dispatch<React.SetStateAction<SpaceType[]>>;
 };
 
 export const MySpacesContext = createContext<MySpacesContextType>({
@@ -16,6 +16,6 @@ type MySpacesProviderProps = {
 };
 
 export const MySpacesProvider: React.FC<MySpacesProviderProps> = ({ children }) => {
-  const [mySpaces, setMySpaces] = useState<SpaceAndUserRelationshipType[] | undefined>(void 0);
+  const [mySpaces, setMySpaces] = useState<SpaceType[] | undefined>(void 0);
   return <MySpacesContext.Provider value={{ mySpaces, setMySpaces }}>{children}</MySpacesContext.Provider>;
 };

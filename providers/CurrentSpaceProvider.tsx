@@ -1,9 +1,9 @@
 import React, { useState, createContext } from 'react';
-import { SpaceAndUserRelationshipType } from '../types';
+import { SpaceAndUserRelationshipType, SpaceType } from '../types';
 
 type CurrentSpaceContextType = {
-  currentSpace: SpaceAndUserRelationshipType;
-  setCurrentSpace: React.Dispatch<React.SetStateAction<SpaceAndUserRelationshipType>>;
+  currentSpace: SpaceType;
+  setCurrentSpace: React.Dispatch<React.SetStateAction<SpaceType>>;
 };
 
 export const CurrentSpaceContext = createContext<CurrentSpaceContextType>({
@@ -16,7 +16,7 @@ type CurrentSpaceProviderProps = {
 };
 
 export const CurrentSpaceProvider: React.FC<CurrentSpaceProviderProps> = ({ children }) => {
-  const [currentSpace, setCurrentSpace] = useState<SpaceAndUserRelationshipType | undefined>(void 0);
+  const [currentSpace, setCurrentSpace] = useState<SpaceType | undefined>(void 0);
   return (
     <CurrentSpaceContext.Provider value={{ currentSpace, setCurrentSpace }}>{children}</CurrentSpaceContext.Provider>
   );

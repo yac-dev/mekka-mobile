@@ -8,7 +8,7 @@ export const loadMe = async (): Promise<LoadMeOutputType> => {
   if (jwt) {
     try {
       const result = await backendAPI.get('/auth/loadMe', { headers: { authorization: `Bearer ${jwt}` } });
-      const { user } = result.data;
+      const { user } = result.data.data;
       return user;
     } catch (error) {
       throw error;

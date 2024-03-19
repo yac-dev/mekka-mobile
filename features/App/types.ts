@@ -1,4 +1,4 @@
-import { AuthType, SpaceAndUserRelationshipType, SpaceUpdatesType } from '../../types';
+import { AuthType, SpaceAndUserRelationshipType, SpaceUpdatesType, SpaceType } from '../../types';
 
 export type LoadMeOutputType = AuthType;
 
@@ -7,6 +7,6 @@ export type GetMySpacesInput = {
 };
 
 export type GetMySpacesOutput = {
-  spaceAndUserRelationships: SpaceAndUserRelationshipType[];
+  spaces: SpaceType[];
   updateTable: SpaceUpdatesType;
 };

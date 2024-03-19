@@ -66,39 +66,31 @@ const App: React.FC = function () {
   //   isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
 
   // notifyのon offを切り替えるfunctionな。
-  useEffect(() => {
-    requestAuth();
-  }, []);
 
-  useEffect(() => {
-    if (authApiResult.status === 'success') {
-      // ここでgetMySpacesとかやんだっけ。たしか。
-    }
-  }, [authApiResult.status]);
-
-  const registerForPushNotificationsAsync = async () => {
-    let token;
-    const data = { token: token, status: false };
-    const { status: existingStatus } = await Notifications.getPermissionsAsync(); // これ多分、スマホから情報をとっているのかね。
-    // 初めての場合は、allowにするかdisallowにするか聴いてくる。いずれにしても、それらの選択はスマホ側に伝えられることになる。
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      // ここは、あくまでpromptを出す部分ね。
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      // alert('Failed to get push token for push notification!');
-      console.log('not gained push token');
-      data.status = false;
-      return data;
-    }
-    token = (await Notifications.getExpoPushTokenAsync({ projectId: Config.EXPO_PROJECT_ID })).data;
-    console.log('this is a token', token);
-    data.token = token;
-    data.status = true;
-    return data;
-  };
+  //  ----- こっから
+  // const registerForPushNotificationsAsync = async () => {
+  //   let token;
+  //   const data = { token: token, status: false };
+  //   const { status: existingStatus } = await Notifications.getPermissionsAsync(); // これ多分、スマホから情報をとっているのかね。
+  //   // 初めての場合は、allowにするかdisallowにするか聴いてくる。いずれにしても、それらの選択はスマホ側に伝えられることになる。
+  //   let finalStatus = existingStatus;
+  //   if (existingStatus !== 'granted') {
+  //     const { status } = await Notifications.requestPermissionsAsync();
+  //     // ここは、あくまでpromptを出す部分ね。
+  //     finalStatus = status;
+  //   }
+  //   if (finalStatus !== 'granted') {
+  //     // alert('Failed to get push token for push notification!');
+  //     console.log('not gained push token');
+  //     data.status = false;
+  //     return data;
+  //   }
+  //   token = (await Notifications.getExpoPushTokenAsync({ projectId: Config.EXPO_PROJECT_ID })).data;
+  //   console.log('this is a token', token);
+  //   data.token = token;
+  //   data.status = true;
+  //   return data;
+  // };
 
   // const loadMe = async () => {
   //   const jwt = await SecureStore.getItemAsync('secure_token');
@@ -114,76 +106,77 @@ const App: React.FC = function () {
   //   }
   // };
 
-  const getMySpaces = async () => {
-    setSpaceAndUserRelationshipsFetchingStatus('loading');
-    const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
-    const { spaceAndUserRelationships, updateTable } = result.data;
-    setSpaceAndUserRelationships(spaceAndUserRelationships);
-    setUpdatesTable(updateTable);
-    setCurrentSpaceAndUserRelationship(spaceAndUserRelationships[0]);
-    setHaveSpaceAndUserRelationshipsBeenFetched(true);
-    setSpaceAndUserRelationshipsFetchingStatus('success');
-  };
+  // const getMySpaces = async () => {
+  //   setSpaceAndUserRelationshipsFetchingStatus('loading');
+  //   const result = await backendAPI.get(`/spaceanduserrelationships/users/${authData._id}`);
+  //   const { spaceAndUserRelationships, updateTable } = result.data;
+  //   setSpaceAndUserRelationships(spaceAndUserRelationships);
+  //   setUpdatesTable(updateTable);
+  //   setCurrentSpaceAndUserRelationship(spaceAndUserRelationships[0]);
+  //   setHaveSpaceAndUserRelationshipsBeenFetched(true);
+  //   setSpaceAndUserRelationshipsFetchingStatus('success');
+  // };
 
   // useEffect(() => {
   //   loadMe();
   // }, []);
-  // loadingにしても、snackbarにしても個々のpageで使うんだったらglobalで持っておく必要ないよね。。。。結局。。。
+  // // loadingにしても、snackbarにしても個々のpageで使うんだったらglobalで持っておく必要ないよね。。。。結局。。。
 
-  const updateSpaceCheckedInDate = async () => {
-    if (currentSpaceAndUserRelationship.space?._id) {
-      await backendAPI.patch(`/users/${authData._id}/lastcheckedin`, {
-        spaceId: currentSpaceAndUserRelationship.space._id,
-      });
-    }
-  };
+  // const updateSpaceCheckedInDate = async () => {
+  //   if (currentSpaceAndUserRelationship.space?._id) {
+  //     await backendAPI.patch(`/users/${authData._id}/lastcheckedin`, {
+  //       spaceId: currentSpaceAndUserRelationship.space._id,
+  //     });
+  //   }
+  // };
 
-  // auth dataがある場合は、これをそもそも起こさない。
-  useEffect(() => {
-    // 最初のrenderで、このsubscription functionが登録される。
-    if (isAuthenticated) {
-      const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-        if (appState.match(/inactive|background/) && nextAppState === 'active') {
-          // appが再び開かれたらここを起こす。
-          // というか、stateを一回resetしたいんだよね。loadするなりなんなりで。。。。
-          getMySpaces();
-          // getMySpacesFromInactive();
-          console.log('App has come to the foreground!');
-        } else if (appState === 'active' && nextAppState === 'inactive') {
-          // appを閉じてbackgroundになる寸前にここを起こす感じ。
-          console.log('Became inactive...');
-          updateSpaceCheckedInDate(); // 一時停止
-        }
-        console.log('Next AppState is: ', nextAppState);
-        setAppState(nextAppState); // backgroundになる。
-      });
-      return () => {
-        appStateListener.remove();
-      };
-    }
-  }, [isAuthenticated, appState, currentSpaceAndUserRelationship]);
+  // // auth dataがある場合は、これをそもそも起こさない。
+  // useEffect(() => {
+  //   // 最初のrenderで、このsubscription functionが登録される。
+  //   if (isAuthenticated) {
+  //     const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+  //       if (appState.match(/inactive|background/) && nextAppState === 'active') {
+  //         // appが再び開かれたらここを起こす。
+  //         // というか、stateを一回resetしたいんだよね。loadするなりなんなりで。。。。
+  //         getMySpaces();
+  //         // getMySpacesFromInactive();
+  //         console.log('App has come to the foreground!');
+  //       } else if (appState === 'active' && nextAppState === 'inactive') {
+  //         // appを閉じてbackgroundになる寸前にここを起こす感じ。
+  //         console.log('Became inactive...');
+  //         updateSpaceCheckedInDate(); // 一時停止
+  //       }
+  //       console.log('Next AppState is: ', nextAppState);
+  //       setAppState(nextAppState); // backgroundになる。
+  //     });
+  //     return () => {
+  //       appStateListener.remove();
+  //     };
+  //   }
+  // }, [isAuthenticated, appState, currentSpaceAndUserRelationship]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      getMySpaces();
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     getMySpaces();
+  //   }
+  // }, [isAuthenticated]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      registerForPushNotificationsAsync().then(async (data) => {
-        if (data.status) {
-          setNotificationEnabled(true);
-          if (!authData.pushToken) {
-            const result = await backendAPI.patch(`/auth/${authData._id}/pushToken`, { pushToken: data.token });
-            // const { pushToken } = result.data;
-          }
-        } else {
-          setNotificationEnabled(false);
-        }
-      });
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     registerForPushNotificationsAsync().then(async (data) => {
+  //       if (data.status) {
+  //         setNotificationEnabled(true);
+  //         if (!authData.pushToken) {
+  //           const result = await backendAPI.patch(`/auth/${authData._id}/pushToken`, { pushToken: data.token });
+  //           // const { pushToken } = result.data;
+  //         }
+  //       } else {
+  //         setNotificationEnabled(false);
+  //       }
+  //     });
+  //   }
+  // }, [isAuthenticated]);
+  //  --------- ここまでコメントアウト
 
   return (
     <GlobalContext.Provider
@@ -235,7 +228,8 @@ const App: React.FC = function () {
           CurrentSpaceProvider,
         ]}
       >
-        <NavigationContainer>
+        <Home />
+        {/* <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
               name='HomeStackNavigator'
@@ -246,7 +240,7 @@ const App: React.FC = function () {
               })}
             />
           </Stack.Navigator>
-        </NavigationContainer>
+        </NavigationContainer> */}
       </Composer>
       {/* <AuthProvider>
         <SnackBarProvider>

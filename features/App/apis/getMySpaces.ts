@@ -6,9 +6,9 @@ import { GetMySpacesInput, GetMySpacesOutput } from '../types';
 export const getMySpaces = async (input: GetMySpacesInput): Promise<GetMySpacesOutput> => {
   try {
     const result = await backendAPI.get(`/spaceanduserrelationships/users/${input.userId}`);
-    const { spaceAndUserRelationships, updateTable } = result.data;
+    const { spaces, updateTable } = result.data;
     return {
-      spaceAndUserRelationships,
+      spaces,
       updateTable,
     };
   } catch (error) {

@@ -19,6 +19,7 @@ export const useLoadMe = () => {
       });
 
       const response = await loadMe();
+      console.log('load me response ', response);
       setApiResult((previous) => {
         return {
           ...previous,

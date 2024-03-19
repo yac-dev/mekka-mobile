@@ -88,6 +88,7 @@ export type ReactionType = {
 };
 
 export type SpaceType = {
+  _id: string;
   name: string;
   icon: string; // s3のlink
   secretKey: string;
