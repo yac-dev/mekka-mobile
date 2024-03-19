@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { TouchableOpacity, View, ActivityIndicator, ScrollView, Text, Dimensions } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
@@ -16,7 +16,8 @@ import Dummy2 from '../features/Utils/Dummy2';
 import SpaceRootStackNavigator from './SpaceRootStackNavigator';
 import backendAPI from '../apis/backend';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { AuthContext, MySpacesContext } from '../providers';
+import { AuthContext, MySpacesContext, SpaceUpdatesContext } from '../providers';
+import { useGetMySpaces } from '../features';
 
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
@@ -24,7 +25,9 @@ import { AuthContext, MySpacesContext } from '../providers';
 
 export const SpacesDrawerNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
-  const { mySpaces } = useContext(MySpacesContext);
+  const { mySpaces, setMySpaces } = useContext(MySpacesContext);
+  const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
+  const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
   const {
     // spaceAndUserRelationships,
     haveSpaceAndUserRelationshipsBeenFetched,
@@ -39,16 +42,22 @@ export const SpacesDrawerNavigator = (props) => {
   } = useContext(GlobalContext);
   const oneGridWidth = Dimensions.get('window').width / 4;
 
-  // これ、spaceRootで実行するのがいいのかも。。。
-  // console.logで見てみるか、currentSpaceをlogしてみる的な。。。
+  useEffect(() => {
+    requestGetMySpaces({ userId: auth._id });
+  }, []);
+
+  useEffect(() => {
+    if (getMySpacesApiResult.status === 'success') {
+      setMySpaces(getMySpacesApiResult.data.spaces);
+      setSpaceUpdates(getMySpacesApiResult.data.updateTable);
+    }
+  }, [getMySpacesApiResult.status]);
+
   const updateLastCheckedIn = async () => {
     const result = await backendAPI.patch(`/users/${auth._id}/lastcheckedin`, {
       spaceId: currentSpaceAndUserRelationship.space._id,
     });
-    // console.log('currens space -> ', currentSpaceAndUserRelationship.space._id);
   };
-
-  const iconWidth = oneGridWidth * 0.65;
 
   function CustomDrawerContent(props) {
     const { state, descriptors, navigation } = props;
@@ -273,24 +282,6 @@ export const SpacesDrawerNavigator = (props) => {
           </>
         ) : (
           <>
-            {/* <TouchableOpacity
-              style={{ padding: 10, backgroundColor: 'red', marginBottom: 20 }}
-              onPress={() => {
-                navigation.closeDrawer();
-                navigation.navigate('Login');
-              }}
-            >
-              <Text>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ padding: 10, backgroundColor: 'red' }}
-              onPress={() => {
-                navigation.closeDrawer();
-                navigation.navigate('Signup');
-              }}
-            >
-              <Text>Signup</Text>
-            </TouchableOpacity> */}
             <Text style={{ color: 'white', textAlign: 'center', paddingTop: 100 }}>
               Please login or signup at first.
             </Text>
@@ -310,224 +301,60 @@ export const SpacesDrawerNavigator = (props) => {
     return sum;
   };
 
-  if (isAuthenticated) {
-    if (spaceAndUserRelationshipsFetchingStatus === 'loading') {
-      return (
-        <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
-          <ActivityIndicator />
-        </View>
-      );
-    } else if (spaceAndUserRelationshipsFetchingStatus === 'success') {
-      return (
-        <Drawer.Navigator
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          screenOptions={({ navigation }) => ({
-            drawerStyle: {
-              backgroundColor: 'rgb(40,40,40)',
-              width: 320,
-              // borderTopRightRadius: 20,
-              // borderBottomRightRadius: 20,
-            },
-            tabBarStyle: {
-              backgroundColor: 'black',
-              borderTopWidth: 0,
-              width: 'auto',
-            },
-            tabBarLabelStyle: {
-              fontSize: 12,
-            },
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: 'black',
-              borderBottomWidth: 0,
-              borderBottomColor: 'black',
-              height: 80,
-            },
-            tabBarLabel: 'Home',
-          })}
-        >
-          {mySpaces.length ? (
-            mySpaces.map((space) => (
-              <Drawer.Screen
-                key={space._id}
-                name={`Space_${space._id}`}
-                initialParams={{ space }}
-                options={({ navigation }) => ({
-                  // headerShown: false,
-                  headerTitle: space.name,
-                  headerTitleStyle: {
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    // padding: 20,
-                  },
-                  // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
-                  headerStyle: {
-                    // padding: 20,
-                    backgroundColor: 'black',
-                  },
-
-                  headerLeft: () => {
-                    return (
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          // backgroundColor: 'blue',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                        onPress={() => navigation.toggleDrawer()}
-                      >
-                        <View
-                          style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: 12,
-                            backgroundColor: 'white',
-                            // marginLeft: 10,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Ionicons name='list' style={{}} size={20} />
-                          {calcurateSumUpdates() ? (
-                            <View
-                              style={{
-                                width: 10,
-                                height: 10,
-                                borderRadius: 5,
-                                backgroundColor: 'red',
-                                position: 'absolute',
-                                top: -3,
-                                right: -3,
-                              }}
-                            >
-                              <View
-                                style={{
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  width: '100%',
-                                  height: '100%',
-                                }}
-                              ></View>
-                            </View>
-                          ) : null}
-                        </View>
-                      </TouchableOpacity>
-                    );
-                  },
-                  headerRight: () => {
-                    return (
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('SpaceInfoStackNavigator', { space });
-                          }}
-                        >
-                          <ExpoImage
-                            style={{
-                              width: 30,
-                              height: 30,
-                              borderRadius: 8,
-                              marginRight: 10,
-                            }}
-                            source={{ uri: space.icon }}
-                            contentFit='cover'
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    );
-                  },
-                })}
-              >
-                {({ navigation, route }) => (
-                  // <SpaceRootStackNavigator
-                  //   space={space}
-                  //   navigation={navigation}
-                  //   route={route}
-                  // />
-                  // 一旦、SpaceRootのrenderしないようにする。
-                  <View>
-                    <Text>Hello world</Text>
-                  </View>
-                )}
-              </Drawer.Screen>
-            ))
-          ) : (
-            <Drawer.Screen
-              name={'NoSpaces'}
-              component={NoSpaces}
-              options={({ navigation }) => ({
-                headerTitle: '',
-                headerTitleStyle: {
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                },
-                // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
-                headerStyle: {
-                  // padding: 20,
-                  backgroundColor: 'black',
-                },
-
-                headerLeft: () => {
-                  return (
-                    <TouchableOpacity
-                      style={{
-                        width: 25,
-                        height: 25,
-                        borderRadius: 15,
-                        backgroundColor: 'white',
-                        marginLeft: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                      onPress={() => navigation.toggleDrawer()}
-                    >
-                      <Ionicons name='menu' style={{}} size={20} />
-                    </TouchableOpacity>
-                  );
-                },
-              })}
-            ></Drawer.Screen>
-          )}
-        </Drawer.Navigator>
-      );
-    }
-  } else {
+  if (getMySpacesApiResult.status === 'loading') {
     return (
-      <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={({ navigation }) => ({
-          drawerStyle: {
-            backgroundColor: 'rgb(40,40,40)',
-            width: 300,
-          },
-          tabBarStyle: {
-            backgroundColor: 'black',
-            borderTopWidth: 0,
-          },
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-          headerTintColor: 'white',
-          headerStyle: {
-            backgroundColor: 'black',
-            borderBottomWidth: 0,
-            borderBottomColor: 'black',
-            height: 80,
-          },
-          tabBarLabel: 'Home',
-        })}
-      >
+      <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  if (getMySpacesApiResult.status === 'success' && !mySpaces.length) {
+    return (
+      <View>
+        <Text>No spacesの画面をここに出す感じ。</Text>
+      </View>
+    );
+  }
+
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={({ navigation }) => ({
+        drawerStyle: {
+          backgroundColor: 'rgb(40,40,40)',
+          width: 320,
+        },
+        tabBarStyle: {
+          backgroundColor: 'black',
+          borderTopWidth: 0,
+          width: 'auto',
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: 'black',
+          borderBottomWidth: 0,
+          borderBottomColor: 'black',
+          height: 80,
+        },
+        tabBarLabel: 'Home',
+      })}
+    >
+      {mySpaces.map((space) => (
         <Drawer.Screen
-          name={'WelcomPage'}
-          component={WelcomePage}
+          key={space._id}
+          name={`Space_${space._id}`}
+          initialParams={{ space }}
           options={({ navigation }) => ({
-            headerTitle: '',
+            // headerShown: false,
+            headerTitle: space.name,
             headerTitleStyle: {
               fontSize: 20,
               fontWeight: 'bold',
+              // padding: 20,
             },
             // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
             headerStyle: {
@@ -538,24 +365,91 @@ export const SpacesDrawerNavigator = (props) => {
             headerLeft: () => {
               return (
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
-                    width: 25,
-                    height: 25,
-                    borderRadius: 15,
-                    backgroundColor: 'white',
-                    marginLeft: 10,
+                    width: 50,
+                    height: 50,
+                    // backgroundColor: 'blue',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
                   onPress={() => navigation.toggleDrawer()}
                 >
-                  <Ionicons name='menu' style={{}} size={20} />
+                  <View
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: 12,
+                      backgroundColor: 'white',
+                      // marginLeft: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Ionicons name='list' style={{}} size={20} />
+                    {calcurateSumUpdates() ? (
+                      <View
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: 5,
+                          backgroundColor: 'red',
+                          position: 'absolute',
+                          top: -3,
+                          right: -3,
+                        }}
+                      >
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        ></View>
+                      </View>
+                    ) : null}
+                  </View>
                 </TouchableOpacity>
               );
             },
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SpaceInfoStackNavigator', { space });
+                    }}
+                  >
+                    <ExpoImage
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 8,
+                        marginRight: 10,
+                      }}
+                      source={{ uri: space.icon }}
+                      contentFit='cover'
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            },
           })}
-        ></Drawer.Screen>
-      </Drawer.Navigator>
-    );
-  }
+        >
+          {({ navigation, route }) => (
+            // <SpaceRootStackNavigator
+            //   space={space}
+            //   navigation={navigation}
+            //   route={route}
+            // />
+            // 一旦、SpaceRootのrenderしないようにする。
+            <View>
+              <Text>Hello world</Text>
+            </View>
+          )}
+        </Drawer.Screen>
+      ))}
+    </Drawer.Navigator>
+  );
 };
