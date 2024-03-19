@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 // import RootStack from './navigations/RootStack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import backendAPI from './apis/backend';
 import Config from 'react-native-config';
 import BottomTab from './navigations/BottomTab';
@@ -179,57 +180,58 @@ const App: React.FC = function () {
   //  --------- ここまでコメントアウト
 
   return (
-    <GlobalContext.Provider
-      value={{
-        authData,
-        setAuthData,
-        isAuthenticated,
-        setIsAuthenticated,
-        isIpad,
-        setIsIpad,
-        loading,
-        setLoading,
-        snackBar,
-        setSnackBar,
-        isAuthDataFetched,
-        setIsAuthDataFetched,
-        spaceAndUserRelationships,
-        setSpaceAndUserRelationships,
-        haveSpaceAndUserRelationshipsBeenFetched,
-        setHaveSpaceAndUserRelationshipsBeenFetched,
-        spaceMenuBottomSheetRef,
-        spaceActionMenuBottomSheetRef,
-        authMenuBottomSheetRef,
-        currentSpaceAndUserRelationship,
-        setCurrentSpaceAndUserRelationship,
-        currentSpace,
-        setCurrentSpace,
-        currentTagObject,
-        setCurrentTagObject,
-        isAfterPosted,
-        setIsAfterPosted,
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GlobalContext.Provider
+        value={{
+          authData,
+          setAuthData,
+          isAuthenticated,
+          setIsAuthenticated,
+          isIpad,
+          setIsIpad,
+          loading,
+          setLoading,
+          snackBar,
+          setSnackBar,
+          isAuthDataFetched,
+          setIsAuthDataFetched,
+          spaceAndUserRelationships,
+          setSpaceAndUserRelationships,
+          haveSpaceAndUserRelationshipsBeenFetched,
+          setHaveSpaceAndUserRelationshipsBeenFetched,
+          spaceMenuBottomSheetRef,
+          spaceActionMenuBottomSheetRef,
+          authMenuBottomSheetRef,
+          currentSpaceAndUserRelationship,
+          setCurrentSpaceAndUserRelationship,
+          currentSpace,
+          setCurrentSpace,
+          currentTagObject,
+          setCurrentTagObject,
+          isAfterPosted,
+          setIsAfterPosted,
 
-        spaceAndUserRelationshipsFetchingStatus,
-        updatesTable,
-        setUpdatesTable,
-        notificationEnabled,
-        setNotificationEnabled,
-      }}
-    >
-      <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-      <Composer
-        components={[
-          PaperProvider,
-          AppStateProvider,
-          AuthProvider,
-          SnackBarProvider,
-          MySpacesProvider,
-          SpaceUpdatesProvider,
-          CurrentSpaceProvider,
-        ]}
+          spaceAndUserRelationshipsFetchingStatus,
+          updatesTable,
+          setUpdatesTable,
+          notificationEnabled,
+          setNotificationEnabled,
+        }}
       >
-        <Home />
-        {/* <NavigationContainer>
+        <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
+        <Composer
+          components={[
+            PaperProvider,
+            AppStateProvider,
+            AuthProvider,
+            SnackBarProvider,
+            MySpacesProvider,
+            SpaceUpdatesProvider,
+            CurrentSpaceProvider,
+          ]}
+        >
+          <Home />
+          {/* <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
               name='HomeStackNavigator'
@@ -241,8 +243,8 @@ const App: React.FC = function () {
             />
           </Stack.Navigator>
         </NavigationContainer> */}
-      </Composer>
-      {/* <AuthProvider>
+        </Composer>
+        {/* <AuthProvider>
         <SnackBarProvider>
           <PaperProvider>
             <NavigationContainer>
@@ -260,7 +262,8 @@ const App: React.FC = function () {
           </PaperProvider>
         </SnackBarProvider>
       </AuthProvider> */}
-    </GlobalContext.Provider>
+      </GlobalContext.Provider>
+    </GestureHandlerRootView>
   );
 };
 

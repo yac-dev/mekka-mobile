@@ -21,14 +21,11 @@ import { AuthContext, MySpacesContext } from '../providers';
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
 // あとは、appがcloseした時もcurrentのspaceのdate updateをする感じだね。
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
-const SpacesDrawerNavigator = (props) => {
+export const SpacesDrawerNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces } = useContext(MySpacesContext);
   const {
-    isIpad,
     // spaceAndUserRelationships,
     haveSpaceAndUserRelationshipsBeenFetched,
     setCurrentSpaceAndUserRelationship,
@@ -40,8 +37,7 @@ const SpacesDrawerNavigator = (props) => {
     setUpdatesTable,
     currentSpaceAndUserRelationship,
   } = useContext(GlobalContext);
-  const oneGridWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 4;
-  const oneGridHeight = isIpad ? Dimensions.get('window').height / 7.5 : Dimensions.get('window').height / 6.5;
+  const oneGridWidth = Dimensions.get('window').width / 4;
 
   // これ、spaceRootで実行するのがいいのかも。。。
   // console.logで見てみるか、currentSpaceをlogしてみる的な。。。
@@ -563,5 +559,3 @@ const SpacesDrawerNavigator = (props) => {
     );
   }
 };
-
-export default SpacesDrawerNavigator;

@@ -1,20 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
-import { GlobalContext } from '../contexts/GlobalContext';
-import { icons } from '../utils/icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Home from '../features/Home/pages/Home';
-// import Signup from '../features/Home/pages/Signup';
 import CreatePost from '../features/Space/pages/CreatePost';
-// import SpaceRootStackNavigator from './SpaceRootStackNavigator';
 import { primaryBackgroundColor } from '../themes/color';
 import { primaryTextColor } from '../themes/text';
 import SpacesTopTabNavigator from './SpacesTopTabNavigator';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-// create space
 import CreateNewSpace from '../features/CreateNewSpace/pages/CreateNewSpace';
 import WriteDescription from '../features/CreateNewSpace/pages/WriteDescription';
 import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
@@ -29,7 +23,6 @@ import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import SpaceMenuBottomSheet from '../features/SpaceMenuBottomSheet/pages/BottomSheet';
 import ActionMenuBottomSheet from '../features/SpaceMenuBottomSheet/pages/ActionMenuBottomSheet';
 import AuthMenuBottomSheet from '../features/Utils/AuthMenuBottomSheet';
-import SpacesDrawerNavigator from './SpacesDrawerNavigator';
 import SpaceInfoStackNavigator from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import Comments from '../features/ViewPost/pages/Comments';
@@ -42,8 +35,8 @@ import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
 import EditAccountStackNavigator from './EditAccountStackNavigator';
 // import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
-import { DeleteMyAccount } from '../features';
-import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
+import { DeleteMyAccount, WelcomePage } from '../features';
+// import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import Login from '../features/NotAuthenticated/pages/Login';
 import Signup from '../features/NotAuthenticated/pages/Signup';
 import EULA from '../features/NotAuthenticated/pages/EULA';
@@ -53,320 +46,204 @@ import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
 import backendAPI from '../apis/backend';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
 import { LoginStackNavigator } from './LoginStackNavigator';
+import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
+import { AuthContext } from '../providers';
 
 const HomeStackNavigator: React.FC = (props) => {
-  const {
-    isAuthenticated,
-    createNewPostFormData,
-    setCreateNewPostFormData,
-    currentSpaceAndUserRelationship,
-    setCreateNewPostResult,
-  } = useContext(GlobalContext);
+  const { auth } = useContext(AuthContext);
+
+  if (!auth) {
+    return <WelcomePage navigation={props.navigation} />;
+  }
 
   return (
     <HomeStackNavContext.Provider value={{}}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack.Navigator
-          screenOptions={({ navigation }) => ({
-            headerShown: false,
-            // headerShown: true,
-          })}
-        >
-          <Stack.Group>
-            <Stack.Screen
-              name='SpacesDrawerNavigator'
-              component={SpacesDrawerNavigator}
-              options={({ navigation }) => ({
-                // headerShown: false,
-              })}
-            />
-            <Stack.Screen
-              name='ViewPost'
-              component={ViewPost}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
+      <Stack.Navigator
+        screenOptions={({ navigation }) => ({
+          headerShown: false,
+          // headerShown: true,
+        })}
+      >
+        <Stack.Group>
+          <Stack.Screen
+            name='SpacesDrawerNavigator'
+            component={SpacesDrawerNavigator}
+            options={({ navigation }) => ({
+              // headerShown: false,
+            })}
+          />
+          <Stack.Screen
+            name='ViewPost'
+            component={ViewPost}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='Comments'
+            component={Comments}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='Discover'
+            component={Discover}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: 'Discover',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='ProfileStackNavigator'
+            component={ProfileStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => {
+                return (
                   <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
                   </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='Comments'
-              component={Comments}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='Discover'
-              component={Discover}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: 'Discover',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='ProfileStackNavigator'
-              component={ProfileStackNavigator}
-              options={({ navigation }) => ({
-                headerShown: true, // ここtrueにすると、,,,
-                headerLeft: () => {
-                  return (
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                      <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                    </TouchableOpacity>
-                  );
-                },
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-          </Stack.Group>
+                );
+              },
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+        </Stack.Group>
 
-          <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-            <Stack.Screen
-              name='CreateNewSpaceStackNavigator'
-              component={CreateNewSpaceStackNavigator}
-              options={({ navigation }) => ({
-                headerShown: false,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: primaryBackgroundColor,
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: primaryTextColor,
-                },
-              })}
-            />
-            <Stack.Screen
-              name='EditTag'
-              component={EditTag}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: primaryBackgroundColor,
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: primaryTextColor,
-                },
-              })}
-            />
-            <Stack.Screen
-              name='SecretKeyForm'
-              component={SecretKeyForm}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: primaryBackgroundColor,
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: primaryTextColor,
-                },
-              })}
-            />
-            {/* <Stack.Screen
-              name='CreateNewPostStackNavigator'
-              component={CreateNewPostStackNavigator}
-              options={({ navigation }) => ({
-                headerShown: false,
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            /> */}
-            <Stack.Screen
-              name='SpaceDetailStackNavigator'
-              component={SpaceDetailStackNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true, // ここtrueにすると、,,,
-                headerShown: false, // ここtrueにすると、,,,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
+        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <Stack.Screen
+            name='CreateNewSpaceStackNavigator'
+            component={CreateNewSpaceStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: primaryBackgroundColor,
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: primaryTextColor,
+              },
+            })}
+          />
+          <Stack.Screen
+            name='EditTag'
+            component={EditTag}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: primaryBackgroundColor,
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: primaryTextColor,
+              },
+            })}
+          />
+          <Stack.Screen
+            name='SecretKeyForm'
+            component={SecretKeyForm}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: primaryBackgroundColor,
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: primaryTextColor,
+              },
+            })}
+          />
+          <Stack.Screen
+            name='SpaceDetailStackNavigator'
+            component={SpaceDetailStackNavigator}
+            options={({ navigation }) => ({
+              // headerShown: true, // ここtrueにすると、,,,
+              headerShown: false, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          {/* <Stack.Screen
               name='LoginStackNavigator'
               component={LoginStackNavigator}
               options={({ navigation }) => ({
                 headerShown: false,
                 headerLeft: () => (
-                  <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    // style={{
-                    //   flexDirection: 'row',
-                    //   alignItems: 'center',
-                    //   paddingTop: 5,
-                    //   paddingBottom: 5,
-                    //   paddingLeft: 10,
-                    //   paddingRight: 10,
-                    //   backgroundColor: 'white',
-                    //   borderRadius: 20,
-                    // }}
-                  >
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            ></Stack.Screen>
-            <Stack.Screen
-              name='Signup'
-              component={Signup}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    // style={{
-                    //   flexDirection: 'row',
-                    //   alignItems: 'center',
-                    //   paddingTop: 5,
-                    //   paddingBottom: 5,
-                    //   paddingLeft: 10,
-                    //   paddingRight: 10,
-                    //   backgroundColor: 'white',
-                    //   borderRadius: 20,
-                    // }}
-                  >
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-          </Stack.Group>
-          <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
-            {/* EULA */}
-            <Stack.Screen
-              name='EULA'
-              component={EULA}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    // style={{
-                    //   flexDirection: 'row',
-                    //   alignItems: 'center',
-                    //   paddingTop: 5,
-                    //   paddingBottom: 5,
-                    //   paddingLeft: 10,
-                    //   paddingRight: 10,
-                    //   backgroundColor: 'white',
-                    //   borderRadius: 20,
-                    // }}
-                  >
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='EditAccountStackNavigator'
-              component={EditAccountStackNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true, // ここtrueにすると、,,,
-                headerShown: false, // ここtrueにすると、,,,
-                headerLeft: () => (
                   <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Ionicons name='close-circle-sharp' size={30} color={'white'} />
                   </TouchableOpacity>
@@ -380,175 +257,238 @@ const HomeStackNavigator: React.FC = (props) => {
                   color: 'white',
                 },
               })}
-            />
-            <Stack.Screen
-              name='WriteDescription'
-              component={WriteDescription}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: primaryBackgroundColor,
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: primaryTextColor,
-                },
-              })}
-            />
+            ></Stack.Screen> */}
+          <Stack.Screen
+            name='Signup'
+            component={Signup}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+          {/* EULA */}
+          <Stack.Screen
+            name='EULA'
+            component={EULA}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='EditAccountStackNavigator'
+            component={EditAccountStackNavigator}
+            options={({ navigation }) => ({
+              // headerShown: true, // ここtrueにすると、,,,
+              headerShown: false, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='WriteDescription'
+            component={WriteDescription}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: primaryBackgroundColor,
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: primaryTextColor,
+              },
+            })}
+          />
 
-            <Stack.Screen
-              name='EmojiPicker'
-              component={EmojiPicker}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: primaryBackgroundColor,
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: primaryTextColor,
-                },
-              })}
-            />
-            <Stack.Screen
-              name='LocationPicker'
-              component={LocationPicker}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: 'Pick location',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='CreateTag'
-              component={CreateTag}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='CreateNewLocationTag'
-              component={CreateNewLocationTag}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='ReportSpace'
-              component={ReportSpace}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='SpaceInfoStackNavigator'
-              component={SpaceInfoStackNavigator}
-              options={({ navigation }) => ({
-                headerShown: false,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: 'SPInfo',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-            <Stack.Screen
-              name='DeleteMyAccount'
-              component={DeleteMyAccount}
-              options={({ navigation }) => ({
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            />
-          </Stack.Group>
-        </Stack.Navigator>
-        <AuthMenuBottomSheet navigation={props.navigation} />
-        {/* <SpaceMenuBottomSheet navigation={props.navigation} /> */}
-        <ActionMenuBottomSheet navigation={props.navigation} />
-        {/* <SnackBar.Primary /> */}
-      </GestureHandlerRootView>
+          <Stack.Screen
+            name='EmojiPicker'
+            component={EmojiPicker}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: primaryBackgroundColor,
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: primaryTextColor,
+              },
+            })}
+          />
+          <Stack.Screen
+            name='LocationPicker'
+            component={LocationPicker}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: 'Pick location',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='CreateTag'
+            component={CreateTag}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='CreateNewLocationTag'
+            component={CreateNewLocationTag}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='ReportSpace'
+            component={ReportSpace}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='SpaceInfoStackNavigator'
+            component={SpaceInfoStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: 'SPInfo',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <Stack.Screen
+            name='DeleteMyAccount'
+            component={DeleteMyAccount}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+      <AuthMenuBottomSheet navigation={props.navigation} />
+      {/* <SpaceMenuBottomSheet navigation={props.navigation} /> */}
+      <ActionMenuBottomSheet navigation={props.navigation} />
+      {/* <SnackBar.Primary /> */}
     </HomeStackNavContext.Provider>
   );
 };

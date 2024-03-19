@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useLoadMe } from '../hooks';
 import { AuthContext, MySpacesContext, CurrentSpaceContext } from '../../../providers';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,6 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import HomeStackNavigator from '../../../navigations/HomeStackNavigator';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
+import { LoginStackNavigator } from '../../../navigations';
+import { VectorIcon } from '../../../Icons';
 
 export const Home = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -20,26 +22,36 @@ export const Home = () => {
   useEffect(() => {
     requestLoadMe();
   }, []);
-  console.log('auth api res', authApiResult);
 
   // 2, loadmeが終わったら、そのuserId使って自分のspaceとspaceUpdatesTableをfetch
   // jwtがなければ、当然data voidでその場合はgetMySpacesを使わない。
-  useEffect(() => {
-    if (authApiResult.status === 'success' && authApiResult.data) {
-      setAuth(authApiResult.data);
-      requestGetMySpaces({ userId: authApiResult.data._id });
-    }
-  }, [authApiResult]);
+  // useEffect(() => {
+  //   if (authApiResult.status === 'success' && authApiResult.data) {
+  //     setAuth(authApiResult.data);
+  //     requestGetMySpaces({ userId: authApiResult.data._id });
+  //   }
+  // }, [authApiResult]);
 
-  useEffect(() => {
-    if (getMySpacesApiResult.status === 'success') {
-      setMySpaces(getMySpacesApiResult.data.spaces);
-      setCurrentSpace(getMySpacesApiResult.data.spaces[0]);
-    }
-  }, [getMySpacesApiResult.status]);
+  // useEffect(() => {
+  //   if (getMySpacesApiResult.status === 'success') {
+  //     setMySpaces(getMySpacesApiResult.data.spaces);
+  //     setCurrentSpace(getMySpacesApiResult.data.spaces[0]);
+  //   }
+  // }, [getMySpacesApiResult.status]);
 
   // ここも、loadmeが終わってない限りrenderしないようにするか。。。ちょうどいいタイミングだし。。。
   //
+
+  // if((authApiResult.status === 'success' && !authApiResult.data) || (authApiResult.status === 'success' && getMySpacesApiResult.status === 'success'))
+  if (authApiResult.status === 'loading') {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  // authがない場合はwelcome pageを出せば良くて、authが取得できればそのままgetMySpacesのqueryを投げればいい。
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -50,6 +62,28 @@ export const Home = () => {
             headerShown: false,
           })}
         />
+        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <Stack.Screen
+            name='LoginStackNavigator'
+            component={LoginStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <VectorIcon.II name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
