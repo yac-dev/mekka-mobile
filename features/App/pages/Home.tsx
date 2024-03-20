@@ -9,28 +9,35 @@ import HomeStackNavigator from '../../../navigations/HomeStackNavigator';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import { LoginStackNavigator } from '../../../navigations';
 import { VectorIcon } from '../../../Icons';
+import * as SecureStore from 'expo-secure-store';
 
 export const Home = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
 
-  const { apiResult: authApiResult, requestApi: requestLoadMe } = useLoadMe();
+  const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
 
   // 1, loadmeをまずする
+  const loadMe = async () => {
+    const jwt = await SecureStore.getItemAsync('secure_token');
+    if (jwt) {
+      requestLoadMe({ jwt });
+    }
+  };
+
   useEffect(() => {
-    requestLoadMe();
+    loadMe();
   }, []);
 
   // 2, loadmeが終わったら、そのuserId使って自分のspaceとspaceUpdatesTableをfetch
   // jwtがなければ、当然data voidでその場合はgetMySpacesを使わない。
-  // useEffect(() => {
-  //   if (authApiResult.status === 'success' && authApiResult.data) {
-  //     setAuth(authApiResult.data);
-  //     requestGetMySpaces({ userId: authApiResult.data._id });
-  //   }
-  // }, [authApiResult]);
+  useEffect(() => {
+    if (loadMeApiResult.status === 'success' && loadMeApiResult.data) {
+      setAuth(loadMeApiResult.data);
+    }
+  }, [loadMeApiResult]);
 
   // useEffect(() => {
   //   if (getMySpacesApiResult.status === 'success') {
@@ -43,7 +50,7 @@ export const Home = () => {
   //
 
   // if((authApiResult.status === 'success' && !authApiResult.data) || (authApiResult.status === 'success' && getMySpacesApiResult.status === 'success'))
-  if (authApiResult.status === 'loading') {
+  if (loadMeApiResult.status === 'loading') {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator />

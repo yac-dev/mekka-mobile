@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { loadMe } from '../apis/loadMe';
 import { ApiResultType, AuthType } from '../../../types';
+import { LoadMeInput } from '../types';
 
 export const useLoadMe = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<AuthType>>({
@@ -9,7 +10,7 @@ export const useLoadMe = () => {
     message: '',
   });
 
-  const requestApi = async () => {
+  const requestApi = async (input: LoadMeInput) => {
     try {
       setApiResult((previous) => {
         return {
@@ -18,8 +19,7 @@ export const useLoadMe = () => {
         };
       });
 
-      const response = await loadMe();
-      console.log('load me response ', response);
+      const response = await loadMe(input);
       setApiResult((previous) => {
         return {
           ...previous,

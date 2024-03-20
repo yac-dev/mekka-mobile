@@ -7,11 +7,14 @@ import { AppButton } from '../../../components';
 import { TextColor } from '../../../themes';
 import { SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
+import { AuthContext } from '../../../providers';
 
 export const Login = ({ navigation }) => {
-  const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
-  const { apiResult, requestApi } = useLogin();
+  const { setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange, onLoginSuccess } =
+    useForm();
+  const { apiResult, requestApi } = useLogin();
 
   // 画面切り替わって、その後もmodalを維持するのがむずいのかも。。。
   useEffect(() => {
@@ -36,16 +39,9 @@ export const Login = ({ navigation }) => {
     });
   }, [formData]);
 
-  // setAuthしてる？？
   useEffect(() => {
     if (apiResult.status === 'success') {
-      navigation.navigate('SpacesDrawerNavigator');
-      setSnackBar({
-        isVisible: true,
-        status: 'success',
-        message: 'Logged in successfully.',
-        duration: 5000,
-      });
+      onLoginSuccess(apiResult.data, navigation);
     }
 
     if (apiResult.status === 'fail') {

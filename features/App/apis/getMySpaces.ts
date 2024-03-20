@@ -7,6 +7,7 @@ export const getMySpaces = async (input: GetMySpacesInput): Promise<GetMySpacesO
   try {
     const result = await backendAPI.get(`/spaceanduserrelationships/users/${input.userId}`);
     const { spaces, updateTable } = result.data;
+    console.log('update table', updateTable);
     return {
       spaces,
       updateTable,
