@@ -1,42 +1,46 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import backendAPI from '../../../apis/backend';
+import { Text, TouchableWithoutFeedback } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import * as SecureStore from 'expo-secure-store';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { useDeleteMe, useForm } from '../hooks';
-import {
-  Underline as AppTextInputUnderline,
-  WithTitle as PageScreenWithTitle,
-  Spinning as LoadingSpinning,
-  Primary as PrimarySnackBar,
-} from '../../../components';
+import { AppTextInput, PageScreen } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
-import { AuthContext } from '../../../providers';
-import { INITIAL_AUTH } from '../../../types';
+import { AuthContext, SnackBarContext, MySpacesContext, CurrentSpaceContext } from '../../../providers';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { HomeStackNavigatorProps } from '../../../navigations';
+import { useNavigation } from '@react-navigation/native';
 
-// routingのprops用意な。。。
-
-export const DeleteMyAccount = (props) => {
+export const DeleteMyAccount = () => {
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { auth, setAuth } = useContext(AuthContext);
+  const { setMySpaces } = useContext(MySpacesContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const {
     setLoading,
-    setSnackBar,
     setIsAuthenticated,
-    setSpaceAndUserRelationships,
-    setCurrentSpaceAndUserRelationship,
-    setCurrentSpace,
-    setCurrentTagObject,
+    // setSpaceAndUserRelationships,
+    // setCurrentSpaceAndUserRelationship,
+    // setCurrentSpace,
+    // setCurrentTagObject,
   } = useContext(GlobalContext);
-  const { apiResult, requestApi, exec } = useDeleteMe();
+  const { apiResult, requestApi } = useDeleteMe();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
 
+  const onDeletePress = () => {
+    const input: DeleteMeInput = {
+      email: formData.email.value,
+      password: formData.password.value,
+    };
+    requestApi(input);
+  };
+
   useEffect(() => {
-    props.navigation.setOptions({
+    homeStackNavigation.setOptions({
       headerRight: () => (
         <TouchableWithoutFeedback
-          onPress={() => exec()}
+          onPress={() => onDeletePress()}
           disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
         >
           <Text
@@ -53,12 +57,21 @@ export const DeleteMyAccount = (props) => {
     });
   }, [formData]);
 
-  const onDeletePressNew = () => {
-    const input: DeleteMeInput = {
-      email: formData.email.value,
-      password: formData.password.value,
-    };
-    requestApi(input);
+  const onDeleteMeSuccess = async () => {
+    await SecureStore.deleteItemAsync('secure_token');
+    setAuth(void 0);
+    setMySpaces(void 0);
+    setCurrentSpace(void 0);
+    // setCurrentSpaceAndUserRelationship(null);
+    // setCurrentTagObject(null);
+    // setCurrentSpace(null);
+    setSnackBar({
+      isVisible: true,
+      status: 'success',
+      message: `Successfully deleted your account.${'\n'}Bye bye.`,
+      duration: 5000,
+    });
+    homeStackNavigation.goBack();
   };
 
   useEffect(() => {
@@ -67,65 +80,26 @@ export const DeleteMyAccount = (props) => {
     } else if (apiResult.status === 'fail') {
       setSnackBar({
         isVisible: true,
-        barType: 'error',
+        status: 'error',
         message: 'fail',
         duration: 5000,
       });
     }
   }, [apiResult]);
 
-  const onDeleteMeSuccess = async () => {
-    await SecureStore.deleteItemAsync('secure_token');
-    setAuth(INITIAL_AUTH);
-    setIsAuthenticated(false);
-    setSpaceAndUserRelationships([]);
-    setCurrentSpaceAndUserRelationship(null);
-    setCurrentTagObject(null);
-    setCurrentSpace(null);
-    setLoading(false);
-    setSnackBar({
-      isVisible: true,
-      barType: 'success',
-      message: `Successfully deleted your account.${'\n'}Bye bye.`,
-      duration: 5000,
-    });
-    props.navigation.goBack();
-  };
-
-  // const onDeletePress = async () => {
-  //   setLoading(true);
-  //   await SecureStore.deleteItemAsync('secure_token');
-  //   const result = await backendAPI.delete(`/auth/${auth._id}`);
-  //   setAuth(INITIAL_AUTH);
-  //   // ここの型一致させる。
-  //   setIsAuthenticated(false);
-  //   setSpaceAndUserRelationships([]);
-  //   setCurrentSpaceAndUserRelationship(null);
-  //   setCurrentTagObject(null);
-  //   setCurrentSpace(null);
-  //   setLoading(false);
-  //   setSnackBar({
-  //     isVisible: true,
-  //     barType: 'success',
-  //     message: 'Successfully deleted your account. Bye bye.',
-  //     duration: 5000,
-  //   });
-  //   props.navigation.goBack();
-  // };
-
   return (
-    <PageScreenWithTitle
+    <PageScreen.WithTitle
       title={'Delete my account'}
       subTitle={`Are you sure you want to delete your account? ${'\n'}To terminate your account, please enter your email and password.`}
     >
-      <AppTextInputUnderline
+      <AppTextInput.Underline
         placeholder='Email'
         value={formData.email.value}
         onTextChange={onEmailChange}
         labelIcon={<VectorIcon.MCI name='email' color={'white'} size={25} />}
         keyboardType='email-address'
       />
-      <AppTextInputUnderline
+      <AppTextInput.Underline
         placeholder='Password'
         value={formData.password.value}
         onTextChange={onPasswordChange}
@@ -134,7 +108,8 @@ export const DeleteMyAccount = (props) => {
         secureTextEntry={isPasswordHidden}
         onTextEntryVisibilityChange={onPasswordHiddenChange}
       />
-      {apiResult.status === 'loading' ? <LoadingSpinner /> : null}
-    </PageScreenWithTitle>
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message={'Processing now'} />
+      {/* <SnackBar.Primary /> */}
+    </PageScreen.WithTitle>
   );
 };

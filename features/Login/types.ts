@@ -1,13 +1,16 @@
-import { UserType, ApiResultType } from '../../types';
+import { UserType, ApiResultType, AuthType } from '../../types';
 export type LoginInput = {
   email: string;
   password: string;
 };
 
-export type LoginOutput = UserType;
+export type LoginOutput = {
+  user: AuthType;
+  jwt: string;
+};
 
 export type UseLoginOutput = {
-  apiResult: ApiResultType<UserType>;
+  apiResult: ApiResultType<LoginOutput>;
   requestApi: (input: LoginInput) => void;
 };
 

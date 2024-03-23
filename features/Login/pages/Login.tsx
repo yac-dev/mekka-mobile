@@ -6,13 +6,17 @@ import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
 import { TextColor } from '../../../themes';
 import { SnackBarContext } from '../../../providers';
-import { SnackBar } from '../../../components';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { AuthContext } from '../../../providers';
 
 export const Login = ({ navigation }) => {
-  const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
-  const { apiResult, requestApi } = useLogin();
+  const { setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange, onLoginSuccess } =
+    useForm();
+  const { apiResult, requestApi } = useLogin();
 
+  // 画面切り替わって、その後もmodalを維持するのがむずいのかも。。。
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -36,6 +40,10 @@ export const Login = ({ navigation }) => {
   }, [formData]);
 
   useEffect(() => {
+    if (apiResult.status === 'success') {
+      onLoginSuccess(apiResult.data, navigation);
+    }
+
     if (apiResult.status === 'fail') {
       setSnackBar({
         isVisible: true,
@@ -77,6 +85,7 @@ export const Login = ({ navigation }) => {
       <View style={{ paddingHorizontal: 20, alignSelf: 'flex-start' }}>
         <AppButton.Text text='Forgot my password' onTextPress={() => onTextPress()} style={{}} />
       </View>
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' />
     </PageScreen.WithTitle>
   );
 };

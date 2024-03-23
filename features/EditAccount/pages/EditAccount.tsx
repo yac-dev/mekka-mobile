@@ -8,8 +8,11 @@ import { AppTextInput } from '../../../components';
 import { useEditAccount, useUpdateUser } from '../hooks';
 import { UpdateUserInputType } from '../types';
 import { TextColor } from '../../../themes';
+import { useNavigation } from '@react-navigation/native';
+import { HomeStackNavigatorProps } from '../../../navigations';
 
-export const EditAccount = (props) => {
+export const EditAccount = () => {
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const {
     formData,
     isFormValidated,
@@ -23,8 +26,18 @@ export const EditAccount = (props) => {
   } = useEditAccount();
   const { apiResult, requestApi } = useUpdateUser();
 
+  const onDonePress = () => {
+    const input: UpdateUserInputType = {
+      name: formData.name.value,
+      email: formData.email.value,
+      password: formData.password.value,
+      avatar: formData.avatar.value,
+    };
+    requestApi(input);
+  };
+
   useEffect(() => {
-    props.navigation.setOptions({
+    homeStackNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={() => onDonePress()} disabled={isFormValidated ? false : true}>
           <Text
@@ -45,16 +58,6 @@ export const EditAccount = (props) => {
     validateForm();
   }, [formData]);
 
-  const onDonePress = () => {
-    const input: UpdateUserInputType = {
-      name: formData.name.value,
-      email: formData.email.value,
-      password: formData.password.value,
-      avatar: formData.avatar.value,
-    };
-    requestApi(input);
-  };
-
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView>
@@ -62,28 +65,27 @@ export const EditAccount = (props) => {
           <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
         </TouchableOpacity>
         <View>
-          <AppTextInput.BorderStyle
+          <AppTextInput.Underline
             value={formData.name.value}
             placeholder='Name here...'
             labelIcon={<VectorIcon.MCI name='account' color='white' size={20} />}
             onTextChange={onNameChange}
             keyboardType={'default'}
           />
-          <AppTextInput.BorderStyle
+          <AppTextInput.Underline
             value={formData.email.value}
             placeholder='Email here...'
             labelIcon={<VectorIcon.MCI name='email' color='white' size={20} />}
             onTextChange={onEmailChange}
             keyboardType={'default'}
           />
-          <AppTextInput.BorderStyle
+          <AppTextInput.Underline
             value={formData.password.value}
             placeholder='Password here...'
             labelIcon={<VectorIcon.II name='eye' color='white' size={20} />}
             onTextChange={onPasswordChange}
             keyboardType={'default'}
             secureTextEntry
-            isTextEntryVisible={isPasswordVisible}
             onTextEntryVisibilityChange={onPasswordVisibilityChange}
           />
         </View>

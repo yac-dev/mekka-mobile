@@ -7,9 +7,12 @@ import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
+import { SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 const EmojisByCategory = ({ category }) => {
-  const { isIpad, setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { isIpad } = useContext(GlobalContext);
   const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
   const oneGridWidth = isIpad ? Dimensions.get('window').width / 15 : Dimensions.get('window').width / 9;
   // {
@@ -51,7 +54,7 @@ const EmojisByCategory = ({ category }) => {
                 if (Object.keys(selectedReactions).length >= 7) {
                   setSnackBar({
                     isVisible: true,
-                    barType: 'warning',
+                    status: 'warning',
                     message: 'OOPS. The number of reaction options is limited to 6 at most.',
                     duration: 5000,
                   });
@@ -90,6 +93,7 @@ const EmojisByCategory = ({ category }) => {
         contentContainerStyle={{ paddingTop: 5 }}
         estimatedItemSize={300}
       />
+      <SnackBar.Primary />
     </View>
   );
 };

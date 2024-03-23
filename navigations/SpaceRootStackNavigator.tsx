@@ -24,6 +24,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { AuthContext } from '../providers';
 import { SnackBarContext } from '../providers';
+import { SnackBar } from '../components';
 const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -329,6 +330,7 @@ const SpaceRootStackNavigator = (props) => {
           /> */}
         </Stack.Group>
       </Stack.Navigator>
+      <SnackBar.Primary />
     </SpaceRootContext.Provider>
   );
 };

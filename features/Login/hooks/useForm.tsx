@@ -1,4 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
+import { AuthContext, SnackBarContext } from '../../../providers';
+import { AuthType } from '../../../types';
+import * as SecureStore from 'expo-secure-store';
+import { LoginOutput } from '../types';
 
 type FormType<T> = {
   value: T;
@@ -27,9 +31,12 @@ type useFormOutput = {
   onPasswordChange: (text: string) => void;
   isPasswordHidden: boolean;
   onPasswordHiddenChange: () => void;
+  onLoginSuccess: (loginOutput: LoginOutput, navigation: any) => void;
 };
 
 export const useForm = (): useFormOutput => {
+  const { setAuth } = useContext(AuthContext);
+  const { setSnackBar } = useContext(SnackBarContext);
   const [formData, setFormData] = useState<FormDataType>(INITIAL_FORM_DATA);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
 
@@ -62,11 +69,24 @@ export const useForm = (): useFormOutput => {
     setIsPasswordHidden((previous) => !previous);
   }, []);
 
+  const onLoginSuccess = async (loginOutput: LoginOutput, navigation: any) => {
+    await SecureStore.setItemAsync('secure_token', loginOutput.jwt);
+    setAuth(loginOutput.user);
+    navigation.navigate('HomeStackNavigator');
+    setSnackBar({
+      isVisible: true,
+      status: 'success',
+      message: 'Logged in successfully.',
+      duration: 5000,
+    });
+  };
+
   return {
     formData,
     onEmailChange,
     onPasswordChange,
     isPasswordHidden,
     onPasswordHiddenChange,
+    onLoginSuccess,
   };
 };

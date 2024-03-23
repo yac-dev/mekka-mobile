@@ -13,9 +13,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 const ReportPost = (props) => {
-  const {setSnackBar} = useContext(SnackBarContext)
+  const { setSnackBar } = useContext(SnackBarContext);
   const inputAccessoryViewID = 'REPORT_POST';
   const [reportIssueOptions, setReportIssueOptions] = useState({
     spam: {
@@ -188,6 +189,7 @@ const ReportPost = (props) => {
         </InputAccessoryView>
         <View style={{ alignSelf: 'center' }}></View>
       </ScrollView>
+      <SnackBar.Primary />
     </KeyboardAvoidingView>
   );
 };

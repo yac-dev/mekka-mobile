@@ -1,16 +1,23 @@
 import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import { EditAccount } from '../features/EditAccount/pages/EditAccount';
+import { EditAccount } from '../features';
 
-const EditAccountStackNavigator: React.FC = () => {
+export type EditProfileStackParams = {
+  EditProfile: undefined;
+};
+
+const EditProfileStack = createNativeStackNavigator();
+
+export type EditProfileStackNavigatorProps = NativeStackNavigationProp<EditProfileStackParams>;
+
+export const EditAccountStackNavigator: React.FC = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Group>
-        <Stack.Screen
-          name='EditAccount'
+    <EditProfileStack.Navigator>
+      <EditProfileStack.Group>
+        <EditProfileStack.Screen
+          name='EditProfile'
           component={EditAccount}
           options={({ navigation }) => ({
             headerShown: true,
@@ -29,10 +36,7 @@ const EditAccountStackNavigator: React.FC = () => {
             },
           })}
         />
-      </Stack.Group>
-      <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}></Stack.Group>
-    </Stack.Navigator>
+      </EditProfileStack.Group>
+    </EditProfileStack.Navigator>
   );
 };
-
-export default EditAccountStackNavigator;

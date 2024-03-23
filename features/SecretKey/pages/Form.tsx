@@ -2,16 +2,17 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { useLoadingSpinner } from '../../../hooks';
 
 const Form = (props) => {
   const { auth } = useContext(AuthContext);
+  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const { setSnackBar } = useContext(SnackBarContext);
   const {
     setSpaceAndUserRelationships,
     spaceAndUserRelationships,
-    setLoading,
     setUpdatesTable,
     setCurrentSpaceAndUserRelationship,
   } = useContext(GlobalContext);
@@ -41,7 +42,7 @@ const Form = (props) => {
       userId: auth._id,
       secretKey: secretKey.toUpperCase(),
     };
-    setLoading(true);
+    showLoadingSpinner();
     const result = await backendAPI.post('/spaces/private', payload);
     const { spaceAndUserRelationship } = result.data;
     setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
@@ -54,7 +55,7 @@ const Form = (props) => {
         [spaceAndUserRelationship.space._id]: {},
       };
     });
-    setLoading(false);
+    hideLoadingSpinner();
     setSnackBar({ isVisible: true, message: 'Joined private space successfully.', status: 'success', duration: 5000 });
     props.navigation?.navigate('SpacesDrawerNavigator');
   };
@@ -119,7 +120,8 @@ const Form = (props) => {
           onChangeText={(text) => setSecretKey(text)}
         />
       </View>
-      <LoadingSpinner />
+      <SnackBar.Primary />
+      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' />
     </View>
   );
 };

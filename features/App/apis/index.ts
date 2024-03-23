@@ -1,2 +1,2 @@
 export * from './loadMe';
-export * from './getSpaces';
+export * from './getMySpaces';
