@@ -26,7 +26,7 @@ export const EditProfileStackNavigator: React.FC = () => {
                 <Ionicons name='close-circle-sharp' size={30} color={'white'} />
               </TouchableOpacity>
             ),
-            headerTitle: 'Edit my account',
+            headerTitle: 'Edit my profile',
             headerStyle: {
               backgroundColor: 'black',
             },

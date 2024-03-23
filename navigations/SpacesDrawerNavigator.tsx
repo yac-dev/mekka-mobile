@@ -416,6 +416,7 @@ export const SpacesDrawerNavigator = (props) => {
                   // padding: 20,
                   backgroundColor: 'black',
                 },
+                title: '',
 
                 headerLeft: () => {
                   return (
@@ -559,7 +560,12 @@ export const SpacesDrawerNavigator = (props) => {
             ))
           )}
         </Drawer.Navigator>
-        <AppBottomSheet.Gorhom ref={authMenuBottomSheetRef} snapPoints={['60%']} title=''>
+        <AppBottomSheet.Gorhom
+          ref={authMenuBottomSheetRef}
+          snapPoints={['60%']}
+          title='Settings'
+          onCloseButtonClose={closeAuthMenuBottomSheet}
+        >
           <AuthMenu
             onEditMyAccountPress={onEditMyAccountPress}
             onNotificationSettingPress={onNotificationSettingPress}

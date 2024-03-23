@@ -21,7 +21,7 @@ export const CellButton: React.FC<CellButtonProps> = ({ onButtonPress, children,
           <Text style={styles.subTitle}>{subTitle}</Text>
         </View>
       </View>
-      <VectorIcon.MCI name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
+      <VectorIcon.MCI name='chevron-right' color='white' size={20} />
     </TouchableOpacity>
   );
 };
