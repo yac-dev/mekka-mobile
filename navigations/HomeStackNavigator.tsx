@@ -49,7 +49,7 @@ import { LoginStackNavigator } from './LoginStackNavigator';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { AuthContext } from '../providers';
 
-const HomeStackNavigator: React.FC = (props) => {
+export const HomeStackNavigator: React.FC = (props) => {
   const { auth } = useContext(AuthContext);
 
   if (!auth) {
@@ -492,5 +492,3 @@ const HomeStackNavigator: React.FC = (props) => {
     </HomeStackNavContext.Provider>
   );
 };
-
-export default HomeStackNavigator;

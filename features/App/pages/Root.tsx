@@ -4,22 +4,22 @@ import { useLoadMe } from '../hooks';
 import { AuthContext, MySpacesContext, CurrentSpaceContext, SpaceUpdatesContext } from '../../../providers';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import HomeStackNavigator from '../../../navigations/HomeStackNavigator';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import { LoginStackNavigator } from '../../../navigations';
 import { VectorIcon } from '../../../Icons';
 import * as SecureStore from 'expo-secure-store';
+import { RootStackNavigator } from '../../../navigations';
 
-const Stack = createNativeStackNavigator<HomeStackParams>();
+const RootStack = createNativeStackNavigator<RootStackParams>();
 
-export type HomeStackParams = {
+export type RootStackParams = {
   HomeStackNavigator: undefined;
   LoginStackNavigator: undefined;
 };
 
-export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
+export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
 
-export const Home = () => {
+export const Root = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
@@ -85,39 +85,5 @@ export const Home = () => {
   // まずこの上でfetchをしているわけだが、、、
 
   // authがない場合はwelcome pageを出せば良くて、authが取得できればそのままgetMySpacesのqueryを投げればいい。
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='HomeStackNavigator'
-          component={HomeStackNavigator}
-          options={({ navigation }) => ({
-            headerShown: false,
-          })}
-        />
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
-            name='LoginStackNavigator'
-            component={LoginStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <VectorIcon.II name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return <RootStackNavigator />;
 };

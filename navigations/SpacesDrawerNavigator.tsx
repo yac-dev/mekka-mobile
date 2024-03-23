@@ -23,7 +23,7 @@ import { VectorIcon } from '../Icons';
 import { AppBottomSheet } from '../components/AppBottomSheet';
 import { useBottomSheet } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../features';
+import { RootStackNavigatorProps } from '../features';
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
 // あとは、appがcloseした時もcurrentのspaceのdate updateをする感じだね。
@@ -33,7 +33,7 @@ export const SpacesDrawerNavigator = (props) => {
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
-  const navigation = useNavigation<HomeStackNavigatorProps>();
+  const navigation = useNavigation<RootStackNavigatorProps>();
   const {
     ref: authMenuBottomSheetRef,
     openModalToIndex: openAuthMenuBottomSheetToIndex,

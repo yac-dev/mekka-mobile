@@ -25,7 +25,7 @@ import {
 import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Composer } from './providers/Providers';
-import { Home } from './features';
+import { Root } from './features';
 import { useLoadMe } from './features';
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -233,7 +233,7 @@ const App: React.FC = function () {
             CurrentSpaceProvider,
           ]}
         >
-          <Home />
+          <Root />
           {/* <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
