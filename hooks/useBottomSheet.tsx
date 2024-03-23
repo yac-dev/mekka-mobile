@@ -1,13 +1,13 @@
 import { useRef, MutableRefObject } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-type UseBottomSheetOutput = {
+type UseBottomSheetOutputType = {
   ref: MutableRefObject<BottomSheetModal>;
   openModalToIndex: (index: number) => void;
   closeModal: () => void;
 };
 
-export const useBottomSheet = (): UseBottomSheetOutput => {
+export const useBottomSheet = (): UseBottomSheetOutputType => {
   const ref = useRef<BottomSheetModal>(null);
 
   const openModalToIndex = (index: number) => {

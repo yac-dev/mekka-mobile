@@ -3,12 +3,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackNavigatorProps } from '../../App';
 
-type WelcomePageProps = {
-  navigation: any;
-};
-
-export const WelcomePage: React.FC<WelcomePageProps> = ({ navigation }) => {
+export const WelcomePage = () => {
+  const navigation = useNavigation<RootStackNavigatorProps>();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 50, paddingBottom: 20 }}>
@@ -49,7 +48,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => navigation.navigate('Signup')}
+          // onPress={() => navigation.navigate('Signup')}
           activeOpacity={1}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>

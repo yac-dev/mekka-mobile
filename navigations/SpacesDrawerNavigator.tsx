@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { TouchableOpacity, View, ActivityIndicator, ScrollView, Text, Dimensions } from 'react-native';
+import { TouchableOpacity, View, ActivityIndicator, ScrollView, Text, Dimensions, Linking } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { GlobalContext } from '../contexts/GlobalContext';
@@ -16,6 +16,7 @@ import SpaceRootStackNavigator from './SpaceRootStackNavigator';
 import backendAPI from '../apis/backend';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { AuthContext, MySpacesContext, SpaceUpdatesContext } from '../providers';
+import * as SecureStore from 'expo-secure-store';
 import { useGetMySpaces } from '../features';
 import { NoSpaces } from '../features';
 import { AppButton } from '../components';
@@ -24,6 +25,9 @@ import { AppBottomSheet } from '../components/AppBottomSheet';
 import { useBottomSheet } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigatorProps } from '../features';
+import { AuthMenu } from '../features';
+import { HomeStackNavigatorProps } from '.';
+
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
 // あとは、appがcloseした時もcurrentのspaceのdate updateをする感じだね。
@@ -34,6 +38,7 @@ export const SpacesDrawerNavigator = (props) => {
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
   const navigation = useNavigation<RootStackNavigatorProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const {
     ref: authMenuBottomSheetRef,
     openModalToIndex: openAuthMenuBottomSheetToIndex,
@@ -312,6 +317,51 @@ export const SpacesDrawerNavigator = (props) => {
     return sum;
   };
 
+  const onLogoutPress = async () => {
+    // setLoading(true);
+    await SecureStore.deleteItemAsync('secure_token');
+    // setAuthData({ _id: '', name: '', email: '', avatar: '' });
+    // setIsAuthenticated(false);
+    // setSpaceAndUserRelationships([]);
+    // setLoading(false);
+    // setSnackBar({
+    //   isVisible: true,
+    //   status: 'success',
+    //   message: 'Logged out successfully.',
+    //   duration: 5000,
+    // });
+    // props.navigation.navigate('Welcome');
+  };
+
+  const onClosePress = () => {
+    closeAuthMenuBottomSheet();
+  };
+
+  // openModalToIndex: openAuthMenuBottomSheetToIndex,
+
+  const onEditMyAccountPress = () => {
+    closeAuthMenuBottomSheet();
+    homeStackNavigation.navigate('EditAccountStackNavigator');
+    // props.navigation.navigate({
+    //   name: 'EditAccountStackNavigator',
+    //   params: {
+    //     screen: 'EditAccount',
+    //   },
+    // });
+  };
+
+  const onNotificationSettingPress = () => {
+    Linking.openSettings();
+  };
+
+  const onDeleteMyAccountPress = () => {
+    closeAuthMenuBottomSheet();
+    homeStackNavigation.navigate('DeleteMyAccount');
+    // props.navigation.navigate({
+    //   name: 'DeleteMyAccount',
+    // });
+  };
+
   // if (getMySpacesApiResult.status === 'loading') {
   //   return (
   //     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
@@ -513,13 +563,13 @@ export const SpacesDrawerNavigator = (props) => {
             ))
           )}
         </Drawer.Navigator>
-        <AppBottomSheet.Gorhom ref={authMenuBottomSheetRef} snapPoints={['60%']} title='r' defaultSnapPointsIndex={-1}>
-          <View>
-            <Text>Hello!!!</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('LoginStackNavigator')}>
-            <Text>Go to edit</Text>
-          </TouchableOpacity>
+        <AppBottomSheet.Gorhom ref={authMenuBottomSheetRef} snapPoints={['60%']} title='r'>
+          <AuthMenu
+            onEditMyAccountPress={onEditMyAccountPress}
+            onNotificationSettingPress={onNotificationSettingPress}
+            onLogoutPress={onLogoutPress}
+            onDeleteMyAccountPress={onDeleteMyAccountPress}
+          />
         </AppBottomSheet.Gorhom>
       </>
     );

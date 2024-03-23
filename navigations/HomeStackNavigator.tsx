@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+
 import Home from '../features/Home/pages/Home';
 import CreatePost from '../features/Space/pages/CreatePost';
 import { primaryBackgroundColor } from '../themes/color';
@@ -14,7 +13,7 @@ import WriteDescription from '../features/CreateNewSpace/pages/WriteDescription'
 import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
 import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
 import { SnackBar } from '../components';
-
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 // secret key
 import SecretKeyForm from '../features/SecretKey/pages/Form';
 // create post
@@ -49,30 +48,57 @@ import { LoginStackNavigator } from './LoginStackNavigator';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { AuthContext } from '../providers';
 
+export type HomeStackParams = {
+  SpacesDrawerNavigator: undefined;
+  ViewPost: undefined;
+  Comments: undefined;
+  Discover: undefined;
+  ProfileStackNavigator: undefined;
+  CreateNewSpaceStackNavigator: undefined;
+  EditTag: undefined;
+  SecretKeyForm: undefined;
+  SpaceDetailStackNavigator: undefined;
+  Signup: undefined;
+  EULA: undefined;
+  EditAccountStackNavigator: undefined;
+  WriteDescription: undefined;
+  LocationPicker: undefined;
+  EmojiPicker: undefined;
+  CreateTag: undefined;
+  ReportSpace: undefined;
+  SpaceInfoStackNavigator: undefined;
+  DeleteMyAccount: undefined;
+};
+
+export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
+
+const HomeStack = createNativeStackNavigator<HomeStackParams>();
+// export type HomeStackNavigatorProps =
+
 export const HomeStackNavigator: React.FC = (props) => {
   const { auth } = useContext(AuthContext);
 
   if (!auth) {
-    return <WelcomePage navigation={props.navigation} />;
+    return <WelcomePage />;
   }
 
   return (
     <HomeStackNavContext.Provider value={{}}>
-      <Stack.Navigator
+      <HomeStack.Navigator
         screenOptions={({ navigation }) => ({
           headerShown: false,
           // headerShown: true,
         })}
       >
-        <Stack.Group>
-          <Stack.Screen
+        <HomeStack.Group>
+          <HomeStack.Screen
             name='SpacesDrawerNavigator'
             component={SpacesDrawerNavigator}
             options={({ navigation }) => ({
               // headerShown: false,
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='ViewPost'
             component={ViewPost}
             options={({ navigation }) => ({
@@ -92,7 +118,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='Comments'
             component={Comments}
             options={({ navigation }) => ({
@@ -112,7 +138,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='Discover'
             component={Discover}
             options={({ navigation }) => ({
@@ -132,7 +158,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='ProfileStackNavigator'
             component={ProfileStackNavigator}
             options={({ navigation }) => ({
@@ -154,10 +180,10 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-        </Stack.Group>
+        </HomeStack.Group>
 
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
+        <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <HomeStack.Screen
             name='CreateNewSpaceStackNavigator'
             component={CreateNewSpaceStackNavigator}
             options={({ navigation }) => ({
@@ -177,7 +203,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='EditTag'
             component={EditTag}
             options={({ navigation }) => ({
@@ -197,7 +223,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='SecretKeyForm'
             component={SecretKeyForm}
             options={({ navigation }) => ({
@@ -217,7 +243,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='SpaceDetailStackNavigator'
             component={SpaceDetailStackNavigator}
             options={({ navigation }) => ({
@@ -258,7 +284,7 @@ export const HomeStackNavigator: React.FC = (props) => {
                 },
               })}
             ></Stack.Screen> */}
-          <Stack.Screen
+          <HomeStack.Screen
             name='Signup'
             component={Signup}
             options={({ navigation }) => ({
@@ -278,10 +304,10 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+        </HomeStack.Group>
+        <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
           {/* EULA */}
-          <Stack.Screen
+          <HomeStack.Screen
             name='EULA'
             component={EULA}
             options={({ navigation }) => ({
@@ -301,7 +327,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='EditAccountStackNavigator'
             component={EditAccountStackNavigator}
             options={({ navigation }) => ({
@@ -322,7 +348,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='WriteDescription'
             component={WriteDescription}
             options={({ navigation }) => ({
@@ -343,7 +369,7 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
 
-          <Stack.Screen
+          <HomeStack.Screen
             name='EmojiPicker'
             component={EmojiPicker}
             options={({ navigation }) => ({
@@ -363,7 +389,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='LocationPicker'
             component={LocationPicker}
             options={({ navigation }) => ({
@@ -383,7 +409,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='CreateTag'
             component={CreateTag}
             options={({ navigation }) => ({
@@ -403,7 +429,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='CreateNewLocationTag'
             component={CreateNewLocationTag}
             options={({ navigation }) => ({
@@ -423,7 +449,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='ReportSpace'
             component={ReportSpace}
             options={({ navigation }) => ({
@@ -443,7 +469,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='SpaceInfoStackNavigator'
             component={SpaceInfoStackNavigator}
             options={({ navigation }) => ({
@@ -463,7 +489,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <HomeStack.Screen
             name='DeleteMyAccount'
             component={DeleteMyAccount}
             options={({ navigation }) => ({
@@ -483,8 +509,8 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-        </Stack.Group>
-      </Stack.Navigator>
+        </HomeStack.Group>
+      </HomeStack.Navigator>
       <AuthMenuBottomSheet navigation={props.navigation} />
       {/* <SpaceMenuBottomSheet navigation={props.navigation} /> */}
       <ActionMenuBottomSheet navigation={props.navigation} />

@@ -7,7 +7,7 @@ type Ref = BottomSheetModal;
 
 type GorhomBottomSheetRef = {
   title: string;
-  defaultSnapPointsIndex: number;
+  defaultSnapPointsIndex?: number;
   snapPoints: string[];
   children: ReactNode;
   onClose?: () => void;
