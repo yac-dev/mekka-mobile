@@ -563,7 +563,7 @@ export const SpacesDrawerNavigator = (props) => {
             ))
           )}
         </Drawer.Navigator>
-        <AppBottomSheet.Gorhom ref={authMenuBottomSheetRef} snapPoints={['60%']} title='r'>
+        <AppBottomSheet.Gorhom ref={authMenuBottomSheetRef} snapPoints={['60%']} title=''>
           <AuthMenu
             onEditMyAccountPress={onEditMyAccountPress}
             onNotificationSettingPress={onNotificationSettingPress}

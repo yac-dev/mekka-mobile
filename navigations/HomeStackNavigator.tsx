@@ -65,6 +65,7 @@ export type HomeStackParams = {
   LocationPicker: undefined;
   EmojiPicker: undefined;
   CreateTag: undefined;
+  CreateNewLocationTag: undefined;
   ReportSpace: undefined;
   SpaceInfoStackNavigator: undefined;
   DeleteMyAccount: undefined;
@@ -511,9 +512,9 @@ export const HomeStackNavigator: React.FC = (props) => {
           />
         </HomeStack.Group>
       </HomeStack.Navigator>
-      <AuthMenuBottomSheet navigation={props.navigation} />
+      {/* <AuthMenuBottomSheet navigation={props.navigation} /> */}
       {/* <SpaceMenuBottomSheet navigation={props.navigation} /> */}
-      <ActionMenuBottomSheet navigation={props.navigation} />
+      {/* <ActionMenuBottomSheet navigation={props.navigation} /> */}
       {/* <SnackBar.Primary /> */}
     </HomeStackNavContext.Provider>
   );
