@@ -6,10 +6,11 @@ import { GetMySpacesInput, GetMySpacesOutput } from '../types';
 export const getMySpaces = async (input: GetMySpacesInput): Promise<GetMySpacesOutput> => {
   try {
     const result = await backendAPI.get(`/spaceanduserrelationships/users/${input.userId}`);
-    const { spaces, updateTable } = result.data;
+    console.log('get my spaces!!', result.data);
+    const { mySpaces, updateTable } = result.data;
     console.log('update table', updateTable);
     return {
-      spaces,
+      mySpaces,
       updateTable,
     };
   } catch (error) {

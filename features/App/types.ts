@@ -11,6 +11,6 @@ export type GetMySpacesInput = {
 };
 
 export type GetMySpacesOutput = {
-  spaces: SpaceType[];
+  mySpaces: SpaceType[];
   updateTable: SpaceUpdatesType;
 };

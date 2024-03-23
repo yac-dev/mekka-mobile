@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useLoadMe } from '../hooks';
-import { AuthContext, MySpacesContext, CurrentSpaceContext } from '../../../providers';
+import { AuthContext, MySpacesContext, CurrentSpaceContext, SpaceUpdatesContext } from '../../../providers';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
@@ -15,7 +15,7 @@ export const Home = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
-
+  const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
 
@@ -34,10 +34,27 @@ export const Home = () => {
   // 2, loadmeが終わったら、そのuserId使って自分のspaceとspaceUpdatesTableをfetch
   // jwtがなければ、当然data voidでその場合はgetMySpacesを使わない。
   useEffect(() => {
-    if (loadMeApiResult.status === 'success' && loadMeApiResult.data) {
+    if (loadMeApiResult.status === 'success') {
+      console.log('auth res', loadMeApiResult.data);
       setAuth(loadMeApiResult.data);
+      // ここでauthがtruthyになって、先にspaceDrawerがrendersれているんだなおそらく。んで、mySpacesの取得が動く前に先にcomponentのrenderingが起こっちゃっているわけか。。。
+      // console.log('has auth and run getmyspaces??', auth);
+      // requestGetMySpaces({ userId: loadMeApiResult.data._id });
     }
   }, [loadMeApiResult]);
+
+  useEffect(() => {
+    if (auth) {
+      requestGetMySpaces({ userId: auth._id });
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (getMySpacesApiResult.status === 'success') {
+      setMySpaces(getMySpacesApiResult.data.mySpaces);
+      setSpaceUpdates(getMySpacesApiResult.data.updateTable);
+    }
+  }, [getMySpacesApiResult]);
 
   // useEffect(() => {
   //   if (getMySpacesApiResult.status === 'success') {
@@ -57,6 +74,7 @@ export const Home = () => {
       </View>
     );
   }
+  // まずこの上でfetchをしているわけだが、、、
 
   // authがない場合はwelcome pageを出せば良くて、authが取得できればそのままgetMySpacesのqueryを投げればいい。
   return (
