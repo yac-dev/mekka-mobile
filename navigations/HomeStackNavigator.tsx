@@ -32,7 +32,7 @@ import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
-import { EditAccountStackNavigator } from '.';
+import { EditProfileStackNavigator } from '.';
 // import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
 import { DeleteMyAccount, WelcomePage } from '../features';
 // import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
@@ -60,7 +60,7 @@ export type HomeStackParams = {
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;
   EULA: undefined;
-  EditAccountStackNavigator: {
+  EditProfileStackNavigator: {
     screen: 'EditProfile';
   };
   WriteDescription: undefined;
@@ -331,8 +331,8 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
           <HomeStack.Screen
-            name='EditAccountStackNavigator'
-            component={EditAccountStackNavigator}
+            name='EditProfileStackNavigator'
+            component={EditProfileStackNavigator}
             options={({ navigation }) => ({
               // headerShown: true, // ここtrueにすると、,,,
               headerShown: false, // ここtrueにすると、,,,

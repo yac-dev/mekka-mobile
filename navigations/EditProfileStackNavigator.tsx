@@ -12,7 +12,7 @@ const EditProfileStack = createNativeStackNavigator();
 
 export type EditProfileStackNavigatorProps = NativeStackNavigationProp<EditProfileStackParams>;
 
-export const EditAccountStackNavigator: React.FC = () => {
+export const EditProfileStackNavigator: React.FC = () => {
   return (
     <EditProfileStack.Navigator>
       <EditProfileStack.Group>

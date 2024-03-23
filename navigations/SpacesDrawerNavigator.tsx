@@ -340,7 +340,7 @@ export const SpacesDrawerNavigator = (props) => {
 
   const onEditMyAccountPress = () => {
     closeAuthMenuBottomSheet();
-    homeStackNavigation.navigate('EditAccountStackNavigator', { screen: 'EditProfile' });
+    homeStackNavigation.navigate('EditProfileStackNavigator', { screen: 'EditProfile' });
     // homeStackNavigation.navigate({ name: 'EditAccountStackNavigator', params: { screen: 'EditAccount' } });
     // ここなんで上の形式だとだめなんだろう？params入れられるかな。。。
     // props.navigation.navigate({ name: 'EditAccountStackNavigator', params: { screen: 'EditAccount' } });
