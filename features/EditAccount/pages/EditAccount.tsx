@@ -26,6 +26,16 @@ export const EditAccount = () => {
   } = useEditAccount();
   const { apiResult, requestApi } = useUpdateUser();
 
+  const onDonePress = () => {
+    const input: UpdateUserInputType = {
+      name: formData.name.value,
+      email: formData.email.value,
+      password: formData.password.value,
+      avatar: formData.avatar.value,
+    };
+    requestApi(input);
+  };
+
   useEffect(() => {
     homeStackNavigation.setOptions({
       headerRight: () => (
@@ -47,16 +57,6 @@ export const EditAccount = () => {
   useEffect(() => {
     validateForm();
   }, [formData]);
-
-  const onDonePress = () => {
-    const input: UpdateUserInputType = {
-      name: formData.name.value,
-      email: formData.email.value,
-      password: formData.password.value,
-      avatar: formData.avatar.value,
-    };
-    requestApi(input);
-  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>

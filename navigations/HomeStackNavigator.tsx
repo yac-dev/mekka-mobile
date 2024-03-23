@@ -32,7 +32,7 @@ import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
-import EditAccountStackNavigator from './EditAccountStackNavigator';
+import { EditAccountStackNavigator } from '.';
 // import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
 import { DeleteMyAccount, WelcomePage } from '../features';
 // import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
@@ -60,7 +60,9 @@ export type HomeStackParams = {
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;
   EULA: undefined;
-  EditAccountStackNavigator: undefined;
+  EditAccountStackNavigator: {
+    screen: 'EditProfile';
+  };
   WriteDescription: undefined;
   LocationPicker: undefined;
   EmojiPicker: undefined;

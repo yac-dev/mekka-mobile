@@ -1,4 +1,5 @@
 export * from './App';
+export * from './EditAccount';
 export * from './DeleteAccount';
 export * from './Login';
 export * from './WelcomePage';

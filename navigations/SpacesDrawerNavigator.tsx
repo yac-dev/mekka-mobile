@@ -26,7 +26,7 @@ import { useBottomSheet } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigatorProps } from '../features';
 import { AuthMenu } from '../features';
-import { HomeStackNavigatorProps } from '.';
+import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
 
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
@@ -39,6 +39,7 @@ export const SpacesDrawerNavigator = (props) => {
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
   const navigation = useNavigation<RootStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const editProfileNavigation = useNavigation<EditProfileStackNavigatorProps>();
   const {
     ref: authMenuBottomSheetRef,
     openModalToIndex: openAuthMenuBottomSheetToIndex,
@@ -337,17 +338,12 @@ export const SpacesDrawerNavigator = (props) => {
     closeAuthMenuBottomSheet();
   };
 
-  // openModalToIndex: openAuthMenuBottomSheetToIndex,
-
   const onEditMyAccountPress = () => {
     closeAuthMenuBottomSheet();
-    homeStackNavigation.navigate('EditAccountStackNavigator');
-    // props.navigation.navigate({
-    //   name: 'EditAccountStackNavigator',
-    //   params: {
-    //     screen: 'EditAccount',
-    //   },
-    // });
+    homeStackNavigation.navigate('EditAccountStackNavigator', { screen: 'EditProfile' });
+    // homeStackNavigation.navigate({ name: 'EditAccountStackNavigator', params: { screen: 'EditAccount' } });
+    // ここなんで上の形式だとだめなんだろう？params入れられるかな。。。
+    // props.navigation.navigate({ name: 'EditAccountStackNavigator', params: { screen: 'EditAccount' } });
   };
 
   const onNotificationSettingPress = () => {
