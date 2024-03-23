@@ -317,10 +317,6 @@ export const SpacesDrawerNavigator = (props) => {
   //   return <View style={{ flex: 1, backgroundColor: 'black' }}></View>;
   // }
 
-  console.log('auth at spacesdraw', auth);
-
-  // lengthがある時ない時でrenderingをわけないといけない。
-  // ここ、mySpacesがない状態でrenderされているのかね。。。
   if (auth && mySpaces) {
     return (
       <Drawer.Navigator
@@ -394,15 +390,7 @@ export const SpacesDrawerNavigator = (props) => {
               },
             })}
           >
-            {({ navigation, route }) => (
-              // <SpaceRootStackNavigator
-              //   space={space}
-              //   navigation={navigation}
-              //   route={route}
-              // />
-              // 一旦、SpaceRootのrenderしないようにする。
-              <NoSpaces navigation={navigation} />
-            )}
+            {({ navigation, route }) => <NoSpaces navigation={navigation} />}
           </Drawer.Screen>
         ) : (
           mySpaces.map((space) => (
