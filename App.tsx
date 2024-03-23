@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect, useRef, useCallback } from 'rea
 import { View, Platform, StatusBar, TouchableOpacity, ActivityIndicator, AppState } from 'react-native';
 import { GlobalContext } from './contexts/GlobalContext';
 import { NavigationContainer } from '@react-navigation/native';
-import { PaperProvider } from 'react-native-paper';
+
 import * as SecureStore from 'expo-secure-store';
 // import RootStack from './navigations/RootStack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -22,6 +22,8 @@ import {
   CurrentSpaceProvider,
   AppStateProvider,
 } from './providers';
+import { PaperProvider } from 'react-native-paper';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Composer } from './providers/Providers';
 import { Home } from './features';
 import { useLoadMe } from './features';
@@ -222,6 +224,7 @@ const App: React.FC = function () {
         <Composer
           components={[
             PaperProvider,
+            BottomSheetModalProvider,
             AppStateProvider,
             AuthProvider,
             SnackBarProvider,

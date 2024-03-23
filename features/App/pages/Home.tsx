@@ -3,13 +3,21 @@ import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useLoadMe } from '../hooks';
 import { AuthContext, MySpacesContext, CurrentSpaceContext, SpaceUpdatesContext } from '../../../providers';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import HomeStackNavigator from '../../../navigations/HomeStackNavigator';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import { LoginStackNavigator } from '../../../navigations';
 import { VectorIcon } from '../../../Icons';
 import * as SecureStore from 'expo-secure-store';
+
+const Stack = createNativeStackNavigator<HomeStackParams>();
+
+export type HomeStackParams = {
+  HomeStackNavigator: undefined;
+  LoginStackNavigator: undefined;
+};
+
+export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
 
 export const Home = () => {
   const { auth, setAuth } = useContext(AuthContext);
