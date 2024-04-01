@@ -1,2 +1,2 @@
-export * from './SpaceProvider';
+export * from './SpaceRootProvider';
 export * from './PostFormProvider';

@@ -18,7 +18,8 @@ import backendAPI from '../apis/backend';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
-import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
+// import SpaceRootBottomTabNavigator from './SpaceBottomTabNavigator';
+import { SpaceBottomTabNavigator } from './SpaceBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
@@ -26,6 +27,9 @@ import { AuthContext } from '../providers';
 import { SnackBarContext } from '../providers';
 import { SnackBar } from '../components';
 import { SpaceType } from '../types';
+import { Composer } from '../providers/Providers';
+import { SpaceRootProvider } from '../features';
+
 const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -45,7 +49,7 @@ type SpaceRootStackNavigatorProps = {
   space: SpaceType;
 };
 
-const SpaceRootStackNavigator = () => {
+export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = ({ space }) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
@@ -60,9 +64,9 @@ const SpaceRootStackNavigator = () => {
     // setCreateNewPostResult,
     // createNewPostResult,
   } = useContext(GlobalContext);
-  const [tags, setTags] = useState({});
-  const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
-  const [screenLoaded, setScreenLoaded] = useState({});
+  // const [tags, setTags] = useState({});
+  // const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
+  // const [screenLoaded, setScreenLoaded] = useState({});
   // ここでstateでいいんじゃないかな。。。
   // もうシンプルに、、、formDataはpostのpageだけで持っておけば良くね？？シンプルにここで重要なのは、stateなわけでさ。。。
   const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
@@ -201,19 +205,24 @@ const SpaceRootStackNavigator = () => {
   // }, [props.route?.params?.createdPost]);
 
   return (
-    <SpaceRootContext.Provider
-      value={{
-        spaceAndUserRelationship: props.spaceAndUserRelationship,
-        navigation: props.navigation,
-        viewPostsType,
-        setViewPostsType,
-        screenLoaded,
-        setScreenLoaded,
-        createNewPostFormData,
-        setCreateNewPostFormData,
-        createNewPostResult,
-        setCreateNewPostResult,
-      }}
+    // <SpaceRootContext.Provider
+    //   value={{
+    //     space,
+    //     spaceAndUserRelationship: props.spaceAndUserRelationship,
+    //     navigation: props.navigation,
+    //     viewPostsType,
+    //     setViewPostsType,
+    //     screenLoaded,
+    //     setScreenLoaded,
+    //     createNewPostFormData,
+    //     setCreateNewPostFormData,
+    //     createNewPostResult,
+    //     setCreateNewPostResult,
+    //   }}
+    // >
+    <Composer
+      // この記法めっちゃいいな。
+      components={[({ children }) => <SpaceRootProvider initialSpace={space}>{children}</SpaceRootProvider>]}
     >
       <Stack.Navigator
         screenOptions={({ navigation }) => ({
@@ -224,7 +233,7 @@ const SpaceRootStackNavigator = () => {
         <Stack.Group>
           <Stack.Screen
             name='SpaceBottomTabNavigator'
-            component={SpaceRootBottomTabNavigator}
+            component={SpaceBottomTabNavigator}
             options={({ navigation }) => ({
               // headerShown: false,
             })}
@@ -249,11 +258,9 @@ const SpaceRootStackNavigator = () => {
         </Stack.Group>
       </Stack.Navigator>
       <SnackBar.Primary />
-    </SpaceRootContext.Provider>
+    </Composer>
   );
 };
-
-export default SpaceRootStackNavigator;
 
 // tabBar={(props) => <CustomTabBar {...props} />}
 // screenOptions={({ route }) => ({

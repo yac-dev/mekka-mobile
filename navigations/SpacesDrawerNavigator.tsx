@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { iconParameterBackgroundColorTable, iconColorTable } from '../themes/color';
-import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
+import SpaceRootBottomTabNavigator from './SpaceBottomTabNavigator';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
