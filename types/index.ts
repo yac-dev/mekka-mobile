@@ -32,7 +32,12 @@ export type IconType = {
 
 export type TagType = {
   _id: string;
+  name: string;
   icon: IconType;
+  color: string;
+  count: number;
+  space: SpaceType;
+  updatedAt: string;
   createdBy: UserType;
 };
 

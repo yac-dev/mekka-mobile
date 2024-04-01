@@ -19,6 +19,7 @@ import {
   MySpacesProvider,
   SpaceUpdatesProvider,
   CurrentSpaceProvider,
+  CurrentTagProvider,
   AppStateProvider,
 } from './providers';
 import { PaperProvider } from 'react-native-paper';
@@ -219,12 +220,13 @@ const App: React.FC = function () {
           components={[
             PaperProvider,
             BottomSheetModalProvider,
-            AppStateProvider,
             AuthProvider,
             SnackBarProvider,
             MySpacesProvider,
             SpaceUpdatesProvider,
             CurrentSpaceProvider,
+            CurrentTagProvider,
+            AppStateProvider,
           ]}
         >
           <Root />

@@ -231,13 +231,7 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
         })}
       >
         <Stack.Group>
-          <Stack.Screen
-            name='SpaceBottomTabNavigator'
-            component={SpaceBottomTabNavigator}
-            options={({ navigation }) => ({
-              // headerShown: false,
-            })}
-          />
+          <Stack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <Stack.Screen
