@@ -16,18 +16,12 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import backendAPI from '../apis/backend';
-import GalleryNew from '../features/Space/components/GalleryNew';
-import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
-import TaggedPosts from '../features/Space/components/TaggedPosts';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import CreatePost from '../features/Space/pages/CreatePost';
-import SpaceMenuBottomSheet from '../features/Space/pages/SpaceMenuBottomSheet';
-import PostsBottomNavigator from './PostsBottomNavigator';
 // import Grid from '../features/Space/components/Grid';
 import TagView from '../features/Space/pages/TagView';
 import Map from '../features/Space/components/Map';
@@ -39,36 +33,31 @@ import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
 import Dummy from '../features/Utils/Dummy';
 import { TabView, Route, SceneMap } from 'react-native-tab-view';
+import { SpaceRootContext } from '../features';
+import { CurrentTagContext, SpaceUpdatesContext } from '../providers';
+import { TagType } from '../types';
 
 const Tab = createMaterialTopTabNavigator();
 
 const TagsTopTabNavigator = (props) => {
-  const {
-    spaceAndUserRelationship,
-    navigation,
-    hasSpaceBeenFetched,
-    setHasSpaceBeenFetched,
-    chooseViewBottomSheetRef,
-    viewPostsType,
-    screenLoaded,
-    setScreenLoaded,
-    createNewPostResult,
-  } = useContext(SpaceRootContext);
-  const {
-    isIpad,
-    spaceMenuBottomSheetRef,
-    currentSpace,
-    setCurrentSpace,
-    currentTagObject,
-    setCurrentTagObject,
-    isAfterPosted,
-    setIsAfterPosted,
-    spaceAndUserRelationshipsFetchingStatus,
-    updatesTable,
-    setUpdatesTable,
-    setCurrentSpaceAndUserRelationship,
-    currentSpaceAndUserRelationship,
-  } = useContext(GlobalContext);
+  const { space, viewPostsType, screenLoaded, setScreenLoaded } = useContext(SpaceRootContext);
+  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
+  const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
+  // const {
+  //   isIpad,
+  //   spaceMenuBottomSheetRef,
+  //   currentSpace,
+  //   setCurrentSpace,
+  //   currentTagObject,
+  //   setCurrentTagObject,
+  //   isAfterPosted,
+  //   setIsAfterPosted,
+  //   spaceAndUserRelationshipsFetchingStatus,
+  //   updatesTable,
+  //   setUpdatesTable,
+  //   setCurrentSpaceAndUserRelationship,
+  //   currentSpaceAndUserRelationship,
+  // } = useContext(GlobalContext);
   const route = useRoute();
   const scrollViewRef = useRef(null);
   // const [space, setSpace] = useState(null);
@@ -78,109 +67,101 @@ const TagsTopTabNavigator = (props) => {
   const [isLoadningTags, setIsLoadingTags] = useState(false);
   const [fetchingState, setFetchingState] = useState({ isLoading: false, success: false, error: false });
 
-  const getTags = async () => {
-    // setIsLoadingTags(true);
-    // setHaveTagsBeenFetched(false);
-    setFetchingState((previous) => {
-      return {
-        ...previous,
-        isLoading: true,
-        success: false,
-      };
-    });
-    setTagsFetchingState('loading');
-    const result = await backendAPI.get(`/spaces/${spaceAndUserRelationship.space._id}/tags`);
-    const { tags } = result.data;
-    setTags(() => {
-      const table = {};
-      tags.forEach((tag, index) => {
-        table[tag._id] = {
-          tag,
-          hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
-          createdPosts: false,
-        };
-      });
+  // これも、SpaceRootの方に移したい。
+  // const getTags = async () => {
+  //   // setIsLoadingTags(true);
+  //   // setHaveTagsBeenFetched(false);
+  //   setFetchingState((previous) => {
+  //     return {
+  //       ...previous,
+  //       isLoading: true,
+  //       success: false,
+  //     };
+  //   });
+  //   setTagsFetchingState('loading');
+  //   const result = await backendAPI.get(`/spaces/${spaceAndUserRelationship.space._id}/tags`);
+  //   const { tags } = result.data;
+  //   setTags(() => {
+  //     const table = {};
+  //     tags.forEach((tag, index) => {
+  //       table[tag._id] = {
+  //         tag,
+  //         hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
+  //         createdPosts: false,
+  //       };
+  //     });
 
-      return table;
-    });
+  //     return table;
+  //   });
 
-    setScreenLoaded(() => {
-      const table = {};
-      tags.forEach((tag, index) => {
-        table[tag._id] = false;
-      });
+  //   setScreenLoaded(() => {
+  //     const table = {};
+  //     tags.forEach((tag, index) => {
+  //       table[tag._id] = false;
+  //     });
 
-      return table;
-    });
-    const defaultTagObject = {
-      tag: tags[0],
-      hasUnreadPosts: tags[0].updatedAt > props.route?.params?.lastCheckedIn ? true : false,
-      createdPosts: false,
-    };
-    setCurrentTagObject(defaultTagObject);
-    // setIsLoadingTags(false);
-    // setHaveTagsBeenFetched(true);
-    setTagsFetchingState('success');
-    setFetchingState((previous) => {
-      return {
-        ...previous,
-        isLoading: false,
-        success: true,
-      };
-    });
-  };
+  //     return table;
+  //   });
+  //   const defaultTagObject = {
+  //     tag: tags[0],
+  //     hasUnreadPosts: tags[0].updatedAt > props.route?.params?.lastCheckedIn ? true : false,
+  //     createdPosts: false,
+  //   };
+  //   setCurrentTagObject(defaultTagObject);
+  //   // setIsLoadingTags(false);
+  //   // setHaveTagsBeenFetched(true);
+  //   setTagsFetchingState('success');
+  //   setFetchingState((previous) => {
+  //     return {
+  //       ...previous,
+  //       isLoading: false,
+  //       success: true,
+  //     };
+  //   });
+  // };
 
-  useEffect(() => {
-    if (spaceAndUserRelationshipsFetchingStatus === 'success') {
-      getTags();
-    }
-  }, [spaceAndUserRelationshipsFetchingStatus]);
+  // useEffect(() => {
+  //   if (createNewPostResult.isSuccess && createNewPostResult.responseData?.createdTags) {
+  //     console.log('created tags', createNewPostResult.responseData?.createdTags);
+  //     setTags((previous) => {
+  //       const updating = { ...previous };
+  //       createNewPostResult.responseData.createdTags.forEach((tag, index) => {
+  //         updating[tag._id] = {
+  //           tag,
+  //           hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
+  //         };
+  //       });
+  //       return updating;
+  //     });
+  //     setUpdatesTable((previous) => {
+  //       const updating = { ...previous };
+  //       createNewPostResult.responseData.createdTags.forEach((tag, index) => {
+  //         updating[tag.space][tag._id] = 0;
+  //       });
 
-  useEffect(() => {
-    if (createNewPostResult.isSuccess && createNewPostResult.responseData?.createdTags) {
-      console.log('created tags', createNewPostResult.responseData?.createdTags);
-      setTags((previous) => {
-        const updating = { ...previous };
-        createNewPostResult.responseData.createdTags.forEach((tag, index) => {
-          updating[tag._id] = {
-            tag,
-            hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
-          };
-        });
-        return updating;
-      });
-      setUpdatesTable((previous) => {
-        const updating = { ...previous };
-        createNewPostResult.responseData.createdTags.forEach((tag, index) => {
-          updating[tag.space][tag._id] = 0;
-        });
-
-        return updating;
-      });
-    }
-  }, [createNewPostResult]);
+  //       return updating;
+  //     });
+  //   }
+  // }, [createNewPostResult]);
 
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    // viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator'
-    setCurrentTagObject(tab);
-    navigation.navigate({
-      name: `SpaceTab_${tab.tag._id}`,
-      params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
-    });
-    if (updatesTable[spaceAndUserRelationship.space._id][tab.tag._id]) {
-      setUpdatesTable((previous) => {
+    setCurrentTag(tab);
+    // navigation.navigate({
+    //   name: `SpaceTab_${tab.tag._id}`,
+    //   params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
+    // });
+    if (spaceUpdates[space._id][tab._id]) {
+      setSpaceUpdates((previous) => {
         const updatesTable = { ...previous };
-        updatesTable[spaceAndUserRelationship.space._id][tab.tag._id] = 0;
+        updatesTable[space._id][tab.tag._id] = 0;
         return updatesTable;
       });
     } // 一時停止。
   };
 
   const renderTab = ({ item }) => {
-    const isActive = item.tag._id === currentTagObject.tag._id;
-    // console.log(isActive);
-    // console.log('current tag pbject', currentTagObject);
+    const isActive = item._id === currentTag._id;
     return (
       <TouchableOpacity
         key={route.key}
@@ -207,7 +188,7 @@ const TagsTopTabNavigator = (props) => {
         >
           <ExpoImage
             style={{ width: 25, height: 25, marginBottom: 5 }}
-            source={{ uri: item.tag.icon.url }}
+            source={{ uri: item.icon.url }}
             // placeholder={blurhash}
             // contentFit='fill'
             // transition={100}
@@ -221,7 +202,7 @@ const TagsTopTabNavigator = (props) => {
                   {route.params?.tagObject.tag.count}
                 </Text> */}
         </View>
-        {updatesTable[spaceAndUserRelationship.space._id]?.[item.tag._id] ? (
+        {spaceUpdates[space._id]?.[item.tag._id] ? (
           <View
             style={{
               width: 18,
@@ -235,7 +216,7 @@ const TagsTopTabNavigator = (props) => {
               right: 0,
             }}
           >
-            <Text style={{ color: 'white' }}>{updatesTable[spaceAndUserRelationship.space._id][item.tag._id]}</Text>
+            <Text style={{ color: 'white' }}>{spaceUpdates[space._id][item.tag._id]}</Text>
           </View>
         ) : null}
 
@@ -275,13 +256,8 @@ const TagsTopTabNavigator = (props) => {
             animationEnabled: true,
           })}
         >
-          {Object.values(tags).map((tagObject, index) => (
-            <Tab.Screen
-              key={index}
-              name={`SpaceTab_${tagObject.tag._id}`}
-              options={{ title: tagObject.tag.name }}
-              initialParams={{ tagObject }}
-            >
+          {Object.values(tags).map((tag: TagType, index: number) => (
+            <Tab.Screen key={index} name={`SpaceTab_${tag._id}`} options={{ title: tag.name }} initialParams={{ tag }}>
               {({ navigation }) => (
                 // <TagViewStackNavigator
                 //   navigation={navigation}
@@ -290,7 +266,7 @@ const TagsTopTabNavigator = (props) => {
                 // />
                 <ViewPostsTopTabNavigator
                   navigation={navigation}
-                  tagObject={tagObject}
+                  tagObject={tag}
                   tagsFetchingStatus={tagsFetchingStatus}
                 />
               )}
