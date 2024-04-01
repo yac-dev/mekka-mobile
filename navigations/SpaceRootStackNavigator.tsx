@@ -25,6 +25,7 @@ import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { AuthContext } from '../providers';
 import { SnackBarContext } from '../providers';
 import { SnackBar } from '../components';
+import { SpaceType } from '../types';
 const Stack = createNativeStackNavigator();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
@@ -40,7 +41,11 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
   moments: [],
 };
 
-const SpaceRootStackNavigator = (props) => {
+type SpaceRootStackNavigatorProps = {
+  space: SpaceType;
+};
+
+const SpaceRootStackNavigator = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
@@ -55,8 +60,6 @@ const SpaceRootStackNavigator = (props) => {
     // setCreateNewPostResult,
     // createNewPostResult,
   } = useContext(GlobalContext);
-  const [space, setSpace] = useState(null);
-  const [hasSpaceBeenFetched, setHasSpaceBeenFetched] = useState(false);
   const [tags, setTags] = useState({});
   const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
   const chooseViewBottomSheetRef = useRef(null);
@@ -313,21 +316,6 @@ const SpaceRootStackNavigator = (props) => {
               },
             })}
           />
-          {/* <Stack.Screen
-            name='ViewPostStackNavigator'
-            component={ViewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          /> */}
         </Stack.Group>
       </Stack.Navigator>
       <SnackBar.Primary />

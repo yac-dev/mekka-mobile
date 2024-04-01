@@ -1,11 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
-
+import { TextColor } from '../themes';
 import Home from '../features/Home/pages/Home';
-import CreatePost from '../features/Space/pages/CreatePost';
 import { primaryBackgroundColor } from '../themes/color';
-import { primaryTextColor } from '../themes/text';
-import SpacesTopTabNavigator from './SpacesTopTabNavigator';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import CreateNewSpace from '../features/CreateNewSpace/pages/CreateNewSpace';
@@ -202,7 +199,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: primaryTextColor,
+                color: TextColor.primary,
               },
             })}
           />
@@ -222,7 +219,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: primaryTextColor,
+                color: TextColor.primary,
               },
             })}
           />
@@ -242,7 +239,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: primaryTextColor,
+                color: TextColor.primary,
               },
             })}
           />
@@ -267,26 +264,6 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          {/* <Stack.Screen
-              name='LoginStackNavigator'
-              component={LoginStackNavigator}
-              options={({ navigation }) => ({
-                headerShown: false,
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerStyle: {
-                  backgroundColor: 'black',
-                },
-                headerTitleStyle: {
-                  fontWeight: 'bold',
-                  color: 'white',
-                },
-              })}
-            ></Stack.Screen> */}
           <HomeStack.Screen
             name='Signup'
             component={Signup}
@@ -367,7 +344,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: primaryTextColor,
+                color: TextColor.primary,
               },
             })}
           />
@@ -388,7 +365,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: primaryTextColor,
+                color: TextColor.primary,
               },
             })}
           />
