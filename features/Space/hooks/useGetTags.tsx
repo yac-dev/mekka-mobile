@@ -3,7 +3,7 @@ import { ApiResultType, AuthType } from '../../../types';
 import { getTags } from '../apis';
 import { GetTagsInputType, GetTagsOutputType } from '../types';
 
-export const useGetMySpaces = () => {
+export const useGetTags = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetTagsOutputType>>({
     status: 'idling',
     data: void 0,

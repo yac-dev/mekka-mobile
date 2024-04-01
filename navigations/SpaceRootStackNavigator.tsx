@@ -18,7 +18,6 @@ import backendAPI from '../apis/backend';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
-// import SpaceRootBottomTabNavigator from './SpaceBottomTabNavigator';
 import { SpaceBottomTabNavigator } from './SpaceBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -220,10 +219,7 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
     //     setCreateNewPostResult,
     //   }}
     // >
-    <Composer
-      // この記法めっちゃいいな。
-      components={[({ children }) => <SpaceRootProvider initialSpace={space}>{children}</SpaceRootProvider>]}
-    >
+    <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}>
       <Stack.Navigator
         screenOptions={({ navigation }) => ({
           headerShown: false,

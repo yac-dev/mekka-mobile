@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Platform, Alert, Text, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import TagsTopTabNavigator from './TagsTopTabNavigator';
+import TagsTopTabNavigator from './SpaceTopTabNavigator';
 import LocationsViewTopTabNavigator from './LocationsViewTopTabNavigator';
 import PeopleViewTopTabNavigator from './PeopleViewTopTabNavigator';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
@@ -35,7 +35,7 @@ const viewTypeObject = {
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={22} />,
 };
 
-const ViewPostsTopTabNavigator = (parentProps) => {
+export const PostsTopTabNavigator = (parentProps) => {
   const {
     chooseViewBottomSheetRef,
     viewPostsType,
@@ -243,5 +243,3 @@ const ViewPostsTopTabNavigator = (parentProps) => {
     </TagRootContext.Provider>
   );
 };
-
-export default ViewPostsTopTabNavigator;

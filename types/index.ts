@@ -73,11 +73,11 @@ export const INITIAL_SNACK_BAR: SnackBarType = {
   duration: void 0,
 };
 
-export type StatusType = 'idling' | 'loading' | 'success' | 'fail' | 'error' | 'paging';
+export type ApiStatusType = 'idling' | 'loading' | 'success' | 'fail' | 'error' | 'paging';
 
 // 最初はdata voidだから、?...　genericはあくまでdata用。
 export type ApiResultType<T> = {
-  status: StatusType;
+  status: ApiStatusType;
   data?: T;
   message: '';
 };

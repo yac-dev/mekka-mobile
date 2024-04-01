@@ -7,11 +7,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { iconParameterBackgroundColorTable, iconColorTable } from '../themes/color';
-import SpaceRootBottomTabNavigator from './SpaceBottomTabNavigator';
 import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import { Image as ExpoImage } from 'expo-image';
 import Dummy2 from '../features/Utils/Dummy2';
-import SpaceRootStackNavigator from './SpaceRootStackNavigator';
+// import SpaceRootStackNavigator from './SpaceRootStackNavigator';
+import { SpaceRootStackNavigator } from './SpaceRootStackNavigator';
 import backendAPI from '../apis/backend';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { AuthContext, MySpacesContext, SpaceUpdatesContext } from '../providers';
@@ -27,6 +27,7 @@ import { RootStackNavigatorProps } from '../features';
 import { AuthMenu } from '../features';
 import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
 import { CustomDrawer } from '../features';
+import { SpaceRootProvider } from '../features';
 
 type SpacesDrawerParams = {};
 
@@ -552,13 +553,7 @@ export const SpacesDrawerNavigator = (props) => {
                   },
                 })}
               >
-                {({ navigation, route }) => (
-                  <SpaceRootStackNavigator space={space} navigation={navigation} />
-                  // 一旦、SpaceRootのrenderしないようにする。
-                  // <View style={{ backgroundColor: 'red' }}>
-                  //   <Text>Hello world</Text>
-                  // </View>
-                )}
+                {({ navigation, route }) => <SpaceRootStackNavigator space={space} navigation={navigation} />}
               </Drawer.Screen>
             ))
           )}

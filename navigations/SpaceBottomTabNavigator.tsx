@@ -3,15 +3,15 @@ import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import TagsTopTabNavigator from './TagsTopTabNavigator';
+import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
 import { Image as ExpoImage } from 'expo-image';
 const Tab = createBottomTabNavigator();
 
-export const SpaceBottomTabNavigator = (props) => {
+export const SpaceBottomTabNavigator = () => {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator screenOptions={({ navigation, route }) => ({ headerShown: false })}>
-        <Tab.Screen name='TagsTopTabNavigator' component={TagsTopTabNavigator} />
+        <Tab.Screen name='TagsTopTabNavigator' component={SpaceTopTabNavigator} />
       </Tab.Navigator>
     </View>
   );

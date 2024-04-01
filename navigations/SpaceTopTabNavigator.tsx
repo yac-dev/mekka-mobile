@@ -25,7 +25,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 // import Grid from '../features/Space/components/Grid';
 import TagView from '../features/Space/pages/TagView';
 import Map from '../features/Space/components/Map';
-import ViewPostsTopTabNavigator from './ViewPostsTopTabNavigator';
+import { PostsTopTabNavigator } from './PostsTopTabNavigator';
 import ChooseViewBottomSheet from '../features/Space/pages/ChooseViewBottomSheet';
 import { TagViewRootContext } from '../features/SpaceMenuBottomSheet/contexts/TagViewRootContext';
 import TagViewStackNavigator from './TagViewStackNavigator';
@@ -39,33 +39,12 @@ import { TagType } from '../types';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TagsTopTabNavigator = (props) => {
-  const { space, viewPostsType, screenLoaded, setScreenLoaded } = useContext(SpaceRootContext);
+export const SpaceTopTabNavigator = (props) => {
+  const { space, viewPostsType, screenLoaded, setScreenLoaded, tags, getTagsStatus } = useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
-  // const {
-  //   isIpad,
-  //   spaceMenuBottomSheetRef,
-  //   currentSpace,
-  //   setCurrentSpace,
-  //   currentTagObject,
-  //   setCurrentTagObject,
-  //   isAfterPosted,
-  //   setIsAfterPosted,
-  //   spaceAndUserRelationshipsFetchingStatus,
-  //   updatesTable,
-  //   setUpdatesTable,
-  //   setCurrentSpaceAndUserRelationship,
-  //   currentSpaceAndUserRelationship,
-  // } = useContext(GlobalContext);
   const route = useRoute();
   const scrollViewRef = useRef(null);
-  // const [space, setSpace] = useState(null);
-  const [tags, setTags] = useState({});
-  const [tagsFetchingStatus, setTagsFetchingState] = useState('idling'); // 'idling','loading','success', 'error'
-  const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
-  const [isLoadningTags, setIsLoadingTags] = useState(false);
-  const [fetchingState, setFetchingState] = useState({ isLoading: false, success: false, error: false });
 
   // これも、SpaceRootの方に移したい。
   // const getTags = async () => {
@@ -225,7 +204,7 @@ const TagsTopTabNavigator = (props) => {
     );
   };
 
-  if (tagsFetchingStatus === 'loading') {
+  if (getTagsStatus === 'loading') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -233,8 +212,7 @@ const TagsTopTabNavigator = (props) => {
     );
   }
 
-  // react native tab viewの実装だ。
-  if (tagsFetchingStatus === 'success') {
+  if (getTagsStatus === 'success') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <View style={{ padding: 10 }}>
@@ -259,15 +237,10 @@ const TagsTopTabNavigator = (props) => {
           {Object.values(tags).map((tag: TagType, index: number) => (
             <Tab.Screen key={index} name={`SpaceTab_${tag._id}`} options={{ title: tag.name }} initialParams={{ tag }}>
               {({ navigation }) => (
-                // <TagViewStackNavigator
-                //   navigation={navigation}
-                //   tagObject={tagObject}
-                //   tagsFetchingStatus={tagsFetchingStatus}
-                // />
-                <ViewPostsTopTabNavigator
+                <PostsTopTabNavigator
+                  // postsかmapPostsのどっちか
                   navigation={navigation}
                   tagObject={tag}
-                  tagsFetchingStatus={tagsFetchingStatus}
                 />
               )}
             </Tab.Screen>
@@ -277,5 +250,3 @@ const TagsTopTabNavigator = (props) => {
     );
   }
 };
-
-export default TagsTopTabNavigator;

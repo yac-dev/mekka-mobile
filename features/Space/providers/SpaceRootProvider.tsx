@@ -1,5 +1,6 @@
-import React, { useState, createContext } from 'react';
-import { SpaceType } from '../../../types';
+import React, { useState, createContext, useEffect } from 'react';
+import { SpaceType, TagType, ApiStatusType } from '../../../types';
+import { useGetTags } from '../hooks';
 
 type SpaceRootContextType = {
   space: SpaceType;
@@ -8,6 +9,9 @@ type SpaceRootContextType = {
   setViewPostsType: React.Dispatch<React.SetStateAction<ViewPostsType>>;
   screenLoaded: boolean;
   setScreenLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+  tags: TagType[];
+  setTags: React.Dispatch<React.SetStateAction<TagType[]>>;
+  getTagsStatus: ApiStatusType;
 };
 
 export const SpaceRootContext = createContext<SpaceRootContextType>({
@@ -17,21 +21,48 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
   setViewPostsType: () => {},
   screenLoaded: false,
   setScreenLoaded: () => {},
+  tags: void 0,
+  setTags: () => {},
+  getTagsStatus: 'idling',
 });
 
 export type ViewPostsType = 'grid' | 'map';
 
-export const SpaceRootProvider: React.FC<{ children: React.ReactNode; initialSpace?: SpaceType }> = ({
-  children,
-  initialSpace,
-}) => {
-  const [space, setSpace] = useState<SpaceType | undefined>(initialSpace);
+type SpaceRootProviderType = {
+  children: React.ReactNode;
+  defaultSpace: SpaceType;
+};
+
+export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, defaultSpace }) => {
+  const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
+  const [space, setSpace] = useState<SpaceType | undefined>(void 0);
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
+  const [tags, setTags] = useState<TagType[] | undefined>(void 0);
+
+  useEffect(() => {
+    requestGetTags({ spaceId: defaultSpace._id });
+  }, []);
+
+  useEffect(() => {
+    if (getTagsResult.status === 'success') {
+      setTags(getTagsResult.data.tags);
+    }
+  }, [getTagsResult.status]);
 
   return (
     <SpaceRootContext.Provider
-      value={{ space, setSpace, viewPostsType, setViewPostsType, screenLoaded, setScreenLoaded }}
+      value={{
+        space,
+        setSpace,
+        viewPostsType,
+        setViewPostsType,
+        screenLoaded,
+        setScreenLoaded,
+        tags,
+        setTags,
+        getTagsStatus: getTagsResult.status,
+      }}
     >
       {children}
     </SpaceRootContext.Provider>

@@ -5,3 +5,5 @@ export * from './SpacesDrawerNavigator';
 export * from './LoginStackNavigator';
 export * from './SpaceRootStackNavigator';
 export * from './SpaceBottomTabNavigator';
+export * from './SpaceTopTabNavigator';
+export * from './PostsTopTabNavigator';
