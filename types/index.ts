@@ -141,3 +141,30 @@ export const INITIAL_POST_FORM_DATA: PostFormType = {
   locationTagOptions: [],
   moments: [],
 };
+
+export type LocationType = {
+  type: string;
+  coordinates: number[];
+};
+
+export type ContentType = {
+  data: string; // urlのdata
+  type: string; // photo or video
+  post: PostType; // これいらねーな多分。
+  duration: number;
+  createdBy: UserType;
+  createdAt: string;
+};
+
+export type PostType = {
+  _id: string;
+  contents: ContentType[];
+  type: string; // normal or moment
+  caption: string;
+  space: string;
+  createdBy: string;
+  disappearAt: string;
+  totalComments?: number;
+  totalReactions?: number;
+  location: LocationType;
+};

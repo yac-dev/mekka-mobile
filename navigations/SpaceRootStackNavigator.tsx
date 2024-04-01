@@ -72,6 +72,7 @@ const SpaceRootStackNavigator = () => {
     isError: false,
     responseData: null,
   });
+  // apiの
 
   // ここが変わってなかったんだよ。。。なんでだろ？？
   // signupした後、spaceを作った後（多分spaceにjoinした後）が動いていない。
@@ -82,6 +83,7 @@ const SpaceRootStackNavigator = () => {
     }
   }, [createNewPostResult.isCreating]);
 
+  // hooksはここでやるよね。。。
   const createPost = async () => {
     const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
       (element, index) => element.created
