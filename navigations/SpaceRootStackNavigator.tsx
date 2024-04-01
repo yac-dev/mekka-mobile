@@ -61,19 +61,10 @@ const SpaceRootStackNavigator = () => {
     // createNewPostResult,
   } = useContext(GlobalContext);
   const [tags, setTags] = useState({});
-  const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
-  const chooseViewBottomSheetRef = useRef(null);
-  const locationsViewPostsBottomSheetRef = useRef(null);
-  const [locationsViewPosts, setLocationsViewPosts] = useState([]);
-  const [haveLocationsViewPostsBeenFetched, setHaveLocationsViewPostsBeenFetched] = useState(false);
-  const [isFetchingLocationsViewPosts, setIsFetchingLocationsViewPosts] = useState(false);
-  const [selectedLocationTag, setSelectedLocationTag] = useState(null);
   const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
-  const [isAfterPosted, setIsAfterPosted] = useState(false);
   const [screenLoaded, setScreenLoaded] = useState({});
-  const [currentPost, setCurrentPost] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
   // ここでstateでいいんじゃないかな。。。
+  // もうシンプルに、、、formDataはpostのpageだけで持っておけば良くね？？シンプルにここで重要なのは、stateなわけでさ。。。
   const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
   const [createNewPostResult, setCreateNewPostResult] = useState({
     isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
@@ -207,82 +198,19 @@ const SpaceRootStackNavigator = () => {
   //   }
   // }, [props.route?.params?.createdPost]);
 
-  // const getSpaceById = async () => {
-  //   setHasSpaceBeenFetched(false);
-  //   const result = await backendAPI.get(`/spaces/${props.spaceAndUserRelationship.space._id}`);
-  //   const { space } = result.data;
-  //   setSpace(space);
-  //   setCurrentSpace(space); // globalで持っているspaceだからねこれ。bottom sheetでrenderするためのもの。
-  //   setHasSpaceBeenFetched(true);
-  // };
-
-  // const getTags = async () => {
-  //   const result = await backendAPI.get(`/spaces/${props.spaceAndUserRelationship.space._id}/tags`);
-  //   const { tags } = result.data;
-  //   setTags(() => {
-  //     const table = {};
-  //     tags.forEach((tag, index) => {
-  //       table[tag._id] = {
-  //         tag,
-  //         hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
-  //         createdPosts: false,
-  //       };
-  //     });
-
-  //     return table;
-  //   });
-  //   setHaveTagsBeenFetched(true);
-  // };
-
-  // useEffect(() => {
-  //   getSpaceById();
-  // }, []);
-
-  // useEffect(() => {
-  //   if(space){
-  //     getTags();
-  //   }
-  // },[hasSpaceBeenFetched, space])
-
-  // useEffect(() => {
-  //   getTags();
-  // }, []);
-
-  // useNavigationでも使ってみようかね。
-  // うん。とりあえず、ここでまんまnavigationをすることは難しそう。。。
-  // うん。spaceRootの中にcreateNewPostを入れないといけないよね。。。
   return (
     <SpaceRootContext.Provider
       value={{
         spaceAndUserRelationship: props.spaceAndUserRelationship,
-        // space,
-        hasSpaceBeenFetched,
-        setHasSpaceBeenFetched,
         navigation: props.navigation,
-        locationsViewPosts,
-        setLocationsViewPosts,
-        haveLocationsViewPostsBeenFetched,
-        setHaveLocationsViewPostsBeenFetched,
-        locationsViewPostsBottomSheetRef,
-        selectedLocationTag,
-        setSelectedLocationTag,
-        isFetchingLocationsViewPosts,
-        setIsFetchingLocationsViewPosts,
-        chooseViewBottomSheetRef,
         viewPostsType,
         setViewPostsType,
-        isAfterPosted,
-        setIsAfterPosted,
         screenLoaded,
         setScreenLoaded,
         createNewPostFormData,
         setCreateNewPostFormData,
         createNewPostResult,
         setCreateNewPostResult,
-        currentPost,
-        setCurrentPost,
-        currentIndex,
-        setCurrentIndex,
       }}
     >
       <Stack.Navigator

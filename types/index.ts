@@ -115,3 +115,29 @@ export type SpaceAndUserRelationshipType = {
 };
 
 export type SpaceUpdatesType = {};
+
+export type PostFormType = {
+  postType: string;
+  contents: [];
+  caption: string;
+  dummyCreatedTagId: 1;
+  addedTags: {};
+  tagOptions: [];
+  addedLocationTag: null;
+  location: null;
+  locationTagOptions: [];
+  moments: [];
+};
+
+export const INITIAL_POST_FORM_DATA: PostFormType = {
+  postType: '',
+  contents: [],
+  caption: '',
+  dummyCreatedTagId: 1,
+  addedTags: {},
+  tagOptions: [],
+  addedLocationTag: null,
+  location: null,
+  locationTagOptions: [],
+  moments: [],
+};
