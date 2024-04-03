@@ -42,7 +42,6 @@ export const Root = () => {
   // jwtがなければ、当然data voidでその場合はgetMySpacesを使わない。
   useEffect(() => {
     if (loadMeApiResult.status === 'success') {
-      console.log('auth res', loadMeApiResult.data);
       setAuth(loadMeApiResult.data);
       // ここでauthがtruthyになって、先にspaceDrawerがrendersれているんだなおそらく。んで、mySpacesの取得が動く前に先にcomponentのrenderingが起こっちゃっているわけか。。。
       // console.log('has auth and run getmyspaces??', auth);

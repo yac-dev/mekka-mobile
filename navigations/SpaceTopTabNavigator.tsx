@@ -18,6 +18,8 @@ import { TabView, Route, SceneMap } from 'react-native-tab-view';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { CurrentTagContext, SpaceUpdatesContext } from '../providers';
 import { TagType } from '../types';
+import { useNavigation } from '@react-navigation/native';
+import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -27,6 +29,7 @@ export const SpaceTopTabNavigator = (props) => {
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const route = useRoute();
   const scrollViewRef = useRef(null);
+  const navigation = useNavigation<SpaceRootStackNavigatorProp>();
 
   // これも、SpaceRootの方に移したい。
   // const getTags = async () => {
@@ -109,9 +112,16 @@ export const SpaceTopTabNavigator = (props) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
     // navigation.navigate({
-    //   name: `SpaceTab_${tab.tag._id}`,
-    //   params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
+    //   name: `Tag_${tab._id}`,
+    //   // params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
     // });
+    navigation.navigate('SpaceBottomTabNavigator', {
+      screen: 'TagsTopTabNavigator',
+      params: {
+        screen: `Tag_${tab._id}`,
+        params: { screen: viewPostsType === 'grid' ? 'grid' : 'map' },
+      },
+    });
     if (spaceUpdates[space._id][tab._id]) {
       setSpaceUpdates((previous) => {
         const updatesTable = { ...previous };
@@ -207,11 +217,10 @@ export const SpaceTopTabNavigator = (props) => {
             keyExtractor={(item, index) => `${item._id}-${index}`}
           />
         </View>
-        {/* <Tab.Navigator
-          // tabBar={(props) => <CustomTabBar {...props} />}
+        <Tab.Navigator
           tabBar={() => null}
           screenOptions={({ route }) => ({
-            lazy: true, // これでそれぞれのとこに足す方がいいのかな。ただな、、
+            lazy: true,
             swipeEnabled: false,
             animationEnabled: true,
           })}
@@ -219,15 +228,18 @@ export const SpaceTopTabNavigator = (props) => {
           {Object.values(tags).map((tag: TagType, index: number) => (
             <Tab.Screen key={index} name={`Tag_${tag._id}`} options={{ title: tag.name }} initialParams={{ tag }}>
               {({ navigation }) => (
-                <PostsTopTabNavigator
-                  // postsかmapPostsのどっちか
-                  navigation={navigation}
-                  tagObject={tag}
-                />
+                // <PostsTopTabNavigator
+                //   // postsかmapPostsのどっちか
+                //   navigation={navigation}
+                //   tagObject={tag}
+                // />
+                <View style={{ backgroundColor: 'black', flex: 1 }}>
+                  <Text style={{ color: 'white' }}>Hello puta madres interviewers</Text>
+                </View>
               )}
             </Tab.Screen>
           ))}
-        </Tab.Navigator> */}
+        </Tab.Navigator>
       </View>
     );
   }

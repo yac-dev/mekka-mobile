@@ -19,7 +19,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceBottomTabNavigator } from './SpaceBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
 import { AuthContext, CurrentTagContext } from '../providers';
 import { SnackBarContext } from '../providers';
@@ -28,8 +28,30 @@ import { SpaceType } from '../types';
 import { Composer } from '../providers/Providers';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { useGetTags } from '../features/Space/hooks/useGetTags';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator();
+// こうやって書くと、nestedな形がよく分かっていいね
+type PostsTopTabNavigatorParams = {
+  grid: undefined;
+  map: undefined;
+};
+
+type SpaceTopTabNavigatorParams = {
+  [key: string]: NavigatorScreenParams<PostsTopTabNavigatorParams>;
+};
+
+type SpaceBottomTabNavigatorParams = {
+  TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+};
+
+export type SpaceRootStackParams = {
+  SpaceBottomTabNavigator: NavigatorScreenParams<SpaceBottomTabNavigatorParams>;
+  CreateNewPostStackNavigator: undefined;
+};
+
+export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
+
+const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
 
 export const INITIAL_CREATE_NEW_POST_STATE = {
   postType: '',
@@ -56,7 +78,6 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   const { setCurrentTag } = useContext(CurrentTagContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
 
-  console.log('tags ', tags);
   useEffect(() => {
     setSpace(space);
     requestGetTags({ spaceId: space._id });
@@ -237,17 +258,17 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
     //   }}
     // // >
     // <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}>
-    <Stack.Navigator
+    <SpaceRootStack.Navigator
       screenOptions={({ navigation }) => ({
         headerShown: false,
         // headerShown: true,
       })}
     >
-      <Stack.Group>
-        <Stack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
-      </Stack.Group>
-      <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-        <Stack.Screen
+      <SpaceRootStack.Group>
+        <SpaceRootStack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
+      </SpaceRootStack.Group>
+      <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+        <SpaceRootStack.Screen
           name='CreateNewPostStackNavigator'
           component={CreateNewPostStackNavigator}
           options={({ navigation }) => ({
@@ -262,8 +283,8 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
             },
           })}
         />
-      </Stack.Group>
-    </Stack.Navigator>
+      </SpaceRootStack.Group>
+    </SpaceRootStack.Navigator>
     // </Composer>
   );
 };
