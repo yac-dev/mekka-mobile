@@ -1,19 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { GlobalContext } from '../contexts/GlobalContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-  Platform,
-  Image,
-  FlatList,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import backendAPI from '../apis/backend';
 import * as Haptics from 'expo-haptics';
@@ -23,17 +11,11 @@ import { Entypo } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // import Grid from '../features/Space/components/Grid';
-import TagView from '../features/Space/pages/TagView';
-import Map from '../features/Space/components/Map';
+
 import { PostsTopTabNavigator } from './PostsTopTabNavigator';
-import ChooseViewBottomSheet from '../features/Space/pages/ChooseViewBottomSheet';
-import { TagViewRootContext } from '../features/SpaceMenuBottomSheet/contexts/TagViewRootContext';
-import TagViewStackNavigator from './TagViewStackNavigator';
 import { Image as ExpoImage } from 'expo-image';
-import Dummy2 from '../features/Utils/Dummy2';
-import Dummy from '../features/Utils/Dummy';
 import { TabView, Route, SceneMap } from 'react-native-tab-view';
-import { SpaceRootContext } from '../features';
+import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { CurrentTagContext, SpaceUpdatesContext } from '../providers';
 import { TagType } from '../types';
 
@@ -133,7 +115,7 @@ export const SpaceTopTabNavigator = (props) => {
     if (spaceUpdates[space._id][tab._id]) {
       setSpaceUpdates((previous) => {
         const updatesTable = { ...previous };
-        updatesTable[space._id][tab.tag._id] = 0;
+        updatesTable[space._id][tab._id] = 0;
         return updatesTable;
       });
     } // 一時停止。
@@ -175,13 +157,13 @@ export const SpaceTopTabNavigator = (props) => {
             tintColor={isActive ? 'white' : 'rgb(150,150,150)'}
           />
           <Text numberOfLines={isActive ? null : 1} style={{ color: isActive ? 'white' : 'rgb(150,150,150)' }}>
-            {item.tag.name}
+            {item.name}
           </Text>
           {/* <Text style={{ color: 'rgb(170,170,170)', position: 'absolute', top: 7, right: 10 }}>
                   {route.params?.tagObject.tag.count}
                 </Text> */}
         </View>
-        {spaceUpdates[space._id]?.[item.tag._id] ? (
+        {spaceUpdates[space._id]?.[item._id] ? (
           <View
             style={{
               width: 18,
@@ -195,7 +177,7 @@ export const SpaceTopTabNavigator = (props) => {
               right: 0,
             }}
           >
-            <Text style={{ color: 'white' }}>{spaceUpdates[space._id][item.tag._id]}</Text>
+            <Text style={{ color: 'white' }}>{spaceUpdates[space._id][item._id]}</Text>
           </View>
         ) : null}
 
@@ -212,7 +194,7 @@ export const SpaceTopTabNavigator = (props) => {
     );
   }
 
-  if (getTagsStatus === 'success') {
+  if (tags) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <View style={{ padding: 10 }}>
@@ -225,7 +207,7 @@ export const SpaceTopTabNavigator = (props) => {
             keyExtractor={(item, index) => `${item._id}-${index}`}
           />
         </View>
-        <Tab.Navigator
+        {/* <Tab.Navigator
           // tabBar={(props) => <CustomTabBar {...props} />}
           tabBar={() => null}
           screenOptions={({ route }) => ({
@@ -235,7 +217,7 @@ export const SpaceTopTabNavigator = (props) => {
           })}
         >
           {Object.values(tags).map((tag: TagType, index: number) => (
-            <Tab.Screen key={index} name={`SpaceTab_${tag._id}`} options={{ title: tag.name }} initialParams={{ tag }}>
+            <Tab.Screen key={index} name={`Tag_${tag._id}`} options={{ title: tag.name }} initialParams={{ tag }}>
               {({ navigation }) => (
                 <PostsTopTabNavigator
                   // postsかmapPostsのどっちか
@@ -245,7 +227,7 @@ export const SpaceTopTabNavigator = (props) => {
               )}
             </Tab.Screen>
           ))}
-        </Tab.Navigator>
+        </Tab.Navigator> */}
       </View>
     );
   }

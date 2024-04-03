@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Platform, Alert, Text, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import TagsTopTabNavigator from './SpaceTopTabNavigator';
-import LocationsViewTopTabNavigator from './LocationsViewTopTabNavigator';
-import PeopleViewTopTabNavigator from './PeopleViewTopTabNavigator';
-import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { useContext } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
-import TagViewStackNavigator from './TagViewStackNavigator';
-import MavViewStackNavigator from './MapViewStackNavigator';
-import * as Haptics from 'expo-haptics';
-import { TagRootContext } from '../contexts/TagRootContext';
-import { GlobalContext } from '../contexts/GlobalContext';
+// import TagViewStackNavigator from './TagViewStackNavigator';
+// import MavViewStackNavigator from './MapViewStackNavigator';
+// import * as Haptics from 'expo-haptics';
+// import { TagRootContext } from '../contexts/TagRootContext';
+// import { GlobalContext } from '../contexts/GlobalContext';
+// import { SpaceRootContext } from '../features';
+// import { CurrentTagContext } from '../providers';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -36,29 +34,20 @@ const viewTypeObject = {
 };
 
 export const PostsTopTabNavigator = (parentProps) => {
-  const {
-    chooseViewBottomSheetRef,
-    viewPostsType,
-    setViewPostsType,
-    navigation,
-    spaceAndUserRelationship,
-    createNewPostResult,
-  } = useContext(SpaceRootContext);
-  const { currentTagObject } = useContext(GlobalContext);
+  const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
+  const { currentTag } = useContext(CurrentTagContext);
   const [posts, setPosts] = useState([]);
+  const [mapPosts, setMapPosts] = useState([]);
+  const [currentPost, setCurrentPost] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
+  //  -----------
   const [isRefreshingGridViewPosts, setIsRefreshingGridViewPosts] = useState(false);
   const [isLoadingGridViewPosts, setIsLoadingGridViewPosts] = useState(false);
   const [currentGridViewPostsPage, setCurrentGridViewPostsPage] = useState(0);
   const [hasMoreGridViewPosts, setHasMoreGridViewPosts] = useState(true);
-  const [mapPosts, setMapPosts] = useState([]);
   const [isLoadingMapViewPosts, setIsLoadingMapViewPosts] = useState(false);
   const [mapViewPostsFetchingStatus, setMapViewPostsFetchingStatus] = useState(''); // 'idle', 'loading', 'success', 'error'
-  const [currentPost, setCurrentPost] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // navigation={navigation}
-  // tagObject={tagObject}
-  // tagsFetchingStatus={tagsFetchingStatus}
   return (
     <TagRootContext.Provider
       value={{

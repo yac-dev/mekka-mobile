@@ -9,16 +9,8 @@ import CreateNewSpace from '../features/CreateNewSpace/pages/CreateNewSpace';
 import WriteDescription from '../features/CreateNewSpace/pages/WriteDescription';
 import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
 import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
-import { SnackBar } from '../components';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-// secret key
 import SecretKeyForm from '../features/SecretKey/pages/Form';
-// create post
-import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-// import CreateNewPost from '../features/CreateNewPost/pages/Form';
-import SpaceMenuBottomSheet from '../features/SpaceMenuBottomSheet/pages/BottomSheet';
-import ActionMenuBottomSheet from '../features/SpaceMenuBottomSheet/pages/ActionMenuBottomSheet';
-import AuthMenuBottomSheet from '../features/Utils/AuthMenuBottomSheet';
 import SpaceInfoStackNavigator from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import Comments from '../features/ViewPost/pages/Comments';
@@ -29,21 +21,18 @@ import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
-import { EditProfileStackNavigator } from '.';
+import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 // import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
 import { DeleteMyAccount, WelcomePage } from '../features';
 // import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
-import Login from '../features/NotAuthenticated/pages/Login';
 import Signup from '../features/NotAuthenticated/pages/Signup';
 import EULA from '../features/NotAuthenticated/pages/EULA';
 
 import EditTag from '../features/EditTag/pages/Form';
 import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
-import backendAPI from '../apis/backend';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
-import { LoginStackNavigator } from './LoginStackNavigator';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
-import { AuthContext } from '../providers';
+import { AuthContext } from '../providers/AuthProvider';
 
 export type HomeStackParams = {
   SpacesDrawerNavigator: undefined;

@@ -25,20 +25,20 @@ import {
 import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Composer } from './providers/Providers';
-import { Root } from './features';
-import { useLoadMe } from './features';
+import { Root } from './features/App/pages/Root';
+import { useLoadMe } from './features/App/hooks/useLoadMe';
 
-export const INITIAL_CREATE_NEW_POST_STATE = {
-  postType: '',
-  contents: [],
-  caption: '',
-  dummyCreatedTagId: 1,
-  addedTags: {},
-  tagOptions: [],
-  addedLocationTag: null,
-  locationTagOptions: [],
-  moments: [],
-};
+// export const INITIAL_CREATE_NEW_POST_STATE = {
+//   postType: '',
+//   contents: [],
+//   caption: '',
+//   dummyCreatedTagId: 1,
+//   addedTags: {},
+//   tagOptions: [],
+//   addedLocationTag: null,
+//   locationTagOptions: [],
+//   moments: [],
+// };
 
 const App: React.FC = function () {
   const { apiResult: authApiResult, requestApi: requestAuth } = useLoadMe();

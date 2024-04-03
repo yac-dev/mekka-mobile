@@ -1,16 +1,15 @@
 import React, { useEffect, useContext } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { useLoadMe } from '../hooks';
-import { AuthContext, MySpacesContext, CurrentSpaceContext, SpaceUpdatesContext } from '../../../providers';
+import { useLoadMe } from '../hooks/useLoadMe';
+import { AuthContext } from '../../../providers/AuthProvider';
+import { MySpacesContext } from '../../../providers/MySpacesProvider';
+import { CurrentSpaceContext } from '../../../providers/CurrentSpaceProvider';
+import { SpaceUpdatesContext } from '../../../providers/SpaceUpdatesProvider';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
-import { LoginStackNavigator } from '../../../navigations';
-import { VectorIcon } from '../../../Icons';
 import * as SecureStore from 'expo-secure-store';
-import { RootStackNavigator } from '../../../navigations';
-
-const RootStack = createNativeStackNavigator<RootStackParams>();
+import { RootStackNavigator } from '../../../navigations/RootStackNavigator';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;

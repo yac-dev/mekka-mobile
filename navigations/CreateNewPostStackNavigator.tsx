@@ -16,10 +16,10 @@ import { CreateNewPostContext } from '../features/CreateNewPost/contexts/CreateN
 import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
+// import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
 import { AuthContext, SnackBarContext } from '../providers';
 import { SnackBar, LoadingSpinner } from '../components';
-import { useLoadingSpinner } from '../hooks';
+import { useLoadingSpinner } from '../hooks/useLoadingSpinner';
 
 const CreateNewPostStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);

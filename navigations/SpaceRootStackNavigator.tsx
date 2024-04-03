@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { GlobalContext } from '../contexts/GlobalContext';
-import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
 import { useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import backendAPI from '../apis/backend';
@@ -22,12 +21,13 @@ import { SpaceBottomTabNavigator } from './SpaceBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPostStackNavigator from './ViewPostStackNavigator';
-import { AuthContext } from '../providers';
+import { AuthContext, CurrentTagContext } from '../providers';
 import { SnackBarContext } from '../providers';
 import { SnackBar } from '../components';
 import { SpaceType } from '../types';
 import { Composer } from '../providers/Providers';
-import { SpaceRootProvider } from '../features';
+import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
+import { useGetTags } from '../features/Space/hooks/useGetTags';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,7 +51,24 @@ type SpaceRootStackNavigatorProps = {
 export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = ({ space }) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { tags, setTags, setSpace } = useContext(SpaceRootContext);
+  const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
+  const { setCurrentTag } = useContext(CurrentTagContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
+
+  console.log('tags ', tags);
+  useEffect(() => {
+    setSpace(space);
+    requestGetTags({ spaceId: space._id });
+  }, []);
+
+  useEffect(() => {
+    if (getTagsResult.status === 'success') {
+      setTags(getTagsResult.data.tags);
+      setCurrentTag(getTagsResult.data.tags[0]);
+    }
+  }, [getTagsResult.status]);
+
   const {
     isIpad,
     spaceMenuBottomSheetRef,
@@ -218,39 +235,42 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
     //     createNewPostResult,
     //     setCreateNewPostResult,
     //   }}
-    // >
-    <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}>
-      <Stack.Navigator
-        screenOptions={({ navigation }) => ({
-          headerShown: false,
-          // headerShown: true,
-        })}
-      >
-        <Stack.Group>
-          <Stack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
-            name='CreateNewPostStackNavigator'
-            component={CreateNewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-      <SnackBar.Primary />
-    </Composer>
+    // // >
+    // <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}>
+    <Stack.Navigator
+      screenOptions={({ navigation }) => ({
+        headerShown: false,
+        // headerShown: true,
+      })}
+    >
+      <Stack.Group>
+        <Stack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+        <Stack.Screen
+          name='CreateNewPostStackNavigator'
+          component={CreateNewPostStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+          })}
+        />
+      </Stack.Group>
+    </Stack.Navigator>
+    // </Composer>
   );
 };
+
+{
+  /* <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}></Composer> */
+}
 
 // tabBar={(props) => <CustomTabBar {...props} />}
 // screenOptions={({ route }) => ({

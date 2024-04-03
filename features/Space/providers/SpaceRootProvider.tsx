@@ -30,25 +30,14 @@ export type ViewPostsType = 'grid' | 'map';
 
 type SpaceRootProviderType = {
   children: React.ReactNode;
-  defaultSpace: SpaceType;
 };
 
-export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, defaultSpace }) => {
+export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children }) => {
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const [space, setSpace] = useState<SpaceType | undefined>(void 0);
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
   const [tags, setTags] = useState<TagType[] | undefined>(void 0);
-
-  useEffect(() => {
-    requestGetTags({ spaceId: defaultSpace._id });
-  }, []);
-
-  useEffect(() => {
-    if (getTagsResult.status === 'success') {
-      setTags(getTagsResult.data.tags);
-    }
-  }, [getTagsResult.status]);
 
   return (
     <SpaceRootContext.Provider

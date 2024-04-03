@@ -23,11 +23,11 @@ import { VectorIcon } from '../Icons';
 import { AppBottomSheet } from '../components/AppBottomSheet';
 import { useBottomSheet } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigatorProps } from '../features';
+import { RootStackNavigatorProps } from '../features/App/pages/Root';
 import { AuthMenu } from '../features';
 import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
 import { CustomDrawer } from '../features';
-import { SpaceRootProvider } from '../features';
+import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 
 type SpacesDrawerParams = {};
 
@@ -553,7 +553,11 @@ export const SpacesDrawerNavigator = (props) => {
                   },
                 })}
               >
-                {({ navigation, route }) => <SpaceRootStackNavigator space={space} navigation={navigation} />}
+                {({ navigation, route }) => (
+                  <SpaceRootProvider>
+                    <SpaceRootStackNavigator space={space} />
+                  </SpaceRootProvider>
+                )}
               </Drawer.Screen>
             ))
           )}

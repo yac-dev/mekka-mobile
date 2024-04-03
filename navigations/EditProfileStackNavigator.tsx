@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import { EditAccount } from '../features';
+import { EditAccount } from '../features/EditAccount';
 
 export type EditProfileStackParams = {
   EditProfile: undefined;

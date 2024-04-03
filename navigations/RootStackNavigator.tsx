@@ -3,8 +3,8 @@ import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
-import { HomeStackNavigator } from '.';
-import { LoginStackNavigator } from '.';
+import { HomeStackNavigator } from './HomeStackNavigator';
+import { LoginStackNavigator } from './LoginStackNavigator';
 import { VectorIcon } from '../Icons';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
