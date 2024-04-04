@@ -204,7 +204,7 @@ export const SpaceTopTabNavigator = (props) => {
     );
   }
 
-  if (tags) {
+  if (tags?.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <View style={{ padding: 10 }}>

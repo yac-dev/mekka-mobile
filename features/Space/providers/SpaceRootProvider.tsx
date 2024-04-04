@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from 'react';
-import { SpaceType, TagType, ApiStatusType } from '../../../types';
+import { SpaceType, TagType, ApiStatusType, PostType } from '../../../types';
 import { useGetTags } from '../hooks';
 
 type SpaceRootContextType = {
@@ -12,6 +12,8 @@ type SpaceRootContextType = {
   tags: TagType[];
   setTags: React.Dispatch<React.SetStateAction<TagType[]>>;
   getTagsStatus: ApiStatusType;
+  currentPost: PostType;
+  setCurrentPost: React.Dispatch<React.SetStateAction<PostType>>;
 };
 
 export const SpaceRootContext = createContext<SpaceRootContextType>({
@@ -24,6 +26,8 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
   tags: void 0,
   setTags: () => {},
   getTagsStatus: 'idling',
+  currentPost: void 0,
+  setCurrentPost: () => {},
 });
 
 export type ViewPostsType = 'grid' | 'map';
@@ -38,6 +42,7 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children })
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
   const [tags, setTags] = useState<TagType[] | undefined>(void 0);
+  const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
 
   return (
     <SpaceRootContext.Provider
@@ -51,6 +56,8 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children })
         tags,
         setTags,
         getTagsStatus: getTagsResult.status,
+        currentPost,
+        setCurrentPost,
       }}
     >
       {children}
