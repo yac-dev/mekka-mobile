@@ -5,11 +5,13 @@ import { useContext } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
-import { PostType } from '../types';
+import { PostType, TagType } from '../types';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { CurrentTagContext } from '../providers/CurrentTagProvider';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
+import { Posts } from '../features/Space/components';
+import { useGetPosts } from '../features/Space/hooks/useGetPosts';
 // import TagViewStackNavigator from './TagViewStackNavigator';
 // import MavViewStackNavigator from './MapViewStackNavigator';
 // import * as Haptics from 'expo-haptics';
@@ -17,9 +19,6 @@ import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
 // import { GlobalContext } from '../contexts/GlobalContext';
 // import { SpaceRootContext } from '../features';
 // import { CurrentTagContext } from '../providers';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -29,7 +28,6 @@ const viewTypeObject = {
     <ExpoImage
       style={{ width: 22, height: 22 }}
       source={require('../assets/forApp/globe.png')}
-      placeholder={blurhash}
       contentFit='contain'
       transition={1000}
       tintColor={'white'}
@@ -38,10 +36,16 @@ const viewTypeObject = {
   people: <MaterialCommunityIcons name='account-multiple' color='black' size={22} />,
 };
 
-export const PostsTopTabNavigator = (parentProps) => {
+type PostsTopTabNavigatorProps = {
+  tag: TagType;
+};
+
+export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag }) => {
   const navigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
   const { currentTag } = useContext(CurrentTagContext);
+
+  const { apiResult, requestApi } = useGetPosts();
   const [posts, setPosts] = useState<PostType[]>([]);
   const [mapPosts, setMapPosts] = useState([]);
   const [currentPost, setCurrentPost] = useState({});
@@ -53,6 +57,8 @@ export const PostsTopTabNavigator = (parentProps) => {
   const [hasMoreGridViewPosts, setHasMoreGridViewPosts] = useState(true);
   const [isLoadingMapViewPosts, setIsLoadingMapViewPosts] = useState(false);
   const [mapViewPostsFetchingStatus, setMapViewPostsFetchingStatus] = useState(''); // 'idle', 'loading', 'success', 'error'
+
+  // ここでpostsのfetchをしてこよう。
 
   return (
     // <TagRootContext.Provider
@@ -90,24 +96,18 @@ export const PostsTopTabNavigator = (parentProps) => {
         })}
         initialRouteName={viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator'}
       >
-        <Tab.Screen name='GridView'>
-          {(props) => (
-            <TagViewStackNavigator
-              {...props}
-              navigation={parentProps.navigation}
-              tagObject={parentProps.tagObject}
-              tagsFetchingStatus={parentProps.tagsFetchingStatus}
-            />
-          )}
-        </Tab.Screen>
+        <Tab.Screen name='GridView'>{(props) => <Posts posts={posts} {...props} />}</Tab.Screen>
         <Tab.Screen name='MavView'>
           {(props) => (
-            <MavViewStackNavigator
-              {...props}
-              navigation={parentProps.navigation}
-              tagObject={parentProps.tagObject}
-              tagsFetchingStatus={parentProps.tagsFetchingStatus}
-            />
+            <View>
+              <Text>Map posts here...</Text>
+            </View>
+            // <MavViewStackNavigator
+            //   {...props}
+            //   navigation={parentProps.navigation}
+            //   tagObject={parentProps.tagObject}
+            //   tagsFetchingStatus={parentProps.tagsFetchingStatus}
+            // />
           )}
         </Tab.Screen>
       </Tab.Navigator>

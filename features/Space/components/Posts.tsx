@@ -2,12 +2,13 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { PostType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
+import { PostThumbnail } from '../../../components';
 
 type PostsProps = {
   posts: PostType[];
 };
 
-export const Posts = ({ posts }) => {
+export const Posts: React.FC<PostsProps> = ({ posts }) => {
   // const renderLoader = () => {
   //   if (hasMoreGridViewPosts) {
   //     return isLoadingGridViewPosts ? (
@@ -20,8 +21,10 @@ export const Posts = ({ posts }) => {
   //   }
   // };
 
-  const renderItem = (post, index) => {
-    return <ContentThumbnail post={post} index={index} />;
+  const onPressPostThumbnail = (post: PostType, index: number) => {};
+
+  const renderItem = ({ item, index }: { item: PostType; index: number }) => {
+    return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
   if (posts.length) {
@@ -30,11 +33,11 @@ export const Posts = ({ posts }) => {
         <FlashList
           numColumns={3}
           data={posts}
-          renderItem={({ item, index }) => renderItem(item, index)}
+          renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
-          // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
           removeClippedSubviews
           estimatedItemSize={125}
+          // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
           // onEndReached={loadMoreItem}
           // ListFooterComponent={renderLoader}
           onEndReachedThreshold={0}

@@ -226,16 +226,17 @@ export const SpaceTopTabNavigator = (props) => {
           })}
         >
           {Object.values(tags).map((tag: TagType, index: number) => (
-            <Tab.Screen key={index} name={`Tag_${tag._id}`} options={{ title: tag.name }} initialParams={{ tag }}>
+            <Tab.Screen
+              key={index}
+              name={`Tag_${tag._id}`}
+              options={{ title: tag.name }}
+              // initialParams={{ tag }}
+            >
               {({ navigation }) => (
-                // <PostsTopTabNavigator
-                //   // postsかmapPostsのどっちか
-                //   navigation={navigation}
-                //   tagObject={tag}
-                // />
-                <View style={{ backgroundColor: 'black', flex: 1 }}>
-                  <Text style={{ color: 'white' }}>Hello puta madres interviewers</Text>
-                </View>
+                <PostsTopTabNavigator tag={tag} />
+                // <View style={{ backgroundColor: 'black', flex: 1 }}>
+                //   <Text style={{ color: 'white' }}>Hello puta madres interviewers</Text>
+                // </View>
               )}
             </Tab.Screen>
           ))}

@@ -6,11 +6,6 @@ import { Video, ResizeMode } from 'expo-av';
 import LinearGradient from 'react-native-linear-gradient';
 import { Skeleton } from './Skelton';
 
-type ThumbnailProps = {
-  post: PostType;
-  onPressPost: (post: PostType) => void;
-};
-
 const sideLength = Dimensions.get('screen').width;
 
 const calculateLeftTime = (disappearAt: string) => {
@@ -40,7 +35,13 @@ const millisecondsToTime = (milliseconds: number) => {
   return formattedTime;
 };
 
-export const Thumbnail: React.FC<ThumbnailProps> = ({ post, onPressPost }) => {
+type PostThumbnailProps = {
+  post: PostType;
+  index: number;
+  onPressPostThumbnail: (post: PostType, index: number) => void;
+};
+
+export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPressPostThumbnail }) => {
   const [isLoading, setIsLoading] = useState(true); // statelessであるべきだが、これは特別。
   const { hours, minutes } = calculateLeftTime(post.disappearAt);
 
@@ -51,7 +52,10 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({ post, onPressPost }) => {
   if (isLoading) return <Skeleton />;
 
   return (
-    <TouchableOpacity style={{ width: sideLength, height: sideLength, padding: 1 }} onPress={() => onPressPost(post)}>
+    <TouchableOpacity
+      style={{ width: sideLength, height: sideLength, padding: 1 }}
+      onPress={() => onPressPostThumbnail(post, index)}
+    >
       {post.type === 'photo' && (
         <ExpoImage
           style={{ width: '100%', height: '100%' }}
