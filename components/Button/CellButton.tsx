@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { VectorIcon } from '../../Icons';
-import { TextColor } from '../../themes';
+import { Colors } from '../../themes';
 
 type CellButtonProps = {
   onButtonPress: () => void;
@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconAndTextContainer: { flexDirection: 'row', alignItems: 'center' },
-  title: { color: TextColor.primary, fontSize: 17, marginBottom: 5 },
-  subTitle: { color: TextColor.secondary, fontSize: 13 },
+  title: {
+    color: Colors.white,
+    fontSize: 17,
+    marginBottom: 5,
+  },
+  subTitle: {
+    color: Colors.white170,
+    fontSize: 13,
+  },
 });

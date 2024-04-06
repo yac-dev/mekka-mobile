@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TextColor, BackgroundColor } from '../../themes';
+// import { TextColor, BackgroundColor } from '../../themes';
+import { Colors } from '../../themes';
 
 type PageScreenWithTitleProps = {
   title: string;
@@ -23,15 +24,15 @@ export const PageScreenWithTitle: React.FC<PageScreenWithTitleProps> = ({ title,
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BackgroundColor.primary,
+    backgroundColor: Colors.black,
   },
   titleContainer: { paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20, marginBottom: 40 },
   title: {
-    color: TextColor.primary,
+    color: Colors.white,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 20,
     marginBottom: 10,
   },
-  subTitle: { color: TextColor.secondary, textAlign: 'center' },
+  subTitle: { color: Colors.white170, textAlign: 'center' },
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import { TextColor } from '../../themes';
+import { Colors } from '../../themes';
 
 type TextButtonProps = {
   text: string;
@@ -21,9 +21,9 @@ export const TextButton: React.FC<TextButtonProps> = ({ text, onTextPress }) => 
 const styles = StyleSheet.create({
   container: {
     borderWidth: 0.3,
-    borderBottomColor: TextColor.primary,
+    borderBottomColor: Colors.white,
   },
   text: {
-    color: TextColor.primary,
+    color: Colors.white,
   },
 });

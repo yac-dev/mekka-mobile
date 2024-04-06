@@ -11,10 +11,14 @@ import { CurrentTagContext } from '../providers/CurrentTagProvider';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
 import { GridPosts } from '../features/Space/components/GridPosts';
+import { MapPosts } from '../features/Space/components/MapPosts';
 import { useGetPosts } from '../features/Space/hooks/useGetPosts';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons';
 // import TagViewStackNavigator from './TagViewStackNavigator';
 // import MavViewStackNavigator from './MapViewStackNavigator';
-// import * as Haptics from 'expo-haptics';
+import * as Haptics from 'expo-haptics';
+import { Icons } from '../Icons/images';
 // import { TagRootContext } from '../contexts/TagRootContext';
 // import { GlobalContext } from '../contexts/GlobalContext';
 // import { SpaceRootContext } from '../features';
@@ -44,6 +48,7 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
   const navigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
   const { currentTag } = useContext(CurrentTagContext);
+  console.log('current tag -> ', currentTag);
 
   const { apiResult, requestApi } = useGetPosts();
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -58,41 +63,18 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
   const [currentGridViewPostsPage, setCurrentGridViewPostsPage] = useState(0);
   const [hasMoreGridViewPosts, setHasMoreGridViewPosts] = useState(true);
   const [isLoadingMapViewPosts, setIsLoadingMapViewPosts] = useState(false);
-  const [mapViewPostsFetchingStatus, setMapViewPostsFetchingStatus] = useState(''); // 'idle', 'loading', 'success', 'error'
+  const [mapViewPostsFetchingStatus, setMapViewPostsFetchingStatus] = useState(''); // 'idle', 'loading', 'success', 'error
 
-  // ここでpostsのfetchをしてこよう。
-  // useEffect(() => {
-  //   if (viewPostsType === 'grid') {
-  //     requestApi({ tagId: tag._id, currentPage });
-  //   }
-  // }, []);
+  const onCreateNewPostButtonPress = () => {
+    console.log('create new post');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    // navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });
+  };
 
   return (
-    // <TagRootContext.Provider
-    //   value={{
-    //     posts,
-    //     setPosts,
-    //     isRefreshingGridViewPosts,
-    //     setIsRefreshingGridViewPosts,
-    //     isLoadingGridViewPosts,
-    //     setIsLoadingGridViewPosts,
-    //     currentGridViewPostsPage,
-    //     setCurrentGridViewPostsPage,
-    //     hasMoreGridViewPosts,
-    //     setHasMoreGridViewPosts,
-    //     mapPosts,
-    //     setMapPosts,
-    //     mapViewPostsFetchingStatus,
-    //     setMapViewPostsFetchingStatus,
-    //     currentPost,
-    //     setCurrentPost,
-    //     currentIndex,
-    //     setCurrentIndex,
-    //   }}
-    // >
     <View style={{ flex: 1 }}>
       <Tab.Navigator
-        // toptab navigatorで表示させるが、top tab自体は表示しない
+        // toptab navigatorで表示させるが、tabはrenderしない。
         tabBar={() => null}
         screenOptions={({ route }) => ({
           lazy: true,
@@ -101,58 +83,24 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
           height: 0,
           backgroundColor: 'transparent',
         })}
-        initialRouteName={viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator'}
+        initialRouteName={viewPostsType === 'grid' ? 'GridView' : 'MapView'}
       >
         <Tab.Screen name='GridView'>{(props) => <GridPosts tag={tag} {...props} />}</Tab.Screen>
-        <Tab.Screen name='MavView'>
-          {(props) => (
-            <View>
-              <Text>Map posts here...</Text>
-            </View>
-            // <MavViewStackNavigator
-            //   {...props}
-            //   navigation={parentProps.navigation}
-            //   tagObject={parentProps.tagObject}
-            //   tagsFetchingStatus={parentProps.tagsFetchingStatus}
-            // />
-          )}
-        </Tab.Screen>
+        <Tab.Screen name='MapView'>{(props) => <MapPosts tag={tag} {...props} />}</Tab.Screen>
       </Tab.Navigator>
-      {/* <TouchableOpacity
-        style={{
-          width: 44,
-          height: 44,
-          borderRadius: 22,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: createNewPostResult.isCreating ? 'rgb(90,90,90)' : 'white',
-          position: 'absolute',
-          bottom: 50,
-          right: 20,
-          ...Platform.select({
-            ios: {
-              shadowColor: 'black',
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.5,
-              shadowRadius: 8,
-            },
-            android: {
-              elevation: 5,
-            },
-          }),
-        }}
-        disabled={createNewPostResult.isCreating}
-        onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });
-        }}
+      <AppButton.Icon
+        addedStyle={{ position: 'absolute', bottom: 50, right: 20 }}
+        onButtonPress={onCreateNewPostButtonPress}
+        isPressDisabled={false} // createのstatusをここに足す感じだな。
+        hasShadow
       >
-        {createNewPostResult.isCreating ? (
+        <VectorIcon.II name='add' size={32} color={'black'} />
+        {/* {createNewPostResult.isCreating ? (
           <ActivityIndicator size={'small'} />
-        ) : (
+          ) : (
           <Ionicons name='add' size={32} color={'black'} />
-        )}
-      </TouchableOpacity> */}
+        )} */}
+      </AppButton.Icon>
       <View
         style={{
           borderRadius: 30,
@@ -177,7 +125,7 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
             setViewPostsType('grid');
             navigation.navigate('SpaceBottomTabNavigator', {
               screen: 'TagsTopTabNavigator',
-              params: { screen: `Tag_${currentTag._id}`, params: { screen: 'grid' } },
+              params: { screen: `Tag_${currentTag._id}`, params: { screen: 'GridView' } },
             });
             // navigation.navigate('TagViewStackNavigator');
             // currentTagObject
@@ -203,7 +151,7 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
             setViewPostsType('map');
             navigation.navigate('SpaceBottomTabNavigator', {
               screen: 'TagsTopTabNavigator',
-              params: { screen: `Tag_${currentTag._id}`, params: { screen: 'map' } },
+              params: { screen: `Tag_${currentTag._id}`, params: { screen: 'MapView' } },
             });
             // navigation.navigate('MavViewStackNavigator');
             // navigation.navigate({
@@ -212,12 +160,7 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
             // });
           }}
         >
-          <ExpoImage
-            style={{ width: 25, height: 25 }}
-            source={require('../assets/forApp/globe.png')}
-            contentFit='contain'
-            tintColor={'white'}
-          />
+          <ExpoImage style={{ width: 25, height: 25 }} source={Icons.globe} contentFit='contain' tintColor={'white'} />
         </TouchableOpacity>
       </View>
     </View>

@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { BackgroundColor, TextColor } from '../../themes';
+import { Colors } from '../../themes';
 import { VectorIcon } from '../../Icons';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 
@@ -28,15 +28,15 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
         backdropComponent={(backdropProps) => (
           <BottomSheetBackdrop {...backdropProps} appearsOnIndex={0} disappearsOnIndex={-1} />
         )}
-        backgroundStyle={{ backgroundColor: BackgroundColor.secondary }}
-        handleIndicatorStyle={{ backgroundColor: BackgroundColor.white }}
+        backgroundStyle={{ backgroundColor: Colors.black90 }}
+        handleIndicatorStyle={{ backgroundColor: Colors.white }}
         onClose={onClose}
         handleComponent={() => {
           return (
             <View style={styles.container}>
               <Text style={styles.text}>{title}</Text>
               <TouchableOpacity onPress={onCloseButtonClose}>
-                <VectorIcon.II name='close-circle-sharp' size={30} color={TextColor.primary} />
+                <VectorIcon.II name='close-circle-sharp' size={30} color={Colors.white} />
               </TouchableOpacity>
             </View>
           );
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 16,
-    backgroundColor: BackgroundColor.secondary,
+    backgroundColor: Colors.black50,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     justifyContent: 'space-between',
@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 23,
-    color: TextColor.primary,
+    color: Colors.white,
   },
 });

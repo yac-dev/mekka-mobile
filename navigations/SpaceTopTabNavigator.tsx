@@ -119,7 +119,7 @@ export const SpaceTopTabNavigator = (props) => {
       screen: 'TagsTopTabNavigator',
       params: {
         screen: `Tag_${tab._id}`,
-        params: { screen: viewPostsType === 'grid' ? 'grid' : 'map' },
+        params: { screen: viewPostsType === 'grid' ? 'GridView' : 'MapView' },
       },
     });
     if (spaceUpdates[space._id][tab._id]) {

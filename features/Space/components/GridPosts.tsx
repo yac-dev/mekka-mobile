@@ -19,8 +19,6 @@ export const GridPosts: React.FC<PostsProps> = ({ tag }) => {
     requestApi({ tagId: tag._id, currentPage });
   }, []);
 
-  console.log('posts -> ', apiResult.data?.posts);
-
   // const loadMoreItem = () => {
   //   if (hasMoreGridViewPosts) {
   //     setCurrentPage(currentPage + 1);

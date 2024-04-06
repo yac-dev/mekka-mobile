@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TextColor } from '../../themes';
+import { Colors } from '../../themes';
 import { VectorIcon } from '../../Icons';
 
 type KeyBoardType = 'default' | 'numeric' | 'email-address' | 'number-pad';
@@ -30,7 +30,7 @@ export const UnderlineTextInput: React.FC<UnderlineTextInputProps> = ({
       <View style={styles.labelIconContainer}>{labelIcon}</View>
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor={TextColor.secondary}
+        placeholderTextColor={Colors.white170}
         style={styles.textInput}
         autoCapitalize='none'
         keyboardType={keyboardType}
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
     borderBottomWidth: 0.3,
-    borderBottomColor: TextColor.primary,
+    borderBottomColor: Colors.white,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-    color: TextColor.primary,
+    color: Colors.white,
   },
   viewSecureEntryContainer: {
     width: 50,

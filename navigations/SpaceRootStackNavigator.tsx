@@ -29,11 +29,14 @@ import { Composer } from '../providers/Providers';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { useGetTags } from '../features/Space/hooks/useGetTags';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { VectorIcon } from '../Icons';
+import { AppButton } from '../components';
+import * as Haptics from 'expo-haptics';
 
 // こうやって書くと、nestedな形がよく分かっていいね
 type PostsTopTabNavigatorParams = {
-  grid: undefined;
-  map: undefined;
+  GridView: undefined;
+  MapView: undefined;
 };
 
 type SpaceTopTabNavigatorParams = {
@@ -232,6 +235,12 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
     }
   };
 
+  const onCreateNewPostButtonPress = () => {
+    console.log('create new post');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    // navigation?.navigate('CreateNewPostStackNavigator', { spaceAndUserRelationship });
+  };
+
   // というよりも、シンプルにsetCreatePostResultの更新じゃないかなー。。？paramsを使うと、その後のstate更新ができなくなるよね。。。
   // useEffect(() => {
   //   if (props.route?.params?.createdPost) {
@@ -257,35 +266,34 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
     //     setCreateNewPostResult,
     //   }}
     // // >
-    // <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}>
-    <SpaceRootStack.Navigator
-      screenOptions={({ navigation }) => ({
-        headerShown: false,
-        // headerShown: true,
-      })}
-    >
-      <SpaceRootStack.Group>
-        <SpaceRootStack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
-      </SpaceRootStack.Group>
-      <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-        <SpaceRootStack.Screen
-          name='CreateNewPostStackNavigator'
-          component={CreateNewPostStackNavigator}
-          options={({ navigation }) => ({
-            headerShown: false,
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
-          })}
-        />
-      </SpaceRootStack.Group>
-    </SpaceRootStack.Navigator>
-    // </Composer>
+    <View style={{ flex: 1 }}>
+      <SpaceRootStack.Navigator
+        screenOptions={({ navigation }) => ({
+          headerShown: false,
+        })}
+      >
+        <SpaceRootStack.Group>
+          <SpaceRootStack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
+        </SpaceRootStack.Group>
+        <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <SpaceRootStack.Screen
+            name='CreateNewPostStackNavigator'
+            component={CreateNewPostStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+        </SpaceRootStack.Group>
+      </SpaceRootStack.Navigator>
+    </View>
   );
 };
 

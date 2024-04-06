@@ -1,16 +1,55 @@
-import React from 'react';
-import { View, Text, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { ReactNode } from 'react';
+import { View, Text, ViewStyle, Platform, TouchableOpacity } from 'react-native';
+import { Colors } from '../../themes';
 
 type IconButtonProps = {
-  children: React.ReactNode;
-  onPressButton: () => void;
-  style?: ViewStyle;
+  children: ReactNode;
+  addedStyle?: ViewStyle;
+  onButtonPress: () => void;
+  isPressDisabled?: boolean;
+  hasShadow: boolean;
 };
 
-export const IconButton: React.FC<IconButtonProps> = ({ children, onPressButton, style }) => {
+const shadow = {
+  ...Platform.select({
+    ios: {
+      shadowColor: 'black',
+      shadowOffset: { width: 5, height: 5 },
+      shadowOpacity: 0.5,
+      shadowRadius: 8,
+    },
+    android: {
+      elevation: 5,
+    },
+  }),
+};
+
+const baseStyle: ViewStyle = {
+  width: 44,
+  height: 44,
+  borderRadius: 22,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: Colors.white,
+};
+
+export const IconButton: React.FC<IconButtonProps> = ({
+  children,
+  onButtonPress,
+  addedStyle,
+  isPressDisabled,
+  hasShadow = false,
+}) => {
+  const processingBackgroundColorStyle: ViewStyle = isPressDisabled && { backgroundColor: Colors.black90 };
+  const shadowStyle: ViewStyle = hasShadow && shadow;
+
   return (
-    <TouchableOpacity style={style} onPress={() => onPressButton()}>
+    <TouchableOpacity
+      activeOpacity={1}
+      style={[baseStyle, addedStyle, processingBackgroundColorStyle, shadowStyle]}
+      // disabled={isPressDisabled}
+      onPress={onButtonPress}
+    >
       {children}
     </TouchableOpacity>
   );

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import { FD, II } from '../../Icons';
-import { BackgroundColor, TextColor } from '../../themes';
+import { Colors } from '../../themes';
 import { SnackBarStatusType } from '../../types';
 import { SnackBarContext } from '../../providers';
 
@@ -15,19 +15,19 @@ type SnackBarStatusTableType = {
 
 const SnackBarStatusTable: SnackBarStatusTableType = {
   success: {
-    backgroundColor: BackgroundColor.lightGreen,
+    backgroundColor: Colors.lightGreen,
     Node: <II name='checkmark-circle' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
   info: {
-    backgroundColor: BackgroundColor.blue,
+    backgroundColor: Colors.blue,
     Node: <II name='information-circle-sharp' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
   warning: {
-    backgroundColor: BackgroundColor.yellow,
+    backgroundColor: Colors.yellow,
     Node: <II name='ios-warning-sharp' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
   error: {
-    backgroundColor: BackgroundColor.red,
+    backgroundColor: Colors.red,
     Node: <FD name='prohibited' size={20} color={'white'} style={{ marginRight: 10 }} />,
   },
 };
@@ -77,7 +77,7 @@ export const PrimarySnackBar: React.FC = () => {
       }
       // WARNING: ここ、stringしか無理っぽい。
       action={{
-        label: <Text style={{ color: TextColor.primary }}>Close</Text>,
+        label: <Text style={{ color: Colors.white }}>Close</Text>,
         onPress: () =>
           setSnackBar({
             isVisible: false,
@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: { flexDirection: 'row', alignItems: 'center' },
   message: {
-    color: TextColor.primary,
+    color: Colors.white,
   },
 });
