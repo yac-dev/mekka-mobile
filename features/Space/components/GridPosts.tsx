@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { PostType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
-import { PostThumbnail } from '../../../components';
+import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { SpaceRootContext } from '../providers/SpaceRootProvider';
 

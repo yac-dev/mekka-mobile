@@ -3,7 +3,7 @@ import { ApiResultType } from '../../../types';
 import { getPostsByTagIdAndRegion } from '../apis';
 import { GetPostsByTagIdAndRegionInput, GetPostsByTagIdAndRegionOutput } from '../types';
 
-export const useGetPosts = () => {
+export const useGetPostsByTagIdAndRegion = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetPostsByTagIdAndRegionOutput>>({
     status: 'idling',
     data: void 0,

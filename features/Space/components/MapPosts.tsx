@@ -1,28 +1,24 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { View, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Image as ExpoImage } from 'expo-image';
-import { TagType } from '../../../types';
+import { PostType, TagType } from '../../../types';
+import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
+import { useMapPostsState } from '../hooks/useMapPostsState';
+// import { MapPostThumbnail } from '../../../components/PostThumbnail';
 
 type MapPostsProps = {
   tag: TagType;
 };
 
 export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
-  // ここでのapi requestする感じね。
-  const mapRef = useRef(null);
-  const [region, setRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 100.0922,
-    longitudeDelta: 100.0421,
-  });
+  const { apiResult, requestApi } = useGetPostsByTagIdAndRegion();
+  const { mapRef, region, onRegionChangeComplete } = useMapPostsState();
 
   const renderMarkers = () => {
-    if (mapPosts.length) {
-      const list = mapPosts.map((post, index) => {
-        return (
+    return (
+      <View>
+        {apiResult.data?.posts.map((post: PostType, index: number) => (
           <Marker
             key={index}
             tracksViewChanges={false}
@@ -30,25 +26,22 @@ export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
               latitude: post.location.coordinates[1],
               longitude: post.location.coordinates[0],
             }}
-            pinColor='black'
-            onPress={() => {
-              // onPress();
-            }}
           >
             <TouchableOpacity
               style={{ width: 54, height: 54, padding: 3, borderRadius: 8, backgroundColor: 'white' }}
-              disabled={mapViewPostsFetchingStatus === 'loading'}
+              disabled={apiResult.status === 'loading'}
               onPress={() => {
-                setCurrentPost(post);
-                setCurrentIndex(index);
-                props.navigation.navigate({
-                  name: 'ViewPostStackNavigator',
-                  params: { screen: 'ViewPost', params: { post } },
-                });
+                // NOTE: currenPostの選択
+                // setCurrentPost(post);
+                // setCurrentIndex(index);
+                // props.navigation.navigate({
+                //   name: 'ViewPostStackNavigator',
+                //   params: { screen: 'ViewPost', params: { post } },
+                // });
               }}
             >
               <View style={{ width: '100%', height: '100%' }}>
-                {/* videoに関してもやらんといかん。 */}
+                {/* NOTE: videoに関してもやらんといかん。 */}
                 <ExpoImage
                   style={{
                     width: '100%',
@@ -57,18 +50,14 @@ export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
                   }}
                   source={{ uri: post.contents[0].data }}
                   contentFit='cover'
-                  transition={200} // ふつくしい。。。
+                  transition={200} // このanimationかなりいい。
                 />
               </View>
             </TouchableOpacity>
           </Marker>
-        );
-      });
-
-      return <>{list}</>;
-    } else {
-      return null;
-    }
+        ))}
+      </View>
+    );
   };
 
   // if (haveLocationTagsBeenFetched) {
@@ -88,11 +77,10 @@ export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
         zoomEnabled={true}
         initialRegion={region}
         onRegionChangeComplete={onRegionChangeComplete}
-        // mapType={'satellite'}
       >
         {renderMarkers()}
       </MapView>
-      {mapViewPostsFetchingStatus === 'loading' ? (
+      {apiResult.status === 'loading' ? (
         <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
           <ActivityIndicator size={'small'} color={'white'} />
         </View>

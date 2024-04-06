@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import { PostType } from '../types';
+import { PostType } from '../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { Video, ResizeMode } from 'expo-av';
 import LinearGradient from 'react-native-linear-gradient';
-import { Skeleton } from './Skelton';
+import { Skeleton } from '../Skelton';
+import { Icons } from '../../assets/iconImages';
 
 const sideLength = Dimensions.get('screen').width / 3;
 
@@ -54,8 +55,8 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
       style={{ width: sideLength, height: sideLength, padding: 1 }}
       onPress={() => onPressPostThumbnail(post, index)}
     >
+      {/* skeltonここじゃないと,そもそもhandleLoadingされない。 */}
       {isLoading && <Skeleton />}
-      {/* skeltonここじゃないと,そもそもhandleLoadingされないからね。。。 */}
       {post.contents[0].type === 'photo' && (
         <ExpoImage
           style={{ width: '100%', height: '100%' }}
@@ -96,7 +97,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           >
             <ExpoImage
               style={{ width: 15, height: 15, marginRight: 5 }}
-              source={require('../assets/forApp/ghost.png')}
+              source={Icons.ghost}
               contentFit='contain'
               tintColor={'white'}
             />
