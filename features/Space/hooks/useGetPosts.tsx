@@ -38,10 +38,37 @@ export const useGetPosts = () => {
     }
   };
 
-  const requestPagination = () => {};
+  const loadMore = async (input: GetPostsInputType) => {
+    try {
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'paging',
+        };
+      });
+
+      const response = await getPosts(input);
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'success',
+          data: response,
+        };
+      });
+    } catch (error) {
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'fail',
+          data: void 0,
+        };
+      });
+    }
+  };
 
   return {
     apiResult,
     requestApi,
+    loadMore,
   };
 };

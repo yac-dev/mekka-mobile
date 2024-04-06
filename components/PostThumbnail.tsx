@@ -6,7 +6,7 @@ import { Video, ResizeMode } from 'expo-av';
 import LinearGradient from 'react-native-linear-gradient';
 import { Skeleton } from './Skelton';
 
-const sideLength = Dimensions.get('screen').width;
+const sideLength = Dimensions.get('screen').width / 3;
 
 const calculateLeftTime = (disappearAt: string) => {
   const now: Date = new Date();
@@ -49,14 +49,14 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
     setIsLoading(false);
   };
 
-  if (isLoading) return <Skeleton />;
-
   return (
     <TouchableOpacity
       style={{ width: sideLength, height: sideLength, padding: 1 }}
       onPress={() => onPressPostThumbnail(post, index)}
     >
-      {post.type === 'photo' && (
+      {isLoading && <Skeleton />}
+      {/* skeltonここじゃないと,そもそもhandleLoadingされないからね。。。 */}
+      {post.contents[0].type === 'photo' && (
         <ExpoImage
           style={{ width: '100%', height: '100%' }}
           source={{ uri: post.contents[0].data }}
@@ -64,8 +64,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           onLoad={handleImageLoad}
         />
       )}
-
-      {post.type === 'video' && (
+      {post.contents[0].type === 'video' && (
         <Video
           source={{ uri: post.contents[0].data }}
           style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
@@ -73,8 +72,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           resizeMode={ResizeMode.COVER}
         />
       )}
-
-      {post.type === 'video' && (
+      {post.contents[0].type === 'video' && (
         <View>
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.5)']}
@@ -87,7 +85,6 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           </View>
         </View>
       )}
-
       {post.type === 'moment' && (
         <View>
           <LinearGradient
@@ -99,7 +96,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           >
             <ExpoImage
               style={{ width: 15, height: 15, marginRight: 5 }}
-              source={require('../../../assets/forApp/ghost.png')}
+              source={require('../assets/forApp/ghost.png')}
               contentFit='contain'
               tintColor={'white'}
             />

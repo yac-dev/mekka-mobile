@@ -1,4 +1,4 @@
-import { PostType, TagType } from '../../types';
+import { PostType, TagType, MapRegionType } from '../../types';
 
 export type GetTagsInputType = {
   spaceId: string;
@@ -14,5 +14,15 @@ export type GetPostsInputType = {
 };
 
 export type GetPostsOutputType = {
+  posts: PostType[];
+  nextPage: number | null;
+};
+
+export type GetPostsByTagIdAndRegionInput = {
+  tagId: string;
+  region: MapRegionType;
+};
+
+export type GetPostsByTagIdAndRegionOutput = {
   posts: PostType[];
 };

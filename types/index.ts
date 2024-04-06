@@ -41,6 +41,13 @@ export type TagType = {
   createdBy: UserType;
 };
 
+export type MapRegionType = {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+};
+
 export type StickerType = {
   url: string;
   name: string;

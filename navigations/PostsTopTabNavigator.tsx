@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Platform, Alert, Text, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useContext } from 'react';
@@ -10,7 +10,7 @@ import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider'
 import { CurrentTagContext } from '../providers/CurrentTagProvider';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
-import { Posts } from '../features/Space/components';
+import { GridPosts } from '../features/Space/components/GridPosts';
 import { useGetPosts } from '../features/Space/hooks/useGetPosts';
 // import TagViewStackNavigator from './TagViewStackNavigator';
 // import MavViewStackNavigator from './MapViewStackNavigator';
@@ -50,6 +50,8 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
   const [mapPosts, setMapPosts] = useState([]);
   const [currentPost, setCurrentPost] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  // const [location, setLocation] = useState('')
   //  -----------
   const [isRefreshingGridViewPosts, setIsRefreshingGridViewPosts] = useState(false);
   const [isLoadingGridViewPosts, setIsLoadingGridViewPosts] = useState(false);
@@ -59,6 +61,11 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
   const [mapViewPostsFetchingStatus, setMapViewPostsFetchingStatus] = useState(''); // 'idle', 'loading', 'success', 'error'
 
   // ここでpostsのfetchをしてこよう。
+  // useEffect(() => {
+  //   if (viewPostsType === 'grid') {
+  //     requestApi({ tagId: tag._id, currentPage });
+  //   }
+  // }, []);
 
   return (
     // <TagRootContext.Provider
@@ -96,7 +103,7 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
         })}
         initialRouteName={viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator'}
       >
-        <Tab.Screen name='GridView'>{(props) => <Posts posts={posts} {...props} />}</Tab.Screen>
+        <Tab.Screen name='GridView'>{(props) => <GridPosts tag={tag} {...props} />}</Tab.Screen>
         <Tab.Screen name='MavView'>
           {(props) => (
             <View>
