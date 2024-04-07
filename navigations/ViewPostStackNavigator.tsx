@@ -1,33 +1,36 @@
-import React, { useContext, useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import React, { useContext } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import CommentsPage from '../features/Comments/pages/CommentsPage';
 import ReportPost from '../features/ViewPost/pages/ReportPost';
 import { Ionicons } from '@expo/vector-icons';
-import { GlobalContext } from '../contexts/GlobalContext';
-import { Image as ExpoImage } from 'expo-image';
+import { CurrentTagContext } from '../providers';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type ViewPostStackNavigatotParams = {
+  ViewPost: undefined;
+  CommentsPage: undefined;
+  ReportPost: undefined;
+};
 
-const ViewPostStackNavigator = () => {
-  const { currentTagObject } = useContext(GlobalContext);
+const ViewPostStack = createNativeStackNavigator<ViewPostStackNavigatotParams>();
+
+export const ViewPostStackNavigator = () => {
+  const { currentTag } = useContext(CurrentTagContext);
 
   return (
-    <Stack.Navigator
-      screenOptions={({ navigation, route }) => ({
-        tabBarStyle: {
-          backgroundColor: 'black',
-          headerStyle: {
-            backgroundColor: 'black',
-          },
-        },
-      })}
+    <ViewPostStack.Navigator
+    // screenOptions={({ navigation, route }) => ({
+    //   tabBarStyle: {
+    //     backgroundColor: 'black',
+    //     headerStyle: {
+    //       backgroundColor: 'black',
+    //     },
+    //   },
+    // })}
     >
-      <Stack.Group>
-        <Stack.Screen
+      <ViewPostStack.Group>
+        <ViewPostStack.Screen
           name='ViewPost'
           component={ViewPost}
           options={({ navigation }) => ({
@@ -38,27 +41,24 @@ const ViewPostStackNavigator = () => {
               </TouchableOpacity>
             ),
             headerTransparent: true,
-            headerTitle: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <ExpoImage
-                  style={{ width: 20, height: 20, marginRight: 10 }}
-                  source={{ uri: currentTagObject.tag.icon }}
-                  contentFit='contain'
-                  tintColor={currentTagObject.tag.iconType === 'icon' ? currentTagObject.tag.color : null}
-                />
-                <Text style={{ color: 'white', fontSize: 20 }}>{currentTagObject.tag.name}</Text>
-              </View>
-            ),
-            // headerStyle: {
-            //   backgroundColor: 'black',
-            // },
+            // headerTitle: () => (
+            //   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            //     <ExpoImage
+            //       style={{ width: 20, height: 20, marginRight: 10 }}
+            //       source={{ uri: currentTag.icon }}
+            //       contentFit='contain'
+            //       tintColor={currentTag.iconType === 'icon' ? currentTagObject.tag.color : null}
+            //     />
+            //     <Text style={{ color: 'white', fontSize: 20 }}>{currentTagObject.tag.name}</Text>
+            //   </View>
+            // ),
             headerTitleStyle: {
               fontWeight: 'bold',
               color: 'white',
             },
           })}
         />
-        <Stack.Screen
+        <ViewPostStack.Screen
           name='CommentsPage'
           component={CommentsPage}
           options={({ navigation }) => ({
@@ -77,12 +77,9 @@ const ViewPostStackNavigator = () => {
             },
           })}
         />
-        {/* all comments */}
-        {/* all reactions */}
-      </Stack.Group>
-      {/* postのreport機能ね。 */}
-      <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
-        <Stack.Screen
+      </ViewPostStack.Group>
+      <ViewPostStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+        <ViewPostStack.Screen
           name='ReportPost'
           component={ReportPost}
           options={({ navigation }) => ({
@@ -103,9 +100,7 @@ const ViewPostStackNavigator = () => {
             },
           })}
         />
-      </Stack.Group>
-    </Stack.Navigator>
+      </ViewPostStack.Group>
+    </ViewPostStack.Navigator>
   );
 };
-
-export default ViewPostStackNavigator;

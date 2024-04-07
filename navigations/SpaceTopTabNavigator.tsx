@@ -12,7 +12,7 @@ import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // import Grid from '../features/Space/components/Grid';
 
-import { PostsTopTabNavigator } from './PostsTopTabNavigator';
+import { PostsTopTabNavigator } from './TagScreenTopTabNavigator';
 import { Image as ExpoImage } from 'expo-image';
 import { TabView, Route, SceneMap } from 'react-native-tab-view';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';

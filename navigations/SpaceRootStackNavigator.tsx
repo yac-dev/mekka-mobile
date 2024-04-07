@@ -20,7 +20,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { SpaceBottomTabNavigator } from './SpaceBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import ViewPostStackNavigator from './ViewPostStackNavigator';
+import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { AuthContext, CurrentTagContext } from '../providers';
 import { SnackBarContext } from '../providers';
 import { SnackBar } from '../components';
@@ -32,6 +32,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { VectorIcon } from '../Icons';
 import { AppButton } from '../components';
 import * as Haptics from 'expo-haptics';
+import { Colors } from '../themes/colors';
 
 // こうやって書くと、nestedな形がよく分かっていいね
 type PostsTopTabNavigatorParams = {
@@ -50,6 +51,7 @@ type SpaceBottomTabNavigatorParams = {
 export type SpaceRootStackParams = {
   SpaceBottomTabNavigator: NavigatorScreenParams<SpaceBottomTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
+  ViewPostStackNavigator: undefined;
 };
 
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
@@ -287,7 +289,22 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: 'white',
+                color: Colors.white,
+              },
+            })}
+          />
+          <SpaceRootStack.Screen
+            name='ViewPostStackNavigator'
+            component={ViewPostStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'transparent',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: Colors.white,
               },
             })}
           />

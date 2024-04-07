@@ -6,4 +6,6 @@ export * from './LoginStackNavigator';
 export * from './SpaceRootStackNavigator';
 export * from './SpaceBottomTabNavigator';
 export * from './SpaceTopTabNavigator';
-export * from './PostsTopTabNavigator';
+export * from './TagScreenTopTabNavigator';
+export * from './GridViewStackNavigator';
+export * from './TagScreenStackNavigator';

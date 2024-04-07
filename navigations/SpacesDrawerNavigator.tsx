@@ -28,6 +28,10 @@ import { AuthMenu } from '../features';
 import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
 import { CustomDrawer } from '../features';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
+import { CurrentSpaceContext } from '../providers';
+import { TagType } from '../types';
+import { TagScreenStackNavigator } from '.';
+import { TagScreenProvider } from '../features';
 
 type SpacesDrawerParams = {};
 
@@ -41,6 +45,7 @@ export const SpacesDrawerNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
+  const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
   const navigation = useNavigation<RootStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
@@ -388,6 +393,7 @@ export const SpacesDrawerNavigator = (props) => {
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawer {...props} />}
           screenOptions={({ navigation }) => ({
+            swipeEnabled: false,
             drawerStyle: {
               backgroundColor: 'rgb(40,40,40)',
               width: 320,
@@ -460,13 +466,13 @@ export const SpacesDrawerNavigator = (props) => {
               {({ navigation, route }) => <NoSpaces navigation={navigation} />}
             </Drawer.Screen>
           ) : (
-            mySpaces.map((space) => (
+            currentSpace.tags.map((tag: TagType) => (
               <Drawer.Screen
-                key={space._id}
-                name={`Space_${space._id}`}
-                initialParams={{ space }}
+                key={tag._id}
+                name={`Tag_${tag._id}`}
+                initialParams={{ tag }}
                 options={({ navigation }) => ({
-                  headerTitle: space.name,
+                  headerTitle: tag.name,
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: 'bold',
@@ -529,34 +535,34 @@ export const SpacesDrawerNavigator = (props) => {
                       </TouchableOpacity>
                     );
                   },
-                  headerRight: () => {
-                    return (
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('SpaceInfoStackNavigator', { space });
-                          }}
-                        >
-                          <ExpoImage
-                            style={{
-                              width: 30,
-                              height: 30,
-                              borderRadius: 8,
-                              marginRight: 10,
-                            }}
-                            source={{ uri: space.icon }}
-                            contentFit='cover'
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    );
-                  },
+                  // headerRight: () => {
+                  //   return (
+                  //     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  //       <TouchableOpacity
+                  //         onPress={() => {
+                  //           navigation.navigate('SpaceInfoStackNavigator', { space });
+                  //         }}
+                  //       >
+                  //         <ExpoImage
+                  //           style={{
+                  //             width: 30,
+                  //             height: 30,
+                  //             borderRadius: 8,
+                  //             marginRight: 10,
+                  //           }}
+                  //           source={{ uri: space.icon }}
+                  //           contentFit='cover'
+                  //         />
+                  //       </TouchableOpacity>
+                  //     </View>
+                  //   );
+                  // },
                 })}
               >
                 {({ navigation, route }) => (
-                  <SpaceRootProvider>
-                    <SpaceRootStackNavigator space={space} />
-                  </SpaceRootProvider>
+                  <TagScreenProvider tag={tag}>
+                    <TagScreenStackNavigator />
+                  </TagScreenProvider>
                 )}
               </Drawer.Screen>
             ))

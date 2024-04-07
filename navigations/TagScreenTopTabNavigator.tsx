@@ -1,29 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, TouchableOpacity, Platform, Alert, Text, ActivityIndicator } from 'react-native';
 import { createMaterialTopTabNavigator, MaterialTopTabNavigationOptions } from '@react-navigation/material-top-tabs';
-import { useContext } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Image as ExpoImage } from 'expo-image';
-import { PostType, TagType } from '../types';
+
+import { ApiStatusType, PostType, TagType } from '../types';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
-import { CurrentTagContext } from '../providers/CurrentTagProvider';
-import { useNavigation } from '@react-navigation/native';
-import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
-import { GridPosts } from '../features/Space/components/GridPosts';
+import { GridViewStackNavigator } from './GridViewStackNavigator';
 import { MapPosts } from '../features/Space/components/MapPosts';
 import { ViewPostsTypeToggleButton } from '../features/Space/components/ViewPostsTypeToggleButtons';
 import { useGetPosts } from '../features/Space/hooks/useGetPosts';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
-// import TagViewStackNavigator from './TagViewStackNavigator';
-// import MavViewStackNavigator from './MapViewStackNavigator';
 import * as Haptics from 'expo-haptics';
-import { Icons } from '../Icons/images';
-// import { TagRootContext } from '../contexts/TagRootContext';
-// import { GlobalContext } from '../contexts/GlobalContext';
-// import { SpaceRootContext } from '../features';
-// import { CurrentTagContext } from '../providers';
+import { GridView } from '../features/Space/components';
+import { TagScreenContext } from '../features';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -34,15 +23,16 @@ const screenOptions: MaterialTopTabNavigationOptions = {
 };
 
 type PostsTopTabNavigatorProps = {
-  tag: TagType;
+  // posts: PostType[];
+  // getPostsApiStatus: ApiStatusType;
 };
 
-export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag }) => {
-  const { viewPostsType } = useContext(SpaceRootContext);
-  const { currentTag } = useContext(CurrentTagContext);
+export const TagScreenTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = () => {
+  // const { viewPostsType } = useContext(SpaceRootContext);
+  const { viewPostsType } = useContext(TagScreenContext);
 
   const { apiResult, requestApi } = useGetPosts();
-  const [posts, setPosts] = useState<PostType[]>([]);
+  // const [posts, setPosts] = useState<PostType[]>([]);
   const [mapPosts, setMapPosts] = useState([]);
   const [currentPost, setCurrentPost] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,23 +59,30 @@ export const PostsTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = ({ tag 
         screenOptions={screenOptions}
         initialRouteName={viewPostsType === 'grid' ? 'GridView' : 'MapView'}
       >
-        <Tab.Screen name='GridView'>{(props) => <GridPosts tag={tag} {...props} />}</Tab.Screen>
-        <Tab.Screen name='MapView'>{(props) => <MapPosts tag={tag} {...props} />}</Tab.Screen>
+        <Tab.Screen name='GridView'>{(props) => <GridView />}</Tab.Screen>
+        {/* <Tab.Screen name='MapView'>{(props) => <MapPosts tag={tag} {...props} />}</Tab.Screen> */}
+        <Tab.Screen name='MapView'>
+          {() => (
+            <View>
+              <Text>Map view</Text>
+            </View>
+          )}
+        </Tab.Screen>
       </Tab.Navigator>
-      <AppButton.Icon
+      {/* <AppButton.Icon
         addedStyle={{ position: 'absolute', bottom: 50, right: 20 }}
         onButtonPress={onCreateNewPostButtonPress}
         isPressDisabled={false} // createのstatusをここに足す感じだな。
         hasShadow
       >
         <VectorIcon.II name='add' size={32} color={'black'} />
-        {/* {createNewPostResult.isCreating ? (
+        {createNewPostResult.isCreating ? (
           <ActivityIndicator size={'small'} />
           ) : (
           <Ionicons name='add' size={32} color={'black'} />
-        )} */}
+        )}
       </AppButton.Icon>
-      <ViewPostsTypeToggleButton />
+      <ViewPostsTypeToggleButton /> */}
     </View>
   );
 };

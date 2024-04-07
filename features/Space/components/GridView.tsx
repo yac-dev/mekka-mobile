@@ -5,19 +5,20 @@ import { FlashList } from '@shopify/flash-list';
 import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { SpaceRootContext } from '../providers/SpaceRootProvider';
+import { ApiStatusType } from '../../../types';
+import { TagScreenContext } from '../providers';
 
-type PostsProps = {
-  tag: TagType;
-};
+type GridViewProps = {};
 
-export const GridPosts: React.FC<PostsProps> = ({ tag }) => {
-  const { setCurrentPost } = useContext(SpaceRootContext);
-  const { apiResult, requestApi, loadMore } = useGetPosts();
-  const [currentPage, setCurrentPage] = useState<number>(0);
+export const GridView: React.FC<GridViewProps> = () => {
+  // const { setCurrentPost } = useContext(SpaceRootContext);
+  const { getPostsApiResult } = useContext(TagScreenContext);
+  // const { apiResult, requestApi, loadMore } = useGetPosts();
+  // const [currentPage, setCurrentPage] = useState<number>(0);
 
-  useEffect(() => {
-    requestApi({ tagId: tag._id, currentPage });
-  }, []);
+  // useEffect(() => {
+  //   requestApi({ tagId: tag._id, currentPage });
+  // }, []);
 
   // const loadMoreItem = () => {
   //   if (hasMoreGridViewPosts) {
@@ -25,9 +26,10 @@ export const GridPosts: React.FC<PostsProps> = ({ tag }) => {
   //   }
   // };
   // ここ、currentPage変えればいけるか多分。
+  // loadmoreも上から持ってくるとする。
 
   const renderLoader = () => {
-    if (apiResult.status === 'paging') {
+    if (getPostsApiResult.status === 'paging') {
       return (
         <View style={{ paddingTop: 30, alignItems: 'center' }}>
           <ActivityIndicator />
@@ -37,14 +39,17 @@ export const GridPosts: React.FC<PostsProps> = ({ tag }) => {
   };
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    setCurrentPost(post);
+    console.log('post', post);
+    // setCurrentPost(post);
+    // ここだとどうだろ、、
+    // ここでnavigationだな。。。
   };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
-  if (apiResult.status === 'loading') {
+  if (getPostsApiResult.status === 'loading') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -52,7 +57,7 @@ export const GridPosts: React.FC<PostsProps> = ({ tag }) => {
     );
   }
 
-  if (!apiResult.data?.posts.length) {
+  if (!getPostsApiResult.data?.posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts in this tag channel...</Text>
@@ -64,14 +69,14 @@ export const GridPosts: React.FC<PostsProps> = ({ tag }) => {
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
         numColumns={3}
-        data={apiResult.data.posts}
+        data={getPostsApiResult.data?.posts}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
         removeClippedSubviews
         estimatedItemSize={125}
         // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
         // onEndReached={loadMoreItem}
-        ListFooterComponent={renderLoader}
+        // ListFooterComponent={renderLoader}
         onEndReachedThreshold={0}
         contentContainerStyle={{ paddingBottom: 30 }}
       />

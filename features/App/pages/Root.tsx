@@ -54,10 +54,10 @@ export const Root = () => {
       requestGetMySpaces({ userId: auth._id });
     }
   }, [auth]);
-
   useEffect(() => {
     if (getMySpacesApiResult.status === 'success') {
       setMySpaces(getMySpacesApiResult.data.mySpaces);
+      setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
       setSpaceUpdates(getMySpacesApiResult.data.updateTable);
     }
   }, [getMySpacesApiResult]);

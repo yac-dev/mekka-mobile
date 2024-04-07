@@ -119,6 +119,7 @@ export type SpaceType = {
   createdBy: UserType;
   createdAt: string;
   updatedAt: string;
+  tags: TagType[];
 };
 
 export type SpaceAndUserRelationshipType = {
