@@ -5,18 +5,20 @@ import { PostType, TagType } from '../../../types';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
 import { useMapPostsState } from '../hooks/useMapPostsState';
 import { MapPostThumbnail } from '../../../components/PostThumbnail/MapPostThumbnail';
+import { TagScreenContext } from '../providers';
 
 type MapPostsProps = {
-  tag: TagType;
+  // tag: TagType;
 };
 
-export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
-  const { apiResult, requestApi } = useGetPostsByTagIdAndRegion();
-  const { mapRef, region, onRegionChangeComplete } = useMapPostsState();
+export const MapPosts: React.FC<MapPostsProps> = () => {
+  const { mapRef, region, onRegionChangeComplete, getPostsByTagIdAndRegionResult } = useContext(TagScreenContext);
+  // const { apiResult, requestApi } = useGetPostsByTagIdAndRegion();
+  // const { mapRef, region, onRegionChangeComplete } = useMapPostsState();
 
-  useEffect(() => {
-    requestApi({ tagId: tag._id, region });
-  }, [region]);
+  // useEffect(() => {
+  //   requestApi({ tagId: tag._id, region });
+  // }, [region]);
 
   const onMapPostThumbnailPress = () => {
     console.log('map post press');
@@ -30,11 +32,11 @@ export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
   };
 
   const renderMarkers = () => {
-    return apiResult.data?.posts.map((post: PostType, index: number) => (
+    return getPostsByTagIdAndRegionResult.data?.posts.map((post: PostType, index: number) => (
       <MapPostThumbnail
         post={post}
         onMapPostThumbnailPress={onMapPostThumbnailPress}
-        isPressDisabled={apiResult.status === 'loading'}
+        isPressDisabled={getPostsByTagIdAndRegionResult.status === 'loading'}
       />
     ));
   };
@@ -57,7 +59,7 @@ export const MapPosts: React.FC<MapPostsProps> = ({ tag }) => {
       >
         {renderMarkers()}
       </MapView>
-      {apiResult.status === 'loading' && (
+      {getPostsByTagIdAndRegionResult.status === 'loading' && (
         <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
           <ActivityIndicator size={'small'} color={'white'} />
         </View>

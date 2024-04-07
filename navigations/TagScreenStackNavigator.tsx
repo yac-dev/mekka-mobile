@@ -1,18 +1,33 @@
 import React, { useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../themes';
 import { useGetPosts } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { TagScreenTopTabNavigator } from './TagScreenTopTabNavigator';
 import { TagType } from '../types';
 import { TagScreenProvider } from '../features';
+import { AppButton } from '../components/Button';
+import { VectorIcon } from '../Icons/VectorIcons';
+import { ViewPostsTypeToggleButton } from '../features/Space/components/ViewPostsTypeToggleButtons';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
-const TagScreenStack = createNativeStackNavigator();
+export type TagScreenTopTabNavigatorParams = {
+  GridView: undefined;
+  MapView: undefined;
+};
 
-type TagScreenStackNavigatorProps = {};
+export type TagScreenStackParams = {
+  TagScreenTopTabNavigator: NavigatorScreenParams<TagScreenTopTabNavigatorParams>;
+  CreateNewPostStackNavigator: undefined;
+  ViewPostStackNavigator: undefined;
+};
 
-export const TagScreenStackNavigator: React.FC<TagScreenStackNavigatorProps> = () => {
+export type TagScreenStackNavigatorProps = NativeStackNavigationProp<TagScreenStackParams>;
+
+const TagScreenStack = createNativeStackNavigator<TagScreenStackParams>();
+
+export const TagScreenStackNavigator: React.FC = () => {
   const { apiResult: getPostsApiResult, requestApi: requestGetPosts } = useGetPosts();
   // useEffect(() => {
   //   if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
@@ -33,6 +48,10 @@ export const TagScreenStackNavigator: React.FC<TagScreenStackNavigatorProps> = (
   //     });
   //   }
   // }, [createNewPostResult]);
+
+  const onCreateNewPostButtonPress = () => {
+    console.log('post');
+  };
 
   return (
     <View
@@ -89,6 +108,20 @@ export const TagScreenStackNavigator: React.FC<TagScreenStackNavigatorProps> = (
           />
         </TagScreenStack.Group>
       </TagScreenStack.Navigator>
+      <AppButton.Icon
+        addedStyle={{ position: 'absolute', bottom: 50, right: 20 }}
+        onButtonPress={onCreateNewPostButtonPress}
+        isPressDisabled={false} // createのstatusをここに足す感じだな。
+        hasShadow
+      >
+        <VectorIcon.II name='add' size={32} color={'black'} />
+        {/* {createNewPostResult.isCreating ? (
+          <ActivityIndicator size={'small'} />
+          ) : (
+          <Ionicons name='add' size={32} color={'black'} />
+        )} */}
+      </AppButton.Icon>
+      <ViewPostsTypeToggleButton />
     </View>
   );
 };

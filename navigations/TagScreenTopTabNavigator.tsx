@@ -11,15 +11,15 @@ import { useGetPosts } from '../features/Space/hooks/useGetPosts';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import * as Haptics from 'expo-haptics';
-import { GridView } from '../features/Space/components';
-import { TagScreenContext } from '../features';
+import { GridView } from '../features/Space/components/GridView';
+import { TagScreenContext } from '../features/Space/providers/TagScreenProvider';
 
 const Tab = createMaterialTopTabNavigator();
 
 const screenOptions: MaterialTopTabNavigationOptions = {
   lazy: true,
   swipeEnabled: false,
-  animationEnabled: false,
+  animationEnabled: true,
 };
 
 type PostsTopTabNavigatorProps = {
@@ -61,28 +61,8 @@ export const TagScreenTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = () 
       >
         <Tab.Screen name='GridView'>{(props) => <GridView />}</Tab.Screen>
         {/* <Tab.Screen name='MapView'>{(props) => <MapPosts tag={tag} {...props} />}</Tab.Screen> */}
-        <Tab.Screen name='MapView'>
-          {() => (
-            <View>
-              <Text>Map view</Text>
-            </View>
-          )}
-        </Tab.Screen>
+        <Tab.Screen name='MapView'>{() => <MapPosts />}</Tab.Screen>
       </Tab.Navigator>
-      {/* <AppButton.Icon
-        addedStyle={{ position: 'absolute', bottom: 50, right: 20 }}
-        onButtonPress={onCreateNewPostButtonPress}
-        isPressDisabled={false} // createのstatusをここに足す感じだな。
-        hasShadow
-      >
-        <VectorIcon.II name='add' size={32} color={'black'} />
-        {createNewPostResult.isCreating ? (
-          <ActivityIndicator size={'small'} />
-          ) : (
-          <Ionicons name='add' size={32} color={'black'} />
-        )}
-      </AppButton.Icon>
-      <ViewPostsTypeToggleButton /> */}
     </View>
   );
 };

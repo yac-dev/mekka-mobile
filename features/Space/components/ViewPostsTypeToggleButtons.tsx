@@ -8,25 +8,22 @@ import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { Colors } from '../../../themes/colors';
+import { TagScreenStackNavigatorProps } from '../../../navigations';
 
 export const ViewPostsTypeToggleButton = () => {
-  const navigation = useNavigation<SpaceRootStackNavigatorProp>();
+  const navigation = useNavigation<TagScreenStackNavigatorProps>();
   const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
   const { currentTag } = useContext(CurrentTagContext);
 
   const onGridIconPress = () => {
     setViewPostsType('grid');
-    navigation.navigate('SpaceBottomTabNavigator', {
-      screen: 'TagsTopTabNavigator',
-      params: { screen: `Tag_${currentTag._id}`, params: { screen: 'GridView' } },
-    });
+    navigation.navigate('TagScreenTopTabNavigator', { screen: 'GridView' });
   };
 
   const onGlobeIconPress = () => {
     setViewPostsType('map');
-    navigation.navigate('SpaceBottomTabNavigator', {
-      screen: 'TagsTopTabNavigator',
-      params: { screen: `Tag_${currentTag._id}`, params: { screen: 'MapView' } },
+    navigation.navigate('TagScreenTopTabNavigator', {
+      screen: 'MapView',
     });
   };
 
