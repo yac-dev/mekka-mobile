@@ -16,14 +16,23 @@ import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { TagRootContext } from '../../../contexts/TagRootContext';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { TagScreenContext } from '../../Space';
+import { PostType } from '../../../types';
+import { CarouselContents } from '../components/CarouselContents';
 
 const ViewPost = (props) => {
+  const {
+    getPostsApiResult,
+    getPostsByTagIdAndRegionResult,
+    setCurrentPost,
+    viewPostsType,
+    currentPost,
+    currentPostIndex,
+    onCurrentPostIndexChange,
+  } = useContext(TagScreenContext);
   // const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
-  const { viewPostsType } = useContext(SpaceRootContext);
-  const { currentPost, setCurrentPost, posts, currentIndex, mapPosts } = useContext(TagRootContext);
+  // const { viewPostsType } = useContext(SpaceRootContext);
+  // const { currentPost, setCurrentPost, posts, currentIndex, mapPosts } = useContext(TagRootContext);
   const mediaRefs = useRef([]);
   const reactionStatusesBottomSheetRef = useRef(null);
   const commentInputBottomSheetRef = useRef(null);
@@ -36,31 +45,28 @@ const ViewPost = (props) => {
   const [isCommentsBottomSheetOpen, setIsCommentsBottomSheetOpen] = useState(false);
   const [isOtherOptionsBottomSheetOpen, setIsOtherOptionsBottomSheetOpen] = useState(false);
 
-  const getReactionStatuses = async () => {
-    // currentPostがあってこれを使う。
-    reactionStatusesBottomSheetRef.current.snapToIndex(0);
-    setIsLoadingReactionStatuses(true);
-    const result = await backendAPI.get(`/reactionstatuses/post/${currentPost._id}`);
-    const { reactionStatuses } = result.data;
-    setReactionStatuses(reactionStatuses);
-    setIsLoadingReactionStatuses(false);
-  };
+  // const getReactionStatuses = async () => {
+  //   // currentPostがあってこれを使う。
+  //   reactionStatusesBottomSheetRef.current.snapToIndex(0);
+  //   setIsLoadingReactionStatuses(true);
+  //   const result = await backendAPI.get(`/reactionstatuses/post/${currentPost._id}`);
+  //   const { reactionStatuses } = result.data;
+  //   setReactionStatuses(reactionStatuses);
+  //   setIsLoadingReactionStatuses(false);
+  // };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return (
       <View
-        style={[
-          // -50はbottom menuのheight文を引いている。
-          {
-            flex: 1,
-            height: Dimensions.get('window').height,
-            width: Dimensions.get('window').width,
-            backgroundColor: 'black',
-          },
-          // index % 2 === 0 ? { backgroundColor: 'red' } : { backgroundColor: 'blue' },
-        ]}
+        style={{
+          flex: 1,
+          height: Dimensions.get('window').height,
+          width: Dimensions.get('window').width,
+          backgroundColor: 'black',
+        }}
       >
-        <Content post={item} ref={(ContentRef) => (mediaRefs.current[item._id] = ContentRef)} />
+        <CarouselContents post={item} />
+        {/* <Content post={item} ref={(ContentRef) => (mediaRefs.current[item._id] = ContentRef)} /> */}
       </View>
     );
   };
@@ -103,61 +109,55 @@ const ViewPost = (props) => {
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach((element) => {
       if (element.isViewable) {
-        setCurrentPost(element.item);
+        onCurrentPostIndexChange(element.item);
       }
     });
   });
-  // 最初の見るやつをcurrentPostに設定したいよね。多分、
 
   return (
-    <ViewPostContext.Provider
-      value={{
-        getReactionStatuses,
-        viewPostStackNavigatorNavigation: props.navigation,
-        reactionStatusesBottomSheetRef,
-        commentInputBottomSheetRef,
-        otherActionsBottomSheetRef,
-        textInputRef,
-        reactionStatuses,
-        setReactionStatuses,
-        isLoadingReactionStatuses,
-        setIsLoadingReactionStatuses,
-        isReactionsBottomSheetOpen,
-        setIsReactionsBottomSheetOpen,
-        isCommentsBottomSheetOpen,
-        setIsCommentsBottomSheetOpen,
-        isOtherOptionsBottomSheetOpen,
-        setIsOtherOptionsBottomSheetOpen,
-      }}
-    >
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-        <FlatList
-          data={viewPostsType === 'grid' ? posts : mapPosts}
-          renderItem={renderItem}
-          pagingEnabled
-          removeClippedSubviews
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-          decelerationRate={'normal'}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-          viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-          initialScrollIndex={currentIndex}
-          getItemLayout={(data, index) => ({
-            length: Dimensions.get('window').height, // Set the height of each item
-            offset: Dimensions.get('window').height * index, // Calculate the offset based on the index
-            index, // Pass the index
-          })}
-        />
-        <BottomMenu
-        // getReactionStatuses={getReactionStatuses}
-        // reactionStatusesBottomSheetRef={reactionStatusesBottomSheetRef}
-        // commentInputBottomSheetRef={commentInputBottomSheetRef}
-        // textInputRef={textInputRef}
-        />
+    // <ViewPostContext.Provider
+    //   value={{
+    //     getReactionStatuses,
+    //     viewPostStackNavigatorNavigation: props.navigation,
+    //     reactionStatusesBottomSheetRef,
+    //     commentInputBottomSheetRef,
+    //     otherActionsBottomSheetRef,
+    //     textInputRef,
+    //     reactionStatuses,
+    //     setReactionStatuses,
+    //     isLoadingReactionStatuses,
+    //     setIsLoadingReactionStatuses,
+    //     isReactionsBottomSheetOpen,
+    //     setIsReactionsBottomSheetOpen,
+    //     isCommentsBottomSheetOpen,
+    //     setIsCommentsBottomSheetOpen,
+    //     isOtherOptionsBottomSheetOpen,
+    //     setIsOtherOptionsBottomSheetOpen,
+    //   }}
+    // >
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
+      <FlatList
+        data={viewPostsType === 'grid' ? getPostsApiResult.data?.posts : getPostsByTagIdAndRegionResult.data?.posts}
+        renderItem={renderItem}
+        pagingEnabled
+        removeClippedSubviews
+        keyExtractor={(item, index) => `${item._id}-${index}`}
+        decelerationRate={'normal'}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+        initialScrollIndex={currentPostIndex}
+        getItemLayout={(data, index) => ({
+          length: Dimensions.get('window').height, // Set the height of each item
+          offset: Dimensions.get('window').height * index, // Calculate the offset based on the index
+          index, // Pass the index
+        })}
+      />
+      {/* <BottomMenu />
         <ReactionOptionsBottomSheet />
         <CommentInputBottomSheet />
-        <OtherActionsBottomSheet />
-      </GestureHandlerRootView>
-    </ViewPostContext.Provider>
+        <OtherActionsBottomSheet /> */}
+    </GestureHandlerRootView>
+    // </ViewPostContext.Provider>
   );
 };
 

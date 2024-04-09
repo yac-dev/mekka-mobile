@@ -395,7 +395,9 @@ export const SpacesDrawerNavigator = (props) => {
           screenOptions={({ navigation }) => ({
             swipeEnabled: false,
             drawerStyle: {
-              backgroundColor: 'rgb(40,40,40)',
+              backgroundColor: 'black',
+              borderRightColor: 'rgb(50,50,50)',
+              borderRightWidth: 1,
               width: 320,
             },
             tabBarStyle: {

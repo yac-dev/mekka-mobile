@@ -18,6 +18,8 @@ type TagScreenContextType = {
   setScreenLoaded: React.Dispatch<React.SetStateAction<boolean>>;
   currentPost: PostType;
   setCurrentPost: React.Dispatch<React.SetStateAction<PostType>>;
+  currentPostIndex: number;
+  onCurrentPostIndexChange: (index: number) => void;
 };
 
 const initialApiResult = {
@@ -53,6 +55,8 @@ export const TagScreenContext = createContext<TagScreenContextType>({
   setScreenLoaded: () => {},
   currentPost: void 0,
   setCurrentPost: () => {},
+  currentPostIndex: 0,
+  onCurrentPostIndexChange: () => void 0,
 });
 
 export type ViewPostsType = 'grid' | 'map';
@@ -69,6 +73,7 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
   const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
+  const [currentPostIndex, setCurrentPostIndex] = useState<number>(0);
   const mapRef = useRef<MapView>(null);
   const [region, setRegion] = useState({
     latitude: 37.78825,
@@ -82,6 +87,10 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
+  const onCurrentPostIndexChange = (index: number) => {
+    setCurrentPostIndex(index);
+  };
+
   useEffect(() => {
     requestGetPostsApi({ tagId: tag._id, currentPage: 0 });
   }, []);
@@ -89,8 +98,6 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
   useEffect(() => {
     requestGetPostsByTagIdAndRegion({ tagId: tag._id, region });
   }, [region]);
-
-  console.log('posts res', getPostsApiResult);
 
   return (
     <TagScreenContext.Provider
@@ -106,6 +113,8 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
         setScreenLoaded,
         currentPost,
         setCurrentPost,
+        currentPostIndex,
+        onCurrentPostIndexChange,
       }}
     >
       {children}

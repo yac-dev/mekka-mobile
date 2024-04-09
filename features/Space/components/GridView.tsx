@@ -7,12 +7,15 @@ import { useGetPosts } from '../hooks/useGetPosts';
 import { SpaceRootContext } from '../providers/SpaceRootProvider';
 import { ApiStatusType } from '../../../types';
 import { TagScreenContext } from '../providers';
+import { useNavigation } from '@react-navigation/native';
+import { TagScreenStackNavigatorProps } from '../../../navigations';
 
 type GridViewProps = {};
 
 export const GridView: React.FC<GridViewProps> = () => {
   // const { setCurrentPost } = useContext(SpaceRootContext);
-  const { getPostsApiResult } = useContext(TagScreenContext);
+  const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  const { getPostsApiResult, setCurrentPost, onCurrentPostIndexChange } = useContext(TagScreenContext);
   // const { apiResult, requestApi, loadMore } = useGetPosts();
   // const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -40,6 +43,9 @@ export const GridView: React.FC<GridViewProps> = () => {
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
     console.log('post', post);
+    setCurrentPost(post);
+    onCurrentPostIndexChange(index);
+    navigation.navigate('ViewPostStackNavigator');
     // setCurrentPost(post);
     // ここだとどうだろ、、
     // ここでnavigationだな。。。
