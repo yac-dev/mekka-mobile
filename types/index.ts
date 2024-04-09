@@ -99,6 +99,12 @@ export type ReactionType = {
   space: SpaceType;
 };
 
+export type ReactionStatus = {
+  post: string;
+  reaction: ReactionType;
+  count: number;
+};
+
 export type SpaceType = {
   _id: string;
   name: string;

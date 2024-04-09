@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 16,
-    backgroundColor: Colors.black50,
+    backgroundColor: Colors.black,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: 'rgb(80,80,80)',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   text: {
     fontSize: 23,

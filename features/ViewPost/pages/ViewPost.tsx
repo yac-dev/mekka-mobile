@@ -5,7 +5,7 @@ import backendAPI from '../../../apis/backend';
 import { ViewPostContext } from '../contexts/ViewPostContext';
 import Header from '../components/Header';
 import Content from '../components/Content';
-import ReactionOptionsBottomSheet from './ReactionOptionsBottomSheet';
+import ReactionOptionsBottomSheet from '../components/ReactionsBottomSheet';
 import CommentInputBottomSheet from './CommentInputBottomSheet';
 import OtherActionsBottomSheet from './OtherActionsBottomSheet';
 import BottomMenu from '../components/BottomMenu';
@@ -19,6 +19,10 @@ import { TagRootContext } from '../../../contexts/TagRootContext';
 import { TagScreenContext } from '../../Space';
 import { PostType } from '../../../types';
 import { CarouselContents } from '../components/CarouselContents';
+import { ViewPostMenu } from '../components';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { useBottomSheet } from '../hooks';
+import { ReactionsBottomSheet } from '../components/ReactionsBottomSheet';
 
 const ViewPost = (props) => {
   const {
@@ -30,20 +34,38 @@ const ViewPost = (props) => {
     currentPostIndex,
     onCurrentPostIndexChange,
   } = useContext(TagScreenContext);
+  const {
+    isReactionsBottomSheetOpen,
+    isCommentsBottomSheetOpen,
+    reactionsBottomSheetRef,
+    commentsBottomSheetRef,
+    userInfoBottomSheetRef,
+    othersBottomSheetRef,
+    openReactionsBottomSheetToIndex,
+    handleReactionBottomSheetVisibility,
+    openCommentsBottomSheetToIndex,
+    openUserInfoBottomSheetRefBottomSheetToIndex,
+    openOthersBottomSheetToIndex,
+    closeReactionsBottomSheet,
+    onReactionsBottomSheetClose,
+    closeCommentsBottomSheet,
+    closeUserInfoBottomSheetRefBottomSheet,
+    closeOthersBottomSheet,
+  } = useBottomSheet();
+
   // const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
   // const { viewPostsType } = useContext(SpaceRootContext);
   // const { currentPost, setCurrentPost, posts, currentIndex, mapPosts } = useContext(TagRootContext);
   const mediaRefs = useRef([]);
-  const reactionStatusesBottomSheetRef = useRef(null);
-  const commentInputBottomSheetRef = useRef(null);
-  const otherActionsBottomSheetRef = useRef(null);
+
   const textInputRef = useRef(null);
   const [reactionStatuses, setReactionStatuses] = useState([]);
   const [isLoadingReactionStatuses, setIsLoadingReactionStatuses] = useState(false);
-  // gorhom bottomがfull screen modalでdefaultで開いちゃうとき用の対策。
-  const [isReactionsBottomSheetOpen, setIsReactionsBottomSheetOpen] = useState(false);
-  const [isCommentsBottomSheetOpen, setIsCommentsBottomSheetOpen] = useState(false);
   const [isOtherOptionsBottomSheetOpen, setIsOtherOptionsBottomSheetOpen] = useState(false);
+
+  const onReactionsPress = () => {
+    openReactionsBottomSheetToIndex(0);
+  };
 
   // const getReactionStatuses = async () => {
   //   // currentPostがあってこれを使う。
@@ -152,8 +174,16 @@ const ViewPost = (props) => {
           index, // Pass the index
         })}
       />
-      {/* <BottomMenu />
-        <ReactionOptionsBottomSheet />
+      <ViewPostMenu onReactionPress={handleReactionBottomSheetVisibility} />
+      <ReactionsBottomSheet
+        ref={reactionsBottomSheetRef}
+        isReactionsBottomSheetOpen={isReactionsBottomSheetOpen}
+        openReactionsBottomSheetToIndex={openReactionsBottomSheetToIndex}
+        closeReactionsBottomSheet={closeReactionsBottomSheet}
+        onReactionsBottomSheetClose={onReactionsBottomSheetClose}
+      />
+      {/* <BottomMenu /> */}
+      {/* <ReactionOptionsBottomSheet />
         <CommentInputBottomSheet />
         <OtherActionsBottomSheet /> */}
     </GestureHandlerRootView>
