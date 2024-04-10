@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native
 import { AppButton } from '../../../components/Button';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
-import { AuthContext, CurrentSpaceContext, SpaceUpdatesContext } from '../../../providers';
+import { AuthContext, CurrentSpaceContext, CurrentTagContext, SpaceUpdatesContext } from '../../../providers';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { MySpacesContext } from '../../../providers';
 import { SpaceType } from '../../../types';
@@ -15,6 +15,7 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
   const { mySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { spaceUpdates } = useContext(SpaceUpdatesContext);
+  const { setCurrentTag } = useContext(CurrentTagContext);
 
   // const updateLastCheckedIn = async () => {
   //   const result = await backendAPI.patch(`/users/${auth._id}/lastcheckedin`, {
@@ -283,7 +284,7 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
             });
             // ここでspaceのdate updateか。
             // updateLastCheckedIn(); //一時停止。
-            setCurrentSpace(route.params?.spaceAndUserRelationship);
+            setCurrentTag(route.params?.tag);
 
             if (!isFocused && !event.defaultPrevented) {
               navigation.navigate(route.name);

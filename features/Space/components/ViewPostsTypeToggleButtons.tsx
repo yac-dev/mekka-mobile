@@ -9,10 +9,11 @@ import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { Colors } from '../../../themes/colors';
 import { TagScreenStackNavigatorProps } from '../../../navigations';
+import { TagScreenContext } from '../providers';
 
 export const ViewPostsTypeToggleButton = () => {
   const navigation = useNavigation<TagScreenStackNavigatorProps>();
-  const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
+  const { viewPostsType, setViewPostsType } = useContext(TagScreenContext);
   const { currentTag } = useContext(CurrentTagContext);
 
   const onGridIconPress = () => {
