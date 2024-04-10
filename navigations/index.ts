@@ -9,3 +9,4 @@ export * from './SpaceTopTabNavigator';
 export * from './TagScreenTopTabNavigator';
 export * from './GridViewStackNavigator';
 export * from './TagScreenStackNavigator';
+export * from './SpaceInfoStackNavigator';

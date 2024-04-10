@@ -396,7 +396,7 @@ export const SpacesDrawerNavigator = (props) => {
             swipeEnabled: false,
             drawerStyle: {
               backgroundColor: 'black',
-              borderRightColor: 'rgb(50,50,50)',
+              borderRightColor: 'rgb(40,40,40)',
               borderRightWidth: 1,
               width: 320,
             },

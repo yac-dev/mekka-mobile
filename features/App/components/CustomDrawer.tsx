@@ -7,10 +7,14 @@ import { AuthContext, CurrentSpaceContext, CurrentTagContext, SpaceUpdatesContex
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { MySpacesContext } from '../../../providers';
 import { SpaceType } from '../../../types';
+import * as Haptics from 'expo-haptics';
+import { useNavigation } from '@react-navigation/native';
+import { HomeStackNavigatorProps } from '../../../navigations';
 
 // このnavigationって、Homeのnavigationを受け継ぎ同時にSpacesDrawerのscreenに対するdrawerのnavigationも持っているのか。。。
 // まあここはよくわからん。。。
 export const CustomDrawer = ({ state, descriptors, navigation }) => {
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { auth } = useContext(AuthContext);
   const { mySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
@@ -61,14 +65,33 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
     setCurrentSpace(space);
   };
 
+  const onSpaceLongPress = (space: SpaceType) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    homeStackNavigation.navigate('SpaceInfoStackNavigator', { space });
+  };
+
   return (
     <View style={{ paddingTop: 30 }}>
-      {/* <AppButton.Icon
-        onPressButton={onCloseDrawerPress}
-        style={{ alignSelf: 'flex-end', marginBottom: 5, marginRight: 10 }}
+      <AppButton.Icon
+        customStyle={{
+          width: 26,
+          height: 26,
+          borderRadius: 13,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'flex-end',
+          marginRight: 15,
+        }}
+        onButtonPress={() => navigation.closeDrawer()}
+        hasShadow={false}
       >
-        <VectorIcon.II name='close-circle' size={30} color='white' />
-      </AppButton.Icon> */}
+        <VectorIcon.II name='close' size={17} color={'black'} />
+        {/* {createNewPostResult.isCreating ? (
+          <ActivityIndicator size={'small'} />
+          ) : (
+          <Ionicons name='add' size={32} color={'black'} />
+        )} */}
+      </AppButton.Icon>
       {/* <View style={{ flexDirection: 'column', alignItems: 'center', marginBottom: 10 }}>
         <ExpoImage
           style={{ width: 35, height: 35, marginBottom: 10 }}
@@ -94,7 +117,11 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
       </View> */}
       <ScrollView
         horizontal
-        style={{ borderBottomWidth: 0.3, borderBottomColor: 'rgb(150,150,150)', padding: 10, marginBottom: 10 }}
+        style={{
+          //  borderBottomWidth: 0.3, borderBottomColor: 'rgb(70,70,70)',
+          padding: 10,
+          marginBottom: 10,
+        }}
       >
         <TouchableOpacity
           style={{
@@ -138,6 +165,8 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
               onPress={() => {
                 onSpacePress(space);
               }}
+              onLongPress={() => onSpaceLongPress(space)}
+              // ここでspaceのinfoを出すようにする。
             >
               <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <ExpoImage
@@ -294,26 +323,28 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
           return (
             <TouchableOpacity
               key={route.key}
+              activeOpacity={0.5}
               style={{
                 padding: 5,
                 // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
               }}
               onPress={onPress}
+              onLongPress={() => console.log('tag long pressed')}
             >
               <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  padding: 10,
-                  backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
-                  borderRadius: 10,
+                  padding: 8,
+                  backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',
+                  borderRadius: 5,
                   justifyContent: 'space-between',
                 }}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <ExpoImage
                     style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
-                    source={{ uri: route.params?.tag.icon.url }}
+                    source={{ uri: route.params?.tag.icon?.url }}
                     contentFit='cover'
                     tintColor={'white'}
                   />

@@ -4,7 +4,7 @@ import { Colors } from '../../themes';
 
 type IconButtonProps = {
   children: ReactNode;
-  addedStyle?: ViewStyle;
+  customStyle?: ViewStyle;
   onButtonPress: () => void;
   isPressDisabled?: boolean;
   hasShadow: boolean;
@@ -36,7 +36,7 @@ const baseStyle: ViewStyle = {
 export const IconButton: React.FC<IconButtonProps> = ({
   children,
   onButtonPress,
-  addedStyle,
+  customStyle,
   isPressDisabled,
   hasShadow = false,
 }) => {
@@ -45,8 +45,8 @@ export const IconButton: React.FC<IconButtonProps> = ({
 
   return (
     <TouchableOpacity
-      activeOpacity={1}
-      style={[baseStyle, addedStyle, processingBackgroundColorStyle, shadowStyle]}
+      activeOpacity={0.5}
+      style={[baseStyle, customStyle, processingBackgroundColorStyle, shadowStyle]}
       // disabled={isPressDisabled}
       onPress={onButtonPress}
     >

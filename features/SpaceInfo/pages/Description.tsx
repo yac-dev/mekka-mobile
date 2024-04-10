@@ -1,19 +1,13 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
-import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
+import { SpaceType } from '../../../types';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type DescriptionProps = {
+  space: SpaceType;
+};
 
-const Description = () => {
-  const { currentSpace } = useContext(GlobalContext);
-  const { spaceAndUserRelationship } = useContext(SpaceInfoContext);
+const Description: React.FC<DescriptionProps> = ({ space }) => {
   const [textShown, setTextShown] = useState(false);
   const [lengthMore, setLengthMore] = useState(false);
 
@@ -46,22 +40,20 @@ const Description = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <ExpoImage
                 style={{ width: 30, height: 30, borderRadius: 20, marginRight: 10 }}
-                source={{ uri: spaceAndUserRelationship.space.createdBy.avatar }}
+                source={{ uri: space.createdBy.avatar }}
                 contentFit='contain'
                 transition={1000}
               />
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                {spaceAndUserRelationship.space.createdBy.name}
-              </Text>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>{space.createdBy.name}</Text>
             </View>
-            {renderDate(spaceAndUserRelationship.space.createdAt)}
+            {renderDate(space.createdAt)}
           </View>
           <Text
             onTextLayout={onTextLayout}
             numberOfLines={textShown ? undefined : 3}
             style={{ color: 'white', lineHeight: 22, padding: 5 }}
           >
-            {spaceAndUserRelationship.space.description}
+            {space.description}
           </Text>
           {lengthMore ? (
             <Text

@@ -9,14 +9,16 @@ import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { SpaceInfoStackNavigatorProps } from '../../../navigations';
+import { SpaceType } from '../../../types';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type SpaceInfoProps = {
+  space: SpaceType;
+};
 
-const SpaceInfo = (props) => {
-  const { currentSpaceAndUserRelationship, spaceMenuBottomSheetRef, currentSpace } = useContext(GlobalContext);
-  // const { spaceAndUserRelationship } = props.route?.params;
-  const { spaceAndUserRelationship } = useContext(SpaceInfoContext);
+export const SpaceInfo: React.FC<SpaceInfoProps> = ({ space }) => {
+  const navigation = useNavigation<SpaceInfoStackNavigatorProps>();
   const [textShown, setTextShown] = useState(false);
   const [lengthMore, setLengthMore] = useState(false);
 
@@ -32,12 +34,7 @@ const SpaceInfo = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)' }}>
       <View style={{ height: 250, width: '100%', marginBottom: 10 }}>
-        <ExpoImage
-          style={{ width: '100%', height: '100%' }}
-          source={{ uri: spaceAndUserRelationship.space.icon }}
-          placeholder={blurhash}
-          contentFit='cover'
-        />
+        <ExpoImage style={{ width: '100%', height: '100%' }} source={{ uri: space.icon }} contentFit='cover' />
         {/* これ、下に影入れた方がいいな。 */}
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.7)']}
@@ -57,10 +54,10 @@ const SpaceInfo = (props) => {
             // 文字影は分からん。。。今は。。。
           }}
         >
-          {spaceAndUserRelationship.space.name}
+          {space.name}
         </Text>
         <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
+          onPress={() => navigation.goBack()}
           style={{
             position: 'absolute',
             top: 10,
@@ -110,11 +107,11 @@ const SpaceInfo = (props) => {
                   },
                 }),
               }}
-              onPress={() =>
-                props.navigation.navigate('ReportSpace', {
-                  spaceAndUserRelationship,
-                })
-              }
+              // onPress={() =>
+              //   props.navigation.navigate('ReportSpace', {
+              //     spaceAndUserRelationship,
+              //   })
+              // }
             >
               {/* <Feather name='more-horizontal' color='black' size={20} /> */}
               <MaterialCommunityIcons name='exclamation' color='black' size={20} />
@@ -122,9 +119,7 @@ const SpaceInfo = (props) => {
           </View>
         </View>
       </View>
-      <SpaceInfoTopTabNavigator />
+      <SpaceInfoTopTabNavigator space={space} />
     </View>
   );
 };
-
-export default SpaceInfo;

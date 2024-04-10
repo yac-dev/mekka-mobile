@@ -109,7 +109,7 @@ export const TagScreenStackNavigator: React.FC = () => {
         </TagScreenStack.Group>
       </TagScreenStack.Navigator>
       <AppButton.Icon
-        addedStyle={{ position: 'absolute', bottom: 50, right: 20 }}
+        customStyle={{ position: 'absolute', bottom: 50, right: 20 }}
         onButtonPress={onCreateNewPostButtonPress}
         isPressDisabled={false} // createのstatusをここに足す感じだな。
         hasShadow

@@ -1,20 +1,17 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
-import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
+import { ReactionType, SpaceType } from '../../../types';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type FeatureProps = {
+  space: SpaceType;
+};
 
-const Feature = () => {
-  const { currentSpace } = useContext(GlobalContext);
-  const { spaceAndUserRelationship } = useContext(SpaceInfoContext);
+const Feature: React.FC<FeatureProps> = ({ space }) => {
   const [textShown, setTextShown] = useState(false);
   const [lengthMore, setLengthMore] = useState(false);
 
@@ -37,9 +34,9 @@ const Feature = () => {
     // console.log(e.nativeEvent);
   }, []);
 
-  const renderReactions = (space) => {
+  const renderReactions = (space: SpaceType) => {
     if (space.isReactionAvailable) {
-      const list = spaceAndUserRelationship.space.reactions.map((reaction, index) => {
+      const list = space.reactions.map((reaction: ReactionType, index: number) => {
         if (reaction) {
           if (reaction.type === 'emoji') {
             return (
@@ -85,41 +82,10 @@ const Feature = () => {
     }
   }
 
-  // <TouchableOpacity
-  //               style={{
-  //                 padding: 15,
-  //                 flexDirection: 'row',
-  //                 alignItems: 'center',
-  //                 justifyContent: 'space-between',
-  //                 marginBottom: 15,
-  //               }}
-  //               onPress={() => pickContents()}
-  //               activeOpacity={1}
-  //             >
-  //               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-  //                 <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
-  //                 <View>
-  //                   <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
-  //                 </View>
-  //               </View>
-  //               <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
-  //             </TouchableOpacity>
-
   return (
     <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)', paddingTop: 10 }}>
       <ScrollView>
         <View>
-          {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-            <MaterialIcons name='photo-library' size={25} color='rgb(130,130,130)' style={{ marginRight: 15 }} />
-            <Text style={{ color: 'white' }}>{`Media type:  ${
-              spaceAndUserRelationship.space.contentType === 'photo'
-                ? 'Photos'
-                : spaceAndUserRelationship.space.contentType === 'video'
-                ? 'Videos'
-                : 'Photos and Videos'
-            }`}</Text>
-          </View> */}
-
           <View
             style={{
               paddingVertical: 10,
@@ -134,16 +100,16 @@ const Feature = () => {
               <View>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Media type</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {spaceAndUserRelationship.space.contentType === 'photo'
+                  {space.contentType === 'photo'
                     ? 'Photos'
-                    : spaceAndUserRelationship.space.contentType === 'video'
+                    : space.contentType === 'video'
                     ? 'Videos'
                     : 'Photos and Videos'}
                 </Text>
               </View>
             </View>
           </View>
-          {spaceAndUserRelationship.space.videoLength ? (
+          {space.videoLength ? (
             <View
               style={{
                 paddingVertical: 10,
@@ -157,9 +123,7 @@ const Feature = () => {
                 <Ionicons name='play-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
                 <View>
                   <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Video length</Text>
-                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                    {spaceAndUserRelationship.space.videoLength} seconds
-                  </Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>{space.videoLength} seconds</Text>
                 </View>
               </View>
             </View>
@@ -181,7 +145,7 @@ const Feature = () => {
                 {/* <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
                     {spaceAndUserRelationship.space.videoLength} seconds
                   </Text> */}
-                {renderReactions(spaceAndUserRelationship.space)}
+                {renderReactions(space)}
               </View>
             </View>
           </View>
@@ -200,7 +164,7 @@ const Feature = () => {
               <View>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Comment</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {spaceAndUserRelationship.space.isCommentAvailable ? 'Available' : 'Turned off'}
+                  {space.isCommentAvailable ? 'Available' : 'Turned off'}
                 </Text>
               </View>
             </View>
@@ -225,7 +189,7 @@ const Feature = () => {
               <View>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Moment</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {convertMinutesToHoursAndMinutes(spaceAndUserRelationship.space.disappearAfter)}
+                  {convertMinutesToHoursAndMinutes(space.disappearAfter)}
                 </Text>
               </View>
             </View>

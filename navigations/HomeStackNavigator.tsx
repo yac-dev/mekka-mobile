@@ -11,7 +11,7 @@ import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
 import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import SecretKeyForm from '../features/SecretKey/pages/Form';
-import SpaceInfoStackNavigator from './SpaceInfoStackNavigator';
+import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import Comments from '../features/ViewPost/pages/Comments';
 import Discover from '../features/Discover/pages/Discover';
@@ -33,6 +33,7 @@ import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { AuthContext } from '../providers/AuthProvider';
+import { SpaceType } from '../types';
 
 export type HomeStackParams = {
   SpacesDrawerNavigator: undefined;
@@ -55,7 +56,7 @@ export type HomeStackParams = {
   CreateTag: undefined;
   CreateNewLocationTag: undefined;
   ReportSpace: undefined;
-  SpaceInfoStackNavigator: undefined;
+  SpaceInfoStackNavigator: { space: SpaceType };
   DeleteMyAccount: undefined;
 };
 

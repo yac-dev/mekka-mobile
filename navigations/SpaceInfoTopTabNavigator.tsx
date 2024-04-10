@@ -6,10 +6,15 @@ import Feature from '../features/SpaceInfo/pages/Feature';
 import Description from '../features/SpaceInfo/pages/Description';
 import Members from '../features/SpaceInfo/pages/Members';
 import ReportBottomSheet from '../features/SpaceInfo/components/ReportBottomSheet';
+import { SpaceType } from '../types';
 
 const Tab = createMaterialTopTabNavigator();
 
-const SpaceInfoTopTabNavigator = () => {
+type SpaceInfoTopTabNavigatorProps = {
+  space: SpaceType;
+};
+
+const SpaceInfoTopTabNavigator: React.FC<SpaceInfoTopTabNavigatorProps> = ({ space }) => {
   const reportBottomSheetRef = useRef(null);
 
   const CustomTabBar = ({ state, descriptors, navigation }) => {
@@ -39,9 +44,7 @@ const SpaceInfoTopTabNavigator = () => {
                 key={index}
                 style={{
                   alignItems: 'center',
-                  // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
                   padding: 15,
-                  // borderRadius: 20,
                   borderBottomWidth: isFocused && 1,
                   borderBottomColor: isFocused && 'white',
                 }}
@@ -66,11 +69,11 @@ const SpaceInfoTopTabNavigator = () => {
         })}
       >
         {/* bottomrefをpropsで渡して、user tapでbottomを出す。 */}
-        <Tab.Screen name={'Feature'} component={Feature} />
-        <Tab.Screen name={'Members'}>{() => <Members reportBottomSheetRef={reportBottomSheetRef} />}</Tab.Screen>
-        <Tab.Screen name={'Description'} component={Description} />
+        <Tab.Screen name={'Feature'}>{() => <Feature space={space} />}</Tab.Screen>
+        <Tab.Screen name={'Members'}>{() => <Members space={space} />}</Tab.Screen>
+        <Tab.Screen name={'Description'}>{() => <Description space={space} />}</Tab.Screen>
       </Tab.Navigator>
-      <ReportBottomSheet reportBottomSheetRef={reportBottomSheetRef} />
+      {/* <ReportBottomSheet reportBottomSheetRef={reportBottomSheetRef} /> */}
     </View>
   );
 };
