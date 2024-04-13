@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { TouchableOpacity, View, ActivityIndicator, ScrollView, Text, Dimensions, Linking } from 'react-native';
 import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
@@ -21,10 +21,10 @@ import { NoSpaces } from '../features';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { AppBottomSheet } from '../components/AppBottomSheet';
-import { useBottomSheet } from '../hooks';
+import { useBottomSheet } from '../features/Home/hooks/useBottomSheet';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigatorProps } from '../features/App/pages/Root';
-import { AuthMenu } from '../features';
+import { AuthMenu, AddNewSpaceMenu } from '../features';
 import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
 import { CustomDrawer } from '../features';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
@@ -32,6 +32,7 @@ import { CurrentSpaceContext } from '../providers';
 import { TagType } from '../types';
 import { TagScreenStackNavigator } from '.';
 import { TagScreenProvider } from '../features';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 type SpacesDrawerParams = {};
 
@@ -46,14 +47,18 @@ export const SpacesDrawerNavigator = (props) => {
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
+  const addNewSpaceBottomSheetRef = useRef<BottomSheetModal>(null);
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
   const navigation = useNavigation<RootStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const editProfileNavigation = useNavigation<EditProfileStackNavigatorProps>();
   const {
-    ref: authMenuBottomSheetRef,
-    openModalToIndex: openAuthMenuBottomSheetToIndex,
-    closeModal: closeAuthMenuBottomSheet,
+    authMenuBottomSheetRef,
+    openAuthMenuBottomSheet,
+    closeAuthMenuBottomSheet,
+    addNewSpaceMenuBottomSheetRef,
+    openAddNewSpaceMenuBottomSheet,
+    closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
   const {
     // spaceAndUserRelationships,
@@ -358,6 +363,21 @@ export const SpacesDrawerNavigator = (props) => {
     // });
   };
 
+  const onCreateNewSpacePress = () => {
+    closeAddNewSpaceMenuBottomSheet();
+    homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
+  };
+
+  const onEnterPrivateKeyPress = () => {
+    closeAddNewSpaceMenuBottomSheet();
+    homeStackNavigation.navigate('SecretKeyForm');
+  };
+
+  const onDiscoverPress = () => {
+    closeAddNewSpaceMenuBottomSheet();
+    homeStackNavigation.navigate('Discover');
+  };
+
   // if (getMySpacesApiResult.status === 'loading') {
   //   return (
   //     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100 }}>
@@ -391,14 +411,23 @@ export const SpacesDrawerNavigator = (props) => {
     return (
       <>
         <Drawer.Navigator
-          drawerContent={(props) => <CustomDrawer {...props} />}
+          defaultStatus='open'
+          drawerContent={(props) => (
+            <CustomDrawer
+              {...props}
+              openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+              closeAuthMenuBottomSheet={closeAuthMenuBottomSheet}
+              openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+              closeAddNewSpaceMenuBottomSheet={closeAddNewSpaceMenuBottomSheet}
+            />
+          )}
           screenOptions={({ navigation }) => ({
             swipeEnabled: true,
             drawerStyle: {
               backgroundColor: 'black',
               borderRightColor: 'rgb(40,40,40)',
               borderRightWidth: 1,
-              width: Dimensions.get('screen').width,
+              width: Dimensions.get('screen').width * 0.9,
             },
             tabBarStyle: {
               backgroundColor: 'black',
@@ -610,6 +639,18 @@ export const SpacesDrawerNavigator = (props) => {
             onNotificationSettingPress={onNotificationSettingPress}
             onLogoutPress={onLogoutPress}
             onDeleteMyAccountPress={onDeleteMyAccountPress}
+          />
+        </AppBottomSheet.Gorhom>
+        <AppBottomSheet.Gorhom
+          ref={addNewSpaceMenuBottomSheetRef}
+          snapPoints={['50%']}
+          title='Add Space'
+          onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
+        >
+          <AddNewSpaceMenu
+            onCreateNewSpacePress={onCreateNewSpacePress}
+            onEnterPrivateKeyPress={onEnterPrivateKeyPress}
+            onDiscoverPress={onDiscoverPress}
           />
         </AppBottomSheet.Gorhom>
       </>

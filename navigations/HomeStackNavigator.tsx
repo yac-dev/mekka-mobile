@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
-import { TextColor } from '../themes';
+import { Colors, TextColor } from '../themes';
 import Home from '../features/Home/pages/Home';
 import { primaryBackgroundColor } from '../themes/color';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -189,7 +189,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: TextColor.primary,
+                color: Colors.white,
               },
             })}
           />
@@ -229,7 +229,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: TextColor.primary,
+                color: Colors.white,
               },
             })}
           />

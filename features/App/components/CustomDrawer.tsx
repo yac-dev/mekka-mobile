@@ -11,10 +11,26 @@ import * as Haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import LinearGradient from 'react-native-linear-gradient';
+import { Colors } from '../../../themes';
 
 // このnavigationって、Homeのnavigationを受け継ぎ同時にSpacesDrawerのscreenに対するdrawerのnavigationも持っているのか。。。
 // まあここはよくわからん。。。
-export const CustomDrawer = ({ state, descriptors, navigation }) => {
+type CustomDrawerProps = {
+  openAuthMenuBottomSheet: (index: number) => void;
+  closeAuthMenuBottomSheet: () => void;
+  openAddNewSpaceMenuBottomSheet: (index: number) => void;
+  closeAddNewSpaceMenuBottomSheet: () => void;
+};
+
+export const CustomDrawer: React.FC<CustomDrawerProps> = ({
+  state,
+  descriptors,
+  navigation,
+  openAuthMenuBottomSheet,
+  closeAuthMenuBottomSheet,
+  openAddNewSpaceMenuBottomSheet,
+  closeAddNewSpaceMenuBottomSheet,
+}) => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { auth } = useContext(AuthContext);
   const { mySpaces } = useContext(MySpacesContext);
@@ -83,9 +99,9 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
           alignItems: 'center',
         }}
       >
-        <Text style={{ color: 'white', marginLeft: 10, fontSize: 23 }}>Mekka</Text>
+        <Text style={{ color: 'white', marginLeft: 20, fontSize: 23 }}>Mekka</Text>
         <AppButton.Icon
-          onButtonPress={() => navigation.closeDrawer()}
+          onButtonPress={() => openAuthMenuBottomSheet(0)}
           customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
           hasShadow={false}
         >
@@ -126,8 +142,8 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  navigation.navigate('CreateNewSpaceStackNavigator');
-                  navigation.closeDrawer();
+                  // homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
+                  openAddNewSpaceMenuBottomSheet(0);
                 }}
               >
                 <VectorIcon.MCI name='plus' color={'rgb(190,190,190)'} size={25} />
@@ -213,198 +229,98 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
             })}
           </ScrollView>
         </View>
-        {/* <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          borderBottomWidth: 0.3,
-          borderBottomColor: 'rgb(150,150,150)',
-          padding: 10,
-          marginBottom: 10,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 80,
-            height: 80,
-          }}
-          onPress={() => {
-            navigation.navigate('CreateNewSpaceStackNavigator');
-            navigation.closeDrawer();
-          }}
-        >
-          <View
-            style={{
-              width: 50,
-              aspectRatio: 1,
-              borderRadius: 25,
-              marginBottom: 10,
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <VectorIcon.MCI name='plus' color={'black'} size={25} />
-          </View>
-          <Text style={{ color: 'white' }}>Create</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 80,
-            height: 80,
-          }}
-          onPress={() => {
-            navigation.navigate('Discover');
-            navigation.closeDrawer();
-          }}
-        >
-          <View
-            style={{
-              width: 50,
-              aspectRatio: 1,
-              borderRadius: 25,
-              marginBottom: 10,
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <VectorIcon.MCI name='compass-outline' color={'black'} size={25} />
-          </View>
-          <Text style={{ color: 'white' }}>Discover</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 80,
-            height: 80,
-          }}
-          onPress={() => {
-            navigation.navigate('SecretKeyForm');
-            navigation.closeDrawer();
-          }}
-        >
-          <View
-            style={{
-              width: 50,
-              aspectRatio: 1,
-              borderRadius: 25,
-              marginBottom: 10,
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <VectorIcon.II name='key' color={'black'} size={25} />
-          </View>
-          <Text style={{ color: 'white' }}>Private key</Text>
-        </TouchableOpacity>
-      </View> */}
-        <View style={{ flex: 9, padding: 5 }}>
-          <View style={{ width: '100%', height: 150, marginBottom: 10, padding: 5 }}>
+        <View style={{ flex: 9 }}>
+          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center' }}>
             <ExpoImage
-              style={{ width: '100%', height: '100%', borderRadius: 8 }}
+              style={{ width: 80, height: 80, borderRadius: 40, marginRight: 15 }}
               source={{ uri: currentSpace.icon }}
               contentFit='cover'
             />
-            {/* これ、下に影入れた方がいいな。 */}
-            <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.7)']}
-              style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 80 }}
-            />
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: 20,
-                position: 'absolute',
-                bottom: 10,
-                left: 20,
-                // textShadowColor: 'rgba(0, 0, 0, 0.9)',
-                // textShadowOffset: { width: -3, height: 3 },
-                // textShadowRadius: 10,
-                // 文字影は分からん。。。今は。。。
-              }}
-            >
-              {currentSpace.name}
-            </Text>
-            <View style={{ position: 'absolute', bottom: 10, right: 10 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <TouchableOpacity
-                  activeOpacity={1}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'white',
-                    borderRadius: 15,
-                    marginRight: 10,
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                >
-                  <VectorIcon.MCI name='exclamation' color='black' size={20} />
-                </TouchableOpacity> */}
-                <AppButton.Icon
-                  onButtonPress={() => navigation.closeDrawer()}
-                  customStyle={{ width: 25, height: 25, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.MCI name='account-group' size={13} color={'rgb(190,190,190)'} />
-                </AppButton.Icon>
-                <AppButton.Icon
-                  onButtonPress={() => navigation.closeDrawer()}
-                  customStyle={{ width: 25, height: 25, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.MCI name='exclamation' size={13} color={'rgb(190,190,190)'} />
-                </AppButton.Icon>
+            <View style={{}}>
+              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
+                {currentSpace.name}
+              </Text>
+              <View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                  <VectorIcon.II name='images' size={13} color='rgb(150,150,150)' style={{ marginRight: 10 }} />
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>{currentSpace.contentType}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                  <VectorIcon.II
+                    name='play-circle-sharp'
+                    size={13}
+                    color={'rgb(150,150,150)'}
+                    style={{ marginRight: 10 }}
+                  />
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>{currentSpace.videoLength} seconds</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <ExpoImage
+                    style={{ width: 13, height: 13, marginRight: 10 }}
+                    source={require('../../../assets/forApp/ghost.png')}
+                    contentFit='contain'
+                    tintColor={'rgb(150,150,150)'}
+                  />
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>{currentSpace.videoLength} seconds</Text>
+                </View>
               </View>
             </View>
           </View>
-
-          {/* <ScrollView horizontal style={{ marginBottom: 10 }}>
-            <AppButton.Icon
-              onButtonPress={() => navigation.closeDrawer()}
-              customStyle={{ width: 50, height: 50, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
-              hasShadow={false}
-            >
-              <VectorIcon.MCI name='account-group' size={18} color={'rgb(190,190,190)'} />
-            </AppButton.Icon>
-            <AppButton.Icon
-              onButtonPress={() => navigation.closeDrawer()}
-              customStyle={{ width: 50, height: 50, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
-              hasShadow={false}
-            >
-              <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
-            </AppButton.Icon>
-            <AppButton.Icon
-              onButtonPress={() => navigation.closeDrawer()}
-              customStyle={{ width: 50, height: 50, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
-              hasShadow={false}
-            >
-              <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
-            </AppButton.Icon>
-          </ScrollView> */}
-
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingTop: 5,
+              alignSelf: 'center',
+              paddingBottom: 10,
+            }}
+          >
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
+              <AppButton.Icon
+                onButtonPress={() => navigation.closeDrawer()}
+                customStyle={{
+                  width: 42,
+                  height: 42,
+                  backgroundColor: 'rgb(50,50,50)',
+                  marginBottom: 3,
+                }}
+                hasShadow={false}
+              >
+                <VectorIcon.MCI name='account-group' size={20} color={'rgb(190,190,190)'} />
+              </AppButton.Icon>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Members</Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
+              <AppButton.Icon
+                onButtonPress={() => navigation.closeDrawer()}
+                customStyle={{
+                  width: 42,
+                  height: 42,
+                  backgroundColor: 'rgb(50,50,50)',
+                  marginBottom: 3,
+                }}
+                hasShadow={false}
+              >
+                <VectorIcon.FT name='activity' size={20} color={'rgb(190,190,190)'} />
+              </AppButton.Icon>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Activities</Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
+              <AppButton.Icon
+                onButtonPress={() => navigation.closeDrawer()}
+                customStyle={{
+                  width: 42,
+                  height: 42,
+                  backgroundColor: 'rgb(50,50,50)',
+                  marginBottom: 3,
+                }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='search' size={20} color={'rgb(190,190,190)'} />
+              </AppButton.Icon>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Search</Text>
+            </View>
+          </View>
           <ScrollView>
             {state.routes.map((route, index: number) => {
               // const spaceUpdatesArray =
@@ -437,7 +353,7 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
                   activeOpacity={0.5}
                   style={{
                     paddingVertical: 5,
-                    // paddingHorizontal: 10,
+                    paddingHorizontal: 5,
                     // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
                   }}
                   onPress={onPress}
@@ -447,7 +363,7 @@ export const CustomDrawer = ({ state, descriptors, navigation }) => {
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
-                      paddingVertical: 8,
+                      paddingVertical: 2,
                       paddingLeft: 5,
                       paddingRight: 10,
                       // backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',

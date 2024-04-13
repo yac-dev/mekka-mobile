@@ -26,8 +26,16 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
         enableOverDrag={true}
         enablePanDownToClose={true}
         snapPoints={snapPoints}
-        backdropComponent={(backdropProps) => (
-          <BottomSheetBackdrop {...backdropProps} appearsOnIndex={0} disappearsOnIndex={-1} />
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop
+            {...props}
+            opacity={0.5}
+            enableTouchThrough={false}
+            appearsOnIndex={0}
+            disappearsOnIndex={-1}
+            style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]}
+            //この色をなんとか直したいね。薄く白くしたい。discordみたいに
+          />
         )}
         backgroundStyle={{ backgroundColor: Colors.black }}
         handleIndicatorStyle={{ backgroundColor: Colors.white }}

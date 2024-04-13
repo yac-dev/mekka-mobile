@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { ViewStyle } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { TextColor } from '../themes';
+import { Colors } from '../themes';
 
 type LoadingSpinnerProps = {
   isVisible: boolean;
@@ -9,10 +9,6 @@ type LoadingSpinnerProps = {
   textColor?: string;
 };
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  isVisible,
-  message,
-  textColor = TextColor.primary,
-}) => {
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ isVisible, message, textColor = Colors.white }) => {
   return <Spinner visible={isVisible} textContent={message} textStyle={{ color: textColor }} />;
 };
