@@ -36,7 +36,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   const { mySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { spaceUpdates } = useContext(SpaceUpdatesContext);
-  const { setCurrentTag } = useContext(CurrentTagContext);
+  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
 
   // const updateLastCheckedIn = async () => {
   //   const result = await backendAPI.patch(`/users/${auth._id}/lastcheckedin`, {
@@ -322,41 +322,18 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
             </View>
           </View>
           <ScrollView>
-            {state.routes.map((route, index: number) => {
-              // const spaceUpdatesArray =
-              //   spaceUpdates[route.params?.space._id] && Object.values(spaceUpdates[route.params?.space._id]);
-              // const sum =
-              //   spaceUpdatesArray && spaceUpdatesArray.reduce((partialSum: number, a: number) => partialSum + a, 0);
-              // const { options } = descriptors[route.key];
-              // const label = options.tabBarLabel !== undefined ? options.tabBarLabel : route.name;
-
-              const isFocused = state.index === index;
-
-              const onPress = () => {
-                const event = navigation.emit({
-                  type: 'tabPress',
-                  target: route.key,
-                  canPreventDefault: true,
-                });
-                // ここでspaceのdate updateか。
-                // updateLastCheckedIn(); //一時停止。
-                setCurrentTag(route.params?.tag);
-
-                if (!isFocused && !event.defaultPrevented) {
-                  navigation.navigate(route.name);
-                }
-              };
-
+            {currentSpace.tags.map((tag, index) => {
+              const isFocused = currentTag._id === tag._id;
               return (
                 <TouchableOpacity
-                  key={route.key}
+                  key={index}
                   activeOpacity={0.5}
                   style={{
                     paddingVertical: 5,
                     paddingHorizontal: 5,
                     // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
                   }}
-                  onPress={onPress}
+                  // onPress={onPress}
                   onLongPress={() => console.log('tag long pressed')}
                 >
                   <View
@@ -374,7 +351,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <ExpoImage
                         style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
-                        source={{ uri: route.params?.tag.icon?.url }}
+                        source={{ uri: tag.icon?.url }}
                         contentFit='cover'
                         tintColor={isFocused ? 'white' : 'rgb(150,150,150)'}
                       />
@@ -383,27 +360,27 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                           numberOfLines={1}
                           style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 15 }}
                         >
-                          {route.params?.tag.name}
+                          {tag.name}
                         </Text>
                         {/* <Text style={{ color: 'rgb(150,150,150))', fontSize: 13 }}>
-                      {route.params?.spa.isPublic ? 'Public' : 'Private'}
-                    </Text> */}
+                    {route.params?.spa.isPublic ? 'Public' : 'Private'}
+                  </Text> */}
                       </View>
                     </View>
                     {/* {sum ? (
-                  <View
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 12,
-                      backgroundColor: 'red',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ color: 'white' }}>{sum}</Text>
-                  </View>
-                ) : null} */}
+                <View
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    backgroundColor: 'red',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>{sum}</Text>
+                </View>
+              ) : null} */}
                   </View>
                 </TouchableOpacity>
               );
@@ -415,3 +392,91 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
     </View>
   );
 };
+
+// 下のcustomDrawerの中身
+// {state.routes.map((route, index: number) => {
+//   // const spaceUpdatesArray =
+//   //   spaceUpdates[route.params?.space._id] && Object.values(spaceUpdates[route.params?.space._id]);
+//   // const sum =
+//   //   spaceUpdatesArray && spaceUpdatesArray.reduce((partialSum: number, a: number) => partialSum + a, 0);
+//   // const { options } = descriptors[route.key];
+//   // const label = options.tabBarLabel !== undefined ? options.tabBarLabel : route.name;
+
+//   const isFocused = state.index === index;
+
+//   const onPress = () => {
+//     const event = navigation.emit({
+//       type: 'tabPress',
+//       target: route.key,
+//       canPreventDefault: true,
+//     });
+//     // ここでspaceのdate updateか。
+//     // updateLastCheckedIn(); //一時停止。
+//     setCurrentTag(route.params?.tag);
+
+//     if (!isFocused && !event.defaultPrevented) {
+//       navigation.navigate(route.name);
+//     }
+//   };
+
+//   return (
+//     <TouchableOpacity
+//       key={route.key}
+//       activeOpacity={0.5}
+//       style={{
+//         paddingVertical: 5,
+//         paddingHorizontal: 5,
+//         // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
+//       }}
+//       onPress={onPress}
+//       onLongPress={() => console.log('tag long pressed')}
+//     >
+//       <View
+//         style={{
+//           flexDirection: 'row',
+//           alignItems: 'center',
+//           paddingVertical: 2,
+//           paddingLeft: 5,
+//           paddingRight: 10,
+//           // backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',
+//           borderRadius: 8,
+//           justifyContent: 'space-between',
+//         }}
+//       >
+//         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//           <ExpoImage
+//             style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
+//             source={{ uri: route.params?.tag.icon?.url }}
+//             contentFit='cover'
+//             tintColor={isFocused ? 'white' : 'rgb(150,150,150)'}
+//           />
+//           <View>
+//             <Text
+//               numberOfLines={1}
+//               style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 15 }}
+//             >
+//               {route.params?.tag.name}
+//             </Text>
+//             {/* <Text style={{ color: 'rgb(150,150,150))', fontSize: 13 }}>
+//           {route.params?.spa.isPublic ? 'Public' : 'Private'}
+//         </Text> */}
+//           </View>
+//         </View>
+//         {/* {sum ? (
+//       <View
+//         style={{
+//           width: 24,
+//           height: 24,
+//           borderRadius: 12,
+//           backgroundColor: 'red',
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//         }}
+//       >
+//         <Text style={{ color: 'white' }}>{sum}</Text>
+//       </View>
+//     ) : null} */}
+//       </View>
+//     </TouchableOpacity>
+//   );
+// })}
