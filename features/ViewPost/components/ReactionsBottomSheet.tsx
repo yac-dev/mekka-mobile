@@ -9,6 +9,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 type Ref = BottomSheetModal;
 
+/// これ、なんで動かなかったんだろう？？forwardrefをnestするとだめなのかな。。。？
 type ReactionsBottomSheetProps = {
   isReactionsBottomSheetOpen: boolean;
   closeReactionsBottomSheet: () => void;
@@ -52,7 +53,8 @@ export const ReactionsBottomSheet = forwardRef<Ref, ReactionsBottomSheetProps>(
     useEffect(() => {
       if (isReactionsBottomSheetOpen) {
         console.log('heeey');
-        openReactionsBottomSheetToIndex(0);
+        // openReactionsBottomSheetToIndex(0);
+        // ref.current?.snapToIndex(0);
         // requestGetReactionsByPostId({ postId: currentPost._id });
       }
     }, [isReactionsBottomSheetOpen]);
@@ -188,28 +190,28 @@ export const ReactionsBottomSheet = forwardRef<Ref, ReactionsBottomSheetProps>(
     };
 
     console.log('reactions bottom ', isReactionsBottomSheetOpen);
-    if (!isReactionsBottomSheetOpen) {
+    if (isReactionsBottomSheetOpen) {
+      return (
+        <AppBottomSheet.Gorhom
+          ref={ref}
+          snapPoints={['60%']}
+          title='How do you feel?'
+          onCloseButtonClose={closeReactionsBottomSheet}
+          onClose={onReactionsBottomSheetClose}
+        >
+          <View style={{ flex: 1, backgroundColor: 'black' }}>
+            {/* {!currentSpace.isReactionAvailable && (
+                <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>
+                  Reactions are not allowed in this space.
+                </Text>
+              )} */}
+            {getReactionsByPostIdResult.status === 'loading' ? <ActivityIndicator /> : null}
+            {getReactionsByPostIdResult.status === 'success' ? renderReactionStatuses() : null}
+          </View>
+        </AppBottomSheet.Gorhom>
+      );
+    } else {
       return null;
     }
-
-    return (
-      <AppBottomSheet.Gorhom
-        ref={ref}
-        snapPoints={['60%']}
-        title='How do you feel?'
-        onCloseButtonClose={closeReactionsBottomSheet}
-        onClose={onReactionsBottomSheetClose}
-      >
-        <View style={{ flex: 1, backgroundColor: 'black' }}>
-          {/* {!currentSpace.isReactionAvailable && (
-              <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>
-                Reactions are not allowed in this space.
-              </Text>
-            )} */}
-          {getReactionsByPostIdResult.status === 'loading' ? <ActivityIndicator /> : null}
-          {getReactionsByPostIdResult.status === 'success' ? renderReactionStatuses() : null}
-        </View>
-      </AppBottomSheet.Gorhom>
-    );
   }
 );

@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Colors } from '../../themes';
 import { VectorIcon } from '../../Icons';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { AppButton } from '../Button';
 
 type Ref = BottomSheetModal;
 
@@ -28,16 +29,20 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
         backdropComponent={(backdropProps) => (
           <BottomSheetBackdrop {...backdropProps} appearsOnIndex={0} disappearsOnIndex={-1} />
         )}
-        backgroundStyle={{ backgroundColor: Colors.black90 }}
+        backgroundStyle={{ backgroundColor: Colors.black }}
         handleIndicatorStyle={{ backgroundColor: Colors.white }}
         onClose={onClose}
         handleComponent={() => {
           return (
             <View style={styles.container}>
               <Text style={styles.text}>{title}</Text>
-              <TouchableOpacity onPress={onCloseButtonClose}>
-                <VectorIcon.II name='close-circle-sharp' size={30} color={Colors.white} />
-              </TouchableOpacity>
+              <AppButton.Icon
+                onButtonPress={onCloseButtonClose}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
+              </AppButton.Icon>
             </View>
           );
         }}
@@ -51,15 +56,13 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     backgroundColor: Colors.black,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgb(80,80,80)',
-    // marginBottom: 20,
   },
   text: {
     fontSize: 23,

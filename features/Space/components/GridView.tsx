@@ -42,7 +42,6 @@ export const GridView: React.FC<GridViewProps> = () => {
   };
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    console.log('post', post);
     setCurrentPost(post);
     onCurrentPostIndexChange(index);
     navigation.navigate('ViewPostStackNavigator');

@@ -60,14 +60,14 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 30,
+    borderRadius: 25,
     backgroundColor: 'rgb(50,50,50)',
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
     bottom: 30,
     alignSelf: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
 });

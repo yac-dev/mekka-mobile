@@ -30,6 +30,7 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const othersBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const handleReactionBottomSheetVisibility = () => {
+    reactionsBottomSheetRef.current?.snapToIndex(0);
     setIsReactionsBottomSheetOpen(true);
   };
 

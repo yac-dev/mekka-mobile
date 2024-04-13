@@ -23,6 +23,7 @@ import { ViewPostMenu } from '../components';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { useBottomSheet } from '../hooks';
 import { ReactionsBottomSheet } from '../components/ReactionsBottomSheet';
+import { Reactions } from '../components/Reactions';
 
 const ViewPost = (props) => {
   const {
@@ -175,14 +176,23 @@ const ViewPost = (props) => {
         })}
       />
       <ViewPostMenu onReactionPress={handleReactionBottomSheetVisibility} />
-      <ReactionsBottomSheet
+      <AppBottomSheet.Gorhom
+        ref={reactionsBottomSheetRef}
+        snapPoints={['60%']}
+        title='How do you feel?'
+        onCloseButtonClose={closeReactionsBottomSheet}
+        onClose={onReactionsBottomSheetClose}
+      >
+        <Reactions isReactionsBottomSheetOpen={isReactionsBottomSheetOpen} />
+      </AppBottomSheet.Gorhom>
+
+      {/* <ReactionsBottomSheet
         ref={reactionsBottomSheetRef}
         isReactionsBottomSheetOpen={isReactionsBottomSheetOpen}
         openReactionsBottomSheetToIndex={openReactionsBottomSheetToIndex}
         closeReactionsBottomSheet={closeReactionsBottomSheet}
         onReactionsBottomSheetClose={onReactionsBottomSheetClose}
-      />
-      {/* <BottomMenu /> */}
+      /> */}
       {/* <ReactionOptionsBottomSheet />
         <CommentInputBottomSheet />
         <OtherActionsBottomSheet /> */}

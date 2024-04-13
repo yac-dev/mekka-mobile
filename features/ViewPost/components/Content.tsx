@@ -21,7 +21,6 @@ const Content = forwardRef(({ post }, parentRef) => {
     });
     return <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'rgb(170, 170, 170)' }}>{d}</Text>;
   };
-  console.log('post', post);
 
   const renderContentOptions = () => {
     if (post.contents.length >= 2) {

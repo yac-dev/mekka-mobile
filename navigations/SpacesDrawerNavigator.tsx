@@ -393,12 +393,12 @@ export const SpacesDrawerNavigator = (props) => {
         <Drawer.Navigator
           drawerContent={(props) => <CustomDrawer {...props} />}
           screenOptions={({ navigation }) => ({
-            swipeEnabled: false,
+            swipeEnabled: true,
             drawerStyle: {
               backgroundColor: 'black',
               borderRightColor: 'rgb(40,40,40)',
               borderRightWidth: 1,
-              width: 320,
+              width: Dimensions.get('screen').width,
             },
             tabBarStyle: {
               backgroundColor: 'black',
@@ -488,53 +488,82 @@ export const SpacesDrawerNavigator = (props) => {
 
                   headerLeft: () => {
                     return (
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          // backgroundColor: 'blue',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                        onPress={() => navigation.toggleDrawer()}
+                      <AppButton.Icon
+                        onButtonPress={() => navigation.toggleDrawer()}
+                        customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginLeft: 10 }}
+                        hasShadow={false}
                       >
-                        <View
-                          style={{
-                            width: 24,
-                            height: 24,
-                            borderRadius: 12,
-                            backgroundColor: 'white',
-                            // marginLeft: 10,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Ionicons name='list' style={{}} size={20} />
-                          {calcurateSumUpdates() ? (
+                        <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
+                        {calcurateSumUpdates() ? (
+                          <View
+                            style={{
+                              width: 10,
+                              height: 10,
+                              borderRadius: 5,
+                              backgroundColor: 'red',
+                              position: 'absolute',
+                              top: -3,
+                              right: -3,
+                            }}
+                          >
                             <View
                               style={{
-                                width: 10,
-                                height: 10,
-                                borderRadius: 5,
-                                backgroundColor: 'red',
-                                position: 'absolute',
-                                top: -3,
-                                right: -3,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: '100%',
+                                height: '100%',
                               }}
-                            >
-                              <View
-                                style={{
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  width: '100%',
-                                  height: '100%',
-                                }}
-                              ></View>
-                            </View>
-                          ) : null}
-                        </View>
-                      </TouchableOpacity>
+                            ></View>
+                          </View>
+                        ) : null}
+                      </AppButton.Icon>
+                      // <TouchableOpacity
+                      //   activeOpacity={1}
+                      //   style={{
+                      //     width: 50,
+                      //     height: 50,
+                      //     // backgroundColor: 'blue',
+                      //     justifyContent: 'center',
+                      //     alignItems: 'center',
+                      //   }}
+                      //   onPress={() => navigation.toggleDrawer()}
+                      // >
+                      //   <View
+                      //     style={{
+                      //       width: 24,
+                      //       height: 24,
+                      //       borderRadius: 12,
+                      //       backgroundColor: 'white',
+                      //       // marginLeft: 10,
+                      //       justifyContent: 'center',
+                      //       alignItems: 'center',
+                      //     }}
+                      //   >
+                      //     <Ionicons name='list' color={'rgb(190,190,190)'} size={20} />
+                      // {calcurateSumUpdates() ? (
+                      //   <View
+                      //     style={{
+                      //       width: 10,
+                      //       height: 10,
+                      //       borderRadius: 5,
+                      //       backgroundColor: 'red',
+                      //       position: 'absolute',
+                      //       top: -3,
+                      //       right: -3,
+                      //     }}
+                      //   >
+                      //     <View
+                      //       style={{
+                      //         justifyContent: 'center',
+                      //         alignItems: 'center',
+                      //         width: '100%',
+                      //         height: '100%',
+                      //       }}
+                      //     ></View>
+                      //   </View>
+                      // ) : null}
+                      //   </View>
+                      // </TouchableOpacity>
                     );
                   },
                   // headerRight: () => {
