@@ -10,6 +10,7 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../../../navigations/RootStackNavigator';
+import { CurrentTagContext } from '../../../providers';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -22,6 +23,7 @@ export const Root = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
@@ -58,6 +60,7 @@ export const Root = () => {
     if (getMySpacesApiResult.status === 'success') {
       setMySpaces(getMySpacesApiResult.data.mySpaces);
       setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
+      setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
       setSpaceUpdates(getMySpacesApiResult.data.updateTable);
     }
   }, [getMySpacesApiResult]);

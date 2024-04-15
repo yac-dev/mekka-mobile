@@ -1,10 +1,11 @@
-import React, { useState, createContext, useEffect, useRef } from 'react';
+import React, { useState, createContext, useEffect, useRef, useContext } from 'react';
 import { SpaceType, TagType, ApiStatusType, PostType, ApiResultType, MapRegionType } from '../../../types';
 import { GetPostsByTagIdAndRegionOutput, GetPostsOutputType } from '../types';
 import { useGetPosts } from '../hooks';
 import * as Haptics from 'expo-haptics';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
 import MapView, { Region } from 'react-native-maps';
+import { CurrentSpaceContext } from '../../../providers';
 
 type TagScreenContextType = {
   mapRef: React.MutableRefObject<MapView | null>;
@@ -67,6 +68,7 @@ type TagScreenProviderType = {
 };
 
 export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, children }) => {
+  const { currentSpace } = useContext(CurrentSpaceContext);
   const { apiResult: getPostsApiResult, requestApi: requestGetPostsApi } = useGetPosts();
   const { apiResult: getPostsByTagIdAndRegionResult, requestApi: requestGetPostsByTagIdAndRegion } =
     useGetPostsByTagIdAndRegion();

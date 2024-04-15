@@ -34,9 +34,29 @@ import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { AuthContext } from '../providers/AuthProvider';
 import { SpaceType } from '../types';
+import { NavigatorScreenParams } from '@react-navigation/native';
+// import { SpacesDrawerParams } from './SpacesDrawerNavigator';
+
+type PostsTopTabNavigatorParams = {
+  GridView: undefined;
+  MapView: undefined;
+};
+
+export type SpaceTopTabNavigatorParams = {
+  [key: string]: NavigatorScreenParams<PostsTopTabNavigatorParams>;
+};
+
+export type SpaceRootStackParams = {
+  TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+  CreateNewPostStackNavigator: undefined;
+};
+
+type SpacesDrawerParams = {
+  [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
+};
 
 export type HomeStackParams = {
-  SpacesDrawerNavigator: undefined;
+  SpacesDrawerNavigator: NavigatorScreenParams<SpacesDrawerParams>;
   ViewPost: undefined;
   Comments: undefined;
   Discover: undefined;

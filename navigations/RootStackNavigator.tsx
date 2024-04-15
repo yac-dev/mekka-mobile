@@ -6,6 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 import { HomeStackNavigator } from './HomeStackNavigator';
 import { LoginStackNavigator } from './LoginStackNavigator';
 import { VectorIcon } from '../Icons';
+import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 

@@ -1,31 +1,30 @@
 import React, { useState, createContext, useEffect } from 'react';
-import { SpaceType, TagType, ApiStatusType, PostType } from '../../../types';
+import { SpaceType, TagType, ApiStatusType, PostType, ApiResultType } from '../../../types';
 import { useGetTags } from '../hooks';
+import { GetTagsOutputType } from '../types';
 
 type SpaceRootContextType = {
   space: SpaceType;
-  setSpace: React.Dispatch<React.SetStateAction<SpaceType>>;
   viewPostsType: ViewPostsType;
   setViewPostsType: React.Dispatch<React.SetStateAction<ViewPostsType>>;
   screenLoaded: boolean;
   setScreenLoaded: React.Dispatch<React.SetStateAction<boolean>>;
-  tags: TagType[];
-  setTags: React.Dispatch<React.SetStateAction<TagType[]>>;
-  getTagsStatus: ApiStatusType;
+  // getTagsResult: ApiResultType<GetTagsOutputType>;
   currentPost: PostType;
   setCurrentPost: React.Dispatch<React.SetStateAction<PostType>>;
 };
 
 export const SpaceRootContext = createContext<SpaceRootContextType>({
   space: void 0,
-  setSpace: () => {},
   viewPostsType: 'grid',
   setViewPostsType: () => {},
   screenLoaded: false,
   setScreenLoaded: () => {},
-  tags: void 0,
-  setTags: () => {},
-  getTagsStatus: 'idling',
+  // getTagsResult: {
+  //   status: 'idling',
+  //   data: void 0,
+  //   message: '',
+  // },
   currentPost: void 0,
   setCurrentPost: () => {},
 });
@@ -33,29 +32,29 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
 export type ViewPostsType = 'grid' | 'map';
 
 type SpaceRootProviderType = {
+  space: SpaceType;
   children: React.ReactNode;
 };
 
-export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children }) => {
+export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, space }) => {
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
-  const [space, setSpace] = useState<SpaceType | undefined>(void 0);
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
-  const [tags, setTags] = useState<TagType[] | undefined>(void 0);
   const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
+
+  // useEffect(() => {
+  //   requestGetTags({ spaceId: space._id });
+  // }, []);
 
   return (
     <SpaceRootContext.Provider
       value={{
         space,
-        setSpace,
         viewPostsType,
         setViewPostsType,
         screenLoaded,
         setScreenLoaded,
-        tags,
-        setTags,
-        getTagsStatus: getTagsResult.status,
+        // getTagsResult,
         currentPost,
         setCurrentPost,
       }}

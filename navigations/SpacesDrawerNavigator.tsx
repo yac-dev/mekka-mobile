@@ -29,14 +29,18 @@ import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
 import { CustomDrawer } from '../features';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 import { CurrentSpaceContext } from '../providers';
-import { TagType } from '../types';
+import { SpaceType, TagType } from '../types';
 import { TagScreenStackNavigator } from '.';
 import { TagScreenProvider } from '../features';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { SpaceRootStackParams } from './SpaceRootStackNavigator';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
-type SpacesDrawerParams = {};
+export type SpacesDrawerParams = {
+  [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
+};
 
-type SpacesDrawerStackNavigatorProps = DrawerNavigationProp<SpacesDrawerParams>;
+export type SpacesDrawerStackNavigatorProps = DrawerNavigationProp<SpacesDrawerParams>;
 const Drawer = createDrawerNavigator();
 // というかあれか、そのspaceが開かれたらその時点でdateをupdateする感じか。それとも、そのspaceのroot stack component unmount時にdata updateをする感じかな。これはtag viewも同様で。
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
@@ -422,12 +426,14 @@ export const SpacesDrawerNavigator = (props) => {
             />
           )}
           screenOptions={({ navigation }) => ({
+            headerShown: false,
             swipeEnabled: true,
+            drawerType: 'back',
             drawerStyle: {
               backgroundColor: 'black',
               borderRightColor: 'rgb(40,40,40)',
               borderRightWidth: 1,
-              width: Dimensions.get('screen').width * 0.9,
+              width: Dimensions.get('screen').width * 0.95,
             },
             tabBarStyle: {
               backgroundColor: 'black',
@@ -497,13 +503,14 @@ export const SpacesDrawerNavigator = (props) => {
               {({ navigation, route }) => <NoSpaces navigation={navigation} />}
             </Drawer.Screen>
           ) : (
-            currentSpace.tags.map((tag: TagType) => (
+            // ここに登録しているnavigationに変化がない限り、drawerをtoggleしてくれない感じ。。。。
+            mySpaces.map((space: SpaceType) => (
               <Drawer.Screen
-                key={tag._id}
-                name={`Tag_${tag._id}`}
-                initialParams={{ tag }}
+                key={space._id}
+                name={`Space_${space._id}`}
+                initialParams={{ space }}
                 options={({ navigation }) => ({
-                  headerTitle: tag.name,
+                  headerTitle: space.name,
                   headerTitleStyle: {
                     fontSize: 20,
                     fontWeight: 'bold',
@@ -546,83 +553,17 @@ export const SpacesDrawerNavigator = (props) => {
                           </View>
                         ) : null}
                       </AppButton.Icon>
-                      // <TouchableOpacity
-                      //   activeOpacity={1}
-                      //   style={{
-                      //     width: 50,
-                      //     height: 50,
-                      //     // backgroundColor: 'blue',
-                      //     justifyContent: 'center',
-                      //     alignItems: 'center',
-                      //   }}
-                      //   onPress={() => navigation.toggleDrawer()}
-                      // >
-                      //   <View
-                      //     style={{
-                      //       width: 24,
-                      //       height: 24,
-                      //       borderRadius: 12,
-                      //       backgroundColor: 'white',
-                      //       // marginLeft: 10,
-                      //       justifyContent: 'center',
-                      //       alignItems: 'center',
-                      //     }}
-                      //   >
-                      //     <Ionicons name='list' color={'rgb(190,190,190)'} size={20} />
-                      // {calcurateSumUpdates() ? (
-                      //   <View
-                      //     style={{
-                      //       width: 10,
-                      //       height: 10,
-                      //       borderRadius: 5,
-                      //       backgroundColor: 'red',
-                      //       position: 'absolute',
-                      //       top: -3,
-                      //       right: -3,
-                      //     }}
-                      //   >
-                      //     <View
-                      //       style={{
-                      //         justifyContent: 'center',
-                      //         alignItems: 'center',
-                      //         width: '100%',
-                      //         height: '100%',
-                      //       }}
-                      //     ></View>
-                      //   </View>
-                      // ) : null}
-                      //   </View>
-                      // </TouchableOpacity>
                     );
                   },
-                  // headerRight: () => {
-                  //   return (
-                  //     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  //       <TouchableOpacity
-                  //         onPress={() => {
-                  //           navigation.navigate('SpaceInfoStackNavigator', { space });
-                  //         }}
-                  //       >
-                  //         <ExpoImage
-                  //           style={{
-                  //             width: 30,
-                  //             height: 30,
-                  //             borderRadius: 8,
-                  //             marginRight: 10,
-                  //           }}
-                  //           source={{ uri: space.icon }}
-                  //           contentFit='cover'
-                  //         />
-                  //       </TouchableOpacity>
-                  //     </View>
-                  //   );
-                  // },
                 })}
               >
                 {({ navigation, route }) => (
-                  <TagScreenProvider tag={tag}>
-                    <TagScreenStackNavigator />
-                  </TagScreenProvider>
+                  // <TagScreenProvider tag={tag}>
+                  //   <TagScreenStackNavigator />
+                  // </TagScreenProvider>
+                  <SpaceRootProvider space={space}>
+                    <SpaceRootStackNavigator />
+                  </SpaceRootProvider>
                 )}
               </Drawer.Screen>
             ))

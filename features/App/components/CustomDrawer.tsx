@@ -74,10 +74,6 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
     );
   };
 
-  useEffect(() => {
-    console.log('current space changed', currentSpace);
-  }, [currentSpace]);
-
   const onSpacePress = (space: SpaceType) => {
     setCurrentSpace(space);
   };
@@ -89,25 +85,6 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
 
   return (
     <View style={{ paddingTop: 30 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          borderBottomWidth: 0.3,
-          borderBottomColor: 'rgb(70,70,70)',
-          height: 35,
-          alignItems: 'center',
-        }}
-      >
-        <Text style={{ color: 'white', marginLeft: 20, fontSize: 23 }}>Mekka</Text>
-        <AppButton.Icon
-          onButtonPress={() => openAuthMenuBottomSheet(0)}
-          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginRight: 10 }}
-          hasShadow={false}
-        >
-          <VectorIcon.MCI name='account' size={18} color={'rgb(190,190,190)'} />
-        </AppButton.Icon>
-      </View>
       <View style={{ flexDirection: 'row', height: '100%' }}>
         <View
           style={{
@@ -150,7 +127,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               </TouchableOpacity>
               {/* <Text style={{ color: 'white' }}>Add space</Text> */}
             </View>
-            {mySpaces.map((space: SpaceType, index: number) => {
+            {mySpaces.map((space: SpaceType) => {
               const isFocused = currentSpace._id === space._id;
               return (
                 <TouchableOpacity
@@ -168,9 +145,9 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     // borderBottomWidth: isFocused ? 1 : null,
                   }}
                   onPress={() => {
-                    onSpacePress(space);
+                    // onSpacePress(route.params?.space);
+                    setCurrentSpace(space);
                   }}
-                  onLongPress={() => onSpaceLongPress(space)}
                 >
                   <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                     <View>
@@ -207,27 +184,42 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                       </View>
                     </View>
                     {/* <Text numberOfLines={1} style={{ color: 'white', fontSize: 15 }}>
-                      {space.name}
-                    </Text> */}
+                    {space.name}
+                  </Text> */}
                   </View>
                   {/* {sum ? (
-                  <View
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 12,
-                      backgroundColor: 'red',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ color: 'white' }}>{sum}</Text>
-                  </View>
-                ) : null} */}
+                <View
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    backgroundColor: 'red',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>{sum}</Text>
+                </View>
+              ) : null} */}
                 </TouchableOpacity>
               );
             })}
           </ScrollView>
+          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
+            <AppButton.Icon
+              onButtonPress={() => openAuthMenuBottomSheet(0)}
+              customStyle={{
+                width: 45,
+                aspectRatio: 1,
+                backgroundColor: 'rgb(50,50,50)',
+                position: 'absolute',
+                bottom: 10,
+              }}
+              hasShadow={false}
+            >
+              <VectorIcon.MCI name='account' size={20} color={'rgb(190,190,190)'} />
+            </AppButton.Icon>
+          </View>
         </View>
         <View style={{ flex: 9 }}>
           <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center' }}>
@@ -243,7 +235,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               <View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
                   <VectorIcon.II name='images' size={13} color='rgb(150,150,150)' style={{ marginRight: 10 }} />
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>{currentSpace.contentType}</Text>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{currentSpace.contentType}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
                   <VectorIcon.II
@@ -252,7 +244,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     color={'rgb(150,150,150)'}
                     style={{ marginRight: 10 }}
                   />
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>{currentSpace.videoLength} seconds</Text>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{currentSpace.videoLength} seconds</Text>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <ExpoImage
@@ -261,7 +253,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     contentFit='contain'
                     tintColor={'rgb(150,150,150)'}
                   />
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>{currentSpace.videoLength} seconds</Text>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{currentSpace.videoLength} seconds</Text>
                 </View>
               </View>
             </View>
@@ -323,7 +315,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           </View>
           <ScrollView>
             {currentSpace.tags.map((tag, index) => {
-              const isFocused = currentTag._id === tag._id;
+              const isFocused = currentTag?._id === tag._id;
               return (
                 <TouchableOpacity
                   key={index}
@@ -333,7 +325,29 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     paddingHorizontal: 5,
                     // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
                   }}
-                  // onPress={onPress}
+                  onPress={() => {
+                    // currentTagのを読み込んでくる必要がある。
+                    navigation.toggleDrawer();
+                    setCurrentTag(tag);
+                    // drawer側のnavigationをしたい場合には、↓を動かしたいんだよね。。。これでも一応動いてはいるがバグの温床になりそう。。。
+                    homeStackNavigation.navigate('SpacesDrawerNavigator', {
+                      screen: `Space_${currentSpace._id}`,
+                      // ここに変化がない限り、toggleしない。実際、確かにここより下はdrawerのnavigatorに登録しているわけではないからね。。。ここをどう克服するか。というか、仕組みが少しわかってきた。
+                      // 逆にでは、そうなら
+                      // params: {
+                      //   screen: 'TagsTopTabNavigator',
+                      //   params: {
+                      //     screen: `Tag_${tag._id}`,
+                      //     params: {
+                      //       screen: 'GridView',
+                      //     },
+                      //   },
+                      // },
+                    });
+
+                    // console.log('current space', currentSpace._id);
+                    // navigation.navigate(`Space_${currentSpace._id}`);
+                  }}
                   onLongPress={() => console.log('tag long pressed')}
                 >
                   <View
@@ -393,7 +407,6 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   );
 };
 
-// 下のcustomDrawerの中身
 // {state.routes.map((route, index: number) => {
 //   // const spaceUpdatesArray =
 //   //   spaceUpdates[route.params?.space._id] && Object.values(spaceUpdates[route.params?.space._id]);
@@ -412,71 +425,143 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
 //     });
 //     // ここでspaceのdate updateか。
 //     // updateLastCheckedIn(); //一時停止。
-//     setCurrentTag(route.params?.tag);
+//     // setCurrentSpace(route.params?.space);
 
 //     if (!isFocused && !event.defaultPrevented) {
 //       navigation.navigate(route.name);
 //     }
 //   };
 
-//   return (
-//     <TouchableOpacity
-//       key={route.key}
-//       activeOpacity={0.5}
-//       style={{
-//         paddingVertical: 5,
-//         paddingHorizontal: 5,
-//         // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
-//       }}
-//       onPress={onPress}
-//       onLongPress={() => console.log('tag long pressed')}
-//     >
-//       <View
-//         style={{
-//           flexDirection: 'row',
-//           alignItems: 'center',
-//           paddingVertical: 2,
-//           paddingLeft: 5,
-//           paddingRight: 10,
-//           // backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',
-//           borderRadius: 8,
-//           justifyContent: 'space-between',
-//         }}
-//       >
-//         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-//           <ExpoImage
-//             style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
-//             source={{ uri: route.params?.tag.icon?.url }}
-//             contentFit='cover'
-//             tintColor={isFocused ? 'white' : 'rgb(150,150,150)'}
-//           />
-//           <View>
-//             <Text
-//               numberOfLines={1}
-//               style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 15 }}
-//             >
-//               {route.params?.tag.name}
-//             </Text>
-//             {/* <Text style={{ color: 'rgb(150,150,150))', fontSize: 13 }}>
-//           {route.params?.spa.isPublic ? 'Public' : 'Private'}
-//         </Text> */}
-//           </View>
-//         </View>
-//         {/* {sum ? (
+// return (
+// <TouchableOpacity
+//   style={{
+//     flexDirection: 'column',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     // width: 90,
+//     // height: 90,
+//     borderRadius: 8,
+//     backgroundColor: isFocused ? 'rgb(50,50,50)' : null,
+//     paddingVertical: 10,
+//     // borderBottomColor: isFocused ? 'white' : null,
+//     // borderBottomWidth: isFocused ? 1 : null,
+//   }}
+//   onPress={() => {
+//     // onSpacePress(route.params?.space);
+//     onPress();
+//   }}
+//   onLongPress={() => onSpaceLongPress(route.params?.space)}
+// >
+//   <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+//     <View>
+//       <ExpoImage
+//         style={{ width: 45, aspectRatio: 1, borderRadius: 25 }}
+//         source={{ uri: route.params?.space.icon }}
+//         contentFit='contain'
+//       />
 //       <View
 //         style={{
 //           width: 24,
 //           height: 24,
 //           borderRadius: 12,
-//           backgroundColor: 'red',
+//           backgroundColor: isFocused ? 'rgb(50,50,50)' : 'black',
+//           position: 'absolute',
+//           top: -5,
+//           right: -5,
 //           justifyContent: 'center',
 //           alignItems: 'center',
 //         }}
 //       >
-//         <Text style={{ color: 'white' }}>{sum}</Text>
+//         <View
+//           style={{
+//             width: 16,
+//             height: 16,
+//             borderRadius: 8,
+//             justifyContent: 'center',
+//             alignItems: 'center',
+//             backgroundColor: 'red',
+//           }}
+//         >
+//           <Text style={{ color: 'white', fontSize: 12 }}>12</Text>
+//         </View>
 //       </View>
-//     ) : null} */}
-//       </View>
-//     </TouchableOpacity>
+//     </View>
+//     {/* <Text numberOfLines={1} style={{ color: 'white', fontSize: 15 }}>
+//       {space.name}
+//     </Text> */}
+//   </View>
+//   {/* {sum ? (
+//   <View
+//     style={{
+//       width: 24,
+//       height: 24,
+//       borderRadius: 12,
+//       backgroundColor: 'red',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//     }}
+//   >
+//     <Text style={{ color: 'white' }}>{sum}</Text>
+//   </View>
+// ) : null} */}
+// </TouchableOpacity>
+//     // <TouchableOpacity
+//     //   key={route.key}
+//     //   activeOpacity={0.5}
+//     //   style={{
+//     //     paddingVertical: 5,
+//     //     paddingHorizontal: 5,
+//     //     // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
+//     //   }}
+//     //   onPress={onPress}
+//     //   onLongPress={() => console.log('tag long pressed')}
+//     // >
+//     //   <View
+//     //     style={{
+//     //       flexDirection: 'row',
+//     //       alignItems: 'center',
+//     //       paddingVertical: 2,
+//     //       paddingLeft: 5,
+//     //       paddingRight: 10,
+//     //       // backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',
+//     //       borderRadius: 8,
+//     //       justifyContent: 'space-between',
+//     //     }}
+//     //   >
+//     //     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//     //       <ExpoImage
+//     //         style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
+//     //         source={{ uri: route.params?.tag.icon?.url }}
+//     //         contentFit='cover'
+//     //         tintColor={isFocused ? 'white' : 'rgb(150,150,150)'}
+//     //       />
+//     //       <View>
+//     //         <Text
+//     //           numberOfLines={1}
+//     //           style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 15 }}
+//     //         >
+//     //           {route.params?.tag.name}
+//     //         </Text>
+//     //         {/* <Text style={{ color: 'rgb(150,150,150))', fontSize: 13 }}>
+//     //       {route.params?.spa.isPublic ? 'Public' : 'Private'}
+//     //     </Text> */}
+//     //       </View>
+//     //     </View>
+//     //     {/* {sum ? (
+//     //   <View
+//     //     style={{
+//     //       width: 24,
+//     //       height: 24,
+//     //       borderRadius: 12,
+//     //       backgroundColor: 'red',
+//     //       justifyContent: 'center',
+//     //       alignItems: 'center',
+//     //     }}
+//     //   >
+//     //     <Text style={{ color: 'white' }}>{sum}</Text>
+//     //   </View>
+//     // ) : null} */}
+//     //   </View>
+//     // </TouchableOpacity>
 //   );
 // })}

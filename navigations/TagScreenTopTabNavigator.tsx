@@ -29,7 +29,7 @@ type PostsTopTabNavigatorProps = {
 
 export const TagScreenTopTabNavigator: React.FC<PostsTopTabNavigatorProps> = () => {
   // const { viewPostsType } = useContext(SpaceRootContext);
-  const { viewPostsType } = useContext(TagScreenContext);
+  const { viewPostsType } = useContext(SpaceRootContext);
 
   const { apiResult, requestApi } = useGetPosts();
   // const [posts, setPosts] = useState<PostType[]>([]);

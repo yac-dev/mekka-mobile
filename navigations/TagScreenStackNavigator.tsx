@@ -11,6 +11,9 @@ import { AppButton } from '../components/Button';
 import { VectorIcon } from '../Icons/VectorIcons';
 import { ViewPostsTypeToggleButton } from '../features/Space/components/ViewPostsTypeToggleButtons';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { CurrentTagContext } from '../providers';
+import { useNavigation } from '@react-navigation/native';
+import { SpaceTopTabNavigationProp } from './SpaceTopTabNavigator';
 
 export type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -29,6 +32,8 @@ const TagScreenStack = createNativeStackNavigator<TagScreenStackParams>();
 
 export const TagScreenStackNavigator: React.FC = () => {
   const { apiResult: getPostsApiResult, requestApi: requestGetPosts } = useGetPosts();
+  const { currentTag } = useContext(CurrentTagContext);
+  const navigation = useNavigation<SpaceTopTabNavigationProp>();
   // useEffect(() => {
   //   if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
   //     // responseDataのaddedTags、もしくはresponseData.createdTagの中にprops.tagObject.tag._idがある場合は
@@ -52,6 +57,13 @@ export const TagScreenStackNavigator: React.FC = () => {
   const onCreateNewPostButtonPress = () => {
     console.log('post');
   };
+
+  // navigation変わった後って、そもそもtagのscreenが登録されていないのだろうか。。。？どうだろう。
+  useEffect(() => {
+    if (currentTag) {
+      navigation.navigate(`Tag_${currentTag._id}`, { screen: 'GridView' });
+    }
+  }, [currentTag]);
 
   return (
     <View
@@ -108,20 +120,6 @@ export const TagScreenStackNavigator: React.FC = () => {
           />
         </TagScreenStack.Group>
       </TagScreenStack.Navigator>
-      <AppButton.Icon
-        customStyle={{ position: 'absolute', bottom: 50, right: 20 }}
-        onButtonPress={onCreateNewPostButtonPress}
-        isPressDisabled={false} // createのstatusをここに足す感じだな。
-        hasShadow
-      >
-        <VectorIcon.II name='add' size={32} color={'black'} />
-        {/* {createNewPostResult.isCreating ? (
-          <ActivityIndicator size={'small'} />
-          ) : (
-          <Ionicons name='add' size={32} color={'black'} />
-        )} */}
-      </AppButton.Icon>
-      <ViewPostsTypeToggleButton />
     </View>
   );
 };

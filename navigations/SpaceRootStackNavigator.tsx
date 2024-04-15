@@ -33,28 +33,28 @@ import { VectorIcon } from '../Icons';
 import { AppButton } from '../components';
 import * as Haptics from 'expo-haptics';
 import { Colors } from '../themes/colors';
+import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
 
 // こうやって書くと、nestedな形がよく分かっていいね
-type PostsTopTabNavigatorParams = {
-  GridView: undefined;
-  MapView: undefined;
+
+// type SpaceBottomTabNavigatorParams = {
+//   TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+// };
+export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
+
+export type SpaceRootStackParams = {
+  TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+  CreateNewPostStackNavigator: undefined;
 };
 
 type SpaceTopTabNavigatorParams = {
   [key: string]: NavigatorScreenParams<PostsTopTabNavigatorParams>;
 };
 
-type SpaceBottomTabNavigatorParams = {
-  TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+type PostsTopTabNavigatorParams = {
+  GridView: undefined;
+  MapView: undefined;
 };
-
-export type SpaceRootStackParams = {
-  SpaceBottomTabNavigator: NavigatorScreenParams<SpaceBottomTabNavigatorParams>;
-  CreateNewPostStackNavigator: undefined;
-  ViewPostStackNavigator: undefined;
-};
-
-export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
 const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
 
@@ -72,28 +72,15 @@ export const INITIAL_CREATE_NEW_POST_STATE = {
 };
 
 type SpaceRootStackNavigatorProps = {
-  space: SpaceType;
+  // space: SpaceType;
 };
 
-export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = ({ space }) => {
+export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
-  const { tags, setTags, setSpace } = useContext(SpaceRootContext);
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const { setCurrentTag } = useContext(CurrentTagContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
-
-  useEffect(() => {
-    setSpace(space);
-    requestGetTags({ spaceId: space._id });
-  }, []);
-
-  useEffect(() => {
-    if (getTagsResult.status === 'success') {
-      setTags(getTagsResult.data.tags);
-      setCurrentTag(getTagsResult.data.tags[0]);
-    }
-  }, [getTagsResult.status]);
 
   const {
     isIpad,
@@ -275,7 +262,7 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
         })}
       >
         <SpaceRootStack.Group>
-          <SpaceRootStack.Screen name='SpaceBottomTabNavigator' component={SpaceBottomTabNavigator} />
+          <SpaceRootStack.Screen name='TagsTopTabNavigator' component={SpaceTopTabNavigator} />
         </SpaceRootStack.Group>
         <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <SpaceRootStack.Screen
@@ -286,21 +273,6 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: Colors.white,
-              },
-            })}
-          />
-          <SpaceRootStack.Screen
-            name='ViewPostStackNavigator'
-            component={ViewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'transparent',
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
