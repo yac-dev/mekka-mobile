@@ -17,7 +17,6 @@ import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider'
 import { CurrentSpaceContext, CurrentTagContext, SpaceUpdatesContext } from '../providers';
 import { TagType } from '../types';
 import { useNavigation } from '@react-navigation/native';
-import { SpaceRootStackNavigatorProp } from './SpaceRootStackNavigator';
 import { TagScreenProvider } from '../features';
 import { TagScreenStackNavigator } from './TagScreenStackNavigator';
 import { SpacesDrawerStackNavigatorProps } from './SpacesDrawerNavigator';
@@ -27,12 +26,12 @@ import { HomeStackNavigatorProps } from '.';
 import { SpaceTopTabNavigatorParams } from '.';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ViewPostsTypeToggleButton } from '../features/Space/components';
-
-export type SpaceTopTabNavigationProp = NativeStackNavigationProp<SpaceTopTabNavigatorParams>;
+import { SpaceRootStackNavigatorProp } from '.';
 
 const Tab = createMaterialTopTabNavigator<SpaceTopTabNavigatorParams>();
 
 export const SpaceTopTabNavigator = (props) => {
+  const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   // const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const drawerNavigation = useNavigation<SpacesDrawerStackNavigatorProps>();
   const { screenLoaded, setScreenLoaded, viewPostsType, setViewPostsType, space } = useContext(SpaceRootContext);
@@ -41,7 +40,7 @@ export const SpaceTopTabNavigator = (props) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const route = useRoute();
   const scrollViewRef = useRef(null);
-  const navigation = useNavigation<SpaceRootStackNavigatorProp>();
+  const navigation = useNavigation<HomeStackNavigatorProps>();
 
   // これも、SpaceRootの方に移したい。
   // const getTags = async () => {
@@ -127,7 +126,7 @@ export const SpaceTopTabNavigator = (props) => {
     //   name: `Tag_${tab._id}`,
     //   // params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
     // });
-    navigation.navigate('TagsTopTabNavigator', {
+    spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
       screen: `Tag_${tab._id}`,
       params: {
         screen: 'TagScreenTopTabNavigator',
@@ -150,7 +149,7 @@ export const SpaceTopTabNavigator = (props) => {
     //   // params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
     // });
     setViewPostsType('grid');
-    navigation.navigate('TagsTopTabNavigator', {
+    spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
       screen: `Tag_${currentTag._id}`,
       params: { screen: 'TagScreenTopTabNavigator', params: { screen: 'GridView' } },
     });
@@ -170,7 +169,7 @@ export const SpaceTopTabNavigator = (props) => {
     //   // params: { screen: viewPostsType === 'grid' ? 'TagViewStackNavigator' : 'MavViewStackNavigator' },
     // });
     setViewPostsType('map');
-    navigation.navigate('TagsTopTabNavigator', {
+    spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
       screen: `Tag_${currentTag._id}`,
       params: { screen: 'TagScreenTopTabNavigator', params: { screen: 'MapView' } },
     });

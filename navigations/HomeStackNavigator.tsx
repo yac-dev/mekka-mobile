@@ -37,19 +37,26 @@ import { SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';
 // import { SpacesDrawerParams } from './SpacesDrawerNavigator';
 
-type PostsTopTabNavigatorParams = {
+type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
   MapView: undefined;
 };
 
+type TagScreenStackNavigatorParams = {
+  TagScreenTopTabNavigator: NavigatorScreenParams<TagScreenTopTabNavigatorParams>;
+  ViewPostStackNavigator: undefined; // いや、これ多分params必要になる。
+};
+
 export type SpaceTopTabNavigatorParams = {
-  [key: string]: NavigatorScreenParams<PostsTopTabNavigatorParams>;
+  [key: string]: NavigatorScreenParams<TagScreenStackNavigatorParams>;
 };
 
 export type SpaceRootStackParams = {
   TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
 };
+
+export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
 type SpacesDrawerParams = {
   [key: string]: NavigatorScreenParams<SpaceRootStackParams>;

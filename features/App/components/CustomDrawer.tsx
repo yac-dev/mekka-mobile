@@ -90,6 +90,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           style={{
             flex: 2,
             paddingTop: 10,
+            paddingHorizontal: 5,
             borderRightWidth: 0.3,
             borderRightColor: 'rgb(70,70,70)',
             height: '100%',
@@ -222,9 +223,9 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           </View>
         </View>
         <View style={{ flex: 9 }}>
-          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}>
             <ExpoImage
-              style={{ width: 80, height: 80, borderRadius: 40, marginRight: 15 }}
+              style={{ width: 80, height: 80, borderRadius: 40, marginRight: 20 }}
               source={{ uri: currentSpace.icon }}
               contentFit='cover'
             />
@@ -264,7 +265,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               alignItems: 'center',
               paddingTop: 5,
               alignSelf: 'center',
-              paddingBottom: 10,
+              marginBottom: 15,
             }}
           >
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>

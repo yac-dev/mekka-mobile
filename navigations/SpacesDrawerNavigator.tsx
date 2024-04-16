@@ -433,7 +433,7 @@ export const SpacesDrawerNavigator = (props) => {
               backgroundColor: 'black',
               borderRightColor: 'rgb(40,40,40)',
               borderRightWidth: 1,
-              width: Dimensions.get('screen').width * 0.95,
+              width: Dimensions.get('screen').width * 0.9,
             },
             tabBarStyle: {
               backgroundColor: 'black',
