@@ -5,6 +5,7 @@ import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { CurrentSpaceContext } from '../providers';
 import { Members } from '../features/Members/pages/Members';
+import { AppButton } from '../components';
 
 const MembersStack = createNativeStackNavigator();
 
@@ -20,13 +21,21 @@ export const MembersStackNavigator = () => {
     });
   };
 
-  // inviteを太文字にしよう。
   return (
     <MembersStack.Navigator
       screenOptions={{
         headerRight: () => (
-          <TouchableOpacity onPress={handleShare}>
-            <Text>Invite</Text>
+          <TouchableOpacity activeOpacity={0.5} onPress={handleShare}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontWeight: 'bold',
+                marginRight: 5,
+              }}
+            >
+              Invite
+            </Text>
           </TouchableOpacity>
         ),
       }}
@@ -35,15 +44,19 @@ export const MembersStackNavigator = () => {
         name='Members'
         component={Members}
         options={({ navigation }) => ({
+          headerShown: true,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <VectorIcon.II name='close-circle-sharp' size={30} color={'white'} />
-            </TouchableOpacity>
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
+            </AppButton.Icon>
           ),
-          headerShown: false,
-          headerTitle: '',
+          headerTitle: 'Members',
           headerStyle: {
-            backgroundColor: 'rgb(30, 30, 30)',
+            backgroundColor: Colors.black,
           },
           headerTitleStyle: {
             fontWeight: 'bold',

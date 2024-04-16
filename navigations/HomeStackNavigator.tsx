@@ -35,6 +35,7 @@ import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { AuthContext } from '../providers/AuthProvider';
 import { SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { MembersStackNavigator } from './MembersStackNavigator';
 // import { SpacesDrawerParams } from './SpacesDrawerNavigator';
 
 type TagScreenTopTabNavigatorParams = {
@@ -85,6 +86,7 @@ export type HomeStackParams = {
   ReportSpace: undefined;
   SpaceInfoStackNavigator: { space: SpaceType };
   DeleteMyAccount: undefined;
+  MembersStackNavigator: undefined;
 };
 
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
@@ -303,6 +305,26 @@ export const HomeStackNavigator: React.FC = (props) => {
           />
         </HomeStack.Group>
         <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+          <HomeStack.Screen
+            name='MembersStackNavigator'
+            component={MembersStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: 'Members',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
           {/* EULA */}
           <HomeStack.Screen
             name='EULA'

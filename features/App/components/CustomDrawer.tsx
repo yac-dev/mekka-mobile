@@ -270,7 +270,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           >
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
-                onButtonPress={() => navigation.closeDrawer()}
+                onButtonPress={() => homeStackNavigation.navigate('MembersStackNavigator')}
                 customStyle={{
                   width: 42,
                   height: 42,
