@@ -71,7 +71,7 @@ type CreateNewSpaceContextType = {
   onIsPubcliChange: (bool: boolean) => void;
   onCommentAvailabilityChange: (bool: boolean) => void;
   onReactionAvailabilityChange: (bool: boolean) => void;
-  onVideoLengthChange: (minutes: number) => void;
+  onVideoLengthChange: (seconds: number) => void;
   onDisapperAfterChange: (minutes: number) => void;
   onDescriptionChange: (text: string) => void;
 };

@@ -143,27 +143,6 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={SelectSpaceVisibility}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('ContentType')}
-                  disabled={formData.isPublic !== undefined ? false : true}
-                >
-                  <Text
-                    style={{
-                      color: formData.isPublic !== undefined ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Next
-                  </Text>
-                </TouchableOpacity>
-              ),
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -179,27 +158,6 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={ContentType}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Moment')}
-                  disabled={formData.contentType ? false : true}
-                >
-                  <Text
-                    style={{
-                      color: formData.contentType ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Next
-                  </Text>
-                </TouchableOpacity>
-              ),
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',

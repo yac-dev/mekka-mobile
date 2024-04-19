@@ -1,40 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+import { VectorIcon } from '../../../Icons';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { AppButton } from '../../../components';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const SelectSpaceVisibility = () => {
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const { formData, onIsPubcliChange } = useContext(CreateNewSpaceContext);
 
-  const renderVisibilityDescription = () => {
-    if (formData.isPublic !== undefined) {
-      if (formData.isPublic) {
-        return (
-          <View style={{ padding: 20 }}>
-            <Text style={{ color: 'white', textAlign: 'center' }}>
-              By setting it to public, this space will be open to everyone, allowing anyone to join and share
-              photos/videos freely.
-            </Text>
-          </View>
-        );
-      } else {
-        return (
-          <View style={{ padding: 20 }}>
-            {/* <Text style={{ color: 'white', textAlign: 'center' }}>
-              By setting to private, you can enjoy sharing only with people you know.
-            </Text> */}
-            <Text style={{ color: 'white', textAlign: 'center' }}>
-              By setting it to private, this space will be closed, allowing sharing only with people you know.
-            </Text>
-          </View>
-        );
-      }
-    } else {
-      return null;
-    }
-  };
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('ContentType')} disabled={!formData.isPublic.isValidated}>
+          <Text
+            style={{
+              color: !formData.name.isValidated || !formData.icon.isValidated ? 'rgb(100,100,100)' : 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData.isPublic]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <AppButton.Icon
+          onButtonPress={() => navigation.goBack()}
+          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='arrow-left' size={18} color={Colors.white} />
+        </AppButton.Icon>
+      ),
+    });
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -55,15 +65,8 @@ const SelectSpaceVisibility = () => {
 
       <TouchableOpacity
         style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-        onPress={() =>
-          setFormData((previous) => {
-            return {
-              ...previous,
-              isPublic: false,
-            };
-          })
-        }
-        activeOpacity={1}
+        onPress={() => onIsPubcliChange(false)}
+        activeOpacity={0.5}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <MaterialIcons name='public-off' color='white' size={20} style={{ marginRight: 20 }} />
@@ -74,23 +77,15 @@ const SelectSpaceVisibility = () => {
             </Text>
           </View>
         </View>
-        {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
-        {formData.isPublic === undefined ? null : formData.isPublic ? null : (
-          <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+        {formData.isPublic.value === undefined ? null : formData.isPublic.value ? null : (
+          <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
         )}
       </TouchableOpacity>
 
       <TouchableOpacity
         style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-        onPress={() =>
-          setFormData((previous) => {
-            return {
-              ...previous,
-              isPublic: true,
-            };
-          })
-        }
-        activeOpacity={1}
+        onPress={() => onIsPubcliChange(true)}
+        activeOpacity={0.5}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <MaterialIcons name='public' color='white' size={20} style={{ marginRight: 20 }} />
@@ -101,8 +96,8 @@ const SelectSpaceVisibility = () => {
             </Text>
           </View>
         </View>
-        {formData.isPublic === undefined ? null : formData.isPublic ? (
-          <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+        {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
+          <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
         ) : null}
       </TouchableOpacity>
 
