@@ -4,7 +4,7 @@ import { PageScreen, AppTextInput } from '../../../components';
 import { useForm, useLogin } from '../hooks';
 import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
-import { TextColor } from '../../../themes';
+import { Colors } from '../../../themes';
 import { SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
 import { AuthContext } from '../../../providers';
@@ -26,8 +26,7 @@ export const Login = ({ navigation }) => {
         >
           <Text
             style={{
-              color:
-                formData.email.isValidated && formData.password.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
+              color: formData.email.isValidated && formData.password.isValidated ? Colors.white : Colors.white170, // 117, 117
               fontSize: 20,
               fontWeight: 'bold',
             }}

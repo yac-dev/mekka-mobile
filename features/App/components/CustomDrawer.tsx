@@ -124,7 +124,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                   openAddNewSpaceMenuBottomSheet(0);
                 }}
               >
-                <VectorIcon.MCI name='plus' color={'rgb(190,190,190)'} size={25} />
+                <VectorIcon.MCI name='plus' color={Colors.white} size={25} />
               </TouchableOpacity>
               {/* <Text style={{ color: 'white' }}>Add space</Text> */}
             </View>
@@ -218,7 +218,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               }}
               hasShadow={false}
             >
-              <VectorIcon.MCI name='account' size={20} color={'rgb(190,190,190)'} />
+              <VectorIcon.MCI name='account' size={20} color={Colors.white} />
             </AppButton.Icon>
           </View>
         </View>
@@ -279,7 +279,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                 }}
                 hasShadow={false}
               >
-                <VectorIcon.MCI name='account-group' size={20} color={'rgb(190,190,190)'} />
+                <VectorIcon.MCI name='account-group' size={20} color={Colors.white} />
               </AppButton.Icon>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Members</Text>
             </View>
@@ -294,7 +294,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                 }}
                 hasShadow={false}
               >
-                <VectorIcon.FT name='activity' size={20} color={'rgb(190,190,190)'} />
+                <VectorIcon.FT name='activity' size={20} color={Colors.white} />
               </AppButton.Icon>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Activities</Text>
             </View>
@@ -309,7 +309,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                 }}
                 hasShadow={false}
               >
-                <VectorIcon.II name='search' size={20} color={'rgb(190,190,190)'} />
+                <VectorIcon.II name='search' size={20} color={Colors.white} />
               </AppButton.Icon>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Search</Text>
             </View>

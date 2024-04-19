@@ -18,7 +18,7 @@ export const AddNewSpaceMenu: React.FC<AddNewSpaceMenuProps> = ({
   return (
     <View style={{ flexDirection: 'column' }}>
       <AppButton.Cell title='Create New' subTitle='Open your own space from here' onButtonPress={onCreateNewSpacePress}>
-        <VectorIcon.MCI name='home-edit' color={Colors.white} size={20} style={{ marginRight: 20 }} />
+        <VectorIcon.II name='hammer' color={Colors.white} size={20} style={{ marginRight: 20 }} />
       </AppButton.Cell>
       <AppButton.Cell title='Enter private key' subTitle='Got invitation keys?' onButtonPress={onEnterPrivateKeyPress}>
         <VectorIcon.II name='key' color={Colors.white} size={20} style={{ marginRight: 20 }} />

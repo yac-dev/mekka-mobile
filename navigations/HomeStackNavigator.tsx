@@ -207,11 +207,6 @@ export const HomeStackNavigator: React.FC = (props) => {
             component={CreateNewSpaceStackNavigator}
             options={({ navigation }) => ({
               headerShown: false,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: primaryBackgroundColor,
@@ -310,11 +305,6 @@ export const HomeStackNavigator: React.FC = (props) => {
             component={MembersStackNavigator}
             options={({ navigation }) => ({
               headerShown: false,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
               headerTitle: 'Members',
               headerStyle: {
                 backgroundColor: 'black',

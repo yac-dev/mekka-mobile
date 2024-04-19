@@ -80,7 +80,7 @@ const Overview = () => {
         <TouchableOpacity
           style={{
             alignSelf: 'center',
-            backgroundColor: 'white',
+            backgroundColor: 'rgb(50,50,50)',
             justifyContent: 'center',
             alignItems: 'center',
             width: 120,
@@ -100,8 +100,8 @@ const Overview = () => {
             />
           ) : (
             <>
-              <MaterialCommunityIcons name='camera-plus' size={30} color='black' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>Space icon</Text>
+              <MaterialCommunityIcons name='camera-plus' size={30} color='white' style={{ marginBottom: 10 }} />
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>Space icon</Text>
             </>
           )}
         </TouchableOpacity>

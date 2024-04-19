@@ -20,6 +20,9 @@ import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocat
 import { AuthContext, SnackBarContext } from '../providers';
 import { SnackBar, LoadingSpinner } from '../components';
 import { useLoadingSpinner } from '../hooks';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons/VectorIcons';
+import { Colors } from '../themes';
 
 const CreateNewSpaceStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -127,7 +130,7 @@ const CreateNewSpaceStackNavigator = (props) => {
                       color:
                         formData.name.length && formData.icon.length && formData.name.length <= 40
                           ? 'white'
-                          : 'rgb(170,170,170)',
+                          : 'rgb(100,100,100)',
                       fontSize: 20,
                       fontWeight: 'bold',
                     }}
@@ -135,11 +138,16 @@ const CreateNewSpaceStackNavigator = (props) => {
                     Next
                   </Text>
                 </TouchableOpacity>
+                // <AppButton.Text text='Next' onTextPress={() => navigation.navigate('SelectSpaceVisibility')}  />
               ),
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {
@@ -339,48 +347,6 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
-          {/* <Stack.Screen
-            name='CreateNewTag'
-            component={CreateNewTag}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <Stack.Screen
-            name='CreateNewLocationTag'
-            component={CreateNewLocationTag}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          /> */}
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <Stack.Screen
