@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { icons } from '../utils/icons';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
+const CreateNewSpaceStack = createNativeStackNavigator();
 import Overview from '../features/CreateNewSpace/pages/Overview';
 import SelectSpaceVisibility from '../features/CreateNewSpace/pages/SelectSpaceVisibility';
 import ContentType from '../features/CreateNewSpace/pages/ContentType';
@@ -23,6 +23,20 @@ import { useLoadingSpinner } from '../hooks';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons/VectorIcons';
 import { Colors } from '../themes';
+import { CreateNewSpaceProvider } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
+
+type CreateNewSpaceStackParams = {
+  Overview: undefined;
+  SelectSpaceVisibility: undefined;
+  ContentType: undefined;
+  Moment: undefined;
+  Reaction: undefined;
+  Description: undefined;
+  ReactionPicker: undefined;
+  CreateNewSticker: undefined;
+};
+
+export type CreateNewSpaceStackProps = NativeStackNavigationProp<CreateNewSpaceStackParams>;
 
 const CreateNewSpaceStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -106,49 +120,14 @@ const CreateNewSpaceStackNavigator = (props) => {
   };
 
   return (
-    <CreateNewSpaceContext.Provider
-      value={{
-        formData,
-        setFormData,
-        navigation: props.navigation,
-      }}
-    >
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
+    <CreateNewSpaceProvider>
+      <CreateNewSpaceStack.Navigator>
+        <CreateNewSpaceStack.Group>
+          <CreateNewSpaceStack.Screen
             name='Overview'
             component={Overview}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('SelectSpaceVisibility')}
-                  disabled={formData.icon.length && formData.name.length && formData.name.length <= 40 ? false : true}
-                >
-                  <Text
-                    style={{
-                      color:
-                        formData.name.length && formData.icon.length && formData.name.length <= 40
-                          ? 'white'
-                          : 'rgb(100,100,100)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Next
-                  </Text>
-                </TouchableOpacity>
-                // <AppButton.Text text='Next' onTextPress={() => navigation.navigate('SelectSpaceVisibility')}  />
-              ),
-              headerLeft: () => (
-                <AppButton.Icon
-                  onButtonPress={() => navigation.goBack()}
-                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.II name='close' size={18} color={Colors.white} />
-                </AppButton.Icon>
-              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -159,7 +138,7 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewSpaceStack.Screen
             name='SelectSpaceVisibility'
             component={SelectSpaceVisibility}
             options={({ navigation }) => ({
@@ -195,7 +174,7 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewSpaceStack.Screen
             name='ContentType'
             component={ContentType}
             options={({ navigation }) => ({
@@ -231,7 +210,7 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewSpaceStack.Screen
             name='Moment'
             component={Moment}
             options={({ navigation }) => ({
@@ -267,7 +246,7 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewSpaceStack.Screen
             name='Reaction'
             component={Reaction}
             options={({ navigation }) => ({
@@ -310,7 +289,7 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewSpaceStack.Screen
             name='Description'
             component={Description}
             options={({ navigation }) => ({
@@ -347,9 +326,9 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
+        </CreateNewSpaceStack.Group>
+        <CreateNewSpaceStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <CreateNewSpaceStack.Screen
             name='ReactionPicker'
             component={ReactionPicker}
             options={({ navigation }) => ({
@@ -385,7 +364,7 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewSpaceStack.Screen
             name='CreateNewSticker'
             component={CreateNewSticker}
             options={({ navigation }) => ({
@@ -421,11 +400,11 @@ const CreateNewSpaceStackNavigator = (props) => {
               },
             })}
           />
-        </Stack.Group>
-      </Stack.Navigator>
+        </CreateNewSpaceStack.Group>
+      </CreateNewSpaceStack.Navigator>
       <SnackBar.Primary />
       <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
-    </CreateNewSpaceContext.Provider>
+    </CreateNewSpaceProvider>
   );
 };
 
