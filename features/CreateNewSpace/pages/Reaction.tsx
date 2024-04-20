@@ -1,31 +1,34 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps, CreateNewSpaceStackParams } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type ReactionProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'Reaction'>;
 
-const Reaction = (props) => {
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
+const Reaction: React.FC<ReactionProps> = ({ route }) => {
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const { formData, onReactionAvailabilityChange } = useContext(CreateNewSpaceContext);
 
   useEffect(() => {
-    if (props.route?.params?.selectedReactions) {
-      setFormData((previous) => {
-        return {
-          ...previous,
-          reactions: props.route?.params?.selectedReactions,
-        };
-      });
+    if (route?.params?.selectedReactions) {
+      // setFormData((previous) => {
+      //   return {
+      //     ...previous,
+      //     reactions: props.route?.params?.selectedReactions,
+      //   };
+      // });
     }
-  }, [props.route?.params?.selectedReactions]);
+  }, [route?.params?.selectedReactions]);
 
   const renderSelectedReactions = () => {
-    if (formData.isReactionAvailable) {
-      const list = formData.reactions.map((reactionObject, index) => {
+    if (formData.isReactionAvailable.value) {
+      const list = formData.reactions.value.map((reactionObject, index) => {
         return (
           <TouchableOpacity
             key={index}
@@ -55,7 +58,7 @@ const Reaction = (props) => {
 
       return (
         <View>
-          {formData.reactions.length === 6 ? null : (
+          {formData.reactions.value.length === 6 ? null : (
             <TouchableOpacity
               style={{
                 padding: 15,
@@ -64,7 +67,7 @@ const Reaction = (props) => {
                 justifyContent: 'space-between',
                 marginBottom: 15,
               }}
-              onPress={() => props.navigation.navigate('ReactionPicker', { reactions: formData.reactions })}
+              onPress={() => navigation.navigate('ReactionPicker', { reactions: formData.reactions.value })}
               activeOpacity={1}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -80,7 +83,7 @@ const Reaction = (props) => {
             </TouchableOpacity>
           )}
           <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20 }}>
-            {formData.reactions.length ? list : null}
+            {formData.reactions.value.length ? list : null}
           </View>
         </View>
       );
@@ -110,15 +113,8 @@ const Reaction = (props) => {
       <View style={{ marginBottom: 30 }}>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                isReactionAvailable: true,
-              };
-            })
-          }
-          activeOpacity={1}
+          onPress={() => onReactionAvailabilityChange(true)}
+          activeOpacity={0.5}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name='thumbs-up' color='white' size={20} style={{ marginRight: 20 }} />
@@ -134,15 +130,8 @@ const Reaction = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                isReactionAvailable: false,
-              };
-            })
-          }
-          activeOpacity={1}
+          onPress={() => onReactionAvailabilityChange(false)}
+          activeOpacity={0.5}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ marginRight: 20 }}>
@@ -167,70 +156,6 @@ const Reaction = (props) => {
           )}
         </TouchableOpacity>
       </View>
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
-        <TouchableOpacity
-          style={{
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 100,
-            height: 100,
-            padding: 2,
-            borderRadius: 100 / 2,
-            marginRight: 20,
-          }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                isReactionAvailable: true,
-              };
-            })
-          }
-        >
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Allowed</Text>
-          {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? (
-            <Ionicons
-              name='checkmark-circle'
-              size={30}
-              color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: -7, right: -7 }}
-            />
-          ) : null}
-        </TouchableOpacity>
-        <Text style={{ color: 'white', fontWeight: 'bold', marginRight: 20, fontSize: 20 }}>Or</Text>
-        <TouchableOpacity
-          style={{
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 100,
-            height: 100,
-            padding: 2,
-            borderRadius: 100 / 2,
-          }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                isReactionAvailable: false,
-              };
-            })
-          }
-        >
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>Not allowed</Text>
-          {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? null : (
-            <Ionicons
-              name='checkmark-circle'
-              size={30}
-              color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: -7, right: -7 }}
-            />
-          )}
-        </TouchableOpacity>
-      </View> */}
       {renderSelectedReactions()}
     </View>
   );

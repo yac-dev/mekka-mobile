@@ -3,7 +3,7 @@ import { View, Text, FlatList, Dimensions, TouchableOpacity } from 'react-native
 import { emojisByCategory } from '../../../utils/Emoji/emojis';
 import shortnameToUnicode from '../../../utils/Emoji/shortNameToUnicode';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
+import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';

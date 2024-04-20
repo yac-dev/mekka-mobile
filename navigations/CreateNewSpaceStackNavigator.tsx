@@ -25,7 +25,7 @@ import { VectorIcon } from '../Icons/VectorIcons';
 import { Colors } from '../themes';
 import { CreateNewSpaceProvider } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
 
-type CreateNewSpaceStackParams = {
+export type CreateNewSpaceStackParams = {
   Overview: undefined;
   SelectSpaceVisibility: undefined;
   ContentType: undefined;

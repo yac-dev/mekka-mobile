@@ -44,6 +44,14 @@ const initialFormData = {
   },
 };
 
+type StickerType = {};
+
+type ReactionType = {
+  type: 'emoji' | 'sticker';
+  emoji: string | undefined;
+  sticker: StickerType | undefined;
+};
+
 type FormType<T> = {
   value: T;
   isValidated: boolean;
