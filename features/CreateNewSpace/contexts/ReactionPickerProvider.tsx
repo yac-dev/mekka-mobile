@@ -1,22 +1,32 @@
-import React, { useState, createContext } from 'react';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState, createContext, useContext } from 'react';
+import { SnackBarContext } from '../../../providers';
+import { emojis } from '../../../utils/Emoji/shortNameToUnicode';
 
-type StickerType = {};
+type StickerType = {
+  _id: string;
+  url: string;
+};
 
-type ReactionType = {
+export type ReactionType = {
   type: 'emoji' | 'sticker';
   emoji: string | undefined;
   sticker: StickerType | undefined;
 };
 
+type SelectedReactionsType = {
+  [key: string]: ReactionType;
+};
+
 type ReactionPickerContextType = {
-  selectedReactions: ReactionType[];
-  setSelectedReactions: React.Dispatch<React.SetStateAction<ReactionType[]>>;
+  selectedReactions: SelectedReactionsType;
+  setSelectedReactions: React.Dispatch<React.SetStateAction<SelectedReactionsType>>;
+  onEmojiPress: (emoji: string) => void;
 };
 
 export const ReactionPickerContext = createContext<ReactionPickerContextType>({
-  selectedReactions: [],
+  selectedReactions: {},
   setSelectedReactions: () => {},
+  onEmojiPress: () => {},
 });
 
 type ReactionPickerProviderProps = {
@@ -24,10 +34,38 @@ type ReactionPickerProviderProps = {
 };
 
 export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ children }) => {
-  const [selectedReactions, setSelectedReactions] = useState<ReactionType[]>([]);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const [selectedReactions, setSelectedReactions] = useState<SelectedReactionsType>({});
+
+  const onEmojiPress = (emoji: string) => {
+    if (Object.keys(selectedReactions).length >= 7) {
+      console.log('emojis number should be at most 6');
+      setSnackBar({
+        isVisible: true,
+        status: 'warning',
+        message: 'OOPS. The number of reaction options is limited to 6 at most.',
+        duration: 5000,
+      });
+    } else {
+      // このlengthが明らかにおかしい。。。というかあれかな。// このfunctionが新しいのに更新されてないよね。useCallbakc的な。。
+      console.log(Object.keys(selectedReactions).length);
+      setSelectedReactions((previous) => {
+        return {
+          ...previous,
+          [emojis[`:${emoji}:`]]: {
+            type: 'emoji',
+            emoji: emojis[`:${emoji}:`],
+            sticker: undefined,
+          },
+        };
+      });
+    }
+  };
+
+  const onStickerPress = () => {};
 
   return (
-    <ReactionPickerContext.Provider value={{ selectedReactions, setSelectedReactions }}>
+    <ReactionPickerContext.Provider value={{ selectedReactions, setSelectedReactions, onEmojiPress }}>
       {children}
     </ReactionPickerContext.Provider>
   );

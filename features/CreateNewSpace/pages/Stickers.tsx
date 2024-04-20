@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
@@ -11,9 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SnackBar } from '../../../components';
 import { SnackBarContext } from '../../../providers';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 
 const Stickers = (props) => {
   const { setSnackBar } = useContext(SnackBarContext);
