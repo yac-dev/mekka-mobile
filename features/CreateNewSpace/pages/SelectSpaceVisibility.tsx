@@ -32,20 +32,6 @@ const SelectSpaceVisibility = () => {
     });
   }, [formData.isPublic]);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppButton.Icon
-          onButtonPress={() => navigation.goBack()}
-          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.MCI name='arrow-left' size={18} color={Colors.white} />
-        </AppButton.Icon>
-      ),
-    });
-  }, []);
-
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 50 }}>

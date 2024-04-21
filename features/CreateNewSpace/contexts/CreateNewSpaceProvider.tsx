@@ -44,7 +44,10 @@ const initialFormData = {
   },
 };
 
-type StickerType = {};
+type StickerType = {
+  _id: string;
+  url: string;
+};
 
 type ReactionType = {
   type: 'emoji' | 'sticker';
@@ -66,7 +69,7 @@ type FormDataType = {
   isReactionAvailable: FormType<boolean>;
   videoLength: FormType<number>;
   disappearAfter: FormType<number>;
-  reactions: FormType<string[]>; //　ここのrteacttionの部分が大変だね。。。
+  reactions: FormType<ReactionType[]>; //　ここのrteacttionの部分が大変だね。。。
   description: FormType<string>;
 };
 

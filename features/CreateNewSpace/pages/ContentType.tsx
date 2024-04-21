@@ -39,10 +39,13 @@ const ContentType = () => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('Moment')} disabled={!formData.contentType.isValidated}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Moment')}
+          disabled={formData.contentType.isValidated ? false : true}
+        >
           <Text
             style={{
-              color: !formData.contentType.isValidated ? 'rgb(100,100,100)' : 'white',
+              color: formData.contentType.isValidated ? 'white' : 'rgb(100,100,100)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -52,21 +55,7 @@ const ContentType = () => {
         </TouchableOpacity>
       ),
     });
-  }, [formData.isPublic]);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppButton.Icon
-          onButtonPress={() => navigation.goBack()}
-          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.MCI name='arrow-left' size={18} color={Colors.white} />
-        </AppButton.Icon>
-      ),
-    });
-  }, []);
+  }, [formData.contentType]);
 
   // 最初の初期設定60秒をここでまず設定する。
   useEffect(() => {

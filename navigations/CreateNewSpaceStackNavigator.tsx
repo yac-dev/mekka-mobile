@@ -24,15 +24,20 @@ import { AppButton } from '../components';
 import { VectorIcon } from '../Icons/VectorIcons';
 import { Colors } from '../themes';
 import { CreateNewSpaceProvider } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
+import { ReactionType } from '../features/CreateNewSpace/contexts/ReactionPickerProvider';
 
 export type CreateNewSpaceStackParams = {
   Overview: undefined;
   SelectSpaceVisibility: undefined;
   ContentType: undefined;
   Moment: undefined;
-  Reaction: undefined;
+  Reaction: {
+    selectedReactions?: ReactionType[];
+  };
   Description: undefined;
-  ReactionPicker: undefined;
+  ReactionPicker: {
+    reactions?: ReactionType[];
+  };
   CreateNewSticker: undefined;
 };
 
@@ -128,6 +133,15 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={Overview}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -143,6 +157,15 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={SelectSpaceVisibility}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -158,6 +181,15 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={ContentType}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -190,9 +222,13 @@ const CreateNewSpaceStackNavigator = (props) => {
                 </TouchableOpacity>
               ),
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {
@@ -209,33 +245,14 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={Reaction}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Description')}
-                  disabled={
-                    (formData.isReactionAvailable && formData.reactions.length) || !formData.isReactionAvailable
-                      ? false
-                      : true
-                  }
-                >
-                  <Text
-                    style={{
-                      color:
-                        (formData.isReactionAvailable && formData.reactions.length) || !formData.isReactionAvailable
-                          ? 'white'
-                          : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Next
-                  </Text>
-                </TouchableOpacity>
-              ),
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {
@@ -270,9 +287,13 @@ const CreateNewSpaceStackNavigator = (props) => {
                 </TouchableOpacity>
               ),
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {
@@ -291,26 +312,14 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={ReactionPicker}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              // headerRight: () => (
-              //   <TouchableOpacity
-              //     onPress={() => console.log('create done!!')}
-              //     disabled={formData.name.length && formData.icon && formData.isPublic !== undefined ? false : true}
-              //   >
-              //     <Text
-              //       style={{
-              //         color: formData.name.length ? 'white' : 'rgb(170,170,170)',
-              //         fontSize: 20,
-              //         fontWeight: 'bold',
-              //       }}
-              //     >
-              //       Add
-              //     </Text>
-              //   </TouchableOpacity>
-              // ),
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {
@@ -344,9 +353,13 @@ const CreateNewSpaceStackNavigator = (props) => {
                 </TouchableOpacity>
               ),
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {

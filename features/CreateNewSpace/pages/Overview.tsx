@@ -35,20 +35,6 @@ const Overview = () => {
     });
   }, [formData.name, formData.icon]);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <AppButton.Icon
-          onButtonPress={() => navigation.goBack()}
-          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.II name='close' size={18} color={Colors.white} />
-        </AppButton.Icon>
-      ),
-    });
-  }, []);
-
   const renderText = () => {
     return (
       <Text style={{ color: formData.name.value.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>

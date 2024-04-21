@@ -1,12 +1,39 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { ReactionType } from '../contexts/ReactionPickerProvider';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 
 export const SelectedReactions = () => {
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          // onPress={() => onAddPress()}
+          disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7 ? false : true}
+        >
+          <Text
+            style={{
+              color:
+                Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7
+                  ? 'white'
+                  : 'rgb(117,117, 117)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Done
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [selectedReactions]); // そもそもここでpicker contextをやれないよねw
 
   const renderSelectedReaction = ({ item }: { item: ReactionType }) => {
     return (

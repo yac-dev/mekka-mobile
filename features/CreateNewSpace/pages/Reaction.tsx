@@ -8,6 +8,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps, CreateNewSpaceStackParams } from '../../../navigations/CreateNewSpaceStackNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { VectorIcon } from '../../../Icons';
 
 type ReactionProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'Reaction'>;
 
@@ -26,6 +27,36 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
     }
   }, [route?.params?.selectedReactions]);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Description')}
+          disabled={
+            (formData.isReactionAvailable.value && formData.reactions.isValidated) ||
+            !formData.isReactionAvailable.value
+              ? false
+              : true
+          }
+        >
+          <Text
+            style={{
+              color:
+                (formData.isReactionAvailable.value && formData.reactions.isValidated) ||
+                !formData.isReactionAvailable.value
+                  ? 'white'
+                  : 'rgb(170,170,170)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData.isReactionAvailable, formData.reactions]);
+
   const renderSelectedReactions = () => {
     if (formData.isReactionAvailable.value) {
       const list = formData.reactions.value.map((reactionObject, index) => {
@@ -41,7 +72,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
               alignItems: 'center',
               marginRight: 8,
             }}
-            onPress={() => props.navigation.navigate('ReactionPicker', { reactions: formData.reactions })}
+            onPress={() => navigation.navigate('ReactionPicker', { reactions: formData.reactions.value })}
           >
             {reactionObject.type === 'emoji' ? (
               <Text style={{ fontSize: 40 }}>{reactionObject.emoji}</Text>
@@ -71,15 +102,13 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
               activeOpacity={1}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
                 <View>
-                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Add</Text>
-                  <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center' }}>
-                    Please choose at most 6 reaction options.
+                  <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center', marginLeft: 10 }}>
+                    Choose at most 6 reaction options.
                   </Text>
                 </View>
               </View>
-              <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+              <MaterialCommunityIcons name='plus' color='white' size={20} style={{ marginRight: 10 }} />
             </TouchableOpacity>
           )}
           <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20 }}>
@@ -124,8 +153,8 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
             </View>
           </View>
           {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
-          {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          {formData.isReactionAvailable.value ? (
+            <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
         </TouchableOpacity>
         <TouchableOpacity
@@ -151,8 +180,8 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
             </View>
           </View>
           {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
-          {formData.isReactionAvailable === undefined ? null : formData.isReactionAvailable ? null : (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          {formData.isReactionAvailable.value ? null : (
+            <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           )}
         </TouchableOpacity>
       </View>

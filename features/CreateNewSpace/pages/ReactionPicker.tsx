@@ -1,12 +1,11 @@
 import React, { useState, useContext, memo, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions } from 'react-native';
 import { emojis } from '../../../utils/emojis';
-import { ReactionPickerProvider } from '../contexts/ReactionPickerProvider';
+import { ReactionPickerContext, ReactionPickerProvider } from '../contexts/ReactionPickerProvider';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { AntDesign } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
-import EmojisByCategory from '../components/EmojisByCategory';
 import { Fontisto } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,7 +17,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewSpaceStackParams, CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 import { useNavigation } from '@react-navigation/native';
-import { SelectedReactions } from '../components';
+import { SelectedReactions, ReactionCategoryBottomTab } from '../components';
 
 // まずreacttionをどういう形で作っているか、それを見るべきだよね。。。
 const Tab = createBottomTabNavigator();
@@ -30,58 +29,34 @@ const emojiTypes = ['People', 'Symbols', 'Nature', 'Food', 'Activity', 'Travel',
 
 const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
+  const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
   // const [selectedReactions, setSelectedReactions] = useState({}); // {emoji: true}
   // ここでemojiOptionsを持っておかないとだめかね。。。
 
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity
-  //         onPress={() => onAddPress()}
-  //         disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7 ? false : true}
-  //       >
-  //         <Text
-  //           style={{
-  //             color:
-  //               Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7
-  //                 ? 'white'
-  //                 : 'rgb(117,117, 117)',
-  //             fontSize: 20,
-  //             fontWeight: 'bold',
-  //           }}
-  //         >
-  //           Done
-  //         </Text>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, [selectedReactions]);
+  useEffect(() => {
+    if (route.params.reactions) {
+      setSelectedReactions(() => {
+        const table = {};
+        route.params.reactions.forEach((reaction) => {
+          if (reaction.type === 'emoji') {
+            table[reaction.emoji] = reaction;
+          } else if (reaction.type === 'sticker') {
+            table[reaction.sticker._id] = reaction;
+          }
+        });
+        return table;
+      });
+    }
+  }, [route.params.reactions]);
 
   // useEffect(() => {
-  //   if (route.params.reactions) {
-  //     setSelectedReactions(() => {
-  //       const table = {};
-  //       route.params.reactions.forEach((reactionObject) => {
-  //         if (reactionObject.type === 'emoji') {
-  //           table[reactionObject.emoji] = reactionObject;
-  //         } else if (reactionObject.type === 'sticker') {
-  //           table[reactionObject._id] = reactionObject;
-  //         }
-  //       });
-  //       return table;
-  //     });
-  //   }
-  // }, [route.params.reactions]);
-
-  // useEffect(() => {
-  //   if(props.route.params.generatedSticker){
+  //   if(route.params.generatedSticker){
   //     setSelectedReactions((previous) => {
   //       const updating = { ...previous };
   //       updating[]
   //     });
   //   }
-  // },[props.route.params.generatedSticker])
+  // },[route.params.generatedSticker])
 
   // const onAddPress = () => {
   //   navigation.navigate('Reaction', { selectedReactions: Object.values(selectedReactions) });
@@ -256,129 +231,7 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
           </Text>
         </View>
         <SelectedReactions />
-        {/* {renderSelectedEmojis()} */}
-        {/* {renderSelectedReactions()} */}
-        <Tab.Navigator
-          initialRouteName='People'
-          screenOptions={{
-            headerShown: false,
-            tabBarStyle: {
-              backgroundColor: 'rgb(40,40,40)',
-              // marginHorizontal: 90,
-              // paddingBottom: 0, // きたー。これよ。これ。
-              // borderRadius: 30,
-              height: 60,
-              borderTopWidth: 0,
-              paddingTop: 5,
-              paddingBottom: 5,
-              // position: 'absolute',
-              // bottom: 30,
-              // justifyContent: 'center',
-              // alignItems: 'center',
-            },
-          }}
-        >
-          <Tab.Group>
-            <Tab.Screen
-              name='Stickers'
-              component={Stickers}
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Ionicons name='hammer' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            />
-            <Tab.Screen
-              name='People'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Fontisto name='smiley' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'people'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Symbols'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Ionicons name='heart' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'symbols'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Nature'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <MaterialCommunityIcons name='dog' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'nature'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Food'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Ionicons name='pizza' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'food'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Activity'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Ionicons name='tennisball' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'activity'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Travel'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <MaterialIcons name='flight' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'travel'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Objects'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Foundation name='telephone' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'objects'} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name='Flags'
-              options={({ navigation, route }) => ({
-                tabBarShowLabel: false,
-                tabBarIcon: ({ size, color, focused }) => (
-                  <Entypo name='globe' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
-                ),
-              })}
-            >
-              {(props) => <EmojisByCategory category={'flags'} {...props} />}
-            </Tab.Screen>
-          </Tab.Group>
-        </Tab.Navigator>
+        <ReactionCategoryBottomTab />
       </View>
     </ReactionPickerProvider>
   );

@@ -8,9 +8,14 @@ import { FlashList } from '@shopify/flash-list';
 import { SnackBarContext } from '../../../providers';
 import { SnackBar } from '../../../components';
 
-const EmojisByCategory = ({ category }) => {
+type EmojisCategoryProps = {
+  category: string;
+};
+
+export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category }) => {
   const { setSnackBar } = useContext(SnackBarContext);
   const { selectedReactions, setSelectedReactions, onEmojiPress } = useContext(ReactionPickerContext);
+  // まずは、ここでcontextをconsumeすることで、componentのrerenderingがおこってしまっていると。
   const oneGridWidth = Dimensions.get('window').width / 9;
 
   const renderItem = ({ item }: { item: string }) => {
@@ -20,7 +25,8 @@ const EmojisByCategory = ({ category }) => {
           style={{
             width: '100%',
             height: '100%',
-            backgroundColor: selectedReactions[emojis[`:${item}:`]] ? 'rgb(70,70,70)' : 'black',
+            // backgroundColor: selectedReactions[emojis[`:${item}:`]] ? 'rgb(70,70,70)' : 'black',
+            backgroundColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 10,
@@ -36,17 +42,18 @@ const EmojisByCategory = ({ category }) => {
   // flashlistすごいな。なんか早くなったぞ。。。
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <FlatList
+      <FlashList
         data={emojisByCategory[category]}
         renderItem={renderItem}
         keyExtractor={(item) => item}
         numColumns={9}
         contentContainerStyle={{ paddingTop: 5 }}
-        // estimatedItemSize={300}
+        // removeClippedSubviews
+        // initialNumToRender={300}
+        // maxToRenderPerBatch={}
+        estimatedItemSize={300}
       />
       <SnackBar.Primary />
     </View>
   );
-};
-
-export default EmojisByCategory;
+});
