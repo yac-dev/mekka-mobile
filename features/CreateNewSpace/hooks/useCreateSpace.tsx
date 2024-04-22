@@ -35,13 +35,6 @@ export const useCreateSpace = () => {
           status: 'fail',
         };
       });
-    } finally {
-      setApiResult((previous) => {
-        return {
-          ...previous,
-          status: 'idling',
-        };
-      });
     }
   };
 

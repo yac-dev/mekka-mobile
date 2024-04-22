@@ -25,6 +25,7 @@ export const createSpace = async (input: CreateSpaceInputType): Promise<CreateSp
     const result = await backendAPI.post('/spaces', payload, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
+    // このdata propertyをbackend側で返していなかったが故にエラー詰まったこういうのでも、throw errorが働くのか。。。。。。。ここら辺のdebuggingがなー。ここら辺の保守性をもっと極められればな。。。
     const { space } = result.data.data;
     return {
       space,

@@ -6,8 +6,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 import { AuthContext } from '../../../providers';
 import { useCreateSpace } from '../hooks';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps, RootStackNavigatorProps } from '../../../navigations';
 import { MySpacesContext } from '../../../providers';
+import { LoadingSpinner } from '../../../components';
 
 const Description = () => {
   const { auth } = useContext(AuthContext);
@@ -41,7 +42,7 @@ const Description = () => {
       setMySpaces((previous) => [...previous, apiResult.data.space]);
       homeStackNavigation.navigate('SpacesDrawerNavigator');
     }
-  }, [apiResult]);
+  }, [apiResult.status]);
 
   const onCreate = () => {
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
@@ -109,6 +110,7 @@ const Description = () => {
           />
         </View>
       </ScrollView>
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing' textColor={'white'} />
     </KeyboardAvoidingView>
   );
 };
