@@ -1,22 +1,47 @@
-import React, { useContext, useRef } from 'react';
-import { View, Text, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
+import React, { useContext, useRef, useEffect } from 'react';
+import { View, Text, TextInput, KeyboardAvoidingView, ScrollView, Platform, TouchableOpacity } from 'react-native';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 
 const Description = () => {
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const { formData, onDescriptionChange } = useContext(CreateNewSpaceContext);
   const textInputRef = useRef(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          // onPress={() => onCreatePress()}
+          disabled={formData.description.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color: formData.description.isValidated ? 'white' : 'rgb(170,170,170)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Create
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   const renderDescriptionLength = () => {
     return (
       <Text
         style={{
           fontSize: 20,
-          color: formData.description.length <= 300 ? 'rgb(170,170,170)' : 'red',
+          color: formData.description.isValidated ? 'rgb(170,170,170)' : 'red',
           textAlign: 'right',
           marginBottom: 10,
         }}
       >
-        {formData.description.length}/300
+        {formData.description.value.length}/300
       </Text>
     );
   };
@@ -61,15 +86,8 @@ const Description = () => {
               fontSize: 18,
               color: 'white',
             }}
-            value={formData.description}
-            onChangeText={(text) => {
-              setFormData((previous) => {
-                return {
-                  ...previous,
-                  description: text,
-                };
-              });
-            }}
+            value={formData.description.value}
+            onChangeText={(text) => onDescriptionChange(text)}
             autoCapitalize='none'
           />
         </View>

@@ -269,23 +269,6 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={Description}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => onCreatePress()}
-                  disabled={formData.name.length && formData.icon && formData.isPublic !== undefined ? false : true}
-                >
-                  <Text
-                    style={{
-                      color:
-                        formData.description.length && formData.description.length >= 10 ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Create!
-                  </Text>
-                </TouchableOpacity>
-              ),
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => navigation.goBack()}
