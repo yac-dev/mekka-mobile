@@ -6,10 +6,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 import { AuthContext } from '../../../providers';
 import { useCreateSpace } from '../hooks';
+import { HomeStackNavigatorProps } from '../../../navigations';
+import { MySpacesContext } from '../../../providers';
 
 const Description = () => {
   const { auth } = useContext(AuthContext);
+  const { setMySpaces } = useContext(MySpacesContext);
   const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onDescriptionChange } = useContext(CreateNewSpaceContext);
   const { apiResult, requestApi } = useCreateSpace();
   const textInputRef = useRef(null);
@@ -30,7 +34,14 @@ const Description = () => {
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [formData.description]);
+
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      setMySpaces((previous) => [...previous, apiResult.data.space]);
+      homeStackNavigation.navigate('SpacesDrawerNavigator');
+    }
+  }, [apiResult]);
 
   const onCreate = () => {
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };

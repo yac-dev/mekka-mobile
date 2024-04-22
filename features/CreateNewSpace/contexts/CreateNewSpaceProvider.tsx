@@ -240,50 +240,6 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
     });
   };
 
-  const onCreate = async () => {
-    const userData = {
-      _id: auth._id,
-      name: auth.name,
-      avatar: auth.avatar,
-    };
-    const payload = new FormData();
-    payload.append('name', formData.name.value);
-    payload.append('contentType', formData.contentType.value);
-    payload.append('isPublic', formData.isPublic.toString()); // ここ、booleanのdata送るのも大変だよな。。。
-    payload.append('isCommentAvailable', formData.isCommentAvailable.toString());
-    payload.append('isReactionAvailable', formData.isReactionAvailable.toString());
-    payload.append('reactions', JSON.stringify(formData.reactions));
-    payload.append('videoLength', formData.videoLength.toString());
-    payload.append('disappearAfter', formData.disappearAfter.toString());
-    payload.append('description', formData.description.value);
-    payload.append('createdBy', JSON.stringify(userData));
-    const fileName = `${formData.icon.value.split('/').pop().split('.')[0]}.png`;
-    const iconData = {
-      name: fileName,
-      uri: formData.icon,
-      type: 'image/jpeg',
-    };
-
-    payload.append('icon', JSON.parse(JSON.stringify(iconData)));
-    // console.log('payload', payload);
-    const result = await backendAPI.post('/spaces', payload, {
-      headers: { 'Content-type': 'multipart/form-data' },
-    });
-    const { spaceAndUserRelationship } = result.data;
-    // setMySpaces((previous) => [...previous, ])
-    // console.log('created!!!', spaceAndUserRelationship);
-    // もし、ユーザーが何もspaceを持っていなかったら、currentSpaceAndUserに入れる。その後すぐにpostできる様に。
-    // if (!spaceAndUserRelationships.length) {
-    //   setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
-    // }
-    // setUpdatesTable((previous) => {
-    //   return {
-    //     ...previous,
-    //     [spaceAndUserRelationship.space._id]: {},
-    //   };
-    // });
-  };
-
   return (
     <CreateNewSpaceContext.Provider
       value={{
