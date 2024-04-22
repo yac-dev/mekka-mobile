@@ -1,6 +1,3 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { icons } from '../utils/icons';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 const CreateNewSpaceStack = createNativeStackNavigator();
 import Overview from '../features/CreateNewSpace/pages/Overview';
@@ -11,15 +8,7 @@ import Reaction from '../features/CreateNewSpace/pages/Reaction';
 import Description from '../features/CreateNewSpace/pages/Description';
 import ReactionPicker from '../features/CreateNewSpace/pages/ReactionPicker';
 import CreateNewSticker from '../features/CreateNewSpace/pages/CreateSticker';
-import { Ionicons } from '@expo/vector-icons';
-import { GlobalContext } from '../contexts/GlobalContext';
-import { CreateNewSpaceContext } from '../features/CreateNewSpace/contexts/CreateNewSpace';
-import backendAPI from '../apis/backend';
-import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
-import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import { AuthContext, SnackBarContext } from '../providers';
 import { SnackBar, LoadingSpinner } from '../components';
-import { useLoadingSpinner } from '../hooks';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons/VectorIcons';
 import { Colors } from '../themes';
@@ -43,87 +32,7 @@ export type CreateNewSpaceStackParams = {
 
 export type CreateNewSpaceStackProps = NativeStackNavigationProp<CreateNewSpaceStackParams>;
 
-const CreateNewSpaceStackNavigator = (props) => {
-  const { auth, setAuth } = useContext(AuthContext);
-  const { setSnackBar } = useContext(SnackBarContext);
-  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
-  const {
-    setLoading,
-    setSpaceAndUserRelationships,
-    spaceAndUserRelationships,
-    setUpdatesTable,
-    setCurrentSpaceAndUserRelationship,
-  } = useContext(GlobalContext);
-  const [formData, setFormData] = useState({
-    name: '',
-    icon: '',
-    contentType: '', // ここら辺は、全部選択式になる。
-    isPublic: undefined,
-    isCommentAvailable: true,
-    isReactionAvailable: undefined,
-    videoLength: 60,
-    disappearAfter: 1439, // from 5 minutes to 1399 minutes(23 hours 59 min), 720 minutes(12 hours) defautlで23時間59分
-    reactions: [],
-    description: '',
-  });
-
-  // const {
-  //   currentSpaceAndUserRelationship: { space },
-  // } = props.route.params;
-
-  const onCreatePress = async () => {
-    const userData = {
-      _id: auth._id,
-      name: auth.name,
-      avatar: auth.avatar,
-    };
-    const payload = new FormData();
-    payload.append('name', formData.name);
-    payload.append('contentType', formData.contentType);
-    payload.append('isPublic', formData.isPublic.toString()); // ここ、booleanのdata送るのも大変だよな。。。
-    payload.append('isCommentAvailable', formData.isCommentAvailable.toString());
-    payload.append('isReactionAvailable', formData.isReactionAvailable.toString());
-    payload.append('reactions', JSON.stringify(formData.reactions));
-    payload.append('videoLength', formData.videoLength.toString());
-    payload.append('disappearAfter', formData.disappearAfter.toString());
-    payload.append('description', formData.description);
-    payload.append('createdBy', JSON.stringify(userData));
-    const fileName = `${formData.icon.split('/').pop().split('.')[0]}.png`;
-    const iconData = {
-      name: fileName,
-      uri: formData.icon,
-      type: 'image/jpeg',
-    };
-
-    payload.append('icon', JSON.parse(JSON.stringify(iconData)));
-    // console.log('payload', payload);
-    setLoading(true);
-    const result = await backendAPI.post('/spaces', payload, {
-      headers: { 'Content-type': 'multipart/form-data' },
-    });
-    setLoading(false);
-    const { spaceAndUserRelationship } = result.data;
-    // console.log('created!!!', spaceAndUserRelationship);
-    setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
-    // もし、ユーザーが何もspaceを持っていなかったら、currentSpaceAndUserに入れる。その後すぐにpostできる様に。
-    if (!spaceAndUserRelationships.length) {
-      setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
-    }
-    setUpdatesTable((previous) => {
-      return {
-        ...previous,
-        [spaceAndUserRelationship.space._id]: {},
-      };
-    });
-    setSnackBar({
-      isVisible: true,
-      status: 'success',
-      message: 'The space has been created successfully. Invite your friends, share your moments and have fun.',
-      duration: 7000,
-    });
-    props.navigation.navigate('SpacesDrawerNavigator');
-  };
-
+const CreateNewSpaceStackNavigator = () => {
   return (
     <CreateNewSpaceProvider>
       <CreateNewSpaceStack.Navigator>
@@ -205,22 +114,6 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={Moment}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Reaction')}
-                  disabled={formData.disappearAfter ? false : true}
-                >
-                  <Text
-                    style={{
-                      color: formData.disappearAfter ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Next
-                  </Text>
-                </TouchableOpacity>
-              ),
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => navigation.goBack()}
@@ -341,7 +234,6 @@ const CreateNewSpaceStackNavigator = (props) => {
         </CreateNewSpaceStack.Group>
       </CreateNewSpaceStack.Navigator>
       <SnackBar.Primary />
-      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
     </CreateNewSpaceProvider>
   );
 };

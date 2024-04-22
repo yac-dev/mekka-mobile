@@ -40,6 +40,14 @@ const Description = () => {
   useEffect(() => {
     if (apiResult.status === 'success') {
       setMySpaces((previous) => [...previous, apiResult.data.space]);
+      // spaceUpdatesの更新。↓こんな感じで。
+      // setUpdatesTable((previous) => {
+      //   return {
+      //     ...previous,
+      //     [spaceAndUserRelationship.space._id]: {},
+      //   };
+      // });
+      // snackbar出し。
       homeStackNavigation.navigate('SpacesDrawerNavigator');
     }
   }, [apiResult.status]);
