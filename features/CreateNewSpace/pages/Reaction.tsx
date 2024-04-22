@@ -14,16 +14,11 @@ type ReactionProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'Reaction
 
 const Reaction: React.FC<ReactionProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const { formData, onReactionAvailabilityChange } = useContext(CreateNewSpaceContext);
+  const { formData, onReactionAvailabilityChange, onReactionsChange } = useContext(CreateNewSpaceContext);
 
   useEffect(() => {
     if (route?.params?.selectedReactions) {
-      // setFormData((previous) => {
-      //   return {
-      //     ...previous,
-      //     reactions: props.route?.params?.selectedReactions,
-      //   };
-      // });
+      onReactionsChange(route?.params?.selectedReactions);
     }
   }, [route?.params?.selectedReactions]);
 
@@ -104,7 +99,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
                   <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center', marginLeft: 10 }}>
-                    Choose at most 6 reaction options.
+                    Add reaction options
                   </Text>
                 </View>
               </View>

@@ -85,6 +85,7 @@ type CreateNewSpaceContextType = {
   onVideoLengthChange: (seconds: number) => void;
   onDisapperAfterChange: (minutes: number) => void;
   onDescriptionChange: (text: string) => void;
+  onReactionsChange: (reactions: ReactionType[]) => void;
 };
 
 export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
@@ -99,6 +100,7 @@ export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
   onVideoLengthChange: () => {},
   onDisapperAfterChange: () => {},
   onDescriptionChange: () => {},
+  onReactionsChange: () => {},
 });
 
 type CreateNewSpaceProviderProps = {
@@ -197,18 +199,29 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
       };
     });
   };
+
   const onDisapperAfterChange = (minutes: number) => {
     setFormData((previous) => {
       return {
         ...previous,
-        vide: {
+        moment: {
           value: minutes,
           isValidated: true,
         },
       };
     });
   };
-  const onReactionsChange = () => {};
+  const onReactionsChange = (reactions: ReactionType[]) => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        reactions: {
+          value: reactions,
+          isValidated: reactions.length ? true : false,
+        },
+      };
+    });
+  };
 
   const onDescriptionChange = (text: string) => {
     setFormData((previous) => {
@@ -238,6 +251,7 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
         onVideoLengthChange,
         onDisapperAfterChange,
         onDescriptionChange,
+        onReactionsChange,
       }}
     >
       {children}

@@ -5,17 +5,42 @@ import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackParams, CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const SelectedReactions = () => {
+type SelectedReactionsProps = {
+  reactions?: ReactionType[];
+};
+
+export const SelectedReactions: React.FC<SelectedReactionsProps> = ({ reactions }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
+
+  const onAddPress = () => {
+    navigation.navigate('Reaction', { selectedReactions: Object.values(selectedReactions) });
+  };
+
+  useEffect(() => {
+    if (reactions) {
+      setSelectedReactions(() => {
+        const table = {};
+        reactions.forEach((reaction) => {
+          if (reaction.type === 'emoji') {
+            table[reaction.emoji] = reaction;
+          } else if (reaction.type === 'sticker') {
+            table[reaction.sticker._id] = reaction;
+          }
+        });
+        return table;
+      });
+    }
+  }, [reactions]);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          // onPress={() => onAddPress()}
+          onPress={() => onAddPress()}
           disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7 ? false : true}
         >
           <Text

@@ -336,22 +336,6 @@ const CreateNewSpaceStackNavigator = (props) => {
             component={CreateNewSticker}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => console.log('create done!!')}
-                  disabled={formData.name.length && formData.icon && formData.isPublic !== undefined ? false : true}
-                >
-                  <Text
-                    style={{
-                      color: formData.name.length ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Create!
-                  </Text>
-                </TouchableOpacity>
-              ),
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => navigation.goBack()}

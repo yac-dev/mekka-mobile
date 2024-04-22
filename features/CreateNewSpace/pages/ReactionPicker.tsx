@@ -33,21 +33,21 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   // const [selectedReactions, setSelectedReactions] = useState({}); // {emoji: true}
   // ここでemojiOptionsを持っておかないとだめかね。。。
 
-  useEffect(() => {
-    if (route.params.reactions) {
-      setSelectedReactions(() => {
-        const table = {};
-        route.params.reactions.forEach((reaction) => {
-          if (reaction.type === 'emoji') {
-            table[reaction.emoji] = reaction;
-          } else if (reaction.type === 'sticker') {
-            table[reaction.sticker._id] = reaction;
-          }
-        });
-        return table;
-      });
-    }
-  }, [route.params.reactions]);
+  // useEffect(() => {
+  //   if (route.params.reactions) {
+  //     setSelectedReactions(() => {
+  //       const table = {};
+  //       route.params.reactions.forEach((reaction) => {
+  //         if (reaction.type === 'emoji') {
+  //           table[reaction.emoji] = reaction;
+  //         } else if (reaction.type === 'sticker') {
+  //           table[reaction.sticker._id] = reaction;
+  //         }
+  //       });
+  //       return table;
+  //     });
+  //   }
+  // }, [route.params.reactions]);
 
   // useEffect(() => {
   //   if(route.params.generatedSticker){
@@ -57,10 +57,6 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   //     });
   //   }
   // },[route.params.generatedSticker])
-
-  // const onAddPress = () => {
-  //   navigation.navigate('Reaction', { selectedReactions: Object.values(selectedReactions) });
-  // };
 
   // const renderSelectedEmojis = () => {
   //   if (Object.values(selectedReactions).length) {
@@ -230,7 +226,7 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
             Add Reactions
           </Text>
         </View>
-        <SelectedReactions />
+        <SelectedReactions reactions={route.params.reactions} />
         <ReactionCategoryBottomTab />
       </View>
     </ReactionPickerProvider>
