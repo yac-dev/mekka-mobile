@@ -4,19 +4,20 @@ import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { AuthContext } from '../../../providers';
+import { useCreateSpace } from '../hooks';
 
 const Description = () => {
+  const { auth } = useContext(AuthContext);
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, onDescriptionChange } = useContext(CreateNewSpaceContext);
+  const { apiResult, requestApi } = useCreateSpace();
   const textInputRef = useRef(null);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          // onPress={() => onCreatePress()}
-          disabled={formData.description.isValidated ? false : true}
-        >
+        <TouchableOpacity onPress={() => onCreate()} disabled={formData.description.isValidated ? false : true}>
           <Text
             style={{
               color: formData.description.isValidated ? 'white' : 'rgb(170,170,170)',
@@ -30,6 +31,11 @@ const Description = () => {
       ),
     });
   }, []);
+
+  const onCreate = () => {
+    const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
+    requestApi(input);
+  };
 
   const renderDescriptionLength = () => {
     return (

@@ -10,7 +10,6 @@ export const useCreateSpace = () => {
     message: '',
   });
 
-  // これさ、stateが変わらない？？？分かんね。。。なぜか。。。
   const requestApi = async (input: CreateSpaceInputType) => {
     try {
       setApiResult((previous) => {
@@ -25,11 +24,11 @@ export const useCreateSpace = () => {
         return {
           ...previous,
           status: 'success',
-          data: void 0,
+          data: response,
+          error: void 0,
         };
       });
     } catch (error) {
-      // 本当は、これapiからきたerror objectを使いたいが。。。分からん。
       setApiResult((previous) => {
         return {
           ...previous,

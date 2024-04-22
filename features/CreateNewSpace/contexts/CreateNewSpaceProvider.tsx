@@ -63,7 +63,7 @@ type FormType<T> = {
   isValidated: boolean;
 };
 
-type FormDataType = {
+export type FormDataType = {
   name: FormType<string>;
   icon: FormType<string>;
   contentType: FormType<string>;
