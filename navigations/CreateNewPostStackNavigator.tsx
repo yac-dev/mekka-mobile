@@ -20,7 +20,8 @@ import { AuthContext, SnackBarContext } from '../providers';
 import { SnackBar, LoadingSpinner } from '../components';
 import { useLoadingSpinner } from '../hooks/useLoadingSpinner';
 import { CurrentSpaceContext } from '../providers';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CreateNewPostProvider } from '../features/CreateNewPost/contexts';
 
 type CreateNewPostStackParams = {
   SelectPostType: undefined;
@@ -31,7 +32,7 @@ type CreateNewPostStackParams = {
   CreateNewTag: undefined;
 };
 
-export type CreateNewPostStackProps = NativeStackScreenProps<CreateNewPostStackParams>;
+export type CreateNewPostStackProps = NativeStackNavigationProp<CreateNewPostStackParams>;
 
 const CreateNewPostStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -145,32 +146,33 @@ const CreateNewPostStackNavigator = (props) => {
   };
 
   return (
-    <CreateNewPostContext.Provider
-      value={{
-        postType,
-        setPostType,
-        contents,
-        setContents,
-        caption,
-        setCaption,
-        addedTags,
-        setAddedTags,
-        tagOptions,
-        setTagOptions,
-        addedLocationTag,
-        setAddedLocationTag,
-        locationTagOptions,
-        setLocationTagOptions,
-        space,
-        navigation: props.navigation,
-        route: props.route,
-        dummyCreatedTagId,
-        setDummyCreatedTagId,
-        moments,
-        setMoments,
-        defaultTagIcon,
-      }}
-    >
+    // <CreateNewPostContext.Provider
+    //   value={{
+    //     postType,
+    //     setPostType,
+    //     contents,
+    //     setContents,
+    //     caption,
+    //     setCaption,
+    //     addedTags,
+    //     setAddedTags,
+    //     tagOptions,
+    //     setTagOptions,
+    //     addedLocationTag,
+    //     setAddedLocationTag,
+    //     locationTagOptions,
+    //     setLocationTagOptions,
+    //     space,
+    //     navigation: props.navigation,
+    //     route: props.route,
+    //     dummyCreatedTagId,
+    //     setDummyCreatedTagId,
+    //     moments,
+    //     setMoments,
+    //     defaultTagIcon,
+    //   }}
+    // >
+    <CreateNewPostProvider>
       <CreateNewPosyStack.Navigator>
         <CreateNewPosyStack.Group>
           <CreateNewPosyStack.Screen
@@ -180,12 +182,7 @@ const CreateNewPostStackNavigator = (props) => {
               headerShown: true, // ここtrueにすると、,,,
               headerRight: () => null,
               headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                    setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE);
-                  }}
-                >
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Ionicons name='close-circle-sharp' size={30} color={'white'} />
                 </TouchableOpacity>
               ),
@@ -300,18 +297,6 @@ const CreateNewPostStackNavigator = (props) => {
               headerRight: () => {
                 return (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    {/* <TouchableOpacity onPress={() => navigation.navigate('CreateNewLocationTag')}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 20,
-                          fontWeight: 'bold',
-                          marginRight: 10,
-                        }}
-                      >
-                        Create
-                      </Text>
-                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={() => onPostPress()}>
                       <Text
                         style={{
@@ -421,8 +406,7 @@ const CreateNewPostStackNavigator = (props) => {
         </CreateNewPosyStack.Group>
       </CreateNewPosyStack.Navigator>
       <SnackBar.Primary />
-      {/* <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' /> */}
-    </CreateNewPostContext.Provider>
+    </CreateNewPostProvider>
   );
 };
 

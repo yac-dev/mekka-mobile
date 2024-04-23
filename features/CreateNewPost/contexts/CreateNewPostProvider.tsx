@@ -58,7 +58,7 @@ type CreateNewPostContextType = {
   onCaptionChange: (caption: string) => void;
 };
 
-const CreateNewPostContext = createContext<CreateNewPostContextType>({
+export const CreateNewPostContext = createContext<CreateNewPostContextType>({
   formData: initialFormData,
   setFormData: () => {},
   onPostTypeChange: () => {},
