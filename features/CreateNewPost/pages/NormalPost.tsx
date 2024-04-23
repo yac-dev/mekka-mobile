@@ -12,7 +12,6 @@ import {
   Platform,
 } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import * as ImagePicker from 'expo-image-picker';
 import AddPhoto from '../components/AddPhoto';
 import AddCaption from '../components/AddCaption';

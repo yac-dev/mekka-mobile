@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { removeEmojis } from '../utils/removeEmoji';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Image as ExpoImage } from 'expo-image';
 
 const blurhash =

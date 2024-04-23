@@ -5,19 +5,18 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import backendAPI from '../../../apis/backend';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Video } from 'expo-av';
 import { AntDesign } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { SnackBarContext } from '../../../providers';
-import { SnackBar} from '../../../components';
+import { SnackBar } from '../../../components';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
 const MomentPost = (props) => {
   const { setSnackBar } = useContext(SnackBarContext);
-  const { isIpad} = useContext(GlobalContext);
+  const { isIpad } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
   const [contents, setContets] = useState([]);
   // const { space } = props.route.params;

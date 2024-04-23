@@ -177,7 +177,10 @@ export const SpaceTopTabNavigator = (props) => {
     //
   };
 
-  // わかんね・・・まじどうしよ。。。
+  const onCreatePostPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    spaceRootStackNavigation.navigate('CreateNewPostStackNavigator');
+  };
 
   const renderTab = ({ item }) => {
     // const isActive = item._id === currentTag._id;
@@ -308,12 +311,12 @@ export const SpaceTopTabNavigator = (props) => {
         ))}
       </Tab.Navigator>
       <AppButton.Icon
-        customStyle={{ position: 'absolute', bottom: 50, right: 20 }}
-        onButtonPress={() => console.log('create post')}
+        customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
+        onButtonPress={() => onCreatePostPress()}
         isPressDisabled={false} // createのstatusをここに足す感じだな。
         hasShadow
       >
-        <VectorIcon.II name='add' size={32} color={'black'} />
+        <VectorIcon.II name='add' size={32} color={'white'} />
         {/* {createNewPostResult.isCreating ? (
           <ActivityIndicator size={'small'} />
           ) : (

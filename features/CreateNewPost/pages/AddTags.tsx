@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';

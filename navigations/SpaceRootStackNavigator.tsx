@@ -286,6 +286,8 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   );
 };
 
+// spaceRootでもcreateのstateを持っておかないといけない。もしくは、シンプルにformで入力したobjectをこっちに持ってきて、ここでcreateを実行すればいいのかね、別にformのstateをここで持っておく必要はないよね。
+
 {
   /* <Composer components={[({ children }) => <SpaceRootProvider defaultSpace={space}>{children}</SpaceRootProvider>]}></Composer> */
 }

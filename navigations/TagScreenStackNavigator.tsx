@@ -59,6 +59,7 @@ export const TagScreenStackNavigator: React.FC = () => {
   };
 
   // navigation変わった後って、そもそもtagのscreenが登録されていないのだろうか。。。？どうだろう。
+  // これ、めちゃきちゃ必要になる。。。
   useEffect(() => {
     if (currentTag) {
       navigation.navigate(`Tag_${currentTag._id}`, { screen: 'GridView' });

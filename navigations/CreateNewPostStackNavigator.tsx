@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { icons } from '../utils/icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+const CreateNewPosyStack = createNativeStackNavigator();
 import SelectPostType from '../features/CreateNewPost/pages/SelectPostType';
 import { Ionicons } from '@expo/vector-icons';
 import NormalPost from '../features/CreateNewPost/pages/NormalPost';
@@ -12,7 +12,6 @@ import AddLocationTag from '../features/CreateNewPost/pages/AddLocationTag';
 import MomentPost from '../features/CreateNewPost/pages/MomentPost';
 import { GlobalContext } from '../contexts/GlobalContext';
 import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
-import { CreateNewPostContext } from '../features/CreateNewPost/contexts/CreateNewPostContext';
 import backendAPI from '../apis/backend';
 import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
@@ -20,20 +19,34 @@ import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocat
 import { AuthContext, SnackBarContext } from '../providers';
 import { SnackBar, LoadingSpinner } from '../components';
 import { useLoadingSpinner } from '../hooks/useLoadingSpinner';
+import { CurrentSpaceContext } from '../providers';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+type CreateNewPostStackParams = {
+  SelectPostType: undefined;
+  NormalPost: undefined;
+  AddTags: undefined;
+  AddLocation: undefined;
+  MomentPost: undefined;
+  CreateNewTag: undefined;
+};
+
+export type CreateNewPostStackProps = NativeStackScreenProps<CreateNewPostStackParams>;
 
 const CreateNewPostStackNavigator = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
-  const { showLoadingSpinner, hideLoadingSpinner, isVisibleLoadingSpinner } = useLoadingSpinner();
-  const {
-    setLoading,
-    isAfterPosted,
-    setIsAfterPosted,
-    // createNewPostFormData,
-    // setCreateNewPostFormData,
-    // createNewPostResult,
-    // setCreateNewPostResult,
-  } = useContext(GlobalContext);
+  const { currentSpace } = useContext(CurrentSpaceContext);
+
+  // const {
+  //   setLoading,
+  //   isAfterPosted,
+  //   setIsAfterPosted,
+  //   // createNewPostFormData,
+  //   // setCreateNewPostFormData,
+  //   // createNewPostResult,
+  //   // setCreateNewPostResult,
+  // } = useContext(GlobalContext);
   const { createNewPostFormData, setCreateNewPostFormData, createNewPostResult, setCreateNewPostResult } =
     useContext(SpaceRootContext);
   const [postType, setPostType] = useState('');
@@ -47,38 +60,33 @@ const CreateNewPostStackNavigator = (props) => {
   const [moments, setMoments] = useState([]);
   const [defaultTagIcon, setDefaultTagIcon] = useState({});
 
-  const {
-    spaceAndUserRelationship: { space },
-  } = props.route.params;
-  // console.log('navigation??', props.navigation);
+  // const getTags = async () => {
+  //   const result = await backendAPI.get(`/spaces/${space._id}/tags`);
+  //   const { tags } = result.data;
+  //   setTagOptions(() => {
+  //     const options = tags.map((tag, index) => {
+  //       return {
+  //         ...tag,
+  //         created: false,
+  //       };
+  //     });
+  //     return options;
+  //   });
+  // };
 
-  const getTags = async () => {
-    const result = await backendAPI.get(`/spaces/${space._id}/tags`);
-    const { tags } = result.data;
-    setTagOptions(() => {
-      const options = tags.map((tag, index) => {
-        return {
-          ...tag,
-          created: false,
-        };
-      });
-      return options;
-    });
-  };
-
-  const getLocationTags = async () => {
-    const result = await backendAPI.get(`/spaces/${space._id}/locationtags`);
-    const { locationTags } = result.data;
-    setLocationTagOptions(() => {
-      const options = locationTags.map((locationTag, index) => {
-        return {
-          ...locationTag,
-          created: false,
-        };
-      });
-      return options;
-    });
-  };
+  // const getLocationTags = async () => {
+  //   const result = await backendAPI.get(`/spaces/${space._id}/locationtags`);
+  //   const { locationTags } = result.data;
+  //   setLocationTagOptions(() => {
+  //     const options = locationTags.map((locationTag, index) => {
+  //       return {
+  //         ...locationTag,
+  //         created: false,
+  //       };
+  //     });
+  //     return options;
+  //   });
+  // };
 
   const getDefaultTagIcon = async () => {
     const result = await backendAPI.get('/icons?name=hash');
@@ -87,9 +95,9 @@ const CreateNewPostStackNavigator = (props) => {
   };
 
   useEffect(() => {
-    getTags();
-    getLocationTags();
-    getDefaultTagIcon();
+    // getTags();
+    // // getLocationTags();
+    // getDefaultTagIcon();
   }, []);
 
   const onPostPress = async () => {
@@ -119,11 +127,9 @@ const CreateNewPostStackNavigator = (props) => {
       payload.append('contents', JSON.parse(JSON.stringify(obj)));
     }
     console.log(payload);
-    showLoadingSpinner();
     const result = await backendAPI.post('/moments', payload, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
-    hideLoadingSpinner();
     const { post } = result.data;
     setSnackBar({
       isVisible: true,
@@ -165,9 +171,9 @@ const CreateNewPostStackNavigator = (props) => {
         defaultTagIcon,
       }}
     >
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
+      <CreateNewPosyStack.Navigator>
+        <CreateNewPosyStack.Group>
+          <CreateNewPosyStack.Screen
             name='SelectPostType'
             component={SelectPostType}
             options={({ navigation }) => ({
@@ -193,7 +199,7 @@ const CreateNewPostStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewPosyStack.Screen
             name='NormalPost'
             component={NormalPost}
             options={({ navigation }) => ({
@@ -227,7 +233,7 @@ const CreateNewPostStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewPosyStack.Screen
             name='AddTags'
             component={AddTags}
             options={({ navigation }) => ({
@@ -279,7 +285,7 @@ const CreateNewPostStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewPosyStack.Screen
             name='AddLocation'
             component={AddLocation}
             options={({ navigation }) => ({
@@ -326,7 +332,7 @@ const CreateNewPostStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewPosyStack.Screen
             name='MomentPost'
             component={MomentPost}
             options={({ navigation }) => ({
@@ -370,9 +376,9 @@ const CreateNewPostStackNavigator = (props) => {
               // },
             })}
           />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
-          <Stack.Screen
+        </CreateNewPosyStack.Group>
+        <CreateNewPosyStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+          <CreateNewPosyStack.Screen
             name='CreateNewTag'
             component={CreateNewTag}
             options={({ navigation }) => ({
@@ -392,7 +398,7 @@ const CreateNewPostStackNavigator = (props) => {
               },
             })}
           />
-          <Stack.Screen
+          <CreateNewPosyStack.Screen
             name='CreateNewLocationTag'
             component={CreateNewLocationTag}
             options={({ navigation }) => ({
@@ -412,10 +418,10 @@ const CreateNewPostStackNavigator = (props) => {
               },
             })}
           />
-        </Stack.Group>
-      </Stack.Navigator>
+        </CreateNewPosyStack.Group>
+      </CreateNewPosyStack.Navigator>
       <SnackBar.Primary />
-      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' />
+      {/* <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' /> */}
     </CreateNewPostContext.Provider>
   );
 };
