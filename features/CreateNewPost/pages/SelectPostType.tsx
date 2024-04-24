@@ -9,20 +9,10 @@ import { CurrentSpaceContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 
-const SelectPostType = (props) => {
+const SelectPostType = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
-  const { onPostTypeChange } = useContext(CreateNewPostContext);
+  const { onPostTypeChange, formData } = useContext(CreateNewPostContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => null,
-  //     headerLeft: () => (
-  //       <TouchableOpacity onPress={() => navigation.goBack()}>
-  //         <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // });
 
   return (
     <View style={{ backgroundColor: 'black', flex: 1 }}>

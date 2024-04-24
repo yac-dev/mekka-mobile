@@ -17,11 +17,13 @@ import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 // import { INITIAL_CREATE_NEW_POST_STATE } from '../App';
 import { AuthContext, SnackBarContext } from '../providers';
-import { SnackBar, LoadingSpinner } from '../components';
+import { SnackBar, LoadingSpinner, AppButton } from '../components';
 import { useLoadingSpinner } from '../hooks/useLoadingSpinner';
 import { CurrentSpaceContext } from '../providers';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CreateNewPostProvider } from '../features/CreateNewPost/contexts';
+import { VectorIcon } from '../Icons';
+import { Colors } from '../themes';
 
 type CreateNewPostStackParams = {
   SelectPostType: undefined;
@@ -180,11 +182,14 @@ const CreateNewPostStackNavigator = (props) => {
             component={SelectPostType}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
-              headerRight: () => null,
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {
@@ -201,28 +206,14 @@ const CreateNewPostStackNavigator = (props) => {
             component={NormalPost}
             options={({ navigation }) => ({
               headerShown: true,
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                );
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AddTags')}
-                  disabled={createNewPostFormData.contents.length ? false : true}
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
                 >
-                  <Text
-                    style={{
-                      color: createNewPostFormData.contents.length ? 'white' : 'rgb(170,170,170)',
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Next
-                  </Text>
-                </TouchableOpacity>
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               title: '',
               headerStyle: {
@@ -235,47 +226,49 @@ const CreateNewPostStackNavigator = (props) => {
             component={AddTags}
             options={({ navigation }) => ({
               headerShown: true,
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                );
-              },
-              headerRight: () => (
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {/* <TouchableOpacity
-                    onPress={() => navigation.navigate('CreateNewTag')}
-                    style={{ marginRight: 10 }}
-                    // disabled={validateAddedTags() ? false : true}
-                  >
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Create
-                    </Text>
-                  </TouchableOpacity> */}
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('AddLocation')}
-                    disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}
-                    // disabled={validateAddedTags() ? false : true}
-                  >
-                    <Text
-                      style={{
-                        color: Object.keys(createNewPostFormData.addedTags).length ? 'white' : 'rgb(170,170,170)',
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Next
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
+              // headerRight: () => (
+              //   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              //     {/* <TouchableOpacity
+              //       onPress={() => navigation.navigate('CreateNewTag')}
+              //       style={{ marginRight: 10 }}
+              //       // disabled={validateAddedTags() ? false : true}
+              //     >
+              //       <Text
+              //         style={{
+              //           color: 'white',
+              //           fontSize: 20,
+              //           fontWeight: 'bold',
+              //         }}
+              //       >
+              //         Create
+              //       </Text>
+              //     </TouchableOpacity> */}
+              //     <TouchableOpacity
+              //       onPress={() => navigation.navigate('AddLocation')}
+              //       disabled={Object.keys(createNewPostFormData.addedTags).length ? false : true}
+              //       // disabled={validateAddedTags() ? false : true}
+              //     >
+              //       <Text
+              //         style={{
+              //           color: Object.keys(createNewPostFormData.addedTags).length ? 'white' : 'rgb(170,170,170)',
+              //           fontSize: 20,
+              //           fontWeight: 'bold',
+              //         }}
+              //       >
+              //         Next
+              //       </Text>
+              //     </TouchableOpacity>
+              //   </View>
+              // ),
               title: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -287,30 +280,32 @@ const CreateNewPostStackNavigator = (props) => {
             component={AddLocation}
             options={({ navigation }) => ({
               headerShown: true,
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                );
-              },
-              headerRight: () => {
-                return (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => onPostPress()}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 20,
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        Post
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              },
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              // headerRight: () => {
+              //   return (
+              //     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              //       <TouchableOpacity onPress={() => onPostPress()}>
+              //         <Text
+              //           style={{
+              //             color: 'white',
+              //             fontSize: 20,
+              //             fontWeight: 'bold',
+              //           }}
+              //         >
+              //           Post
+              //         </Text>
+              //       </TouchableOpacity>
+              //     </View>
+              //   );
+              // },
               title: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -322,28 +317,30 @@ const CreateNewPostStackNavigator = (props) => {
             component={MomentPost}
             options={({ navigation }) => ({
               headerShown: true,
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                );
-              },
-              headerRight: () => {
-                return (
-                  <TouchableOpacity onPress={() => onMomentPostPress()} disabled={moments.length ? false : true}>
-                    <Text
-                      style={{
-                        color: moments.length ? 'white' : 'rgb(70,70,70)',
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Done
-                    </Text>
-                  </TouchableOpacity>
-                );
-              },
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              // headerRight: () => {
+              //   return (
+              //     <TouchableOpacity onPress={() => onMomentPostPress()} disabled={moments.length ? false : true}>
+              //       <Text
+              //         style={{
+              //           color: moments.length ? 'white' : 'rgb(70,70,70)',
+              //           fontSize: 20,
+              //           fontWeight: 'bold',
+              //         }}
+              //       >
+              //         Done
+              //       </Text>
+              //     </TouchableOpacity>
+              //   );
+              // },
               title: '',
               headerStyle: {
                 backgroundColor: 'black',

@@ -32,7 +32,7 @@ type ContentTypeType = 'photo' | 'video';
 
 type TagType = {};
 
-type ContentType = {
+export type ContentType = {
   uri: string;
   type: ContentTypeType;
   duration: number | undefined;
@@ -55,6 +55,7 @@ type CreateNewPostContextType = {
   setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;
   onPostTypeChange: (postType: PostTypeType) => void;
   pickUpContents: () => void;
+  onRemoveContentPress: (index: number) => void;
   onCaptionChange: (caption: string) => void;
 };
 
@@ -63,6 +64,7 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
   setFormData: () => {},
   onPostTypeChange: () => {},
   pickUpContents: () => {},
+  onRemoveContentPress: () => {},
   onCaptionChange: () => {},
 });
 
@@ -129,6 +131,19 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const onRemoveContentPress = (index: number) => {
+    setFormData((previous) => {
+      const updatedContents = [...previous.contents.value].filter((_, idx: number) => index !== idx);
+      return {
+        ...previous,
+        contents: {
+          value: updatedContents,
+          isValidated: updatedContents.length ? true : false,
+        },
+      };
+    });
+  };
+
   const onCaptionChange = (text: string) => {
     setFormData((previous) => {
       return {
@@ -142,7 +157,9 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <CreateNewPostContext.Provider value={{ formData, setFormData, onPostTypeChange, pickUpContents, onCaptionChange }}>
+    <CreateNewPostContext.Provider
+      value={{ formData, setFormData, onPostTypeChange, pickUpContents, onRemoveContentPress, onCaptionChange }}
+    >
       {children}
     </CreateNewPostContext.Provider>
   );
