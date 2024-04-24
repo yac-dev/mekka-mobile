@@ -6,77 +6,57 @@ import { AntDesign } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { CreateNewPostContext } from '../contexts';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { CurrentSpaceContext } from '../../../providers';
+import { TagType } from '../../../types';
 
 const AddTags = (props) => {
-  // const { createNewPostFormData, setCreateNewPostFormData } = useContext(GlobalContext);
-  const { createNewPostFormData, setCreateNewPostFormData } = useContext(SpaceRootContext);
+  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const { currentSpace } = useContext(CurrentSpaceContext);
   const {
-    navigation,
-    route,
-    tagOptions,
-    setTagOptions,
-    addedTags,
-    setAddedTags,
-    createdTags,
-    setCreatedTags,
-    dummyCreatedTagId,
-    setDummyCreatedTagId,
+    // navigation,
+    // route,
+    // tagOptions,
+    // setTagOptions,
+
+    // dummyCreatedTagId,
+    // setDummyCreatedTagId,
+    formData,
+    onChangeAddedTags,
   } = useContext(CreateNewPostContext);
 
-  useEffect(() => {
-    if (props.route?.params?.createdTag) {
-      setCreateNewPostFormData((previous) => {
-        // [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
-        const updating = { ...previous.addedTags };
-        updating[props.route?.params?.createdTag._id] = props.route?.params?.createdTag;
-        return {
-          ...previous,
-          addedTags: updating,
-        };
-      });
-      // setAddedTags((previous) => {
-      //   return {
-      //     ...previous,
-      //     [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
-      //   };
-      // });
-      setTagOptions((previous) => {
-        const updating = [...previous];
-        updating.unshift(props.route?.params?.createdTag);
-        return updating;
-      });
-    }
-  }, [props.route?.params?.createdTag]);
+  // useEffect(() => {
+  //   if (props.route?.params?.createdTag) {
+  //     setCreateNewPostFormData((previous) => {
+  //       // [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
+  //       const updating = { ...previous.addedTags };
+  //       updating[props.route?.params?.createdTag._id] = props.route?.params?.createdTag;
+  //       return {
+  //         ...previous,
+  //         addedTags: updating,
+  //       };
+  //     });
+  //     // setAddedTags((previous) => {
+  //     //   return {
+  //     //     ...previous,
+  //     //     [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
+  //     //   };
+  //     // });
+  //     setTagOptions((previous) => {
+  //       const updating = [...previous];
+  //       updating.unshift(props.route?.params?.createdTag);
+  //       return updating;
+  //     });
+  //   }
+  // }, [props.route?.params?.createdTag]);
 
   const renderTagOptions = () => {
     // if (Object.values(tagOptions).length) {
-    const list = tagOptions.map((tag, index) => {
+    const list = currentSpace.tags.map((tag: TagType, index: number) => {
       return (
-        <TouchableWithoutFeedback
-          key={index}
-          onPress={() => {
-            setCreateNewPostFormData((previous) => {
-              const updating = { ...previous.addedTags };
-              if (createNewPostFormData.addedTags[tag._id]) {
-                delete updating[tag._id];
-                return {
-                  ...previous,
-                  addedTags: updating,
-                };
-              } else {
-                const updating = { ...previous.addedTags };
-                updating[tag._id] = tag;
-                return {
-                  ...previous,
-                  addedTags: updating,
-                };
-              }
-            });
-          }}
-        >
+        <TouchableWithoutFeedback key={index} onPress={() => onChangeAddedTags(tag)}>
           <View
             style={{
               flexDirection: 'row',
@@ -98,7 +78,7 @@ const AddTags = (props) => {
               tintColor={tag.icon ? tag.color : null}
             />
             <Text style={{ color: 'white' }}>{tag.name}</Text>
-            {createNewPostFormData.addedTags[tag._id] ? (
+            {formData.addedTags.value[tag._id] ? (
               <View
                 style={{
                   position: 'absolute',
@@ -161,7 +141,7 @@ const AddTags = (props) => {
       <TouchableOpacity
         style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
         onPress={() => {
-          navigation.navigate('CreateNewTag');
+          createNewPostStackNavigation.navigate('CreateNewTag');
         }}
         activeOpacity={1}
       >

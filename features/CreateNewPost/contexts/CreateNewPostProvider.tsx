@@ -2,6 +2,7 @@ import React, { useState, createContext, useContext } from 'react';
 import backendAPI from '../../../apis/backend';
 import * as ImagePicker from 'expo-image-picker';
 import { CurrentSpaceContext } from '../../../providers';
+import { TagType } from '../../../types';
 
 const initialFormData: FormDataType = {
   postType: {
@@ -16,10 +17,14 @@ const initialFormData: FormDataType = {
     value: '',
     isValidated: false,
   },
-  // addedTags: {
-  //   value: [],
-  //   isValidated: false, // これに関してはuserに選ばせる。必ず。
-  // },
+  addedTags: {
+    value: {},
+    isValidated: false, // これに関してはuserに選ばせる。必ず。
+  },
+  createdTags: {
+    value: [],
+    isValidated: true,
+  },
   // addedLocation: {
   //   value: {},
   //   isValidated: true,
@@ -30,7 +35,7 @@ type PostTypeType = 'normal' | 'moment';
 
 type ContentTypeType = 'photo' | 'video';
 
-type TagType = {};
+type CreatedTagType = {};
 
 export type ContentType = {
   uri: string;
@@ -43,11 +48,16 @@ type FormType<T> = {
   isValidated: boolean;
 };
 
+type AddedTagType = {
+  [key: string]: TagType;
+};
+
 export type FormDataType = {
   postType: FormType<PostTypeType>;
   contents: FormType<ContentType[]>;
   caption: FormType<string>;
-  // addedTags: FormType<string>;
+  addedTags: FormType<AddedTagType>;
+  createdTags: FormType<CreatedTagType[]>;
 };
 
 type CreateNewPostContextType = {
@@ -57,6 +67,7 @@ type CreateNewPostContextType = {
   pickUpContents: () => void;
   onRemoveContentPress: (index: number) => void;
   onCaptionChange: (caption: string) => void;
+  onChangeAddedTags: (tag: TagType) => void;
 };
 
 export const CreateNewPostContext = createContext<CreateNewPostContextType>({
@@ -66,6 +77,7 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
   pickUpContents: () => {},
   onRemoveContentPress: () => {},
   onCaptionChange: () => {},
+  onChangeAddedTags: () => {},
 });
 
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -156,9 +168,69 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const addTag = (tag: TagType) => {
+    setFormData((previous) => {
+      const updatedAddedTag = {
+        ...previous.addedTags.value,
+        [tag._id]: tag,
+      };
+      return {
+        ...previous,
+        addedTags: {
+          value: updatedAddedTag,
+          isValidated: Object.values(updatedAddedTag).length ? true : false,
+        },
+      };
+    });
+  };
+
+  const removeAddedTag = (tag: TagType) => {
+    setFormData((previous) => {
+      const updating = { ...previous.addedTags.value };
+      delete updating[tag._id];
+      return {
+        ...previous,
+        addedTags: {
+          value: updating,
+          isValidated: Object.values(updating).length ? true : false,
+        },
+      };
+    });
+  };
+
+  const onChangeAddedTags = (tag: TagType) => {
+    if (formData.addedTags.value[tag._id]) {
+      removeAddedTag(tag);
+    } else {
+      addTag(tag);
+    }
+  };
+
+  // const removeTag = () => {};
+
+  // const onAddedTagChange = (tag: TagType) => {
+  //   setFormData((previous) => {
+  //     const
+  //     return {
+  //       ...previous,
+  //       addedTags: {
+  //         value
+  //       }
+  //     }
+  //   })
+  // };
+
   return (
     <CreateNewPostContext.Provider
-      value={{ formData, setFormData, onPostTypeChange, pickUpContents, onRemoveContentPress, onCaptionChange }}
+      value={{
+        formData,
+        setFormData,
+        onPostTypeChange,
+        pickUpContents,
+        onRemoveContentPress,
+        onCaptionChange,
+        onChangeAddedTags,
+      }}
     >
       {children}
     </CreateNewPostContext.Provider>
