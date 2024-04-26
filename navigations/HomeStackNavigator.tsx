@@ -520,10 +520,6 @@ export const HomeStackNavigator: React.FC = (props) => {
           />
         </HomeStack.Group>
       </HomeStack.Navigator>
-      {/* <AuthMenuBottomSheet navigation={props.navigation} /> */}
-      {/* <SpaceMenuBottomSheet navigation={props.navigation} /> */}
-      {/* <ActionMenuBottomSheet navigation={props.navigation} /> */}
-      {/* <SnackBar.Primary /> */}
     </HomeStackNavContext.Provider>
   );
 };

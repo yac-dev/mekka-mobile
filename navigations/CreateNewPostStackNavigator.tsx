@@ -39,22 +39,7 @@ export type CreateNewPostStackParams = {
 
 export type CreateNewPostStackProps = NativeStackNavigationProp<CreateNewPostStackParams>;
 
-const CreateNewPostStackNavigator = (props) => {
-  const { auth, setAuth } = useContext(AuthContext);
-  const { setSnackBar } = useContext(SnackBarContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
-
-  // const {
-  //   setLoading,
-  //   isAfterPosted,
-  //   setIsAfterPosted,
-  //   // createNewPostFormData,
-  //   // setCreateNewPostFormData,
-  //   // createNewPostResult,
-  //   // setCreateNewPostResult,
-  // } = useContext(GlobalContext);
-  const { createNewPostFormData, setCreateNewPostFormData, createNewPostResult, setCreateNewPostResult } =
-    useContext(SpaceRootContext);
+const CreateNewPostStackNavigator = () => {
   const [postType, setPostType] = useState('');
   const [contents, setContents] = useState([]);
   const [caption, setCaption] = useState('');
@@ -94,89 +79,38 @@ const CreateNewPostStackNavigator = (props) => {
   //   });
   // };
 
-  const getDefaultTagIcon = async () => {
-    const result = await backendAPI.get('/icons?name=hash');
-    const { icon } = result.data;
-    setDefaultTagIcon(icon);
-  };
-
-  useEffect(() => {
-    // getTags();
-    // // getLocationTags();
-    // getDefaultTagIcon();
-  }, []);
-
-  const onPostPress = async () => {
-    // app.tsxにはいけないんだよね。まあ、globalだしどこで実行してもいいのだろうけど、、、
-    setCreateNewPostResult((previous) => {
-      return {
-        ...previous,
-        isCreating: true,
-      };
-    });
-    // ここ、なんでnavigationしてくんないんだろ。。。
-    // props.navigation.navigate(`Space_${props.route?.params?.spaceAndUserRelationship._id}`);
-    props.navigation.navigate('SpaceBottomTabNavigator');
-  };
-
-  const onMomentPostPress = async () => {
-    const payload = new FormData();
-    payload.append('disappearAfter', space.disappearAfter);
-    payload.append('createdBy', auth._id);
-    payload.append('spaceId', space._id);
-    for (let content of moments) {
-      const obj = {
-        name: content.uri.split('/').pop(),
-        uri: content.uri,
-        type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
-      };
-      payload.append('contents', JSON.parse(JSON.stringify(obj)));
-    }
-    console.log(payload);
-    const result = await backendAPI.post('/moments', payload, {
-      headers: { 'Content-type': 'multipart/form-data' },
-    });
-    const { post } = result.data;
-    setSnackBar({
-      isVisible: true,
-      status: 'success',
-      message: 'Post has been created successfully.',
-      duration: 7000,
-    });
-    props.navigation.navigate({
-      name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
-      params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
-      merge: true,
-    });
-  };
+  // const onMomentPostPress = async () => {
+  //   const payload = new FormData();
+  //   payload.append('disappearAfter', space.disappearAfter);
+  //   payload.append('createdBy', auth._id);
+  //   payload.append('spaceId', space._id);
+  //   for (let content of moments) {
+  //     const obj = {
+  //       name: content.uri.split('/').pop(),
+  //       uri: content.uri,
+  //       type: content.type === 'image' ? 'image/jpg' : 'video/mp4',
+  //     };
+  //     payload.append('contents', JSON.parse(JSON.stringify(obj)));
+  //   }
+  //   console.log(payload);
+  //   const result = await backendAPI.post('/moments', payload, {
+  //     headers: { 'Content-type': 'multipart/form-data' },
+  //   });
+  //   const { post } = result.data;
+  //   setSnackBar({
+  //     isVisible: true,
+  //     status: 'success',
+  //     message: 'Post has been created successfully.',
+  //     duration: 7000,
+  //   });
+  //   props.navigation.navigate({
+  //     name: `Space_${props.route?.params?.spaceAndUserRelationship._id}`,
+  //     params: { afterPosted: true }, // 作ったtagをSpaceRootに入れる。
+  //     merge: true,
+  //   });
+  // };
 
   return (
-    // <CreateNewPostContext.Provider
-    //   value={{
-    //     postType,
-    //     setPostType,
-    //     contents,
-    //     setContents,
-    //     caption,
-    //     setCaption,
-    //     addedTags,
-    //     setAddedTags,
-    //     tagOptions,
-    //     setTagOptions,
-    //     addedLocationTag,
-    //     setAddedLocationTag,
-    //     locationTagOptions,
-    //     setLocationTagOptions,
-    //     space,
-    //     navigation: props.navigation,
-    //     route: props.route,
-    //     dummyCreatedTagId,
-    //     setDummyCreatedTagId,
-    //     moments,
-    //     setMoments,
-    //     defaultTagIcon,
-    //   }}
-    // >
     <CreateNewPostProvider>
       <CreateNewPosyStack.Navigator>
         <CreateNewPosyStack.Group>

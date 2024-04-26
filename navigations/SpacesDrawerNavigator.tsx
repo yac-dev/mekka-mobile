@@ -52,10 +52,8 @@ export const SpacesDrawerNavigator = (props) => {
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const addNewSpaceBottomSheetRef = useRef<BottomSheetModal>(null);
-  const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
   const navigation = useNavigation<RootStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  const editProfileNavigation = useNavigation<EditProfileStackNavigatorProps>();
   const {
     authMenuBottomSheetRef,
     openAuthMenuBottomSheet,
@@ -64,18 +62,6 @@ export const SpacesDrawerNavigator = (props) => {
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
-  const {
-    // spaceAndUserRelationships,
-    // haveSpaceAndUserRelationshipsBeenFetched,
-    // setCurrentSpaceAndUserRelationship,
-    // spaceMenuBottomSheetRef,
-    // // authMenuBottomSheetRef,
-    // isAuthenticated,
-    // spaceAndUserRelationshipsFetchingStatus,
-    // updatesTable,
-    // setUpdatesTable,
-    // currentSpaceAndUserRelationship,
-  } = useContext(GlobalContext);
   const oneGridWidth = Dimensions.get('window').width / 4;
 
   // getMySpacesをやってないよね。。。ここをなまず直さないといけないな。。。

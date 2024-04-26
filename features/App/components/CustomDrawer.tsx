@@ -90,7 +90,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           style={{
             flex: 2,
             paddingTop: 10,
-            paddingHorizontal: 5,
+
             borderRightWidth: 0.3,
             borderRightColor: 'rgb(70,70,70)',
             height: '100%',
@@ -132,6 +132,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               const isFocused = currentSpace._id === space._id;
               return (
                 <TouchableOpacity
+                  activeOpacity={0.5}
                   key={space._id}
                   style={{
                     flexDirection: 'column',
@@ -139,11 +140,13 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     justifyContent: 'center',
                     // width: 90,
                     // height: 90,
-                    borderRadius: 8,
-                    backgroundColor: isFocused ? 'rgb(50,50,50)' : null,
+                    // borderRadius: 8,
+                    // backgroundColor: isFocused ? 'rgb(50,50,50)' : null,
                     paddingVertical: 10,
                     // borderBottomColor: isFocused ? 'white' : null,
                     // borderBottomWidth: isFocused ? 1 : null,
+                    borderRightWidth: isFocused ? 1 : 0,
+                    borderRightColor: 'white',
                   }}
                   onPress={() => {
                     // onSpacePress(route.params?.space);
@@ -162,7 +165,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                           width: 24,
                           height: 24,
                           borderRadius: 12,
-                          backgroundColor: isFocused ? 'rgb(50,50,50)' : 'black',
+                          backgroundColor: 'black',
                           position: 'absolute',
                           top: -5,
                           right: -5,
@@ -223,7 +226,10 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           </View>
         </View>
         <View style={{ flex: 9 }}>
-          <View style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}
+          >
             <ExpoImage
               style={{ width: 80, height: 80, borderRadius: 40, marginRight: 20 }}
               source={{ uri: currentSpace.icon }}
@@ -258,8 +264,8 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                 </View>
               </View>
             </View>
-          </View>
-          <View
+          </TouchableOpacity>
+          {/* <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -313,7 +319,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               </AppButton.Icon>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Search</Text>
             </View>
-          </View>
+          </View> */}
           <ScrollView>
             {currentSpace.tags.map((tag, index) => {
               const isFocused = currentTag?._id === tag._id;

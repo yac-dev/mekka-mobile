@@ -8,11 +8,15 @@ type UseBottomSheetOutputType = {
   addNewSpaceMenuBottomSheetRef: MutableRefObject<BottomSheetModal>;
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
   closeAddNewSpaceMenuBottomSheet: () => void;
+  aboutSpaceBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  openAboutSpaceBottomSheet: (index: number) => void;
+  closeAboutSpaceBottomSheet: () => void;
 };
 
 export const useBottomSheet = (): UseBottomSheetOutputType => {
   const authMenuBottomSheetRef = useRef<BottomSheetModal>(null);
   const addNewSpaceMenuBottomSheetRef = useRef<BottomSheetModal>(null);
+  const aboutSpaceBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const openAuthMenuBottomSheet = (index: number) => {
     authMenuBottomSheetRef.current?.snapToIndex(index);
@@ -30,6 +34,14 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     addNewSpaceMenuBottomSheetRef.current?.close();
   };
 
+  const openAboutSpaceBottomSheet = (index: number) => {
+    aboutSpaceBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeAboutSpaceBottomSheet = () => {
+    aboutSpaceBottomSheetRef.current?.close();
+  };
+
   return {
     authMenuBottomSheetRef,
     openAuthMenuBottomSheet,
@@ -37,5 +49,8 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     addNewSpaceMenuBottomSheetRef,
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
+    aboutSpaceBottomSheetRef,
+    openAboutSpaceBottomSheet,
+    closeAboutSpaceBottomSheet,
   };
 };
