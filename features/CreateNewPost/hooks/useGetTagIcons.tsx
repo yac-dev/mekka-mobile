@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { ApiResultType, AuthType } from '../../../types';
-import { CreatePostInputType, CreatePostOutputType } from '../types';
-import { createPost } from '../apis';
+import { GetTagIconsInputType, GetTagIconsOutputType } from '../types';
+import { getTagIcons } from '../apis';
 
-export const useCreatePost = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType<CreatePostOutputType>>({
+export const useGetTagIcons = () => {
+  const [apiResult, setApiResult] = useState<ApiResultType<GetTagIconsOutputType>>({
     status: 'idling',
     data: void 0,
     message: '',
   });
 
-  const requestApi = async (input: CreatePostInputType) => {
+  const requestApi = async (input: GetTagIconsInputType) => {
     try {
       setApiResult((previous) => {
         return {
@@ -19,7 +19,7 @@ export const useCreatePost = () => {
         };
       });
 
-      const response = await createPost(input);
+      const response = await getTagIcons(input);
       setApiResult((previous) => {
         return {
           ...previous,

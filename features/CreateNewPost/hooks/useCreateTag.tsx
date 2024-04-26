@@ -1,26 +1,24 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { IconType } from '../../../types';
-
-export type CreatingTagType = {
-  _id: Date;
-  iconType: 'icon';
-  icon: IconType;
-  name: string;
-  color: string;
-  added: boolean;
-  created: boolean;
-  image: string;
-};
+import { CreateNewPostContext } from '../contexts';
+import { CreatedTagType } from '../contexts';
+// export type CreatingTagType = {
+//   _id: Date;
+//   iconType: 'icon';
+//   icon: IconType;
+//   name: string;
+//   color: string;
+//   created: boolean;
+// };
 
 export const useCreateTag = () => {
-  const [creatingTag, setCreatingTag] = useState<CreatingTagType>({
+  const { defaultTagIcon } = useContext(CreateNewPostContext);
+  const [creatingTag, setCreatingTag] = useState<CreatedTagType>({
     _id: new Date(),
     iconType: 'icon',
-    icon: '',
-    image: '',
+    icon: defaultTagIcon,
     name: '',
     color: 'white',
-    added: true,
     created: true,
   });
 

@@ -1,23 +1,23 @@
-import { PostType, TagType } from '../../types';
+import { PostType, TagType, IconType, ReactionType } from '../../types';
+import { FormDataType } from './contexts';
 
-export type CreatePostInputType = {
-  disappearAfter: string;
-  type: string;
-  reactions: string; // JSON string
-  caption: string;
-  createdTags: string; // JSON string
-  addedTags: string; // JSON string
-  location: string; // JSON string
-  createdLocationTag?: string; // JSON string, optional
-  addedLocationTag?: string; // JSON string, optional
-  createdBy: string;
+export type CreatePostInputType = FormDataType & {
+  userId: string;
   spaceId: string;
-  contents: string; // JSON string
-  // Define other fields if necessary
+  reactions: ReactionType[];
+  disappearAfter: string;
 };
 
 export type CreatePostOutputType = {
   post: PostType;
   addedTags: TagType[];
   createdTags?: TagType[];
+};
+
+export type GetTagIconsInputType = {
+  name: string;
+};
+
+export type GetTagIconsOutputType = {
+  icon: IconType;
 };

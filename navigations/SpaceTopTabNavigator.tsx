@@ -30,7 +30,7 @@ import { SpaceRootStackNavigatorProp } from '.';
 
 const Tab = createMaterialTopTabNavigator<SpaceTopTabNavigatorParams>();
 
-export const SpaceTopTabNavigator = (props) => {
+export const SpaceTopTabNavigator = () => {
   const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   // const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const drawerNavigation = useNavigation<SpacesDrawerStackNavigatorProps>();

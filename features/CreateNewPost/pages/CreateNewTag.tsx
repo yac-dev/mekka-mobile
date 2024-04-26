@@ -15,7 +15,7 @@ const CreateNewTag = (props) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    props.navigation.setOptions({
+    createNewPostStackNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           onPress={() => onDonePress()}
@@ -34,7 +34,6 @@ const CreateNewTag = (props) => {
       ),
     });
   }, [creatingTag]);
-  // createNewPostStackNavigatorに移動って、まさにこのcreateNewTagが今いる場所だもんね。だからpageが変わらないんだわ。
 
   useEffect(() => {
     inputRef.current.focus();
@@ -46,11 +45,7 @@ const CreateNewTag = (props) => {
       name: removeEmojis(creatingTag.name),
     };
 
-    createNewPostStackNavigation.navigate({
-      name: 'AddTags',
-      params: { createdTag: payload },
-      merge: true,
-    });
+    createNewPostStackNavigation.navigate({ name: 'AddTags', params: { createdTag: payload }, merge: true });
   };
 
   return (

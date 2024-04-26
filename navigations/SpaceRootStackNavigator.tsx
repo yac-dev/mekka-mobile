@@ -84,10 +84,10 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
 
   const {
     isIpad,
-    spaceMenuBottomSheetRef,
-    currentSpace,
-    setCurrentSpace,
-    currentSpaceAndUserRelationship,
+    // spaceMenuBottomSheetRef,
+    // currentSpace,
+    // setCurrentSpace,
+    // currentSpaceAndUserRelationship,
     // createNewPostFormData,
     // setCreateNewPostFormData,
     // setCreateNewPostResult,
@@ -112,117 +112,117 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   useEffect(() => {
     // isCreating状態ならここのcreateを起こすと。
     if (createNewPostResult.isCreating) {
-      createPost();
+      // createPost();
     }
   }, [createNewPostResult.isCreating]);
 
   // hooksはここでやるよね。。。
-  const createPost = async () => {
-    const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
-      (element, index) => element.created
-    );
-    const filteredAddedTags = Object.values(createNewPostFormData.addedTags)
-      .filter((element, index) => !element.created)
-      .map((element, index) => element._id);
-    try {
-      const payload = new FormData();
-      payload.append('disappearAfter', currentSpaceAndUserRelationship.space.disappearAfter);
-      payload.append('type', createNewPostFormData.postType);
-      payload.append('reactions', JSON.stringify(currentSpaceAndUserRelationship.space.reactions));
-      payload.append('caption', createNewPostFormData.caption);
-      payload.append('createdTags', JSON.stringify(filteredCreatedTags));
-      payload.append('addedTags', JSON.stringify(filteredAddedTags));
-      payload.append('location', JSON.stringify(createNewPostFormData.location));
+  // const createPost = async () => {
+  //   const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
+  //     (element, index) => element.created
+  //   );
+  //   const filteredAddedTags = Object.values(createNewPostFormData.addedTags)
+  //     .filter((element, index) => !element.created)
+  //     .map((element, index) => element._id);
+  //   try {
+  //     const payload = new FormData();
+  //     payload.append('disappearAfter', currentSpaceAndUserRelationship.space.disappearAfter);
+  //     payload.append('type', createNewPostFormData.postType);
+  //     payload.append('reactions', JSON.stringify(currentSpaceAndUserRelationship.space.reactions));
+  //     payload.append('caption', createNewPostFormData.caption);
+  //     payload.append('createdTags', JSON.stringify(filteredCreatedTags));
+  //     payload.append('addedTags', JSON.stringify(filteredAddedTags));
+  //     payload.append('location', JSON.stringify(createNewPostFormData.location));
 
-      // えーと。。。何したいんだっけ？？buffer側は
-      const contents = [],
-        bufferContents = [];
-      createNewPostFormData.contents.forEach((content) => {
-        if (content.type === 'photo') {
-          const fileName = `${content.uri.split('/').pop().split('.')[0]}.png`;
-          const contentObject = {
-            fileName: fileName,
-            type: 'photo',
-            duration: null,
-          };
-          contents.push(contentObject);
+  //     // えーと。。。何したいんだっけ？？buffer側は
+  //     const contents = [],
+  //       bufferContents = [];
+  //     createNewPostFormData.contents.forEach((content) => {
+  //       if (content.type === 'photo') {
+  //         const fileName = `${content.uri.split('/').pop().split('.')[0]}.png`;
+  //         const contentObject = {
+  //           fileName: fileName,
+  //           type: 'photo',
+  //           duration: null,
+  //         };
+  //         contents.push(contentObject);
 
-          const bufferContent = {
-            name: fileName,
-            uri: content.uri,
-            type: content.type === 'image/jpg',
-          };
-          bufferContents.push(bufferContent);
-        } else if (content.type === 'video') {
-          const fileName = `${content.uri.split('/').pop().split('.')[0]}.mp4`;
-          const contentObject = {
-            fileName: fileName,
-            type: 'video',
-            duration: content.duration,
-          };
+  //         const bufferContent = {
+  //           name: fileName,
+  //           uri: content.uri,
+  //           type: content.type === 'image/jpg',
+  //         };
+  //         bufferContents.push(bufferContent);
+  //       } else if (content.type === 'video') {
+  //         const fileName = `${content.uri.split('/').pop().split('.')[0]}.mp4`;
+  //         const contentObject = {
+  //           fileName: fileName,
+  //           type: 'video',
+  //           duration: content.duration,
+  //         };
 
-          contents.push(contentObject);
-          const bufferContent = {
-            name: fileName,
-            uri: content.uri,
-            type: 'video/mp4',
-          };
-          bufferContents.push(bufferContent);
-        }
-      });
+  //         contents.push(contentObject);
+  //         const bufferContent = {
+  //           name: fileName,
+  //           uri: content.uri,
+  //           type: 'video/mp4',
+  //         };
+  //         bufferContents.push(bufferContent);
+  //       }
+  //     });
 
-      if (createNewPostFormData.addedLocationTag) {
-        if (createNewPostFormData.addedLocationTag.created) {
-          payload.append('createdLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag)); // これがない場合もある。
-        } else {
-          payload.append('addedLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag._id)); // これがない場合もある。
-        }
-      } else {
-        payload.append('addedLocationTag', '');
-      }
-      payload.append('createdBy', auth._id);
-      payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
-      payload.append('contents', JSON.stringify(contents));
-      console.log('createdTags -> ', filteredCreatedTags);
-      console.log('addedTags -> ', filteredAddedTags);
-      //  ----- 一回ここdebuggingでコメントアウト
-      for (let content of createNewPostFormData.contents) {
-        const fileName = `${content.uri.split('/').pop().split('.')[0]}.${content.type === 'photo' ? 'png' : 'mp4'}`;
-        const obj = {
-          name: fileName,
-          uri: content.uri,
-          type: content.type === 'photo' ? 'image/jpg' : 'video/mp4',
-        };
-        payload.append('bufferContents', JSON.parse(JSON.stringify(obj)));
-      }
-      setSnackBar({
-        isVisible: true,
-        status: 'success',
-        message: 'It takes couple seconds to finish processing....',
-        duration: 4000,
-      });
-      const result = await backendAPI.post('/posts', payload, {
-        headers: { 'Content-type': 'multipart/form-data' },
-      });
-      setCreateNewPostResult((previous) => {
-        return {
-          ...previous,
-          isCreating: false,
-          isSuccess: true,
-          responseData: result.data,
-        };
-      });
-      setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE); // initialのstateに戻す。
-      setSnackBar({
-        isVisible: true,
-        status: 'success',
-        message: 'Post has been created successfully.',
-        duration: 5000,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     if (createNewPostFormData.addedLocationTag) {
+  //       if (createNewPostFormData.addedLocationTag.created) {
+  //         payload.append('createdLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag)); // これがない場合もある。
+  //       } else {
+  //         payload.append('addedLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag._id)); // これがない場合もある。
+  //       }
+  //     } else {
+  //       payload.append('addedLocationTag', '');
+  //     }
+  //     payload.append('createdBy', auth._id);
+  //     payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
+  //     payload.append('contents', JSON.stringify(contents));
+  //     console.log('createdTags -> ', filteredCreatedTags);
+  //     console.log('addedTags -> ', filteredAddedTags);
+  //     //  ----- 一回ここdebuggingでコメントアウト
+  //     for (let content of createNewPostFormData.contents) {
+  //       const fileName = `${content.uri.split('/').pop().split('.')[0]}.${content.type === 'photo' ? 'png' : 'mp4'}`;
+  //       const obj = {
+  //         name: fileName,
+  //         uri: content.uri,
+  //         type: content.type === 'photo' ? 'image/jpg' : 'video/mp4',
+  //       };
+  //       payload.append('bufferContents', JSON.parse(JSON.stringify(obj)));
+  //     }
+  //     setSnackBar({
+  //       isVisible: true,
+  //       status: 'success',
+  //       message: 'It takes couple seconds to finish processing....',
+  //       duration: 4000,
+  //     });
+  //     const result = await backendAPI.post('/posts', payload, {
+  //       headers: { 'Content-type': 'multipart/form-data' },
+  //     });
+  //     setCreateNewPostResult((previous) => {
+  //       return {
+  //         ...previous,
+  //         isCreating: false,
+  //         isSuccess: true,
+  //         responseData: result.data,
+  //       };
+  //     });
+  //     setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE); // initialのstateに戻す。
+  //     setSnackBar({
+  //       isVisible: true,
+  //       status: 'success',
+  //       message: 'Post has been created successfully.',
+  //       duration: 5000,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const onCreateNewPostButtonPress = () => {
     console.log('create new post');
@@ -240,21 +240,6 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   // }, [props.route?.params?.createdPost]);
 
   return (
-    // <SpaceRootContext.Provider
-    //   value={{
-    //     space,
-    //     spaceAndUserRelationship: props.spaceAndUserRelationship,
-    //     navigation: props.navigation,
-    //     viewPostsType,
-    //     setViewPostsType,
-    //     screenLoaded,
-    //     setScreenLoaded,
-    //     createNewPostFormData,
-    //     setCreateNewPostFormData,
-    //     createNewPostResult,
-    //     setCreateNewPostResult,
-    //   }}
-    // // >
     <View style={{ flex: 1 }}>
       <SpaceRootStack.Navigator
         screenOptions={({ navigation }) => ({

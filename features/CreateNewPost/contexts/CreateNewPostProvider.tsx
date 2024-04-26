@@ -1,8 +1,9 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import backendAPI from '../../../apis/backend';
 import * as ImagePicker from 'expo-image-picker';
 import { CurrentSpaceContext } from '../../../providers';
-import { TagType } from '../../../types';
+import { IconType, TagType, LocationType } from '../../../types';
+import { useGetTagIcons } from '../hooks';
 
 const initialFormData: FormDataType = {
   postType: {
@@ -17,12 +18,15 @@ const initialFormData: FormDataType = {
     value: '',
     isValidated: false,
   },
-  addedTags: {
+  addedTagsTable: {
     value: {},
     isValidated: false, // これに関してはuserに選ばせる。必ず。
   },
-  createdTags: {
-    value: [],
+  location: {
+    value: {
+      type: 'Point',
+      coordinates: [],
+    },
     isValidated: true,
   },
   // addedLocation: {
@@ -35,8 +39,6 @@ type PostTypeType = 'normal' | 'moment';
 
 type ContentTypeType = 'photo' | 'video';
 
-type CreatedTagType = {};
-
 export type ContentType = {
   uri: string;
   type: ContentTypeType;
@@ -48,41 +50,79 @@ type FormType<T> = {
   isValidated: boolean;
 };
 
-type AddedTagType = {
-  [key: string]: TagType;
+type AddedTagsTableType = {
+  [key: string]: AddedTagType;
 };
+
+// _id: string;
+//   name: string;
+//   icon: IconType;
+//   color: string;
+//   count: number;
+//   space: SpaceType;
+//   updatedAt: string;
+//   createdBy: UserType;
+
+export type CreatedTagType = {
+  _id: string;
+  icon: IconType;
+  name: string;
+  color: string;
+  created: boolean;
+};
+
+type AddedTagType = (TagType & { created?: boolean }) | CreatedTagType;
+export type TagOptionType = AddedTagType;
 
 export type FormDataType = {
   postType: FormType<PostTypeType>;
   contents: FormType<ContentType[]>;
   caption: FormType<string>;
-  addedTags: FormType<AddedTagType>;
-  createdTags: FormType<CreatedTagType[]>;
+  addedTagsTable: FormType<AddedTagsTableType>;
+  location: FormType<LocationType | undefined>;
 };
 
 type CreateNewPostContextType = {
   formData: FormDataType;
   setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;
+  tagOptions: TagOptionType[];
   onPostTypeChange: (postType: PostTypeType) => void;
   pickUpContents: () => void;
   onRemoveContentPress: (index: number) => void;
   onCaptionChange: (caption: string) => void;
-  onChangeAddedTags: (tag: TagType) => void;
+  addTag: (tagOption: TagOptionType) => void;
+  addCreatedTag: (createdTag: CreatedTagType) => void;
+  removeAddedTag: (tagOption: TagOptionType) => void;
+  addLocation: (coordinates: number[]) => void;
+  removeLocation: () => void;
+  defaultTagIcon?: IconType;
 };
 
 export const CreateNewPostContext = createContext<CreateNewPostContextType>({
   formData: initialFormData,
   setFormData: () => {},
+  tagOptions: [],
   onPostTypeChange: () => {},
   pickUpContents: () => {},
   onRemoveContentPress: () => {},
   onCaptionChange: () => {},
-  onChangeAddedTags: () => {},
+  addTag: () => {},
+  addCreatedTag: () => {},
+  removeAddedTag: () => {},
+  addLocation: (coordinates: number[]) => {},
+  removeLocation: () => {},
+  defaultTagIcon: void 0,
 });
 
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
+  const [tagOptions, setTagOptions] = useState<TagOptionType[]>(currentSpace.tags);
+  const { apiResult, requestApi } = useGetTagIcons();
+
+  useEffect(() => {
+    requestApi({ name: 'hash' });
+  }, []);
 
   const onPostTypeChange = (postType: PostTypeType) => {
     setFormData((previous) => {
@@ -168,15 +208,17 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const addTag = (tag: TagType) => {
+  const addTag = (tag: TagOptionType) => {
+    console.log(tag._id);
     setFormData((previous) => {
       const updatedAddedTag = {
-        ...previous.addedTags.value,
+        ...previous.addedTagsTable.value,
         [tag._id]: tag,
       };
+      console.log('updated', updatedAddedTag);
       return {
         ...previous,
-        addedTags: {
+        addedTagsTable: {
           value: updatedAddedTag,
           isValidated: Object.values(updatedAddedTag).length ? true : false,
         },
@@ -184,13 +226,30 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const removeAddedTag = (tag: TagType) => {
+  const addCreatedTag = (createdTag: CreatedTagType) => {
     setFormData((previous) => {
-      const updating = { ...previous.addedTags.value };
+      return {
+        ...previous,
+        addedTagsTable: {
+          ...previous.addedTagsTable,
+          value: {
+            ...previous.addedTagsTable.value,
+            [createdTag._id]: createdTag,
+          },
+        },
+      };
+    });
+
+    setTagOptions((previous) => [...previous, createdTag]);
+  };
+
+  const removeAddedTag = (tag: TagOptionType) => {
+    setFormData((previous) => {
+      const updating = { ...previous.addedTagsTable.value };
       delete updating[tag._id];
       return {
         ...previous,
-        addedTags: {
+        addedTagsTable: {
           value: updating,
           isValidated: Object.values(updating).length ? true : false,
         },
@@ -198,38 +257,46 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const onChangeAddedTags = (tag: TagType) => {
-    if (formData.addedTags.value[tag._id]) {
-      removeAddedTag(tag);
-    } else {
-      addTag(tag);
-    }
+  const addLocation = (coordinates: number[]) => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        location: {
+          value: { type: 'Point', coordinates },
+          isValidated: true,
+        },
+      };
+    });
   };
 
-  // const removeTag = () => {};
-
-  // const onAddedTagChange = (tag: TagType) => {
-  //   setFormData((previous) => {
-  //     const
-  //     return {
-  //       ...previous,
-  //       addedTags: {
-  //         value
-  //       }
-  //     }
-  //   })
-  // };
+  const removeLocation = () => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        location: {
+          value: void 0,
+          isValidated: true,
+        },
+      };
+    });
+  };
 
   return (
     <CreateNewPostContext.Provider
       value={{
         formData,
         setFormData,
+        tagOptions,
         onPostTypeChange,
         pickUpContents,
         onRemoveContentPress,
         onCaptionChange,
-        onChangeAddedTags,
+        addTag,
+        addCreatedTag,
+        removeAddedTag,
+        addLocation,
+        removeLocation,
+        defaultTagIcon: apiResult.data?.icon,
       }}
     >
       {children}

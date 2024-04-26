@@ -202,86 +202,86 @@ const NormalPost = () => {
   // };
 
   return (
-    <KeyboardAvoidingView
-      // これ動かねーな。
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={120}
-      style={{ flex: 1, backgroundColor: 'black' }}
-      // keyboardVerticalOffset={Platform.select({
-      //   ios: Header.HEIGHT, // iOS
-      //   android:Header.HEIGHT + StatusBar.currentHeight, // android
-      // })}
-    >
-      <ScrollView>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View>
-            <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                  marginBottom: 10,
-                }}
-              >
-                {formData.postType.value === 'normal' ? 'Normal Post' : 'Moment Post'}
-              </Text>
-              <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-                Please select at most 6 {renderContentType()}.
-              </Text>
-              {formData.postType.value === 'moment' ? (
-                <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-                  Your moment post will disappear within{'\n'}
-                  <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
-                    {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
-                  </Text>
-                </Text>
-              ) : null}
-            </View>
-            {formData.contents.value.length >= 6 ? null : (
-              <TouchableOpacity
-                style={{
-                  padding: 15,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 15,
-                }}
-                onPress={() => pickUpContents()}
-                activeOpacity={1}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
-                  <View>
-                    <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
-                  </View>
-                </View>
-                <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
-              </TouchableOpacity>
-            )}
-            {renderContents()}
-            <TextInput
+    // <KeyboardAvoidingView
+    //   // これ動かねーな。
+    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    //   keyboardVerticalOffset={120}
+    //   style={{ flex: 1, backgroundColor: 'black' }}
+    //   // keyboardVerticalOffset={Platform.select({
+    //   //   ios: Header.HEIGHT, // iOS
+    //   //   android:Header.HEIGHT + StatusBar.currentHeight, // android
+    //   // })}
+    // >
+    <ScrollView style={{ flex: 1, backgroundColor: 'black' }} automaticallyAdjustKeyboardInsets={true}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
+            <Text
               style={{
-                // backgroundColor: 'rgb(88, 88, 88)',
-                padding: 10,
-                // borderRadius: 5,
-                marginBottom: 20,
                 color: 'white',
-                borderBottomColor: 'rgb(88, 88, 88)',
-                borderBottomWidth: 1,
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 20,
+                marginBottom: 10,
               }}
-              placeholder='Add caption...'
-              placeholderTextColor={'rgb(170,170,170)'}
-              autoCapitalize='none'
-              value={formData.caption.value}
-              onChangeText={(text) => onCaptionChange(text)}
-            />
+            >
+              {formData.postType.value === 'normal' ? 'Normal Post' : 'Moment Post'}
+            </Text>
+            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+              Please select at most 6 {renderContentType()}.
+            </Text>
+            {formData.postType.value === 'moment' ? (
+              <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+                Your moment post will disappear within{'\n'}
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
+                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
+                </Text>
+              </Text>
+            ) : null}
           </View>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+          {formData.contents.value.length >= 6 ? null : (
+            <TouchableOpacity
+              style={{
+                padding: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: 15,
+              }}
+              onPress={() => pickUpContents()}
+              activeOpacity={1}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
+                </View>
+              </View>
+              <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+            </TouchableOpacity>
+          )}
+          {renderContents()}
+          <TextInput
+            style={{
+              // backgroundColor: 'rgb(88, 88, 88)',
+              padding: 10,
+              // borderRadius: 5,
+              marginBottom: 20,
+              color: 'white',
+              borderBottomColor: 'rgb(88, 88, 88)',
+              borderBottomWidth: 1,
+            }}
+            placeholder='Add caption...'
+            placeholderTextColor={'rgb(170,170,170)'}
+            autoCapitalize='none'
+            value={formData.caption.value}
+            onChangeText={(text) => onCaptionChange(text)}
+          />
+        </View>
+      </TouchableWithoutFeedback>
       <SnackBar.Primary />
-    </KeyboardAvoidingView>
+    </ScrollView>
+    // </KeyboardAvoidingView>
   );
 };
 

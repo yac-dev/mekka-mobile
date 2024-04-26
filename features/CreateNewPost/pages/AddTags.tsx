@@ -6,13 +6,17 @@ import { AntDesign } from '@expo/vector-icons';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
-import { CreateNewPostContext } from '../contexts';
+import { CreateNewPostContext, TagOptionType } from '../contexts';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../../../providers';
 import { TagType } from '../../../types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CreateNewPostStackParams } from '../../../navigations/CreateNewPostStackNavigator';
 
-const AddTags = (props) => {
+type IAddTags = NativeStackScreenProps<CreateNewPostStackParams, 'AddTags'>;
+
+const AddTags: React.FC<IAddTags> = ({ route }) => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const { currentSpace } = useContext(CurrentSpaceContext);
   const {
@@ -24,39 +28,59 @@ const AddTags = (props) => {
     // dummyCreatedTagId,
     // setDummyCreatedTagId,
     formData,
-    onChangeAddedTags,
+    tagOptions,
+    addTag,
+    removeAddedTag,
+    addCreatedTag,
+    // やっぱ、addとremoveを分けた方がいいのか、あと、tag options用のstate を持っておく方が良さそうだわ。。。
   } = useContext(CreateNewPostContext);
 
-  // useEffect(() => {
-  //   if (props.route?.params?.createdTag) {
-  //     setCreateNewPostFormData((previous) => {
-  //       // [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
-  //       const updating = { ...previous.addedTags };
-  //       updating[props.route?.params?.createdTag._id] = props.route?.params?.createdTag;
-  //       return {
-  //         ...previous,
-  //         addedTags: updating,
-  //       };
-  //     });
-  //     // setAddedTags((previous) => {
-  //     //   return {
-  //     //     ...previous,
-  //     //     [props.route?.params?.createdTag._id]: props.route?.params?.createdTag,
-  //     //   };
-  //     // });
-  //     setTagOptions((previous) => {
-  //       const updating = [...previous];
-  //       updating.unshift(props.route?.params?.createdTag);
-  //       return updating;
-  //     });
-  //   }
-  // }, [props.route?.params?.createdTag]);
+  useEffect(() => {
+    if (route?.params?.createdTag) {
+      addCreatedTag(route.params.createdTag);
+    }
+  }, [route?.params?.createdTag]);
+
+  useEffect(() => {
+    createNewPostStackNavigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => createNewPostStackNavigation.navigate('AddLocation')}
+          disabled={formData.addedTagsTable.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color: formData.addedTagsTable.isValidated ? 'white' : 'rgb(100,100,100)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData.addedTagsTable]);
 
   const renderTagOptions = () => {
     // if (Object.values(tagOptions).length) {
-    const list = currentSpace.tags.map((tag: TagType, index: number) => {
+    const list = tagOptions.map((tag: TagOptionType, index: number) => {
+      console.log('current table', formData.addedTagsTable.value);
+
       return (
-        <TouchableWithoutFeedback key={index} onPress={() => onChangeAddedTags(tag)}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          key={index}
+          onPress={() => {
+            if (formData.addedTagsTable.value[tag._id]) {
+              removeAddedTag(tag);
+            } else {
+              addTag(tag);
+            }
+            // addTag(tag);
+          }}
+        >
           <View
             style={{
               flexDirection: 'row',
@@ -78,7 +102,7 @@ const AddTags = (props) => {
               tintColor={tag.icon ? tag.color : null}
             />
             <Text style={{ color: 'white' }}>{tag.name}</Text>
-            {formData.addedTags.value[tag._id] ? (
+            {formData.addedTagsTable.value[tag._id] ? (
               <View
                 style={{
                   position: 'absolute',
@@ -107,7 +131,7 @@ const AddTags = (props) => {
               </View>
             ) : null}
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       );
     });
 

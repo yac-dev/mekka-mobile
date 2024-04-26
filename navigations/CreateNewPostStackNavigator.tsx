@@ -24,11 +24,14 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CreateNewPostProvider } from '../features/CreateNewPost/contexts';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
+import { CreatedTagType } from '../features/CreateNewPost/contexts';
 
-type CreateNewPostStackParams = {
+export type CreateNewPostStackParams = {
   SelectPostType: undefined;
   NormalPost: undefined;
-  AddTags: undefined;
+  AddTags?: {
+    createdTag: CreatedTagType;
+  };
   AddLocation: undefined;
   MomentPost: undefined;
   CreateNewTag: undefined;

@@ -1,29 +1,63 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { removeEmojis } from '../utils/removeEmoji';
-import MapView, { Marker } from 'react-native-maps';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
+import MapView, { Marker, MapPressEvent } from 'react-native-maps';
+import { CreateNewPostContext } from '../contexts';
 import { Image as ExpoImage } from 'expo-image';
-import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { SpaceRootStackNavigatorProp } from '../../../navigations';
+import { CreatePostInputType } from '../types';
+import { AuthContext, CurrentSpaceContext } from '../../../providers';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
-const AddLocation = (props) => {
-  const { createNewPostFormData, setCreateNewPostFormData } = useContext(SpaceRootContext);
+const AddLocation = () => {
+  const { formData, addLocation, removeLocation } = useContext(CreateNewPostContext);
+  const { requestCreatePost } = useContext(SpaceRootContext);
+  const { currentSpace } = useContext(CurrentSpaceContext);
+  const { auth } = useContext(AuthContext);
+  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   const mapRef = useRef(null);
-  const onMapPress = (event) => {
-    event.persist();
-    console.log(event.nativeEvent.coordinate);
-    setCreateNewPostFormData((previous) => {
-      return {
-        ...previous,
-        location: {
-          type: 'Point',
-          coordinates: [event.nativeEvent.coordinate.longitude, event.nativeEvent.coordinate.latitude],
-        },
-      };
+
+  const onPostPress = () => {
+    spaceRootStackNavigation.navigate('TagsTopTabNavigator');
+    const input: CreatePostInputType = {
+      ...formData,
+      userId: auth._id,
+      spaceId: currentSpace._id,
+      reactions: currentSpace.reactions,
+      disappearAfter: currentSpace.disappearAfter.toString(),
+    };
+    requestCreatePost(input);
+  };
+
+  useEffect(() => {
+    createNewPostStackNavigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          // onPress={() => onPostPress()}
+          disabled={formData.location.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color: formData.location.isValidated ? 'white' : 'rgb(100,100,100)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Post
+          </Text>
+        </TouchableOpacity>
+      ),
     });
+  }, [formData.location]);
+
+  const onMapPress = (event: MapPressEvent) => {
+    event.persist();
+    const coordinates: number[] = [event.nativeEvent.coordinate.longitude, event.nativeEvent.coordinate.latitude];
+    addLocation(coordinates);
   };
 
   return (
@@ -53,28 +87,21 @@ const AddLocation = (props) => {
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
-          // latitudeDelta: 0.0922,
-          // longitudeDelta: 0.0421,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
         }}
         showsCompass={true}
         scrollEnabled={true}
         zoomEnabled={true}
         pitchEnabled={false}
-        onLongPress={() => {
-          setCreateNewPostFormData((previous) => {
-            return {
-              ...previous,
-              location: null,
-            };
-          });
-        }}
+        onLongPress={() => removeLocation()}
       >
-        {createNewPostFormData.location ? (
+        {formData.location.value ? (
           <Marker
             tracksViewChanges={false}
             coordinate={{
-              latitude: createNewPostFormData.location.coordinates[1],
-              longitude: createNewPostFormData.location.coordinates[0],
+              latitude: formData.location.value.coordinates[1],
+              longitude: formData.location.value.coordinates[0],
             }}
           >
             <ExpoImage

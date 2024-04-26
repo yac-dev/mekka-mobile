@@ -2,6 +2,8 @@ import React, { useState, createContext, useEffect } from 'react';
 import { SpaceType, TagType, ApiStatusType, PostType, ApiResultType } from '../../../types';
 import { useGetTags } from '../hooks';
 import { GetTagsOutputType } from '../types';
+import { useCreatePost } from '../../CreateNewPost/hooks';
+import { CreatePostInputType, CreatePostOutputType } from '../../CreateNewPost/types';
 
 type SpaceRootContextType = {
   space: SpaceType;
@@ -9,7 +11,8 @@ type SpaceRootContextType = {
   setViewPostsType: React.Dispatch<React.SetStateAction<ViewPostsType>>;
   screenLoaded: boolean;
   setScreenLoaded: React.Dispatch<React.SetStateAction<boolean>>;
-  // getTagsResult: ApiResultType<GetTagsOutputType>;
+  createPostResult: ApiResultType<CreatePostOutputType>;
+  requestCreatePost: (input: CreatePostInputType) => void;
   currentPost: PostType;
   setCurrentPost: React.Dispatch<React.SetStateAction<PostType>>;
 };
@@ -20,6 +23,12 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
   setViewPostsType: () => {},
   screenLoaded: false,
   setScreenLoaded: () => {},
+  createPostResult: {
+    status: 'idling',
+    data: void 0,
+    message: '',
+  },
+  requestCreatePost: () => {},
   // getTagsResult: {
   //   status: 'idling',
   //   data: void 0,
@@ -38,6 +47,7 @@ type SpaceRootProviderType = {
 
 export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, space }) => {
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
+  const { apiResult: createPostResult, requestApi: requestCreatePost } = useCreatePost();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
   const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
@@ -54,6 +64,8 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, s
         setViewPostsType,
         screenLoaded,
         setScreenLoaded,
+        createPostResult,
+        requestCreatePost,
         // getTagsResult,
         currentPost,
         setCurrentPost,
