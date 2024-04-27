@@ -5,21 +5,23 @@ import backendAPI from '../../../apis/backend';
 import { AuthContext, SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
 import { useLoadingSpinner } from '../../../hooks';
+import { HomeStackNavigatorProps } from '../../../navigations';
+import { useNavigation } from '@react-navigation/native';
 
-const Form = (props) => {
+export const EnterPrivateSpace = () => {
   const { auth } = useContext(AuthContext);
-  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const { setSnackBar } = useContext(SnackBarContext);
-  const {
-    setSpaceAndUserRelationships,
-    spaceAndUserRelationships,
-    setUpdatesTable,
-    setCurrentSpaceAndUserRelationship,
-  } = useContext(GlobalContext);
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  // const {
+  //   setSpaceAndUserRelationships,
+  //   spaceAndUserRelationships,
+  //   setUpdatesTable,
+  //   setCurrentSpaceAndUserRelationship,
+  // } = useContext(GlobalContext);
   const [secretKey, setSecretKey] = useState('');
 
   useEffect(() => {
-    props.navigation.setOptions({
+    homeStackNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPress={() => onDonePress()} disabled={secretKey.length ? false : true}>
           <Text
@@ -36,29 +38,29 @@ const Form = (props) => {
     });
   }, [secretKey]);
 
-  const onDonePress = async () => {
-    // ここでsecretKeyを全部大文字にするようにする。
-    const payload = {
-      userId: auth._id,
-      secretKey: secretKey.toUpperCase(),
-    };
-    showLoadingSpinner();
-    const result = await backendAPI.post('/spaces/private', payload);
-    const { spaceAndUserRelationship } = result.data;
-    setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
-    if (!spaceAndUserRelationships.length) {
-      setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
-    }
-    setUpdatesTable((previous) => {
-      return {
-        ...previous,
-        [spaceAndUserRelationship.space._id]: {},
-      };
-    });
-    hideLoadingSpinner();
-    setSnackBar({ isVisible: true, message: 'Joined private space successfully.', status: 'success', duration: 5000 });
-    props.navigation?.navigate('SpacesDrawerNavigator');
-  };
+  // const onDonePress = async () => {
+  //   // ここでsecretKeyを全部大文字にするようにする。
+  //   const payload = {
+  //     userId: auth._id,
+  //     secretKey: secretKey.toUpperCase(),
+  //   };
+  //   showLoadingSpinner();
+  //   const result = await backendAPI.post('/spaces/private', payload);
+  //   const { spaceAndUserRelationship } = result.data;
+  //   setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
+  //   if (!spaceAndUserRelationships.length) {
+  //     setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
+  //   }
+  //   setUpdatesTable((previous) => {
+  //     return {
+  //       ...previous,
+  //       [spaceAndUserRelationship.space._id]: {},
+  //     };
+  //   });
+  //   hideLoadingSpinner();
+  //   setSnackBar({ isVisible: true, message: 'Joined private space successfully.', status: 'success', duration: 5000 });
+  //   props.navigation?.navigate('SpacesDrawerNavigator');
+  // };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
@@ -78,20 +80,6 @@ const Form = (props) => {
           Already have a private key? Copy and paste it down below.
         </Text>
       </View>
-      {/* <TextInput
-        placeholder='e.g) CP3W2LFMD9EIF6RNZL47'
-        placeholderTextColor={'rgb(170,170,170)'}
-        style={{
-          backgroundColor: 'rgb(80,80,80)',
-          height: 50,
-          padding: 10,
-          color: 'white',
-          borderRadius: 10,
-        }}
-        autoCapitalize='characters'
-        value={secretKey}
-        onChangeText={(text) => setSecretKey(text)}
-      /> */}
       <View
         style={{
           flexDirection: 'row',
@@ -107,7 +95,6 @@ const Form = (props) => {
           placeholder='e.g.) CP3W2LFMD9EIF6RNZL47'
           placeholderTextColor={'rgb(170,170,170)'}
           style={{
-            // backgroundColor: 'rgb(80,80,80)',
             height: 50,
             padding: 10,
             flex: 1,
@@ -125,5 +112,3 @@ const Form = (props) => {
     </View>
   );
 };
-
-export default Form;

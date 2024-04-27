@@ -50,6 +50,7 @@ export const Members = () => {
 
   return (
     <View>
+      <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 23, marginBottom: 10 }}>Members</Text>
       <View style={{ flexDirection: 'row' }}>
         <View style={{ alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
           <AppButton.Icon

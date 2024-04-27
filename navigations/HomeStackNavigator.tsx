@@ -10,7 +10,7 @@ import WriteDescription from '../features/CreateNewSpace/pages/WriteDescription'
 import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
 import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import SecretKeyForm from '../features/SecretKey/pages/Form';
+import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import Comments from '../features/ViewPost/pages/Comments';
@@ -71,7 +71,7 @@ export type HomeStackParams = {
   ProfileStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
   EditTag: undefined;
-  SecretKeyForm: undefined;
+  EnterPrivateSpace: undefined;
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;
   EULA: undefined;
@@ -238,8 +238,8 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
           <HomeStack.Screen
-            name='SecretKeyForm'
-            component={SecretKeyForm}
+            name='EnterPrivateSpace'
+            component={EnterPrivateSpace}
             options={({ navigation }) => ({
               headerShown: true,
               headerLeft: () => (

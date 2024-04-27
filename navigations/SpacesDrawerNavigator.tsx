@@ -360,7 +360,7 @@ export const SpacesDrawerNavigator = (props) => {
 
   const onEnterPrivateKeyPress = () => {
     closeAddNewSpaceMenuBottomSheet();
-    homeStackNavigation.navigate('SecretKeyForm');
+    homeStackNavigation.navigate('EnterPrivateSpace');
   };
 
   const onDiscoverPress = () => {

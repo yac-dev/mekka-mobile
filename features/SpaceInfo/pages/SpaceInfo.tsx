@@ -29,7 +29,7 @@ export const SpaceInfo = () => {
   };
 
   const onTextLayout = useCallback((e) => {
-    setLengthMore(e.nativeEvent.lines.length >= 3);
+    setLengthMore(e.nativeEvent.lines.length >= 2);
     // console.log(e.nativeEvent);
   }, []);
 
@@ -92,7 +92,7 @@ export const SpaceInfo = () => {
         <View style={{ marginBottom: 10 }}>
           <Text
             onTextLayout={onTextLayout}
-            numberOfLines={textShown ? undefined : 3}
+            numberOfLines={textShown ? undefined : 2}
             style={{ lineHeight: 21, color: 'white' }}
           >
             {currentSpace.description}
