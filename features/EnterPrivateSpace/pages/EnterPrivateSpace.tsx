@@ -1,29 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
-import backendAPI from '../../../apis/backend';
-import { AuthContext, SnackBarContext } from '../../../providers';
+import { AuthContext, MySpacesContext, SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
-import { useLoadingSpinner } from '../../../hooks';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import { useNavigation } from '@react-navigation/native';
+import { useEnterPrivateSpace } from '../hooks';
 
 export const EnterPrivateSpace = () => {
   const { auth } = useContext(AuthContext);
+  const { setMySpaces } = useContext(MySpacesContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { apiResult, requestApi } = useEnterPrivateSpace();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  // const {
-  //   setSpaceAndUserRelationships,
-  //   spaceAndUserRelationships,
-  //   setUpdatesTable,
-  //   setCurrentSpaceAndUserRelationship,
-  // } = useContext(GlobalContext);
   const [secretKey, setSecretKey] = useState('');
 
   useEffect(() => {
     homeStackNavigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => onDonePress()} disabled={secretKey.length ? false : true}>
+        <TouchableOpacity
+          onPress={() => requestApi({ userId: auth._id, secretKey: secretKey.toLocaleUpperCase() })}
+          disabled={secretKey.length ? false : true}
+        >
           <Text
             style={{
               color: secretKey.length ? 'white' : 'rgb(90,90,90)',
@@ -37,6 +34,13 @@ export const EnterPrivateSpace = () => {
       ),
     });
   }, [secretKey]);
+
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      setMySpaces((previous) => [...previous, apiResult.data?.space]);
+      homeStackNavigation.goBack();
+    }
+  }, [apiResult.status]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
@@ -84,7 +88,7 @@ export const EnterPrivateSpace = () => {
         />
       </View>
       <SnackBar.Primary />
-      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' />
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now' />
     </View>
   );
 };
