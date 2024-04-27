@@ -89,7 +89,7 @@ export const SpaceInfo = () => {
         </AppButton.Icon>
       </View>
       <ScrollView style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
-        <View style={{ marginBottom: 20 }}>
+        <View style={{ marginBottom: 10 }}>
           <Text
             onTextLayout={onTextLayout}
             numberOfLines={textShown ? undefined : 3}

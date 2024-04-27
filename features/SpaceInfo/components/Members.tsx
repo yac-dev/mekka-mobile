@@ -23,15 +23,15 @@ export const Members = () => {
         <AppButton.Icon
           onButtonPress={() => console.log('invite button')}
           customStyle={{
-            width: 50,
-            height: 50,
+            width: 60,
+            height: 60,
             backgroundColor: null,
-            borderRadius: 25,
+            borderRadius: 30,
             marginBottom: 5,
           }}
           hasShadow={false}
         >
-          <ExpoImage style={{ width: 30, aspectRatio: 1 }} source={{ uri: item.avatar }} contentFit='contain' />
+          <ExpoImage style={{ width: 40, aspectRatio: 1 }} source={{ uri: item.avatar }} contentFit='contain' />
         </AppButton.Icon>
         <Text numberOfLines={1} style={{ color: 'white' }}>
           {item.name}
@@ -42,7 +42,7 @@ export const Members = () => {
 
   if (apiResult.status === 'loading') {
     return (
-      <View style={{ height: 50, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator />
       </View>
     );
@@ -55,15 +55,15 @@ export const Members = () => {
           <AppButton.Icon
             onButtonPress={() => console.log('invite button')}
             customStyle={{
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
               backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 25,
+              borderRadius: 30,
               marginBottom: 5,
             }}
             hasShadow={false}
           >
-            <VectorIcon.II name='person-add' size={20} color={Colors.white} />
+            <VectorIcon.II name='person-add' size={25} color={Colors.white} />
           </AppButton.Icon>
           <Text style={{ color: 'white' }}>Invite</Text>
         </View>
