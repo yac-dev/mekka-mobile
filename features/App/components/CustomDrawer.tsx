@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../../../themes';
+import { SpaceRootStackNavigatorProp } from '../../../navigations/SpaceRootStackNavigator';
 
 // このnavigationって、Homeのnavigationを受け継ぎ同時にSpacesDrawerのscreenに対するdrawerのnavigationも持っているのか。。。
 // まあここはよくわからん。。。
@@ -32,6 +33,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   closeAddNewSpaceMenuBottomSheet,
 }) => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { auth } = useContext(AuthContext);
   const { mySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
@@ -229,6 +231,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           <TouchableOpacity
             activeOpacity={0.5}
             style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}
+            onPress={() => spaceRootStackNavigation.navigate('SpaceInfoStackNavigator')}
           >
             <ExpoImage
               style={{ width: 80, height: 80, borderRadius: 40, marginRight: 20 }}

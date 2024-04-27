@@ -34,6 +34,7 @@ import { AppButton } from '../components';
 import * as Haptics from 'expo-haptics';
 import { Colors } from '../themes/colors';
 import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
+import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 
 // こうやって書くと、nestedな形がよく分かっていいね
 
@@ -45,6 +46,7 @@ export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootSta
 export type SpaceRootStackParams = {
   TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
+  SpaceInfoStackNavigator: undefined;
 };
 
 type SpaceTopTabNavigatorParams = {
@@ -253,6 +255,23 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
           <SpaceRootStack.Screen
             name='CreateNewPostStackNavigator'
             component={CreateNewPostStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: Colors.white,
+              },
+            })}
+          />
+        </SpaceRootStack.Group>
+        <SpaceRootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <SpaceRootStack.Screen
+            name='SpaceInfoStackNavigator'
+            component={SpaceInfoStackNavigator}
             options={({ navigation }) => ({
               headerShown: false,
               headerTitle: '',

@@ -13,11 +13,9 @@ type SpaceInfoStackParams = {
 export type SpaceInfoStackNavigatorProps = NativeStackNavigationProp<SpaceInfoStackParams>;
 const SpaceInfoStack = createNativeStackNavigator();
 
-export const SpaceInfoStackNavigator: React.FC<NativeStackScreenProps<HomeStackParams, 'SpaceInfoStackNavigator'>> = ({
-  route,
-}) => {
-  const { space } = route.params;
+// : React.FC<NativeStackScreenProps<HomeStackParams, 'SpaceInfoStackNavigator'>>
 
+export const SpaceInfoStackNavigator = () => {
   return (
     <SpaceInfoStack.Navigator>
       <SpaceInfoStack.Screen
@@ -39,7 +37,7 @@ export const SpaceInfoStackNavigator: React.FC<NativeStackScreenProps<HomeStackP
           },
         })}
       >
-        {(props) => <SpaceInfo space={space} {...props} />}
+        {(props) => <SpaceInfo />}
       </SpaceInfoStack.Screen>
     </SpaceInfoStack.Navigator>
   );
