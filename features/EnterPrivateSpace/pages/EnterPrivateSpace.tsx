@@ -38,30 +38,6 @@ export const EnterPrivateSpace = () => {
     });
   }, [secretKey]);
 
-  // const onDonePress = async () => {
-  //   // ここでsecretKeyを全部大文字にするようにする。
-  //   const payload = {
-  //     userId: auth._id,
-  //     secretKey: secretKey.toUpperCase(),
-  //   };
-  //   showLoadingSpinner();
-  //   const result = await backendAPI.post('/spaces/private', payload);
-  //   const { spaceAndUserRelationship } = result.data;
-  //   setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
-  //   if (!spaceAndUserRelationships.length) {
-  //     setCurrentSpaceAndUserRelationship(spaceAndUserRelationship);
-  //   }
-  //   setUpdatesTable((previous) => {
-  //     return {
-  //       ...previous,
-  //       [spaceAndUserRelationship.space._id]: {},
-  //     };
-  //   });
-  //   hideLoadingSpinner();
-  //   setSnackBar({ isVisible: true, message: 'Joined private space successfully.', status: 'success', duration: 5000 });
-  //   props.navigation?.navigate('SpacesDrawerNavigator');
-  // };
-
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>

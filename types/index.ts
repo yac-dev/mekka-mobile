@@ -86,7 +86,7 @@ export type ApiStatusType = 'idling' | 'loading' | 'success' | 'fail' | 'error' 
 export type ApiResultType<T> = {
   status: ApiStatusType;
   data?: T;
-  message: '';
+  message: string;
 };
 
 export type LoadingType = boolean;
