@@ -211,7 +211,21 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               );
             })}
           </ScrollView>
-          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'red' }}>
+          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+            {/* 基本、自分のpost向けのcommentやreactionの通知をここで出すようにしたい。 */}
+            {/* <AppButton.Icon
+              onButtonPress={() => openAuthMenuBottomSheet(0)}
+              customStyle={{
+                width: 45,
+                aspectRatio: 1,
+                backgroundColor: 'rgb(50,50,50)',
+                position: 'absolute',
+                bottom: 60,
+              }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='notifications-sharp' size={20} color={Colors.white} />
+            </AppButton.Icon> */}
             <AppButton.Icon
               onButtonPress={() => openAuthMenuBottomSheet(0)}
               customStyle={{
@@ -242,33 +256,12 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
                 {currentSpace.name}
               </Text>
-              <View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
-                  <VectorIcon.II name='images' size={13} color='rgb(150,150,150)' style={{ marginRight: 10 }} />
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{currentSpace.contentType}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
-                  <VectorIcon.II
-                    name='play-circle-sharp'
-                    size={13}
-                    color={'rgb(150,150,150)'}
-                    style={{ marginRight: 10 }}
-                  />
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{currentSpace.videoLength} seconds</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <ExpoImage
-                    style={{ width: 13, height: 13, marginRight: 10 }}
-                    source={require('../../../assets/forApp/ghost.png')}
-                    contentFit='contain'
-                    tintColor={'rgb(150,150,150)'}
-                  />
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{currentSpace.videoLength} seconds</Text>
-                </View>
-              </View>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>
+                {currentSpace.isPublic ? 'Public' : 'Private'}
+              </Text>
             </View>
           </TouchableOpacity>
-          {/* <View
+          <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -303,9 +296,14 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                 }}
                 hasShadow={false}
               >
-                <VectorIcon.FT name='activity' size={20} color={Colors.white} />
+                <ExpoImage
+                  style={{ width: 20, aspectRatio: 1 }}
+                  source={require('../../../assets/forApp/ghost.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
               </AppButton.Icon>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Activities</Text>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Moments</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
@@ -318,11 +316,16 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                 }}
                 hasShadow={false}
               >
-                <VectorIcon.II name='search' size={20} color={Colors.white} />
+                <ExpoImage
+                  style={{ width: 20, aspectRatio: 1 }}
+                  source={require('../../../assets/forApp/film-roll.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
               </AppButton.Icon>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Search</Text>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Rolls</Text>
             </View>
-          </View> */}
+          </View>
           <ScrollView>
             {currentSpace.tags.map((tag, index) => {
               const isFocused = currentTag?._id === tag._id;
@@ -332,7 +335,8 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                   activeOpacity={0.5}
                   style={{
                     paddingVertical: 5,
-                    paddingHorizontal: 5,
+                    paddingLeft: 10,
+                    paddingRight: 5,
                     // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
                   }}
                   onPress={() => {
