@@ -20,6 +20,7 @@ export const SpaceInfoStackNavigator = () => {
     <SpaceInfoStack.Navigator>
       <SpaceInfoStack.Screen
         name='SpaceInfo'
+        component={SpaceInfo}
         options={({ navigation }) => ({
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -36,9 +37,7 @@ export const SpaceInfoStackNavigator = () => {
             color: Colors.white,
           },
         })}
-      >
-        {(props) => <SpaceInfo />}
-      </SpaceInfoStack.Screen>
+      />
     </SpaceInfoStack.Navigator>
   );
 };

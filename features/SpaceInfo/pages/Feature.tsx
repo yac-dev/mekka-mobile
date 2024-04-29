@@ -6,15 +6,23 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { ReactionType, SpaceType } from '../../../types';
+import { CurrentSpaceContext } from '../../../providers';
 
-type FeatureProps = {
-  space: SpaceType;
-};
+type FeatureProps = {};
 
-const Feature: React.FC<FeatureProps> = ({ space }) => {
-  const [textShown, setTextShown] = useState(false);
+const Feature: React.FC<FeatureProps> = () => {
+  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [textShown, setTextShown] = useState<boolean>(false);
   const [lengthMore, setLengthMore] = useState(false);
 
+  const toggleNumberOfLines = () => {
+    setTextShown(!textShown);
+  };
+
+  const onTextLayout = useCallback((e) => {
+    setLengthMore(e.nativeEvent.lines.length >= 2);
+    // console.log(e.nativeEvent);
+  }, []);
   const renderDate = (date) => {
     const d = new Date(date).toLocaleDateString('en-US', {
       month: 'short',
@@ -24,15 +32,6 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
     });
     return <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'rgb(170, 170, 170)' }}>{d}</Text>;
   };
-
-  const toggleNumberOfLines = () => {
-    setTextShown(!textShown);
-  };
-
-  const onTextLayout = useCallback((e) => {
-    setLengthMore(e.nativeEvent.lines.length >= 3);
-    // console.log(e.nativeEvent);
-  }, []);
 
   const renderReactions = (space: SpaceType) => {
     if (space.isReactionAvailable) {
@@ -86,6 +85,23 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
     <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)', paddingTop: 10 }}>
       <ScrollView>
         <View>
+          <View style={{ paddingBottom: 10, paddingHorizontal: 10 }}>
+            <Text
+              onTextLayout={onTextLayout}
+              numberOfLines={textShown ? undefined : 2}
+              style={{ lineHeight: 21, color: 'white' }}
+            >
+              {currentSpace.description}
+            </Text>
+            {lengthMore ? (
+              <Text
+                onPress={toggleNumberOfLines}
+                style={{ lineHeight: 21, marginTop: 10, color: 'rgb(170,170,170)', alignSelf: 'flex-end' }}
+              >
+                {textShown ? 'Read less...' : 'Read more...'}
+              </Text>
+            ) : null}
+          </View>
           <View
             style={{
               paddingVertical: 10,
@@ -100,16 +116,16 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
               <View>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Media type</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {space.contentType === 'photo'
+                  {currentSpace.contentType === 'photo'
                     ? 'Photos'
-                    : space.contentType === 'video'
+                    : currentSpace.contentType === 'video'
                     ? 'Videos'
                     : 'Photos and Videos'}
                 </Text>
               </View>
             </View>
           </View>
-          {space.videoLength ? (
+          {currentSpace.videoLength ? (
             <View
               style={{
                 paddingVertical: 10,
@@ -123,7 +139,7 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
                 <Ionicons name='play-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
                 <View>
                   <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Video length</Text>
-                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>{space.videoLength} seconds</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>{currentSpace.videoLength} seconds</Text>
                 </View>
               </View>
             </View>
@@ -145,7 +161,7 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
                 {/* <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
                     {spaceAndUserRelationship.space.videoLength} seconds
                   </Text> */}
-                {renderReactions(space)}
+                {renderReactions(currentSpace)}
               </View>
             </View>
           </View>
@@ -164,7 +180,7 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
               <View>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Comment</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {space.isCommentAvailable ? 'Available' : 'Turned off'}
+                  {currentSpace.isCommentAvailable ? 'Available' : 'Turned off'}
                 </Text>
               </View>
             </View>
@@ -189,7 +205,7 @@ const Feature: React.FC<FeatureProps> = ({ space }) => {
               <View>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Moment</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {convertMinutesToHoursAndMinutes(space.disappearAfter)}
+                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
                 </Text>
               </View>
             </View>

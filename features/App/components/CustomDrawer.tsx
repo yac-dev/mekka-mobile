@@ -276,7 +276,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               marginBottom: 15,
             }}
           >
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
+            {/* <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
                 onButtonPress={() => homeStackNavigation.navigate('MembersStackNavigator')}
                 customStyle={{
@@ -289,8 +289,8 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               >
                 <VectorIcon.MCI name='account-group' size={20} color={Colors.white} />
               </AppButton.Icon>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Members</Text>
-            </View>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>For You</Text>
+            </View> */}
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
                 onButtonPress={() =>

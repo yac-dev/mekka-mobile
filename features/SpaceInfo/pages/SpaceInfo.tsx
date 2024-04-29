@@ -4,7 +4,7 @@ import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import SpaceInfoTopTabNavigator from '../../../navigations/SpaceInfoTopTabNavigator';
+import { SpaceInfoTopTabNavigator } from '../../../navigations/SpaceInfoTopTabNavigator';
 import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,21 +21,10 @@ import { Members } from '../components';
 export const SpaceInfo = () => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const navigation = useNavigation<SpaceInfoStackNavigatorProps>();
-  const [textShown, setTextShown] = useState<boolean>(false);
-  const [lengthMore, setLengthMore] = useState(false);
-
-  const toggleNumberOfLines = () => {
-    setTextShown(!textShown);
-  };
-
-  const onTextLayout = useCallback((e) => {
-    setLengthMore(e.nativeEvent.lines.length >= 2);
-    // console.log(e.nativeEvent);
-  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)' }}>
-      <View style={{ height: 250, width: '100%', marginBottom: 10 }}>
+      <View style={{ height: 150, width: '100%', marginBottom: 10 }}>
         <ExpoImage style={{ width: '100%', height: '100%' }} source={{ uri: currentSpace.icon }} contentFit='cover' />
         {/* これ、下に影入れた方がいいな。 */}
         <LinearGradient
@@ -88,26 +77,7 @@ export const SpaceInfo = () => {
           <VectorIcon.MCI name='exclamation' size={18} color={Colors.white} />
         </AppButton.Icon>
       </View>
-      <ScrollView style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
-        <View style={{ marginBottom: 10 }}>
-          <Text
-            onTextLayout={onTextLayout}
-            numberOfLines={textShown ? undefined : 2}
-            style={{ lineHeight: 21, color: 'white' }}
-          >
-            {currentSpace.description}
-          </Text>
-          {lengthMore ? (
-            <Text
-              onPress={toggleNumberOfLines}
-              style={{ lineHeight: 21, marginTop: 10, color: 'rgb(170,170,170)', alignSelf: 'flex-end' }}
-            >
-              {textShown ? 'Read less...' : 'Read more...'}
-            </Text>
-          ) : null}
-        </View>
-        <Members />
-      </ScrollView>
+      <SpaceInfoTopTabNavigator />
     </View>
   );
 };
