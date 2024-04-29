@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, FlatList, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, FlatList, Platform, Alert } from 'react-native';
 import { AppButton } from '../../../components/Button';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
@@ -83,6 +83,12 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   const onSpaceLongPress = (space: SpaceType) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     homeStackNavigation.navigate('SpaceInfoStackNavigator', { space });
+  };
+
+  const onRollsPress = () => {
+    Alert.alert('Not available now', 'The Rolls feature will be available in the next update.', [
+      { text: 'Got it', onPress: () => null },
+    ]);
   };
 
   return (
@@ -322,7 +328,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
-                onButtonPress={() => navigation.closeDrawer()}
+                onButtonPress={() => onRollsPress()}
                 customStyle={{
                   width: 42,
                   height: 42,
