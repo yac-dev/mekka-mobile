@@ -23,59 +23,24 @@ export const SpaceInfo = () => {
   const navigation = useNavigation<SpaceInfoStackNavigatorProps>();
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)' }}>
-      <View style={{ height: 150, width: '100%', marginBottom: 10 }}>
-        <ExpoImage style={{ width: '100%', height: '100%' }} source={{ uri: currentSpace.icon }} contentFit='cover' />
-        {/* これ、下に影入れた方がいいな。 */}
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.7)']}
-          style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 80 }}
-        />
-        <Text
-          style={{
-            color: 'white',
-            fontWeight: 'bold',
-            fontSize: 25,
-            position: 'absolute',
-            bottom: 10,
-            left: 20,
-            // textShadowColor: 'rgba(0, 0, 0, 0.9)',
-            // textShadowOffset: { width: -3, height: 3 },
-            // textShadowRadius: 10,
-            // 文字影は分からん。。。今は。。。
-          }}
-        >
-          {currentSpace.name}
-        </Text>
-
-        <AppButton.Icon
-          onButtonPress={() => navigation.goBack()}
-          customStyle={{
-            width: 28,
-            height: 28,
-            backgroundColor: 'rgb(50,50,50)',
-            position: 'absolute',
-            top: 10,
-            left: 10,
-          }}
-          hasShadow={true}
-        >
-          <VectorIcon.II name='close' size={18} color={Colors.white} />
-        </AppButton.Icon>
-        <AppButton.Icon
-          onButtonPress={() => navigation.goBack()}
-          customStyle={{
-            width: 28,
-            height: 28,
-            backgroundColor: 'rgb(50,50,50)',
-            position: 'absolute',
-            top: 10,
-            right: 10,
-          }}
-          hasShadow={true}
-        >
-          <VectorIcon.MCI name='exclamation' size={18} color={Colors.white} />
-        </AppButton.Icon>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <ExpoImage
+            style={{ width: 80, height: 80, borderRadius: 40, marginRight: 20 }}
+            source={{ uri: currentSpace.icon }}
+            contentFit='cover'
+          />
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 25,
+            }}
+          >
+            {currentSpace.name}
+          </Text>
+        </View>
       </View>
       <SpaceInfoTopTabNavigator />
     </View>

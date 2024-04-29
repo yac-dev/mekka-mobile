@@ -6,6 +6,8 @@ import { SpaceInfo } from '../features/SpaceInfo/pages/SpaceInfo';
 import { Colors } from '../themes/colors';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackNavigatorProps, HomeStackParams } from './HomeStackNavigator';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons';
 
 type SpaceInfoStackParams = {
   SpaceInfo: undefined;
@@ -23,14 +25,27 @@ export const SpaceInfoStackNavigator = () => {
         component={SpaceInfo}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-            </TouchableOpacity>
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='close' size={18} color={Colors.white} />
+            </AppButton.Icon>
           ),
-          headerShown: false,
+          headerRight: () => (
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='ellipsis-horizontal' size={18} color={Colors.white} />
+            </AppButton.Icon>
+          ),
+          headerShown: true,
           headerTitle: '',
           headerStyle: {
-            backgroundColor: 'rgb(30, 30, 30)',
+            backgroundColor: 'black',
           },
           headerTitleStyle: {
             fontWeight: 'bold',
