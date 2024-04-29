@@ -29,6 +29,7 @@ export const useGetMomentPosts = (): useGetMomentPostsOutputType => {
       setApiResult((previous) => {
         return {
           ...previous,
+          status: 'success',
           data: response,
         };
       });
