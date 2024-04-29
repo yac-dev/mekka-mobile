@@ -1,13 +1,19 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useEffect } from 'react';
 import { View, Text, Dimensions, ActivityIndicator, FlatList } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
-import { MomentsContext } from '../contexts/MomentsContext';
-import MomentThumbnail from '../components/MomentThumbnail';
-import { AppButton } from '../../../components';
+import { AppButton, PostThumbnail } from '../../../components';
 import { VectorIcon } from '../../../Icons';
+import { useGetMomentPosts } from '../hooks/useGetMomentPosts';
+import { CurrentSpaceContext } from '../../../providers';
+import { PostType } from '../../../types';
+import { FlashList } from '@shopify/flash-list';
 
 export const Moments = () => {
-  const oneAssetWidth = Dimensions.get('window').width / 3;
+  const { apiResult, requestApi } = useGetMomentPosts();
+  const { currentSpace } = useContext(CurrentSpaceContext);
+
+  useEffect(() => {
+    requestApi({ spaceId: currentSpace._id, date: new Date() });
+  }, []);
 
   // const loadMoreItem = () => {
   //   if (hasMoreItems) {
@@ -26,35 +32,41 @@ export const Moments = () => {
   //   }
   // };
 
-  // const renderItem = useCallback((moment, index) => {
-  //   return <MomentThumbnail moment={moment} index={index} navigation={props.navigation} />;
-  // }, []);
+  const onPostThumbnailPress = () => {};
 
-  // if (moments.length) {
-  //   return (
-  //     <View style={{ flex: 1, backgroundColor: 'black' }}>
-  //       <FlatList
-  //         style={{ paddingTop: 10 }}
-  //         numColumns={3}
-  //         data={moments}
-  //         renderItem={({ item, index }) => renderItem(item, index)}
-  //         keyExtractor={(item, index) => `${item._id}-${index}`}
-  //         onEndReached={loadMoreItem}
-  //         ListFooterComponent={renderLoader}
-  //         onEndReachedThreshold={0}
-  //       />
-  //     </View>
-  //   );
-  // } else {
-  //   return (
-  //     <View style={{ flex: 1, backgroundColor: 'black' }}>
-  //       <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>There are no moments currentlly...</Text>
-  //     </View>
-  //   );
-  // }
+  const renderItem = ({ item, index }: { item: PostType; index: number }) => {
+    return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPostThumbnailPress} />;
+  };
+
+  if (apiResult.status === 'loading') {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 20 }}>
-      <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 20 }}>Moments</Text>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 20, color: 'white' }}>Moments</Text>
+      {!apiResult.data?.posts.length && (
+        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No Moments</Text>
+      )}
+      {apiResult.data?.posts.length && (
+        <FlashList
+          numColumns={3}
+          data={apiResult.data?.posts}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
+          removeClippedSubviews
+          estimatedItemSize={125}
+          // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
+          // onEndReached={loadMoreItem}
+          // ListFooterComponent={renderLoader}
+          onEndReachedThreshold={0}
+          contentContainerStyle={{ paddingBottom: 30 }}
+        />
+      )}
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => console.log('post moments')}
