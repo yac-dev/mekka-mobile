@@ -38,6 +38,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { MembersStackNavigator } from './MembersStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
+import { MomentsStackNavigator } from './MomentsStackNavigator';
 // import { SpacesDrawerParams } from './SpacesDrawerNavigator';
 
 type TagScreenTopTabNavigatorParams = {
@@ -57,12 +58,14 @@ export type SpaceTopTabNavigatorParams = {
 export type SpaceRootStackParams = {
   TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
+  MomentsStackNavigator: undefined;
 };
 
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
 type SpacesDrawerParams = {
   [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
+  MomentsStackNavigator: undefined;
 };
 
 export type HomeStackParams = {
@@ -70,6 +73,7 @@ export type HomeStackParams = {
   ViewPost: undefined;
   Comments: undefined;
   Discover: undefined;
+  MomentsStackNavigator: undefined;
   ProfileStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
   EditTag: undefined;
@@ -183,6 +187,31 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
+          <HomeStack.Screen
+            name='MomentsStackNavigator'
+            component={MomentsStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: 'Moments',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          {/* moment cre */}
           <HomeStack.Screen
             name='ProfileStackNavigator'
             component={ProfileStackNavigator}

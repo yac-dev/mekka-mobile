@@ -287,7 +287,22 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
-                onButtonPress={() => navigation.closeDrawer()}
+                onButtonPress={() =>
+                  homeStackNavigation.navigate('SpacesDrawerNavigator', {
+                    screen: `Moments_${currentSpace._id}`,
+                    // ここに変化がない限り、toggleしない。実際、確かにここより下はdrawerのnavigatorに登録しているわけではないからね。。。ここをどう克服するか。というか、仕組みが少しわかってきた。
+                    // 逆にでは、そうなら
+                    // params: {
+                    //   screen: 'TagsTopTabNavigator',
+                    //   params: {
+                    //     screen: `Tag_${tag._id}`,
+                    //     params: {
+                    //       screen: 'GridView',
+                    //     },
+                    //   },
+                    // },
+                  })
+                }
                 customStyle={{
                   width: 42,
                   height: 42,

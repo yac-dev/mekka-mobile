@@ -25,7 +25,7 @@ import { useBottomSheet } from '../features/Home/hooks/useBottomSheet';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigatorProps } from '../features/App/pages/Root';
 import { AuthMenu, AddNewSpaceMenu } from '../features';
-import { EditProfileStackNavigatorProps, HomeStackNavigatorProps } from '.';
+import { EditProfileStackNavigatorProps, HomeStackNavigatorProps, MomentsStackNavigator } from '.';
 import { CustomDrawer } from '../features';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 import { CurrentSpaceContext } from '../providers';
@@ -491,67 +491,128 @@ export const SpacesDrawerNavigator = (props) => {
           ) : (
             // ここに登録しているnavigationに変化がない限り、drawerをtoggleしてくれない感じ。。。。
             mySpaces.map((space: SpaceType) => (
-              <Drawer.Screen
-                key={space._id}
-                name={`Space_${space._id}`}
-                initialParams={{ space }}
-                options={({ navigation }) => ({
-                  headerTitle: space.name,
-                  headerTitleStyle: {
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    // padding: 20,
-                  },
-                  // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
-                  headerStyle: {
-                    // padding: 20,
-                    backgroundColor: 'black',
-                  },
+              <>
+                <Drawer.Screen
+                  key={space._id}
+                  name={`Space_${space._id}`}
+                  initialParams={{ space }}
+                  options={({ navigation }) => ({
+                    headerTitle: space.name,
+                    headerTitleStyle: {
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      // padding: 20,
+                    },
+                    // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
+                    headerStyle: {
+                      // padding: 20,
+                      backgroundColor: 'black',
+                    },
 
-                  headerLeft: () => {
-                    return (
-                      <AppButton.Icon
-                        onButtonPress={() => navigation.toggleDrawer()}
-                        customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginLeft: 10 }}
-                        hasShadow={false}
-                      >
-                        <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
-                        {calcurateSumUpdates() ? (
-                          <View
-                            style={{
-                              width: 10,
-                              height: 10,
-                              borderRadius: 5,
-                              backgroundColor: 'red',
-                              position: 'absolute',
-                              top: -3,
-                              right: -3,
-                            }}
-                          >
+                    headerLeft: () => {
+                      return (
+                        <AppButton.Icon
+                          onButtonPress={() => navigation.toggleDrawer()}
+                          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginLeft: 10 }}
+                          hasShadow={false}
+                        >
+                          <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
+                          {calcurateSumUpdates() ? (
                             <View
                               style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: '100%',
-                                height: '100%',
+                                width: 10,
+                                height: 10,
+                                borderRadius: 5,
+                                backgroundColor: 'red',
+                                position: 'absolute',
+                                top: -3,
+                                right: -3,
                               }}
-                            ></View>
-                          </View>
-                        ) : null}
-                      </AppButton.Icon>
-                    );
-                  },
-                })}
-              >
-                {({ navigation, route }) => (
-                  // <TagScreenProvider tag={tag}>
-                  //   <TagScreenStackNavigator />
-                  // </TagScreenProvider>
-                  <SpaceRootProvider space={space}>
-                    <SpaceRootStackNavigator />
-                  </SpaceRootProvider>
-                )}
-              </Drawer.Screen>
+                            >
+                              <View
+                                style={{
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              ></View>
+                            </View>
+                          ) : null}
+                        </AppButton.Icon>
+                      );
+                    },
+                  })}
+                >
+                  {({ navigation, route }) => (
+                    // <TagScreenProvider tag={tag}>
+                    //   <TagScreenStackNavigator />
+                    // </TagScreenProvider>
+                    <SpaceRootProvider space={space}>
+                      <SpaceRootStackNavigator />
+                    </SpaceRootProvider>
+                  )}
+                </Drawer.Screen>
+                <Drawer.Screen
+                  key={space._id}
+                  name={`Moments_${space._id}`}
+                  initialParams={{ space }}
+                  options={({ navigation }) => ({
+                    headerTitle: space.name,
+                    headerTitleStyle: {
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      // padding: 20,
+                    },
+                    // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
+                    headerStyle: {
+                      // padding: 20,
+                      backgroundColor: 'black',
+                    },
+
+                    headerLeft: () => {
+                      return (
+                        <AppButton.Icon
+                          onButtonPress={() => navigation.toggleDrawer()}
+                          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginLeft: 10 }}
+                          hasShadow={false}
+                        >
+                          <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
+                          {calcurateSumUpdates() ? (
+                            <View
+                              style={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: 5,
+                                backgroundColor: 'red',
+                                position: 'absolute',
+                                top: -3,
+                                right: -3,
+                              }}
+                            >
+                              <View
+                                style={{
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              ></View>
+                            </View>
+                          ) : null}
+                        </AppButton.Icon>
+                      );
+                    },
+                  })}
+                >
+                  {({ navigation, route }) => (
+                    // <SpaceRootProvider space={space}>
+                    //   <SpaceRootStackNavigator />
+                    // </SpaceRootProvider>
+                    <MomentsStackNavigator />
+                  )}
+                </Drawer.Screen>
+              </>
             ))
           )}
         </Drawer.Navigator>

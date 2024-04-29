@@ -35,6 +35,7 @@ import * as Haptics from 'expo-haptics';
 import { Colors } from '../themes/colors';
 import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
+import { MomentsStackNavigator } from './MomentsStackNavigator';
 
 // こうやって書くと、nestedな形がよく分かっていいね
 
@@ -46,6 +47,7 @@ export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootSta
 export type SpaceRootStackParams = {
   TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
+  MomentsStackNavigator: undefined;
   SpaceInfoStackNavigator: undefined;
 };
 
