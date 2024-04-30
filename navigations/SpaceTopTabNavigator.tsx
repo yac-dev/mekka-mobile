@@ -298,7 +298,7 @@ export const SpaceTopTabNavigator = () => {
         screenOptions={({ route }) => ({
           lazy: true,
           swipeEnabled: false,
-          animationEnabled: true,
+          animationEnabled: false,
         })}
       >
         {space?.tags.map((tag: TagType, index: number) => (

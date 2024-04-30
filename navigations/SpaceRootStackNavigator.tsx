@@ -21,7 +21,7 @@ import { SpaceBottomTabNavigator } from './SpaceBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
-import { AuthContext, CurrentTagContext } from '../providers';
+import { AuthContext, CurrentSpaceContext, CurrentTagContext, MySpacesContext } from '../providers';
 import { SnackBarContext } from '../providers';
 import { SnackBar } from '../components';
 import { SpaceType } from '../types';
@@ -86,6 +86,8 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   const { setCurrentTag } = useContext(CurrentTagContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
   const { createPostResult, setSpace } = useContext(SpaceRootContext);
+  const { setMySpaces } = useContext(MySpacesContext);
+  const { currentSpace } = useContext(CurrentSpaceContext);
   const {
     isIpad,
     // spaceMenuBottomSheetRef,
@@ -236,9 +238,19 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
           tags: [...previous.tags, ...createPostResult.data?.createdTags],
         };
       });
+
+      // 新しく作ったtagをここに追加する。
+      setMySpaces((previous) => {
+        const updatingSpace = [...previous].map((space) => {
+          if (space._id === currentSpace._id) {
+            space.tags.push(...createPostResult.data?.createdTags);
+          }
+          return space;
+        });
+        return updatingSpace;
+      });
     }
   }, [createPostResult]);
-  // tagに関してはここで追加する。
 
   const onCreateNewPostButtonPress = () => {
     console.log('create new post');
