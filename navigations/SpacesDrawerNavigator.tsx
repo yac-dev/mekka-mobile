@@ -548,7 +548,7 @@ export const SpacesDrawerNavigator = (props) => {
                     // <TagScreenProvider tag={tag}>
                     //   <TagScreenStackNavigator />
                     // </TagScreenProvider>
-                    <SpaceRootProvider space={space}>
+                    <SpaceRootProvider defaultSpace={space}>
                       <SpaceRootStackNavigator />
                     </SpaceRootProvider>
                   )}

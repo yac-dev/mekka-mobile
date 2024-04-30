@@ -11,6 +11,7 @@ type LoadedTagScreenTableType = {
 
 type SpaceRootContextType = {
   space: SpaceType;
+  setSpace: React.Dispatch<React.SetStateAction<SpaceType>>;
   viewPostsType: ViewPostsType;
   setViewPostsType: React.Dispatch<React.SetStateAction<ViewPostsType>>;
   loadedScreenTable: LoadedTagScreenTableType;
@@ -23,6 +24,7 @@ type SpaceRootContextType = {
 
 export const SpaceRootContext = createContext<SpaceRootContextType>({
   space: void 0,
+  setSpace: () => {},
   viewPostsType: 'grid',
   setViewPostsType: () => {},
   loadedScreenTable: {},
@@ -45,15 +47,18 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
 export type ViewPostsType = 'grid' | 'map';
 
 type SpaceRootProviderType = {
-  space: SpaceType;
+  defaultSpace: SpaceType;
   children: React.ReactNode;
 };
 
-export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, space }) => {
+export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, defaultSpace }) => {
+  const [space, setSpace] = useState<SpaceType>(defaultSpace);
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const { apiResult: createPostResult, requestApi: requestCreatePost } = useCreatePost();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
-  const [loadedScreenTable, setLoadedScreenTable] = useState<LoadedTagScreenTableType>({ [space.tags[0]._id]: true });
+  const [loadedScreenTable, setLoadedScreenTable] = useState<LoadedTagScreenTableType>({
+    [defaultSpace.tags[0]._id]: true,
+  });
   // 最初のtagはdefaultで入れる。
   const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
 
@@ -65,6 +70,7 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, s
     <SpaceRootContext.Provider
       value={{
         space,
+        setSpace,
         viewPostsType,
         setViewPostsType,
         loadedScreenTable,

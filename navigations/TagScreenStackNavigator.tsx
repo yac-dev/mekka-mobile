@@ -32,8 +32,8 @@ export type TagScreenStackNavigatorProps = NativeStackNavigationProp<TagScreenSt
 const TagScreenStack = createNativeStackNavigator<TagScreenStackParams>();
 
 export const TagScreenStackNavigator: React.FC = () => {
-  const { tag } = useContext(TagScreenContext);
-  const { setLoadedScreenTable } = useContext(SpaceRootContext);
+  const { tag, addCreatedPost } = useContext(TagScreenContext);
+  const { setLoadedScreenTable, createPostResult, loadedScreenTable } = useContext(SpaceRootContext);
   const { apiResult: getPostsApiResult, requestApi: requestGetPosts } = useGetPosts();
   const { currentTag } = useContext(CurrentTagContext);
   const navigation = useNavigation<SpaceTopTabNavigationProp>();
@@ -68,6 +68,15 @@ export const TagScreenStackNavigator: React.FC = () => {
       navigation.navigate(`Tag_${currentTag._id}`, { screen: 'GridView' });
     }
   }, [currentTag]);
+
+  useEffect(() => {
+    if (createPostResult.status === 'success') {
+      if (loadedScreenTable[tag._id] && createPostResult.data.addedTags.includes(tag._id)) {
+        // これ、多分stringにした方がいいよな。
+        addCreatedPost(createPostResult.data?.post);
+      }
+    }
+  }, [createPostResult.status]);
 
   // tag channelが開かれたかをもっておかないといけないんだよな。だから、Rootの方でstateを持っておかないといかんな。
   return (

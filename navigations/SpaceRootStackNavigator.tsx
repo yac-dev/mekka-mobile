@@ -85,7 +85,7 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const { setCurrentTag } = useContext(CurrentTagContext);
   // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
-
+  const { createPostResult, setSpace } = useContext(SpaceRootContext);
   const {
     isIpad,
     // spaceMenuBottomSheetRef,
@@ -113,12 +113,12 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
 
   // ここが変わってなかったんだよ。。。なんでだろ？？
   // signupした後、spaceを作った後（多分spaceにjoinした後）が動いていない。
-  useEffect(() => {
-    // isCreating状態ならここのcreateを起こすと。
-    if (createNewPostResult.isCreating) {
-      // createPost();
-    }
-  }, [createNewPostResult.isCreating]);
+  // useEffect(() => {
+  //   // isCreating状態ならここのcreateを起こすと。
+  //   if (createNewPostResult.isCreating) {
+  //     // createPost();
+  //   }
+  // }, [createNewPostResult.isCreating]);
 
   // hooksはここでやるよね。。。
   // const createPost = async () => {
@@ -227,6 +227,18 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
   //     console.log(error);
   //   }
   // };
+
+  useEffect(() => {
+    if (createPostResult.status === 'success' && createPostResult.data?.createdTags) {
+      setSpace((previous) => {
+        return {
+          ...previous,
+          tags: [...previous.tags, ...createPostResult.data?.createdTags],
+        };
+      });
+    }
+  }, [createPostResult]);
+  // tagに関してはここで追加する。
 
   const onCreateNewPostButtonPress = () => {
     console.log('create new post');

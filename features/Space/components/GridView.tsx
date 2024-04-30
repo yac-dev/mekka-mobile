@@ -33,14 +33,6 @@ export const GridView: React.FC<GridViewProps> = () => {
   // ここ、currentPage変えればいけるか多分。
   // loadmoreも上から持ってくるとする。
 
-  useEffect(() => {
-    if (createPostResult.status === 'success') {
-      if (loadedScreenTable[tag._id]) {
-        addCreatedPost(createPostResult.data?.post);
-      }
-    }
-  }, [createPostResult.status]);
-
   const renderLoader = () => {
     if (getPostsApiResult.status === 'paging') {
       return (
