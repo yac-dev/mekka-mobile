@@ -5,6 +5,7 @@ import { CurrentSpaceContext } from '../../../providers';
 import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
+import { VectorIcon } from '../../../Icons';
 
 type MembersProps = {
   spaceId: string;
@@ -18,6 +19,15 @@ export const Members: React.FC<MembersProps> = () => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
+  const handleInvite = async () => {
+    Share.share({
+      title: 'Share Mekka',
+      message: `Access here to download Mekka: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
+        currentSpace.secretKey
+      }`,
+    });
+  };
+
   const renderUser = useCallback(({ item }: { item: UserType }) => {
     return (
       <TouchableOpacity
@@ -25,16 +35,19 @@ export const Members: React.FC<MembersProps> = () => {
           flexDirection: 'row',
           alignItems: 'center',
           padding: 15,
-          borderBottomWidth: 0.3,
-          borderBottomColor: 'rgb(90,90,90)',
+          justifyContent: 'space-between',
         }}
+        activeOpacity={0.5}
       >
-        <ExpoImage
-          style={{ width: 25, height: 25, marginRight: 20 }}
-          source={{ uri: item.avatar }}
-          contentFit='contain'
-        />
-        <Text style={{ color: 'white', fontSize: 17 }}>{item.name}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <ExpoImage
+            style={{ width: 30, height: 30, marginRight: 20 }}
+            source={{ uri: item.avatar }}
+            contentFit='contain'
+          />
+          <Text style={{ color: 'white', fontSize: 17 }}>{item.name}</Text>
+        </View>
+        <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
       </TouchableOpacity>
     );
   }, []);
@@ -49,7 +62,29 @@ export const Members: React.FC<MembersProps> = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.black, padding: 10 }}>
-      <FlatList data={apiResult.data?.users} renderItem={renderUser} keyExtractor={(item, index) => `${index}`} />
+      <FlatList
+        data={apiResult.data?.users}
+        renderItem={renderUser}
+        keyExtractor={(item, index) => `${index}`}
+        ListHeaderComponent={
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 15,
+              justifyContent: 'space-between',
+            }}
+            activeOpacity={0.5}
+            onPress={handleInvite}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.MCI name='human-greeting-variant' color='white' size={30} style={{ marginRight: 20 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Invite</Text>
+            </View>
+            <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
+          </TouchableOpacity>
+        }
+      />
     </View>
   );
 };

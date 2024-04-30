@@ -82,7 +82,7 @@ const Feature: React.FC<FeatureProps> = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgb(30, 30, 30)', paddingTop: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       <ScrollView>
         <View>
           <View style={{ paddingBottom: 10, paddingHorizontal: 10 }}>
