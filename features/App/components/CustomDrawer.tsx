@@ -262,9 +262,10 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
                 {currentSpace.name}
               </Text>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginBottom: 3 }}>
                 {currentSpace.isPublic ? 'Public' : 'Private'}
               </Text>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Ads free</Text>
             </View>
           </TouchableOpacity>
           <View

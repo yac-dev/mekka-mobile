@@ -15,7 +15,9 @@ type GridViewProps = {};
 export const GridView: React.FC<GridViewProps> = () => {
   // const { setCurrentPost } = useContext(SpaceRootContext);
   const navigation = useNavigation<TagScreenStackNavigatorProps>();
-  const { getPostsApiResult, setCurrentPost, onCurrentPostIndexChange } = useContext(TagScreenContext);
+  const { getPostsApiResult, setCurrentPost, onCurrentPostIndexChange, tag, addCreatedPost } =
+    useContext(TagScreenContext);
+  const { loadedScreenTable, createPostResult } = useContext(SpaceRootContext);
   // const { apiResult, requestApi, loadMore } = useGetPosts();
   // const [currentPage, setCurrentPage] = useState<number>(0);
 
@@ -30,6 +32,14 @@ export const GridView: React.FC<GridViewProps> = () => {
   // };
   // ここ、currentPage変えればいけるか多分。
   // loadmoreも上から持ってくるとする。
+
+  useEffect(() => {
+    if (createPostResult.status === 'success') {
+      if (loadedScreenTable[tag._id]) {
+        addCreatedPost(createPostResult.data?.post);
+      }
+    }
+  }, [createPostResult.status]);
 
   const renderLoader = () => {
     if (getPostsApiResult.status === 'paging') {

@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useCallback, useRef } from 'rea
 import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../themes';
-import { useGetPosts } from '../features';
+import { TagScreenContext, useGetPosts } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { TagScreenTopTabNavigator } from './TagScreenTopTabNavigator';
 import { TagType } from '../types';
@@ -14,6 +14,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { CurrentTagContext } from '../providers';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceTopTabNavigationProp } from './SpaceTopTabNavigator';
+import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 
 export type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -31,6 +32,8 @@ export type TagScreenStackNavigatorProps = NativeStackNavigationProp<TagScreenSt
 const TagScreenStack = createNativeStackNavigator<TagScreenStackParams>();
 
 export const TagScreenStackNavigator: React.FC = () => {
+  const { tag } = useContext(TagScreenContext);
+  const { setLoadedScreenTable } = useContext(SpaceRootContext);
   const { apiResult: getPostsApiResult, requestApi: requestGetPosts } = useGetPosts();
   const { currentTag } = useContext(CurrentTagContext);
   const navigation = useNavigation<SpaceTopTabNavigationProp>();
@@ -66,17 +69,18 @@ export const TagScreenStackNavigator: React.FC = () => {
     }
   }, [currentTag]);
 
+  // tag channelが開かれたかをもっておかないといけないんだよな。だから、Rootの方でstateを持っておかないといかんな。
   return (
     <View
       style={{ flex: 1 }}
-      // onLayout={() =>
-      //   setScreenLoaded((previous) => {
-      //     return {
-      //       ...previous,
-      //       [props.tagObject.tag._id]: true,
-      //     };
-      //   })
-      // }
+      onLayout={() =>
+        setLoadedScreenTable((previous) => {
+          return {
+            ...previous,
+            [tag._id]: true,
+          };
+        })
+      }
     >
       <TagScreenStack.Navigator>
         <TagScreenStack.Group>

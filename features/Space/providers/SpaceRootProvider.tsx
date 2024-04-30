@@ -5,12 +5,16 @@ import { GetTagsOutputType } from '../types';
 import { useCreatePost } from '../../CreateNewPost/hooks';
 import { CreatePostInputType, CreatePostOutputType } from '../../CreateNewPost/types';
 
+type LoadedTagScreenTableType = {
+  [key: string]: true; // tagId: true
+};
+
 type SpaceRootContextType = {
   space: SpaceType;
   viewPostsType: ViewPostsType;
   setViewPostsType: React.Dispatch<React.SetStateAction<ViewPostsType>>;
-  screenLoaded: boolean;
-  setScreenLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+  loadedScreenTable: LoadedTagScreenTableType;
+  setLoadedScreenTable: React.Dispatch<React.SetStateAction<LoadedTagScreenTableType>>;
   createPostResult: ApiResultType<CreatePostOutputType>;
   requestCreatePost: (input: CreatePostInputType) => void;
   currentPost: PostType;
@@ -21,8 +25,8 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
   space: void 0,
   viewPostsType: 'grid',
   setViewPostsType: () => {},
-  screenLoaded: false,
-  setScreenLoaded: () => {},
+  loadedScreenTable: {},
+  setLoadedScreenTable: () => {},
   createPostResult: {
     status: 'idling',
     data: void 0,
@@ -49,7 +53,8 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, s
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const { apiResult: createPostResult, requestApi: requestCreatePost } = useCreatePost();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
-  const [screenLoaded, setScreenLoaded] = useState<boolean>(false);
+  const [loadedScreenTable, setLoadedScreenTable] = useState<LoadedTagScreenTableType>({ [space.tags[0]._id]: true });
+  // 最初のtagはdefaultで入れる。
   const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
 
   // useEffect(() => {
@@ -62,8 +67,8 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, s
         space,
         viewPostsType,
         setViewPostsType,
-        screenLoaded,
-        setScreenLoaded,
+        loadedScreenTable,
+        setLoadedScreenTable,
         createPostResult,
         requestCreatePost,
         // getTagsResult,

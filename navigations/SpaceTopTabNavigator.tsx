@@ -34,7 +34,8 @@ export const SpaceTopTabNavigator = () => {
   const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   // const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const drawerNavigation = useNavigation<SpacesDrawerStackNavigatorProps>();
-  const { screenLoaded, setScreenLoaded, viewPostsType, setViewPostsType, space } = useContext(SpaceRootContext);
+  const { loadedScreenTable, setLoadedScreenTable, viewPostsType, setViewPostsType, space } =
+    useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { currentSpace } = useContext(CurrentSpaceContext);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ApiResultType, AuthType } from '../../../types';
+import { ApiResultType, AuthType, PostType } from '../../../types';
 import { getPosts } from '../apis';
 import { GetPostsInputType, GetPostsOutputType } from '../types';
 
@@ -38,6 +38,21 @@ export const useGetPosts = () => {
     }
   };
 
+  const addCreatedPost = (createdPost: PostType) => {
+    setApiResult((previous) => {
+      const previousPosts = [...previous.data?.posts].unshift(createdPost);
+
+      return {
+        ...previous,
+        status: 'success',
+        data: {
+          ...previous.data,
+          post: previousPosts,
+        },
+      };
+    });
+  };
+
   const loadMore = async (input: GetPostsInputType) => {
     try {
       setApiResult((previous) => {
@@ -70,5 +85,6 @@ export const useGetPosts = () => {
     apiResult,
     requestApi,
     loadMore,
+    addCreatedPost,
   };
 };

@@ -8,11 +8,13 @@ import MapView, { Region } from 'react-native-maps';
 import { CurrentSpaceContext } from '../../../providers';
 
 type TagScreenContextType = {
+  tag?: TagType;
   mapRef: React.MutableRefObject<MapView | null>;
   region: MapRegionType;
   onRegionChangeComplete: (region: Region) => void;
   getPostsApiResult: ApiResultType<GetPostsOutputType>;
   getPostsByTagIdAndRegionResult: ApiResultType<GetPostsByTagIdAndRegionOutput>;
+  addCreatedPost: (createdPost: PostType) => void;
   viewPostsType: ViewPostsType;
   setViewPostsType: React.Dispatch<React.SetStateAction<ViewPostsType>>;
   screenLoaded: boolean;
@@ -37,6 +39,7 @@ const defaultRegion = {
 };
 
 export const TagScreenContext = createContext<TagScreenContextType>({
+  tag: void 0,
   mapRef: null,
   onRegionChangeComplete: () => {},
   region: defaultRegion,
@@ -50,6 +53,7 @@ export const TagScreenContext = createContext<TagScreenContextType>({
     data: void 0,
     message: '',
   },
+  addCreatedPost: () => {},
   viewPostsType: 'grid',
   setViewPostsType: () => {},
   screenLoaded: false,
@@ -69,7 +73,7 @@ type TagScreenProviderType = {
 
 export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, children }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const { apiResult: getPostsApiResult, requestApi: requestGetPostsApi } = useGetPosts();
+  const { apiResult: getPostsApiResult, requestApi: requestGetPostsApi, addCreatedPost } = useGetPosts();
   const { apiResult: getPostsByTagIdAndRegionResult, requestApi: requestGetPostsByTagIdAndRegion } =
     useGetPostsByTagIdAndRegion();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
@@ -83,6 +87,7 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
     latitudeDelta: 100.0922,
     longitudeDelta: 100.0421,
   });
+  // このscreen loadedをな。。。
 
   const onRegionChangeComplete = (region: Region) => {
     setRegion(region);
@@ -104,11 +109,13 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
   return (
     <TagScreenContext.Provider
       value={{
+        tag,
         mapRef,
         region,
         onRegionChangeComplete,
         getPostsApiResult,
         getPostsByTagIdAndRegionResult,
+        addCreatedPost,
         viewPostsType,
         setViewPostsType,
         screenLoaded,

@@ -91,19 +91,14 @@ export const Moments = () => {
           <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>No Moments now...</Text>
         </View>
       )}
-      <AppButton.Icon
+      {/* <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => console.log('post moments')}
         isPressDisabled={false} // createのstatusをここに足す感じだな。
         hasShadow
       >
         <VectorIcon.II name='add' size={32} color={'white'} />
-        {/* {createNewPostResult.isCreating ? (
-          <ActivityIndicator size={'small'} />
-          ) : (
-          <Ionicons name='add' size={32} color={'black'} />
-        )} */}
-      </AppButton.Icon>
+      </AppButton.Icon> */}
     </View>
   );
 };
