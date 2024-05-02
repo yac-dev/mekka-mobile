@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { VectorIcon } from '../../Icons';
 import { Colors } from '../../themes';
@@ -9,11 +9,12 @@ type CellButtonProps = {
   children: ReactNode;
   title: string;
   subTitle?: string;
+  customStyle?: ViewStyle;
 };
 
-export const CellButton: React.FC<CellButtonProps> = ({ onButtonPress, children, title, subTitle }) => {
+export const CellButton: React.FC<CellButtonProps> = ({ onButtonPress, children, title, subTitle, customStyle }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onButtonPress} activeOpacity={1}>
+    <TouchableOpacity style={[styles.container, { ...customStyle }]} onPress={onButtonPress} activeOpacity={0.5}>
       <View style={styles.iconAndTextContainer}>
         {children}
         <View>
@@ -28,10 +29,12 @@ export const CellButton: React.FC<CellButtonProps> = ({ onButtonPress, children,
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderRadius: 8,
   },
   iconAndTextContainer: { flexDirection: 'row', alignItems: 'center' },
   title: {

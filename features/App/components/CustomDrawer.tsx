@@ -250,7 +250,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
         <View style={{ flex: 9 }}>
           <TouchableOpacity
             activeOpacity={0.5}
-            style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 15 }}
+            style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 10 }}
             onPress={() => spaceRootStackNavigation.navigate('SpaceInfoStackNavigator')}
           >
             <ExpoImage
@@ -292,6 +292,21 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               </AppButton.Icon>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>For You</Text>
             </View> */}
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
+              <AppButton.Icon
+                onButtonPress={() => console.log('move to Log page')}
+                customStyle={{
+                  width: 42,
+                  height: 42,
+                  backgroundColor: 'rgb(50,50,50)',
+                  marginBottom: 3,
+                }}
+                hasShadow={false}
+              >
+                <VectorIcon.FT name='activity' size={20} color={'white'} />
+              </AppButton.Icon>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Log</Text>
+            </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
                 onButtonPress={() =>

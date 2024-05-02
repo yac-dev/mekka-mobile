@@ -232,13 +232,6 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
 
   useEffect(() => {
     if (createPostResult.status === 'success' && createPostResult.data?.createdTags) {
-      setSpace((previous) => {
-        return {
-          ...previous,
-          tags: [...previous.tags, ...createPostResult.data?.createdTags],
-        };
-      });
-
       // 新しく作ったtagをここに追加する。
       setMySpaces((previous) => {
         const updatingSpace = [...previous].map((space) => {
@@ -251,6 +244,7 @@ export const SpaceRootStackNavigator: React.FC<SpaceRootStackNavigatorProps> = (
       });
     }
   }, [createPostResult]);
+  // reloadでpropsの影響でバグる。
 
   const onCreateNewPostButtonPress = () => {
     console.log('create new post');

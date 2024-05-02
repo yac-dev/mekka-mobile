@@ -71,8 +71,8 @@ export const TagScreenStackNavigator: React.FC = () => {
 
   useEffect(() => {
     if (createPostResult.status === 'success') {
-      if (loadedScreenTable[tag._id] && createPostResult.data.addedTags.includes(tag._id)) {
-        // これ、多分stringにした方がいいよな。
+      if (loadedScreenTable[tag._id] && createPostResult.data?.addedTags.includes(tag._id)) {
+        console.log('finish create post!', createPostResult.data);
         addCreatedPost(createPostResult.data?.post);
       }
     }

@@ -40,14 +40,15 @@ export const useGetPosts = () => {
 
   const addCreatedPost = (createdPost: PostType) => {
     setApiResult((previous) => {
-      const previousPosts = [...previous.data?.posts].unshift(createdPost);
+      const previousPosts = [createdPost, ...(previous.data?.posts || [])];
+      // このunshiftとか、push methodって、最終的なarrayのlengthを返す仕様らしい。。。
 
       return {
         ...previous,
         status: 'success',
         data: {
           ...previous.data,
-          post: previousPosts,
+          posts: previousPosts,
         },
       };
     });

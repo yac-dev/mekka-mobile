@@ -7,6 +7,8 @@ import { Foundation } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { ReactionType, SpaceType } from '../../../types';
 import { CurrentSpaceContext } from '../../../providers';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
 
 type FeatureProps = {};
 
@@ -102,118 +104,89 @@ const Feature: React.FC<FeatureProps> = () => {
               </Text>
             ) : null}
           </View>
-          <View
-            style={{
-              paddingVertical: 10,
-              paddingHorizontal: 15,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
+          <AppButton.Cell
+            title='Space Visibility'
+            subTitle={currentSpace.isPublic ? 'Public' : 'Private'}
+            onButtonPress={() => console.log('hey')}
+            customStyle={{ marginBottom: 10 }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name='images' size={25} color='white' style={{ marginRight: 20 }} />
-              <View>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Media type</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {currentSpace.contentType === 'photo'
-                    ? 'Photos'
-                    : currentSpace.contentType === 'video'
-                    ? 'Videos'
-                    : 'Photos and Videos'}
-                </Text>
-              </View>
-            </View>
-          </View>
+            <VectorIcon.MI name='public' size={20} color='white' style={{ marginRight: 20 }} />
+          </AppButton.Cell>
+          <AppButton.Cell
+            title='Media Type'
+            subTitle={
+              currentSpace.contentType === 'photo'
+                ? 'Photos'
+                : currentSpace.contentType === 'video'
+                ? 'Videos'
+                : 'Photos and Videos'
+            }
+            onButtonPress={() => console.log('hey')}
+            customStyle={{ marginBottom: 10 }}
+          >
+            <VectorIcon.II name='images' size={20} color='white' style={{ marginRight: 20 }} />
+          </AppButton.Cell>
           {currentSpace.videoLength ? (
-            <View
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 15,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+            <AppButton.Cell
+              title='Video Length'
+              subTitle={`${currentSpace.videoLength} seconds`}
+              onButtonPress={() => console.log('hey')}
+              customStyle={{ marginBottom: 10 }}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Ionicons name='play-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
-                <View>
-                  <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Video length</Text>
-                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>{currentSpace.videoLength} seconds</Text>
-                </View>
-              </View>
-            </View>
+              <VectorIcon.II name='play-circle-sharp' size={20} color='white' style={{ marginRight: 20 }} />
+            </AppButton.Cell>
           ) : null}
-
-          <View
-            style={{
-              paddingVertical: 10,
-              paddingHorizontal: 15,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
+          <AppButton.Cell
+            title='Moments'
+            subTitle={convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
+            onButtonPress={() => console.log('hey')}
+            customStyle={{ marginBottom: 10 }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <MaterialCommunityIcons name='thumb-up' size={25} color='white' style={{ marginRight: 20 }} />
-              <View>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Reactions</Text>
-                {/* <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                    {spaceAndUserRelationship.space.videoLength} seconds
-                  </Text> */}
-                {renderReactions(currentSpace)}
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={{
-              paddingVertical: 10,
-              paddingHorizontal: 15,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
+            <ExpoImage
+              style={{ width: 20, height: 20, marginRight: 20 }}
+              source={require('../../../assets/forApp/ghost.png')}
+              contentFit='contain'
+              tintColor={'white'}
+            />
+          </AppButton.Cell>
+          <AppButton.Cell
+            title='Comments'
+            subTitle={currentSpace.isCommentAvailable ? 'Available' : 'Turned off'}
+            onButtonPress={() => console.log('hey')}
+            customStyle={{ marginBottom: 10 }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Foundation name='comments' size={25} color='white' style={{ marginRight: 20 }} />
-              <View>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Comment</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {currentSpace.isCommentAvailable ? 'Available' : 'Turned off'}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={{
-              paddingVertical: 10,
-              paddingHorizontal: 15,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
+            <VectorIcon.MCI name='comment' size={20} color='white' style={{ marginRight: 20 }} />
+          </AppButton.Cell>
+          <AppButton.Cell
+            title='Banner'
+            subTitle={'Turned off'}
+            onButtonPress={() => console.log('hey')}
+            customStyle={{ marginBottom: 10 }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <ExpoImage
-                style={{ width: 25, height: 25, marginRight: 15 }}
-                source={require('../../../assets/forApp/ghost.png')}
-                contentFit='contain'
-                tintColor={'white'}
-              />
-              <View>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Moment</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
-                </Text>
-              </View>
-            </View>
-          </View>
+            <VectorIcon.MCI name='advertisements' size={20} color='white' style={{ marginRight: 20 }} />
+          </AppButton.Cell>
         </View>
       </ScrollView>
     </View>
   );
 };
+
+// <View
+//             style={{
+//               paddingVertical: 10,
+//               paddingHorizontal: 15,
+//               flexDirection: 'row',
+//               alignItems: 'center',
+//               justifyContent: 'space-between',
+//             }}
+//           >
+//             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//               <MaterialCommunityIcons name='thumb-up' size={25} color='white' style={{ marginRight: 20 }} />
+//               <View>
+//                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Reactions</Text>
+//                 {renderReactions(currentSpace)}
+//               </View>
+//             </View>
+//           </View>
 
 export default Feature;

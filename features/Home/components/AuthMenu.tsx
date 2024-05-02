@@ -23,16 +23,32 @@ export const AuthMenu: React.FC<AuthMenu> = ({
         title='Edit my info'
         subTitle='Change your personal information.'
         onButtonPress={onEditMyAccountPress}
+        customStyle={{ marginBottom: 10 }}
       >
         <VectorIcon.MCI name='account' color={Colors.white} size={20} style={{ marginRight: 20 }} />
       </AppButton.Cell>
-      <AppButton.Cell title='Notification' subTitle='Allowed' onButtonPress={onNotificationSettingPress}>
-        <VectorIcon.MCI name='account' color={Colors.white} size={20} style={{ marginRight: 20 }} />
+      <AppButton.Cell
+        title='Notification'
+        subTitle='Allowed'
+        onButtonPress={onNotificationSettingPress}
+        customStyle={{ marginBottom: 10 }}
+      >
+        <VectorIcon.MI name='notifications-on' color={Colors.white} size={20} style={{ marginRight: 20 }} />
       </AppButton.Cell>
-      <AppButton.Cell title='Logout' subTitle='Take a break?' onButtonPress={onLogoutPress}>
-        <VectorIcon.MCI name='exit-run' color={Colors.white} size={20} style={{ marginRight: 20 }} />
+      <AppButton.Cell
+        title='Logout'
+        subTitle='Take a break?'
+        onButtonPress={onLogoutPress}
+        customStyle={{ marginBottom: 10 }}
+      >
+        <VectorIcon.MCI name='sleep' color={Colors.white} size={20} style={{ marginRight: 20 }} />
       </AppButton.Cell>
-      <AppButton.Cell title='Delete my account' subTitle='No regreats?' onButtonPress={onDeleteMyAccountPress}>
+      <AppButton.Cell
+        title='Delete my account'
+        subTitle='No regreats?'
+        onButtonPress={onDeleteMyAccountPress}
+        customStyle={{ marginBottom: 10 }}
+      >
         <VectorIcon.MCI name='delete-alert' color={Colors.white} size={20} style={{ marginRight: 20 }} />
       </AppButton.Cell>
     </View>

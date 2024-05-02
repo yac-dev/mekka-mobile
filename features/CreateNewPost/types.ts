@@ -10,7 +10,7 @@ export type CreatePostInputType = FormDataType & {
 
 export type CreatePostOutputType = {
   post: PostType;
-  addedTags: TagType[];
+  addedTags: string[]; // tagの_idが複数返ってくる。
   createdTags?: TagType[];
 };
 

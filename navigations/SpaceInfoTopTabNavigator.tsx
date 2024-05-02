@@ -65,13 +65,6 @@ export const SpaceInfoTopTabNavigator: React.FC<SpaceInfoTopTabNavigatorProps> =
       >
         <Tab.Screen name={'About'} component={Feature} />
         <Tab.Screen name={'Members'} component={Members} />
-        <Tab.Screen name={'History'}>
-          {() => (
-            <View style={{ flex: 1, backgroundColor: 'black' }}>
-              <Text style={{ color: 'red' }}>About</Text>
-            </View>
-          )}
-        </Tab.Screen>
       </Tab.Navigator>
     </View>
   );
