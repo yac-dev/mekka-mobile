@@ -29,6 +29,8 @@ export const Moments = () => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
+  // propsで来てたら、useGetMomentsPosts使う感じだよな。。。
+  // ていうか、apiだけではないことを考えるとさ、命名を変えた方がいいよな。。。シンプルにusePostsでいいよな。。。
   useEffect(() => {
     // navigationでcreateNewPostから来た場合にここを動かすことになる。
   }, []);

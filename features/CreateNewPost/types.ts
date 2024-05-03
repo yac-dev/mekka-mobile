@@ -14,6 +14,12 @@ export type CreatePostOutputType = {
   createdTags?: TagType[];
 };
 
+export type CreateMomentInputType = CreatePostInputType;
+
+export type CreateMomentOutputType = {
+  post: PostType;
+};
+
 export type GetTagIconsInputType = {
   name: string;
 };

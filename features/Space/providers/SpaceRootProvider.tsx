@@ -34,6 +34,7 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
     data: void 0,
     message: '',
   },
+
   requestCreatePost: () => {},
   // getTagsResult: {
   //   status: 'idling',
@@ -55,6 +56,7 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, d
   const [space, setSpace] = useState<SpaceType>(defaultSpace);
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const { apiResult: createPostResult, requestApi: requestCreatePost } = useCreatePost();
+  const { apiResult: createMomentResult, requestApi: requestCreateMoment } = useCreatePost();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [loadedScreenTable, setLoadedScreenTable] = useState<LoadedTagScreenTableType>({
     [defaultSpace.tags[0]._id]: true,

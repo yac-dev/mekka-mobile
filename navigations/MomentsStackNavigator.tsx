@@ -25,6 +25,7 @@ const MomentsStack = createNativeStackNavigator();
 
 export const MomentsStackNavigator = () => {
   return (
+    // ここ、providerが必要だな。。。createのapi statusをcontextで持たせよう。
     <MomentsStack.Navigator>
       <MomentsStack.Group>
         <MomentsStack.Screen
