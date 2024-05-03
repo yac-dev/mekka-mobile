@@ -8,21 +8,25 @@ import backendAPI from '../../../apis/backend';
 import { Video } from 'expo-av';
 import { AntDesign } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
-import { SnackBarContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
 import { SnackBar } from '../../../components';
 import { CurrentSpaceContext } from '../../../providers';
 import { ContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
+import { CreateMomentInputType } from '../types';
 
 const MomentPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [modalVisible, setModalVisible] = useState(false);
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress } = useContext(CreateNewPostContext);
+  const { auth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { isIpad } = useContext(GlobalContext);
+  const { requestCreateMoment } = useContext(SpaceRootContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
 
   // このpageに来た時点で、postTypeをmomentにする。
@@ -33,10 +37,7 @@ const MomentPost = () => {
   useEffect(() => {
     createNewPostStackNavigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          onPress={() => createNewPostStackNavigation.goBack()}
-          disabled={formData.contents.isValidated ? false : true}
-        >
+        <TouchableOpacity onPress={() => onPostPress()} disabled={formData.contents.isValidated ? false : true}>
           <Text
             style={{
               color: formData.contents.isValidated ? 'white' : 'rgb(100,100,100)',
@@ -50,6 +51,18 @@ const MomentPost = () => {
       ),
     });
   }, [formData.contents]);
+
+  const onPostPress = () => {
+    const input: CreateMomentInputType = {
+      ...formData,
+      userId: auth._id,
+      spaceId: currentSpace._id,
+      reactions: currentSpace.reactions,
+      disappearAfter: currentSpace.disappearAfter.toString(),
+    };
+    requestCreateMoment(input);
+    createNewPostStackNavigation.goBack();
+  };
 
   function convertMinutesToHoursAndMinutes(minutes: number) {
     const hours = Math.floor(minutes / 60);

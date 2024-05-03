@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MomentsStackNavigatorProps } from '../../../navigations';
 import * as Haptics from 'expo-haptics';
 import { useCreatePost } from '../../CreateNewPost/hooks';
+import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
@@ -21,8 +22,8 @@ const ItemWidth = Dimensions.get('window').width / 3;
 // まあ、早く終わらせたい意味では使い回すのもいんだけどね。。。
 export const Moments = () => {
   const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
-  const { apiResult, requestApi } = useGetMomentPosts();
-  const { apiResult: createMomentResult, requestApi: requestCreateMoment } = useCreatePost();
+  const { apiResult, requestApi, addCreatedMoment } = useGetMomentPosts();
+  const { createMomentResult, requestCreateMoment } = useContext(SpaceRootContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   useEffect(() => {
@@ -32,8 +33,10 @@ export const Moments = () => {
   // propsで来てたら、useGetMomentsPosts使う感じだよな。。。
   // ていうか、apiだけではないことを考えるとさ、命名を変えた方がいいよな。。。シンプルにusePostsでいいよな。。。
   useEffect(() => {
-    // navigationでcreateNewPostから来た場合にここを動かすことになる。
-  }, []);
+    if (createMomentResult.status === 'success') {
+      addCreatedMoment(createMomentResult.data?.post);
+    }
+  }, [createMomentResult.status]);
 
   // useEffect(() => {
   //   if(createMomentResult.status === 'success'){
@@ -41,7 +44,7 @@ export const Moments = () => {
   //   }
   // },[createMomentResult.status])
 
-  function convertMinutesToHoursAndMinutes(minutes) {
+  function convertMinutesToHoursAndMinutes(minutes: number) {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
 
@@ -148,10 +151,14 @@ export const Moments = () => {
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => onCreateMomentPress()}
-        isPressDisabled={false}
+        isPressDisabled={createMomentResult.status === 'loading' ? true : false}
         hasShadow
       >
-        <VectorIcon.II name='add' size={32} color={'white'} />
+        {createMomentResult.status === 'loading' ? (
+          <ActivityIndicator color={'white'} />
+        ) : (
+          <VectorIcon.II name='add' size={32} color={'white'} />
+        )}
       </AppButton.Icon>
     </View>
   );
