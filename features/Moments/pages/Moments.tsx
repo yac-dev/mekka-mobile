@@ -10,18 +10,52 @@ import { CurrentSpaceContext } from '../../../providers';
 import { PostType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { Image as ExpoImage } from 'expo-image';
+import { useNavigation } from '@react-navigation/native';
+import { MomentsStackNavigatorProps } from '../../../navigations';
+import * as Haptics from 'expo-haptics';
+import { useCreatePost } from '../../CreateNewPost/hooks';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
+// moment postも、今後要件変わるかもしれないし、これをまんま使うのはなんか嫌だな。
+// まあ、早く終わらせたい意味では使い回すのもいんだけどね。。。
 export const Moments = () => {
+  const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
   const { apiResult, requestApi } = useGetMomentPosts();
+  const { apiResult: createMomentResult, requestApi: requestCreateMoment } = useCreatePost();
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   useEffect(() => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
-  console.log('res', apiResult);
+  useEffect(() => {
+    // navigationでcreateNewPostから来た場合にここを動かすことになる。
+  }, []);
+
+  // useEffect(() => {
+  //   if(createMomentResult.status === 'success'){
+  //     // ここで、
+  //   }
+  // },[createMomentResult.status])
+
+  function convertMinutesToHoursAndMinutes(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+      return `${minutes} minutes`;
+    } else if (remainingMinutes === 0) {
+      return `${hours} hours`;
+    } else {
+      return `${hours} hours ${remainingMinutes} minutes`;
+    }
+  }
+
+  const onCreateMomentPress = () => {
+    momentsStackNavigation.navigate('CreateNewPostStackNavigator', { screen: 'MomentPost' });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+  };
 
   // const loadMoreItem = () => {
   //   if (hasMoreItems) {
@@ -56,7 +90,6 @@ export const Moments = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <Text style={{ fontWeight: 'bold', fontSize: 20, padding: 20, color: 'white' }}>Moments</Text>
       {/* {!apiResult.data?.posts.length && (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50, alignSelf: 'center' }}>
           <ExpoImage
@@ -82,23 +115,42 @@ export const Moments = () => {
           contentContainerStyle={{ paddingBottom: 30 }}
         />
       ) : (
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50, alignSelf: 'center' }}>
-          <ExpoImage
+        <View style={{ alignItems: 'center', alignSelf: 'center', marginTop: 50 }}>
+          {/* <ExpoImage
             source={require('../../../assets/forApp/ghost-disappointed.png')}
             style={{ width: 25, height: 25, marginRight: 20 }}
             tintColor='white'
-          />
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>No Moments now...</Text>
+          /> */}
+          <Text
+            style={{
+              color: 'white',
+              textAlign: 'center',
+              marginTop: 50,
+              marginBottom: 20,
+              fontWeight: 'bold',
+              fontSize: 23,
+            }}
+          >
+            No moments now...
+          </Text>
+          <Text style={{ color: 'white', textAlign: 'center' }}>
+            Every moment posts in {currentSpace.name}
+            {'\n'}will disappear in{' '}
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
+            </Text>
+            .
+          </Text>
         </View>
       )}
-      {/* <AppButton.Icon
+      <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
-        onButtonPress={() => console.log('post moments')}
-        isPressDisabled={false} // createのstatusをここに足す感じだな。
+        onButtonPress={() => onCreateMomentPress()}
+        isPressDisabled={false}
         hasShadow
       >
         <VectorIcon.II name='add' size={32} color={'white'} />
-      </AppButton.Icon> */}
+      </AppButton.Icon>
     </View>
   );
 };

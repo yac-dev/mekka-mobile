@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { EditAccount } from '../features/EditAccount';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons';
+import { Colors } from '../themes';
 
 export type EditProfileStackParams = {
   EditProfile: undefined;
@@ -22,11 +25,15 @@ export const EditProfileStackNavigator: React.FC = () => {
           options={({ navigation }) => ({
             headerShown: true,
             headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-              </TouchableOpacity>
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
             ),
-            headerTitle: 'Edit my profile',
+            headerTitle: 'Edit my info',
             headerStyle: {
               backgroundColor: 'black',
             },

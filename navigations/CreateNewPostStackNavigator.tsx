@@ -226,23 +226,6 @@ const CreateNewPostStackNavigator = () => {
                   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
-              // headerRight: () => {
-              //   return (
-              //     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              //       <TouchableOpacity onPress={() => onPostPress()}>
-              //         <Text
-              //           style={{
-              //             color: 'white',
-              //             fontSize: 20,
-              //             fontWeight: 'bold',
-              //           }}
-              //         >
-              //           Post
-              //         </Text>
-              //       </TouchableOpacity>
-              //     </View>
-              //   );
-              // },
               title: '',
               headerStyle: {
                 backgroundColor: 'black',
@@ -260,24 +243,9 @@ const CreateNewPostStackNavigator = () => {
                   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
                   hasShadow={false}
                 >
-                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
-              // headerRight: () => {
-              //   return (
-              //     <TouchableOpacity onPress={() => onMomentPostPress()} disabled={moments.length ? false : true}>
-              //       <Text
-              //         style={{
-              //           color: moments.length ? 'white' : 'rgb(70,70,70)',
-              //           fontSize: 20,
-              //           fontWeight: 'bold',
-              //         }}
-              //       >
-              //         Done
-              //       </Text>
-              //     </TouchableOpacity>
-              //   );
-              // },
               title: '',
               headerStyle: {
                 backgroundColor: 'black',

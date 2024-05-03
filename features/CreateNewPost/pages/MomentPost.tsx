@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, StyleSheet } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,206 +10,211 @@ import { AntDesign } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { SnackBarContext } from '../../../providers';
 import { SnackBar } from '../../../components';
+import { CurrentSpaceContext } from '../../../providers';
+import { ContentType, CreateNewPostContext } from '../contexts';
+import { ContentThumbnail } from '../components/ContentThumbnail';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
-const MomentPost = (props) => {
+const MomentPost = () => {
+  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const [modalVisible, setModalVisible] = useState(false);
+  const { currentSpace } = useContext(CurrentSpaceContext);
+  const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress } = useContext(CreateNewPostContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { isIpad } = useContext(GlobalContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
-  const [contents, setContets] = useState([]);
-  // const { space } = props.route.params;
-  const { space, setMoments, moments } = useContext(CreateNewPostContext);
 
-  const calcurateMinutes = () => {
-    if (space.disappearAfter >= 60) {
-      return (
-        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
-          {space.disappearAfter / 60} hours.
-        </Text>
-      );
+  // このpageに来た時点で、postTypeをmomentにする。
+  useEffect(() => {
+    onPostTypeChange('moment');
+  }, []);
+
+  useEffect(() => {
+    createNewPostStackNavigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => createNewPostStackNavigation.goBack()}
+          disabled={formData.contents.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color: formData.contents.isValidated ? 'white' : 'rgb(100,100,100)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Post
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData.contents]);
+
+  function convertMinutesToHoursAndMinutes(minutes: number) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+      return `${minutes} minutes`;
+    } else if (remainingMinutes === 0) {
+      return `${hours} hours`;
     } else {
-      return (
-        <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center', fontSize: 18 }}>
-          {space.disappearAfter} minutes.
-        </Text>
-      );
+      return `${hours} hours ${remainingMinutes} minutes`;
     }
-  };
-  // spaceのvideo lengthも含めてな。ここでやろうか。
-
-  const pickContents = async () => {
-    const pickerOption = {
-      mediaTypes:
-        space.contentType === 'photo'
-          ? ImagePicker.MediaTypeOptions.Images
-          : space.contentType === 'video'
-          ? ImagePicker.MediaTypeOptions.Videos
-          : ImagePicker.MediaTypeOptions.All,
-      allowsMultipleSelection: true,
-      quality: 1,
-      duration: space.videoLength ? 3000 : null,
-    };
-
-    let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
-    // if (!result.canceled && result.assets) {
-    //   // result assets それぞれのassetに対して、dataを作る様にすると。
-    //   setMoments((previous) => {
-    //     const addedAssets = result.assets.map((asset) => {
-    //       return {
-    //         uri: asset.uri,
-    //         type: asset.type === 'image' ? 'image' : 'video',
-    //         duration: asset.duration ? asset.duration : null,
-    //       };
-    //     });
-
-    //     return [...previous, ...addedAssets];
-    //   });
-    // }
-    if (!result.canceled && result.assets) {
-      // result assets それぞれのassetに対して、dataを作る様にすると。
-      setMoments((previous) => {
-        console.log(result.assets);
-        const adding = [];
-        result.assets.forEach((asset) => {
-          if (asset.type === 'video') {
-            // 基本は, videoの時はdurationがspaceのvideo length以下の時だけ入れる様にする。
-            if (asset.duration / 1000 <= space.videoLength) {
-              adding.push({ uri: asset.uri, type: 'video', duration: asset.duration ? asset.duration : null });
-            } else {
-              // addingのarrayに入れないで、snacbarを出してあげる。無理ですって。
-              setSnackBar({
-                isVisible: true,
-                status: 'warning',
-                message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
-                duration: 5000,
-              });
-            }
-          } else if (asset.type === 'image') {
-            adding.push({ uri: asset.uri, type: 'image', duration: asset.duration ? asset.duration : null });
-          }
-        });
-
-        return [...previous, ...adding];
-      });
-    }
-  };
+  }
 
   const renderContents = () => {
-    const list = moments.map((content, index) => {
-      return (
-        <View key={index} style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 2 }}>
-          {content.type === 'image' ? (
-            <ExpoImage
-              style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
-              source={{ uri: content.uri }}
-              placeholder={blurhash}
-              contentFit='cover'
-              transition={1000}
-              tintColor={'rgb(170,170,170)'}
-            />
-          ) : (
-            <Video
-              source={{ uri: content.uri }}
-              style={{ width: '100%', height: '100%', borderRadius: 12, marginRight: 10 }}
-            />
-          )}
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: -10,
-              right: 0,
-              backgroundColor: 'red',
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() =>
-              setMoments((previous) => {
-                const updating = [...previous];
-                const updated = updating.filter((content, idx) => index !== idx);
-                return updated;
-              })
-            }
-          >
-            <Ionicons name='trash' size={20} color={'white'} />
-          </TouchableOpacity>
-        </View>
-      );
+    const list = formData.contents.value.map((content: ContentType, index) => {
+      return <ContentThumbnail key={index} content={content} index={index} onRemovePress={onRemoveContentPress} />;
     });
 
     return (
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-        {moments.length >= 6 ? null : (
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: oneAssetWidth,
-              height: oneAssetWidth,
-              padding: 2,
-              borderRadius: oneAssetWidth / 2,
-            }}
-            onPress={() => pickContents()}
-          >
-            <AntDesign name='plus' size={30} color='black' style={{ marginBottom: 10 }} />
-            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Add</Text>
-          </TouchableOpacity>
-        )}
-        {moments.length ? list : null}
+        {formData.contents.value.length ? list : null}
       </View>
     );
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
-        <Text
-          style={{
-            color: 'white',
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 20,
-            marginBottom: 10,
-          }}
-        >
-          Create New Moment
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 10 }}>
+          <ExpoImage
+            source={require('../../../assets/forApp/ghost.png')}
+            style={{ width: 20, height: 20, marginRight: 10 }}
+            tintColor='white'
+          />
+          <Text
+            style={{
+              color: 'white',
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}
+          >
+            New Moments?
+          </Text>
+        </View>
         <View style={{ flexDirection: 'column' }}>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            Moment is a story of IG. Instead of 24 hours constrain, your moment post will be disappeared within
+            Your moment post will disappeare within
           </Text>
-          {calcurateMinutes()}
+          <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
+            {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
+          </Text>
         </View>
       </View>
+      {formData.contents.value.length >= 6 ? null : (
+        <TouchableOpacity
+          style={{
+            padding: 15,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 15,
+          }}
+          onPress={() => pickUpContents()}
+          activeOpacity={1}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
+            </View>
+          </View>
+          <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+        </TouchableOpacity>
+      )}
       {renderContents()}
-      {/* <View style={{ paddingTop: 10 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50 }}>
-          <TouchableOpacity
+      <Text
+        onPress={() => setModalVisible(true)}
+        style={{ color: 'white', position: 'absolute', bottom: 10, alignSelf: 'center' }}
+      >
+        What is Moment by the way?
+      </Text>
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View
             style={{
-              width: 90,
-              aspectRatio: 1,
-              backgroundColor: 'rgb(170,170,170)',
-              borderRadius: 13,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: 10,
+              width: 300,
+              height: 300,
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 10,
+              padding: 20,
             }}
-            onPress={() => pickImages()}
           >
-            <MaterialCommunityIcons name='plus' size={30} color='white' />
-            <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
-          </TouchableOpacity>
-          {renderAddedContents()}
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 18,
+                textAlign: 'center',
+                marginBottom: 30,
+              }}
+            >
+              Similar to IG's Stories
+            </Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={styles.modalText}>
+                The main difference is the duration.{'\n'}Instead of 24 hours limitation, the disappearing time depends
+                on Space setting. In {currentSpace.name}, it is set to{' '}
+                {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
+              </Text>
+              <Pressable style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
-      </View> */}
-      <SnackBar.Primary />
+      </Modal>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    width: 500,
+    height: 300,
+  },
+  modalView: {
+    width: 500,
+    height: 300,
+    backgroundColor: 'rgb(50,50,50)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    color: 'white',
+  },
+});
 
 export default MomentPost;

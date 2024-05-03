@@ -174,7 +174,7 @@ export const HomeStackNavigator: React.FC = (props) => {
                   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
                   hasShadow={false}
                 >
-                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
               headerTitle: 'Discover',

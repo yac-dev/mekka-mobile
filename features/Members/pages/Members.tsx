@@ -78,8 +78,8 @@ export const Members: React.FC<MembersProps> = () => {
             onPress={handleInvite}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <VectorIcon.MCI name='human-greeting-variant' color='white' size={30} style={{ marginRight: 20 }} />
-              <Text style={{ color: 'white', fontSize: 17 }}>Invite</Text>
+              <VectorIcon.II name='add' color='white' size={30} style={{ marginRight: 20 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Invite new member</Text>
             </View>
             <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
           </TouchableOpacity>

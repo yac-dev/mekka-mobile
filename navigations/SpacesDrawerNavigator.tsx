@@ -562,6 +562,7 @@ export const SpacesDrawerNavigator = (props) => {
                     headerTitleStyle: {
                       fontSize: 20,
                       fontWeight: 'bold',
+                      color: 'white',
                       // padding: 20,
                     },
                     // simulatorの場合、これないとheaderのheiightがおかしくなる。。。何で？？？
