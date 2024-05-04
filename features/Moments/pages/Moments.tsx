@@ -1,5 +1,5 @@
-import React, { useContext, useCallback, useEffect } from 'react';
-import { View, Text, Dimensions, ActivityIndicator, FlatList } from 'react-native';
+import React, { useContext, useCallback, useEffect, useState } from 'react';
+import { View, Text, Dimensions, ActivityIndicator, FlatList, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import MomentThumbnail from '../components/MomentThumbnail';
 import { AppButton, PostThumbnail } from '../../../components';
@@ -15,16 +15,32 @@ import * as Haptics from 'expo-haptics';
 import { useCreatePost } from '../../CreateNewPost/hooks';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { MomentsContext } from '../../Space';
+import { Colors } from '../../../themes';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
 // moment postも、今後要件変わるかもしれないし、これをまんま使うのはなんか嫌だな。
 // まあ、早く終わらせたい意味では使い回すのもいんだけどね。。。
 export const Moments = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
   const { apiResult, requestApi, addCreatedMoment } = useGetMomentPosts();
   const { createMomentResult, requestCreateMoment } = useContext(MomentsContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
+
+  useEffect(() => {
+    momentsStackNavigation.setOptions({
+      headerRight: () => (
+        <AppButton.Icon
+          onButtonPress={() => setModalVisible(true)}
+          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.AD name='question' size={18} color={Colors.white} />
+        </AppButton.Icon>
+      ),
+    });
+  }, []);
 
   useEffect(() => {
     requestApi({ spaceId: currentSpace._id });
@@ -53,7 +69,7 @@ export const Moments = () => {
     } else if (remainingMinutes === 0) {
       return `${hours} hours`;
     } else {
-      return `${hours} hours ${remainingMinutes} minutes`;
+      return `${hours} hours ${remainingMinutes} mins`;
     }
   }
 
@@ -95,7 +111,7 @@ export const Moments = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       {/* {!apiResult.data?.posts.length && (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50, alignSelf: 'center' }}>
           <ExpoImage
@@ -149,6 +165,61 @@ export const Moments = () => {
           </Text>
         </View>
       )}
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 10,
+              padding: 10,
+            }}
+          >
+            <AppButton.Icon
+              customStyle={{
+                width: 28,
+                height: 28,
+                backgroundColor: 'rgb(50,50,50)',
+                alignSelf: 'flex-end',
+                marginBottom: 10,
+              }}
+              onButtonPress={() => setModalVisible(!modalVisible)}
+              hasShadow
+            >
+              <VectorIcon.II name='close' size={20} color={'white'} />
+            </AppButton.Icon>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 18,
+                textAlign: 'center',
+                marginBottom: 30,
+              }}
+            >
+              What is Moments by the way?
+            </Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={styles.modalText}>
+                You can think of Moments as IG's Stories.{'\n'}By using Moments post, your photos/videos will disappear
+                after a certain time after posting. Instead of 24 hours, the disappearing time depends on Space setting.
+                {'\n'}In {currentSpace.name}, it is set to{'\n'}
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}.
+                </Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => onCreateMomentPress()}
@@ -164,3 +235,42 @@ export const Moments = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    width: 500,
+    height: 300,
+  },
+  modalView: {
+    width: 500,
+    height: 300,
+    backgroundColor: 'rgb(50,50,50)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    color: 'white',
+    lineHeight: 25,
+  },
+});

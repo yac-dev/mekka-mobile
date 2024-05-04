@@ -561,7 +561,7 @@ export const SpacesDrawerNavigator = (props) => {
                   options={({ navigation }) => ({
                     headerTitle: space.name,
                     headerTitleStyle: {
-                      fontSize: 20,
+                      fontSize: 17,
                       fontWeight: 'bold',
                       color: 'white',
                       // padding: 20,

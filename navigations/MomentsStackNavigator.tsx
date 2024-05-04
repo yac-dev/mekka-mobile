@@ -49,6 +49,7 @@ export const MomentsStackNavigator = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
               color: Colors.white,
+              fontSize: 17,
             },
           })}
         />
