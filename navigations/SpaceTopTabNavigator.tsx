@@ -43,6 +43,14 @@ export const SpaceTopTabNavigator = () => {
   const scrollViewRef = useRef(null);
   const navigation = useNavigation<HomeStackNavigatorProps>();
 
+  useEffect(() => {
+    const currentIndex = space?.tags.findIndex((tag) => currentTag._id === tag._id);
+    scrollViewRef.current.scrollToOffset({
+      offset: (currentIndex - 1) * 120,
+      animated: true,
+    });
+  }, [currentTag]);
+
   // これも、SpaceRootの方に移したい。
   // const getTags = async () => {
   //   // setIsLoadingTags(true);
