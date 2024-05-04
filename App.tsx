@@ -21,6 +21,7 @@ import {
   CurrentSpaceProvider,
   CurrentTagProvider,
   AppStateProvider,
+  GlobalProvider,
 } from './providers';
 import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -133,29 +134,6 @@ const App: React.FC = function () {
   // };
 
   // // auth dataがある場合は、これをそもそも起こさない。
-  // useEffect(() => {
-  //   // 最初のrenderで、このsubscription functionが登録される。
-  //   if (isAuthenticated) {
-  //     const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-  //       if (appState.match(/inactive|background/) && nextAppState === 'active') {
-  //         // appが再び開かれたらここを起こす。
-  //         // というか、stateを一回resetしたいんだよね。loadするなりなんなりで。。。。
-  //         getMySpaces();
-  //         // getMySpacesFromInactive();
-  //         console.log('App has come to the foreground!');
-  //       } else if (appState === 'active' && nextAppState === 'inactive') {
-  //         // appを閉じてbackgroundになる寸前にここを起こす感じ。
-  //         console.log('Became inactive...');
-  //         updateSpaceCheckedInDate(); // 一時停止
-  //       }
-  //       console.log('Next AppState is: ', nextAppState);
-  //       setAppState(nextAppState); // backgroundになる。
-  //     });
-  //     return () => {
-  //       appStateListener.remove();
-  //     };
-  //   }
-  // }, [isAuthenticated, appState, currentSpaceAndUserRelationship]);
 
   // useEffect(() => {
   //   if (isAuthenticated) {
@@ -219,6 +197,7 @@ const App: React.FC = function () {
         <Composer
           components={[
             PaperProvider,
+            GlobalProvider,
             BottomSheetModalProvider,
             AuthProvider,
             SnackBarProvider,
@@ -230,46 +209,10 @@ const App: React.FC = function () {
           ]}
         >
           <Root />
-          {/* <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name='HomeStackNavigator'
-              component={HomeStackNavigator}
-              options={({ navigation }) => ({
-                // headerShown: true,
-                headerShown: false,
-              })}
-            />
-          </Stack.Navigator>
-        </NavigationContainer> */}
         </Composer>
-        {/* <AuthProvider>
-        <SnackBarProvider>
-          <PaperProvider>
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen
-                  name='HomeStackNavigator'
-                  component={HomeStackNavigator}
-                  options={({ navigation }) => ({
-                    // headerShown: true,
-                    headerShown: false,
-                  })}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </PaperProvider>
-        </SnackBarProvider>
-      </AuthProvider> */}
       </GlobalContext.Provider>
     </GestureHandlerRootView>
   );
 };
 
-{
-  /* <Booting /> */
-}
-{
-  /* authのありinit component */
-}
 export default App;

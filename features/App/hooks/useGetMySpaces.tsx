@@ -38,8 +38,37 @@ export const useGetMySpaces = () => {
     }
   };
 
+  const requestRefresh = async (input: GetMySpacesInput) => {
+    try {
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'refreshing',
+        };
+      });
+      const response = await getMySpaces(input);
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'success',
+          data: response,
+        };
+      });
+    } catch (error) {
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'fail',
+          data: void 0,
+          message: 'Something went wrong.',
+        };
+      });
+    }
+  };
+
   return {
     apiResult,
     requestApi,
+    requestRefresh,
   };
 };

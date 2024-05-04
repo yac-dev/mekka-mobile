@@ -47,7 +47,7 @@ const Drawer = createDrawerNavigator();
 //　tapでbadgeは消す。ただ、dateのupdateはそのspace rootのunmount時、tag viewのunmount時にdate updateをする感じか。。。
 // あとは、appがcloseした時もcurrentのspaceのdate updateをする感じだね。
 
-export const SpacesDrawerNavigator = (props) => {
+export const SpacesDrawerNavigator = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);

@@ -72,6 +72,8 @@ export const GridView: React.FC<GridViewProps> = () => {
     );
   }
 
+  console.log(getPostsApiResult.status);
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
@@ -87,6 +89,16 @@ export const GridView: React.FC<GridViewProps> = () => {
         onEndReachedThreshold={0}
         contentContainerStyle={{ paddingBottom: 30 }}
       />
+      {getPostsApiResult.status === 'refreshing' ? (
+        // <ActivityIndicator
+        //   style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}
+        //   size={'large'}
+        //   color={'white'}
+        // />
+        <View style={{ position: 'absolute', top: 100, left: 10 }}>
+          <Text style={{ color: 'red' }}>Refreshing</Text>
+        </View>
+      ) : null}
     </View>
   );
 };

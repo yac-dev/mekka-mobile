@@ -1,11 +1,12 @@
 import React, { useState, createContext, useEffect, useRef, useContext } from 'react';
+import { AppState } from 'react-native';
 import { SpaceType, TagType, ApiStatusType, PostType, ApiResultType, MapRegionType } from '../../../types';
 import { GetPostsByTagIdAndRegionOutput, GetPostsOutputType } from '../types';
 import { useGetPosts } from '../hooks';
 import * as Haptics from 'expo-haptics';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
 import MapView, { Region } from 'react-native-maps';
-import { CurrentSpaceContext } from '../../../providers';
+import { CurrentSpaceContext, GlobalContext } from '../../../providers';
 
 type TagScreenContextType = {
   tag?: TagType;
@@ -72,8 +73,14 @@ type TagScreenProviderType = {
 };
 
 export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, children }) => {
+  const { appState } = useContext(GlobalContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const { apiResult: getPostsApiResult, requestApi: requestGetPostsApi, addCreatedPost } = useGetPosts();
+  const {
+    apiResult: getPostsApiResult,
+    requestApi: requestGetPostsApi,
+    addCreatedPost,
+    requestRefresh,
+  } = useGetPosts();
   const { apiResult: getPostsByTagIdAndRegionResult, requestApi: requestGetPostsByTagIdAndRegion } =
     useGetPostsByTagIdAndRegion();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
@@ -105,6 +112,23 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
   useEffect(() => {
     requestGetPostsByTagIdAndRegion({ tagId: tag._id, region });
   }, [region]);
+
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        console.log('App has come to the foreground!');
+        requestRefresh({ tagId: tag._id, currentPage: 0 });
+        console.log('refreshig');
+      } else if (appState === 'active' && nextAppState === 'inactive') {
+        // console.log('Became inactive...');
+      }
+      // console.log('Next AppState is: ', nextAppState);
+    });
+
+    return () => {
+      appStateListener.remove();
+    };
+  }, [appState]);
 
   return (
     <TagScreenContext.Provider

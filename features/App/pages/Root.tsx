@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, AppState } from 'react-native';
 import { useLoadMe } from '../hooks/useLoadMe';
 import { AuthContext } from '../../../providers/AuthProvider';
 import { MySpacesContext } from '../../../providers/MySpacesProvider';
@@ -11,6 +11,7 @@ import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../../../navigations/RootStackNavigator';
 import { CurrentTagContext } from '../../../providers';
+import { GlobalContext } from '../../../providers';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -20,13 +21,18 @@ export type RootStackParams = {
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
 
 export const Root = () => {
+  const { appState, onAppStateChange } = useContext(GlobalContext);
   const { auth, setAuth } = useContext(AuthContext);
   const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
-  const { apiResult: getMySpacesApiResult, requestApi: requestGetMySpaces } = useGetMySpaces();
+  const {
+    apiResult: getMySpacesApiResult,
+    requestApi: requestGetMySpaces,
+    requestRefresh: refreshGetMySpaces,
+  } = useGetMySpaces();
 
   // 1, loadmeをまずする
   const loadMe = async () => {
@@ -45,9 +51,6 @@ export const Root = () => {
   useEffect(() => {
     if (loadMeApiResult.status === 'success') {
       setAuth(loadMeApiResult.data);
-      // ここでauthがtruthyになって、先にspaceDrawerがrendersれているんだなおそらく。んで、mySpacesの取得が動く前に先にcomponentのrenderingが起こっちゃっているわけか。。。
-      // console.log('has auth and run getmyspaces??', auth);
-      // requestGetMySpaces({ userId: loadMeApiResult.data._id });
     }
   }, [loadMeApiResult]);
 
@@ -56,6 +59,7 @@ export const Root = () => {
       requestGetMySpaces({ userId: auth._id });
     }
   }, [auth]);
+
   useEffect(() => {
     if (getMySpacesApiResult.status === 'success') {
       setMySpaces(getMySpacesApiResult.data.mySpaces);
@@ -64,6 +68,31 @@ export const Root = () => {
       setSpaceUpdates(getMySpacesApiResult.data.updateTable);
     }
   }, [getMySpacesApiResult]);
+
+  useEffect(() => {
+    if (auth) {
+      const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+        if (appState.match(/inactive|background/) && nextAppState === 'active') {
+          // appが再び開かれたら起こす。
+          // getMySpaces();
+          // getMySpacesFromInactive();
+          refreshGetMySpaces({ userId: auth._id });
+          console.log('App has come to the foreground!');
+        } else if (appState === 'active' && nextAppState === 'inactive') {
+          // appを閉じてbackgroundになる寸前にここを起こす感じ。
+          console.log('Became inactive...');
+          // inactiveになったときに、何かapiを送る。
+          // updateSpaceCheckedInDate(); // 一時停止
+        }
+        console.log('Next AppState is: ', nextAppState);
+        onAppStateChange(nextAppState);
+      });
+
+      return () => {
+        appStateListener.remove();
+      };
+    }
+  }, [auth, appState]);
 
   // useEffect(() => {
   //   if (getMySpacesApiResult.status === 'success') {

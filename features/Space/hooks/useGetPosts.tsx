@@ -38,6 +38,35 @@ export const useGetPosts = () => {
     }
   };
 
+  const requestRefresh = async (input: GetPostsInputType) => {
+    try {
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'refreshing',
+        };
+      });
+
+      const response = await getPosts(input);
+      console.log('refreshed');
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'success',
+          data: response,
+        };
+      });
+    } catch (error) {
+      setApiResult((previous) => {
+        return {
+          ...previous,
+          status: 'fail',
+          data: void 0,
+        };
+      });
+    }
+  };
+
   const addCreatedPost = (createdPost: PostType) => {
     setApiResult((previous) => {
       const previousPosts = [createdPost, ...(previous.data?.posts || [])];
@@ -85,6 +114,7 @@ export const useGetPosts = () => {
   return {
     apiResult,
     requestApi,
+    requestRefresh,
     loadMore,
     addCreatedPost,
   };

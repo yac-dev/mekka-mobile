@@ -5,3 +5,4 @@ export * from './SpaceUpdatesProvider';
 export * from './CurrentSpaceProvider';
 export * from './CurrentTagProvider';
 export * from './AppStateProvider';
+export * from './GlobalProvider';
