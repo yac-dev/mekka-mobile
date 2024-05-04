@@ -2,7 +2,9 @@ import React, { useState, createContext, useEffect } from 'react';
 import { SpaceType, TagType, ApiStatusType, PostType, ApiResultType } from '../../../types';
 import { useGetTags } from '../hooks';
 import { GetTagsOutputType } from '../types';
-import { useCreateMoment, useCreatePost } from '../../CreateNewPost/hooks';
+import { useCreatePost } from '../../CreateNewPost/hooks/useCreatePost';
+import { useCreateMoment } from '../../CreateNewPost/hooks/useCreateMoment';
+
 import {
   CreateMomentInputType,
   CreateMomentOutputType,

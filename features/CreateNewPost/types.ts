@@ -14,7 +14,12 @@ export type CreatePostOutputType = {
   createdTags?: TagType[];
 };
 
-export type CreateMomentInputType = CreatePostInputType;
+export type CreateMomentInputType = FormDataType & {
+  userId: string;
+  spaceId: string;
+  reactions: ReactionType[];
+  disappearAfter: string;
+};
 
 export type CreateMomentOutputType = {
   post: PostType;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ApiResultType, AuthType } from '../../../types';
 import { CreateMomentInputType, CreateMomentOutputType } from '../types';
-import { createMoment } from '../apis';
+import { createMoment } from '../apis/createMoment';
 
 export const useCreateMoment = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<CreateMomentOutputType>>({
@@ -12,6 +12,7 @@ export const useCreateMoment = () => {
 
   const requestApi = async (input: CreateMomentInputType) => {
     try {
+      console.log('heeeey moment');
       setApiResult((previous) => {
         return {
           ...previous,

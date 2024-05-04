@@ -606,12 +606,7 @@ export const SpacesDrawerNavigator = (props) => {
                     },
                   })}
                 >
-                  {({ navigation, route }) => (
-                    // <SpaceRootProvider space={space}>
-                    //   <SpaceRootStackNavigator />
-                    // </SpaceRootProvider>
-                    <MomentsStackNavigator />
-                  )}
+                  {({ navigation, route }) => <MomentsStackNavigator />}
                 </Drawer.Screen>
               </>
             ))

@@ -3,19 +3,20 @@ import { CreateMomentInputType, CreateMomentOutputType } from '../types';
 
 export const createMoment = async (input: CreateMomentInputType): Promise<CreateMomentOutputType> => {
   try {
-    const filteredCreatedTags = Object.values(input.addedTagsTable.value).filter((element) => element.created);
-    const filteredAddedTags = Object.values(input.addedTagsTable.value)
-      .filter((element) => !element.created)
-      .map((element) => element._id);
+    // const filteredCreatedTags = Object.values(input.addedTagsTable.value).filter((element) => element.created);
+    // const filteredAddedTags = Object.values(input.addedTagsTable.value)
+    //   .filter((element) => !element.created)
+    //   .map((element) => element._id);
+    console.log('working///');
     const payload = new FormData();
 
     payload.append('disappearAfter', input.disappearAfter);
     payload.append('type', input.postType.value);
     payload.append('reactions', JSON.stringify(input.reactions));
     payload.append('caption', input.caption.value);
-    payload.append('createdTags', JSON.stringify(filteredCreatedTags));
-    payload.append('addedTags', JSON.stringify(filteredAddedTags));
-    payload.append('location', JSON.stringify(input.location.value));
+    // payload.append('createdTags', JSON.stringify(filteredCreatedTags));
+    // payload.append('addedTags', JSON.stringify(filteredAddedTags));
+    // payload.append('location', JSON.stringify(input.location.value));
 
     // えーと。。。何したいんだっけ？？buffer側は
     const contents = [],
@@ -66,8 +67,6 @@ export const createMoment = async (input: CreateMomentInputType): Promise<Create
     payload.append('createdBy', input.userId);
     payload.append('spaceId', input.spaceId);
     payload.append('contents', JSON.stringify(contents));
-    console.log('createdTags -> ', filteredCreatedTags);
-    console.log('addedTags -> ', filteredAddedTags);
     //  ----- 一回ここdebuggingでコメントアウト
     for (let content of input.contents.value) {
       const fileName = `${content.uri.split('/').pop().split('.')[0]}.${content.type === 'photo' ? 'png' : 'mp4'}`;
@@ -102,7 +101,8 @@ export const createMoment = async (input: CreateMomentInputType): Promise<Create
     //   message: 'Post has been created successfully.',
     //   duration: 5000,
     // });
-    const result = await backendAPI.post('/posts', payload, {
+    console.log('payload', payload);
+    const result = await backendAPI.post('/posts/moment', payload, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
     const { post } = result.data.data;

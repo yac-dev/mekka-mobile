@@ -57,6 +57,7 @@ export const Moments = () => {
     }
   }
 
+  // うん、やっぱあれだわ、spaceRootの中に無かったからな。。。。ここがめんどいところだな。。。
   const onCreateMomentPress = () => {
     momentsStackNavigation.navigate('CreateNewPostStackNavigator', { screen: 'MomentPost' });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
