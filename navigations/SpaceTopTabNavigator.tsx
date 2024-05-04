@@ -34,7 +34,7 @@ export const SpaceTopTabNavigator = () => {
   const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   // const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const drawerNavigation = useNavigation<SpacesDrawerStackNavigatorProps>();
-  const { loadedScreenTable, setLoadedScreenTable, viewPostsType, setViewPostsType, space } =
+  const { loadedScreenTable, setLoadedScreenTable, viewPostsType, setViewPostsType, space, createPostResult } =
     useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
@@ -322,15 +322,14 @@ export const SpaceTopTabNavigator = () => {
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => onCreatePostPress()}
-        isPressDisabled={false} // createのstatusをここに足す感じだな。
+        isPressDisabled={createPostResult.status === 'loading' ? true : false} // createのstatusをここに足す感じだな。
         hasShadow
       >
-        <VectorIcon.II name='add' size={32} color={'white'} />
-        {/* {createNewPostResult.isCreating ? (
-          <ActivityIndicator size={'small'} />
-          ) : (
-          <Ionicons name='add' size={32} color={'black'} />
-        )} */}
+        {createPostResult.status === 'loading' ? (
+          <ActivityIndicator size={'small'} color={'white'} />
+        ) : (
+          <VectorIcon.II name='add' size={32} color={'white'} />
+        )}
       </AppButton.Icon>
       <ViewPostsTypeToggleButton onGridViewPress={onGridViewPress} onMapViewPress={onMapViewPress} />
     </View>

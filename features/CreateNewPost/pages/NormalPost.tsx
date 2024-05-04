@@ -35,9 +35,14 @@ import { CurrentSpaceContext } from '../../../providers';
 
 const NormalPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
-  const { formData, onCaptionChange, pickUpContents, onRemoveContentPress } = useContext(CreateNewPostContext);
+  const { formData, onCaptionChange, pickUpContents, onRemoveContentPress, onPostTypeChange } =
+    useContext(CreateNewPostContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
   const oneAssetWidth = Dimensions.get('window').width / 3;
+
+  useEffect(() => {
+    onPostTypeChange('normal');
+  }, []);
 
   useEffect(() => {
     createNewPostStackNavigation.setOptions({

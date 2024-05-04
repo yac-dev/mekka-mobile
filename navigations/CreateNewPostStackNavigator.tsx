@@ -115,30 +115,6 @@ const CreateNewPostStackNavigator = () => {
       <CreateNewPosyStack.Navigator>
         <CreateNewPosyStack.Group>
           <CreateNewPosyStack.Screen
-            name='SelectPostType'
-            component={SelectPostType}
-            options={({ navigation }) => ({
-              headerShown: true, // ここtrueにすると、,,,
-              headerLeft: () => (
-                <AppButton.Icon
-                  onButtonPress={() => navigation.goBack()}
-                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.II name='close' size={18} color={Colors.white} />
-                </AppButton.Icon>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <CreateNewPosyStack.Screen
             name='NormalPost'
             component={NormalPost}
             options={({ navigation }) => ({
@@ -149,7 +125,7 @@ const CreateNewPostStackNavigator = () => {
                   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
                   hasShadow={false}
                 >
-                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
               title: '',
