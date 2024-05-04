@@ -1,7 +1,6 @@
 import React, { useContext, useCallback, useEffect } from 'react';
 import { View, Text, Dimensions, ActivityIndicator, FlatList } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { MomentsContext } from '../contexts/MomentsContext';
 import MomentThumbnail from '../components/MomentThumbnail';
 import { AppButton, PostThumbnail } from '../../../components';
 import { VectorIcon } from '../../../Icons';
@@ -15,6 +14,7 @@ import { MomentsStackNavigatorProps } from '../../../navigations';
 import * as Haptics from 'expo-haptics';
 import { useCreatePost } from '../../CreateNewPost/hooks';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
+import { MomentsContext } from '../../Space';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
@@ -23,7 +23,7 @@ const ItemWidth = Dimensions.get('window').width / 3;
 export const Moments = () => {
   const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
   const { apiResult, requestApi, addCreatedMoment } = useGetMomentPosts();
-  const { createMomentResult, requestCreateMoment } = useContext(SpaceRootContext);
+  const { createMomentResult, requestCreateMoment } = useContext(MomentsContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   useEffect(() => {

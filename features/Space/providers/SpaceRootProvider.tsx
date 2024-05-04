@@ -25,8 +25,6 @@ type SpaceRootContextType = {
   setLoadedScreenTable: React.Dispatch<React.SetStateAction<LoadedTagScreenTableType>>;
   createPostResult: ApiResultType<CreatePostOutputType>;
   requestCreatePost: (input: CreatePostInputType) => void;
-  createMomentResult: ApiResultType<CreateMomentOutputType>;
-  requestCreateMoment: (input: CreateMomentInputType) => void;
   currentPost: PostType;
   setCurrentPost: React.Dispatch<React.SetStateAction<PostType>>;
 };
@@ -43,13 +41,7 @@ export const SpaceRootContext = createContext<SpaceRootContextType>({
     data: void 0,
     message: '',
   },
-  createMomentResult: {
-    status: 'idling',
-    data: void 0,
-    message: '',
-  },
   requestCreatePost: () => {},
-  requestCreateMoment: () => {},
 
   currentPost: void 0,
   setCurrentPost: () => {},
@@ -66,7 +58,6 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, d
   const [space, setSpace] = useState<SpaceType>(defaultSpace);
   const { apiResult: getTagsResult, requestApi: requestGetTags } = useGetTags();
   const { apiResult: createPostResult, requestApi: requestCreatePost } = useCreatePost();
-  const { apiResult: createMomentResult, requestApi: requestCreateMoment } = useCreateMoment();
   const [viewPostsType, setViewPostsType] = useState<ViewPostsType>('grid');
   const [loadedScreenTable, setLoadedScreenTable] = useState<LoadedTagScreenTableType>({
     [defaultSpace.tags[0]._id]: true,
@@ -89,8 +80,6 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, d
         setLoadedScreenTable,
         createPostResult,
         requestCreatePost,
-        createMomentResult,
-        requestCreateMoment,
         currentPost,
         setCurrentPost,
       }}

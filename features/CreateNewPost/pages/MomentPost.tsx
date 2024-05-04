@@ -27,6 +27,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { CreateMomentInputType } from '../types';
+import { MomentsContext } from '../../Space/providers/MomentsProvider';
 
 const MomentPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
@@ -37,15 +38,13 @@ const MomentPost = () => {
   const { auth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { isIpad } = useContext(GlobalContext);
-  const { requestCreateMoment, createMomentResult } = useContext(SpaceRootContext);
+  const { requestCreateMoment, createMomentResult, space } = useContext(MomentsContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
 
   // このpageに来た時点で、postTypeをmomentにする。
   useEffect(() => {
     onPostTypeChange('moment');
   }, []);
-
-  console.log('testing state', createMomentResult);
 
   useEffect(() => {
     createNewPostStackNavigation.setOptions({
@@ -76,9 +75,7 @@ const MomentPost = () => {
       reactions: currentSpace.reactions,
       disappearAfter: currentSpace.disappearAfter.toString(),
     };
-    console.log('input is this -> ', input);
     requestCreateMoment(input);
-    // const requestCreateMoment: (input: CreatePostInputType) => void　なんでcreatePostInputTypeなのしねよ。
     createNewPostStackNavigation.goBack();
   };
 

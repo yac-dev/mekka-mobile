@@ -35,6 +35,7 @@ import { TagScreenProvider } from '../features';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { SpaceRootStackParams } from './SpaceRootStackNavigator';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { MomentsProvider } from '../features/Space/providers/MomentsProvider';
 
 export type SpacesDrawerParams = {
   [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
@@ -606,7 +607,11 @@ export const SpacesDrawerNavigator = (props) => {
                     },
                   })}
                 >
-                  {({ navigation, route }) => <MomentsStackNavigator />}
+                  {({ navigation, route }) => (
+                    <MomentsProvider defaultSpace={space}>
+                      <MomentsStackNavigator />
+                    </MomentsProvider>
+                  )}
                 </Drawer.Screen>
               </>
             ))

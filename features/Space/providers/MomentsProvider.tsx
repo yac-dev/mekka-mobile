@@ -1,13 +1,8 @@
 import React, { useState, createContext, useEffect } from 'react';
-import { SpaceType, TagType, ApiStatusType, PostType, ApiResultType } from '../../../types';
+import { SpaceType, ApiResultType } from '../../../types';
 import { useCreateMoment } from '../../CreateNewPost/hooks/useCreateMoment';
 
-import {
-  CreateMomentInputType,
-  CreateMomentOutputType,
-  CreatePostInputType,
-  CreatePostOutputType,
-} from '../../CreateNewPost/types';
+import { CreateMomentInputType, CreateMomentOutputType } from '../../CreateNewPost/types';
 
 type MomentsContextType = {
   space: SpaceType;
