@@ -24,6 +24,8 @@ type TagScreenContextType = {
   setCurrentPost: React.Dispatch<React.SetStateAction<PostType>>;
   currentPostIndex: number;
   onCurrentPostIndexChange: (index: number) => void;
+  mapPostInitialFetchCompleted: boolean;
+  setMapPostInitialFetchCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const initialApiResult = {
@@ -63,6 +65,8 @@ export const TagScreenContext = createContext<TagScreenContextType>({
   setCurrentPost: () => {},
   currentPostIndex: 0,
   onCurrentPostIndexChange: () => void 0,
+  mapPostInitialFetchCompleted: false,
+  setMapPostInitialFetchCompleted: () => {},
 });
 
 export type ViewPostsType = 'grid' | 'map';
@@ -94,6 +98,7 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
     latitudeDelta: 100.0922,
     longitudeDelta: 100.0421,
   });
+  const [mapPostInitialFetchCompleted, setMapPostInitialFetchCompleted] = useState<boolean>(false);
   // このscreen loadedをな。。。
 
   const onRegionChangeComplete = (region: Region) => {
@@ -108,6 +113,8 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
   useEffect(() => {
     requestGetPostsApi({ tagId: tag._id, currentPage: 0 });
   }, []);
+
+  // 最初のfetchだけ近づけるようにしてーよな。。。
 
   useEffect(() => {
     requestGetPostsByTagIdAndRegion({ tagId: tag._id, region });
@@ -130,6 +137,22 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
     };
   }, [appState]);
 
+  useEffect(() => {
+    if (getPostsByTagIdAndRegionResult.status === 'success' && !mapPostInitialFetchCompleted) {
+      setMapPostInitialFetchCompleted(true);
+      const firstPost = getPostsByTagIdAndRegionResult.data?.posts[0];
+      const newLat = firstPost.location.coordinates[1] - 0.0065;
+      mapRef.current?.animateToRegion({
+        latitude: newLat,
+        longitude: firstPost.location.coordinates[0],
+        latitudeDelta: 50.0922,
+        longitudeDelta: 50.0421,
+        // latitudeDelta: 0.0322,
+        // longitudeDelta: 0.0221, // これだとだいぶ近いかな。。。
+      });
+    }
+  }, [getPostsByTagIdAndRegionResult.status]);
+
   return (
     <TagScreenContext.Provider
       value={{
@@ -148,6 +171,8 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
         setCurrentPost,
         currentPostIndex,
         onCurrentPostIndexChange,
+        mapPostInitialFetchCompleted,
+        setMapPostInitialFetchCompleted,
       }}
     >
       {children}

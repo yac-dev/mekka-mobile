@@ -12,7 +12,8 @@ type MapPostsProps = {
 };
 
 export const MapPosts: React.FC<MapPostsProps> = () => {
-  const { mapRef, region, onRegionChangeComplete, getPostsByTagIdAndRegionResult } = useContext(TagScreenContext);
+  const { mapRef, region, onRegionChangeComplete, getPostsByTagIdAndRegionResult, mapPostInitialFetchCompleted } =
+    useContext(TagScreenContext);
   // const { apiResult, requestApi } = useGetPostsByTagIdAndRegion();
   // const { mapRef, region, onRegionChangeComplete } = useMapPostsState();
 
