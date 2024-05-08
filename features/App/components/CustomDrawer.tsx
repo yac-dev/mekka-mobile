@@ -41,7 +41,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { auth } = useContext(AuthContext);
-  const { logsTable } = useContext(LogsTableContext);
+  const { logsTable, setLogsTable } = useContext(LogsTableContext);
   const { mySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { spaceUpdates } = useContext(SpaceUpdatesContext);
@@ -143,6 +143,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
               </TouchableOpacity>
               {/* <Text style={{ color: 'white' }}>Add space</Text> */}
             </View>
+            {/* space tapで、spaceAndUserRelationshipのlastCheckedInでupdateしような。 */}
             {mySpaces.map((space: SpaceType) => {
               const isFocused = currentSpace._id === space._id;
               const totalLogs =
@@ -394,6 +395,15 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     // currentTagのを読み込んでくる必要がある。
                     navigation.toggleDrawer();
                     setCurrentTag(tag);
+                    setLogsTable((previous) => {
+                      return {
+                        ...previous,
+                        [currentSpace._id]: {
+                          ...previous[currentSpace._id],
+                          [tag._id]: 0,
+                        },
+                      };
+                    });
                     // drawer側のnavigationをしたい場合には、↓を動かしたいんだよね。。。これでも一応動いてはいるがバグの温床になりそう。。。
                     homeStackNavigation.navigate('SpacesDrawerNavigator', {
                       screen: `Space_${currentSpace._id}`,
