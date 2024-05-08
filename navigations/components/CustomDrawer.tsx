@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { VectorIcon } from '../../Icons';
 import { Image as ExpoImage } from 'expo-image';
 import { AuthContext } from '../../providers';
+import { LogsTableContext } from '../../providers';
 
 type CustomDrawerProps = DrawerContentComponentProps & {
   onAuthCaretDownPress: () => void;
@@ -12,6 +13,7 @@ type CustomDrawerProps = DrawerContentComponentProps & {
 
 export const CustomDrawer: React.FC<CustomDrawerProps> = ({ state, descriptors, navigation, onAuthCaretDownPress }) => {
   const { auth } = useContext(AuthContext);
+  // const {logsTable} = useContext(LogsTableContext);
   const onCloseDrawerPress = () => {
     navigation.closeDrawer();
   };

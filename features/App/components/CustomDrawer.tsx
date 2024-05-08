@@ -3,7 +3,13 @@ import { View, Text, TouchableOpacity, ScrollView, FlatList, Platform, Alert } f
 import { AppButton } from '../../../components/Button';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
-import { AuthContext, CurrentSpaceContext, CurrentTagContext, SpaceUpdatesContext } from '../../../providers';
+import {
+  AuthContext,
+  CurrentSpaceContext,
+  CurrentTagContext,
+  SpaceUpdatesContext,
+  LogsTableContext,
+} from '../../../providers';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { MySpacesContext } from '../../../providers';
 import { SpaceType } from '../../../types';
@@ -35,6 +41,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { auth } = useContext(AuthContext);
+  const { logsTable } = useContext(LogsTableContext);
   const { mySpaces } = useContext(MySpacesContext);
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { spaceUpdates } = useContext(SpaceUpdatesContext);
@@ -138,6 +145,10 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
             </View>
             {mySpaces.map((space: SpaceType) => {
               const isFocused = currentSpace._id === space._id;
+              const totalLogs =
+                logsTable[space._id] &&
+                Object.values(logsTable[space._id]).reduce((accumlator, logs) => accumlator + logs, 0);
+
               return (
                 <TouchableOpacity
                   activeOpacity={0.5}
@@ -168,32 +179,34 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                         source={{ uri: space.icon }}
                         contentFit='contain'
                       />
-                      <View
-                        style={{
-                          width: 24,
-                          height: 24,
-                          borderRadius: 12,
-                          backgroundColor: 'black',
-                          position: 'absolute',
-                          top: -5,
-                          right: -5,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
+                      {totalLogs ? (
                         <View
                           style={{
-                            width: 16,
-                            height: 16,
-                            borderRadius: 8,
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
+                            backgroundColor: 'black',
+                            position: 'absolute',
+                            top: -5,
+                            right: -5,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: 'red',
                           }}
                         >
-                          <Text style={{ color: 'white', fontSize: 12 }}>12</Text>
+                          <View
+                            style={{
+                              width: 16,
+                              height: 16,
+                              borderRadius: 8,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              backgroundColor: 'red',
+                            }}
+                          >
+                            <Text style={{ color: 'white', fontSize: 12 }}>{totalLogs}</Text>
+                          </View>
                         </View>
-                      </View>
+                      ) : null}
                     </View>
                     {/* <Text numberOfLines={1} style={{ color: 'white', fontSize: 15 }}>
                     {space.name}
@@ -366,6 +379,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
           <ScrollView>
             {currentSpace.tags.map((tag, index) => {
               const isFocused = currentTag?._id === tag._id;
+              const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][tag._id];
               return (
                 <TouchableOpacity
                   key={index}
@@ -432,20 +446,20 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                   </Text> */}
                       </View>
                     </View>
-                    {/* {sum ? (
-                <View
-                  style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: 12,
-                    backgroundColor: 'red',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white' }}>{sum}</Text>
-                </View>
-              ) : null} */}
+                    {tagLogs ? (
+                      <View
+                        style={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: 8,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          backgroundColor: 'red',
+                        }}
+                      >
+                        <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+                      </View>
+                    ) : null}
                   </View>
                 </TouchableOpacity>
               );

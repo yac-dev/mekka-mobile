@@ -12,6 +12,8 @@ import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../../../navigations/RootStackNavigator';
 import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
+import { useGetLogsByUserId } from '../hooks';
+import { LogsTableContext } from '../../../providers';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -27,6 +29,7 @@ export const Root = () => {
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
+  const { setLogsTable } = useContext(LogsTableContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const {
     apiResult: getMySpacesApiResult,
@@ -34,6 +37,7 @@ export const Root = () => {
     requestRefresh: refreshGetMySpaces,
   } = useGetMySpaces();
 
+  const { apiResult: getLogsResult, requestApi: requestGetLogs } = useGetLogsByUserId();
   // 1, loadmeをまずする
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
@@ -57,6 +61,7 @@ export const Root = () => {
   useEffect(() => {
     if (auth) {
       requestGetMySpaces({ userId: auth._id });
+      requestGetLogs({ userId: auth._id });
     }
   }, [auth]);
 
@@ -70,6 +75,12 @@ export const Root = () => {
   }, [getMySpacesApiResult]);
 
   useEffect(() => {
+    if (getLogsResult.status === 'success') {
+      setLogsTable(getLogsResult.data?.logs);
+    }
+  }, [getLogsResult.status]);
+
+  useEffect(() => {
     if (auth) {
       const appStateListener = AppState.addEventListener('change', (nextAppState) => {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
@@ -77,6 +88,7 @@ export const Root = () => {
           // getMySpaces();
           // getMySpacesFromInactive();
           refreshGetMySpaces({ userId: auth._id });
+          requestGetLogs({ userId: auth._id });
           console.log('App has come to the foreground!');
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。

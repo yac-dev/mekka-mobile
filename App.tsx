@@ -22,6 +22,7 @@ import {
   CurrentTagProvider,
   AppStateProvider,
   GlobalProvider,
+  LogsTableProvider,
 } from './providers';
 import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -206,6 +207,7 @@ const App: React.FC = function () {
             CurrentSpaceProvider,
             CurrentTagProvider,
             AppStateProvider,
+            LogsTableProvider,
           ]}
         >
           <Root />

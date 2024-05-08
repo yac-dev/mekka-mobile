@@ -14,3 +14,17 @@ export type GetMySpacesOutput = {
   mySpaces: SpaceType[];
   updateTable: SpaceUpdatesType;
 };
+
+export type GetLogsByUserIdInputType = {
+  userId: string;
+};
+
+type TagTable = {
+  [key: string]: number;
+};
+
+export type GetLogsByUserIdOutputType = {
+  logs: {
+    [key: string]: TagTable;
+  };
+};

@@ -187,3 +187,11 @@ export type PostType = {
   totalReactions?: number;
   location: LocationType;
 };
+
+export type LogsTagTableType = {
+  [key: string]: number;
+};
+
+export type LogsTableType = {
+  [key: string]: LogsTagTableType;
+};
