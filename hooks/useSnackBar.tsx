@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
-import { SnackBarStatusType, SnackBarType, INITIAL_STATUS_BAR } from '../types';
+import { SnackBarStatusType, SnackBarType, INITIAL_SNACK_BAR } from '../types';
 
-export const useSnackBar = (): { snackBar: SnackBarType; hideSnackBar: () => void } => {
-  const [snackBar, setSnackBar] = useState<SnackBarType>(INITIAL_STATUS_BAR);
+export type ShowSnackBarInputType = {
+  status: SnackBarStatusType;
+  message: string;
+  duration: number;
+};
+
+export const useSnackBar = (): {
+  snackBar: SnackBarType;
+  showSnackBar: (status: SnackBarStatusType, message: string, duration: number) => void;
+  hideSnackBar: () => void;
+} => {
+  const [snackBar, setSnackBar] = useState<SnackBarType>(INITIAL_SNACK_BAR);
+
+  const showSnackBar = (status: SnackBarStatusType, message: string, duration: number) => {
+    const snackBarOption = {
+      isVisible: true,
+      status: status,
+      message,
+      duration,
+    };
+    setSnackBar(snackBarOption);
+  };
+
   const hideSnackBar = () => {
     setSnackBar({
       isVisible: false,
@@ -14,6 +35,7 @@ export const useSnackBar = (): { snackBar: SnackBarType; hideSnackBar: () => voi
 
   return {
     snackBar,
+    showSnackBar,
     hideSnackBar,
   };
 };
