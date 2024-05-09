@@ -1,15 +1,10 @@
-import React, { useContext, useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View } from 'react-native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../themes';
-import { TagScreenContext, useGetPosts } from '../features';
+import { TagScreenContext } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { TagScreenTopTabNavigator } from './TagScreenTopTabNavigator';
-import { TagType } from '../types';
-import { TagScreenProvider } from '../features';
-import { AppButton } from '../components/Button';
-import { VectorIcon } from '../Icons/VectorIcons';
-import { ViewPostsTypeToggleButton } from '../features/Space/components/ViewPostsTypeToggleButtons';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { CurrentTagContext } from '../providers';
 import { useNavigation } from '@react-navigation/native';
@@ -34,35 +29,9 @@ const TagScreenStack = createNativeStackNavigator<TagScreenStackParams>();
 export const TagScreenStackNavigator: React.FC = () => {
   const { tag, addCreatedPost } = useContext(TagScreenContext);
   const { setLoadedScreenTable, createPostResult, loadedScreenTable } = useContext(SpaceRootContext);
-  const { apiResult: getPostsApiResult, requestApi: requestGetPosts } = useGetPosts();
   const { currentTag } = useContext(CurrentTagContext);
   const navigation = useNavigation<SpaceTopTabNavigationProp>();
-  // useEffect(() => {
-  //   if (screenLoaded[props.tagObject.tag._id] && createNewPostResult.isSuccess && createNewPostResult.responseData) {
-  //     // responseDataのaddedTags、もしくはresponseData.createdTagの中にprops.tagObject.tag._idがある場合は
-  //     // って言うのが必要になる。
-  //     setPosts((previous) => {
-  //       const updating = [...previous];
-  //       updating.unshift(createNewPostResult.responseData.post);
-  //       return updating;
-  //     });
-  //     setCreateNewPostResult((previous) => {
-  //       return {
-  //         ...previous,
-  //         isCreating: false,
-  //         isSuccess: false,
-  //         responseData: null,
-  //       };
-  //     });
-  //   }
-  // }, [createNewPostResult]);
 
-  const onCreateNewPostButtonPress = () => {
-    console.log('post');
-  };
-
-  // navigation変わった後って、そもそもtagのscreenが登録されていないのだろうか。。。？どうだろう。
-  // これ、めちゃきちゃ必要になる。。。
   useEffect(() => {
     if (currentTag) {
       navigation.navigate(`Tag_${currentTag._id}`, { screen: 'GridView' });
@@ -78,7 +47,6 @@ export const TagScreenStackNavigator: React.FC = () => {
     }
   }, [createPostResult.status]);
 
-  // tag channelが開かれたかをもっておかないといけないんだよな。だから、Rootの方でstateを持っておかないといかんな。
   return (
     <View
       style={{ flex: 1 }}
@@ -97,19 +65,6 @@ export const TagScreenStackNavigator: React.FC = () => {
             name='TagScreenTopTabNavigator'
             options={({ navigation }) => ({
               headerShown: false,
-              // headerLeft: () => (
-              //   <TouchableOpacity onPress={() => navigation.goBack()}>
-              //     <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-              //   </TouchableOpacity>
-              // ),
-              // headerTitle: '',
-              // headerStyle: {
-              //   backgroundColor: 'rgb(30, 30, 30)',
-              // },
-              // headerTitleStyle: {
-              //   fontWeight: 'bold',
-              //   color: primaryTextColor,
-              // },
             })}
           >
             {() => <TagScreenTopTabNavigator />}
@@ -121,7 +76,6 @@ export const TagScreenStackNavigator: React.FC = () => {
             component={ViewPostStackNavigator}
             options={({ navigation }) => ({
               headerShown: false,
-              // headerTransparent: true,
               headerTitle: '',
               headerStyle: {
                 backgroundColor: 'transparent',

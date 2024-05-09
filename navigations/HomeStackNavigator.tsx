@@ -1,11 +1,8 @@
-import React, { useContext, useEffect } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { Colors, TextColor } from '../themes';
-import Home from '../features/Home/pages/Home';
+import React, { useContext } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { Colors } from '../themes';
 import { primaryBackgroundColor } from '../themes/color';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import CreateNewSpace from '../features/CreateNewSpace/pages/CreateNewSpace';
 import WriteDescription from '../features/CreateNewSpace/pages/WriteDescription';
 import EmojiPicker from '../features/CreateNewSpace/pages/EmojiPicker';
 import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
@@ -19,15 +16,11 @@ import ProfileStackNavigator from './ProfileStackNavigator';
 import LocationPicker from '../features/CreateNewPost/pages/LocationPicker';
 import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import Report from '../features/Report/pages/Report';
 import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
-// import DeleteMyAccount from '../features/DeleteAccount/pages/DeleteMyAccount';
 import { DeleteMyAccount, WelcomePage } from '../features';
-// import WelcomePage from '../features/NotAuthenticated/pages/WelcomePage';
 import Signup from '../features/NotAuthenticated/pages/Signup';
 import EULA from '../features/NotAuthenticated/pages/EULA';
-
 import EditTag from '../features/EditTag/pages/Form';
 import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
@@ -39,7 +32,6 @@ import { MembersStackNavigator } from './MembersStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { MomentsStackNavigator } from './MomentsStackNavigator';
-// import { SpacesDrawerParams } from './SpacesDrawerNavigator';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -98,7 +90,6 @@ export type HomeStackParams = {
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
 
 const HomeStack = createNativeStackNavigator<HomeStackParams>();
-// export type HomeStackNavigatorProps =
 
 export const HomeStackNavigator: React.FC = (props) => {
   const { auth } = useContext(AuthContext);
@@ -112,16 +103,13 @@ export const HomeStackNavigator: React.FC = (props) => {
       <HomeStack.Navigator
         screenOptions={({ navigation }) => ({
           headerShown: false,
-          // headerShown: true,
         })}
       >
         <HomeStack.Group>
           <HomeStack.Screen
             name='SpacesDrawerNavigator'
             component={SpacesDrawerNavigator}
-            options={({ navigation }) => ({
-              // headerShown: false,
-            })}
+            options={({ navigation }) => ({})}
           />
           <HomeStack.Screen
             name='ViewPost'
@@ -211,12 +199,11 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          {/* moment cre */}
           <HomeStack.Screen
             name='ProfileStackNavigator'
             component={ProfileStackNavigator}
             options={({ navigation }) => ({
-              headerShown: true, // ここtrueにすると、,,,
+              headerShown: true,
               headerLeft: () => {
                 return (
                   <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -268,7 +255,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: TextColor.primary,
+                color: Colors.white,
               },
             })}
           />
@@ -300,8 +287,7 @@ export const HomeStackNavigator: React.FC = (props) => {
             name='SpaceDetailStackNavigator'
             component={SpaceDetailStackNavigator}
             options={({ navigation }) => ({
-              // headerShown: true, // ここtrueにすると、,,,
-              headerShown: false, // ここtrueにすると、,,,
+              headerShown: false,
               headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Ionicons name='close-circle-sharp' size={30} color={'white'} />
@@ -354,7 +340,6 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          {/* EULA */}
           <HomeStack.Screen
             name='EULA'
             component={EULA}
@@ -379,8 +364,7 @@ export const HomeStackNavigator: React.FC = (props) => {
             name='EditProfileStackNavigator'
             component={EditProfileStackNavigator}
             options={({ navigation }) => ({
-              // headerShown: true, // ここtrueにすると、,,,
-              headerShown: false, // ここtrueにすると、,,,
+              headerShown: false,
               headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Ionicons name='close-circle-sharp' size={30} color={'white'} />
@@ -412,7 +396,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: TextColor.primary,
+                color: Colors.white,
               },
             })}
           />
@@ -433,7 +417,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: TextColor.primary,
+                color: Colors.white,
               },
             })}
           />

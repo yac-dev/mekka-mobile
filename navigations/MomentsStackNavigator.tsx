@@ -1,11 +1,6 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { SpaceInfo } from '../features/SpaceInfo/pages/SpaceInfo';
 import { Colors } from '../themes/colors';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HomeStackNavigatorProps, HomeStackParams } from './HomeStackNavigator';
 import { Moments } from '../features/Moments/pages/Moments';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { AppButton } from '../components';
@@ -20,8 +15,6 @@ type MomentsStackParams = {
 };
 export type MomentsStackNavigatorProps = NativeStackNavigationProp<MomentsStackParams>;
 const MomentsStack = createNativeStackNavigator();
-
-// : React.FC<NativeStackScreenProps<HomeStackParams, 'SpaceInfoStackNavigator'>>
 
 export const MomentsStackNavigator = () => {
   return (

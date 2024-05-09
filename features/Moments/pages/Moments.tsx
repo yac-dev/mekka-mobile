@@ -19,8 +19,6 @@ import { Colors } from '../../../themes';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
-// moment postも、今後要件変わるかもしれないし、これをまんま使うのはなんか嫌だな。
-// まあ、早く終わらせたい意味では使い回すのもいんだけどね。。。
 export const Moments = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
@@ -46,8 +44,6 @@ export const Moments = () => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
-  // propsで来てたら、useGetMomentsPosts使う感じだよな。。。
-  // ていうか、apiだけではないことを考えるとさ、命名を変えた方がいいよな。。。シンプルにusePostsでいいよな。。。
   useEffect(() => {
     if (createMomentResult.status === 'success') {
       addCreatedMoment(createMomentResult.data?.post);
@@ -78,23 +74,6 @@ export const Moments = () => {
     momentsStackNavigation.navigate('CreateNewPostStackNavigator', { screen: 'MomentPost' });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
   };
-
-  // const loadMoreItem = () => {
-  //   if (hasMoreItems) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-  // const renderLoader = () => {
-  //   if (hasMoreItems) {
-  //     return isLoading ? (
-  //       <View>
-  //         <ActivityIndicator />
-  //       </View>
-  //     ) : null;
-  //   } else {
-  //     return null;
-  //   }
-  // };
 
   const onPostThumbnailPress = () => {};
 
@@ -138,11 +117,6 @@ export const Moments = () => {
         />
       ) : (
         <View style={{ alignItems: 'center', alignSelf: 'center', marginTop: 50 }}>
-          {/* <ExpoImage
-            source={require('../../../assets/forApp/ghost-disappointed.png')}
-            style={{ width: 25, height: 25, marginRight: 20 }}
-            tintColor='white'
-          /> */}
           <Text
             style={{
               color: 'white',

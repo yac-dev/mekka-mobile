@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { PostType, TagType } from '../../../types';
+import { PostType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
-import { useGetPosts } from '../hooks/useGetPosts';
-import { SpaceRootContext } from '../providers/SpaceRootProvider';
-import { ApiStatusType } from '../../../types';
 import { TagScreenContext } from '../providers';
 import { useNavigation } from '@react-navigation/native';
 import { TagScreenStackNavigatorProps } from '../../../navigations';
@@ -13,25 +10,9 @@ import { TagScreenStackNavigatorProps } from '../../../navigations';
 type GridViewProps = {};
 
 export const GridView: React.FC<GridViewProps> = () => {
-  // const { setCurrentPost } = useContext(SpaceRootContext);
   const navigation = useNavigation<TagScreenStackNavigatorProps>();
   const { getPostsApiResult, setCurrentPost, onCurrentPostIndexChange, tag, addCreatedPost } =
     useContext(TagScreenContext);
-  const { loadedScreenTable, createPostResult } = useContext(SpaceRootContext);
-  // const { apiResult, requestApi, loadMore } = useGetPosts();
-  // const [currentPage, setCurrentPage] = useState<number>(0);
-
-  // useEffect(() => {
-  //   requestApi({ tagId: tag._id, currentPage });
-  // }, []);
-
-  // const loadMoreItem = () => {
-  //   if (hasMoreGridViewPosts) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-  // ここ、currentPage変えればいけるか多分。
-  // loadmoreも上から持ってくるとする。
 
   const renderLoader = () => {
     if (getPostsApiResult.status === 'paging') {
@@ -47,9 +28,6 @@ export const GridView: React.FC<GridViewProps> = () => {
     setCurrentPost(post);
     onCurrentPostIndexChange(index);
     navigation.navigate('ViewPostStackNavigator');
-    // setCurrentPost(post);
-    // ここだとどうだろ、、
-    // ここでnavigationだな。。。
   };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
@@ -72,8 +50,6 @@ export const GridView: React.FC<GridViewProps> = () => {
     );
   }
 
-  console.log(getPostsApiResult.status);
-
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
@@ -90,14 +66,11 @@ export const GridView: React.FC<GridViewProps> = () => {
         contentContainerStyle={{ paddingBottom: 30 }}
       />
       {getPostsApiResult.status === 'refreshing' ? (
-        // <ActivityIndicator
-        //   style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}
-        //   size={'large'}
-        //   color={'white'}
-        // />
-        <View style={{ position: 'absolute', top: 100, left: 10 }}>
-          <Text style={{ color: 'red' }}>Refreshing</Text>
-        </View>
+        <ActivityIndicator
+          style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}
+          size={'large'}
+          color={'white'}
+        />
       ) : null}
     </View>
   );

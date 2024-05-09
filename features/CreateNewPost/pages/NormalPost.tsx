@@ -1,32 +1,8 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-  TextInput,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-} from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
-import * as ImagePicker from 'expo-image-picker';
-import AddPhoto from '../components/AddPhoto';
-import AddCaption from '../components/AddCaption';
-import AddLocation from '../components/AddLocation';
-import AddTags from '../components/AddTags';
-import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
-import backendAPI from '../../../apis/backend';
-import { AntDesign } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { Video } from 'expo-av';
 import { ContentThumbnail } from '../components/ContentThumbnail';
-import { Video as VideoCompressor, Image as ImageCompressor } from 'react-native-compressor';
-import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
-import { SnackBarContext } from '../../../providers';
 import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { ContentType, CreateNewPostContext } from '../contexts';
@@ -38,7 +14,6 @@ const NormalPost = () => {
   const { formData, onCaptionChange, pickUpContents, onRemoveContentPress, onPostTypeChange } =
     useContext(CreateNewPostContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const oneAssetWidth = Dimensions.get('window').width / 3;
 
   useEffect(() => {
     onPostTypeChange('normal');
@@ -72,26 +47,6 @@ const NormalPost = () => {
 
     return (
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-        {/* {createNewPostFormData.contents.length >= 6 ? null : (
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: oneAssetWidth,
-              height: oneAssetWidth,
-              padding: 2,
-              borderRadius: oneAssetWidth / 2,
-            }}
-            onPress={() => pickContents()}
-          >
-            <AntDesign name='plus' size={30} color='black' style={{ marginBottom: 10 }} />
-            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>Add</Text>
-          </TouchableOpacity>
-        )} */}
-
-        {/* {contents.length && list} この記法、react native ではダメらしい。reactではいいんだけど。。。 */}
-        {/* Error: Text strings must be rendered within a <Text> component.って言われる。 */}
         {formData.contents.value.length ? list : null}
       </View>
     );
@@ -146,77 +101,7 @@ const NormalPost = () => {
     }
   }, []);
 
-  // const pickContents = async () => {
-  //   const pickerOption = {
-  //     mediaTypes:
-  //     currentSpace.contentType === 'photo'
-  //         ? ImagePicker.MediaTypeOptions.Images
-  //         : space.contentType === 'video'
-  //         ? ImagePicker.MediaTypeOptions.Videos
-  //         : ImagePicker.MediaTypeOptions.All,
-  //     allowsMultipleSelection: true,
-  //     quality: 1,
-  //     storageOptions: {
-  //       skipBackup: true,
-  //     },
-  //     // duration: space.videoLength ? space.videoLength : 3000,
-  //   };
-
-  //   // 多分、ここのstate changeがおかしいな。。。
-  //   let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
-  //   if (!result.canceled && result.assets) {
-  //     const adding = [];
-  //     for (const asset of result.assets) {
-  //       if (asset.type === 'video') {
-  //         // 基本は, videoの時はdurationがspaceのvideo length以下の時だけ入れる様にする。
-  //         if (asset.duration / 1000 <= space.videoLength) {
-  //           // const compressed = await VideoCompressor.compress(
-  //           //   asset.uri,
-  //           //   {
-  //           //     compressionMethod: 'manual',
-  //           //   },
-  //           //   (progress) => {
-  //           //     // 本当は、ここでprogress使ってsnakcbarを出したりしたいよね。。。
-  //           //   }
-  //           // );
-  //           // console.log('compressed result', compressed);
-  //           // console.log('asset url', asset.uri);
-  //           adding.push({ uri: asset.uri, type: 'video', duration: asset.duration ? asset.duration : null });
-  //           console.log('adding this', adding);
-  //         } else {
-  //           setSnackBar({
-  //             isVisible: true,
-  //             status: 'warning',
-  //             message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
-  //             duration: 5000,
-  //           });
-  //         }
-  //       } else if (asset.type === 'image') {
-  //         // const compressed = await ImageCompressor.compress(asset.uri, { quality: 0.3 });
-  //         adding.push({ uri: asset.uri, type: 'photo', duration: asset.duration ? asset.duration : null });
-  //       }
-  //     }
-  //     // result assets それぞれのassetに対して、dataを作る様にすると。
-  //     setCreateNewPostFormData((previous) => {
-  //       return {
-  //         ...previous,
-  //         contents: [...previous.contents, ...adding],
-  //       };
-  //     });
-  //   }
-  // };
-
   return (
-    // <KeyboardAvoidingView
-    //   // これ動かねーな。
-    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    //   keyboardVerticalOffset={120}
-    //   style={{ flex: 1, backgroundColor: 'black' }}
-    //   // keyboardVerticalOffset={Platform.select({
-    //   //   ios: Header.HEIGHT, // iOS
-    //   //   android:Header.HEIGHT + StatusBar.currentHeight, // android
-    //   // })}
-    // >
     <ScrollView style={{ flex: 1, backgroundColor: 'black' }} automaticallyAdjustKeyboardInsets={true}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>

@@ -1,12 +1,11 @@
-import React, { useEffect, useContext } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, AppState } from 'react-native';
+import { useEffect, useContext } from 'react';
+import { View, ActivityIndicator, AppState } from 'react-native';
 import { useLoadMe } from '../hooks/useLoadMe';
 import { AuthContext } from '../../../providers/AuthProvider';
 import { MySpacesContext } from '../../../providers/MySpacesProvider';
 import { CurrentSpaceContext } from '../../../providers/CurrentSpaceProvider';
 import { SpaceUpdatesContext } from '../../../providers/SpaceUpdatesProvider';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../../../navigations/RootStackNavigator';
@@ -25,10 +24,10 @@ export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>
 export const Root = () => {
   const { appState, onAppStateChange } = useContext(GlobalContext);
   const { auth, setAuth } = useContext(AuthContext);
-  const { mySpaces, setMySpaces } = useContext(MySpacesContext);
-  const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
-  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
-  const { spaceUpdates, setSpaceUpdates } = useContext(SpaceUpdatesContext);
+  const { setMySpaces } = useContext(MySpacesContext);
+  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { setCurrentTag } = useContext(CurrentTagContext);
+  const { setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { setLogsTable } = useContext(LogsTableContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const {
@@ -85,14 +84,11 @@ export const Root = () => {
       const appStateListener = AppState.addEventListener('change', (nextAppState) => {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
           // appが再び開かれたら起こす。
-          // getMySpaces();
-          // getMySpacesFromInactive();
           refreshGetMySpaces({ userId: auth._id });
           requestGetLogs({ userId: auth._id });
           console.log('App has come to the foreground!');
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。
-          console.log('Became inactive...');
           // inactiveになったときに、何かapiを送る。
           // updateSpaceCheckedInDate(); // 一時停止
         }
@@ -106,17 +102,6 @@ export const Root = () => {
     }
   }, [auth, appState]);
 
-  // useEffect(() => {
-  //   if (getMySpacesApiResult.status === 'success') {
-  //     setMySpaces(getMySpacesApiResult.data.spaces);
-  //     setCurrentSpace(getMySpacesApiResult.data.spaces[0]);
-  //   }
-  // }, [getMySpacesApiResult.status]);
-
-  // ここも、loadmeが終わってない限りrenderしないようにするか。。。ちょうどいいタイミングだし。。。
-  //
-
-  // if((authApiResult.status === 'success' && !authApiResult.data) || (authApiResult.status === 'success' && getMySpacesApiResult.status === 'success'))
   if (loadMeApiResult.status === 'loading') {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -124,8 +109,6 @@ export const Root = () => {
       </View>
     );
   }
-  // まずこの上でfetchをしているわけだが、、、
 
-  // authがない場合はwelcome pageを出せば良くて、authが取得できればそのままgetMySpacesのqueryを投げればいい。
   return <RootStackNavigator />;
 };
