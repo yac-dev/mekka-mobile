@@ -1,34 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
+import { CreateNewPostContext } from '../contexts';
 import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { iconColorTable, iconParameterBackgroundColorTable } from '../../../themes/color';
 import { Image as ExpoImage } from 'expo-image';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { CurrentSpaceContext } from '../../../providers';
 
 const AddTags = () => {
-  const { navigation, route, setFormData, formData, tagOptions, setTagOptions } = useContext(CreateNewPostContext);
-  const [accordion, setAccordion] = useState(false);
+  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const { currentSpace } = useContext(CurrentSpaceContext);
+  const { route, setFormData, formData, addTag, removeTag } = useContext(CreateNewPostContext);
 
-  useEffect(() => {
-    if (route?.params?.createdTag) {
-      setFormData((previous) => {
-        return {
-          ...previous,
-          createdTags: [...previous.createdTags, route?.params?.createdTag],
-        };
-      });
-    }
-  }, [route?.params?.createdTag]);
+  // useEffect(() => {
+  //   if (route?.params?.createdTag) {
+  //     setFormData((previous) => {
+  //       return {
+  //         ...previous,
+  //         createdTags: [...previous.createdTags, route?.params?.createdTag],
+  //       };
+  //     });
+  //   }
+  // }, [route?.params?.createdTag]);
 
   const renderTagOptions = () => {
-    if (Object.values(tagOptions).length) {
-      const list = Object.values(tagOptions).map((tag, index) => {
+    if (currentSpace.tags.length) {
+      const list = currentSpace.tags.map((tag, index) => {
         return (
           <TouchableOpacity
             key={index}
@@ -40,27 +41,11 @@ const AddTags = () => {
               borderRadius: 5,
               marginRight: 10,
             }}
-            onPress={() => {
-              setFormData((previous) => {
-                return {
-                  ...previous,
-                  addedTags: {
-                    ...previous.addedTags,
-                    [tag._id]: tag,
-                  },
-                };
-              });
-              setTagOptions((previous) => {
-                const updating = { ...previous };
-                delete updating[tag._id];
-                return updating;
-              });
-            }}
+            onPress={() => addTag(tag)}
           >
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10 }}
-              source={{ uri: tag.icon }}
-              placeholder={blurhash}
+              source={{ uri: tag.icon.url }}
               contentFit='cover'
               transition={1000}
               tintColor={'white'}
@@ -78,7 +63,7 @@ const AddTags = () => {
             <Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Options</Text>
             <TouchableOpacity
               style={{ flexDirection: 'row', alignItems: 'center' }}
-              onPress={() => navigation?.navigate('CreateTag')}
+              onPress={() => createNewPostStackNavigation.navigate('CreateNewTag')}
             >
               <Ionicons name='create' size={17} style={{ marginRight: 5 }} color={'white'} />
               <Text style={{ color: 'white' }}>Create new?</Text>
@@ -108,7 +93,7 @@ const AddTags = () => {
             <Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Options</Text>
             <TouchableOpacity
               style={{ flexDirection: 'row', alignItems: 'center' }}
-              onPress={() => navigation?.navigate('CreateTag')}
+              onPress={() => createNewPostStackNavigation.navigate('CreateNewTag')}
             >
               <Ionicons name='create' size={17} style={{ marginRight: 5 }} color={'white'} />
               <Text style={{ color: 'white' }}>Create new?</Text>
@@ -121,8 +106,8 @@ const AddTags = () => {
   };
 
   const renderAddedTags = () => {
-    if (Object.values(formData.addedTags).length) {
-      const list = Object.values(formData.addedTags).map((tag, index) => {
+    if (Object.values(formData.addedTags.value).length) {
+      const list = Object.values(formData.addedTags.value).map((tag, index) => {
         return (
           <View
             key={index}
@@ -137,31 +122,13 @@ const AddTags = () => {
           >
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 10 }}
-              source={{ uri: tag.icon }}
-              placeholder={blurhash}
+              source={{ uri: tag.icon.url }}
               contentFit='cover'
               transition={1000}
               tintColor={'white'}
             />
             <Text style={{ color: 'white', marginRight: 10 }}>{tag.name}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                setFormData((previous) => {
-                  const updating = { ...previous.addedTags };
-                  delete updating[tag._id];
-                  return {
-                    ...previous,
-                    addedTags: updating,
-                  };
-                });
-                setTagOptions((previous) => {
-                  return {
-                    ...previous,
-                    [tag._id]: tag,
-                  };
-                });
-              }}
-            >
+            <TouchableOpacity onPress={() => removeTag(tag)}>
               <Ionicons name='close-circle-sharp' color='white' size={20} />
             </TouchableOpacity>
           </View>

@@ -45,18 +45,8 @@ export const useDeleteMe = () => {
     }
   };
 
-  const exec = () => {
-    setApiResult((previous) => {
-      return {
-        ...previous,
-        status: 'loading',
-      };
-    });
-  };
-
   return {
     apiResult,
     requestApi,
-    exec,
   };
 };

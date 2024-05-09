@@ -1,28 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
+import { CreateNewPostContext } from '../contexts';
+import { CurrentSpaceContext } from '../../../providers';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
-const SelectPostType = (props) => {
-  const { navigation, setPostType, space } = useContext(CreateNewPostContext);
-  const { setCreateNewPostFormData } = useContext(SpaceRootContext);
-
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => null,
-  //     headerLeft: () => (
-  //       <TouchableOpacity onPress={() => navigation.goBack()}>
-  //         <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // });
+const SelectPostType = () => {
+  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const { onPostTypeChange, formData } = useContext(CreateNewPostContext);
+  const { currentSpace } = useContext(CurrentSpaceContext);
 
   return (
     <View style={{ backgroundColor: 'black', flex: 1 }}>
@@ -36,23 +26,15 @@ const SelectPostType = (props) => {
             marginBottom: 10,
           }}
         >
-          Post {space.name}
+          Post {currentSpace.name}
         </Text>
-        {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Share your photos/videos with your peers from here.
-        </Text> */}
       </View>
       <View style={{}}>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => {
-            setCreateNewPostFormData((previous) => {
-              return {
-                ...previous,
-                postType: 'normal',
-              };
-            });
-            navigation?.navigate('NormalPost');
+            onPostTypeChange('normal');
+            createNewPostStackNavigation.navigate('NormalPost');
           }}
           activeOpacity={1}
         >
@@ -69,15 +51,8 @@ const SelectPostType = (props) => {
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           activeOpacity={1}
           onPress={() => {
-            // setPostType('moment');
-            // navigation?.navigate('MomentPost');
-            setCreateNewPostFormData((previous) => {
-              return {
-                ...previous,
-                postType: 'moment',
-              };
-            });
-            navigation?.navigate('NormalPost');
+            onPostTypeChange('moment');
+            createNewPostStackNavigation.navigate('NormalPost');
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', width: 250 }}>

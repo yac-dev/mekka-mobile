@@ -1,51 +1,65 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { AppButton } from '../../../components';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { VectorIcon } from '../../../Icons';
+
+const formatTime = (inputSeconds: number): { minutes: number; seconds: number } => {
+  const minutes = Math.floor(inputSeconds / 60);
+  const seconds = inputSeconds % 60;
+  return {
+    minutes: minutes,
+    seconds: seconds,
+  };
+};
+
+const calculateSeconds = (minutes: string, seconds: string): number => {
+  const minNumber = Number(minutes);
+  const secNumber = Number(seconds);
+  return minNumber * 60 + secNumber;
+};
 
 const ContentType = () => {
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
-  const [selectedMin, setSelectedMin] = useState();
-  const [selectedSec, setSelectedSec] = useState();
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const { formData, onContentTypeChange, onVideoLengthChange } = useContext(CreateNewSpaceContext);
+  const [selectedMin, setSelectedMin] = useState<string>('');
+  const [selectedSec, setSelectedSec] = useState<string>('');
   const pickerMinRef = useRef();
   const pickerSecRef = useRef();
 
-  const formatTime = (inputSeconds) => {
-    if (inputSeconds < 0) {
-      return 'Invalid input';
-    }
-
-    const minutes = Math.floor(inputSeconds / 60);
-    const seconds = inputSeconds % 60;
-
-    // const minuteText = minutes > 0 ? `${minutes} minute` + (minutes > 1 ? 's' : '') : '';
-    // const secondText = seconds > 0 ? `${seconds} second` + (seconds > 1 ? 's' : '') : '';
-
-    return {
-      minutes: minutes,
-      seconds: seconds,
-    };
-  };
-
-  function calculateSeconds(minutes, seconds) {
-    const minNumber = Number(minutes);
-    const secNumber = Number(seconds);
-
-    if (minNumber < 0 || secNumber < 0 || secNumber >= 60) {
-      return 'Invalid input. Minutes should be non-negative, and seconds should be in the range 0-59.';
-    }
-
-    return minNumber * 60 + secNumber;
-  }
-
-  // 最後は、これの逆をやればいいのかな。
   useEffect(() => {
-    const res = formatTime(formData.videoLength);
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Moment')}
+          disabled={formData.contentType.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color: formData.contentType.isValidated ? 'white' : 'rgb(100,100,100)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData.contentType]);
+
+  // 最初の初期設定60秒をここでまず設定する。
+  useEffect(() => {
+    const res = formatTime(formData.videoLength.value);
     console.log(res);
     setSelectedMin(res.minutes.toString());
     setSelectedSec(res.seconds.toString());
@@ -53,12 +67,7 @@ const ContentType = () => {
 
   useEffect(() => {
     const seconds = calculateSeconds(selectedMin, selectedSec);
-    setFormData((previous) => {
-      return {
-        ...previous,
-        videoLength: seconds,
-      };
-    });
+    onVideoLengthChange(seconds);
   }, [selectedMin, selectedSec]);
 
   const renderMinPickerItems = () => {
@@ -145,14 +154,7 @@ const ContentType = () => {
       <View style={{ marginBottom: 30 }}>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                contentType: 'photo',
-              };
-            })
-          }
+          onPress={() => onContentTypeChange('photo')}
           activeOpacity={1}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -161,20 +163,13 @@ const ContentType = () => {
               <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Photos</Text>
             </View>
           </View>
-          {formData.contentType === 'photo' ? (
+          {formData.contentType.value === 'photo' ? (
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
         </TouchableOpacity>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                contentType: 'video',
-              };
-            })
-          }
+          onPress={() => onContentTypeChange('video')}
           activeOpacity={1}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -183,20 +178,13 @@ const ContentType = () => {
               <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Videos</Text>
             </View>
           </View>
-          {formData.contentType === 'video' ? (
+          {formData.contentType.value === 'video' ? (
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
         </TouchableOpacity>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                contentType: 'photoAndVideo',
-              };
-            })
-          }
+          onPress={() => onContentTypeChange('photoAndVideo')}
           activeOpacity={1}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -209,106 +197,13 @@ const ContentType = () => {
               <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photos & Videos</Text>
             </View>
           </View>
-          {formData.contentType === 'photoAndVideo' ? (
+          {formData.contentType.value === 'photoAndVideo' ? (
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
         </TouchableOpacity>
       </View>
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 30 }}>
-        <TouchableOpacity
-          style={{
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 80,
-            height: 80,
-            padding: 2,
-            borderRadius: 80 / 2,
-            marginRight: 20,
-          }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                contentType: 'photo',
-              };
-            })
-          }
-        >
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>only{'\n'}Photos</Text>
-          {formData.contentType === 'photo' ? (
-            <Ionicons
-              name='checkmark-circle'
-              size={30}
-              color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: -5, right: -5 }}
-            />
-          ) : null}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 80,
-            height: 80,
-            padding: 2,
-            borderRadius: 80 / 2,
-            marginRight: 20,
-          }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                contentType: 'video',
-              };
-            })
-          }
-        >
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}> only Videos</Text>
-          {formData.contentType === 'video' ? (
-            <Ionicons
-              name='checkmark-circle'
-              size={30}
-              color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: -5, right: -5 }}
-            />
-          ) : null}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 80,
-            height: 80,
-            padding: 2,
-            borderRadius: 80 / 2,
-          }}
-          onPress={() =>
-            setFormData((previous) => {
-              return {
-                ...previous,
-                contentType: 'photoAndVideo',
-              };
-            })
-          }
-        >
-          <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>Photos & Videos</Text>
-          {formData.contentType === 'photoAndVideo' ? (
-            <Ionicons
-              name='checkmark-circle'
-              size={30}
-              color={'rgba(45, 209, 40, 0.85)'}
-              style={{ position: 'absolute', top: -5, right: -5 }}
-            />
-          ) : null}
-        </TouchableOpacity>
-      </View> */}
-      {formData.contentType === 'video' || formData.contentType === 'photoAndVideo' ? (
+
+      {formData.contentType.value === 'video' || formData.contentType.value === 'photoAndVideo' ? (
         <View>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
             {/* Just as there are limits on video length on other platforms, you can put limits on the length of videos you

@@ -1,14 +1,15 @@
 import React, { useReducer, useContext, useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { primaryBackgroundColor, inputBackgroundColor, modalBackgroundColor } from '../../../themes/color';
 import { primaryTextColor, placeholderTextColor } from '../../../themes/text';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import backendAPI from '../../../apis/backend';
 import Form from '../components/Form';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
-import { AuthContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { useLoadingSpinner } from '../../../hooks';
 
 type StickerType = {
   _id: string;
@@ -42,7 +43,9 @@ type RouterProps = {
 
 const CreateNewSpace: React.FC<RouterProps> = (props) => {
   const { auth } = useContext(AuthContext);
-  const { setLoading, setSnackBar, setSpaceAndUserRelationships } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
+  const { setSpaceAndUserRelationships } = useContext(GlobalContext);
   const [formData, setFormData] = useState<FormDataStateType>({
     name: '',
     icon: '',
@@ -147,16 +150,16 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
     };
 
     payload.append('icon', JSON.parse(JSON.stringify(iconData)));
-    setLoading(true);
+    showLoadingSpinner(); // こういうの多分必要ないかも、api resultを使っていれば。。。
     const result = await backendAPI.post('/spaces', payload, {
       headers: { 'Content-type': 'multipart/form-data' },
     });
-    setLoading(false);
+    hideLoadingSpinner();
     const { spaceAndUserRelationship } = result.data;
     setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
     setSnackBar({
       isVisible: true,
-      barType: 'success',
+      status: 'success',
       message: `The space has been created successfully. Invite your friends, share your moments${'\n'}and have fun.`,
       duration: 7000,
     });
@@ -189,7 +192,8 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
           <Form />
         </View>
       </SafeAreaView>
-      <LoadingSpinner />
+      <SnackBar.Primary />
+      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
     </CreateNewSpaceContext.Provider>
   );
 };

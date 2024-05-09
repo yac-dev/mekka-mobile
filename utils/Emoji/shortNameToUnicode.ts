@@ -1,4 +1,4 @@
-const emojis = {
+export const emojis = {
   ':england:': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
   ':scotland:': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
   ':wales:': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
@@ -4627,4 +4627,3 @@ const emojis = {
   ':yin_yang:': '☯️',
   ':zap:': '⚡',
 };
-export default emojis;

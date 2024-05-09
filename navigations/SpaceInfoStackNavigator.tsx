@@ -1,40 +1,58 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
-import { primaryBackgroundColor } from '../themes/color';
-import { primaryTextColor } from '../themes/text';
 import { Ionicons } from '@expo/vector-icons';
-import SpaceInfo from '../features/SpaceInfo/pages/SpaceInfo';
-import { SpaceInfoContext } from '../features/SpaceInfo/contexts/SpaceInfoContext';
+import { SpaceInfo } from '../features/SpaceInfo/pages/SpaceInfo';
+import { Colors } from '../themes/colors';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { HomeStackNavigatorProps, HomeStackParams } from './HomeStackNavigator';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons';
 
-const SpaceInfoStackNavigator: React.FC = (props) => {
+type SpaceInfoStackParams = {
+  SpaceInfo: undefined;
+};
+export type SpaceInfoStackNavigatorProps = NativeStackNavigationProp<SpaceInfoStackParams>;
+const SpaceInfoStack = createNativeStackNavigator();
+
+// : React.FC<NativeStackScreenProps<HomeStackParams, 'SpaceInfoStackNavigator'>>
+
+export const SpaceInfoStackNavigator = () => {
   return (
-    <SpaceInfoContext.Provider value={{ spaceAndUserRelationship: props.route.params.spaceAndUserRelationship }}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='SpaceInfo'
-          component={SpaceInfo}
-          options={({ navigation }) => ({
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-              </TouchableOpacity>
-            ),
-            headerShown: false,
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'rgb(30, 30, 30)',
-            },
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: primaryTextColor,
-            },
-          })}
-        />
-      </Stack.Navigator>
-    </SpaceInfoContext.Provider>
+    <SpaceInfoStack.Navigator>
+      <SpaceInfoStack.Screen
+        name='SpaceInfo'
+        component={SpaceInfo}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='close' size={18} color={Colors.white} />
+            </AppButton.Icon>
+          ),
+          headerRight: () => (
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='ellipsis-horizontal' size={18} color={Colors.white} />
+            </AppButton.Icon>
+          ),
+          headerShown: true,
+          headerTitle: '',
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color: Colors.white,
+          },
+        })}
+      />
+    </SpaceInfoStack.Navigator>
   );
 };
-
-export default SpaceInfoStackNavigator;

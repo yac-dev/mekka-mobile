@@ -1,59 +1,40 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+
+const formatTime = (inputMinutes: number): { hours: number; minutes: number } => {
+  const hours = Math.floor(inputMinutes / 60);
+  const minutes = inputMinutes % 60;
+
+  return {
+    hours,
+    minutes,
+  };
+};
+
+const calculateMinutes = (hours: string, minutes: string) => {
+  const hourNumber = Number(hours);
+  const minNumber = Number(minutes);
+
+  const d = hourNumber * 60 + minNumber;
+  return hourNumber * 60 + minNumber;
+};
 
 const Moment = () => {
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
-  const [selectedHour, setSelectedHour] = useState();
-  const [selectedMin, setSelectedMin] = useState();
-  console.log('moment time', formData.disappearAfter);
-
-  const formatTime = (inputMinutes) => {
-    if (inputMinutes < 0) {
-      return 'Invalid input';
-    }
-
-    const hours = Math.floor(inputMinutes / 60);
-    const minutes = inputMinutes % 60;
-
-    // const minuteText = minutes > 0 ? `${minutes} minute` + (minutes > 1 ? 's' : '') : '';
-    // const secondText = seconds > 0 ? `${seconds} second` + (seconds > 1 ? 's' : '') : '';
-
-    return {
-      hours,
-      minutes,
-    };
-  };
-
-  function calculateMinutes(hours, minutes) {
-    const hourNumber = Number(hours);
-    const minNumber = Number(minutes);
-
-    if (hourNumber < 0 || minNumber < 0 || hourNumber >= 60) {
-      return 'Invalid input. Minutes should be non-negative, and seconds should be in the range 0-59.';
-    }
-
-    const d = hourNumber * 60 + minNumber;
-    console.log(d);
-    return hourNumber * 60 + minNumber;
-  }
+  const { formData, onDisapperAfterChange } = useContext(CreateNewSpaceContext);
+  const [selectedHour, setSelectedHour] = useState<string>('');
+  const [selectedMin, setSelectedMin] = useState<string>('');
 
   useEffect(() => {
-    const res = formatTime(formData.disappearAfter);
+    const res = formatTime(formData.disappearAfter.value);
     setSelectedHour(res.hours.toString());
     setSelectedMin(res.minutes.toString());
   }, []);
 
   useEffect(() => {
     const minutes = calculateMinutes(selectedHour, selectedMin);
-    console.log('calcurated', minutes);
-    setFormData((previous) => {
-      return {
-        ...previous,
-        disappearAfter: minutes,
-      };
-    });
+    onDisapperAfterChange(minutes);
   }, [selectedHour, selectedMin]);
 
   const renderHourPickerItems = () => {

@@ -1,303 +1,71 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  ScrollView,
-  Dimensions,
-  SafeAreaView,
-  Platform,
-} from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React, { useState, useEffect, useContext } from 'react';
+import { View } from 'react-native';
 import { GlobalContext } from '../contexts/GlobalContext';
-import { SpaceRootContext } from '../features/Space/contexts/SpaceRootContext';
-import { useNavigation } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import backendAPI from '../apis/backend';
-import { Octicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image as ExpoImage } from 'expo-image';
-import SpaceRootBottomTabNavigator from './SpaceRootBottomTabNavigator';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ViewPostStackNavigator from './ViewPostStackNavigator';
-import { AuthContext } from '../providers';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthContext, CurrentSpaceContext, CurrentTagContext, MySpacesContext } from '../providers';
 import { SnackBarContext } from '../providers';
-const Stack = createNativeStackNavigator();
+import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
+import { useGetTags } from '../features/Space/hooks/useGetTags';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
+import { Colors } from '../themes/colors';
+import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
+import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 
-export const INITIAL_CREATE_NEW_POST_STATE = {
-  postType: '',
-  contents: [],
-  caption: '',
-  dummyCreatedTagId: 1,
-  addedTags: {},
-  tagOptions: [],
-  addedLocationTag: null,
-  location: null,
-  locationTagOptions: [],
-  moments: [],
+export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
+
+export type SpaceRootStackParams = {
+  TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+  CreateNewPostStackNavigator: undefined;
+  MomentsStackNavigator: undefined;
+  SpaceInfoStackNavigator: undefined;
 };
 
-const SpaceRootStackNavigator = (props) => {
-  const { auth, setAuth } = useContext(AuthContext);
-  const { setSnackBar } = useContext(SnackBarContext);
-  // const { spaceAndUserRelationship } = useContext(SpaceRootContext);
-  const {
-    isIpad,
-    spaceMenuBottomSheetRef,
-    currentSpace,
-    setCurrentSpace,
-    currentSpaceAndUserRelationship,
-    // createNewPostFormData,
-    // setCreateNewPostFormData,
-    // setCreateNewPostResult,
-    // createNewPostResult,
-  } = useContext(GlobalContext);
-  const [space, setSpace] = useState(null);
-  const [hasSpaceBeenFetched, setHasSpaceBeenFetched] = useState(false);
-  const [tags, setTags] = useState({});
-  const [haveTagsBeenFetched, setHaveTagsBeenFetched] = useState(false);
-  const chooseViewBottomSheetRef = useRef(null);
-  const locationsViewPostsBottomSheetRef = useRef(null);
-  const [locationsViewPosts, setLocationsViewPosts] = useState([]);
-  const [haveLocationsViewPostsBeenFetched, setHaveLocationsViewPostsBeenFetched] = useState(false);
-  const [isFetchingLocationsViewPosts, setIsFetchingLocationsViewPosts] = useState(false);
-  const [selectedLocationTag, setSelectedLocationTag] = useState(null);
-  const [viewPostsType, setViewPostsType] = useState('grid'); // grid, map, people
-  const [isAfterPosted, setIsAfterPosted] = useState(false);
-  const [screenLoaded, setScreenLoaded] = useState({});
-  const [currentPost, setCurrentPost] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
-  // ここでstateでいいんじゃないかな。。。
-  const [createNewPostFormData, setCreateNewPostFormData] = useState(INITIAL_CREATE_NEW_POST_STATE);
-  const [createNewPostResult, setCreateNewPostResult] = useState({
-    isCreating: false, // responseが返ってくるまでは、ここをtrueにする。そんでsnakckbarで、"processing now"的なindicatorを出しておく。
-    isSuccess: false,
-    isError: false,
-    responseData: null,
-  });
+type SpaceTopTabNavigatorParams = {
+  [key: string]: NavigatorScreenParams<PostsTopTabNavigatorParams>;
+};
 
-  // ここが変わってなかったんだよ。。。なんでだろ？？
-  // signupした後、spaceを作った後（多分spaceにjoinした後）が動いていない。
+type PostsTopTabNavigatorParams = {
+  GridView: undefined;
+  MapView: undefined;
+};
+
+const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
+
+export const SpaceRootStackNavigator: React.FC = () => {
+  const { createPostResult } = useContext(SpaceRootContext);
+  const { setMySpaces } = useContext(MySpacesContext);
+  const { currentSpace } = useContext(CurrentSpaceContext);
+
   useEffect(() => {
-    // isCreating状態ならここのcreateを起こすと。
-    if (createNewPostResult.isCreating) {
-      createPost();
+    if (createPostResult.status === 'success' && createPostResult.data?.createdTags) {
+      // 新しく作ったtagをここに追加する。
+      setMySpaces((previous) => {
+        const updatingSpace = [...previous].map((space) => {
+          if (space._id === currentSpace._id) {
+            space.tags.push(...createPostResult.data?.createdTags);
+          }
+          return space;
+        });
+        return updatingSpace;
+      });
     }
-  }, [createNewPostResult.isCreating]);
+  }, [createPostResult]);
+  // reloadでpropsの影響でバグる。
 
-  const createPost = async () => {
-    const filteredCreatedTags = Object.values(createNewPostFormData.addedTags).filter(
-      (element, index) => element.created
-    );
-    const filteredAddedTags = Object.values(createNewPostFormData.addedTags)
-      .filter((element, index) => !element.created)
-      .map((element, index) => element._id);
-    try {
-      const payload = new FormData();
-      payload.append('disappearAfter', currentSpaceAndUserRelationship.space.disappearAfter);
-      payload.append('type', createNewPostFormData.postType);
-      payload.append('reactions', JSON.stringify(currentSpaceAndUserRelationship.space.reactions));
-      payload.append('caption', createNewPostFormData.caption);
-      payload.append('createdTags', JSON.stringify(filteredCreatedTags));
-      payload.append('addedTags', JSON.stringify(filteredAddedTags));
-      payload.append('location', JSON.stringify(createNewPostFormData.location));
-
-      // えーと。。。何したいんだっけ？？buffer側は
-      const contents = [],
-        bufferContents = [];
-      createNewPostFormData.contents.forEach((content) => {
-        if (content.type === 'photo') {
-          const fileName = `${content.uri.split('/').pop().split('.')[0]}.png`;
-          const contentObject = {
-            fileName: fileName,
-            type: 'photo',
-            duration: null,
-          };
-          contents.push(contentObject);
-
-          const bufferContent = {
-            name: fileName,
-            uri: content.uri,
-            type: content.type === 'image/jpg',
-          };
-          bufferContents.push(bufferContent);
-        } else if (content.type === 'video') {
-          const fileName = `${content.uri.split('/').pop().split('.')[0]}.mp4`;
-          const contentObject = {
-            fileName: fileName,
-            type: 'video',
-            duration: content.duration,
-          };
-
-          contents.push(contentObject);
-          const bufferContent = {
-            name: fileName,
-            uri: content.uri,
-            type: 'video/mp4',
-          };
-          bufferContents.push(bufferContent);
-        }
-      });
-
-      if (createNewPostFormData.addedLocationTag) {
-        if (createNewPostFormData.addedLocationTag.created) {
-          payload.append('createdLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag)); // これがない場合もある。
-        } else {
-          payload.append('addedLocationTag', JSON.stringify(createNewPostFormData.addedLocationTag._id)); // これがない場合もある。
-        }
-      } else {
-        payload.append('addedLocationTag', '');
-      }
-      payload.append('createdBy', auth._id);
-      payload.append('spaceId', currentSpaceAndUserRelationship.space._id);
-      payload.append('contents', JSON.stringify(contents));
-      console.log('createdTags -> ', filteredCreatedTags);
-      console.log('addedTags -> ', filteredAddedTags);
-      //  ----- 一回ここdebuggingでコメントアウト
-      for (let content of createNewPostFormData.contents) {
-        const fileName = `${content.uri.split('/').pop().split('.')[0]}.${content.type === 'photo' ? 'png' : 'mp4'}`;
-        const obj = {
-          name: fileName,
-          uri: content.uri,
-          type: content.type === 'photo' ? 'image/jpg' : 'video/mp4',
-        };
-        payload.append('bufferContents', JSON.parse(JSON.stringify(obj)));
-      }
-      setSnackBar({
-        isVisible: true,
-        status: 'success',
-        message: 'It takes couple seconds to finish processing....',
-        duration: 4000,
-      });
-      const result = await backendAPI.post('/posts', payload, {
-        headers: { 'Content-type': 'multipart/form-data' },
-      });
-      setCreateNewPostResult((previous) => {
-        return {
-          ...previous,
-          isCreating: false,
-          isSuccess: true,
-          responseData: result.data,
-        };
-      });
-      setCreateNewPostFormData(INITIAL_CREATE_NEW_POST_STATE); // initialのstateに戻す。
-      setSnackBar({
-        isVisible: true,
-        status: 'success',
-        message: 'Post has been created successfully.',
-        duration: 5000,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // というよりも、シンプルにsetCreatePostResultの更新じゃないかなー。。？paramsを使うと、その後のstate更新ができなくなるよね。。。
-  // useEffect(() => {
-  //   if (props.route?.params?.createdPost) {
-  //     // ここでapiを起こして、setCreateとかのstate更新をしていく感じかな。。
-  //     createPost();
-  //     console.log('create post!!');
-  //   }
-  // }, [props.route?.params?.createdPost]);
-
-  // const getSpaceById = async () => {
-  //   setHasSpaceBeenFetched(false);
-  //   const result = await backendAPI.get(`/spaces/${props.spaceAndUserRelationship.space._id}`);
-  //   const { space } = result.data;
-  //   setSpace(space);
-  //   setCurrentSpace(space); // globalで持っているspaceだからねこれ。bottom sheetでrenderするためのもの。
-  //   setHasSpaceBeenFetched(true);
-  // };
-
-  // const getTags = async () => {
-  //   const result = await backendAPI.get(`/spaces/${props.spaceAndUserRelationship.space._id}/tags`);
-  //   const { tags } = result.data;
-  //   setTags(() => {
-  //     const table = {};
-  //     tags.forEach((tag, index) => {
-  //       table[tag._id] = {
-  //         tag,
-  //         hasUnreadPosts: tag.updatedAt > props.route?.params?.lastCheckedIn ? true : false,
-  //         createdPosts: false,
-  //       };
-  //     });
-
-  //     return table;
-  //   });
-  //   setHaveTagsBeenFetched(true);
-  // };
-
-  // useEffect(() => {
-  //   getSpaceById();
-  // }, []);
-
-  // useEffect(() => {
-  //   if(space){
-  //     getTags();
-  //   }
-  // },[hasSpaceBeenFetched, space])
-
-  // useEffect(() => {
-  //   getTags();
-  // }, []);
-
-  // useNavigationでも使ってみようかね。
-  // うん。とりあえず、ここでまんまnavigationをすることは難しそう。。。
-  // うん。spaceRootの中にcreateNewPostを入れないといけないよね。。。
   return (
-    <SpaceRootContext.Provider
-      value={{
-        spaceAndUserRelationship: props.spaceAndUserRelationship,
-        // space,
-        hasSpaceBeenFetched,
-        setHasSpaceBeenFetched,
-        navigation: props.navigation,
-        locationsViewPosts,
-        setLocationsViewPosts,
-        haveLocationsViewPostsBeenFetched,
-        setHaveLocationsViewPostsBeenFetched,
-        locationsViewPostsBottomSheetRef,
-        selectedLocationTag,
-        setSelectedLocationTag,
-        isFetchingLocationsViewPosts,
-        setIsFetchingLocationsViewPosts,
-        chooseViewBottomSheetRef,
-        viewPostsType,
-        setViewPostsType,
-        isAfterPosted,
-        setIsAfterPosted,
-        screenLoaded,
-        setScreenLoaded,
-        createNewPostFormData,
-        setCreateNewPostFormData,
-        createNewPostResult,
-        setCreateNewPostResult,
-        currentPost,
-        setCurrentPost,
-        currentIndex,
-        setCurrentIndex,
-      }}
-    >
-      <Stack.Navigator
+    <View style={{ flex: 1 }}>
+      <SpaceRootStack.Navigator
         screenOptions={({ navigation }) => ({
           headerShown: false,
-          // headerShown: true,
         })}
       >
-        <Stack.Group>
-          <Stack.Screen
-            name='SpaceBottomTabNavigator'
-            component={SpaceRootBottomTabNavigator}
-            options={({ navigation }) => ({
-              // headerShown: false,
-            })}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <Stack.Screen
+        <SpaceRootStack.Group>
+          <SpaceRootStack.Screen name='TagsTopTabNavigator' component={SpaceTopTabNavigator} />
+        </SpaceRootStack.Group>
+        <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <SpaceRootStack.Screen
             name='CreateNewPostStackNavigator'
             component={CreateNewPostStackNavigator}
             options={({ navigation }) => ({
@@ -308,13 +76,15 @@ const SpaceRootStackNavigator = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: 'white',
+                color: Colors.white,
               },
             })}
           />
-          {/* <Stack.Screen
-            name='ViewPostStackNavigator'
-            component={ViewPostStackNavigator}
+        </SpaceRootStack.Group>
+        <SpaceRootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <SpaceRootStack.Screen
+            name='SpaceInfoStackNavigator'
+            component={SpaceInfoStackNavigator}
             options={({ navigation }) => ({
               headerShown: false,
               headerTitle: '',
@@ -323,21 +93,12 @@ const SpaceRootStackNavigator = (props) => {
               },
               headerTitleStyle: {
                 fontWeight: 'bold',
-                color: 'white',
+                color: Colors.white,
               },
             })}
-          /> */}
-        </Stack.Group>
-      </Stack.Navigator>
-    </SpaceRootContext.Provider>
+          />
+        </SpaceRootStack.Group>
+      </SpaceRootStack.Navigator>
+    </View>
   );
 };
-
-export default SpaceRootStackNavigator;
-
-// tabBar={(props) => <CustomTabBar {...props} />}
-// screenOptions={({ route }) => ({
-//   tabBarScrollEnabled: false,
-//   lazy: true,
-//   swipeEnabled: false,
-// })}

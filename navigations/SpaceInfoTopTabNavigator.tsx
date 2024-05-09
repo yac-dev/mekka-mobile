@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import backendAPI from '../apis/backend';
+import { Members } from '../features/Members/pages/Members';
 import Feature from '../features/SpaceInfo/pages/Feature';
-import Description from '../features/SpaceInfo/pages/Description';
-import Members from '../features/SpaceInfo/pages/Members';
-import ReportBottomSheet from '../features/SpaceInfo/components/ReportBottomSheet';
 
 const Tab = createMaterialTopTabNavigator();
 
-const SpaceInfoTopTabNavigator = () => {
+type SpaceInfoTopTabNavigatorProps = {};
+
+export const SpaceInfoTopTabNavigator: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
   const reportBottomSheetRef = useRef(null);
 
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
-      <View style={{ alignItems: 'center', marginBottom: 15 }}>
+      <View style={{ alignItems: 'center' }}>
         <View style={{ flexDirection: 'row' }}>
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
@@ -39,15 +38,14 @@ const SpaceInfoTopTabNavigator = () => {
                 key={index}
                 style={{
                   alignItems: 'center',
-                  // backgroundColor: isFocused ? 'rgb(110,110,110)' : null,
-                  padding: 15,
-                  // borderRadius: 20,
-                  borderBottomWidth: isFocused && 1,
-                  borderBottomColor: isFocused && 'white',
+                  paddingHorizontal: 15,
+                  paddingBottom: 10,
                 }}
                 onPress={onPress}
               >
-                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{label}</Text>
+                <Text style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 17, fontWeight: 'bold' }}>
+                  {label}
+                </Text>
               </TouchableOpacity>
             );
           })}
@@ -57,7 +55,7 @@ const SpaceInfoTopTabNavigator = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop: 15 }}>
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={({ route }) => ({
@@ -65,14 +63,9 @@ const SpaceInfoTopTabNavigator = () => {
           swipeEnabled: false,
         })}
       >
-        {/* bottomrefをpropsで渡して、user tapでbottomを出す。 */}
-        <Tab.Screen name={'Feature'} component={Feature} />
-        <Tab.Screen name={'Members'}>{() => <Members reportBottomSheetRef={reportBottomSheetRef} />}</Tab.Screen>
-        <Tab.Screen name={'Description'} component={Description} />
+        <Tab.Screen name={'About'} component={Feature} />
+        <Tab.Screen name={'Members'} component={Members} />
       </Tab.Navigator>
-      <ReportBottomSheet reportBottomSheetRef={reportBottomSheetRef} />
     </View>
   );
 };
-
-export default SpaceInfoTopTabNavigator;

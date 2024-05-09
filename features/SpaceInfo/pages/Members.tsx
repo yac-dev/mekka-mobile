@@ -7,14 +7,14 @@ import { SpaceInfoContext } from '../contexts/SpaceInfoContext';
 import { Image as ExpoImage } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { CurrentSpaceContext } from '../../../providers';
+import { SpaceType } from '../../../types';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type MembersProps = {
+  space: SpaceType;
+};
 
-const Members = (props) => {
-  const { currentSpace } = useContext(GlobalContext);
-  const { spaceAndUserRelationship } = useContext(SpaceInfoContext);
-  const { space } = spaceAndUserRelationship;
+const Members: React.FC<MembersProps> = ({ space }) => {
   const [members, setMembers] = useState([]);
   const [haveMembersBeenFetched, setHaveMembersBeenFetched] = useState(false);
 
@@ -39,9 +39,9 @@ const Members = (props) => {
           borderBottomWidth: 0.3,
           borderBottomColor: 'rgb(90,90,90)',
         }}
-        onPress={() => {
-          props.reportBottomSheetRef.current.snapToIndex(0);
-        }}
+        // onPress={() => {
+        //   props.reportBottomSheetRef.current.snapToIndex(0);
+        // }}
       >
         <ExpoImage
           style={{ width: 25, height: 25, marginRight: 20 }}
@@ -57,7 +57,7 @@ const Members = (props) => {
     Share.share({
       title: 'Share Mekka',
       message: `Access here to download Mekka: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
-        spaceAndUserRelationship.space.secretKey
+        space.secretKey
       }`,
     });
   };

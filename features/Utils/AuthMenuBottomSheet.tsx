@@ -6,6 +6,7 @@ import { GlobalContext } from '../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { SnackBarContext } from '../../providers';
+import { SnackBar } from '../../components';
 
 const AuthMenuBottomSheet = (props) => {
   const snapPoints = useMemo(() => ['60%'], []);
@@ -160,75 +161,6 @@ const AuthMenuBottomSheet = (props) => {
               </View>
               <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} />
             </TouchableOpacity>
-            {/* <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: iconWidth,
-                aspectRatio: 1,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  width: iconWidth * 0.55,
-                  aspectRatio: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                  borderRadius: (iconWidth * 0.65) / 2,
-                  backgroundColor: 'white',
-                }}
-                onPress={() => onEditMyAccountPress()}
-              >
-                <Ionicons name='settings' color='black' size={25} />
-              </TouchableOpacity>
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>Edit</Text>
-            </View> */}
-            {/* <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: iconWidth,
-                aspectRatio: 1,
-              }}
-            >
-              <TouchableOpacity
-                style={{
-                  width: iconWidth * 0.55,
-                  aspectRatio: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                  borderRadius: (iconWidth * 0.65) / 2,
-                  backgroundColor: 'white',
-                }}
-                onPress={() => {
-                  onLogoutPress();
-                }}
-              >
-                <MaterialCommunityIcons name='logout' color='black' size={25} />
-              </TouchableOpacity>
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>Logout</Text>
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', width: iconWidth, aspectRatio: 1 }}>
-              <TouchableOpacity
-                style={{
-                  width: iconWidth * 0.55,
-                  aspectRatio: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                  borderRadius: (iconWidth * 0.65) / 2,
-                  backgroundColor: 'white',
-                }}
-                onPress={() => {
-                  onDeleteMyAccountPress();
-                }}
-              >
-                <MaterialCommunityIcons name='delete-alert' size={25} color='black' style={{}} />
-              </TouchableOpacity>
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
-            </View> */}
           </View>
         </BottomSheetView>
       </GorhomBottomSheet>

@@ -44,8 +44,6 @@ const MapViewStackNavigator: React.FC = (props) => {
     setMapPosts(posts);
     setMapViewPostsFetchingStatus('success');
   };
-  console.log('fetching state -> ', fetchingStatus);
-  console.log('posts -> ', posts);
 
   // props.tagObject.tag._idを使ってqueryをしていくと。
   const onRegionChangeComplete = (region) => {

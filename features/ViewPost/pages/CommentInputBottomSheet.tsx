@@ -19,6 +19,7 @@ import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import * as Haptics from 'expo-haptics';
 import { TagRootContext } from '../../../contexts/TagRootContext';
 import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBar } from '../../../components';
 
 // rgb(35, 35, 35)
 const CommentInputBottomSheet = (props) => {
@@ -205,6 +206,7 @@ const CommentInputBottomSheet = (props) => {
             </View>
           )}
         </BottomSheetView>
+        <SnackBar.Primary />
       </GorhomBottomSheet>
     );
   } else {

@@ -1,54 +1,45 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
 
 const Overview = () => {
-  const { formData, setFormData } = useContext(CreateNewSpaceContext);
-  const [count, setCount] = useState<number>(0);
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const { formData, onNameChange, onIconChange } = useContext(CreateNewSpaceContext);
 
-  const pickImage = async () => {
-    let pickedImage = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [16, 9],
-      quality: 1,
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('SelectSpaceVisibility')}
+          disabled={!formData.name.isValidated || !formData.icon.isValidated}
+        >
+          <Text
+            style={{
+              color: !formData.name.isValidated || !formData.icon.isValidated ? 'rgb(100,100,100)' : 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
     });
-    if (!pickedImage.canceled && pickedImage.assets[0].uri) {
-      // console.log(pickedImage);
-      setFormData((previous) => {
-        return {
-          ...previous,
-          icon: pickedImage.assets[0].uri,
-        };
-      });
-    }
-  };
-  // シンプルなこのarrow functionであると、毎度このfunctionが実行される。componentがrerenderされるたびにこれが実行される。
-  // const renderTextInputLength = () => {
-  //   console.log('hello');
-  //   return (
-  //     <Text style={{ color: formData.name.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>{formData.name.length}</Text>
-  //   );
-  // };
-
-  // これだと、最初のrender時のみのrender。だから、formDataのstateが変わってもここのfunction componentのrenderは更新されない。
-  // const renderTex = useCallback(() => {
-  //   console.log('hello');
-  //   return (
-  //     <Text style={{ color: formData.name.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>{formData.name.length}</Text>
-  //   );
-  // }, []);
+  }, [formData.name, formData.icon]);
 
   const renderText = () => {
     return (
-      <Text style={{ color: formData.name.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>{formData.name.length}</Text>
+      <Text style={{ color: formData.name.value.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>
+        {formData.name.value.length}
+      </Text>
     );
   };
 
@@ -80,7 +71,7 @@ const Overview = () => {
         <TouchableOpacity
           style={{
             alignSelf: 'center',
-            backgroundColor: 'white',
+            backgroundColor: 'rgb(50,50,50)',
             justifyContent: 'center',
             alignItems: 'center',
             width: 120,
@@ -90,18 +81,18 @@ const Overview = () => {
             marginBottom: 20,
             marginTop: 30,
           }}
-          onPress={() => pickImage()}
+          onPress={() => onIconChange()}
         >
-          {formData.icon ? (
+          {formData.icon.value ? (
             <ExpoImage
               style={{ width: 120, height: 120, borderRadius: 120 / 2, alignSelf: 'center' }}
-              source={{ uri: formData.icon }}
+              source={{ uri: formData.icon.value }}
               contentFit='cover'
             />
           ) : (
             <>
-              <MaterialCommunityIcons name='camera-plus' size={30} color='black' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>Space icon</Text>
+              <MaterialCommunityIcons name='camera-plus' size={30} color='white' style={{ marginBottom: 10 }} />
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>Space icon</Text>
             </>
           )}
         </TouchableOpacity>
@@ -124,45 +115,14 @@ const Overview = () => {
             placeholder='Space name'
             placeholderTextColor={'rgb(170,170,170)'}
             autoCapitalize='none'
-            value={formData.name}
-            onChangeText={(text) =>
-              setFormData((previous) => {
-                return {
-                  ...previous,
-                  name: text,
-                };
-              })
-            }
+            value={formData.name.value}
+            onChangeText={(text) => onNameChange(text)}
           />
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {renderText()}
             <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
           </View>
         </View>
-
-        {/* <View style={{ borderBottomColor: 'rgb(88, 88, 88)', borderBottomWidth: 1 }}>
-          <TextInput
-            style={{
-              fontSize: 18,
-              color: 'white',
-            }}
-            placeholder='Space name'
-            placeholderTextColor={'rgb(170,170,170)'}
-            autoCapitalize='none'
-            value={formData.name}
-            onChangeText={(text) =>
-              setFormData((previous) => {
-                return {
-                  ...previous,
-                  name: text,
-                };
-              })
-            }
-          />
-          <Text style={{ marginRight: 10, alignSelf: 'flex-end', color: 'rgb(170,170,170)' }}>
-            {formData.name.length}
-          </Text>
-        </View> */}
       </ScrollView>
     </KeyboardAvoidingView>
   );

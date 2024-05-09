@@ -87,14 +87,6 @@ const ContentThumbnail = (props) => {
           resizeMode={ResizeMode.COVER}
         />
         {/* 一時停止 */}
-        {/* <ExpoImage
-          style={{ width: '100%', height: '100%' }}
-          source={{ uri: props.post.contents[0].data }}
-          // placeholder={blurhash}
-          contentFit='cover'
-          // transition={1000}
-          onLoad={handleImageLoad}
-        /> */}
         {props.post.contents[0].duration && (
           <>
             <LinearGradient

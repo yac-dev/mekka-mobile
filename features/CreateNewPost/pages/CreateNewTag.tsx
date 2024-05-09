@@ -1,38 +1,29 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { removeEmojis } from '../utils/removeEmoji';
-import { CreateNewPostContext } from '../contexts/CreateNewPostContext';
 import { Image as ExpoImage } from 'expo-image';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewPostContext } from '../contexts';
+import { useCreateTag } from '../hooks/useCreateTag';
 
 const CreateNewTag = (props) => {
-  const { navigation, defaultTagIcon } = useContext(CreateNewPostContext);
-  const [tagName, setTagName] = useState('');
+  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const { defaultTagIcon } = useContext(CreateNewPostContext);
+  const { onCreatingTagNameChange, creatingTag } = useCreateTag();
+
   const inputRef = useRef(null);
-  const [tag, setTag] = useState({
-    _id: new Date(),
-    iconType: 'icon',
-    icon: defaultTagIcon,
-    image: '',
-    name: '',
-    color: 'white',
-    added: true,
-    created: true,
-  });
-  console.log('default icon ', defaultTagIcon);
 
   useEffect(() => {
-    props.navigation.setOptions({
+    createNewPostStackNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           onPress={() => onDonePress()}
-          disabled={tag.name.length && tag.name.length <= 40 ? false : true}
+          disabled={creatingTag.name.length && creatingTag.name.length <= 40 ? false : true}
         >
           <Text
             style={{
-              color: tag.name.length && tag.name.length <= 40 ? 'white' : 'rgb(117,117, 117)',
+              color: creatingTag.name.length && creatingTag.name.length <= 40 ? 'white' : 'rgb(117,117, 117)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -42,8 +33,7 @@ const CreateNewTag = (props) => {
         </TouchableOpacity>
       ),
     });
-  }, [tag]);
-  // createNewPostStackNavigatorに移動って、まさにこのcreateNewTagが今いる場所だもんね。だからpageが変わらないんだわ。
+  }, [creatingTag]);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -51,15 +41,11 @@ const CreateNewTag = (props) => {
 
   const onDonePress = () => {
     const payload = {
-      ...tag,
-      name: removeEmojis(tag.name),
+      ...creatingTag,
+      name: removeEmojis(creatingTag.name),
     };
 
-    navigation.navigate({
-      name: 'AddTags',
-      params: { createdTag: payload },
-      merge: true,
-    });
+    createNewPostStackNavigation.navigate({ name: 'AddTags', params: { createdTag: payload }, merge: true });
   };
 
   return (
@@ -82,13 +68,13 @@ const CreateNewTag = (props) => {
       </View>
       <Text
         style={{
-          color: tag.name.length <= 40 ? 'rgb(170,170,170)' : 'red',
+          color: creatingTag.name.length <= 40 ? 'rgb(170,170,170)' : 'red',
           alignSelf: 'flex-end',
           marginRight: 10,
           marginBottom: 10,
         }}
       >
-        {tag.name.length}/40
+        {creatingTag.name.length}/40
       </Text>
       <View
         style={{
@@ -119,24 +105,10 @@ const CreateNewTag = (props) => {
           placeholder='Tag name'
           placeholderTextColor={'rgb(170,170,170)'}
           autoCapitalize='none'
-          value={tag.name}
-          onChangeText={(text) =>
-            setTag((previous) => {
-              return {
-                ...previous,
-                name: text,
-              };
-            })
-          }
+          value={creatingTag.name}
+          onChangeText={(text) => onCreatingTagNameChange(text)}
         />
       </View>
-      {/* <TextInput
-        placeholder='Type tag name and press "Done"'
-        placeholderTextColor={'rgb(170, 170, 170)'}
-        value={tagName}
-        onChangeText={(text) => setTagName(text)}
-        style={{ padding: 10, backgroundColor: 'rgb(88,88,88)', borderRadius: 5, color: 'white' }}
-      /> */}
     </View>
   );
 };

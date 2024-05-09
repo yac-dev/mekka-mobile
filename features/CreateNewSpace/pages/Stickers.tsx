@@ -2,19 +2,19 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { GlobalContext } from '../../../contexts/GlobalContext';
-import { ReactionPickerContext } from '../contexts/ReactionPickerContext';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+import { SnackBar } from '../../../components';
+import { SnackBarContext } from '../../../providers';
+import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 
 const Stickers = (props) => {
-  const { isIpad, setSnackBar } = useContext(GlobalContext);
+  const { setSnackBar } = useContext(SnackBarContext);
+  const { isIpad } = useContext(GlobalContext);
   const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
   const { navigation } = useContext(CreateNewSpaceContext);
   const [stickers, setStickers] = useState([]);
@@ -67,7 +67,7 @@ const Stickers = (props) => {
                 if (Object.keys(selectedReactions).length >= 6) {
                   setSnackBar({
                     isVisible: true,
-                    barType: 'warning',
+                    status: 'warning',
                     message: 'OOPS. The number of reaction options is limited to 6 at most.',
                     duration: 5000,
                   });

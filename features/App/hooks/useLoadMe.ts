@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { loadMe } from '../apis/loadMe';
-import { ApiResultType } from '../types';
+import { ApiResultType, AuthType } from '../../../types';
+import { LoadMeInput } from '../types';
 
 export const useLoadMe = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType>({
-    status: 'loading',
+  const [apiResult, setApiResult] = useState<ApiResultType<AuthType>>({
+    status: 'idling',
     data: void 0,
     message: '',
   });
 
-  const requestApi = async () => {
+  const requestApi = async (input: LoadMeInput) => {
     try {
       setApiResult((previous) => {
         return {
@@ -18,7 +19,7 @@ export const useLoadMe = () => {
         };
       });
 
-      const response = await loadMe();
+      const response = await loadMe(input);
       setApiResult((previous) => {
         return {
           ...previous,
@@ -27,7 +28,6 @@ export const useLoadMe = () => {
         };
       });
     } catch (error) {
-      //ここ、snackbarを毎回出す感じかな。
       setApiResult((previous) => {
         return {
           ...previous,

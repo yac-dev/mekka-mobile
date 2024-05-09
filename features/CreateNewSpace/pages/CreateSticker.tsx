@@ -6,13 +6,14 @@ import * as ImagePicker from 'expo-image-picker';
 import backendAPI from '../../../apis/backend';
 import baseURL from '../../../apis/baseURL';
 import { Ionicons } from '@expo/vector-icons';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from '../../../providers';
+import { LoadingSpinner } from '../../../components';
+import { useLoadingSpinner } from '../../../hooks';
 
 const CreateCustomEmoji = (props) => {
-  const { setLoading } = useContext(GlobalContext);
   const { auth } = useContext(AuthContext);
+  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const [previewEmoji, setPreviewEmoji] = useState('');
   const [fileName, setFileName] = useState('');
   // const [stickerName, setStickerName] = useState('');
@@ -21,9 +22,9 @@ const CreateCustomEmoji = (props) => {
 
   const onClose = async () => {
     if (fileName) {
-      setLoading(true);
+      showLoadingSpinner();
       const result = await backendAPI.patch('/stickers/preview', { fileName });
-      setLoading(false);
+      hideLoadingSpinner();
       props.navigation.goBack();
     } else {
       props.navigation.goBack();
@@ -85,11 +86,11 @@ const CreateCustomEmoji = (props) => {
         type: 'image/jpeg',
       };
       payload.append('originalStickerImage', JSON.parse(JSON.stringify(iconData)));
-      setLoading(true);
+      showLoadingSpinner();
       const result = await backendAPI.post('/stickers/preview', payload, {
         headers: { 'Content-type': 'multipart/form-data' },
       });
-      setLoading(false);
+      hideLoadingSpinner();
       // const { previewEmoji } = result.data;
       setFileName(creatingFileName);
       // setPreviewEmoji(previewEmoji);
@@ -102,9 +103,9 @@ const CreateCustomEmoji = (props) => {
   };
 
   const createSticker = async () => {
-    setLoading(true);
+    showLoadingSpinner();
     const result = await backendAPI.post('/stickers', { fileName, userId: auth._id });
-    setLoading(false);
+    hideLoadingSpinner();
     const { sticker } = result.data;
     props.navigation.navigate({
       name: 'Stickers',
@@ -113,8 +114,6 @@ const CreateCustomEmoji = (props) => {
     });
   };
 
-  console.log(fileName);
-  console.log('source', `${baseURL}/buffer/removed-${fileName}`);
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, marginBottom: 20 }}>
@@ -188,7 +187,7 @@ const CreateCustomEmoji = (props) => {
           <Text style={{ color: 'white', fontSize: 17, marginRight: 10 }}>{isPublic ? 'Public' : 'Private'}</Text>
         </TouchableOpacity>
       ) : null} */}
-      <LoadingSpinner />
+      <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
     </View>
   );
 };
