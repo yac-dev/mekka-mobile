@@ -4,12 +4,18 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { HomeStackNavigator } from './HomeStackNavigator';
 import { LoginStackNavigator } from './LoginStackNavigator';
 import { VectorIcon } from '../Icons';
+import Signup from '../features/NotAuthenticated/pages/Signup';
+import { AppButton } from '../components/Button';
+import { Colors } from '../themes';
+import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
+// NOTE: こっちのParams使ってない。消そう。
 export type RootStackParams = {
   HomeStackNavigator: undefined;
-  LoginStackNavigator: undefined;
+  Signup: undefined;
+  ForgotPasswordStackNavigator: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
@@ -27,14 +33,42 @@ export const RootStackNavigator = () => {
         />
         <RootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <RootStack.Screen
-            name='LoginStackNavigator'
-            component={LoginStackNavigator}
+            name='Signup'
+            component={Signup}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <RootStack.Screen
+            name='ForgotPasswordStackNavigator'
+            component={ForgotPasswordStackNavigator}
             options={({ navigation }) => ({
               headerShown: false,
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <VectorIcon.II name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {

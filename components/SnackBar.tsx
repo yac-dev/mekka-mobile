@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import { FD, II } from '../../Icons';
-import { Colors } from '../../themes';
-import { SnackBarStatusType } from '../../types';
-import { SnackBarContext } from '../../providers';
+import { FD, II } from '../Icons';
+import { Colors } from '../themes';
+import { SnackBarStatusType, SnackBarType } from '../types';
 
 type SnackBarStatusTableType = {
   [key in SnackBarStatusType]: {
@@ -32,26 +31,19 @@ const SnackBarStatusTable: SnackBarStatusTableType = {
   },
 };
 
-type PrimarySnackBarProps = {
-  isVisible: boolean;
-  status: SnackBarStatusType;
-  message: string;
-  duration: number;
+type SnackBarProps = {
+  snackBar: SnackBarType;
   hideSnackBar: () => void;
+  onClosePress?: () => void;
+  onSnackBarDismiss?: () => void;
 };
 
 // snackbarの表示stateは親で、それを隠すfunctionも渡してくればいい。
-export const PrimarySnackBar: React.FC = () => {
-  const { snackBar, setSnackBar } = useContext(SnackBarContext);
+export const SnackBar: React.FC<SnackBarProps> = ({ snackBar, hideSnackBar, onClosePress, onSnackBarDismiss }) => {
   useEffect(() => {
     if (snackBar.isVisible) {
       setTimeout(() => {
-        setSnackBar({
-          isVisible: false,
-          status: void 0,
-          message: void 0,
-          duration: void 0,
-        });
+        hideSnackBar();
       }, snackBar.duration);
     }
   }, [snackBar.isVisible]);
@@ -67,24 +59,11 @@ export const PrimarySnackBar: React.FC = () => {
         backgroundColor: SnackBarStatusTable[snackBar.status].backgroundColor,
       }}
       visible={snackBar.isVisible}
-      onDismiss={() =>
-        setSnackBar({
-          isVisible: false,
-          status: void 0,
-          message: void 0,
-          duration: void 0,
-        })
-      }
+      onDismiss={onSnackBarDismiss}
       // WARNING: ここ、stringしか無理っぽい。
       action={{
         label: <Text style={{ color: Colors.white }}>Close</Text>,
-        onPress: () =>
-          setSnackBar({
-            isVisible: false,
-            status: void 0,
-            message: void 0,
-            duration: void 0,
-          }),
+        onPress: onClosePress,
       }}
     >
       <View style={styles.contentContainer}>

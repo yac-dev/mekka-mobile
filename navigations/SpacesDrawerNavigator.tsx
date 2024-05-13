@@ -43,6 +43,10 @@ export const SpacesDrawerNavigator = () => {
 
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
+    // ここでauthに関してもdefaultに戻さんといかんし、
+    setAuth(void 0);
+    setMySpaces(void 0);
+    setSpaceUpdates(void 0);
   };
 
   const onClosePress = () => {

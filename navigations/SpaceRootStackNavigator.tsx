@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View } from 'react-native';
-import { GlobalContext } from '../contexts/GlobalContext';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AuthContext, CurrentSpaceContext, CurrentTagContext, MySpacesContext } from '../providers';
-import { SnackBarContext } from '../providers';
+import { CurrentSpaceContext, MySpacesContext } from '../providers';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
-import { useGetTags } from '../features/Space/hooks/useGetTags';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import * as Haptics from 'expo-haptics';
 import { Colors } from '../themes/colors';
 import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
+import { useSnackBar } from '../hooks';
+import { SnackBar } from '../components';
 
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
@@ -32,15 +30,22 @@ type PostsTopTabNavigatorParams = {
 };
 
 const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
+const processingPostMessage = 'It takes couple seconds to finish processing.';
+const postSucceededMessage = 'Your post has been created successfully.';
 
 export const SpaceRootStackNavigator: React.FC = () => {
+  const { snackBar, showSnackBar, hideSnackBar } = useSnackBar();
   const { createPostResult } = useContext(SpaceRootContext);
   const { setMySpaces } = useContext(MySpacesContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   useEffect(() => {
+    if (createPostResult.status === 'loading') {
+      showSnackBar('info', processingPostMessage, 5000);
+    }
     if (createPostResult.status === 'success' && createPostResult.data?.createdTags) {
-      // 新しく作ったtagをここに追加する。
+      // NOTE: 新しく作ったtagをここに追加する。
+      showSnackBar('success', postSucceededMessage, 5000);
       setMySpaces((previous) => {
         const updatingSpace = [...previous].map((space) => {
           if (space._id === currentSpace._id) {
@@ -99,6 +104,7 @@ export const SpaceRootStackNavigator: React.FC = () => {
           />
         </SpaceRootStack.Group>
       </SpaceRootStack.Navigator>
+      <SnackBar snackBar={snackBar} hideSnackBar={hideSnackBar} />
     </View>
   );
 };

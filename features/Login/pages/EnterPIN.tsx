@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { PageScreen } from '../../../components';
 import { AppTextInput } from '../../../components';
-import { LoadingIndicator } from '../../../components';
+import { LoadingSpinner } from '../../../components';
 import { usePINcode } from '../hooks/usePINcode';
 import { VectorIcon } from '../../../Icons';
-import { TextColor } from '../../../themes';
 import { useCheckPINCode } from '../hooks/useCheckPINCode';
 
 export const EnterPIN = ({ navigation, route }) => {
@@ -22,7 +21,7 @@ export const EnterPIN = ({ navigation, route }) => {
         >
           <Text
             style={{
-              color: PINCodeForm.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
+              color: PINCodeForm.isValidated ? 'white' : 'rgb(170,170,170)', // 117, 117
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -54,11 +53,7 @@ export const EnterPIN = ({ navigation, route }) => {
           keyboardType='number-pad'
         />
       </View>
-      <LoadingIndicator.Spin
-        isVisible={apiResult.status === 'loading'}
-        message='Processing now...'
-        textColor={TextColor.primary}
-      />
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </PageScreen.WithTitle>
   );
 };

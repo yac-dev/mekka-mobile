@@ -57,20 +57,11 @@ export type StickerType = {
 
 export type SnackBarStatusType = 'success' | 'warning' | 'info' | 'error';
 
-export type SnackBarType = SnackBarVisibleType | SnackBarInVisibleType;
-
-export type SnackBarVisibleType = {
-  isVisible: true;
-  status: SnackBarStatusType;
-  message: string;
-  duration: number;
-};
-
-export type SnackBarInVisibleType = {
-  isVisible: false;
-  status: undefined;
-  message: undefined;
-  duration: undefined;
+export type SnackBarType = {
+  isVisible: boolean;
+  status?: SnackBarStatusType;
+  message?: string;
+  duration?: number;
 };
 
 export const INITIAL_SNACK_BAR: SnackBarType = {

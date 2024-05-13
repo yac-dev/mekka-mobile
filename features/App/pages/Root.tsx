@@ -16,11 +16,14 @@ import { LogsTableContext } from '../../../providers';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
-  LoginStackNavigator: undefined;
+  Signup: undefined;
+  ForgotPasswordStackNavigator: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
-
+// NOTE: 初期読み込み
+// 1, loadme
+// 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
   const { appState, onAppStateChange } = useContext(GlobalContext);
   const { auth, setAuth } = useContext(AuthContext);
@@ -37,7 +40,6 @@ export const Root = () => {
   } = useGetMySpaces();
 
   const { apiResult: getLogsResult, requestApi: requestGetLogs } = useGetLogsByUserId();
-  // 1, loadmeをまずする
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
@@ -49,8 +51,6 @@ export const Root = () => {
     loadMe();
   }, []);
 
-  // 2, loadmeが終わったら、そのuserId使って自分のspaceとspaceUpdatesTableをfetch
-  // jwtがなければ、当然data voidでその場合はgetMySpacesを使わない。
   useEffect(() => {
     if (loadMeApiResult.status === 'success') {
       setAuth(loadMeApiResult.data);
@@ -112,3 +112,46 @@ export const Root = () => {
 
   return <RootStackNavigator />;
 };
+
+// push notificationに関するcallback実行
+//  ----- こっから
+// const registerForPushNotificationsAsync = async () => {
+//   let token;
+//   const data = { token: token, status: false };
+//   const { status: existingStatus } = await Notifications.getPermissionsAsync(); // これ多分、スマホから情報をとっているのかね。
+//   // 初めての場合は、allowにするかdisallowにするか聴いてくる。いずれにしても、それらの選択はスマホ側に伝えられることになる。
+//   let finalStatus = existingStatus;
+//   if (existingStatus !== 'granted') {
+//     const { status } = await Notifications.requestPermissionsAsync();
+//     // ここは、あくまでpromptを出す部分ね。
+//     finalStatus = status;
+//   }
+//   if (finalStatus !== 'granted') {
+//     // alert('Failed to get push token for push notification!');
+//     console.log('not gained push token');
+//     data.status = false;
+//     return data;
+//   }
+//   token = (await Notifications.getExpoPushTokenAsync({ projectId: Config.EXPO_PROJECT_ID })).data;
+//   console.log('this is a token', token);
+//   data.token = token;
+//   data.status = true;
+//   return data;
+// };
+
+// useEffect(() => {
+//   if (isAuthenticated) {
+//     registerForPushNotificationsAsync().then(async (data) => {
+//       if (data.status) {
+//         setNotificationEnabled(true);
+//         if (!authData.pushToken) {
+//           const result = await backendAPI.patch(`/auth/${authData._id}/pushToken`, { pushToken: data.token });
+//           // const { pushToken } = result.data;
+//         }
+//       } else {
+//         setNotificationEnabled(false);
+//       }
+//     });
+//   }
+// }, [isAuthenticated]);
+//  --------- ここまでコメントアウト

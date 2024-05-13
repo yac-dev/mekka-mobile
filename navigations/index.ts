@@ -11,3 +11,4 @@ export * from './GridViewStackNavigator';
 export * from './TagScreenStackNavigator';
 export * from './SpaceInfoStackNavigator';
 export * from './MomentsStackNavigator';
+export * from './ForgotPasswordStackNavigator';
