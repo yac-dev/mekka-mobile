@@ -4,12 +4,15 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { HomeStackNavigator } from './HomeStackNavigator';
 import { LoginStackNavigator } from './LoginStackNavigator';
 import { VectorIcon } from '../Icons';
+import Signup from '../features/NotAuthenticated/pages/Signup';
+import { AppButton } from '../components/Button';
+import { Colors } from '../themes';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
-  LoginStackNavigator: undefined;
+  Signup: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
@@ -27,14 +30,18 @@ export const RootStackNavigator = () => {
         />
         <RootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <RootStack.Screen
-            name='LoginStackNavigator'
-            component={LoginStackNavigator}
+            name='Signup'
+            component={Signup}
             options={({ navigation }) => ({
-              headerShown: false,
+              headerShown: true,
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <VectorIcon.II name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {

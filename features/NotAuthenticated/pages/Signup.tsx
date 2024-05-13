@@ -273,7 +273,6 @@ const Signup = (props) => {
           </TouchableOpacity>
         </View>
       </View>
-      <SnackBar.Primary />
     </View>
   );
 };
