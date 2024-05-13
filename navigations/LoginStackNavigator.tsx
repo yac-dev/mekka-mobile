@@ -57,7 +57,7 @@ export const LoginStackNavigator = ({ navigation }) => {
             headerShown: true,
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <VectorIcon.II name='close-circle-sharp' size={30} color={BackgroundColor.white} />
+                <VectorIcon.II name='close-circle-sharp' size={30} color={Colors.white} />
               </TouchableOpacity>
             ),
             headerTitle: '',
@@ -77,7 +77,7 @@ export const LoginStackNavigator = ({ navigation }) => {
             headerShown: true,
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <VectorIcon.II name='close-circle-sharp' size={30} color={BackgroundColor.white} />
+                <VectorIcon.II name='close-circle-sharp' size={30} color={Colors.white} />
               </TouchableOpacity>
             ),
             headerTitle: '',

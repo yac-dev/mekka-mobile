@@ -62,20 +62,19 @@ export const Login = ({ navigation }) => {
       title={'Login'}
       subTitle={`Already signed up? Please fill out your email, password and then tap Continue.`}
     >
-      <SnackBar.Primary />
       <View style={{ paddingHorizontal: 10, marginBottom: 40 }}>
         <AppTextInput.Underline
           placeholder='Email'
           value={formData.email.value}
           onTextChange={onEmailChange}
-          labelIcon={<VectorIcon.MCI name='email' color={'white'} size={25} />}
+          labelIcon={<VectorIcon.MCI name='email' color={'white'} size={20} />}
           keyboardType='email-address'
         />
         <AppTextInput.Underline
           placeholder='Password'
           value={formData.password.value}
           onTextChange={onPasswordChange}
-          labelIcon={<VectorIcon.MCI name='key' color={'white'} size={25} />}
+          labelIcon={<VectorIcon.MCI name='key' color={'white'} size={20} />}
           keyboardType='default'
           secureTextEntry={isPasswordHidden}
           onTextEntryVisibilityChange={onPasswordHiddenChange}
