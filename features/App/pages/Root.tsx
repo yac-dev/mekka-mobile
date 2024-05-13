@@ -17,6 +17,7 @@ import { LogsTableContext } from '../../../providers';
 export type RootStackParams = {
   HomeStackNavigator: undefined;
   Signup: undefined;
+  ForgotPasswordStackNavigator: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;

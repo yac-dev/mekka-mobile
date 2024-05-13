@@ -16,7 +16,7 @@ export const WelcomePage = () => {
     useForm();
 
   const onForgotMyPasswordPress = useCallback(() => {
-    navigation.navigate('ForgotPassword');
+    navigation.navigate('ForgotPasswordStackNavigator');
   }, []);
 
   const onRegisterPress = () => {
