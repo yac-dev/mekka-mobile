@@ -15,6 +15,7 @@ const RootStack = createNativeStackNavigator<RootStackParams>();
 export type RootStackParams = {
   HomeStackNavigator: undefined;
   Signup: undefined;
+  ForgotPasswordStackNavigator: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
@@ -59,7 +60,7 @@ export const RootStackNavigator = () => {
             name='ForgotPasswordStackNavigator'
             component={ForgotPasswordStackNavigator}
             options={({ navigation }) => ({
-              headerShown: true,
+              headerShown: false,
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => navigation.goBack()}

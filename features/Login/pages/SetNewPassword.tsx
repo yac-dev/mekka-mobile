@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { PageScreen, AppTextInput, LoadingIndicator } from '../../../components';
+import { PageScreen, AppTextInput, LoadingSpinner } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { usePasswordForm, useSetNewPassword } from '../hooks';
-import { TextColor } from '../../../themes';
+import { RootStackNavigatorProps } from '../../App';
+import { useNavigation } from '@react-navigation/native';
 
-export const SetNewPassword = ({ navigation, route }) => {
+export const SetNewPassword = ({ route }) => {
+  const navigation = useNavigation<RootStackNavigatorProps>();
   const { passwordForm, onPasswordChange, isPasswordHidden, onPasswordVisibilityChange } = usePasswordForm();
   const { apiResult, requestApi } = useSetNewPassword();
 
@@ -19,7 +21,7 @@ export const SetNewPassword = ({ navigation, route }) => {
         >
           <Text
             style={{
-              color: passwordForm.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
+              color: passwordForm.isValidated ? 'white' : 'rgb(170,170,170)', // 117, 117
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -34,7 +36,7 @@ export const SetNewPassword = ({ navigation, route }) => {
   useEffect(() => {
     if (apiResult.status === 'success') {
       console.log('statusa after set new password', apiResult);
-      navigation.navigate('WelcomPage'); // この後に、snackbarを出す感じにしたい。だから、snackbar自体は、appでglobalにcomponentをもっておく方がいいかも。。
+      navigation.navigate('HomeStackNavigator'); // この後に、snackbarを出す感じにしたい。だから、snackbar自体は、appでglobalにcomponentをもっておく方がいいかも。。
     }
   }, [apiResult.status]);
 
@@ -45,17 +47,13 @@ export const SetNewPassword = ({ navigation, route }) => {
           placeholder='At least 10 characters long'
           value={passwordForm.value}
           onTextChange={onPasswordChange}
-          labelIcon={<VectorIcon.MCI name='key' color={'white'} size={25} />}
+          labelIcon={<VectorIcon.MCI name='key' color={'white'} size={20} />}
           keyboardType='default'
           secureTextEntry={isPasswordHidden}
           onTextEntryVisibilityChange={onPasswordVisibilityChange}
         />
       </View>
-      <LoadingIndicator.Spin
-        isVisible={apiResult.status === 'loading'}
-        message='Processing now...'
-        textColor={TextColor.primary}
-      />
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </PageScreen.WithTitle>
   );
 };

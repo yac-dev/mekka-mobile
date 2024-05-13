@@ -4,9 +4,8 @@ import { PageScreen } from '../../../components';
 import { AppTextInput } from '../../../components';
 import { useEmailForm } from '../hooks';
 import { VectorIcon } from '../../../Icons';
-import { TextColor } from '../../../themes';
 import { useForgotPassword } from '../hooks';
-import { LoadingIndicator } from '../../../components';
+import { LoadingSpinner } from '../../../components';
 
 // ここでemailを入力させて、emailに送る。そんで、indicator出して、pageをenter pin pageへnavigateする。
 export const ForgotPassword = ({ navigation, route }) => {
@@ -22,7 +21,7 @@ export const ForgotPassword = ({ navigation, route }) => {
         >
           <Text
             style={{
-              color: emailForm.isValidated ? TextColor.primary : TextColor.secondary, // 117, 117
+              color: emailForm.isValidated ? 'white' : 'rgb(170,170,170)', // 117, 117
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -43,22 +42,18 @@ export const ForgotPassword = ({ navigation, route }) => {
   return (
     <PageScreen.WithTitle
       title='Forgot your password?'
-      subTitle={`Please write your account's email and tap "Send".${'\n'}We'll send you a verification code to this email${'\n'}if it matches an existing Mekka account.`}
+      subTitle={`Please type your account's email and tap "Send".${'\n'}We'll send you a verification code to this email${'\n'}if it matches an existing Mekka account.`}
     >
       <View style={{ paddingHorizontal: 10 }}>
         <AppTextInput.Underline
           placeholder='Email'
           value={emailForm.value}
           onTextChange={onEmailChange}
-          labelIcon={<VectorIcon.MCI name='email' color={'white'} size={25} />}
+          labelIcon={<VectorIcon.MCI name='email' color={'white'} size={20} />}
           keyboardType='email-address'
         />
       </View>
-      <LoadingIndicator.Spin
-        isVisible={apiResult.status === 'loading'}
-        message='Processing now...'
-        textColor={TextColor.primary}
-      />
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </PageScreen.WithTitle>
   );
 };
