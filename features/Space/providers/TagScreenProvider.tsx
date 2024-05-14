@@ -138,7 +138,11 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
   }, [appState]);
 
   useEffect(() => {
-    if (getPostsByTagIdAndRegionResult.status === 'success' && !mapPostInitialFetchCompleted) {
+    if (
+      getPostsByTagIdAndRegionResult.status === 'success' &&
+      getPostsByTagIdAndRegionResult.data?.posts.length &&
+      !mapPostInitialFetchCompleted
+    ) {
       setMapPostInitialFetchCompleted(true);
       const firstPost = getPostsByTagIdAndRegionResult.data?.posts[0];
       const newLat = firstPost.location.coordinates[1] - 0.0065;
@@ -151,7 +155,7 @@ export const TagScreenProvider: React.FC<TagScreenProviderType> = ({ tag, childr
         // longitudeDelta: 0.0221, // これだとだいぶ近いかな。。。
       });
     }
-  }, [getPostsByTagIdAndRegionResult.status]);
+  }, [getPostsByTagIdAndRegionResult]);
 
   return (
     <TagScreenContext.Provider

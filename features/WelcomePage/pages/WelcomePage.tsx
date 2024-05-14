@@ -47,12 +47,12 @@ export const WelcomePage = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 30, paddingBottom: 20 }}>
-        <ExpoImage
-          style={{ width: 120, height: 120, alignSelf: 'center' }}
+      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 80, paddingBottom: 20 }}>
+        {/* <ExpoImage
+          style={{ width: 50, height: 50, alignSelf: 'center' }}
           source={require('../../../assets/appLogos/mekka_logo.png')}
           contentFit='contain'
-        />
+        /> */}
         <Text
           style={{
             color: 'white',
@@ -120,7 +120,7 @@ export const WelcomePage = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, alignSelf: 'center' }}>
+        <View style={{ flexDirection: 'column', alignItems: 'center', gap: 15, alignSelf: 'flex-end' }}>
           <View style={{ alignSelf: 'center', marginBottom: 15 }}>
             <AppButton.Text text='Forgot my password' onTextPress={() => onForgotMyPasswordPress()} style={{}} />
           </View>
