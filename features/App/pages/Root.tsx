@@ -102,9 +102,9 @@ export const Root = () => {
     }
   }, [auth, appState]);
 
-  if (loadMeApiResult.status === 'loading') {
+  if (loadMeApiResult.status === 'loading' || getMySpacesApiResult.status === 'loading') {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
         <ActivityIndicator />
       </View>
     );

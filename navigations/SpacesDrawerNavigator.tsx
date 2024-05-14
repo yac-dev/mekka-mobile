@@ -281,6 +281,6 @@ export const SpacesDrawerNavigator = () => {
       </>
     );
   } else {
-    return null;
+    return <View style={{ flex: 1, backgroundColor: 'black' }}></View>;
   }
 };
