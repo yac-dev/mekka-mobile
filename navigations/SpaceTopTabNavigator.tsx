@@ -97,7 +97,7 @@ export const SpaceTopTabNavigator = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 20 }}>
       <View style={{ paddingTop: 30, flexDirection: 'row' }}>
         <AppButton.Icon
           onButtonPress={() => drawerNavigation.toggleDrawer()}

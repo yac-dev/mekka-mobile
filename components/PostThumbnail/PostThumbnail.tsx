@@ -66,15 +66,13 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
         />
       )}
       {post.contents[0].type === 'video' && (
-        <Video
-          source={{ uri: post.contents[0].data }}
-          style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
-          onLoad={handleImageLoad}
-          resizeMode={ResizeMode.COVER}
-        />
-      )}
-      {post.contents[0].type === 'video' && (
-        <View>
+        <>
+          <Video
+            source={{ uri: post.contents[0].data }}
+            style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
+            onLoad={handleImageLoad}
+            resizeMode={ResizeMode.COVER}
+          />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.5)']}
             start={{ x: 0, y: 0 }}
@@ -84,7 +82,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           <View style={{ position: 'absolute', right: 5, top: 5 }}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>{millisecondsToTime(post.contents[0].duration)}</Text>
           </View>
-        </View>
+        </>
       )}
       {post.type === 'moment' && (
         <View>

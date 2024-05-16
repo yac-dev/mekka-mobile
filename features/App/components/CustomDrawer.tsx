@@ -104,7 +104,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
         <View
           style={{
             flex: 2,
-            paddingTop: 10,
+            paddingTop: 25,
 
             borderRightWidth: 0.3,
             borderRightColor: 'rgb(70,70,70)',
@@ -261,7 +261,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
             </AppButton.Icon>
           </View>
         </View>
-        <View style={{ flex: 9 }}>
+        <View style={{ flex: 9, paddingTop: 15 }}>
           <TouchableOpacity
             activeOpacity={0.5}
             style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 10 }}
@@ -429,7 +429,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
-                      paddingVertical: 2,
+                      paddingVertical: 8,
                       paddingLeft: 5,
                       paddingRight: 10,
                       // backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',
