@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { AuthContext } from '../providers';
 import { TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,30 +10,50 @@ import Signup from '../features/NotAuthenticated/pages/Signup';
 import { AppButton } from '../components/Button';
 import { Colors } from '../themes';
 import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
+import { NonAuthNavigator } from './NonAuthNavigator';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
 // NOTE: こっちのParams使ってない。消そう。
 export type RootStackParams = {
   HomeStackNavigator: undefined;
-  Signup: undefined;
-  ForgotPasswordStackNavigator: undefined;
+  NonAuthNavigator: undefined;
+  // Signup: undefined;
+  // ForgotPasswordStackNavigator: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
 
 export const RootStackNavigator = () => {
+  const { auth } = useContext(AuthContext);
+
   return (
     <NavigationContainer>
       <RootStack.Navigator>
-        <RootStack.Screen
-          name='HomeStackNavigator'
-          component={HomeStackNavigator}
-          options={({ navigation }) => ({
-            headerShown: false,
-          })}
-        />
-        <RootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+        {auth ? (
+          <RootStack.Screen
+            name='HomeStackNavigator'
+            component={HomeStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+            })}
+          />
+        ) : (
+          <RootStack.Screen
+            name='NonAuthNavigator'
+            component={NonAuthNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+            })}
+          />
+        )}
+      </RootStack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+{
+  /* <RootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <RootStack.Screen
             name='Signup'
             component={Signup}
@@ -80,8 +102,5 @@ export const RootStackNavigator = () => {
               },
             })}
           />
-        </RootStack.Group>
-      </RootStack.Navigator>
-    </NavigationContainer>
-  );
-};
+        </RootStack.Group> */
+}

@@ -66,10 +66,12 @@ export const Root = () => {
 
   useEffect(() => {
     if (getMySpacesApiResult.status === 'success') {
-      setMySpaces(getMySpacesApiResult.data.mySpaces);
-      setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
-      setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
-      setSpaceUpdates(getMySpacesApiResult.data.updateTable);
+      setMySpaces(getMySpacesApiResult.data?.mySpaces);
+      if (getMySpacesApiResult.data?.mySpaces?.length) {
+        setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
+        setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
+        setSpaceUpdates(getMySpacesApiResult.data.updateTable);
+      }
     }
   }, [getMySpacesApiResult]);
 

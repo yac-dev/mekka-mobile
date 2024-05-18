@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { TouchableOpacity, View, Dimensions, Linking } from 'react-native';
+import { TouchableOpacity, View, Dimensions, Linking, Text } from 'react-native';
 import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootStackNavigator } from './SpaceRootStackNavigator';
@@ -281,6 +281,78 @@ export const SpacesDrawerNavigator = () => {
       </>
     );
   } else {
-    return <View style={{ flex: 1, backgroundColor: 'black' }}></View>;
+    return (
+      <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100, paddingHorizontal: 20 }}>
+        <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17, marginBottom: 20 }}>
+          You haven't joined any spaces now.
+        </Text>
+        <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
+        <View style={{ marginTop: 30, gap: 8 }}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              paddingVertical: 15,
+              borderRadius: 50,
+              marginBottom: 15,
+            }}
+            onPress={() => console.log('hello')}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Create new space
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              paddingVertical: 15,
+              borderRadius: 50,
+              marginBottom: 15,
+            }}
+            onPress={() => console.log('hello')}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Join private space
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              paddingVertical: 15,
+              borderRadius: 50,
+              marginBottom: 15,
+            }}
+            onPress={() => console.log('hello')}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Discover new space
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   }
 };

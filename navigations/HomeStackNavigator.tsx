@@ -94,9 +94,9 @@ const HomeStack = createNativeStackNavigator<HomeStackParams>();
 export const HomeStackNavigator: React.FC = (props) => {
   const { auth } = useContext(AuthContext);
 
-  if (!auth) {
-    return <WelcomePage />;
-  }
+  // if (!auth) {
+  //   return <WelcomePage />;
+  // }
 
   return (
     <HomeStackNavContext.Provider value={{}}>
