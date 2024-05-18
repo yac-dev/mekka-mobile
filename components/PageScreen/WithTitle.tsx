@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import { TextColor, BackgroundColor } from '../../themes';
 import { Colors } from '../../themes';
 
 type PageScreenWithTitleProps = {
