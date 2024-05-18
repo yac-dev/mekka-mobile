@@ -11,16 +11,51 @@ import { useForm } from '../../Login/hooks';
 import { AppButton } from '../../../components/Button';
 import { useLogin } from '../../Login/hooks';
 import { LoadingSpinner } from '../../../components';
+import { NonAuthStackNavigatorProps } from '../../../navigations/NonAuthNavigator';
 
 export const WelcomePage = () => {
-  const navigation = useNavigation<RootStackNavigatorProps>();
+  const nonAuthStackNavigation = useNavigation<NonAuthStackNavigatorProps>();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange, onLoginSuccess } =
     useForm();
   const { apiResult, requestApi } = useLogin();
 
   useEffect(() => {
+    nonAuthStackNavigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => onLoginPress()}
+          disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
+        >
+          <Text
+            style={{
+              color: formData.email.isValidated && formData.password.isValidated ? 'white' : 'rgb(117, 117, 117)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Login
+          </Text>
+        </TouchableOpacity>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => onRegisterPress()}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Signup
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData]);
+
+  useEffect(() => {
     if (apiResult.status === 'success') {
-      onLoginSuccess(apiResult.data, navigation);
+      onLoginSuccess(apiResult.data, nonAuthStackNavigation);
     }
 
     // if (apiResult.status === 'fail') {
@@ -38,16 +73,16 @@ export const WelcomePage = () => {
   };
 
   const onForgotMyPasswordPress = useCallback(() => {
-    navigation.navigate('ForgotPasswordStackNavigator');
+    nonAuthStackNavigation.navigate('ForgotPasswordStackNavigator');
   }, []);
 
   const onRegisterPress = () => {
-    navigation.navigate('Signup');
+    nonAuthStackNavigation.navigate('SignupStackNavigator');
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 80, paddingBottom: 20 }}>
+      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 50, paddingBottom: 20 }}>
         {/* <ExpoImage
           style={{ width: 50, height: 50, alignSelf: 'center' }}
           source={require('../../../assets/appLogos/mekka_logo.png')}
@@ -65,7 +100,7 @@ export const WelcomePage = () => {
           Welcome to Mekka
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          To get started, please login or signup at first.
+          Please fill in your email and password to login.
         </Text>
       </View>
       <Text>Welcome to Mekka. Please signup or login to proceed.</Text>
@@ -88,44 +123,12 @@ export const WelcomePage = () => {
             onTextEntryVisibilityChange={onPasswordHiddenChange}
           />
         </View>
-        <View style={{ paddingHorizontal: 10 }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={{
-              backgroundColor: 'rgb(50,50,50)',
-              paddingVertical: 15,
-              borderRadius: 50,
-              marginBottom: 15,
-            }}
-            disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
-            onPress={onLoginPress}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-              <VectorIcon.II
-                name='checkmark-circle'
-                color={formData.email.isValidated && formData.password.isValidated ? 'white' : 'rgb(90,90,90)'}
-                size={15}
-                style={{ marginRight: 5 }}
-              />
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: formData.email.isValidated && formData.password.isValidated ? 'white' : 'rgb(90,90,90)',
-                  fontSize: 15,
-                  fontWeight: '700',
-                }}
-              >
-                Sign in
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: 'column', alignItems: 'center', gap: 15, alignSelf: 'flex-end' }}>
+        <View style={{ paddingHorizontal: 10 }}></View>
+        <View
+          style={{ flexDirection: 'column', alignItems: 'center', gap: 15, alignSelf: 'flex-end', marginRight: 20 }}
+        >
           <View style={{ alignSelf: 'center', marginBottom: 15 }}>
             <AppButton.Text text='Forgot my password' onTextPress={() => onForgotMyPasswordPress()} style={{}} />
-          </View>
-          <View style={{ alignSelf: 'center', marginBottom: 15 }}>
-            <AppButton.Text text="Don't have account" onTextPress={() => onRegisterPress()} style={{}} />
           </View>
         </View>
       </View>

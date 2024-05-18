@@ -101,7 +101,7 @@ const Signup = (props) => {
             Signup
           </Text>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            To get started, please provide your name, email and password, then press Submit.
+            Don't hava an account yet?{'\n'}To get started, please provide your name, email and password.
           </Text>
         </View>
         <View>

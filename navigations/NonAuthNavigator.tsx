@@ -44,6 +44,8 @@ export const NonAuthNavigator = () => {
           })}
           // headerRight（headerLeft）はcomponent側で出してあげる。
         />
+      </NonAuthStack.Group>
+      <NonAuthStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
         <NonAuthStack.Screen
           name='SignupStackNavigator'
           component={SignupStackNavigator}
