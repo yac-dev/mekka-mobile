@@ -233,7 +233,6 @@ const CreateNewSpaceStackNavigator = () => {
           />
         </CreateNewSpaceStack.Group>
       </CreateNewSpaceStack.Navigator>
-      <SnackBar.Primary />
     </CreateNewSpaceProvider>
   );
 };

@@ -5,11 +5,17 @@ import { SnackBar, LoadingSpinner } from '../../../components';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useEnterPrivateSpace } from '../hooks';
+import { CurrentSpaceContext } from '../../../providers';
+import { CurrentTagContext } from '../../../providers';
+import { LogsTableContext } from '../../../providers';
 
 export const EnterPrivateSpace = () => {
   const { auth } = useContext(AuthContext);
-  const { setMySpaces } = useContext(MySpacesContext);
+  const { setMySpaces, mySpaces } = useContext(MySpacesContext);
   const { setSnackBar } = useContext(SnackBarContext);
+  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
+  const { setLogsTable } = useContext(LogsTableContext);
   const { apiResult, requestApi } = useEnterPrivateSpace();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [secretKey, setSecretKey] = useState('');
@@ -37,7 +43,20 @@ export const EnterPrivateSpace = () => {
 
   useEffect(() => {
     if (apiResult.status === 'success') {
+      // 0からのjoin
       setMySpaces((previous) => [...previous, apiResult.data?.space]);
+      if (!mySpaces?.length) {
+        setCurrentSpace(apiResult.data?.space);
+        setCurrentTag(apiResult.data?.space.tags[0]);
+        setLogsTable((previous) => {
+          return {
+            ...previous,
+            [apiResult.data?.space._id]: {
+              [apiResult.data?.space.tags[0]._id]: 0,
+            },
+          };
+        });
+      }
       homeStackNavigation.goBack();
     }
   }, [apiResult.status]);
@@ -87,7 +106,6 @@ export const EnterPrivateSpace = () => {
           onChangeText={(text) => setSecretKey(text)}
         />
       </View>
-      <SnackBar.Primary />
       <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now' />
     </View>
   );

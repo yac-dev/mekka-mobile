@@ -139,7 +139,7 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
   }, []);
 
   return (
-    <SpaceDetailContext.Provider value={{ space, navigation: props.navigation }}>
+    <SpaceDetailContext.Provider value={{ space }}>
       <View style={{ flex: 1, backgroundColor: 'rgb(40, 40, 40)' }}>
         {isSpaceFetched && space ? (
           <>
@@ -150,7 +150,7 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
           <ActivityIndicator />
         )}
       </View>
-      <SnackBar.Primary />
+
       <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
     </SpaceDetailContext.Provider>
   );

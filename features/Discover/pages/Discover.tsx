@@ -4,7 +4,6 @@ import { NavigationProp } from '@react-navigation/native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
 import backendAPI from '../../../apis/backend';
 import { primaryBackgroundColor } from '../../../themes/color';
-import { primaryTextColor } from '../../../themes/text';
 import CreateNewButton from '../components/CreateNewButton';
 import { DiscoverContext } from '../contexts/DiscoverContext';
 import { Image as ExpoImage } from 'expo-image';
@@ -146,7 +145,7 @@ const Discover: React.FC<RouterProps> = (props) => {
   };
 
   return (
-    <DiscoverContext.Provider value={{ spaces, setSpaces, navigation: props.navigation }}>
+    <DiscoverContext.Provider value={{ spaces, setSpaces }}>
       <View style={{ flex: 1, backgroundColor: primaryBackgroundColor, padding: 10 }}>{renderSpaces()}</View>
     </DiscoverContext.Provider>
   );

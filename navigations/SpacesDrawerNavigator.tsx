@@ -19,6 +19,7 @@ import { SpaceType } from '../types';
 import { SpaceRootStackParams } from './SpaceRootStackNavigator';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { MomentsProvider } from '../features/Space/providers/MomentsProvider';
+import { Colors } from '../themes';
 
 export type SpacesDrawerParams = {
   [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
@@ -26,6 +27,8 @@ export type SpacesDrawerParams = {
 
 export type SpacesDrawerStackNavigatorProps = DrawerNavigationProp<SpacesDrawerParams>;
 const Drawer = createDrawerNavigator();
+const actionButtonContainerWidth = (Dimensions.get('screen').width - 40 - 16) / 3;
+const actionButtonWidth = actionButtonContainerWidth * 0.8;
 
 export const SpacesDrawerNavigator = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -85,7 +88,8 @@ export const SpacesDrawerNavigator = () => {
     homeStackNavigation.navigate('Discover');
   };
 
-  if (auth && mySpaces) {
+  // そもそも、mySpacesはないからこっちはrenderingされないはずだが。。。
+  if (auth && mySpaces?.length) {
     return (
       <>
         <Drawer.Navigator
@@ -287,17 +291,32 @@ export const SpacesDrawerNavigator = () => {
           You haven't joined any spaces now.
         </Text>
         <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
-        <View style={{ marginTop: 30, gap: 8 }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
+        <View style={{ marginTop: 50, gap: 8, flexDirection: 'row', alignItems: 'center' }}>
+          <View
             style={{
-              backgroundColor: 'rgb(50,50,50)',
-              paddingVertical: 15,
-              borderRadius: 50,
-              marginBottom: 15,
+              width: actionButtonContainerWidth,
+              aspectRatio: 1,
+              padding: 10,
             }}
-            onPress={() => console.log('hello')}
+            // onPress={() => console.log('hello')}
           >
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                width: actionButtonWidth,
+                aspectRatio: 1,
+                marginBottom: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => homeStackNavigation.navigate('CreateNewSpaceStackNavigator')}
+              // ここのnavigationがおかしいね。enterprivateも。discoverは大丈夫そう。
+              // あとは、spaceが無からアリになった時用な。
+            >
+              <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
+            </TouchableOpacity>
             <Text
               style={{
                 textAlign: 'center',
@@ -308,17 +327,31 @@ export const SpacesDrawerNavigator = () => {
             >
               Create new space
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.5}
+          </View>
+          <View
+            // activeOpacity={0.5}
             style={{
-              backgroundColor: 'rgb(50,50,50)',
-              paddingVertical: 15,
-              borderRadius: 50,
-              marginBottom: 15,
+              width: actionButtonContainerWidth,
+              aspectRatio: 1,
+              padding: 10,
             }}
-            onPress={() => console.log('hello')}
+            // onPress={() => console.log('hello')}
           >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                width: actionButtonWidth,
+                aspectRatio: 1,
+                marginBottom: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              activeOpacity={0.5}
+              onPress={() => homeStackNavigation.navigate('EnterPrivateSpace')}
+            >
+              <VectorIcon.II name='key' color={Colors.white} size={40} />
+            </TouchableOpacity>
             <Text
               style={{
                 textAlign: 'center',
@@ -329,17 +362,31 @@ export const SpacesDrawerNavigator = () => {
             >
               Join private space
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.5}
+          </View>
+          <View
+            // activeOpacity={0.5}
             style={{
-              backgroundColor: 'rgb(50,50,50)',
-              paddingVertical: 15,
-              borderRadius: 50,
-              marginBottom: 15,
+              width: actionButtonContainerWidth,
+              aspectRatio: 1,
+              padding: 10,
             }}
-            onPress={() => console.log('hello')}
+            // onPress={() => console.log('hello')}
           >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                width: actionButtonWidth,
+                aspectRatio: 1,
+                marginBottom: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              activeOpacity={0.5}
+              onPress={() => homeStackNavigation.navigate('Discover')}
+            >
+              <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
+            </TouchableOpacity>
             <Text
               style={{
                 textAlign: 'center',
@@ -350,7 +397,7 @@ export const SpacesDrawerNavigator = () => {
             >
               Discover new space
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
