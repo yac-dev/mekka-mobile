@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 
 const formatTime = (inputMinutes: number): { hours: number; minutes: number } => {
   const hours = Math.floor(inputMinutes / 60);
@@ -23,6 +25,7 @@ const calculateMinutes = (hours: string, minutes: string) => {
 
 const Moment = () => {
   const { formData, onDisapperAfterChange } = useContext(CreateNewSpaceContext);
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
   const [selectedHour, setSelectedHour] = useState<string>('');
   const [selectedMin, setSelectedMin] = useState<string>('');
 
@@ -30,6 +33,25 @@ const Moment = () => {
     const res = formatTime(formData.disappearAfter.value);
     setSelectedHour(res.hours.toString());
     setSelectedMin(res.minutes.toString());
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('Reaction')}>
+          <Text
+            style={{
+              color: 'white',
+
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
   }, []);
 
   useEffect(() => {

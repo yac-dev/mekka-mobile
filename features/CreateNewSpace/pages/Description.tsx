@@ -9,10 +9,16 @@ import { useCreateSpace } from '../hooks';
 import { HomeStackNavigatorProps, RootStackNavigatorProps } from '../../../navigations';
 import { MySpacesContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
+import { CurrentSpaceContext } from '../../../providers';
+import { CurrentTagContext } from '../../../providers';
+import { LogsTableContext } from '../../../providers';
 
 const Description = () => {
   const { auth } = useContext(AuthContext);
-  const { setMySpaces } = useContext(MySpacesContext);
+  const { setMySpaces, mySpaces } = useContext(MySpacesContext);
+  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { setCurrentTag } = useContext(CurrentTagContext);
+  const { setLogsTable } = useContext(LogsTableContext);
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onDescriptionChange } = useContext(CreateNewSpaceContext);
@@ -40,14 +46,18 @@ const Description = () => {
   useEffect(() => {
     if (apiResult.status === 'success') {
       setMySpaces((previous) => [...previous, apiResult.data.space]);
-      // spaceUpdatesの更新。↓こんな感じで。
-      // setUpdatesTable((previous) => {
-      //   return {
-      //     ...previous,
-      //     [spaceAndUserRelationship.space._id]: {},
-      //   };
-      // });
-      // snackbar出し。
+      if (!mySpaces?.length) {
+        setCurrentSpace(apiResult.data?.space);
+        setCurrentTag(apiResult.data?.space.tags[0]);
+        setLogsTable((previous) => {
+          return {
+            ...previous,
+            [apiResult.data?.space._id]: {
+              [apiResult.data?.space.tags[0]._id]: 0,
+            },
+          };
+        });
+      }
       homeStackNavigation.navigate('SpacesDrawerNavigator');
     }
   }, [apiResult.status]);

@@ -53,7 +53,6 @@ export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category 
         // maxToRenderPerBatch={}
         estimatedItemSize={300}
       />
-      <SnackBar.Primary />
     </View>
   );
 });
