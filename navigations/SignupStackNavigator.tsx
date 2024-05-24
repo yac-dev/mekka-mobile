@@ -3,7 +3,7 @@ import { ForgotPassword, EnterPIN, SetNewPassword } from '../features';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
-import Signup from '../features/NotAuthenticated/pages/Signup';
+import { Signup } from '../features';
 import EULA from '../features/NotAuthenticated/pages/EULA';
 
 type SignupStackNavigatorParams = {

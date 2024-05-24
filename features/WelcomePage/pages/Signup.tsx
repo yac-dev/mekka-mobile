@@ -2,7 +2,6 @@ import { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SnackBarContext } from '../../../providers';
 import { useSignupForm } from '../hooks';
 import { SignupStackNavigatorProp } from '../../../navigations/SignupStackNavigator';
 import { useNavigation } from '@react-navigation/native';
@@ -48,7 +47,7 @@ export const Signup = () => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView style={{ flex: 1 }}>
-        <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20, marginBottom: 20 }}>
+        <View style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 20, paddingBottom: 20, marginBottom: 20 }}>
           <Text
             style={{
               color: 'white',
@@ -65,32 +64,29 @@ export const Signup = () => {
           </Text>
         </View>
         <View style={{ flexDirection: 'column' }}>
-          <View style={{ paddingHorizontal: 10, marginBottom: 0 }}>
-            <AppTextInput.Underline
-              placeholder='Name'
-              value={formData.name.value}
-              onTextChange={onNameChange}
-              labelIcon={<VectorIcon.MCI name='email' color={'white'} size={20} />}
-              keyboardType='default'
-            />
-            <AppTextInput.Underline
-              placeholder='Email'
-              value={formData.email.value}
-              onTextChange={onEmailChange}
-              labelIcon={<VectorIcon.MCI name='email' color={'white'} size={20} />}
-              keyboardType='email-address'
-            />
-            <AppTextInput.Underline
-              placeholder='Password'
-              value={formData.password.value}
-              onTextChange={onPasswordChange}
-              labelIcon={<VectorIcon.MCI name='key' color={'white'} size={20} />}
-              keyboardType='default'
-              secureTextEntry={isPasswordHidden}
-              onTextEntryVisibilityChange={onPasswordHiddenChange}
-            />
-          </View>
-          <View style={{ paddingHorizontal: 10 }}></View>
+          <AppTextInput.Underline
+            placeholder='Name'
+            value={formData.name.value}
+            onTextChange={onNameChange}
+            labelIcon={<VectorIcon.MCI name='account' color={'white'} size={20} />}
+            keyboardType='default'
+          />
+          <AppTextInput.Underline
+            placeholder='Email'
+            value={formData.email.value}
+            onTextChange={onEmailChange}
+            labelIcon={<VectorIcon.MCI name='email' color={'white'} size={20} />}
+            keyboardType='email-address'
+          />
+          <AppTextInput.Underline
+            placeholder='Password'
+            value={formData.password.value}
+            onTextChange={onPasswordChange}
+            labelIcon={<VectorIcon.MCI name='key' color={'white'} size={20} />}
+            keyboardType='default'
+            secureTextEntry={isPasswordHidden}
+            onTextEntryVisibilityChange={onPasswordHiddenChange}
+          />
         </View>
         <LoadingSpinner isVisible={signupResult.status === 'loading'} message='Processing now...' />
       </ScrollView>
