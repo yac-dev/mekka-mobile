@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback } from 'react-native';
-
-import { GlobalContext } from '../../../contexts/GlobalContext';
+import { VectorIcon } from '../../../Icons';
 import backendAPI from '../../../apis/backend';
 import * as SecureStore from 'expo-secure-store';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,12 +10,9 @@ import { Foundation } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
-import { useLoadingSpinner } from '../../../hooks';
 
-const Signup = (props) => {
+export const Signup = (props) => {
   const { setSnackBar } = useContext(SnackBarContext);
-  const { setAuthData, setIsAuthenticated, setLoading } = useContext(GlobalContext);
-  const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -277,5 +273,3 @@ const Signup = (props) => {
     </View>
   );
 };
-
-export default Signup;

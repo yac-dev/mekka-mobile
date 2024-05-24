@@ -174,12 +174,15 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                   }}
                 >
                   <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                    <View>
+                    <View
+                      style={{ width: 45, aspectRatio: 1, borderRadius: 22.5, borderColor: 'white', borderWidth: 0.3 }}
+                    >
                       <ExpoImage
-                        style={{ width: 45, aspectRatio: 1, borderRadius: 25 }}
+                        style={{ width: '100%', height: '100%' }}
                         source={{ uri: space.icon }}
                         contentFit='contain'
                       />
+                      <View></View>
                       {totalLogs ? (
                         <View
                           style={{
