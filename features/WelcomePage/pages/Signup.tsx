@@ -1,27 +1,29 @@
 import { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { VectorIcon } from '../../../Icons';
-import backendAPI from '../../../apis/backend';
-import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SnackBarContext } from '../../../providers';
 import { useSignupForm } from '../hooks';
 import { SignupStackNavigatorProp } from '../../../navigations/SignupStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '../../../components';
+import { useSignupState } from '../hooks';
+import { LoadingSpinner } from '../../../components';
 
 export const Signup = () => {
   const navigation = useNavigation<SignupStackNavigatorProp>();
-  const { setSnackBar } = useContext(SnackBarContext);
   const { formData, onNameChange, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } =
     useSignupForm();
+  const { apiResult: signupResult, requestApi } = useSignupState();
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={() => console.log('hello')}
+          onPress={() =>
+            requestApi({ name: formData.name.value, email: formData.email.value, password: formData.password.value })
+          }
           disabled={
             formData.name.isValidated && formData.email.isValidated && formData.password.isValidated ? false : true
           }
@@ -42,33 +44,6 @@ export const Signup = () => {
       ),
     });
   }, [formData]);
-
-  // const onSubmitPress = async () => {
-  //   const payload = {
-  //     name,
-  //     email,
-  //     password,
-  //   };
-  //   showLoadingSpinner();
-  //   try {
-  //     const result = await backendAPI.post('/auth/signup', payload);
-  //     const response = result.data.data;
-  //     setAuthData(response.user);
-  //     setIsAuthenticated(true);
-  //     hideLoadingSpinner();
-  //     setSnackBar({ isVisible: true, message: 'Welcome to Mekka', status: 'success', duration: 5000 });
-  //     await SecureStore.setItemAsync('secure_token', response.jwt);
-  //     props.navigation?.navigate('SpacesDrawerNavigator');
-  //   } catch (error) {
-  //     hideLoadingSpinner();
-  //     setSnackBar({
-  //       isVisible: true,
-  //       status: 'warning',
-  //       message: 'OOPS. Something went wrong. Please try again.',
-  //       duration: 5000,
-  //     });
-  //   }
-  // };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
@@ -117,19 +92,19 @@ export const Signup = () => {
           </View>
           <View style={{ paddingHorizontal: 10 }}></View>
         </View>
-        {/* <LoadingSpinner isVisible={isVisibleLoadingSpinner} message='Processing now' /> */}
+        <LoadingSpinner isVisible={signupResult.status === 'loading'} message='Processing now...' />
       </ScrollView>
-      {/* <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
+      <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
           <Text style={{ color: 'rgb(150,150,150)' }}>By signing up, you accept and read Mekka's&nbsp;</Text>
           <TouchableOpacity
             style={{ borderBottomWidth: 0.5, borderBottomColor: 'rgb(150, 150,150)' }}
-            onPress={() => props.navigation.navigate('EULA')}
+            onPress={() => navigation.navigate('EULA')}
           >
             <Text style={{ color: 'rgb(150,150,150)' }}>EULA.</Text>
           </TouchableOpacity>
         </View>
-      </View> */}
+      </View>
     </View>
   );
 };

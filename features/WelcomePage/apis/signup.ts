@@ -1,5 +1,5 @@
 import backendAPI from '../../../apis/backend';
-import { SignupInputType, SignupOutputType } from '../type';
+import { SignupInputType, SignupOutputType } from '../types';
 
 export const signup = async (input: SignupInputType): Promise<SignupOutputType> => {
   try {
