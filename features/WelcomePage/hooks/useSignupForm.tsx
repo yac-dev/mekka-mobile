@@ -6,11 +6,16 @@ type FormType<T> = {
 };
 
 type FormDataType = {
+  name: FormType<string>;
   email: FormType<string>;
   password: FormType<string>;
 };
 
 export const INITIAL__SIGNUP_FORM_DATA = {
+  name: {
+    value: '',
+    isValidated: false,
+  },
   email: {
     value: '',
     isValidated: false,
@@ -23,15 +28,28 @@ export const INITIAL__SIGNUP_FORM_DATA = {
 
 type UseSignupFormOutputType = {
   formData: FormDataType;
+  onNameChange: (text: string) => void;
   onEmailChange: (text: string) => void;
   onPasswordChange: (text: string) => void;
   isPasswordHidden: boolean;
   onPasswordHiddenChange: () => void;
 };
 
-export const useForm = (): UseSignupFormOutputType => {
+export const useSignupForm = (): UseSignupFormOutputType => {
   const [formData, setFormData] = useState<FormDataType>(INITIAL__SIGNUP_FORM_DATA);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
+
+  const onNameChange = (text: string) => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        name: {
+          value: text,
+          isValidated: text.length ? true : false,
+        },
+      };
+    });
+  };
 
   const onEmailChange = useCallback((text: string) => {
     setFormData((previous) => {
@@ -65,6 +83,7 @@ export const useForm = (): UseSignupFormOutputType => {
 
   return {
     formData,
+    onNameChange,
     onEmailChange,
     onPasswordChange,
     isPasswordHidden,
