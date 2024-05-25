@@ -97,20 +97,6 @@ const Discover: React.FC<RouterProps> = (props) => {
             <MaterialCommunityIcons name='magnify' size={25} color='black' />
           </TouchableOpacity>
         </View>
-        {/* <View style={{ flexDirection: 'column' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Text style={{ color: 'white' }}>Content</Text>
-            <Text style={{ color: 'white' }}>{space.contentType}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Text style={{ color: 'white' }}>Video length</Text>
-            <Text style={{ color: 'white' }}>{space.videoLength}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Text style={{ color: 'white' }}>Disappear</Text>
-            <Text style={{ color: 'white' }}>{space.disappearAfter}</Text>
-          </View>
-        </View> */}
       </View>
     );
   }, []);
