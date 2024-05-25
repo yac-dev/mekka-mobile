@@ -1,8 +1,9 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useRef } from 'react';
 import backendAPI from '../../../apis/backend';
 import { AuthContext } from '../../../providers';
 import { MySpacesContext } from '../../../providers';
 import * as ImagePicker from 'expo-image-picker';
+import FlashMessage from 'react-native-flash-message';
 // data構造から見直そう
 const initialFormData = {
   name: {
@@ -89,6 +90,7 @@ type CreateNewSpaceContextType = {
   onDisapperAfterChange: (minutes: number) => void;
   onDescriptionChange: (text: string) => void;
   onReactionsChange: (reactions: ReactionType[]) => void;
+  flashMessageRef: React.RefObject<FlashMessage>;
 };
 
 export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
@@ -104,6 +106,7 @@ export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
   onDisapperAfterChange: () => {},
   onDescriptionChange: () => {},
   onReactionsChange: () => {},
+  flashMessageRef: null,
 });
 
 type CreateNewSpaceProviderProps = {
@@ -111,8 +114,7 @@ type CreateNewSpaceProviderProps = {
 };
 
 export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ children }) => {
-  const { auth } = useContext(AuthContext);
-  const { setMySpaces } = useContext(MySpacesContext);
+  const flashMessageRef = useRef<FlashMessage>(null);
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
 
   const onNameChange = (text: string) => {
@@ -255,9 +257,11 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
         onDisapperAfterChange,
         onDescriptionChange,
         onReactionsChange,
+        flashMessageRef,
       }}
     >
       {children}
+      <FlashMessage ref={flashMessageRef} />
     </CreateNewSpaceContext.Provider>
   );
 };

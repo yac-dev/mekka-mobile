@@ -3,6 +3,7 @@ import { AuthContext, SnackBarContext } from '../../../providers';
 import { AuthType } from '../../../types';
 import * as SecureStore from 'expo-secure-store';
 import { LoginOutput } from '../types';
+import { showMessage } from 'react-native-flash-message';
 
 type FormType<T> = {
   value: T;
@@ -72,13 +73,8 @@ export const useForm = (): useFormOutput => {
   const onLoginSuccess = async (loginOutput: LoginOutput, navigation: any) => {
     await SecureStore.setItemAsync('secure_token', loginOutput.jwt);
     setAuth(loginOutput.user);
-    navigation.navigate('HomeStackNavigator');
-    setSnackBar({
-      isVisible: true,
-      status: 'success',
-      message: 'Logged in successfully.',
-      duration: 5000,
-    });
+    showMessage({ message: 'Logged in successfully.', type: 'success' });
+    // navigation.navigate('HomeStackNavigator');
   };
 
   return {

@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '../../../components';
 import { useSignupState } from '../hooks';
 import { LoadingSpinner } from '../../../components';
+import { showMessage } from 'react-native-flash-message';
 
 export const Signup = () => {
   const navigation = useNavigation<SignupStackNavigatorProp>();
@@ -43,6 +44,12 @@ export const Signup = () => {
       ),
     });
   }, [formData]);
+
+  useEffect(() => {
+    if (signupResult.status === 'success') {
+      showMessage({ message: 'Your accout was created.', type: 'success' });
+    }
+  }, [signupResult]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>

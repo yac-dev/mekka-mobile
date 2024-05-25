@@ -8,6 +8,7 @@ import { useEnterPrivateSpace } from '../hooks';
 import { CurrentSpaceContext } from '../../../providers';
 import { CurrentTagContext } from '../../../providers';
 import { LogsTableContext } from '../../../providers';
+import { showMessage } from 'react-native-flash-message';
 
 export const EnterPrivateSpace = () => {
   const { auth } = useContext(AuthContext);
@@ -58,6 +59,7 @@ export const EnterPrivateSpace = () => {
         });
       }
       homeStackNavigation.goBack();
+      showMessage({ message: 'Joined a private space.', type: 'success' });
     }
   }, [apiResult.status]);
 

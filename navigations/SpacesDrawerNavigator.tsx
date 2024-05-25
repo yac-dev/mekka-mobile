@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Dimensions, Linking, Text } from 'react-native'
 import { createDrawerNavigator, DrawerNavigationProp } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootStackNavigator } from './SpaceRootStackNavigator';
-import { AuthContext, MySpacesContext, SpaceUpdatesContext } from '../providers';
+import { AuthContext, MySpacesContext, SnackBarContext, SpaceUpdatesContext } from '../providers';
 import * as SecureStore from 'expo-secure-store';
 import { NoSpaces } from '../features';
 import { AppButton } from '../components';
@@ -20,6 +20,9 @@ import { SpaceRootStackParams } from './SpaceRootStackNavigator';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { MomentsProvider } from '../features/Space/providers/MomentsProvider';
 import { Colors } from '../themes';
+import FlashMessage from 'react-native-flash-message';
+import { showMessage, hideMessage } from 'react-native-flash-message';
+import { useEffect } from 'react';
 
 export type SpacesDrawerParams = {
   [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
@@ -44,12 +47,30 @@ export const SpacesDrawerNavigator = () => {
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
 
+  // authMenuのmodalを出す様にする。
+  useEffect(() => {
+    // ここでheaderRightにauthにかんするiconを出しておく。
+    homeStackNavigation.setOptions({
+      headerShown: auth && mySpaces?.length ? false : true,
+      headerRight: () => (
+        <AppButton.Icon
+          onButtonPress={() => openAuthMenuBottomSheet(0)}
+          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='account' size={18} color={Colors.white} />
+        </AppButton.Icon>
+      ),
+    });
+  }, [auth, mySpaces]);
+
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
     // ここでauthに関してもdefaultに戻さんといかんし、
     setAuth(void 0);
     setMySpaces(void 0);
     setSpaceUpdates(void 0);
+    showMessage({ message: 'Logged out successfully.', type: 'success' });
   };
 
   const onClosePress = () => {
@@ -311,7 +332,9 @@ export const SpacesDrawerNavigator = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onPress={() => homeStackNavigation.navigate('CreateNewSpaceStackNavigator')}
+              onPress={() => {
+                homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
+              }}
               // ここのnavigationがおかしいね。enterprivateも。discoverは大丈夫そう。
               // あとは、spaceが無からアリになった時用な。
             >
@@ -399,6 +422,19 @@ export const SpacesDrawerNavigator = () => {
             </Text>
           </View>
         </View>
+        <AppBottomSheet.Gorhom
+          ref={authMenuBottomSheetRef}
+          snapPoints={['60%']}
+          title='Settings'
+          onCloseButtonClose={closeAuthMenuBottomSheet}
+        >
+          <AuthMenu
+            onEditMyAccountPress={onEditMyAccountPress}
+            onNotificationSettingPress={onNotificationSettingPress}
+            onLogoutPress={onLogoutPress}
+            onDeleteMyAccountPress={onDeleteMyAccountPress}
+          />
+        </AppBottomSheet.Gorhom>
       </View>
     );
   }

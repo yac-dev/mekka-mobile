@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState, useEffect } from 'react';
+import React, { useCallback, useContext, useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
@@ -9,10 +9,12 @@ import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceSta
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
+import { showMessage } from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 
 const Overview = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const { formData, onNameChange, onIconChange } = useContext(CreateNewSpaceContext);
+  const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -124,6 +126,10 @@ const Overview = () => {
           </View>
         </View>
       </ScrollView>
+      <TouchableOpacity
+        style={{ backgroundColor: 'red', width: '100%', height: 100 }}
+        onPress={() => flashMessageRef.current.showMessage({ message: 'nice', type: 'success' })}
+      ></TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };

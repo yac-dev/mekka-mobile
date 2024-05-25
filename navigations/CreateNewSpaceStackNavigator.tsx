@@ -12,8 +12,15 @@ import { SnackBar, LoadingSpinner } from '../components';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons/VectorIcons';
 import { Colors } from '../themes';
-import { CreateNewSpaceProvider } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
+import {
+  CreateNewSpaceProvider,
+  CreateNewSpaceContext,
+} from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
 import { ReactionType } from '../features/CreateNewSpace/contexts/ReactionPickerProvider';
+import { showMessage } from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
+import { useContext } from 'react';
+import { SnackBarContext } from '../providers';
 
 export type CreateNewSpaceStackParams = {
   Overview: undefined;
@@ -44,7 +51,9 @@ const CreateNewSpaceStackNavigator = () => {
               headerShown: true, // ここtrueにすると、,,,
               headerLeft: () => (
                 <AppButton.Icon
-                  onButtonPress={() => navigation.goBack()}
+                  onButtonPress={() => {
+                    navigation.goBack();
+                  }}
                   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
                   hasShadow={false}
                 >

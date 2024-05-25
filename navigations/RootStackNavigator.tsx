@@ -11,6 +11,8 @@ import { AppButton } from '../components/Button';
 import { Colors } from '../themes';
 import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
 import { NonAuthNavigator } from './NonAuthNavigator';
+import { SnackBarContext } from '../providers';
+import FlashMessage from 'react-native-flash-message';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 

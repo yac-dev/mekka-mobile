@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -16,6 +16,7 @@ import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Composer } from './providers/Providers';
 import { Root } from './features/App/pages/Root';
+import FlashMessage from 'react-native-flash-message';
 
 const App: React.FC = function () {
   return (
@@ -38,6 +39,7 @@ const App: React.FC = function () {
       >
         <Root />
       </Composer>
+      <FlashMessage />
     </GestureHandlerRootView>
   );
 };
