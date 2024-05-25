@@ -192,7 +192,6 @@ const CreateNewSpace: React.FC<RouterProps> = (props) => {
           <Form />
         </View>
       </SafeAreaView>
-      <SnackBar.Primary />
       <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
     </CreateNewSpaceContext.Provider>
   );

@@ -109,7 +109,6 @@ export const DeleteMyAccount = () => {
         onTextEntryVisibilityChange={onPasswordHiddenChange}
       />
       <LoadingSpinner isVisible={apiResult.status === 'loading'} message={'Processing now'} />
-      {/* <SnackBar.Primary /> */}
     </PageScreen.WithTitle>
   );
 };

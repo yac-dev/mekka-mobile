@@ -206,7 +206,6 @@ const CommentInputBottomSheet = (props) => {
             </View>
           )}
         </BottomSheetView>
-        <SnackBar.Primary />
       </GorhomBottomSheet>
     );
   } else {

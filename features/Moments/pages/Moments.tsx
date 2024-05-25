@@ -16,6 +16,7 @@ import { useCreatePost } from '../../CreateNewPost/hooks';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { MomentsContext } from '../../Space';
 import { Colors } from '../../../themes';
+import { showMessage } from 'react-native-flash-message';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
@@ -47,6 +48,7 @@ export const Moments = () => {
   useEffect(() => {
     if (createMomentResult.status === 'success') {
       addCreatedMoment(createMomentResult.data?.post);
+      showMessage({ message: 'Created new moment.', type: 'success' });
     }
   }, [createMomentResult.status]);
 

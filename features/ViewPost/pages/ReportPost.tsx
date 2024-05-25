@@ -189,7 +189,6 @@ const ReportPost = (props) => {
         </InputAccessoryView>
         <View style={{ alignSelf: 'center' }}></View>
       </ScrollView>
-      <SnackBar.Primary />
     </KeyboardAvoidingView>
   );
 };
