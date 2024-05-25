@@ -8,7 +8,7 @@ type useGetSpacesStateOutputType = {
   requestApi: () => void;
 };
 
-export const useGetSpacesOutputType = (): useGetSpacesStateOutputType => {
+export const useGetSpacesState = (): useGetSpacesStateOutputType => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetSpacesOutputType>>({
     status: 'idling',
     data: void 0,
