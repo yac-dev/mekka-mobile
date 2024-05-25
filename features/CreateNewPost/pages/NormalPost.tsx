@@ -169,7 +169,6 @@ const NormalPost = () => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <SnackBar.Primary />
     </ScrollView>
     // </KeyboardAvoidingView>
   );

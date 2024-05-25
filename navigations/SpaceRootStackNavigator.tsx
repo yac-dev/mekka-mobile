@@ -10,6 +10,7 @@ import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import { useSnackBar } from '../hooks';
 import { SnackBar } from '../components';
+import { showMessage } from 'react-native-flash-message';
 
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
@@ -41,11 +42,12 @@ export const SpaceRootStackNavigator: React.FC = () => {
 
   useEffect(() => {
     if (createPostResult.status === 'loading') {
-      showSnackBar('info', processingPostMessage, 5000);
+      // showSnackBar('info', processingPostMessage, 5000);
+      showMessage({ message: 'Takes couple seconds to finish.', type: 'info' });
     }
     if (createPostResult.status === 'success' && createPostResult.data?.createdTags) {
       // NOTE: 新しく作ったtagをここに追加する。
-      showSnackBar('success', postSucceededMessage, 5000);
+      showMessage({ message: 'Created new post.', type: 'success' });
       setMySpaces((previous) => {
         const updatingSpace = [...previous].map((space) => {
           if (space._id === currentSpace._id) {
@@ -104,7 +106,6 @@ export const SpaceRootStackNavigator: React.FC = () => {
           />
         </SpaceRootStack.Group>
       </SpaceRootStack.Navigator>
-      <SnackBar snackBar={snackBar} hideSnackBar={hideSnackBar} />
     </View>
   );
 };

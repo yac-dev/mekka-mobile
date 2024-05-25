@@ -157,7 +157,6 @@ const CreateNewPostStackNavigator = () => {
           />
         </CreateNewPosyStack.Group>
       </CreateNewPosyStack.Navigator>
-      <SnackBar.Primary />
     </CreateNewPostProvider>
   );
 };

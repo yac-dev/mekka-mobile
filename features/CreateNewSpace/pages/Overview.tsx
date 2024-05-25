@@ -126,10 +126,6 @@ const Overview = () => {
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity
-        style={{ backgroundColor: 'red', width: '100%', height: 100 }}
-        onPress={() => flashMessageRef.current.showMessage({ message: 'nice', type: 'success' })}
-      ></TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };

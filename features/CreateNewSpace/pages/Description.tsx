@@ -12,6 +12,7 @@ import { LoadingSpinner } from '../../../components';
 import { CurrentSpaceContext } from '../../../providers';
 import { CurrentTagContext } from '../../../providers';
 import { LogsTableContext } from '../../../providers';
+import { showMessage } from 'react-native-flash-message';
 
 const Description = () => {
   const { auth } = useContext(AuthContext);
@@ -59,6 +60,7 @@ const Description = () => {
         });
       }
       homeStackNavigation.navigate('SpacesDrawerNavigator');
+      showMessage({ message: 'Created new space successfully.', type: 'success' });
     }
   }, [apiResult.status]);
 
