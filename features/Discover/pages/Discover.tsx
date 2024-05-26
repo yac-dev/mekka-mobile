@@ -1,5 +1,14 @@
 import React, { useReducer, useState, useEffect, useContext, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Dimensions, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { NavigationProp } from '@react-navigation/native';
 import { GlobalContext } from '../../../contexts/GlobalContext';
@@ -47,131 +56,158 @@ const Discover: React.FC<RouterProps> = (props) => {
   // },[])
 
   // tapして、detailを出す様にする。
-  const renderSpace = useCallback((space: any) => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingTop: 20,
-          paddingBottom: 30,
-          paddingLeft: 10,
-          paddingRight: 10,
-          borderBottomWidth: 0.3,
-          borderBottomColor: 'rgb(170,170,170)',
-          justifyContent: 'space-between',
-        }}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View>
-            <ExpoImage
-              style={{ width: 80, height: 80, borderRadius: 13, marginRight: 20 }}
-              source={{ uri: space.icon }}
-              contentFit='cover'
-            />
-            <View style={{ backgroundColor: 'black', padding: 2, position: 'absolute', top: 2, right: 2 }}>
-              <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}>
-                <VectorIcon.II name='close' size={15} color={'black'} />
-                <VectorIcon.II name='close' size={15} color={'black'} />
-              </View>
+
+  // spaceのtypeがphotoの場合は、必要なものが media type photoとmoment、
+  // spaceのtypeがvideoの場合は、必要なものがvideo,
+  const renderItem = ({ item }: { item: SpaceType }) => {
+    const renderLabels = (space: SpaceType) => {
+      if (space.contentType === 'photo') {
+        return (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+            <View
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                padding: 5,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 5 }} />
+              <Text style={{ color: 'white' }}>Photo</Text>
+            </View>
+            <View
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                padding: 5,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 3 }} />
+              <Text style={{ color: 'white' }}>23h59m</Text>
             </View>
           </View>
-          <View style={{ flexDirection: 'column' }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 5 }}>{space.name}</Text>
-            <Text numberOfLines={2} style={{ color: 'rgb(170,170,170)', width: 150 }}>
-              {space.description}
-            </Text>
-          </View>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() =>
-              props.navigation.navigate('SpaceDetailStackNavigator', {
-                screen: 'SpaceDetail',
-                params: { spaceId: space._id },
-              })
-            }
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: 40,
-              height: 40,
-            }}
-          >
-            <MaterialCommunityIcons name='magnify' size={25} color='black' />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }, []);
-
-  const renderSpaces = () => {
-    if (areSpacesFetched) {
-      if (spaces.length) {
+        );
+      } else if (space.contentType === 'video') {
         return (
-          <FlatList
-            data={spaces}
-            renderItem={({ item }) => renderSpace(item)}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-          />
+          <ScrollView horizontal>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+              <View
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 5 }} />
+                <Text style={{ color: 'white' }}>Video</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 5 }} />
+                <Text style={{ color: 'white' }}>23h59m</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 5 }} />
+                <Text style={{ color: 'white' }}>2m30s</Text>
+              </View>
+            </View>
+          </ScrollView>
         );
       } else {
         return (
-          <Text style={{ paddingTop: 100, color: 'white', textAlign: 'center', fontSize: 20 }}>
-            There are no public spaces now.
-          </Text>
-        );
-      }
-    } else {
-      return (
-        <View style={{ flex: 1, paddingTop: 100, backgroundColor: 'black' }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-  };
-
-  const renderItem = ({ item }: { item: SpaceType }) => {
-    return (
-      <TouchableOpacity style={styles.itemContainer} activeOpacity={0.5}>
-        <View style={styles.itemInnerContainer}>
-          <View>
-            <ExpoImage style={styles.spaceIcon} source={{ uri: item.icon }} contentFit='cover' />
-            <View
-              style={{
-                backgroundColor: 'black',
-                padding: 3,
-                position: 'absolute',
-                top: -2,
-                right: 7,
-                borderRadius: 100,
-              }}
-            >
+          <ScrollView>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
               <View
                 style={{
-                  backgroundColor: 'white',
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  backgroundColor: 'rgb(50,50,50)',
                   borderRadius: 100,
                   padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}
               >
-                <VectorIcon.II name='image' size={13} color={'black'} style={{ marginRight: 3 }} />
-                <VectorIcon.OI name='video' size={13} color={'black'} />
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 3 }} />
+                <Text style={{ color: 'white' }}>Photo</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 3 }} />
+                <Text style={{ color: 'white' }}>Video</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 3 }} />
+                <Text style={{ color: 'white' }}>23h59m</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  padding: 5,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='image' size={13} color={'white'} style={{ marginRight: 3 }} />
+                <Text style={{ color: 'white' }}>2m30s</Text>
               </View>
             </View>
-          </View>
-          <View style={{ flexDirection: 'column' }}>
-            <Text style={styles.spaceName}>{item.name}</Text>
-            <Text numberOfLines={2} style={styles.description}>
-              {item.description}
-            </Text>
-          </View>
+          </ScrollView>
+        );
+      }
+    };
+    // ここをreusableにしたいよね。どうするか。
+
+    return (
+      // <TouchableOpacity style={styles.itemContainer} activeOpacity={0.5}>
+      <TouchableOpacity style={styles.itemInnerContainer} activeOpacity={0.5}>
+        <ExpoImage style={styles.spaceIcon} source={{ uri: item.icon }} contentFit='cover' />
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={styles.spaceName}>{item.name}</Text>
+          <Text numberOfLines={2} style={styles.description}>
+            {item.description}
+          </Text>
+          {renderLabels(item)}
+          {/* ここにlabelを表示していく。 */}
+          {/* <VectorIcon.II name='image' size={13} color={'black'} style={{ marginRight: 3 }} />
+                <VectorIcon.OI name='video' size={13} color={'black'} /> */}
         </View>
       </TouchableOpacity>
+      // </TouchableOpacity>
     );
   };
 
@@ -208,19 +244,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderBottomWidth: 0.3,
-    borderBottomColor: 'rgb(170,170,170)',
-    justifyContent: 'space-between',
-  },
-  itemInnerContainer: { flexDirection: 'row', alignItems: 'center' },
-  spaceName: { color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 5 },
+  // itemContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   paddingTop: 20,
+  //   paddingBottom: 20,
+  //   paddingLeft: 10,
+  //   paddingRight: 10,
+  //   borderBottomWidth: 0.3,
+  //   borderBottomColor: 'rgb(170,170,170)',
+  //   justifyContent: 'space-between',
+  // },
+  itemInnerContainer: { flexDirection: 'row', alignItems: 'center', padding: 20 },
+  spaceName: { color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 10 },
   spaceIcon: {
     width: 80,
     height: 80,
@@ -230,5 +266,6 @@ const styles = StyleSheet.create({
   description: {
     color: 'rgb(170,170,170)',
     width: 150,
+    marginBottom: 10,
   },
 });

@@ -178,7 +178,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                       style={{ width: 45, aspectRatio: 1, borderRadius: 22.5, borderColor: 'white', borderWidth: 0.3 }}
                     >
                       <ExpoImage
-                        style={{ width: '100%', height: '100%' }}
+                        style={{ width: '100%', height: '100%', borderRadius: 22.5 }}
                         source={{ uri: space.icon }}
                         contentFit='contain'
                       />
