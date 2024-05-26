@@ -442,7 +442,11 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                   >
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <ExpoImage
-                        style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
+                        style={{
+                          width: 20,
+                          aspectRatio: 1,
+                          marginRight: 10,
+                        }}
                         source={{ uri: tag.icon?.url }}
                         contentFit='cover'
                         tintColor={isFocused ? 'white' : 'rgb(150,150,150)'}
@@ -454,9 +458,6 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                         >
                           {tag.name}
                         </Text>
-                        {/* <Text style={{ color: 'rgb(150,150,150))', fontSize: 13 }}>
-                    {route.params?.spa.isPublic ? 'Public' : 'Private'}
-                  </Text> */}
                       </View>
                     </View>
                     {tagLogs ? (
