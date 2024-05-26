@@ -16,7 +16,6 @@ import ProfileStackNavigator from './ProfileStackNavigator';
 import LocationPicker from '../features/CreateNewPost/pages/LocationPicker';
 import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount, WelcomePage } from '../features';
 import Signup from '../features/NotAuthenticated/pages/Signup';
@@ -32,6 +31,7 @@ import { MembersStackNavigator } from './MembersStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { MomentsStackNavigator } from './MomentsStackNavigator';
+import { DiscoverStackNavigator } from './DiscoverStackNavigator';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -64,7 +64,7 @@ export type HomeStackParams = {
   SpacesDrawerNavigator: NavigatorScreenParams<SpacesDrawerParams>;
   ViewPost: undefined;
   Comments: undefined;
-  Discover: undefined;
+  DiscoverStackNavigator: undefined;
   MomentsStackNavigator: undefined;
   ProfileStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
@@ -150,8 +150,8 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
           <HomeStack.Screen
-            name='Discover'
-            component={Discover}
+            name='DiscoverStackNavigator'
+            component={DiscoverStackNavigator}
             options={({ navigation }) => ({
               headerShown: true,
               headerLeft: () => (
@@ -281,7 +281,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <HomeStack.Screen
+          {/* <HomeStack.Screen
             name='SpaceDetailStackNavigator'
             component={SpaceDetailStackNavigator}
             options={({ navigation }) => ({
@@ -300,7 +300,7 @@ export const HomeStackNavigator: React.FC = (props) => {
                 color: 'white',
               },
             })}
-          />
+          /> */}
           <HomeStack.Screen
             name='Signup'
             component={Signup}

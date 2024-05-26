@@ -106,7 +106,7 @@ export const SpacesDrawerNavigator = () => {
 
   const onDiscoverPress = () => {
     closeAddNewSpaceMenuBottomSheet();
-    homeStackNavigation.navigate('Discover');
+    homeStackNavigation.navigate('DiscoverStackNavigator');
   };
 
   // そもそも、mySpacesはないからこっちはrenderingされないはずだが。。。
@@ -406,7 +406,7 @@ export const SpacesDrawerNavigator = () => {
                 alignItems: 'center',
               }}
               activeOpacity={0.5}
-              onPress={() => homeStackNavigation.navigate('Discover')}
+              onPress={() => homeStackNavigation.navigate('DiscoverStackNavigator')}
             >
               <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
             </TouchableOpacity>

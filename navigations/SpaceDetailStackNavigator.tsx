@@ -7,8 +7,10 @@ import SpaceDetail from '../features/Discover/pages/SpaceDetail';
 import Members from '../features/Discover/pages/Members';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../themes';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons';
 
-const SpaceDetailStackNavigator: React.FC = () => {
+export const SpaceDetailStackNavigator: React.FC = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -16,18 +18,21 @@ const SpaceDetailStackNavigator: React.FC = () => {
         component={SpaceDetail}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-            </TouchableOpacity>
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='close' size={18} color={Colors.white} />
+            </AppButton.Icon>
           ),
-          headerShown: true,
-          headerTitle: '',
+          headerTitle: 'Detail',
           headerStyle: {
-            backgroundColor: 'rgb(38, 38, 38)',
+            backgroundColor: 'white',
           },
           headerTitleStyle: {
             fontWeight: 'bold',
-            color: Colors.white,
+            color: 'white',
           },
         })}
       />
@@ -35,24 +40,25 @@ const SpaceDetailStackNavigator: React.FC = () => {
         name='Members'
         component={Members}
         options={({ navigation }) => ({
-          // headerLeft: () => (
-          //   <TouchableOpacity onPress={() => navigation.goBack()}>
-          //     <Text style={{ color: primaryTextColor, fontSize: 20 }}>Close</Text>
-          //   </TouchableOpacity>
-          // ),
-          // headerShown: true,
-          // headerTitle: 'Space detail',
-          // headerStyle: {
-          //   backgroundColor: primaryBackgroundColor,
-          // },
-          // headerTitleStyle: {
-          //   fontWeight: 'bold',
-          //   color: primaryTextColor,
-          // },
+          headerLeft: () => (
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+            </AppButton.Icon>
+          ),
+          headerTitle: 'Detail',
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color: 'white',
+          },
         })}
       />
     </Stack.Navigator>
   );
 };
-
-export default SpaceDetailStackNavigator;

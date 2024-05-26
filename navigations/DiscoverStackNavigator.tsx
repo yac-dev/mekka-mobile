@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Discover from '../features/Discover/pages/Discover';
-import SpaceDetailStackNavigator from './SpaceDetailStackNavigator';
+import { SpaceDetailStackNavigator } from './SpaceDetailStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
@@ -41,21 +41,3 @@ export const DiscoverStackNavigator: React.FC = () => {
     </DiscoverStack.Navigator>
   );
 };
-
-// headerLeft: () => (
-//   <AppButton.Icon
-//       onButtonPress={() => navigation.goBack()}
-//       customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-//       hasShadow={false}
-//     >
-//       <VectorIcon.II name='close' size={18} color={Colors.white} />
-//     </AppButton.Icon>
-// ),
-// headerTitle: 'Space detail',
-// headerStyle: {
-//   backgroundColor: 'rgb(38, 38, 38)',
-// },
-// headerTitleStyle: {
-//   fontWeight: 'bold',
-//   color: 'white',
-// },

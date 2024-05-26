@@ -16,51 +16,8 @@ import { AuthContext, SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
 import { useLoadingSpinner } from '../../../hooks';
 
-// props.route.params.spaceIdでくるよね。
-interface RouterProps {
-  navigation: NavigationProp<any, any>;
-  route: RouteProp<any, any> | undefined;
-}
-
-type StickerType = {
-  _id: string;
-  url: string;
-  name: string;
-};
-
-type ReactionType = {
-  _id: string;
-  type: 'emoji' | 'sticker';
-  emoji: string | null;
-  sticker: StickerType | null;
-};
-
-type UserType = {
-  _id: string;
-  name: string;
-  avatar: string;
-};
-
-type SpaceType = {
-  _id: string;
-  name: string;
-  icon: string;
-  contentType: string;
-  videoLength: number;
-  disappearAfter: number;
-  isPublic: boolean;
-  isCommentAvailable: boolean;
-  isReactionAvailable: boolean;
-  reactions: ReactionType[];
-  totalPosts: number;
-  totalMembers: number;
-  rate: number;
-  createdBy: UserType;
-  createdAt: string;
-};
-
 // ここに、spaceのthumbnailから始まり、
-const SpaceDetail: React.FC<RouterProps> = (props) => {
+const SpaceDetail: React.FC = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
@@ -139,20 +96,17 @@ const SpaceDetail: React.FC<RouterProps> = (props) => {
   }, []);
 
   return (
-    <SpaceDetailContext.Provider value={{ space }}>
-      <View style={{ flex: 1, backgroundColor: 'rgb(40, 40, 40)' }}>
-        {isSpaceFetched && space ? (
-          <>
-            <Header />
-            <SpaceDetailTopTabNavigator />
-          </>
-        ) : (
-          <ActivityIndicator />
-        )}
-      </View>
-
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      {isSpaceFetched && space ? (
+        <>
+          <Header />
+          <SpaceDetailTopTabNavigator />
+        </>
+      ) : (
+        <ActivityIndicator />
+      )}
       <LoadingSpinner isVisible={isVisibleLoadingSpinner} message={'Processing now'} />
-    </SpaceDetailContext.Provider>
+    </View>
   );
 };
 
