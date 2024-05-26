@@ -1,71 +1,72 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import backendAPI from '../../../apis/backend';
-import { SpaceDetailContext } from '../contexts/SpaceDetailContext';
-import { FadingTransition } from 'react-native-reanimated';
+import React, { useEffect, useCallback } from 'react';
+import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { useGetMembersBySpaceId } from '../../Members/hooks';
+import { UserType } from '../../../types';
+import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
+import { VectorIcon } from '../../../Icons';
+import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+type MembersProps = {
+  spaceId: string;
+};
 
-const Members = () => {
-  const { space } = useContext(SpaceDetailContext);
-  const [members, setMembers] = useState([]);
-  const [haveMembersBeenFetched, setHaveMembersBeenFetched] = useState(false);
-
-  const getSpaceMembersBySpaceId = async () => {
-    const result = await backendAPI.get(`/users/${space._id}/space`);
-    const { users } = result.data;
-    setMembers(users);
-    setHaveMembersBeenFetched(true);
-  };
+export const Members: React.FC<MembersProps> = () => {
+  const { apiResult } = useGetSpaceByIdState();
+  const { apiResult: getMembersBySpaceIdResult, requestApi } = useGetMembersBySpaceId();
 
   useEffect(() => {
-    getSpaceMembersBySpaceId();
+    requestApi({ spaceId: apiResult.data?.space._id });
   }, []);
 
-  const renderUser = useCallback((user) => {
+  const renderUser = useCallback(({ item }: { item: UserType }) => {
     return (
       <TouchableOpacity
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          padding: 10,
-          borderBottomWidth: 0.3,
-          borderBottomColor: 'rgb(150,150,150)',
+          padding: 15,
+          justifyContent: 'space-between',
         }}
+        activeOpacity={0.5}
       >
-        <ExpoImage
-          style={{ width: 35, height: 35, marginRight: 15 }}
-          source={{ uri: user.avatar }}
-          contentFit='cover'
-        />
-        <Text style={{ color: 'white', fontSize: 17 }}>{user.name}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <ExpoImage
+            style={{ width: 30, height: 30, marginRight: 20 }}
+            source={{ uri: item.avatar }}
+            contentFit='contain'
+          />
+          <Text style={{ color: 'white', fontSize: 17 }}>{item.name}</Text>
+        </View>
+        <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
       </TouchableOpacity>
     );
   }, []);
 
-  const renderMembers = useCallback(() => {
-    if (haveMembersBeenFetched) {
-      if (members.length) {
-        return (
-          <FlatList
-            data={members}
-            renderItem={({ item }) => renderUser(item)}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-          />
-        );
-      } else {
-        return (
-          <Text style={{ color: 'white', textAlign: 'center' }}>There are no members in this space currentlly.</Text>
-        );
-      }
-    } else {
-      return <ActivityIndicator />;
-    }
-  }, [haveMembersBeenFetched]);
+  if (getMembersBySpaceIdResult.status === 'loading') {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
-  return <View style={{ flex: 1, backgroundColor: 'rgb(40, 40, 40)', padding: 10 }}>{renderMembers()}</View>;
+  return (
+    <View style={{ flex: 1, backgroundColor: Colors.black, padding: 10 }}>
+      <FlatList
+        data={getMembersBySpaceIdResult.data?.users}
+        renderItem={renderUser}
+        keyExtractor={(item, index) => `${index}`}
+      />
+    </View>
+  );
 };
 
-export default Members;
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    backgroundColor: Colors.black,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

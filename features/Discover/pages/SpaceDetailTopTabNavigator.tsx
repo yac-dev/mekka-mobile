@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import backendAPI from '../../../apis/backend';
-import {Feature} from './Feature';
-import Members from './Members';
+import { Feature } from './Feature';
+import { Members } from './Members';
 import Posts from './Posts';
 import Tags from './Tags';
 
