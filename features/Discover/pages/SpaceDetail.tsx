@@ -9,12 +9,21 @@ import { MySpacesContext } from '../../../providers';
 import { SpaceDetailStackNavigatorProp } from '../../../navigations/SpaceDetailStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { Image as ExpoImage } from 'expo-image';
+import { useJoinPublicSpaceByIdState } from '../hooks';
+import { showMessage } from 'react-native-flash-message';
+import { CurrentSpaceContext, CurrentTagContext, LogsTableContext } from '../../../providers';
 // ここに、spaceのthumbnailから始まり、
 const SpaceDetail: React.FC = () => {
   const spaceDetailStackNavigation = useNavigation<SpaceDetailStackNavigatorProp>();
   const { auth, setAuth } = useContext(AuthContext);
-  const { mySpaces } = useContext(MySpacesContext);
+  const { mySpaces, setMySpaces } = useContext(MySpacesContext);
   const { apiResult } = useGetSpaceByIdState();
+  const { apiResult: joinPublicSpaceByIdResult, requestApi: requestJoinPublicSpaceById } =
+    useJoinPublicSpaceByIdState();
+
+  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { setCurrentTag } = useContext(CurrentTagContext);
+  const { setLogsTable } = useContext(LogsTableContext);
 
   const isJoinSpaceValidated = () => {
     if (mySpaces.some((space) => space._id === apiResult.data?.space._id)) {
@@ -22,6 +31,10 @@ const SpaceDetail: React.FC = () => {
     }
 
     return false;
+  };
+
+  const onJoinPress = async () => {
+    requestJoinPublicSpaceById({ userId: auth._id, spaceId: apiResult.data?.space._id });
   };
 
   useEffect(() => {
@@ -43,11 +56,25 @@ const SpaceDetail: React.FC = () => {
     });
   }, [apiResult]);
 
-  const onJoinPress = async () => {
-    // const result = await backendAPI.post(`/spaces/${props.route.params.spaceId}/public`, payload);
-    // const { spaceAndUserRelationship } = result.data;
-    spaceDetailStackNavigation.goBack();
-  };
+  useEffect(() => {
+    if (joinPublicSpaceByIdResult.status === 'success') {
+      showMessage({ message: 'Joined new space successfully.', type: 'success' });
+      setMySpaces((previous) => [...previous, joinPublicSpaceByIdResult.data.space]);
+      if (!mySpaces?.length) {
+        setCurrentSpace(joinPublicSpaceByIdResult.data?.space);
+        setCurrentTag(joinPublicSpaceByIdResult.data?.space.tags[0]);
+        setLogsTable((previous) => {
+          return {
+            ...previous,
+            [joinPublicSpaceByIdResult.data?.space._id]: {
+              [joinPublicSpaceByIdResult.data?.space.tags[0]._id]: 0,
+            },
+          };
+        });
+      }
+      spaceDetailStackNavigation.goBack();
+    }
+  }, [joinPublicSpaceByIdResult.status]);
 
   if (apiResult.status === 'loading') {
     return (
@@ -78,10 +105,7 @@ const SpaceDetail: React.FC = () => {
         </View>
       </View>
       <SpaceDetailTopTabNavigator />
-      {/* <Header />
-      <SpaceDetailTopTabNavigator /> */}
-      {/* <LoadingSpinner isVisible={apiResult.status === 'loading'} message={'Processing now...'} /> */}
-      {/* createのloading spinner　statusな */}
+      <LoadingSpinner isVisible={joinPublicSpaceByIdResult.status === 'loading'} message={'Processing now...'} />
     </View>
   );
 };
