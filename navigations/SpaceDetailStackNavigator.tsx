@@ -11,29 +11,6 @@ import { AuthContext } from '../providers';
 import { MySpacesContext } from '../providers';
 import { useGetSpaceByIdState } from '../features/Discover/hooks/useGetSpaceByIdState';
 
-// const onJoinPress = async () => {
-//   const payload = {
-//     userId: auth._id,
-//     space: {
-//       _id: space._id,
-//       name: space.name,
-//       icon: space.icon,
-//       contentType: space.contentType,
-//     },
-//   };
-//   showLoadingSpinner();
-//   const result = await backendAPI.post(`/spaces/${props.route.params.spaceId}/public`, payload);
-//   const { spaceAndUserRelationship } = result.data;
-//   setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
-//   hideLoadingSpinner();
-//   setSnackBar({
-//     isVisible: true,
-//     status: 'success',
-//     message: `You have joined ${space.name} successfully`,
-//     duration: 5000,
-//   });
-//   props.navigation.goBack();
-// };
 export type SpaceDetailStackNavigatorScreens = {
   SpaceDetail: { _id: string };
 };

@@ -17,21 +17,21 @@ const SpaceDetail: React.FC = () => {
   const { apiResult } = useGetSpaceByIdState();
 
   const isJoinSpaceValidated = () => {
-    if (!mySpaces.length) return true;
     if (mySpaces.some((space) => space._id === apiResult.data?.space._id)) {
-      return false;
+      return true;
     }
-    return true;
+
+    return false;
   };
 
   useEffect(() => {
     spaceDetailStackNavigation.setOptions({
       headerRight: () =>
         apiResult.status === 'loading' ? null : (
-          <TouchableOpacity disabled={isJoinSpaceValidated() ? true : false}>
+          <TouchableOpacity disabled={isJoinSpaceValidated()} onPress={() => onJoinPress()}>
             <Text
               style={{
-                color: isJoinSpaceValidated() ? 'white' : 'rgb(150,150,150)',
+                color: isJoinSpaceValidated() ? 'rgb(150,150,150)' : 'white',
                 fontSize: 20,
                 fontWeight: 'bold',
               }}
@@ -42,6 +42,12 @@ const SpaceDetail: React.FC = () => {
         ),
     });
   }, [apiResult]);
+
+  const onJoinPress = async () => {
+    // const result = await backendAPI.post(`/spaces/${props.route.params.spaceId}/public`, payload);
+    // const { spaceAndUserRelationship } = result.data;
+    spaceDetailStackNavigation.goBack();
+  };
 
   if (apiResult.status === 'loading') {
     return (

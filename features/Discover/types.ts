@@ -19,3 +19,12 @@ export type GetTagsBySpaceIdInputType = {
 export type GetTagsBySpaceIdOutputType = {
   tags: TagType[];
 };
+
+export type JoinPublicSpaceByIdInputType = {
+  spaceId: string;
+  userId: string;
+};
+
+export type JoinPublicSpaceByIdOutputType = {
+  space: SpaceType;
+};
