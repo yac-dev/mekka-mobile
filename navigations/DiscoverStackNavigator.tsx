@@ -9,12 +9,12 @@ import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 
 export type SpaceDetailStackNavigatorScreens = {
-  SpaceDetail: { _id: string };
+  SpaceDetail: undefined;
 };
 
 type DiscoverStackNavigatiorScreens = {
   Discover: undefined;
-  SpaceDetailStackNavigator: NavigatorScreenParams<SpaceDetailStackNavigatorScreens>;
+  SpaceDetailStackNavigator: { _id: string };
 };
 
 const DiscoverStack = createNativeStackNavigator<DiscoverStackNavigatiorScreens>();

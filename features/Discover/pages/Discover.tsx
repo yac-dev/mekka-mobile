@@ -29,10 +29,7 @@ const Discover: React.FC = () => {
   }, []);
 
   const onSpacePress = (space: SpaceType) => {
-    discoverStackNavigation.navigate('SpaceDetailStackNavigator', {
-      screen: 'SpaceDetail',
-      params: { _id: space._id },
-    });
+    discoverStackNavigation.navigate('SpaceDetailStackNavigator', { _id: space._id });
   };
 
   // spaceのtypeがphotoの場合は、必要なものが media type photoとmoment、

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppButton } from '../components';
 import { primaryBackgroundColor } from '../themes/color';
@@ -43,18 +43,15 @@ export type SpaceDetailStackNavigatorProp = NativeStackNavigationProp<SpaceDetai
 
 const SpaceDetailStack = createNativeStackNavigator<SpaceDetailStackNavigatorScreens>();
 
-// recoil使いてーな。。便利そうここら辺とか特に。
-// routeのparamsが必要でこれをpassする。
-// というかもうここでspaceをfetchする感じでいいのかね。。。
-
 type SpaceDetailStackNavigatorProps = NativeStackScreenProps<SpaceDetailStackNavigatorScreens, 'SpaceDetail'>;
 
 export const SpaceDetailStackNavigator: React.FC<SpaceDetailStackNavigatorProps> = ({ route }) => {
-  const { auth, setAuth } = useContext(AuthContext);
-  const { mySpaces } = useContext(MySpacesContext);
-  const { apiResult, requestApi } = useGetSpaceByIdState();
+  const { requestApi: requestGetSpaceById } = useGetSpaceByIdState();
 
-  // ここでcontextをやるのもなんか面倒だよね。。。
+  useEffect(() => {
+    requestGetSpaceById({ _id: route.params?._id });
+  }, []);
+
   return (
     <SpaceDetailStack.Navigator>
       <SpaceDetailStack.Screen
@@ -70,9 +67,9 @@ export const SpaceDetailStackNavigator: React.FC<SpaceDetailStackNavigatorProps>
               <VectorIcon.II name='close' size={18} color={Colors.white} />
             </AppButton.Icon>
           ),
-          headerTitle: 'Detail',
+          headerTitle: '',
           headerStyle: {
-            backgroundColor: 'white',
+            backgroundColor: 'black',
           },
           headerTitleStyle: {
             fontWeight: 'bold',

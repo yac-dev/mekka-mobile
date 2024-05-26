@@ -1,9 +1,10 @@
 import { atom } from 'recoil';
 import { selector } from 'recoil';
-import { ApiResultType, SpaceType } from '../../../types';
+import { ApiResultType } from '../../../types';
+import { GetSpaceByIdOutputType } from '../types';
 
-export const GetSpaceByIdState = atom<ApiResultType<SpaceType>>({
-  key: 'GetSpaceByIdState',
+export const GetSpaceByIdState = atom<ApiResultType<GetSpaceByIdOutputType>>({
+  key: 'GetSpaceByIdAtom',
   default: {
     status: 'loading',
     data: void 0,

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ApiResultType } from '../../../types';
 import { GetSpaceByIdInputType, GetSpaceByIdOutputType } from '../types';
 import { getSpaceById } from '../apis';
+import { GetSpaceByIdState } from '../states';
+import { useRecoilState } from 'recoil';
 
 type useGetSpaceByIdStateOutputType = {
   apiResult: ApiResultType<GetSpaceByIdOutputType>;
@@ -9,12 +11,7 @@ type useGetSpaceByIdStateOutputType = {
 };
 
 export const useGetSpaceByIdState = (): useGetSpaceByIdStateOutputType => {
-  const [apiResult, setApiResult] = useState<ApiResultType<GetSpaceByIdOutputType>>({
-    status: 'idling',
-    data: void 0,
-    message: '',
-  });
-  // ここをatom state使う様にしていく感じがいいのでは？？
+  const [apiResult, setApiResult] = useRecoilState(GetSpaceByIdState);
 
   const requestApi = async (input: GetSpaceByIdInputType) => {
     try {
