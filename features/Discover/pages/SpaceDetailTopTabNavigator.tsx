@@ -5,7 +5,7 @@ import backendAPI from '../../../apis/backend';
 import { Feature } from './Feature';
 import { Members } from './Members';
 import Posts from './Posts';
-import Tags from './Tags';
+import { Tags } from './Tags';
 
 const Tab = createMaterialTopTabNavigator();
 

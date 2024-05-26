@@ -3,7 +3,6 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { AppButton } from '../components';
 import { primaryBackgroundColor } from '../themes/color';
 import SpaceDetail from '../features/Discover/pages/SpaceDetail';
-import Members from '../features/Discover/pages/Members';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../themes';
 import { VectorIcon } from '../Icons';
