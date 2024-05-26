@@ -1,15 +1,20 @@
 import React, { useContext } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import Discover from '../features/Discover/pages/Discover';
 import { SpaceDetailStackNavigator } from './SpaceDetailStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 
+export type SpaceDetailStackNavigatorScreens = {
+  SpaceDetail: { _id: string };
+};
+
 type DiscoverStackNavigatiorScreens = {
   Discover: undefined;
-  SpaceDetailStackNavigator: undefined;
+  SpaceDetailStackNavigator: NavigatorScreenParams<SpaceDetailStackNavigatorScreens>;
 };
 
 const DiscoverStack = createNativeStackNavigator<DiscoverStackNavigatiorScreens>();

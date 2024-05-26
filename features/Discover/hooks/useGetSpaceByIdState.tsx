@@ -8,12 +8,13 @@ type useGetSpaceByIdStateOutputType = {
   requestApi: (input: GetSpaceByIdInputType) => void;
 };
 
-export const useGetSpacesState = (): useGetSpaceByIdStateOutputType => {
+export const useGetSpaceByIdState = (): useGetSpaceByIdStateOutputType => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetSpaceByIdOutputType>>({
     status: 'idling',
     data: void 0,
     message: '',
   });
+  // ここをatom state使う様にしていく感じがいいのでは？？
 
   const requestApi = async (input: GetSpaceByIdInputType) => {
     try {

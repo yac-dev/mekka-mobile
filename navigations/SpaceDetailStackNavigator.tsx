@@ -1,19 +1,63 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
+import React, { useContext } from 'react';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppButton } from '../components';
 import { primaryBackgroundColor } from '../themes/color';
 import SpaceDetail from '../features/Discover/pages/SpaceDetail';
 import Members from '../features/Discover/pages/Members';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../themes';
-import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AuthContext } from '../providers';
+import { MySpacesContext } from '../providers';
+import { useGetSpaceByIdState } from '../features/Discover/hooks/useGetSpaceByIdState';
 
-export const SpaceDetailStackNavigator: React.FC = () => {
+// const onJoinPress = async () => {
+//   const payload = {
+//     userId: auth._id,
+//     space: {
+//       _id: space._id,
+//       name: space.name,
+//       icon: space.icon,
+//       contentType: space.contentType,
+//     },
+//   };
+//   showLoadingSpinner();
+//   const result = await backendAPI.post(`/spaces/${props.route.params.spaceId}/public`, payload);
+//   const { spaceAndUserRelationship } = result.data;
+//   setSpaceAndUserRelationships((previous) => [...previous, spaceAndUserRelationship]);
+//   hideLoadingSpinner();
+//   setSnackBar({
+//     isVisible: true,
+//     status: 'success',
+//     message: `You have joined ${space.name} successfully`,
+//     duration: 5000,
+//   });
+//   props.navigation.goBack();
+// };
+export type SpaceDetailStackNavigatorScreens = {
+  SpaceDetail: { _id: string };
+};
+
+export type SpaceDetailStackNavigatorProp = NativeStackNavigationProp<SpaceDetailStackNavigatorScreens>;
+
+const SpaceDetailStack = createNativeStackNavigator<SpaceDetailStackNavigatorScreens>();
+
+// recoil使いてーな。。便利そうここら辺とか特に。
+// routeのparamsが必要でこれをpassする。
+// というかもうここでspaceをfetchする感じでいいのかね。。。
+
+type SpaceDetailStackNavigatorProps = NativeStackScreenProps<SpaceDetailStackNavigatorScreens, 'SpaceDetail'>;
+
+export const SpaceDetailStackNavigator: React.FC<SpaceDetailStackNavigatorProps> = ({ route }) => {
+  const { auth, setAuth } = useContext(AuthContext);
+  const { mySpaces } = useContext(MySpacesContext);
+  const { apiResult, requestApi } = useGetSpaceByIdState();
+
+  // ここでcontextをやるのもなんか面倒だよね。。。
   return (
-    <Stack.Navigator>
-      <Stack.Screen
+    <SpaceDetailStack.Navigator>
+      <SpaceDetailStack.Screen
         name='SpaceDetail'
         component={SpaceDetail}
         options={({ navigation }) => ({
@@ -36,7 +80,7 @@ export const SpaceDetailStackNavigator: React.FC = () => {
           },
         })}
       />
-      <Stack.Screen
+      {/* <SpaceDetailStack.Screen
         name='Members'
         component={Members}
         options={({ navigation }) => ({
@@ -58,7 +102,7 @@ export const SpaceDetailStackNavigator: React.FC = () => {
             color: 'white',
           },
         })}
-      />
-    </Stack.Navigator>
+      /> */}
+    </SpaceDetailStack.Navigator>
   );
 };

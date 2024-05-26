@@ -17,30 +17,33 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Composer } from './providers/Providers';
 import { Root } from './features/App/pages/Root';
 import FlashMessage from 'react-native-flash-message';
+import { RecoilRoot } from 'recoil';
 
 const App: React.FC = function () {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-      <Composer
-        components={[
-          PaperProvider,
-          GlobalProvider,
-          BottomSheetModalProvider,
-          AuthProvider,
-          SnackBarProvider,
-          MySpacesProvider,
-          SpaceUpdatesProvider,
-          CurrentSpaceProvider,
-          CurrentTagProvider,
-          AppStateProvider,
-          LogsTableProvider,
-        ]}
-      >
-        <Root />
-      </Composer>
-      <FlashMessage />
-    </GestureHandlerRootView>
+    <RecoilRoot>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
+        <Composer
+          components={[
+            PaperProvider,
+            GlobalProvider,
+            BottomSheetModalProvider,
+            AuthProvider,
+            SnackBarProvider,
+            MySpacesProvider,
+            SpaceUpdatesProvider,
+            CurrentSpaceProvider,
+            CurrentTagProvider,
+            AppStateProvider,
+            LogsTableProvider,
+          ]}
+        >
+          <Root />
+        </Composer>
+        <FlashMessage />
+      </GestureHandlerRootView>
+    </RecoilRoot>
   );
 };
 

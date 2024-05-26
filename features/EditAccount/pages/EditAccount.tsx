@@ -7,7 +7,6 @@ import { VectorIcon } from '../../../Icons';
 import { AppTextInput } from '../../../components';
 import { useEditAccount, useUpdateUser } from '../hooks';
 import { UpdateUserInputType } from '../types';
-import { TextColor } from '../../../themes';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../../../navigations';
 
@@ -42,7 +41,7 @@ export const EditAccount = () => {
         <TouchableOpacity onPress={() => onDonePress()} disabled={isFormValidated ? false : true}>
           <Text
             style={{
-              color: isFormValidated ? TextColor.primary : 'rgb(117,117, 117)',
+              color: isFormValidated ? 'white' : 'rgb(117,117, 117)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
