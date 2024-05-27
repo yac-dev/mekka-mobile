@@ -19,12 +19,12 @@ export const useUpdateSpaceCheckedInDate = () => {
         };
       });
 
-      const response = await updateSpaceCheckedInDate(input);
+      await updateSpaceCheckedInDate(input);
       setApiResult((previous) => {
         return {
           ...previous,
           status: 'success',
-          data: response,
+          data: void 0,
         };
       });
     } catch (error) {

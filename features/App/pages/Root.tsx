@@ -13,6 +13,7 @@ import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
 import { LogsTableContext } from '../../../providers';
+import { useUpdateSpaceCheckedInDate } from '../../../api';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -38,6 +39,7 @@ export const Root = () => {
     requestApi: requestGetMySpaces,
     requestRefresh: refreshGetMySpaces,
   } = useGetMySpaces();
+  const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
 
   const { apiResult: getLogsResult, requestApi: requestGetLogs } = useGetLogsByUserId();
   const loadMe = async () => {
@@ -72,7 +74,9 @@ export const Root = () => {
         setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
         setSpaceUpdates(getMySpacesApiResult.data.updateTable);
       }
-      // ここで、index0のもんだけpostでupdateしたい。最初の時点でupdateしておく。
+      const firstSpace = getMySpacesApiResult.data?.mySpaces[0];
+      requestApi({ spaceId: firstSpace._id, userId: auth._id });
+      // 最初のspace fetchで最初のspaceのcheckedin の日付だけ更新する。
     }
   }, [getMySpacesApiResult]);
 
@@ -89,7 +93,8 @@ export const Root = () => {
           // appが再び開かれたら起こす。
           refreshGetMySpaces({ userId: auth._id });
           requestGetLogs({ userId: auth._id });
-          // currentSpaceにid使ってupdateすればいいかとりあえず。
+          // requestApi({ spaceId: currentSpace._id, userId: auth._id });
+          // こんな感じか。。。
           console.log('App has come to the foreground!');
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。

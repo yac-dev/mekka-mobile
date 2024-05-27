@@ -19,6 +19,7 @@ import { HomeStackNavigatorProps } from '../../../navigations';
 import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../../../themes';
 import { SpaceRootStackNavigatorProp } from '../../../navigations/SpaceRootStackNavigator';
+import { useUpdateSpaceCheckedInDate } from '../../../api';
 
 // このnavigationって、Homeのnavigationを受け継ぎ同時にSpacesDrawerのscreenに対するdrawerのnavigationも持っているのか。。。
 // まあここはよくわからん。。。
@@ -46,6 +47,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
   const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
   const { spaceUpdates } = useContext(SpaceUpdatesContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
+  const { requestApi } = useUpdateSpaceCheckedInDate();
 
   // const updateLastCheckedIn = async () => {
   //   const result = await backendAPI.patch(`/users/${auth._id}/lastcheckedin`, {
@@ -169,8 +171,9 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                     borderRightColor: 'white',
                   }}
                   onPress={() => {
-                    // onSpacePress(route.params?.space);
                     setCurrentSpace(space);
+                    requestApi({ spaceId: space._id, userId: auth._id });
+                    // spaceのicon tapでlastCheckedinを更新していく。
                   }}
                 >
                   <View style={{ flexDirection: 'column', alignItems: 'center' }}>
