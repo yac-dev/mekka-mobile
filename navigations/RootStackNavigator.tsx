@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { AuthContext } from '../providers';
-import { TouchableOpacity } from 'react-native';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from './HomeStackNavigator';
@@ -15,6 +15,7 @@ import { SnackBarContext } from '../providers';
 import FlashMessage from 'react-native-flash-message';
 import { ApiResultType } from '../types';
 import { LoadMeOutputType } from '../features/App/types';
+import { View, Text } from 'react-native';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -35,18 +36,10 @@ type IRootStackNavigator = {
 export const RootStackNavigator: React.FC<IRootStackNavigator> = ({ loadMeApiResult }) => {
   const { auth } = useContext(AuthContext);
 
-  return (
-    <NavigationContainer>
-      <RootStack.Navigator>
-        {loadMeApiResult.status === 'success' && auth ? (
-          <RootStack.Screen
-            name='HomeStackNavigator'
-            component={HomeStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-            })}
-          />
-        ) : (
+  if (loadMeApiResult.status === 'success' && !auth) {
+    return (
+      <NavigationContainer>
+        <RootStack.Navigator>
           <RootStack.Screen
             name='NonAuthNavigator'
             component={NonAuthNavigator}
@@ -54,7 +47,21 @@ export const RootStackNavigator: React.FC<IRootStackNavigator> = ({ loadMeApiRes
               headerShown: false,
             })}
           />
-        )}
+        </RootStack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  return (
+    <NavigationContainer>
+      <RootStack.Navigator>
+        <RootStack.Screen
+          name='HomeStackNavigator'
+          component={HomeStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+          })}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );
