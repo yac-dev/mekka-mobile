@@ -41,7 +41,7 @@ export const Root = () => {
   } = useGetMySpaces();
   const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
 
-  const { apiResult: getLogsResult, requestApi: requestGetLogs } = useGetLogsByUserId();
+  const { apiResult: getLogsResult, requestApi: requestGetLogs, requestRefresh } = useGetLogsByUserId();
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
@@ -92,7 +92,8 @@ export const Root = () => {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
           // appが再び開かれたら起こす。
           refreshGetMySpaces({ userId: auth._id });
-          requestGetLogs({ userId: auth._id });
+          requestRefresh({ userId: auth._id });
+          // ここもrefreshに直したほうがいいと思う。
           // requestApi({ spaceId: currentSpace._id, userId: auth._id });
           // こんな感じか。。。
           console.log('App has come to the foreground!');
@@ -109,9 +110,13 @@ export const Root = () => {
         appStateListener.remove();
       };
     }
-  }, [auth, appState, currentSpace]);
+  }, [auth, appState]);
 
-  if (loadMeApiResult.status === 'loading' || getMySpacesApiResult.status === 'loading') {
+  if (
+    loadMeApiResult.status === 'loading' ||
+    getMySpacesApiResult.status === 'loading' ||
+    getLogsResult.status === 'loading'
+  ) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -119,7 +124,7 @@ export const Root = () => {
     );
   }
 
-  return <RootStackNavigator />;
+  return <RootStackNavigator loadMeApiResult={loadMeApiResult} />;
 };
 
 // push notificationに関するcallback実行

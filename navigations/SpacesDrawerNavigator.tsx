@@ -110,7 +110,7 @@ export const SpacesDrawerNavigator = () => {
   };
 
   // そもそも、mySpacesはないからこっちはrenderingされないはずだが。。。
-  if (auth && mySpaces?.length) {
+  if (auth && mySpaces) {
     return (
       <>
         <Drawer.Navigator
@@ -196,7 +196,139 @@ export const SpacesDrawerNavigator = () => {
                 },
               })}
             >
-              {({ navigation, route }) => <NoSpaces navigation={navigation} />}
+              {({ navigation, route }) => (
+                <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100, paddingHorizontal: 20 }}>
+                  <Text
+                    style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17, marginBottom: 20 }}
+                  >
+                    You haven't joined any spaces now.
+                  </Text>
+                  <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
+                  <View style={{ marginTop: 50, gap: 8, flexDirection: 'row', alignItems: 'center' }}>
+                    <View
+                      style={{
+                        width: actionButtonContainerWidth,
+                        aspectRatio: 1,
+                        padding: 10,
+                      }}
+                      // onPress={() => console.log('hello')}
+                    >
+                      <TouchableOpacity
+                        activeOpacity={0.5}
+                        style={{
+                          backgroundColor: 'rgb(50,50,50)',
+                          borderRadius: 100,
+                          width: actionButtonWidth,
+                          aspectRatio: 1,
+                          marginBottom: 10,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        onPress={() => {
+                          homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
+                        }}
+                        // ここのnavigationがおかしいね。enterprivateも。discoverは大丈夫そう。
+                        // あとは、spaceが無からアリになった時用な。
+                      >
+                        <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: 'white',
+                          fontSize: 15,
+                          fontWeight: '700',
+                        }}
+                      >
+                        Create new space
+                      </Text>
+                    </View>
+                    <View
+                      // activeOpacity={0.5}
+                      style={{
+                        width: actionButtonContainerWidth,
+                        aspectRatio: 1,
+                        padding: 10,
+                      }}
+                      // onPress={() => console.log('hello')}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: 'rgb(50,50,50)',
+                          borderRadius: 100,
+                          width: actionButtonWidth,
+                          aspectRatio: 1,
+                          marginBottom: 10,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        activeOpacity={0.5}
+                        onPress={() => homeStackNavigation.navigate('EnterPrivateSpace')}
+                      >
+                        <VectorIcon.II name='key' color={Colors.white} size={40} />
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: 'white',
+                          fontSize: 15,
+                          fontWeight: '700',
+                        }}
+                      >
+                        Join private space
+                      </Text>
+                    </View>
+                    <View
+                      // activeOpacity={0.5}
+                      style={{
+                        width: actionButtonContainerWidth,
+                        aspectRatio: 1,
+                        padding: 10,
+                      }}
+                      // onPress={() => console.log('hello')}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: 'rgb(50,50,50)',
+                          borderRadius: 100,
+                          width: actionButtonWidth,
+                          aspectRatio: 1,
+                          marginBottom: 10,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        activeOpacity={0.5}
+                        onPress={() => homeStackNavigation.navigate('DiscoverStackNavigator')}
+                      >
+                        <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: 'white',
+                          fontSize: 15,
+                          fontWeight: '700',
+                        }}
+                      >
+                        Discover new space
+                      </Text>
+                    </View>
+                  </View>
+                  <AppBottomSheet.Gorhom
+                    ref={authMenuBottomSheetRef}
+                    snapPoints={['60%']}
+                    title='Settings'
+                    onCloseButtonClose={closeAuthMenuBottomSheet}
+                  >
+                    <AuthMenu
+                      onEditMyAccountPress={onEditMyAccountPress}
+                      onNotificationSettingPress={onNotificationSettingPress}
+                      onLogoutPress={onLogoutPress}
+                      onDeleteMyAccountPress={onDeleteMyAccountPress}
+                    />
+                  </AppBottomSheet.Gorhom>
+                </View>
+              )}
             </Drawer.Screen>
           ) : (
             mySpaces.map((space: SpaceType) => (
@@ -306,136 +438,6 @@ export const SpacesDrawerNavigator = () => {
       </>
     );
   } else {
-    return (
-      <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100, paddingHorizontal: 20 }}>
-        <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17, marginBottom: 20 }}>
-          You haven't joined any spaces now.
-        </Text>
-        <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
-        <View style={{ marginTop: 50, gap: 8, flexDirection: 'row', alignItems: 'center' }}>
-          <View
-            style={{
-              width: actionButtonContainerWidth,
-              aspectRatio: 1,
-              padding: 10,
-            }}
-            // onPress={() => console.log('hello')}
-          >
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 100,
-                width: actionButtonWidth,
-                aspectRatio: 1,
-                marginBottom: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={() => {
-                homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
-              }}
-              // ここのnavigationがおかしいね。enterprivateも。discoverは大丈夫そう。
-              // あとは、spaceが無からアリになった時用な。
-            >
-              <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
-            </TouchableOpacity>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: 'white',
-                fontSize: 15,
-                fontWeight: '700',
-              }}
-            >
-              Create new space
-            </Text>
-          </View>
-          <View
-            // activeOpacity={0.5}
-            style={{
-              width: actionButtonContainerWidth,
-              aspectRatio: 1,
-              padding: 10,
-            }}
-            // onPress={() => console.log('hello')}
-          >
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 100,
-                width: actionButtonWidth,
-                aspectRatio: 1,
-                marginBottom: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              activeOpacity={0.5}
-              onPress={() => homeStackNavigation.navigate('EnterPrivateSpace')}
-            >
-              <VectorIcon.II name='key' color={Colors.white} size={40} />
-            </TouchableOpacity>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: 'white',
-                fontSize: 15,
-                fontWeight: '700',
-              }}
-            >
-              Join private space
-            </Text>
-          </View>
-          <View
-            // activeOpacity={0.5}
-            style={{
-              width: actionButtonContainerWidth,
-              aspectRatio: 1,
-              padding: 10,
-            }}
-            // onPress={() => console.log('hello')}
-          >
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 100,
-                width: actionButtonWidth,
-                aspectRatio: 1,
-                marginBottom: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              activeOpacity={0.5}
-              onPress={() => homeStackNavigation.navigate('DiscoverStackNavigator')}
-            >
-              <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
-            </TouchableOpacity>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: 'white',
-                fontSize: 15,
-                fontWeight: '700',
-              }}
-            >
-              Discover new space
-            </Text>
-          </View>
-        </View>
-        <AppBottomSheet.Gorhom
-          ref={authMenuBottomSheetRef}
-          snapPoints={['60%']}
-          title='Settings'
-          onCloseButtonClose={closeAuthMenuBottomSheet}
-        >
-          <AuthMenu
-            onEditMyAccountPress={onEditMyAccountPress}
-            onNotificationSettingPress={onNotificationSettingPress}
-            onLogoutPress={onLogoutPress}
-            onDeleteMyAccountPress={onDeleteMyAccountPress}
-          />
-        </AppBottomSheet.Gorhom>
-      </View>
-    );
+    return <View style={{ flex: 1, backgroundColor: 'black' }} />;
   }
 };

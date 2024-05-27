@@ -13,6 +13,8 @@ import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
 import { NonAuthNavigator } from './NonAuthNavigator';
 import { SnackBarContext } from '../providers';
 import FlashMessage from 'react-native-flash-message';
+import { ApiResultType } from '../types';
+import { LoadMeOutputType } from '../features/App/types';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -26,13 +28,17 @@ export type RootStackParams = {
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
 
-export const RootStackNavigator = () => {
+type IRootStackNavigator = {
+  loadMeApiResult: ApiResultType<LoadMeOutputType>;
+};
+
+export const RootStackNavigator: React.FC<IRootStackNavigator> = ({ loadMeApiResult }) => {
   const { auth } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
       <RootStack.Navigator>
-        {auth ? (
+        {loadMeApiResult.status === 'success' && auth ? (
           <RootStack.Screen
             name='HomeStackNavigator'
             component={HomeStackNavigator}
