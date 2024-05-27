@@ -130,9 +130,9 @@ export const SpacesDrawerNavigator = () => {
             drawerType: 'back',
             drawerStyle: {
               backgroundColor: 'black',
-              borderRightColor: 'rgb(40,40,40)',
+              borderRightColor: 'rgb(100,100,100)',
               borderRightWidth: 1,
-              width: Dimensions.get('screen').width * 0.9,
+              width: Dimensions.get('screen').width * 0.87,
             },
             tabBarStyle: {
               backgroundColor: 'black',

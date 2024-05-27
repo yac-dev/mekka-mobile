@@ -28,7 +28,7 @@ export const Root = () => {
   const { appState, onAppStateChange } = useContext(GlobalContext);
   const { auth, setAuth } = useContext(AuthContext);
   const { setMySpaces } = useContext(MySpacesContext);
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { setCurrentSpace, currentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
   const { setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { setLogsTable } = useContext(LogsTableContext);
@@ -72,6 +72,7 @@ export const Root = () => {
         setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
         setSpaceUpdates(getMySpacesApiResult.data.updateTable);
       }
+      // ここで、index0のもんだけpostでupdateしたい。最初の時点でupdateしておく。
     }
   }, [getMySpacesApiResult]);
 
@@ -88,6 +89,7 @@ export const Root = () => {
           // appが再び開かれたら起こす。
           refreshGetMySpaces({ userId: auth._id });
           requestGetLogs({ userId: auth._id });
+          // currentSpaceにid使ってupdateすればいいかとりあえず。
           console.log('App has come to the foreground!');
         } else if (appState === 'active' && nextAppState === 'inactive') {
           // appを閉じてbackgroundになる寸前にここを起こす感じ。
@@ -102,7 +104,7 @@ export const Root = () => {
         appStateListener.remove();
       };
     }
-  }, [auth, appState]);
+  }, [auth, appState, currentSpace]);
 
   if (loadMeApiResult.status === 'loading' || getMySpacesApiResult.status === 'loading') {
     return (

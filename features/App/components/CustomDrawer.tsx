@@ -267,7 +267,13 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
         <View style={{ flex: 9, paddingTop: 15 }}>
           <TouchableOpacity
             activeOpacity={0.5}
-            style={{ flexDirection: 'row', padding: 10, alignItems: 'center', marginBottom: 10 }}
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              alignItems: 'center',
+              marginBottom: 10,
+            }}
             onPress={() => spaceRootStackNavigation.navigate('SpaceInfoStackNavigator')}
           >
             <ExpoImage
@@ -396,7 +402,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                   }}
                   onPress={() => {
                     // currentTagのを読み込んでくる必要がある。
-                    navigation.toggleDrawer();
+
                     setCurrentTag(tag);
                     setLogsTable((previous) => {
                       return {
@@ -408,20 +414,26 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                       };
                     });
                     // drawer側のnavigationをしたい場合には、↓を動かしたいんだよね。。。これでも一応動いてはいるがバグの温床になりそう。。。
-                    homeStackNavigation.navigate('SpacesDrawerNavigator', {
-                      screen: `Space_${currentSpace._id}`,
-                      // ここに変化がない限り、toggleしない。実際、確かにここより下はdrawerのnavigatorに登録しているわけではないからね。。。ここをどう克服するか。というか、仕組みが少しわかってきた。
-                      // 逆にでは、そうなら
-                      // params: {
-                      //   screen: 'TagsTopTabNavigator',
-                      //   params: {
-                      //     screen: `Tag_${tag._id}`,
-                      //     params: {
-                      //       screen: 'GridView',
-                      //     },
-                      //   },
-                      // },
-                    });
+                    // あれか。。。currentSpaceの方はただtoggleをすればいいだけかな。。。
+
+                    if (currentSpace._id !== tag._id) {
+                      homeStackNavigation.navigate('SpacesDrawerNavigator', {
+                        screen: `Space_${currentSpace._id}`,
+                        // ここに変化がない限り、toggleしない。実際、確かにここより下はdrawerのnavigatorに登録しているわけではないからね。。。ここをどう克服するか。というか、仕組みが少しわかってきた。
+                        // 逆にでは、そうなら
+                        // params: {
+                        //   screen: 'TagsTopTabNavigator',
+                        //   params: {
+                        //     screen: `Tag_${tag._id}`,
+                        //     params: {
+                        //       screen: 'GridView',
+                        //     },
+                        //   },
+                        // },
+                      });
+                    } else {
+                      navigation.toggleDrawer();
+                    }
 
                     // console.log('current space', currentSpace._id);
                     // navigation.navigate(`Space_${currentSpace._id}`);
