@@ -14,7 +14,6 @@ import Comments from './Comments';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
-import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { TagRootContext } from '../../../contexts/TagRootContext';
 import { TagScreenContext } from '../../Space';
 import { PostType } from '../../../types';
@@ -24,17 +23,21 @@ import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { useBottomSheet } from '../hooks';
 import { ReactionsBottomSheet } from '../components/ReactionsBottomSheet';
 import { Reactions } from '../components/Reactions';
+import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 
-const ViewPost = (props) => {
+const ViewPost = () => {
   const {
     getPostsApiResult,
     getPostsByTagIdAndRegionResult,
     setCurrentPost,
-    viewPostsType,
     currentPost,
     currentPostIndex,
     onCurrentPostIndexChange,
+    // viewPostsType,
   } = useContext(TagScreenContext);
+
+  const { viewPostsType } = useContext(SpaceRootContext);
+
   const {
     isReactionsBottomSheetOpen,
     isCommentsBottomSheetOpen,
@@ -54,30 +57,6 @@ const ViewPost = (props) => {
     closeOthersBottomSheet,
   } = useBottomSheet();
 
-  // const { currentPost, setCurrentPost, posts, currentIndex } = useContext(TagViewContext);
-  // const { viewPostsType } = useContext(SpaceRootContext);
-  // const { currentPost, setCurrentPost, posts, currentIndex, mapPosts } = useContext(TagRootContext);
-  const mediaRefs = useRef([]);
-
-  const textInputRef = useRef(null);
-  const [reactionStatuses, setReactionStatuses] = useState([]);
-  const [isLoadingReactionStatuses, setIsLoadingReactionStatuses] = useState(false);
-  const [isOtherOptionsBottomSheetOpen, setIsOtherOptionsBottomSheetOpen] = useState(false);
-
-  const onReactionsPress = () => {
-    openReactionsBottomSheetToIndex(0);
-  };
-
-  // const getReactionStatuses = async () => {
-  //   // currentPostがあってこれを使う。
-  //   reactionStatusesBottomSheetRef.current.snapToIndex(0);
-  //   setIsLoadingReactionStatuses(true);
-  //   const result = await backendAPI.get(`/reactionstatuses/post/${currentPost._id}`);
-  //   const { reactionStatuses } = result.data;
-  //   setReactionStatuses(reactionStatuses);
-  //   setIsLoadingReactionStatuses(false);
-  // };
-
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return (
       <View
@@ -89,45 +68,9 @@ const ViewPost = (props) => {
         }}
       >
         <CarouselContents post={item} />
-        {/* <Content post={item} ref={(ContentRef) => (mediaRefs.current[item._id] = ContentRef)} /> */}
       </View>
     );
   };
-
-  // return (
-  //   <ViewPostContext.Provider
-  //     value={
-  //       {
-  //         // post,
-  //         // setPost,
-  //         // isPostFetched,
-  //         // setIsPostFetched,
-  //         // reactionStatuses,
-  //         // setReactionStatuses,
-  //         // areReactionStatusesFetched,
-  //         // comments,
-  //         // setComments,
-  //         // areCommentsFetched,
-  //         // navigation: props.navigation,
-  //         // reactionOptionsBottomSheetRef,
-  //         // commentInputBottomSheetRef,
-  //         // textInputRef,
-  //       }
-  //     }
-  //   >
-  //     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-  //       {/* <Content />
-  //       <Header />
-  //       <BottomMenu />
-  //       <ReactionOptionsBottomSheet />
-  //       <CommentInputBottomSheet />
-  //       <View>
-  //         <Text style={{ color: 'red' }}>{currentPost._id}</Text>
-  //       </View>
-  //     </GestureHandlerRootView>
-  //   </ViewPostContext.Provider>
-  // );
-  // console.log('currentpost', currentPost);
 
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach((element) => {
@@ -138,26 +81,6 @@ const ViewPost = (props) => {
   });
 
   return (
-    // <ViewPostContext.Provider
-    //   value={{
-    //     getReactionStatuses,
-    //     viewPostStackNavigatorNavigation: props.navigation,
-    //     reactionStatusesBottomSheetRef,
-    //     commentInputBottomSheetRef,
-    //     otherActionsBottomSheetRef,
-    //     textInputRef,
-    //     reactionStatuses,
-    //     setReactionStatuses,
-    //     isLoadingReactionStatuses,
-    //     setIsLoadingReactionStatuses,
-    //     isReactionsBottomSheetOpen,
-    //     setIsReactionsBottomSheetOpen,
-    //     isCommentsBottomSheetOpen,
-    //     setIsCommentsBottomSheetOpen,
-    //     isOtherOptionsBottomSheetOpen,
-    //     setIsOtherOptionsBottomSheetOpen,
-    //   }}
-    // >
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
       <FlatList
         data={viewPostsType === 'grid' ? getPostsApiResult.data?.posts : getPostsByTagIdAndRegionResult.data?.posts}
@@ -185,19 +108,7 @@ const ViewPost = (props) => {
       >
         <Reactions isReactionsBottomSheetOpen={isReactionsBottomSheetOpen} />
       </AppBottomSheet.Gorhom>
-
-      {/* <ReactionsBottomSheet
-        ref={reactionsBottomSheetRef}
-        isReactionsBottomSheetOpen={isReactionsBottomSheetOpen}
-        openReactionsBottomSheetToIndex={openReactionsBottomSheetToIndex}
-        closeReactionsBottomSheet={closeReactionsBottomSheet}
-        onReactionsBottomSheetClose={onReactionsBottomSheetClose}
-      /> */}
-      {/* <ReactionOptionsBottomSheet />
-        <CommentInputBottomSheet />
-        <OtherActionsBottomSheet /> */}
     </GestureHandlerRootView>
-    // </ViewPostContext.Provider>
   );
 };
 

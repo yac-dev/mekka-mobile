@@ -22,16 +22,7 @@ export const ViewPostStackNavigator = () => {
   const { currentTag } = useContext(CurrentTagContext);
 
   return (
-    <ViewPostStack.Navigator
-    // screenOptions={({ navigation, route }) => ({
-    //   tabBarStyle: {
-    //     backgroundColor: 'black',
-    //     headerStyle: {
-    //       backgroundColor: 'black',
-    //     },
-    //   },
-    // })}
-    >
+    <ViewPostStack.Navigator>
       <ViewPostStack.Group>
         <ViewPostStack.Screen
           name='ViewPost'

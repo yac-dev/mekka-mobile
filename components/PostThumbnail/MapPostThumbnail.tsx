@@ -6,12 +6,14 @@ import { Image as ExpoImage } from 'expo-image';
 
 type MapPostThumbnailProps = {
   post: PostType;
-  onMapPostThumbnailPress: () => void;
+  index: number;
+  onMapPostThumbnailPress: (post: PostType, index: number) => void;
   isPressDisabled: boolean;
 };
 
 export const MapPostThumbnail: React.FC<MapPostThumbnailProps> = ({
   post,
+  index,
   onMapPostThumbnailPress,
   isPressDisabled,
 }) => {
@@ -26,7 +28,7 @@ export const MapPostThumbnail: React.FC<MapPostThumbnailProps> = ({
       <TouchableOpacity
         style={{ width: 54, height: 54, padding: 3, borderRadius: 8, backgroundColor: 'white' }}
         disabled={isPressDisabled}
-        onPress={onMapPostThumbnailPress}
+        onPress={() => onMapPostThumbnailPress(post, index)}
       >
         <View style={{ width: '100%', height: '100%' }}>
           <ExpoImage

@@ -8,9 +8,6 @@ import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { Colors } from '../../../themes/colors';
-import { TagScreenStackNavigatorProps } from '../../../navigations';
-import { TagScreenContext } from '../providers';
-import { HomeStackNavigatorProps } from '../../../navigations';
 
 type ViewPostsTypeToggleButtonProps = {
   onGridViewPress: () => void;
@@ -25,27 +22,6 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
   const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
   const { currentTag } = useContext(CurrentTagContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
-
-  // const onGridIconPress = () => {
-  //   setViewPostsType('grid');
-  //   navigation.navigate('TagsTopTabNavigator', {
-  //     screen: `Tag_${currentTag._id}`,
-  //     params: {
-  //       screen: 'GridView',
-  //     },
-  //   });
-  //   // navigation.navigate('TagScreenTopTabNavigator', { screen: 'GridView' });
-  // };
-
-  // const onGlobeIconPress = () => {
-  //   setViewPostsType('map');
-  //   navigation.navigate('TagsTopTabNavigator', {
-  //     screen: `Tag_${currentTag._id}`,
-  //     params: {
-  //       screen: 'MapView',
-  //     },
-  //   });
-  // };
 
   return (
     <View style={styles.container}>

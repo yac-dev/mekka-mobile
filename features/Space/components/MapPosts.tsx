@@ -4,19 +4,35 @@ import MapView from 'react-native-maps';
 import { PostType } from '../../../types';
 import { MapPostThumbnail } from '../../../components/PostThumbnail/MapPostThumbnail';
 import { TagScreenContext } from '../providers';
+import { useNavigation } from '@react-navigation/native';
+import { TagScreenStackNavigatorProps } from '../../../navigations';
 
 export const MapPosts: React.FC = () => {
-  const { mapRef, region, onRegionChangeComplete, getPostsByTagIdAndRegionResult } = useContext(TagScreenContext);
+  const {
+    mapRef,
+    region,
+    onRegionChangeComplete,
+    getPostsByTagIdAndRegionResult,
+    setCurrentPost,
+    onCurrentPostIndexChange,
+  } = useContext(TagScreenContext);
+  const navigation = useNavigation<TagScreenStackNavigatorProps>();
 
   // TODO: Pressで写真見せるようにする。
-  const onMapPostThumbnailPress = () => {
-    console.log('map post press');
+  const onMapPostThumbnailPress = (post: PostType, index: number) => {
+    setCurrentPost(post);
+    onCurrentPostIndexChange(index);
+    navigation.navigate('ViewPostStackNavigator');
+    // console.log('current post', post);
+    // console.log('view posts type', viewPostsType);
   };
+  // ここばぐってるな。。。
 
   const renderMarkers = () => {
     return getPostsByTagIdAndRegionResult.data?.posts.map((post: PostType, index: number) => (
       <MapPostThumbnail
         post={post}
+        index={index}
         onMapPostThumbnailPress={onMapPostThumbnailPress}
         isPressDisabled={getPostsByTagIdAndRegionResult.status === 'loading'}
       />
