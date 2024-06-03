@@ -36,7 +36,7 @@ type IRootStackNavigator = {
 export const RootStackNavigator: React.FC<IRootStackNavigator> = ({ loadMeApiResult }) => {
   const { auth } = useContext(AuthContext);
 
-  if (loadMeApiResult.status === 'success' && !auth) {
+  if (!auth) {
     return (
       <NavigationContainer>
         <RootStack.Navigator>

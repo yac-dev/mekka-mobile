@@ -48,6 +48,9 @@ export const Root = () => {
       requestLoadMe({ jwt });
     }
   };
+  // そもそもloadme動いてないね。。。
+  // そもそもjwtがない場合はここを動かさないもんな。。。
+  // ここの制御めんどいかもね。。。
 
   useEffect(() => {
     loadMe();
@@ -73,9 +76,9 @@ export const Root = () => {
         setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
         setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
         setSpaceUpdates(getMySpacesApiResult.data.updateTable);
+        const firstSpace = getMySpacesApiResult.data?.mySpaces[0];
+        requestApi({ spaceId: firstSpace._id, userId: auth._id });
       }
-      const firstSpace = getMySpacesApiResult.data?.mySpaces[0];
-      requestApi({ spaceId: firstSpace._id, userId: auth._id });
       // 最初のspace fetchで最初のspaceのcheckedin の日付だけ更新する。
     }
   }, [getMySpacesApiResult]);
