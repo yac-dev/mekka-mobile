@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { iconColorTable } from '../../../themes/color';
 import { Feather } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 
-const blurhash =
-  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
-const Comments = (props) => {
+export const Comments = (props) => {
   const [comments, setComments] = useState([]);
   const [haveCommentsBeenFetched, setHaveCommentsBeenFetched] = useState(false);
 
@@ -90,5 +87,3 @@ const Comments = (props) => {
     </View>
   );
 };
-
-export default Comments;

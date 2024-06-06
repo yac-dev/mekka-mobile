@@ -20,10 +20,11 @@ import { PostType } from '../../../types';
 import { CarouselContents } from '../components/CarouselContents';
 import { ViewPostMenu } from '../components';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
-import { useBottomSheet } from '../hooks';
+import { useBottomSheet, useModal } from '../hooks';
 import { ReactionsBottomSheet } from '../components/ReactionsBottomSheet';
 import { Reactions } from '../components/Reactions';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
+import { CommentsModal } from '.';
 
 const ViewPost = () => {
   const {
@@ -56,6 +57,8 @@ const ViewPost = () => {
     closeUserInfoBottomSheetRefBottomSheet,
     closeOthersBottomSheet,
   } = useBottomSheet();
+
+  const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return (
@@ -98,7 +101,11 @@ const ViewPost = () => {
           index, // Pass the index
         })}
       />
-      <ViewPostMenu onReactionPress={handleReactionBottomSheetVisibility} />
+      <ViewPostMenu
+        onReactionPress={openReactionsBottomSheetToIndex}
+        onCommentsPress={handleCommentsModalVisibility}
+        onAvatarPress={openUserInfoBottomSheetRefBottomSheetToIndex}
+      />
       <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
@@ -108,6 +115,15 @@ const ViewPost = () => {
       >
         <Reactions isReactionsBottomSheetOpen={isReactionsBottomSheetOpen} />
       </AppBottomSheet.Gorhom>
+
+      {/* <AppBottomSheet.Gorhom
+          ref={commentsBottomSheetRef}
+          snapPoints={['80%']}
+          title='Settings'
+          onCloseButtonClose={closeAuthMenuBottomSheet}
+        >
+        </AppBottomSheet.Gorhom> */}
+      {/* commentのinputをbottom sheetで出す様にする。 */}
     </GestureHandlerRootView>
   );
 };

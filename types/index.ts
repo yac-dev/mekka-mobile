@@ -172,11 +172,19 @@ export type PostType = {
   type: string; // normal or moment
   caption: string;
   space: string;
-  createdBy: string;
+  createdBy: UserType;
   disappearAt: string;
   totalComments?: number;
   totalReactions?: number;
   location: LocationType;
+};
+
+export type CommentType = {
+  content: string;
+  post: PostType;
+  reply: CommentType;
+  createdBy: UserType;
+  createdAt: string;
 };
 
 export type LogsTagTableType = {

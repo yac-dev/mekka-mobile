@@ -8,10 +8,10 @@ type UseBottomSheetOutputType = {
   commentsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   userInfoBottomSheetRef: MutableRefObject<BottomSheetModal>;
   othersBottomSheetRef: MutableRefObject<BottomSheetModal>;
-  openReactionsBottomSheetToIndex: (index: number) => void;
+  openReactionsBottomSheetToIndex: () => void;
   handleReactionBottomSheetVisibility: () => void;
-  openCommentsBottomSheetToIndex: (index: number) => void;
-  openUserInfoBottomSheetRefBottomSheetToIndex: (index: number) => void;
+  openCommentsBottomSheetToIndex: () => void;
+  openUserInfoBottomSheetRefBottomSheetToIndex: () => void;
   openOthersBottomSheetToIndex: (index: number) => void;
   closeReactionsBottomSheet: () => void;
   onReactionsBottomSheetClose: () => void;
@@ -34,14 +34,14 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     setIsReactionsBottomSheetOpen(true);
   };
 
-  const openReactionsBottomSheetToIndex = (index: number) => {
+  const openReactionsBottomSheetToIndex = () => {
     reactionsBottomSheetRef.current?.snapToIndex(0);
   };
-  const openCommentsBottomSheetToIndex = (index: number) => {
-    commentsBottomSheetRef.current?.snapToIndex(index);
+  const openCommentsBottomSheetToIndex = () => {
+    commentsBottomSheetRef.current?.snapToIndex(0);
   };
-  const openUserInfoBottomSheetRefBottomSheetToIndex = (index: number) => {
-    userInfoBottomSheetRef.current?.snapToIndex(index);
+  const openUserInfoBottomSheetRefBottomSheetToIndex = () => {
+    userInfoBottomSheetRef.current?.snapToIndex(0);
   };
   const openOthersBottomSheetToIndex = (index: number) => {
     othersBottomSheetRef.current?.snapToIndex(index);

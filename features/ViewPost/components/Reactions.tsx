@@ -58,10 +58,8 @@ export const Reactions = ({
 
   // console.log('bottom sheet state', isReactionsBottomSheetOpen);
   useEffect(() => {
-    if (isReactionsBottomSheetOpen) {
-      requestGetReactionsByPostId({ postId: currentPost._id });
-    }
-  }, [isReactionsBottomSheetOpen]);
+    requestGetReactionsByPostId({ postId: currentPost._id });
+  }, []);
 
   // とりあえず、1以上のものだけ、0のものをextractする感じでいいか。
 
