@@ -10,7 +10,6 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
-import Comments from '../features/ViewPost/pages/Comments';
 import Discover from '../features/Discover/pages/Discover';
 import ProfileStackNavigator from './ProfileStackNavigator';
 import LocationPicker from '../features/CreateNewPost/pages/LocationPicker';
@@ -112,26 +111,6 @@ export const HomeStackNavigator: React.FC = (props) => {
           <HomeStack.Screen
             name='ViewPost'
             component={ViewPost}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <HomeStack.Screen
-            name='Comments'
-            component={Comments}
             options={({ navigation }) => ({
               headerShown: true,
               headerLeft: () => (

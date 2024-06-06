@@ -5,12 +5,11 @@ import backendAPI from '../../../apis/backend';
 import { ViewPostContext } from '../contexts/ViewPostContext';
 import Header from '../components/Header';
 import Content from '../components/Content';
-import ReactionOptionsBottomSheet from '../components/ReactionsBottomSheet';
 import CommentInputBottomSheet from './CommentInputBottomSheet';
 import OtherActionsBottomSheet from './OtherActionsBottomSheet';
 import BottomMenu from '../components/BottomMenu';
 // import ReactionOptions from '../compoReactionOptions';
-import Comments from './Comments';
+import { Comments } from '../components';
 import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
@@ -25,6 +24,8 @@ import { ReactionsBottomSheet } from '../components/ReactionsBottomSheet';
 import { Reactions } from '../components/Reactions';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { CommentsModal } from '.';
+import { useGetCommentsByPostIdState } from '../../../api/hooks/useGetCommentsByPostIdState';
+import { useGetReactionsByPostId } from '../hooks';
 
 const ViewPost = () => {
   const {
@@ -36,6 +37,9 @@ const ViewPost = () => {
     onCurrentPostIndexChange,
     // viewPostsType,
   } = useContext(TagScreenContext);
+
+  const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
+  const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
 
   const { viewPostsType } = useContext(SpaceRootContext);
 
@@ -74,6 +78,7 @@ const ViewPost = () => {
       </View>
     );
   };
+  // bottom sheet開くと同時にgetCommentsをやればいいかね。。。
 
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach((element) => {
@@ -82,6 +87,18 @@ const ViewPost = () => {
       }
     });
   });
+
+  // handle reactionで開けようか。
+  // これは絶対必要なものになる。
+  const handleReactionPress = () => {
+    requestGetReactionsByPostId({ postId: currentPost._id });
+    openReactionsBottomSheetToIndex();
+  };
+
+  const handleCommentsPress = () => {
+    requestGetCommentsByPostId({ postId: currentPost._id });
+    openCommentsBottomSheetToIndex();
+  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
@@ -102,8 +119,8 @@ const ViewPost = () => {
         })}
       />
       <ViewPostMenu
-        onReactionPress={openReactionsBottomSheetToIndex}
-        onCommentsPress={handleCommentsModalVisibility}
+        onReactionPress={handleReactionPress}
+        onCommentsPress={handleCommentsPress}
         onAvatarPress={openUserInfoBottomSheetRefBottomSheetToIndex}
       />
       <AppBottomSheet.Gorhom
@@ -113,16 +130,17 @@ const ViewPost = () => {
         onCloseButtonClose={closeReactionsBottomSheet}
         onClose={onReactionsBottomSheetClose}
       >
-        <Reactions isReactionsBottomSheetOpen={isReactionsBottomSheetOpen} />
+        <Reactions getReactionsByPostIdResult={getReactionsByPostIdResult} />
       </AppBottomSheet.Gorhom>
 
-      {/* <AppBottomSheet.Gorhom
-          ref={commentsBottomSheetRef}
-          snapPoints={['80%']}
-          title='Settings'
-          onCloseButtonClose={closeAuthMenuBottomSheet}
-        >
-        </AppBottomSheet.Gorhom> */}
+      <AppBottomSheet.Gorhom
+        ref={commentsBottomSheetRef}
+        snapPoints={['80%']}
+        title='Comments'
+        onCloseButtonClose={closeCommentsBottomSheet}
+      >
+        <Comments getCommentsResult={getCommentsResult} />
+      </AppBottomSheet.Gorhom>
       {/* commentのinputをbottom sheetで出す様にする。 */}
     </GestureHandlerRootView>
   );

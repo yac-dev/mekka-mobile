@@ -12,36 +12,29 @@ import {
 import { Image as ExpoImage } from 'expo-image';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { TagScreenContext } from '../../Space';
-import { useGetReactionsPostsByPostId } from '../hooks';
+import { useGetReactionsByPostId } from '../hooks';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '../../../themes';
+import { ApiResultType } from '../../../types';
+import { GetReactionsByPostIdOutputType } from '../types';
 
 type Ref = BottomSheetModal;
 
-type ReactionsBottomSheetProps = {
-  isReactionsBottomSheetOpen: boolean;
-  closeReactionsBottomSheet: () => void;
-  onReactionsBottomSheetClose: () => void;
-  openReactionsBottomSheetToIndex: (index: number) => void;
+type IReactions = {
+  getReactionsByPostIdResult: ApiResultType<GetReactionsByPostIdOutputType>;
 };
 
 const itemWidth = Dimensions.get('window').width / 3;
 const reactionContainerWidth = itemWidth * 0.7;
 
-export const Reactions = ({
-  isReactionsBottomSheetOpen,
-  closeReactionsBottomSheet,
-  onReactionsBottomSheetClose,
-  openReactionsBottomSheetToIndex,
-}) => {
+export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { currentPost } = useContext(TagScreenContext);
   const { auth, setAuth } = useContext(AuthContext);
-  const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } =
-    useGetReactionsPostsByPostId();
+  // const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
 
-  console.log(reactionContainerWidth * 0.6);
+  // console.log(reactionContainerWidth * 0.6);
 
   // const upvoteReaction = async (reactionStatus, index) => {
   //   setLoading(true);
@@ -57,9 +50,9 @@ export const Reactions = ({
   // };
 
   // console.log('bottom sheet state', isReactionsBottomSheetOpen);
-  useEffect(() => {
-    requestGetReactionsByPostId({ postId: currentPost._id });
-  }, []);
+  // useEffect(() => {
+  //   requestGetReactionsByPostId({ postId: currentPost._id });
+  // }, []);
 
   // とりあえず、1以上のものだけ、0のものをextractする感じでいいか。
 

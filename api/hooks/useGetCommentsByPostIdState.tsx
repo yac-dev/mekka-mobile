@@ -5,7 +5,7 @@ import { getCommentsByPostId } from '../get';
 
 export const useGetCommentsByPostIdState = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetCommentsByPostIdOutputType>>({
-    status: 'loading',
+    status: 'idling',
     data: void 0,
     message: '',
   });

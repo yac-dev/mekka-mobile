@@ -3,7 +3,7 @@ import { ApiResultType } from '../../../types';
 import { getReactionStatuses } from '../apis';
 import { GetReactionsByPostIdInputType, GetReactionsByPostIdOutputType } from '../types';
 
-export const useGetReactionsPostsByPostId = () => {
+export const useGetReactionsByPostId = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetReactionsByPostIdOutputType>>({
     status: 'idling',
     data: void 0,

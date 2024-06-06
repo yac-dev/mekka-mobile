@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import backendAPI from '../../../apis/backend';
 import { iconColorTable } from '../../../themes/color';
 import { Feather } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
+import { ApiResultType, CommentType } from '../../../types';
+import { GetCommentsByPostIdOutputType } from '../../../api/types';
 
-export const Comments = (props) => {
-  const [comments, setComments] = useState([]);
-  const [haveCommentsBeenFetched, setHaveCommentsBeenFetched] = useState(false);
+type IComments = {
+  getCommentsResult: ApiResultType<GetCommentsByPostIdOutputType>;
+};
 
-  const renderDate = (date) => {
+export const Comments: React.FC<IComments> = ({ getCommentsResult }) => {
+  const renderDate = (date: string) => {
     const d = new Date(date).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -19,19 +22,8 @@ export const Comments = (props) => {
     return <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'rgb(170, 170, 170)' }}>{d}</Text>;
   };
 
-  const getComments = async () => {
-    const result = await backendAPI.get(`/comments/post/${props.route.params.post._id}`);
-    const { comments } = result.data;
-    setComments(comments);
-    setHaveCommentsBeenFetched(true);
-  };
-
-  useEffect(() => {
-    getComments();
-  }, []);
-
-  const renderComment = (comment) => {
-    if (comment.createdBy) {
+  const renderComment = ({ item }: { item: CommentType }) => {
+    if (item.createdBy) {
       return (
         <View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
@@ -44,22 +36,21 @@ export const Comments = (props) => {
                   backgroundColor: iconColorTable['blue1'],
                   borderRadius: 5,
                 }}
-                source={{ uri: comment.createdBy.avatar }}
-                placeholder={blurhash}
+                source={{ uri: item.createdBy.avatar }}
                 contentFit='contain'
                 transition={1000}
                 tintColor={'white'}
               />
               <View style={{ flexDirection: 'column' }}>
-                <Text style={{ color: 'white', marginBottom: 8 }}>{comment.createdBy.name}</Text>
-                {renderDate(comment.createdAt)}
+                <Text style={{ color: 'white', marginBottom: 8 }}>{item.createdBy.name}</Text>
+                {renderDate(item.createdAt)}
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
               <Feather name='more-horizontal' size={20} color='white' />
             </TouchableOpacity>
           </View>
-          <Text style={{ color: 'white', fontSize: 17 }}>{comment.content}</Text>
+          <Text style={{ color: 'white', fontSize: 17 }}>{item.content}</Text>
         </View>
       );
     } else {
@@ -67,23 +58,38 @@ export const Comments = (props) => {
     }
   };
 
-  const renderComments = () => {
-    if (comments.length) {
-      return (
-        <FlatList
-          data={comments}
-          renderItem={({ item }) => renderComment(item)}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-        />
-      );
-    } else {
-      return <Text style={{ marginTop: 50, textAlign: 'center', color: 'white' }}>There are no comments yet.</Text>;
-    }
-  };
+  if (getCommentsResult.status === 'loading') {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
-      {haveCommentsBeenFetched ? renderComments() : <ActivityIndicator />}
+      <FlatList
+        data={getCommentsResult.data?.comments}
+        renderItem={renderComment}
+        keyExtractor={(_, index) => `${index}`}
+        ListEmptyComponent={
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'white' }}>No comments yet...</Text>
+          </View>
+        }
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

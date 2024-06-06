@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions, ScrollView
 import { Image as ExpoImage } from 'expo-image';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { TagScreenContext } from '../../Space';
-import { useGetReactionsPostsByPostId } from '../hooks';
+import { useGetReactionsByPostId } from '../hooks';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
@@ -34,7 +34,7 @@ export const ReactionsBottomSheet = forwardRef<Ref, ReactionsBottomSheetProps>(
     const { currentPost } = useContext(TagScreenContext);
     const { auth, setAuth } = useContext(AuthContext);
     const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } =
-      useGetReactionsPostsByPostId();
+      useGetReactionsByPostId();
 
     // const upvoteReaction = async (reactionStatus, index) => {
     //   setLoading(true);
