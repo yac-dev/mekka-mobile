@@ -12,3 +12,12 @@ export type GetCommentsByPostIdInputType = {
 export type GetCommentsByPostIdOutputType = {
   comments: CommentType[];
 };
+
+export type CreateCommentInputType = {
+  content: string;
+  postId: string;
+  userId: string;
+};
+
+// 今はなくていいかな・
+export type CreateCommentOutputType = {};

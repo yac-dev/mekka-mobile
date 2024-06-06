@@ -5,7 +5,8 @@ import backendAPI from '../../../apis/backend';
 import { ViewPostContext } from '../contexts/ViewPostContext';
 import Header from '../components/Header';
 import Content from '../components/Content';
-import CommentInputBottomSheet from './CommentInputBottomSheet';
+
+import { CommentInput } from '../components/CommentInput';
 import OtherActionsBottomSheet from './OtherActionsBottomSheet';
 import BottomMenu from '../components/BottomMenu';
 // import ReactionOptions from '../compoReactionOptions';
@@ -60,6 +61,9 @@ const ViewPost = () => {
     closeCommentsBottomSheet,
     closeUserInfoBottomSheetRefBottomSheet,
     closeOthersBottomSheet,
+    commentInputBottomSheetRef,
+    openCommentInputBottomSheet,
+    closeCommentInputBottomSheet,
   } = useBottomSheet();
 
   const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
@@ -98,6 +102,10 @@ const ViewPost = () => {
   const handleCommentsPress = () => {
     requestGetCommentsByPostId({ postId: currentPost._id });
     openCommentsBottomSheetToIndex();
+  };
+
+  const handleCommentInputPress = () => {
+    openCommentInputBottomSheet(0);
   };
 
   return (
@@ -139,7 +147,15 @@ const ViewPost = () => {
         title='Comments'
         onCloseButtonClose={closeCommentsBottomSheet}
       >
-        <Comments getCommentsResult={getCommentsResult} />
+        <Comments getCommentsResult={getCommentsResult} handleCommentInputPress={handleCommentInputPress} />
+      </AppBottomSheet.Gorhom>
+      <AppBottomSheet.Gorhom
+        ref={commentInputBottomSheetRef}
+        snapPoints={['40%']}
+        title='What are your thought?'
+        onCloseButtonClose={closeCommentInputBottomSheet}
+      >
+        <CommentInput />
       </AppBottomSheet.Gorhom>
       {/* commentのinputをbottom sheetで出す様にする。 */}
     </GestureHandlerRootView>

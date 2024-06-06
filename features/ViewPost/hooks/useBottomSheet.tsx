@@ -6,6 +6,9 @@ type UseBottomSheetOutputType = {
   isCommentsBottomSheetOpen: boolean;
   reactionsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentsBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  commentInputBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  openCommentInputBottomSheet: (index: number) => void;
+  closeCommentInputBottomSheet: () => void;
   userInfoBottomSheetRef: MutableRefObject<BottomSheetModal>;
   othersBottomSheetRef: MutableRefObject<BottomSheetModal>;
   openReactionsBottomSheetToIndex: () => void;
@@ -28,10 +31,19 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const commentsBottomSheetRef = useRef<BottomSheetModal>(null);
   const userInfoBottomSheetRef = useRef<BottomSheetModal>(null);
   const othersBottomSheetRef = useRef<BottomSheetModal>(null);
+  const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const handleReactionBottomSheetVisibility = () => {
     reactionsBottomSheetRef.current?.snapToIndex(0);
     setIsReactionsBottomSheetOpen(true);
+  };
+
+  const openCommentInputBottomSheet = (index: number) => {
+    commentInputBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeCommentInputBottomSheet = () => {
+    commentInputBottomSheetRef.current?.close();
   };
 
   const openReactionsBottomSheetToIndex = () => {
@@ -70,6 +82,9 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     isCommentsBottomSheetOpen,
     reactionsBottomSheetRef,
     commentsBottomSheetRef,
+    commentInputBottomSheetRef,
+    openCommentInputBottomSheet,
+    closeCommentInputBottomSheet,
     userInfoBottomSheetRef,
     othersBottomSheetRef,
     openReactionsBottomSheetToIndex,

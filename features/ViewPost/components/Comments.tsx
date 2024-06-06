@@ -6,12 +6,15 @@ import { Feather } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { ApiResultType, CommentType } from '../../../types';
 import { GetCommentsByPostIdOutputType } from '../../../api/types';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
 
 type IComments = {
   getCommentsResult: ApiResultType<GetCommentsByPostIdOutputType>;
+  handleCommentInputPress: () => void;
 };
 
-export const Comments: React.FC<IComments> = ({ getCommentsResult }) => {
+export const Comments: React.FC<IComments> = ({ getCommentsResult, handleCommentInputPress }) => {
   const renderDate = (date: string) => {
     const d = new Date(date).toLocaleDateString('en-US', {
       month: 'short',
@@ -78,6 +81,22 @@ export const Comments: React.FC<IComments> = ({ getCommentsResult }) => {
           </View>
         }
       />
+      <AppButton.Icon
+        onButtonPress={handleCommentInputPress}
+        customStyle={{
+          width: 44,
+          height: 44,
+          backgroundColor: 'rgb(50,50,50)',
+          marginRight: 15,
+          borderRadius: 22,
+          position: 'absolute',
+          bottom: 10,
+          right: 10,
+        }}
+        hasShadow={false}
+      >
+        <VectorIcon.ETP name='feather' size={20} color={'white'} />
+      </AppButton.Icon>
     </View>
   );
 };
