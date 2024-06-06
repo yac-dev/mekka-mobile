@@ -5,7 +5,6 @@ import backendAPI from '../../../apis/backend';
 import { ViewPostContext } from '../contexts/ViewPostContext';
 import Header from '../components/Header';
 import Content from '../components/Content';
-
 import { CommentInput } from '../components/CommentInput';
 import OtherActionsBottomSheet from './OtherActionsBottomSheet';
 import BottomMenu from '../components/BottomMenu';
@@ -64,6 +63,7 @@ const ViewPost = () => {
     commentInputBottomSheetRef,
     openCommentInputBottomSheet,
     closeCommentInputBottomSheet,
+    commentInputRef,
   } = useBottomSheet();
 
   const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
@@ -155,7 +155,7 @@ const ViewPost = () => {
         title='What are your thought?'
         onCloseButtonClose={closeCommentInputBottomSheet}
       >
-        <CommentInput />
+        <CommentInput ref={commentInputRef} closeCommentInputBottomSheet={closeCommentInputBottomSheet} />
       </AppBottomSheet.Gorhom>
       {/* commentのinputをbottom sheetで出す様にする。 */}
     </GestureHandlerRootView>

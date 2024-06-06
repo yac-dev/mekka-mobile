@@ -1,5 +1,6 @@
 import { useRef, MutableRefObject, useState } from 'react';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { TextInput } from 'react-native-gesture-handler';
 
 type UseBottomSheetOutputType = {
   isReactionsBottomSheetOpen: boolean;
@@ -7,6 +8,7 @@ type UseBottomSheetOutputType = {
   reactionsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentInputBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  commentInputRef: MutableRefObject<TextInput>;
   openCommentInputBottomSheet: (index: number) => void;
   closeCommentInputBottomSheet: () => void;
   userInfoBottomSheetRef: MutableRefObject<BottomSheetModal>;
@@ -32,6 +34,7 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const userInfoBottomSheetRef = useRef<BottomSheetModal>(null);
   const othersBottomSheetRef = useRef<BottomSheetModal>(null);
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
+  const commentInputRef = useRef<TextInput>(null);
 
   const handleReactionBottomSheetVisibility = () => {
     reactionsBottomSheetRef.current?.snapToIndex(0);
@@ -40,6 +43,7 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
 
   const openCommentInputBottomSheet = (index: number) => {
     commentInputBottomSheetRef.current?.snapToIndex(index);
+    commentInputRef.current?.focus();
   };
 
   const closeCommentInputBottomSheet = () => {
@@ -97,5 +101,6 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     closeCommentsBottomSheet,
     closeUserInfoBottomSheetRefBottomSheet,
     closeOthersBottomSheet,
+    commentInputRef,
   };
 };
