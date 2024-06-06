@@ -7,5 +7,7 @@ export const getCommentsByPostId = async (
   const result = await backendAPI.get(`/comments/post/${input.postId}`);
   const { comments } = result.data.data;
 
-  return { comments };
+  return {
+    comments,
+  };
 };
