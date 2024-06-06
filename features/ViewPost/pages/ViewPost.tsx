@@ -88,6 +88,7 @@ const ViewPost = () => {
     changed.forEach((element) => {
       if (element.isViewable) {
         onCurrentPostIndexChange(element.item);
+        setCurrentPost(element.item);
       }
     });
   });
