@@ -61,7 +61,7 @@ export const CommentInput = forwardRef<TextInput, ICommentinput>(
               <View></View>
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
-                  style={{ padding: 10 }}
+                  style={{ padding: 15 }}
                   onPress={() => {
                     Keyboard.dismiss();
                     setCommentInput('');
@@ -71,7 +71,7 @@ export const CommentInput = forwardRef<TextInput, ICommentinput>(
                   <Text style={{ color: 'white', fontWeight: 'bold' }}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{ padding: 10 }}
+                  style={{ padding: 15 }}
                   onPress={() => console.log('hello')}
                   disabled={commentInput.length ? false : true}
                 >

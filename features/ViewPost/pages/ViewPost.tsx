@@ -152,12 +152,11 @@ const ViewPost = () => {
       <AppBottomSheet.Gorhom
         ref={commentInputBottomSheetRef}
         snapPoints={['40%']}
-        title='What are your thought?'
+        title='What are your thoughts?'
         onCloseButtonClose={closeCommentInputBottomSheet}
       >
         <CommentInput ref={commentInputRef} closeCommentInputBottomSheet={closeCommentInputBottomSheet} />
       </AppBottomSheet.Gorhom>
-      {/* commentのinputをbottom sheetで出す様にする。 */}
     </GestureHandlerRootView>
   );
 };
