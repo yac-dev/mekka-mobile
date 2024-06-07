@@ -26,6 +26,7 @@ import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { CommentsModal } from '.';
 import { useGetCommentsByPostIdState } from '../../../api/hooks/useGetCommentsByPostIdState';
 import { useGetReactionsByPostId } from '../hooks';
+import FlashMessage from 'react-native-flash-message';
 
 const ViewPost = () => {
   const {
@@ -37,6 +38,7 @@ const ViewPost = () => {
     onCurrentPostIndexChange,
     // viewPostsType,
   } = useContext(TagScreenContext);
+  const viewPostFlashMessageRef = useRef<FlashMessage>();
 
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
   const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
@@ -65,6 +67,8 @@ const ViewPost = () => {
     closeCommentInputBottomSheet,
     commentInputRef,
   } = useBottomSheet();
+
+  const flashMessageRef = useRef<FlashMessage>();
 
   const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
 
@@ -156,8 +160,12 @@ const ViewPost = () => {
         title='What are your thoughts?'
         onCloseButtonClose={closeCommentInputBottomSheet}
       >
-        <CommentInput ref={commentInputRef} closeCommentInputBottomSheet={closeCommentInputBottomSheet} />
+        <CommentInput
+          refs={{ commentInputRef: commentInputRef, flashMessageRef: flashMessageRef }}
+          closeCommentInputBottomSheet={closeCommentInputBottomSheet}
+        />
       </AppBottomSheet.Gorhom>
+      <FlashMessage ref={flashMessageRef} position={'bottom'} />
     </GestureHandlerRootView>
   );
 };
