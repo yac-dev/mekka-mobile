@@ -3,12 +3,13 @@ import { TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import CommentsPage from '../features/Comments/pages/CommentsPage';
-import ReportPost from '../features/ViewPost/pages/ReportPost';
+// import ReportPost from '../features/ViewPost/pages/ReportPost';
 import { Ionicons } from '@expo/vector-icons';
 import { CurrentTagContext } from '../providers';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
+import { ReportPost } from '../features/ReportPost/ReportPost';
 
 type ViewPostStackNavigatotParams = {
   ViewPost: undefined;
@@ -85,20 +86,17 @@ export const ViewPostStackNavigator = () => {
           component={ReportPost}
           options={({ navigation }) => ({
             headerShown: true,
-            // headerTransparent: true,
+            title: '',
             headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-              </TouchableOpacity>
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
             ),
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
+            headerTransparent: true,
           })}
         />
       </ViewPostStack.Group>
