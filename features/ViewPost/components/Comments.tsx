@@ -8,6 +8,8 @@ import { ApiResultType, CommentType } from '../../../types';
 import { GetCommentsByPostIdOutputType } from '../../../api/types';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
+import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { useNavigation } from '@react-navigation/native';
 
 type IComments = {
   getCommentsResult: ApiResultType<GetCommentsByPostIdOutputType>;
@@ -15,6 +17,8 @@ type IComments = {
 };
 
 export const Comments: React.FC<IComments> = ({ getCommentsResult, handleCommentInputPress }) => {
+  const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
+
   const renderDate = (date: string) => {
     const d = new Date(date).toLocaleDateString('en-US', {
       month: 'short',
@@ -48,8 +52,10 @@ export const Comments: React.FC<IComments> = ({ getCommentsResult, handleComment
                 {renderDate(item.createdAt)}
               </View>
             </View>
+            {/* ここもnavigationは分けておいて、中身をreusable componentを使い回す様にすればいいよね。 */}
+            {/* propsでtitleを受け取ったりって感じでさ。選択肢もそのarrayでもらってくればいいわな。 */}
             <AppButton.Icon
-              onButtonPress={() => console.log('hello')}
+              onButtonPress={() => viewPostStackNavigation.navigate('ReportPost')}
               customStyle={{
                 width: 20,
                 height: 20,

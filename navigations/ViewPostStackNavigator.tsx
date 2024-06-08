@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import CommentsPage from '../features/Comments/pages/CommentsPage';
 import ReportPost from '../features/ViewPost/pages/ReportPost';
@@ -18,6 +18,8 @@ type ViewPostStackNavigatotParams = {
 
 const ViewPostStack = createNativeStackNavigator<ViewPostStackNavigatotParams>();
 
+export type ViewPostStackNavigatorProps = NativeStackNavigationProp<ViewPostStackNavigatotParams>;
+
 export const ViewPostStackNavigator = () => {
   const { currentTag } = useContext(CurrentTagContext);
 
@@ -29,6 +31,7 @@ export const ViewPostStackNavigator = () => {
           component={ViewPost}
           options={({ navigation }) => ({
             headerShown: true,
+            title: '',
             headerLeft: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}

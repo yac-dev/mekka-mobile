@@ -165,7 +165,7 @@ const ViewPost = () => {
           closeCommentInputBottomSheet={closeCommentInputBottomSheet}
         />
       </AppBottomSheet.Gorhom>
-      <FlashMessage ref={flashMessageRef} position={'bottom'} />
+      <FlashMessage ref={flashMessageRef} position={'top'} />
     </GestureHandlerRootView>
   );
 };
