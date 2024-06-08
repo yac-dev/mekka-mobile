@@ -6,3 +6,4 @@ export * from './Button';
 export * from './PostThumbnail';
 export * from './Skelton';
 export * from './SnackBar';
+export * from './Report';
