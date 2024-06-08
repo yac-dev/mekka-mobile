@@ -28,30 +28,38 @@ export const Comments: React.FC<IComments> = ({ getCommentsResult, handleComment
   const renderComment = ({ item }: { item: CommentType }) => {
     if (item.createdBy) {
       return (
-        <View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'column', marginBottom: 30 }}>
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15, justifyContent: 'space-between' }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <ExpoImage
                 style={{
                   width: 35,
                   height: 35,
                   marginRight: 20,
-                  backgroundColor: iconColorTable['blue1'],
                   borderRadius: 5,
                 }}
                 source={{ uri: item.createdBy.avatar }}
                 contentFit='contain'
-                transition={1000}
-                tintColor={'white'}
               />
               <View style={{ flexDirection: 'column' }}>
                 <Text style={{ color: 'white', marginBottom: 8 }}>{item.createdBy.name}</Text>
                 {renderDate(item.createdAt)}
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-              <Feather name='more-horizontal' size={20} color='white' />
-            </TouchableOpacity>
+            </View>
+            <AppButton.Icon
+              onButtonPress={() => console.log('hello')}
+              customStyle={{
+                width: 20,
+                height: 20,
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 10,
+              }}
+              hasShadow={false}
+            >
+              <VectorIcon.FT name='more-horizontal' size={10} color={'white'} />
+            </AppButton.Icon>
           </View>
           <Text style={{ color: 'white', fontSize: 17 }}>{item.content}</Text>
         </View>
@@ -70,7 +78,13 @@ export const Comments: React.FC<IComments> = ({ getCommentsResult, handleComment
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: 'black',
+        padding: 15,
+      }}
+    >
       <FlatList
         data={getCommentsResult.data?.comments}
         renderItem={renderComment}
