@@ -10,11 +10,13 @@ import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { ReportPost } from '../features/ReportPost/ReportPost';
+import { ReportComment } from '../features/ReportComment';
 
 type ViewPostStackNavigatotParams = {
   ViewPost: undefined;
   CommentsPage: undefined;
   ReportPost: undefined;
+  ReportComment: undefined;
 };
 
 const ViewPostStack = createNativeStackNavigator<ViewPostStackNavigatotParams>();
@@ -84,6 +86,27 @@ export const ViewPostStackNavigator = () => {
         <ViewPostStack.Screen
           name='ReportPost'
           component={ReportPost}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: '',
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            // headerTransparent: true,
+          })}
+        />
+        <ViewPostStack.Screen
+          name='ReportComment'
+          component={ReportComment}
           options={({ navigation }) => ({
             headerShown: true,
             title: '',

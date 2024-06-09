@@ -1,24 +1,78 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Report } from '../../components';
+import { AppButton } from '../../components';
+import { useNavigation } from '@react-navigation/native';
+import { ViewPostStackNavigatorProps } from '../../navigations/ViewPostStackNavigator';
+import { VectorIcon } from '../../Icons';
 
-type ReportCommentOptionType = string;
+class ReportPostOption implements ReportOptionType {
+  value: string;
+  label: string;
 
-const options: ReportCommentOptionType[] = ['report 1', 'report 2', 'report 3', 'report 4'];
+  constructor(value: string, label: string) {
+    this.value = value;
+    this.label = label;
+  }
+}
 
-//  routingかな。。。
-type IReportComment = {};
+export type ReportOptionType = {
+  value: string;
+  label: string;
+};
 
-export const ReportComment: React.FC<IReportComment> = ({}) => {
-  const [selectedOption, setSelectedOption] = useState<ReportCommentOptionType>('');
+const options: ReportOptionType[] = [
+  new ReportPostOption('spam', 'Spam'),
+  new ReportPostOption('nudity', 'Nudity or sexual activity'),
+  new ReportPostOption('hateSpeech', 'Hate speech or symbols'),
+  new ReportPostOption('falseInformation', 'False information'),
+  new ReportPostOption('bullying', 'Bullying or harassment'),
+  new ReportPostOption('scam', 'Scam or fraud'),
+  new ReportPostOption('violence', 'Violence or dangerous organizations'),
+  new ReportPostOption('intellectual', 'Intellectual property violation'),
+  new ReportPostOption('sale', 'Sale of illegal or regurated goods'),
+  new ReportPostOption('suicide', 'Suicide or self-injury'),
+];
 
-  const renderItem = ({ item, index }: { item: ReportCommentOptionType; index: number }) => {
-    return (
-      <View>
-        <Text>{item}</Text>
-      </View>
-    );
+type IReportPost = {};
+
+export const ReportComment: React.FC<IReportPost> = ({}) => {
+  const navigation = useNavigation<ViewPostStackNavigatorProps>();
+  const [selectedReportOptionValue, setSelectedReportOptionValue] = useState<string>(null);
+
+  const onSendPress = () => {
+    navigation.goBack();
   };
 
-  return <Report title='Report for comment.' options={options} renderItem={renderItem} content={<View></View>} />;
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => onSendPress()} disabled={selectedReportOptionValue ? false : true}>
+          <Text
+            style={{
+              color: selectedReportOptionValue ? 'white' : 'rgb(100,100,100)',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Send
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [selectedReportOptionValue]);
+
+  const onSelectedOptionChange = (option: ReportOptionType) => {
+    setSelectedReportOptionValue(option.value);
+  };
+
+  return (
+    <Report
+      title='Something wrong with this comment?'
+      options={options}
+      selectedOptionValue={selectedReportOptionValue}
+      onSelectedOptionChange={onSelectedOptionChange}
+      content={<View></View>}
+    />
+  );
 };

@@ -55,7 +55,7 @@ export const Comments: React.FC<IComments> = ({ getCommentsResult, handleComment
             {/* ここもnavigationは分けておいて、中身をreusable componentを使い回す様にすればいいよね。 */}
             {/* propsでtitleを受け取ったりって感じでさ。選択肢もそのarrayでもらってくればいいわな。 */}
             <AppButton.Icon
-              onButtonPress={() => viewPostStackNavigation.navigate('ReportPost')}
+              onButtonPress={() => viewPostStackNavigation.navigate('ReportComment')}
               customStyle={{
                 width: 20,
                 height: 20,
