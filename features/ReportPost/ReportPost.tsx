@@ -6,24 +6,22 @@ import { useNavigation } from '@react-navigation/native';
 import { ViewPostStackNavigatorProps } from '../../navigations/ViewPostStackNavigator';
 import { VectorIcon } from '../../Icons';
 
-// 共通のtype使いたいから方はつけたい。
-
-class ReportPostOption implements ReportPostOptionType {
-  key: string;
+class ReportPostOption implements ReportOptionType {
+  value: string;
   label: string;
 
-  constructor(key: string, label: string) {
-    this.key = key;
+  constructor(value: string, label: string) {
+    this.value = value;
     this.label = label;
   }
 }
 
-type ReportPostOptionType = {
-  key: string;
+export type ReportOptionType = {
+  value: string;
   label: string;
 };
 
-const options: ReportPostOptionType[] = [
+const options: ReportOptionType[] = [
   new ReportPostOption('spam', 'Spam'),
   new ReportPostOption('nudity', 'Nudity or sexual activity'),
   new ReportPostOption('hateSpeech', 'Hate speech or symbols'),
@@ -40,51 +38,40 @@ type IReportPost = {};
 
 export const ReportPost: React.FC<IReportPost> = ({}) => {
   const navigation = useNavigation<ViewPostStackNavigatorProps>();
-  const [selectedOption, setSelectedOption] = useState<ReportPostOptionType | undefined>();
+  const [selectedReportOptionValue, setSelectedReportOptionValue] = useState<string>(null);
 
-  const onDonePress = () => {};
+  const onSendPress = () => {
+    navigation.goBack();
+  };
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => onDonePress()}>
+        <TouchableOpacity onPress={() => onSendPress()} disabled={selectedReportOptionValue ? false : true}>
           <Text
             style={{
-              color: 'white',
+              color: selectedReportOptionValue ? 'white' : 'rgb(100,100,100)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
           >
-            Done
+            Send
           </Text>
         </TouchableOpacity>
       ),
     });
-  }, [selectedOption]);
+  }, [selectedReportOptionValue]);
 
-  const onOptionPress = (option: ReportPostOptionType) => {
-    setSelectedOption(option);
-  };
-
-  const renderItem = ({ item, index }: { item: ReportPostOptionType; index: number }) => {
-    const isSelected = item.key === selectedOption.key;
-
-    return (
-      <TouchableOpacity
-        style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-        onPress={() => onOptionPress(item)}
-      >
-        <Text>{item.label}</Text>
-        {isSelected && <VectorIcon.II name='add' color='white' size={15} />}
-      </TouchableOpacity>
-    );
+  const onSelectedOptionChange = (option: ReportOptionType) => {
+    setSelectedReportOptionValue(option.value);
   };
 
   return (
     <Report
-      title='Something wrong with this comment?'
+      title='Something wrong with this post?'
       options={options}
-      renderItem={renderItem}
+      selectedOptionValue={selectedReportOptionValue}
+      onSelectedOptionChange={onSelectedOptionChange}
       content={<View></View>}
     />
   );

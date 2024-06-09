@@ -27,8 +27,11 @@ import { CommentsModal } from '.';
 import { useGetCommentsByPostIdState } from '../../../api/hooks/useGetCommentsByPostIdState';
 import { useGetReactionsByPostId } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
+import { useNavigation } from '@react-navigation/native';
+import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 
 const ViewPost = () => {
+  const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
   const {
     getPostsApiResult,
     getPostsByTagIdAndRegionResult,
@@ -113,6 +116,10 @@ const ViewPost = () => {
     openCommentInputBottomSheet(0);
   };
 
+  const handleHorizontalDotsPress = () => {
+    viewStackNavigation.navigate('ReportPost');
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
       <FlatList
@@ -135,6 +142,7 @@ const ViewPost = () => {
         onReactionPress={handleReactionPress}
         onCommentsPress={handleCommentsPress}
         onAvatarPress={openUserInfoBottomSheetRefBottomSheetToIndex}
+        onHorizontalDotsPress={handleHorizontalDotsPress}
       />
       <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}

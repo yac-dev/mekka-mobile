@@ -9,9 +9,15 @@ type ViewPostMenuProps = {
   onReactionPress: () => void;
   onCommentsPress: () => void;
   onAvatarPress: () => void;
+  onHorizontalDotsPress: () => void;
 };
 
-export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({ onReactionPress, onCommentsPress, onAvatarPress }) => {
+export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
+  onReactionPress,
+  onCommentsPress,
+  onAvatarPress,
+  onHorizontalDotsPress,
+}) => {
   const { currentPost } = useContext(TagScreenContext);
 
   return (
@@ -30,10 +36,17 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({ onReactionPress, onC
         </AppButton.Icon>
         <AppButton.Icon
           onButtonPress={onCommentsPress}
-          customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', borderRadius: 22 }}
+          customStyle={{ width: 44, height: 44, marginRight: 15, backgroundColor: 'rgb(50,50,50)', borderRadius: 22 }}
           hasShadow={false}
         >
           <VectorIcon.MCI name='comment-multiple' size={20} style={{ color: 'white' }} />
+        </AppButton.Icon>
+        <AppButton.Icon
+          onButtonPress={onHorizontalDotsPress}
+          customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', borderRadius: 22 }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
         </AppButton.Icon>
       </View>
     </View>

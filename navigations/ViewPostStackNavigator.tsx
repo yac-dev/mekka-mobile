@@ -80,7 +80,7 @@ export const ViewPostStackNavigator = () => {
           })}
         />
       </ViewPostStack.Group>
-      <ViewPostStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+      <ViewPostStack.Group screenOptions={{ presentation: 'fullScreenModal', gestureEnabled: false }}>
         <ViewPostStack.Screen
           name='ReportPost'
           component={ReportPost}
@@ -96,7 +96,10 @@ export const ViewPostStackNavigator = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
-            headerTransparent: true,
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            // headerTransparent: true,
           })}
         />
       </ViewPostStack.Group>
