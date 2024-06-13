@@ -11,7 +11,6 @@ import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPriv
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import Discover from '../features/Discover/pages/Discover';
-import ProfileStackNavigator from './ProfileStackNavigator';
 import LocationPicker from '../features/CreateNewPost/pages/LocationPicker';
 import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
@@ -65,7 +64,6 @@ export type HomeStackParams = {
   Comments: undefined;
   DiscoverStackNavigator: undefined;
   MomentsStackNavigator: undefined;
-  ProfileStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
   EditTag: undefined;
   EnterPrivateSpace: undefined;
@@ -167,28 +165,6 @@ export const HomeStackNavigator: React.FC = (props) => {
                 </AppButton.Icon>
               ),
               headerTitle: 'Moments',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <HomeStack.Screen
-            name='ProfileStackNavigator'
-            component={ProfileStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-                  </TouchableOpacity>
-                );
-              },
-              headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
               },

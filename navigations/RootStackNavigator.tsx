@@ -4,7 +4,6 @@ import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from './HomeStackNavigator';
-import { LoginStackNavigator } from './LoginStackNavigator';
 import { VectorIcon } from '../Icons';
 import Signup from '../features/NotAuthenticated/pages/Signup';
 import { AppButton } from '../components/Button';
