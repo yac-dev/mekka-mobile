@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Members } from '../features/Members/pages/Members';
-import Feature from '../features/SpaceInfo/pages/Feature';
+import { Feature } from '../features/SpaceInfo/components/Feature';
 
 const Tab = createMaterialTopTabNavigator();
 

@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
-import CommentsPage from '../features/Comments/pages/CommentsPage';
 // import ReportPost from '../features/ViewPost/pages/ReportPost';
 import { Ionicons } from '@expo/vector-icons';
 import { CurrentTagContext } from '../providers';
@@ -59,25 +58,6 @@ export const ViewPostStackNavigator = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
               color: 'white',
-            },
-          })}
-        />
-        <ViewPostStack.Screen
-          name='CommentsPage'
-          component={CommentsPage}
-          options={({ navigation }) => ({
-            headerShown: true,
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-              </TouchableOpacity>
-            ),
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleStyle: {
-              fontWeight: 'bold',
             },
           })}
         />

@@ -15,8 +15,6 @@ import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount, WelcomePage } from '../features';
-import Signup from '../features/NotAuthenticated/pages/Signup';
-import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { SpaceType } from '../types';
@@ -72,7 +70,6 @@ export type HomeStackParams = {
   EmojiPicker: undefined;
   CreateTag: undefined;
   CreateNewLocationTag: undefined;
-  ReportSpace: undefined;
   SpaceInfoStackNavigator: { space: SpaceType };
   DeleteMyAccount: undefined;
   MembersStackNavigator: undefined;
@@ -210,26 +207,6 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          <HomeStack.Screen
-            name='Signup'
-            component={Signup}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
         </HomeStack.Group>
         <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
           <HomeStack.Screen
@@ -356,26 +333,6 @@ export const HomeStackNavigator: React.FC = (props) => {
               headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <HomeStack.Screen
-            name='ReportSpace'
-            component={ReportSpace}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle' size={30} color={'white'} />
                 </TouchableOpacity>
               ),
               headerTitle: '',

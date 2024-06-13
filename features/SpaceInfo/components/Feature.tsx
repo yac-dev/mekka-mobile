@@ -12,7 +12,7 @@ import { VectorIcon } from '../../../Icons';
 
 type FeatureProps = {};
 
-const Feature: React.FC<FeatureProps> = () => {
+export const Feature: React.FC<FeatureProps> = () => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const [textShown, setTextShown] = useState<boolean>(false);
   const [lengthMore, setLengthMore] = useState(false);
