@@ -2,11 +2,10 @@ import { useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSignupForm } from '../hooks';
+import { useSignupForm, useSignupState } from '../hooks';
 import { SignupStackNavigatorProp } from '../../../navigations/SignupStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '../../../components';
-import { useSignupState } from '../hooks';
 import { LoadingSpinner } from '../../../components';
 import { showMessage } from 'react-native-flash-message';
 

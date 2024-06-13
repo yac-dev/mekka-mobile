@@ -63,3 +63,14 @@ export type UseSetNewPasswordOutputType = {
   apiResult: ApiResultType<void>;
   requestApi: (input: SetNewPasswordInputType) => void;
 };
+
+export type SignupInputType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type SignupOutputType = {
+  user: AuthType;
+  jwt: string;
+};

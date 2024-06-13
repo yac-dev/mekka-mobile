@@ -1,15 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigatorProps } from '../../App';
 import { AppTextInput } from '../../../components/AppTextInput';
-import { useForm } from '../../Login/hooks';
+import { useForm } from '../hooks';
 import { AppButton } from '../../../components/Button';
-import { useLogin } from '../../Login/hooks';
+import { useLogin } from '../hooks';
 import { LoadingSpinner } from '../../../components';
 import { NonAuthStackNavigatorProps } from '../../../navigations/NonAuthNavigator';
 

@@ -1,16 +1,6 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { icons } from '../utils/icons';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileHome from '../features/Profile/pages/Home';
-import { Ionicons } from '@expo/vector-icons';
 import { WelcomePage } from '../features';
 import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
-import Login from '../features/NotAuthenticated/pages/Login';
-import Signup from '../features/NotAuthenticated/pages/Signup';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
 import { SignupStackNavigator } from './SignupStackNavigator';
 
 // welcome pageとsignupstack, forgot my password stack.

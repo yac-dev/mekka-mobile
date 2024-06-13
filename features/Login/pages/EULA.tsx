@@ -51,7 +51,7 @@ const licenceGrantPermissions = [
   'Use the Software for any purpose that Mekka considers is a breach of this EULA agreement',
 ];
 
-const EULA = () => {
+export const EULA = () => {
   const renderLicenceGrantPermissons = () => {
     const list = licenceGrantPermissions.map((permisson, index) => {
       return (
@@ -96,5 +96,3 @@ const EULA = () => {
     </ScrollView>
   );
 };
-
-export default EULA;

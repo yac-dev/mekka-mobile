@@ -10,19 +10,15 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
-import Discover from '../features/Discover/pages/Discover';
 import LocationPicker from '../features/CreateNewPost/pages/LocationPicker';
 import CreateTag from '../features/CreateNewPost/pages/CreateNewTag';
 import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount, WelcomePage } from '../features';
 import Signup from '../features/NotAuthenticated/pages/Signup';
-import EULA from '../features/NotAuthenticated/pages/EULA';
-import EditTag from '../features/EditTag/pages/Form';
 import ReportSpace from '../features/SpaceInfo/pages/ReportSpace';
 import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
-import { AuthContext } from '../providers/AuthProvider';
 import { SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { MembersStackNavigator } from './MembersStackNavigator';
@@ -65,11 +61,9 @@ export type HomeStackParams = {
   DiscoverStackNavigator: undefined;
   MomentsStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
-  EditTag: undefined;
   EnterPrivateSpace: undefined;
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;
-  EULA: undefined;
   EditProfileStackNavigator: {
     screen: 'EditProfile';
   };
@@ -193,26 +187,6 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
           <HomeStack.Screen
-            name='EditTag'
-            component={EditTag}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: primaryBackgroundColor,
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: Colors.white,
-              },
-            })}
-          />
-          <HomeStack.Screen
             name='EnterPrivateSpace'
             component={EnterPrivateSpace}
             options={({ navigation }) => ({
@@ -236,26 +210,6 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-          {/* <HomeStack.Screen
-            name='SpaceDetailStackNavigator'
-            component={SpaceDetailStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          /> */}
           <HomeStack.Screen
             name='Signup'
             component={Signup}
@@ -284,26 +238,6 @@ export const HomeStackNavigator: React.FC = (props) => {
             options={({ navigation }) => ({
               headerShown: false,
               headerTitle: 'Members',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <HomeStack.Screen
-            name='EULA'
-            component={EULA}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
               },
