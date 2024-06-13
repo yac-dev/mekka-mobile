@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ApiResultType, AuthType } from '../../../types';
-import { getMembersBySpaceId } from '../apis/getSpaceMembers';
-import { GetMembersBySpaceIdInputType, GetMembersBySpaceIdOutputType } from '../types';
+import { getMembersBySpaceId } from '../../../api/get/getMembersBySpaceId';
+import { GetMembersBySpaceIdInputType, GetMembersBySpaceIdOutputType } from '../../../api/types';
 
-export const useGetMembersBySpaceId = () => {
+export const useGetMembersBySpaceIdState = () => {
   const [apiResult, setApiResult] = useState<ApiResultType<GetMembersBySpaceIdOutputType>>({
     status: 'idling',
     data: void 0,

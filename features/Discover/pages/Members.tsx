@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import { useGetMembersBySpaceId } from '../../Members/hooks';
+import { useGetMembersBySpaceIdState } from '../hooks';
 import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
@@ -13,7 +13,7 @@ type MembersProps = {
 
 export const Members: React.FC<MembersProps> = () => {
   const { apiResult } = useGetSpaceByIdState();
-  const { apiResult: getMembersBySpaceIdResult, requestApi } = useGetMembersBySpaceId();
+  const { apiResult: getMembersBySpaceIdResult, requestApi } = useGetMembersBySpaceIdState();
 
   useEffect(() => {
     requestApi({ spaceId: apiResult.data?.space._id });

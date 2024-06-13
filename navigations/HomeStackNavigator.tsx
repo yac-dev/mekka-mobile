@@ -19,7 +19,6 @@ import { HomeStackNavContext } from '../contexts/HomeStackNavContext';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { MembersStackNavigator } from './MembersStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { MomentsStackNavigator } from './MomentsStackNavigator';
@@ -72,7 +71,6 @@ export type HomeStackParams = {
   CreateNewLocationTag: undefined;
   SpaceInfoStackNavigator: { space: SpaceType };
   DeleteMyAccount: undefined;
-  MembersStackNavigator: undefined;
 };
 
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
@@ -209,21 +207,6 @@ export const HomeStackNavigator: React.FC = (props) => {
           />
         </HomeStack.Group>
         <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
-          <HomeStack.Screen
-            name='MembersStackNavigator'
-            component={MembersStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: 'Members',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
           <HomeStack.Screen
             name='EditProfileStackNavigator'
             component={EditProfileStackNavigator}
