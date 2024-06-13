@@ -1,81 +1,99 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { useGetMembersBySpaceId } from '../../Members/hooks';
-import { AppButton } from '../../../components';
-import { FlashList } from '@shopify/flash-list';
+import React, { useEffect, useCallback, useContext } from 'react';
+import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { useGetMembersBySpaceIdState } from '../hooks';
 import { CurrentSpaceContext } from '../../../providers';
-import { VectorIcon } from '../../../Icons';
-import { Colors } from '../../../themes';
 import { UserType } from '../../../types';
+import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
+import { VectorIcon } from '../../../Icons';
 
-export const Members = () => {
+type MembersProps = {
+  spaceId: string;
+};
+
+export const Members: React.FC<MembersProps> = () => {
+  const { apiResult, requestApi } = useGetMembersBySpaceIdState();
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const { apiResult, requestApi } = useGetMembersBySpaceId();
 
   useEffect(() => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
-  const renderMember = ({ item }: { item: UserType }) => {
-    return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
-        <AppButton.Icon
-          onButtonPress={() => console.log('invite button')}
-          customStyle={{
-            width: 60,
-            height: 60,
-            backgroundColor: null,
-            borderRadius: 30,
-            marginBottom: 5,
-          }}
-          hasShadow={false}
-        >
-          <ExpoImage style={{ width: 40, aspectRatio: 1 }} source={{ uri: item.avatar }} contentFit='contain' />
-        </AppButton.Icon>
-        <Text numberOfLines={1} style={{ color: 'white' }}>
-          {item.name}
-        </Text>
-      </View>
-    );
+  const handleInvite = async () => {
+    Share.share({
+      title: 'Share Mekka',
+      message: `Access here to download Mekka: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
+        currentSpace.secretKey
+      }`,
+    });
   };
+
+  const renderUser = useCallback(({ item }: { item: UserType }) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 15,
+          justifyContent: 'space-between',
+        }}
+        activeOpacity={0.5}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <ExpoImage
+            style={{ width: 30, height: 30, marginRight: 20 }}
+            source={{ uri: item.avatar }}
+            contentFit='contain'
+          />
+          <Text style={{ color: 'white', fontSize: 17 }}>{item.name}</Text>
+        </View>
+        <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
+      </TouchableOpacity>
+    );
+  }, []);
 
   if (apiResult.status === 'loading') {
     return (
-      <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.loading}>
         <ActivityIndicator />
       </View>
     );
   }
 
   return (
-    <View>
-      <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 23, marginBottom: 10 }}>Members</Text>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={{ alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
-          <AppButton.Icon
-            onButtonPress={() => console.log('invite button')}
-            customStyle={{
-              width: 60,
-              height: 60,
-              backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 30,
-              marginBottom: 5,
+    <View style={{ flex: 1, backgroundColor: Colors.black, padding: 10 }}>
+      <FlatList
+        data={apiResult.data?.users}
+        renderItem={renderUser}
+        keyExtractor={(item, index) => `${index}`}
+        ListHeaderComponent={
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 15,
+              justifyContent: 'space-between',
             }}
-            hasShadow={false}
+            activeOpacity={0.5}
+            onPress={handleInvite}
           >
-            <VectorIcon.II name='person-add' size={25} color={Colors.white} />
-          </AppButton.Icon>
-          <Text style={{ color: 'white' }}>Invite</Text>
-        </View>
-        <FlashList
-          horizontal
-          data={apiResult.data?.users}
-          renderItem={renderMember}
-          keyExtractor={(_, index) => `${index}`}
-          estimatedItemSize={45}
-        />
-      </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.II name='add' color='white' size={30} style={{ marginRight: 20 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Invite new member</Text>
+            </View>
+            <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
+          </TouchableOpacity>
+        }
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    backgroundColor: Colors.black,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Members } from '../features/Members/pages/Members';
-import { Feature } from '../features/SpaceInfo/components/Feature';
+import { Feature, Members } from '../features';
 
 const Tab = createMaterialTopTabNavigator();
 

@@ -1,4 +1,4 @@
-import { CommentType } from '../types';
+import { CommentType, UserType } from '../types';
 
 export type UpdateSpaceCheckedInDateInputType = {
   spaceId: string;
@@ -21,3 +21,11 @@ export type CreateCommentInputType = {
 
 // 今はなくていいかな・
 export type CreateCommentOutputType = {};
+
+export type GetMembersBySpaceIdInputType = {
+  spaceId: string;
+};
+
+export type GetMembersBySpaceIdOutputType = {
+  users: UserType[];
+};
