@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Report } from '../../components';
-import { AppButton } from '../../components';
+import { Report, AppButton } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
-import { ViewPostStackNavigatorProps } from '../../navigations/ViewPostStackNavigator';
-import { VectorIcon } from '../../Icons';
+import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { VectorIcon } from '../../../Icons';
 
 class ReportPostOption implements ReportOptionType {
   value: string;
@@ -36,7 +35,7 @@ const options: ReportOptionType[] = [
 
 type IReportPost = {};
 
-export const ReportPost: React.FC<IReportPost> = ({}) => {
+export const ReportComment: React.FC<IReportPost> = ({}) => {
   const navigation = useNavigation<ViewPostStackNavigatorProps>();
   const [selectedReportOptionValue, setSelectedReportOptionValue] = useState<string>(null);
 
@@ -68,7 +67,7 @@ export const ReportPost: React.FC<IReportPost> = ({}) => {
 
   return (
     <Report
-      title='Something wrong with this post?'
+      title='Something wrong with this comment?'
       options={options}
       selectedOptionValue={selectedReportOptionValue}
       onSelectedOptionChange={onSelectedOptionChange}

@@ -8,8 +8,7 @@ import { CurrentTagContext } from '../providers';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
-import { ReportPost } from '../features/ReportPost/ReportPost';
-import { ReportComment } from '../features/ReportComment';
+import { ReportPost, ReportComment } from '../features';
 
 type ViewPostStackNavigatotParams = {
   ViewPost: undefined;

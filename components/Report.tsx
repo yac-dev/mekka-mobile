@@ -13,13 +13,13 @@ import {
 import { FlatList } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { VectorIcon } from '../Icons';
-import { ReportOptionType } from '../features/ReportPost/ReportPost';
+import { ReportPostOptionType } from '../features/Report/pages/ReportPost';
 
 type IReport<T> = {
   title: string; // commentに対するreportなり、userに対するreportなり分けていく感じ。
-  options: ReportOptionType[];
+  options: ReportPostOptionType[];
   selectedOptionValue: string;
-  onSelectedOptionChange: (option: ReportOptionType) => void;
+  onSelectedOptionChange: (option: ReportPostOptionType) => void;
   textInput?: string;
   onTextInputChange?: (textinput: string) => void;
   content: React.ReactNode;

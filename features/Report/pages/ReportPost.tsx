@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Report } from '../../components';
-import { AppButton } from '../../components';
+import { Report } from '../../../components';
+import { AppButton } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
-import { ViewPostStackNavigatorProps } from '../../navigations/ViewPostStackNavigator';
-import { VectorIcon } from '../../Icons';
+import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { VectorIcon } from '../../../Icons';
 
-class ReportPostOption implements ReportOptionType {
+class ReportPostOption implements ReportPostOptionType {
   value: string;
   label: string;
 
@@ -16,12 +16,12 @@ class ReportPostOption implements ReportOptionType {
   }
 }
 
-export type ReportOptionType = {
+export type ReportPostOptionType = {
   value: string;
   label: string;
 };
 
-const options: ReportOptionType[] = [
+const options: ReportPostOptionType[] = [
   new ReportPostOption('spam', 'Spam'),
   new ReportPostOption('nudity', 'Nudity or sexual activity'),
   new ReportPostOption('hateSpeech', 'Hate speech or symbols'),
@@ -36,7 +36,7 @@ const options: ReportOptionType[] = [
 
 type IReportPost = {};
 
-export const ReportComment: React.FC<IReportPost> = ({}) => {
+export const ReportPost: React.FC<IReportPost> = ({}) => {
   const navigation = useNavigation<ViewPostStackNavigatorProps>();
   const [selectedReportOptionValue, setSelectedReportOptionValue] = useState<string>(null);
 
@@ -62,13 +62,13 @@ export const ReportComment: React.FC<IReportPost> = ({}) => {
     });
   }, [selectedReportOptionValue]);
 
-  const onSelectedOptionChange = (option: ReportOptionType) => {
+  const onSelectedOptionChange = (option: ReportPostOptionType) => {
     setSelectedReportOptionValue(option.value);
   };
 
   return (
     <Report
-      title='Something wrong with this comment?'
+      title='Something wrong with this post?'
       options={options}
       selectedOptionValue={selectedReportOptionValue}
       onSelectedOptionChange={onSelectedOptionChange}
