@@ -17,6 +17,8 @@ import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { MomentsStackNavigator } from './MomentsStackNavigator';
 import { DiscoverStackNavigator } from './DiscoverStackNavigator';
+import { Home } from '../features/Home/pages';
+import { SpaceRootStackNavigator } from './SpaceRootStackNavigator';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -46,7 +48,12 @@ type SpacesDrawerParams = {
 };
 
 export type HomeStackParams = {
-  SpacesDrawerNavigator: NavigatorScreenParams<SpacesDrawerParams>;
+  // Home: NavigatorScreenParams<SpacesDrawerParams>;
+  Home: undefined;
+  // SpaceRootStackNavigator: NavigatorScreenParams<SpaceRootStackParams>;
+  SpaceRootStackNavigator: {
+    space: SpaceType;
+  };
   ViewPost: undefined;
   Comments: undefined;
   DiscoverStackNavigator: undefined;
@@ -71,11 +78,12 @@ export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>
 
 const HomeStack = createNativeStackNavigator<HomeStackParams>();
 
+// あと、ここにbottom sheetを入れるようにしたいね。ここpassするのもめんどうだし、recoilを使うのいいかも。
 export const HomeStackNavigator: React.FC = (props) => {
   return (
     <HomeStack.Navigator
       screenOptions={({ navigation }) => ({
-        headerShown: true,
+        headerShown: false,
         title: '',
         headerStyle: {
           backgroundColor: 'black',
@@ -83,11 +91,15 @@ export const HomeStackNavigator: React.FC = (props) => {
       })}
     >
       <HomeStack.Group>
+        <HomeStack.Screen name='Home' component={Home} options={({ navigation }) => ({})} />
         <HomeStack.Screen
-          name='SpacesDrawerNavigator'
-          component={SpacesDrawerNavigator}
+          name='SpaceRootStackNavigator'
+          component={SpaceRootStackNavigator}
           options={({ navigation }) => ({})}
         />
+        {/* ここに、spaceRootStackを入れる感じか。home component内で、SpaceRootStackへnavigationするようにしたいよね。そういう流れだ。 */}
+
+        {/* MomensStackもここに入れる感じかな多分。 */}
         <HomeStack.Screen
           name='ViewPost'
           component={ViewPost}

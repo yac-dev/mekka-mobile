@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { SpaceRootStackNavigator } from './SpaceRootStackNavigator';
 import { AuthContext, MySpacesContext, SnackBarContext, SpaceUpdatesContext } from '../providers';
 import * as SecureStore from 'expo-secure-store';
-import { NoSpaces } from '../features';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { AppBottomSheet } from '../components/AppBottomSheet';

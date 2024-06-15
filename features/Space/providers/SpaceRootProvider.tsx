@@ -64,10 +64,13 @@ export const SpaceRootProvider: React.FC<SpaceRootProviderType> = ({ children, d
   });
   // 最初のtagはdefaultで入れる。
   const [currentPost, setCurrentPost] = useState<PostType | undefined>(void 0);
-
+  // ここでtagを取ってきていない理由はなんだろうね。。。
+  // シンプルにspaceの画面だし取ってきていんじゃないかな。。。なんで俺ここ取ってない？？
   // useEffect(() => {
   //   requestGetTags({ spaceId: space._id });
   // }, []);
+
+  // cachingと、state management、この両方を改変したいよな。それがreact queryとrecoilの利用。この二つをうまく使いたいよね。
 
   return (
     <SpaceRootContext.Provider

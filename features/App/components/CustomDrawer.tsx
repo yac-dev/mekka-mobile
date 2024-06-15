@@ -435,7 +435,7 @@ export const CustomDrawer: React.FC<CustomDrawerProps> = ({
                         // },
                       });
                     } else {
-                      navigation.toggleDrawer();
+                      // navigation.toggleDrawer();
                     }
 
                     // console.log('current space', currentSpace._id);

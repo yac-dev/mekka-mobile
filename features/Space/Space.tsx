@@ -4,24 +4,21 @@ import { View, Text, ActivityIndicator, TouchableOpacity, FlatList } from 'react
 import { useRoute } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
-import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
-import { CurrentTagContext } from '../providers';
-import { TagType } from '../types';
+import { SpaceRootContext } from '../../features/Space/providers/SpaceRootProvider';
+import { CurrentTagContext } from '../../providers';
+import { TagType } from '../../types';
 import { useNavigation } from '@react-navigation/native';
-import { TagScreenProvider } from '../features';
-import { TagScreenStackNavigator } from './TagScreenStackNavigator';
-import { SpacesDrawerStackNavigatorProps } from './SpacesDrawerNavigator';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons/VectorIcons';
-import { SpaceTopTabNavigatorParams } from '.';
-import { ViewPostsTypeToggleButton } from '../features/Space/components';
-import { SpaceRootStackNavigatorProp } from '.';
+import { TagScreenProvider } from '../../features';
+import { AppButton } from '../../components';
+import { VectorIcon } from '../../Icons/VectorIcons';
+import { ViewPostsTypeToggleButton } from '../../features/Space/components';
+import { Posts } from '../../features/Space/components';
+import { SpaceRootStackNavigatorProp } from '../../navigations';
 
-const Tab = createMaterialTopTabNavigator<SpaceTopTabNavigatorParams>();
+const Tab = createMaterialTopTabNavigator();
 
 export const SpaceTopTabNavigator = () => {
-  const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
-  const drawerNavigation = useNavigation<SpacesDrawerStackNavigatorProps>();
+  const spaceNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { viewPostsType, setViewPostsType, space, createPostResult } = useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const route = useRoute();
@@ -38,36 +35,36 @@ export const SpaceTopTabNavigator = () => {
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
-    spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
-      screen: `Tag_${tab._id}`,
-      params: {
-        screen: 'TagScreenTopTabNavigator',
-        params: { screen: viewPostsType === 'grid' ? 'GridView' : 'MapView' },
-      },
-    });
+    // spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
+    //   screen: `Tag_${tab._id}`,
+    //   params: {
+    //     screen: 'TagScreenTopTabNavigator',
+    //     params: { screen: viewPostsType === 'grid' ? 'GridView' : 'MapView' },
+    //   },
+    // });
   };
 
   const onGridViewPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setViewPostsType('grid');
-    spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
-      screen: `Tag_${currentTag._id}`,
-      params: { screen: 'TagScreenTopTabNavigator', params: { screen: 'GridView' } },
-    });
+    // spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
+    //   screen: `Tag_${currentTag._id}`,
+    //   params: { screen: 'TagScreenTopTabNavigator', params: { screen: 'GridView' } },
+    // });
   };
 
   const onMapViewPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setViewPostsType('map');
-    spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
-      screen: `Tag_${currentTag._id}`,
-      params: { screen: 'TagScreenTopTabNavigator', params: { screen: 'MapView' } },
-    });
+    // spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
+    //   screen: `Tag_${currentTag._id}`,
+    //   params: { screen: 'TagScreenTopTabNavigator', params: { screen: 'MapView' } },
+    // });
   };
 
   const onCreatePostPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    spaceRootStackNavigation.navigate('CreateNewPostStackNavigator');
+    // spaceRootStackNavigation.navigate('CreateNewPostStackNavigator');
   };
 
   const renderTab = ({ item }) => {
@@ -98,9 +95,10 @@ export const SpaceTopTabNavigator = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 20 }}>
+      {/* 上tabは別でcomponent分けた方がいい。 */}
       <View style={{ paddingTop: 30, flexDirection: 'row' }}>
         <AppButton.Icon
-          onButtonPress={() => spaceRootStackNavigation.goBack()}
+          onButtonPress={() => spaceNavigation.goBack()}
           customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
           hasShadow={false}
         >
@@ -125,15 +123,9 @@ export const SpaceTopTabNavigator = () => {
           animationEnabled: false,
         })}
       >
-        {/* シンプルにさ、このtagだけ使って実現できるはずよ。。。 */}
-        {/* こうやってcontextがnestingするとめちゃくちゃ煩雑になる。っていうこともわかるね。シンプルにpostsっていうcomponentで解決できるはずなのよね。。。 */}
         {space?.tags.map((tag: TagType, index: number) => (
-          <Tab.Screen key={index} name={`Tag_${tag._id}`} options={{ title: tag.name }}>
-            {({ navigation }) => (
-              <TagScreenProvider tag={tag}>
-                <TagScreenStackNavigator />
-              </TagScreenProvider>
-            )}
+          <Tab.Screen key={index} name={`Posts_${tag._id}`} options={{ title: tag.name }}>
+            <Posts tag={tag} />
           </Tab.Screen>
         ))}
       </Tab.Navigator>

@@ -11,6 +11,7 @@ import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import { useSnackBar } from '../hooks';
 import { SnackBar } from '../components';
 import { showMessage } from 'react-native-flash-message';
+import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
@@ -34,7 +35,7 @@ const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
 const processingPostMessage = 'It takes couple seconds to finish processing.';
 const postSucceededMessage = 'Your post has been created successfully.';
 
-export const SpaceRootStackNavigator: React.FC = () => {
+export const SpaceRootStackNavigator: React.FC = (props) => {
   const { snackBar, showSnackBar, hideSnackBar } = useSnackBar();
   const { createPostResult } = useContext(SpaceRootContext);
   const { setMySpaces } = useContext(MySpacesContext);
@@ -62,50 +63,48 @@ export const SpaceRootStackNavigator: React.FC = () => {
   // reloadでpropsの影響でバグる。
 
   return (
-    <View style={{ flex: 1 }}>
-      <SpaceRootStack.Navigator
-        screenOptions={({ navigation }) => ({
-          headerShown: false,
-        })}
-      >
-        <SpaceRootStack.Group>
-          <SpaceRootStack.Screen name='TagsTopTabNavigator' component={SpaceTopTabNavigator} />
-        </SpaceRootStack.Group>
-        <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-          <SpaceRootStack.Screen
-            name='CreateNewPostStackNavigator'
-            component={CreateNewPostStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: Colors.white,
-              },
-            })}
-          />
-        </SpaceRootStack.Group>
-        <SpaceRootStack.Group screenOptions={{ presentation: 'modal' }}>
-          <SpaceRootStack.Screen
-            name='SpaceInfoStackNavigator'
-            component={SpaceInfoStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: Colors.white,
-              },
-            })}
-          />
-        </SpaceRootStack.Group>
-      </SpaceRootStack.Navigator>
-    </View>
+    <SpaceRootStack.Navigator
+      screenOptions={({ navigation }) => ({
+        headerShown: false,
+      })}
+    >
+      <SpaceRootStack.Group>
+        <SpaceRootStack.Screen name='TagsTopTabNavigator' component={SpaceTopTabNavigator} />
+      </SpaceRootStack.Group>
+      <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+        <SpaceRootStack.Screen
+          name='CreateNewPostStackNavigator'
+          component={CreateNewPostStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: Colors.white,
+            },
+          })}
+        />
+      </SpaceRootStack.Group>
+      <SpaceRootStack.Group screenOptions={{ presentation: 'modal' }}>
+        <SpaceRootStack.Screen
+          name='SpaceInfoStackNavigator'
+          component={SpaceInfoStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: Colors.white,
+            },
+          })}
+        />
+      </SpaceRootStack.Group>
+    </SpaceRootStack.Navigator>
   );
 };
