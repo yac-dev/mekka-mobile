@@ -1,2 +1,2 @@
-export * from './postsAtom';
+export * from './getPostsByTagIdAtomFamily';
 export * from './viewPostsTypeAtom';

@@ -584,7 +584,7 @@ export const Home = () => {
                     //     screen: `Tag_${tag._id}`,
                     //   },
                     // });
-                    homeStackNavigation.navigate('SpaceRootStackNavigator', { space: currentSpace });
+                    homeStackNavigation.navigate('SpaceStackNavigator', { space: currentSpace });
 
                     // if (currentSpace._id !== tag._id) {
                     //   homeStackNavigation.navigate('SpaceRootStackNavigator', {

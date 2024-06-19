@@ -2,7 +2,7 @@ export * from './RootStackNavigator';
 export * from './HomeStackNavigator';
 export * from './EditProfileStackNavigator';
 export * from './SpacesDrawerNavigator';
-export * from './SpaceRootStackNavigator';
+export * from './SpaceStackNavigator';
 export * from './SpaceTopTabNavigator';
 export * from './TagScreenTopTabNavigator';
 export * from './TagScreenStackNavigator';

@@ -12,11 +12,12 @@ import { useSnackBar } from '../hooks';
 import { SnackBar } from '../components';
 import { showMessage } from 'react-native-flash-message';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
+import { Space } from '../features';
 
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
 export type SpaceRootStackParams = {
-  TagsTopTabNavigator: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
+  Space: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
   MomentsStackNavigator: undefined;
   SpaceInfoStackNavigator: undefined;
@@ -35,7 +36,8 @@ const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
 const processingPostMessage = 'It takes couple seconds to finish processing.';
 const postSucceededMessage = 'Your post has been created successfully.';
 
-export const SpaceRootStackNavigator: React.FC = (props) => {
+// 命名的に、SpaceStackNavigator の方がいいね。そんで、最初のscreenにspaceを割り当てる感じだな。
+export const SpaceStackNavigator: React.FC = (props) => {
   const { snackBar, showSnackBar, hideSnackBar } = useSnackBar();
   const { createPostResult } = useContext(SpaceRootContext);
   const { setMySpaces } = useContext(MySpacesContext);
@@ -69,7 +71,7 @@ export const SpaceRootStackNavigator: React.FC = (props) => {
       })}
     >
       <SpaceRootStack.Group>
-        <SpaceRootStack.Screen name='TagsTopTabNavigator' component={SpaceTopTabNavigator} />
+        <SpaceRootStack.Screen name='Space' component={Space} />
       </SpaceRootStack.Group>
       <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
         <SpaceRootStack.Screen
@@ -105,6 +107,7 @@ export const SpaceRootStackNavigator: React.FC = (props) => {
           })}
         />
       </SpaceRootStack.Group>
+      {/* viewPostsStackをここで持っておいた方がいいのかね。。 */}
     </SpaceRootStack.Navigator>
   );
 };

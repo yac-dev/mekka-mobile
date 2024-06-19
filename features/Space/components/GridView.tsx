@@ -1,40 +1,48 @@
 import React, { useContext } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { PostType } from '../../../types';
+import { PostType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { TagScreenContext } from '../providers';
 import { useNavigation } from '@react-navigation/native';
 import { TagScreenStackNavigatorProps } from '../../../navigations';
+import { getPostsByTagIdAtomFamily } from '../atoms';
+// tag Idが必要になるからな。そこの管理もすげーめんどいな。。。
+import { useRecoilValue } from 'recoil';
 
-type GridViewProps = {};
+type IGridView = {
+  tag: TagType;
+};
 
-export const GridView: React.FC<GridViewProps> = () => {
+// tagごとにpostsのcomponentを表示するわけだが、、、
+
+export const GridView: React.FC<IGridView> = ({ tag }) => {
   const navigation = useNavigation<TagScreenStackNavigatorProps>();
-  const { getPostsApiResult, setCurrentPost, onCurrentPostIndexChange, tag, addCreatedPost } =
-    useContext(TagScreenContext);
+  const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
 
-  const renderLoader = () => {
-    if (getPostsApiResult.status === 'paging') {
-      return (
-        <View style={{ paddingTop: 30, alignItems: 'center' }}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-  };
+  // const renderLoader = () => {
+  //   if (getPostsApiResult.status === 'paging') {
+  //     return (
+  //       <View style={{ paddingTop: 30, alignItems: 'center' }}>
+  //         <ActivityIndicator />
+  //       </View>
+  //     );
+  //   }
+  // };
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    setCurrentPost(post);
-    onCurrentPostIndexChange(index);
-    navigation.navigate('ViewPostStackNavigator');
+    // setCurrentPost(post);
+    // onCurrentPostIndexChange(index);
+    // navigation.navigate('ViewPostStackNavigator');
+    console.log('press thumbnail');
   };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
-  if (getPostsApiResult.status === 'loading') {
+  // これ配列なのかよ。。。そういうdata構造かよ。。。どうしよう。。。
+  if (getPostsByTagIdResult.status === 'loading') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -42,10 +50,10 @@ export const GridView: React.FC<GridViewProps> = () => {
     );
   }
 
-  if (!getPostsApiResult.data?.posts.length) {
+  if (!getPostsByTagIdResult.data.posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts in this tag channel...</Text>
+        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts tagged by [tag name]</Text>
       </View>
     );
   }
@@ -54,7 +62,7 @@ export const GridView: React.FC<GridViewProps> = () => {
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
         numColumns={3}
-        data={getPostsApiResult.data?.posts}
+        data={getPostsByTagIdResult.data.posts}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
         removeClippedSubviews
@@ -65,13 +73,13 @@ export const GridView: React.FC<GridViewProps> = () => {
         onEndReachedThreshold={0}
         contentContainerStyle={{ paddingBottom: 30 }}
       />
-      {getPostsApiResult.status === 'refreshing' ? (
+      {/* {getPostsApiResult.status === 'refreshing' ? (
         <ActivityIndicator
           style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}
           size={'large'}
           color={'white'}
         />
-      ) : null}
+      ) : null} */}
     </View>
   );
 };

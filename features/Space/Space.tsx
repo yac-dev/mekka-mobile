@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../features/Space/providers/SpaceRootProvider';
-import { CurrentTagContext } from '../../providers';
+import { CurrentSpaceContext, CurrentTagContext } from '../../providers';
 import { TagType } from '../../types';
 import { useNavigation } from '@react-navigation/native';
 import { TagScreenProvider } from '../../features';
@@ -17,7 +17,8 @@ import { SpaceRootStackNavigatorProp } from '../../navigations';
 
 const Tab = createMaterialTopTabNavigator();
 
-export const SpaceTopTabNavigator = () => {
+export const Space = () => {
+  const { currentSpace } = useContext(CurrentSpaceContext);
   const spaceNavigation = useNavigation<SpaceRootStackNavigatorProp>();
   const { viewPostsType, setViewPostsType, space, createPostResult } = useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
@@ -25,16 +26,21 @@ export const SpaceTopTabNavigator = () => {
   const scrollViewRef = useRef(null);
 
   useEffect(() => {
-    const currentIndex = space?.tags.findIndex((tag) => currentTag._id === tag._id);
+    const currentIndex = currentSpace?.tags.findIndex((tag) => currentTag._id === tag._id);
     scrollViewRef.current.scrollToOffset({
       offset: (currentIndex - 1) * 120,
       animated: true,
     });
   }, [currentTag]);
 
+  // currentTag
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
+    spaceNavigation.navigate('Space', {
+      screen: `Posts_${tab._id}`,
+    });
+    // そっか、ここでtab移動をせなあかんな。
     // spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
     //   screen: `Tag_${tab._id}`,
     //   params: {
@@ -95,7 +101,7 @@ export const SpaceTopTabNavigator = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 20 }}>
-      {/* 上tabは別でcomponent分けた方がいい。 */}
+      {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
       <View style={{ paddingTop: 30, flexDirection: 'row' }}>
         <AppButton.Icon
           onButtonPress={() => spaceNavigation.goBack()}
@@ -109,23 +115,28 @@ export const SpaceTopTabNavigator = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           ref={scrollViewRef}
-          data={space?.tags}
+          data={currentSpace?.tags}
           renderItem={renderTab}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           style={{ marginBottom: 10 }}
         />
       </View>
+      {/* tabごとにPostsのcompnentを使うのね。 */}
+      {/* posts componentが、、、最初のgeneralぶんしか表示されん。。。なぜだ。。。 */}
       <Tab.Navigator
+        //最初のroutingをせっていしないとあかんよ。
         tabBar={() => null}
+        initialRouteName={`Posts_${currentTag._id}`}
+        // これ上手くいかんな。。。
         screenOptions={({ route }) => ({
           lazy: true,
           swipeEnabled: false,
           animationEnabled: false,
         })}
       >
-        {space?.tags.map((tag: TagType, index: number) => (
+        {currentSpace?.tags.map((tag: TagType, index: number) => (
           <Tab.Screen key={index} name={`Posts_${tag._id}`} options={{ title: tag.name }}>
-            <Posts tag={tag} />
+            {() => <Posts tag={tag} />}
           </Tab.Screen>
         ))}
       </Tab.Navigator>

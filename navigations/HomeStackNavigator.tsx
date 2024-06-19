@@ -18,7 +18,7 @@ import { VectorIcon } from '../Icons';
 import { MomentsStackNavigator } from './MomentsStackNavigator';
 import { DiscoverStackNavigator } from './DiscoverStackNavigator';
 import { Home } from '../features/Home/pages';
-import { SpaceRootStackNavigator } from './SpaceRootStackNavigator';
+import { SpaceStackNavigator } from './SpaceStackNavigator';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -51,7 +51,7 @@ export type HomeStackParams = {
   // Home: NavigatorScreenParams<SpacesDrawerParams>;
   Home: undefined;
   // SpaceRootStackNavigator: NavigatorScreenParams<SpaceRootStackParams>;
-  SpaceRootStackNavigator: {
+  SpaceStackNavigator: {
     space: SpaceType;
   };
   ViewPost: undefined;
@@ -93,8 +93,8 @@ export const HomeStackNavigator: React.FC = (props) => {
       <HomeStack.Group>
         <HomeStack.Screen name='Home' component={Home} options={({ navigation }) => ({})} />
         <HomeStack.Screen
-          name='SpaceRootStackNavigator'
-          component={SpaceRootStackNavigator}
+          name='SpaceStackNavigator'
+          component={SpaceStackNavigator}
           options={({ navigation }) => ({})}
         />
         {/* ここに、spaceRootStackを入れる感じか。home component内で、SpaceRootStackへnavigationするようにしたいよね。そういう流れだ。 */}

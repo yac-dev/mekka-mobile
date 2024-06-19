@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../../../themes';
-import { SpaceRootStackNavigatorProp } from '../../../navigations/SpaceRootStackNavigator';
+import { SpaceRootStackNavigatorProp } from '../../../navigations/SpaceStackNavigator';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
 
 // このnavigationって、Homeのnavigationを受け継ぎ同時にSpacesDrawerのscreenに対するdrawerのnavigationも持っているのか。。。

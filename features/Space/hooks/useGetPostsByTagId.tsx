@@ -2,16 +2,17 @@ import { useState } from 'react';
 import { ApiResultType, AuthType, PostType } from '../../../types';
 import { getPosts } from '../apis';
 import { GetPostsInputType, GetPostsOutputType } from '../types';
-import { postsAtom } from '../atoms';
+import { getPostsByTagIdAtomFamily } from '../atoms';
 import { useRecoilState } from 'recoil';
 
 // page開くたびにapi request支度ないからさ。それを防がないとな。。。
-export const useGetPostsByTagIdResult = (tagId: string) => {
-  const [getPostsResult, setGetPostsResult] = useRecoilState(postsAtom(tagId));
+export const useGetPostsByTagId = (tagId: string) => {
+  // 正直、resultの方はいらないんだわな。だって、atomの方を消費するようにすればいいから。
+  const [getPostsByTagIdResult, setGetPostsByTagIdResult] = useRecoilState(getPostsByTagIdAtomFamily(tagId));
 
-  const requestApi = async (input: GetPostsInputType) => {
+  const requestGetPostsByTagId = async (input: GetPostsInputType) => {
     try {
-      setGetPostsResult((previous) => {
+      setGetPostsByTagIdResult((previous) => {
         return {
           ...previous,
           status: 'loading',
@@ -20,21 +21,21 @@ export const useGetPostsByTagIdResult = (tagId: string) => {
       });
 
       const response = await getPosts(input);
-      setGetPostsResult((previous) => {
+      setGetPostsByTagIdResult((previous) => {
         return {
           ...previous,
           status: 'success',
-          data: [{ o: 'a' }],
+          data: response,
         };
       });
     } catch (error) {
-      setGetPostsResult((previous) => {
-        return {
-          ...previous,
-          status: 'fail',
-          data: void 0,
-        };
-      });
+      // setGetPostsResult((previous) => {
+      //   return {
+      //     ...previous,
+      //     status: 'fail',
+      //     data: void 0,
+      //   };
+      // });
     }
   };
 
@@ -68,7 +69,7 @@ export const useGetPostsByTagIdResult = (tagId: string) => {
   // };
 
   const addCreatedPost = (createdPost: PostType) => {
-    setGetPostsResult((previous) => {
+    setGetPostsByTagIdResult((previous) => {
       const previousPosts = [createdPost, ...(previous.data?.posts || [])];
       // このunshiftとか、push methodって、最終的なarrayのlengthを返す仕様らしい。。。
 
@@ -116,7 +117,8 @@ export const useGetPostsByTagIdResult = (tagId: string) => {
     // requestApi,
     // requestRefresh,
     // loadMore,
-    getPostsResult,
+    getPostsByTagIdResult,
+    requestGetPostsByTagId,
     addCreatedPost,
   };
 };
