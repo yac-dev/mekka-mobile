@@ -6,14 +6,11 @@ import { useGetPosts } from '../hooks';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
 import * as Haptics from 'expo-haptics';
 import { createMaterialTopTabNavigator, MaterialTopTabNavigationOptions } from '@react-navigation/material-top-tabs';
-import { GridView } from './GridView';
+import { GridView, RegionView } from '.';
 import { MapPosts } from './MapPosts';
-import { useGetPostsByTagId } from '../hooks';
 import { TagType } from '../../../types';
 import { viewPostsTypeAtom } from '../atoms';
 import { useRecoilValue } from 'recoil';
-import MapView, { Region } from 'react-native-maps';
-import { getPostsByTagIdAtomFamily, getPostsByTagIdAndRegionResultAtomFamily } from '../atoms';
 // postsに関してはそこまでnestするとも思えないからまあいいかな。。
 // tagはrouteでもらってくる想定。
 const PostsTab = createMaterialTopTabNavigator();
@@ -34,22 +31,9 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
   const viewPostsType = useRecoilValue(viewPostsTypeAtom);
   const { appState } = useContext(GlobalContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const { requestGetPostsByTagId } = useGetPostsByTagId(tag._id); // tagのidはatomFamily用に使っている。
-  const { requestGetPostsByTagIdAndRegion } = useGetPostsByTagIdAndRegion(tag._id);
-  const getPostsByTagIdState = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
-  const getPostsByTagIdAndRegionResult = useRecoilValue(getPostsByTagIdAndRegionResultAtomFamily(tag._id));
-  // const { apiResult: getPostsByTagIdAndRegionResult, requestApi: requestGetPostsByTagIdAndRegion } =
-  //   useGetPostsByTagIdAndRegion();
-  const [currentPostIndex, setCurrentPostIndex] = useState<number>(0);
-  const mapRef = useRef<MapView>(null);
 
-  const [region, setRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 100.0922,
-    longitudeDelta: 100.0421,
-  });
-  const [mapPostInitialFetchCompleted, setMapPostInitialFetchCompleted] = useState<boolean>(false);
+  const [currentPostIndex, setCurrentPostIndex] = useState<number>(0);
+
   // このscreen loadedをな。。。
 
   // const onRegionChangeComplete = (region: Region) => {
@@ -108,19 +92,6 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
   //   }
   // }, [getPostsByTagIdAndRegionResult]);
 
-  // 最初のpost component renderの時点で両方とも引っ張ってくる感じかな。
-  // ここでgrid用のpostとmap用のpostで持っておくのがいいだろうね。
-
-  useEffect(() => {
-    if (getPostsByTagIdState.status !== 'success') {
-      requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
-    }
-  }, []);
-
-  useEffect(() => {
-    requestGetPostsByTagIdAndRegion({ tagId: tag._id, region: '' });
-  }, []);
-
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <PostsTab.Navigator
@@ -129,7 +100,7 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
         initialRouteName={viewPostsType === 'grid' ? 'GridView' : 'MapView'}
       >
         <PostsTab.Screen name='GridView'>{() => <GridView tag={tag} />}</PostsTab.Screen>
-        {/* <PostsTab.Screen name='MapView'>{() => <MapPosts />}</PostsTab.Screen> */}
+        <PostsTab.Screen name='RegionView'>{() => <RegionView tag={tag} />}</PostsTab.Screen>
       </PostsTab.Navigator>
     </View>
   );

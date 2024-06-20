@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { PostType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
@@ -9,6 +9,7 @@ import { TagScreenStackNavigatorProps } from '../../../navigations';
 import { getPostsByTagIdAtomFamily } from '../atoms';
 // tag Idが必要になるからな。そこの管理もすげーめんどいな。。。
 import { useRecoilValue } from 'recoil';
+import { useGetPostsByTagId } from '../hooks';
 
 type IGridView = {
   tag: TagType;
@@ -18,6 +19,8 @@ type IGridView = {
 
 export const GridView: React.FC<IGridView> = ({ tag }) => {
   const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  const { requestGetPostsByTagId } = useGetPostsByTagId(tag._id);
+
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
 
   // const renderLoader = () => {
@@ -29,6 +32,12 @@ export const GridView: React.FC<IGridView> = ({ tag }) => {
   //     );
   //   }
   // };
+
+  useEffect(() => {
+    if (getPostsByTagIdResult.status !== 'success') {
+      requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
+    }
+  }, []);
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
     // setCurrentPost(post);
