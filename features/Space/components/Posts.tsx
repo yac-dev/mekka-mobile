@@ -13,7 +13,7 @@ import { TagType } from '../../../types';
 import { viewPostsTypeAtom } from '../atoms';
 import { useRecoilValue } from 'recoil';
 import MapView, { Region } from 'react-native-maps';
-import { getPostsByTagIdAtomFamily } from '../atoms';
+import { getPostsByTagIdAtomFamily, getPostsByTagIdAndRegionResultAtomFamily } from '../atoms';
 // postsに関してはそこまでnestするとも思えないからまあいいかな。。
 // tagはrouteでもらってくる想定。
 const PostsTab = createMaterialTopTabNavigator();
@@ -35,16 +35,11 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
   const { appState } = useContext(GlobalContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { requestGetPostsByTagId } = useGetPostsByTagId(tag._id); // tagのidはatomFamily用に使っている。
+  const { requestGetPostsByTagIdAndRegion } = useGetPostsByTagIdAndRegion(tag._id);
   const getPostsByTagIdState = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
-  // ここも命名を変えた方がいいよな。。。多分。
-  const {
-    apiResult: getPostsApiResult,
-    requestApi: requestGetPostsApi,
-    addCreatedPost,
-    requestRefresh,
-  } = useGetPosts();
-  const { apiResult: getPostsByTagIdAndRegionResult, requestApi: requestGetPostsByTagIdAndRegion } =
-    useGetPostsByTagIdAndRegion();
+  const getPostsByTagIdAndRegionResult = useRecoilValue(getPostsByTagIdAndRegionResultAtomFamily(tag._id));
+  // const { apiResult: getPostsByTagIdAndRegionResult, requestApi: requestGetPostsByTagIdAndRegion } =
+  //   useGetPostsByTagIdAndRegion();
   const [currentPostIndex, setCurrentPostIndex] = useState<number>(0);
   const mapRef = useRef<MapView>(null);
 
@@ -120,6 +115,10 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
     if (getPostsByTagIdState.status !== 'success') {
       requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
     }
+  }, []);
+
+  useEffect(() => {
+    requestGetPostsByTagIdAndRegion({ tagId: tag._id, region: '' });
   }, []);
 
   return (

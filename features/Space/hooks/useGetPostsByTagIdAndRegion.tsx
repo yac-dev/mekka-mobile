@@ -10,7 +10,7 @@ export const useGetPostsByTagIdAndRegion = (tagId: string) => {
     getPostsByTagIdAndRegionResultAtomFamily(tagId)
   );
 
-  const requestApi = async (input: GetPostsByTagIdAndRegionInput) => {
+  const requestGetPostsByTagIdAndRegion = async (input: GetPostsByTagIdAndRegionInput) => {
     try {
       setGetPostsByTagIdAndRegionResult((previous) => {
         return {
@@ -41,6 +41,6 @@ export const useGetPostsByTagIdAndRegion = (tagId: string) => {
   };
 
   return {
-    requestApi,
+    requestGetPostsByTagIdAndRegion,
   };
 };
