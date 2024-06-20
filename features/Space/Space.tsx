@@ -158,11 +158,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
           <VectorIcon.II name='add' size={32} color={'white'} />
         )}
       </AppButton.Icon>
-      <ViewPostsTypeToggleButton
-        space={route.params.space}
-        onGridViewPress={onGridViewPress}
-        onMapViewPress={onMapViewPress}
-      />
+      <ViewPostsTypeToggleButton space={route.params.space} />
     </View>
   );
 };

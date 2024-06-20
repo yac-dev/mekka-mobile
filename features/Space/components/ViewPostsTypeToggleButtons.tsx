@@ -10,24 +10,26 @@ import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { Colors } from '../../../themes/colors';
 import { SpaceType } from '../../../types';
 import { viewPostsTypeAtomFamily } from '../atoms';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 type ViewPostsTypeToggleButtonProps = {
   space: SpaceType;
-  onGridViewPress: () => void;
-  onMapViewPress: () => void;
 };
 
-export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({
-  space,
-  onGridViewPress,
-  onMapViewPress,
-}) => {
+export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({ space }) => {
   const navigation = useNavigation<SpaceRootStackNavigatorProp>();
   // const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
-  const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
+  const [viewPostsType, setViewPostsType] = useRecoilState(viewPostsTypeAtomFamily(space._id));
   const { currentTag } = useContext(CurrentTagContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
+
+  const onGridViewPress = () => {
+    setViewPostsType('grid');
+  };
+
+  const onRegionViewPress = () => {
+    setViewPostsType('region');
+  };
 
   return (
     <View style={styles.container}>
@@ -48,7 +50,7 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
           backgroundColor: viewPostsType === 'region' ? 'rgb(80,80,80)' : null,
           borderRadius: viewPostsType === 'region' ? 12 : 0,
         }}
-        onPress={() => onMapViewPress()}
+        onPress={() => onRegionViewPress()}
       >
         <ExpoImage
           style={{ width: 25, height: 25 }}

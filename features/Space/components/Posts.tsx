@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
-import { View, Text, AppState } from 'react-native';
+import React, { useEffect, useContext, useState, useRef, useCallback, useMemo } from 'react';
+import { View, Text, AppState, StyleSheet } from 'react-native';
 import { GlobalContext } from '../../../providers';
 import { CurrentSpaceContext } from '../../../providers';
 import { useGetPosts } from '../hooks';
@@ -11,6 +11,7 @@ import { MapPosts } from './MapPosts';
 import { SpaceType, TagType } from '../../../types';
 import { viewPostsTypeAtomFamily } from '../atoms';
 import { useRecoilValue } from 'recoil';
+import PagerView from 'react-native-pager-view';
 // postsに関してはそこまでnestするとも思えないからまあいいかな。。
 // tagはrouteでもらってくる想定。
 const PostsTab = createMaterialTopTabNavigator();
@@ -25,11 +26,26 @@ type IPosts = {
   tag: TagType;
 };
 
+type TabType = {
+  key: string;
+  title: string;
+};
+
+const tabs: TabType[] = [
+  { key: 'gridView', title: 'GridView' },
+  { key: 'regionView', title: 'RegionView' },
+];
+
 // 次は、gridとmapのnavigationを実装しようか。
 // ここら辺のatomも作ろうか。。。
 // 結局、apiの結果をcacheしたいから、やっぱ、recoil必要だね。
 export const Posts: React.FC<IPosts> = ({ space, tag }) => {
   const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
+  const pagerViewRef = useRef<PagerView>(null);
+  const [routes] = React.useState([
+    { key: 'first', title: 'First' },
+    { key: 'second', title: 'Second' },
+  ]);
   const { appState } = useContext(GlobalContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
@@ -92,17 +108,31 @@ export const Posts: React.FC<IPosts> = ({ space, tag }) => {
   //     });
   //   }
   // }, [getPostsByTagIdAndRegionResult]);
+  //  viewPostのtypeが変わったらjumpすればいいのかね。多分、pagerViewを使った方がいい絶対。
+
+  useEffect(() => {
+    pagerViewRef.current?.setPage(viewPostsType === 'grid' ? 0 : 1);
+  }, [viewPostsType]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <PostsTab.Navigator
-        tabBar={() => null}
-        screenOptions={screenOptions}
-        initialRouteName={viewPostsType === 'grid' ? 'GridView' : 'RegionView'}
+      <PagerView
+        style={styles.pagerView}
+        initialPage={viewPostsType === 'grid' ? 0 : 1}
+        scrollEnabled={false}
+        ref={pagerViewRef}
       >
-        <PostsTab.Screen name='GridView'>{() => <GridView tag={tag} />}</PostsTab.Screen>
-        <PostsTab.Screen name='RegionView'>{() => <RegionView tag={tag} />}</PostsTab.Screen>
-      </PostsTab.Navigator>
+        <GridView tag={tag} />
+        <RegionView tag={tag} />
+      </PagerView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  pagerView: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+});
