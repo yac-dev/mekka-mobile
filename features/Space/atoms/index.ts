@@ -1,4 +1,4 @@
 export * from './getPostsByTagIdAtomFamily';
 export * from './getPostsByTagIdAndRegionResultAtomFamily';
-export * from './viewPostsTypeAtom';
+export * from './viewPostsTypeAtomFamily';
 export * from './currentRegionAtomFamily';

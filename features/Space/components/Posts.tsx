@@ -8,8 +8,8 @@ import * as Haptics from 'expo-haptics';
 import { createMaterialTopTabNavigator, MaterialTopTabNavigationOptions } from '@react-navigation/material-top-tabs';
 import { GridView, RegionView } from '.';
 import { MapPosts } from './MapPosts';
-import { TagType } from '../../../types';
-import { viewPostsTypeAtom } from '../atoms';
+import { SpaceType, TagType } from '../../../types';
+import { viewPostsTypeAtomFamily } from '../atoms';
 import { useRecoilValue } from 'recoil';
 // postsに関してはそこまでnestするとも思えないからまあいいかな。。
 // tagはrouteでもらってくる想定。
@@ -21,14 +21,15 @@ const screenOptions: MaterialTopTabNavigationOptions = {
 };
 
 type IPosts = {
+  space: SpaceType;
   tag: TagType;
 };
 
 // 次は、gridとmapのnavigationを実装しようか。
 // ここら辺のatomも作ろうか。。。
 // 結局、apiの結果をcacheしたいから、やっぱ、recoil必要だね。
-export const Posts: React.FC<IPosts> = ({ tag }) => {
-  const viewPostsType = useRecoilValue(viewPostsTypeAtom);
+export const Posts: React.FC<IPosts> = ({ space, tag }) => {
+  const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
   const { appState } = useContext(GlobalContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
@@ -97,7 +98,7 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
       <PostsTab.Navigator
         tabBar={() => null}
         screenOptions={screenOptions}
-        initialRouteName={viewPostsType === 'grid' ? 'GridView' : 'MapView'}
+        initialRouteName={viewPostsType === 'grid' ? 'GridView' : 'RegionView'}
       >
         <PostsTab.Screen name='GridView'>{() => <GridView tag={tag} />}</PostsTab.Screen>
         <PostsTab.Screen name='RegionView'>{() => <RegionView tag={tag} />}</PostsTab.Screen>

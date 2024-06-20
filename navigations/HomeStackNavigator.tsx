@@ -47,13 +47,18 @@ type SpacesDrawerParams = {
   MomentsStackNavigator: undefined;
 };
 
+export type SpaceStackNavigatorParams = {
+  Space: {
+    space: SpaceType;
+  };
+  CreateNewPostStackNavigator: undefined;
+};
+
 export type HomeStackParams = {
   // Home: NavigatorScreenParams<SpacesDrawerParams>;
   Home: undefined;
   // SpaceRootStackNavigator: NavigatorScreenParams<SpaceRootStackParams>;
-  SpaceStackNavigator: {
-    space: SpaceType;
-  };
+  SpaceStackNavigator: NavigatorScreenParams<SpaceStackNavigatorParams>;
   ViewPost: undefined;
   Comments: undefined;
   DiscoverStackNavigator: undefined;
@@ -75,6 +80,7 @@ export type HomeStackParams = {
 };
 
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
+export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackNavigatorParams>;
 
 const HomeStack = createNativeStackNavigator<HomeStackParams>();
 

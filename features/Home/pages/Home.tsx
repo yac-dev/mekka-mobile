@@ -584,7 +584,11 @@ export const Home = () => {
                     //     screen: `Tag_${tag._id}`,
                     //   },
                     // });
-                    homeStackNavigation.navigate('SpaceStackNavigator', { space: currentSpace });
+                    // ここnestedにspaceに行くようにすればいいか。そのspaceにidを渡せばいいだけだわ。
+                    homeStackNavigation.navigate('SpaceStackNavigator', {
+                      screen: 'Space',
+                      params: { space: currentSpace },
+                    });
 
                     // if (currentSpace._id !== tag._id) {
                     //   homeStackNavigation.navigate('SpaceRootStackNavigator', {

@@ -13,17 +13,32 @@ import { AppButton } from '../../components';
 import { VectorIcon } from '../../Icons/VectorIcons';
 import { ViewPostsTypeToggleButton } from '../../features/Space/components';
 import { Posts } from '../../features/Space/components';
-import { SpaceRootStackNavigatorProp } from '../../navigations';
+import {
+  HomeStackNavigatorProps,
+  HomeStackParams,
+  SpaceRootStackNavigatorProp,
+  SpaceStackNavigatorProps,
+} from '../../navigations';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SpaceStackNavigatorParams } from '../../navigations';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<TagsNavigationParams>();
 
-export const Space = () => {
+type TagsNavigationParams = {
+  [key: string]: undefined;
+};
+
+type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
+
+export const Space: React.FC<ISpace> = ({ route }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const spaceNavigation = useNavigation<SpaceRootStackNavigatorProp>();
-  const { viewPostsType, setViewPostsType, space, createPostResult } = useContext(SpaceRootContext);
+  // const spaceNavigation = useNavigation<SpaceRootStackNavigatorProp>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
+  const { viewPostsType, setViewPostsType, createPostResult } = useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
-  const route = useRoute();
   const scrollViewRef = useRef(null);
+  const tabNavigatorRef = useRef(null);
 
   useEffect(() => {
     const currentIndex = currentSpace?.tags.findIndex((tag) => currentTag._id === tag._id);
@@ -36,17 +51,9 @@ export const Space = () => {
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
-    spaceNavigation.navigate('Space', {
+    homeStackNavigation.navigate('Space', {
       screen: `Posts_${tab._id}`,
     });
-    // そっか、ここでtab移動をせなあかんな。
-    // spaceRootStackNavigation.navigate('TagsTopTabNavigator', {
-    //   screen: `Tag_${tab._id}`,
-    //   params: {
-    //     screen: 'TagScreenTopTabNavigator',
-    //     params: { screen: viewPostsType === 'grid' ? 'GridView' : 'MapView' },
-    //   },
-    // });
   };
 
   const onGridViewPress = () => {
@@ -103,7 +110,7 @@ export const Space = () => {
       {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
       <View style={{ paddingTop: 30, flexDirection: 'row' }}>
         <AppButton.Icon
-          onButtonPress={() => spaceNavigation.goBack()}
+          onButtonPress={() => spaceStackNavigation.goBack()}
           customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
           hasShadow={false}
         >
@@ -135,7 +142,7 @@ export const Space = () => {
       >
         {currentSpace?.tags.map((tag: TagType, index: number) => (
           <Tab.Screen key={index} name={`Posts_${tag._id}`} options={{ title: tag.name }}>
-            {() => <Posts tag={tag} />}
+            {() => <Posts space={route.params.space} tag={tag} />}
           </Tab.Screen>
         ))}
       </Tab.Navigator>
@@ -151,7 +158,13 @@ export const Space = () => {
           <VectorIcon.II name='add' size={32} color={'white'} />
         )}
       </AppButton.Icon>
-      <ViewPostsTypeToggleButton onGridViewPress={onGridViewPress} onMapViewPress={onMapViewPress} />
+      <ViewPostsTypeToggleButton
+        space={route.params.space}
+        onGridViewPress={onGridViewPress}
+        onMapViewPress={onMapViewPress}
+      />
     </View>
   );
 };
+
+// currentSpaceを使う方がいいのかな。。。
