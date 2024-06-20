@@ -32,7 +32,6 @@ export const Space = () => {
       animated: true,
     });
   }, [currentTag]);
-
   // currentTag
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

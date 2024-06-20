@@ -1,4 +1,4 @@
-import { CommentType, UserType, PostType } from '../types';
+import { CommentType, UserType, PostType, MapRegionType } from '../types';
 
 export type UpdateSpaceCheckedInDateInputType = {
   spaceId: string;
@@ -38,4 +38,13 @@ export type GetPostsByTagIdInputType = {
 export type GetPostsByTagIdOutputType = {
   posts: PostType[];
   nextPage: number | null;
+};
+
+export type GetPostsByTagIdAndRegionInput = {
+  tagId: string;
+  region: MapRegionType;
+};
+
+export type GetPostsByTagIdAndRegionOutput = {
+  posts: PostType[];
 };

@@ -3,4 +3,5 @@ export const atomKeys = {
   currentPost: 'currentPost',
   currentMapPost: 'currentMapPost',
   screenLoaded: 'screenLoaded',
+  postsByTagIdAndRegion: 'postsByTagIdAndRegion',
 };

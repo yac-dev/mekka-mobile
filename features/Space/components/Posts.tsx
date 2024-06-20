@@ -27,6 +27,7 @@ type IPosts = {
   tag: TagType;
 };
 
+// 次は、gridとmapのnavigationを実装しようか。
 // ここら辺のatomも作ろうか。。。
 // 結局、apiの結果をcacheしたいから、やっぱ、recoil必要だね。
 export const Posts: React.FC<IPosts> = ({ tag }) => {
@@ -123,7 +124,6 @@ export const Posts: React.FC<IPosts> = ({ tag }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <Text style={{ color: 'white' }}>{tag.name}</Text>
       <PostsTab.Navigator
         tabBar={() => null}
         screenOptions={screenOptions}
