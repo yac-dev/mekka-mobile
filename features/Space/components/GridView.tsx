@@ -46,7 +46,10 @@ export const GridView: React.FC<IGridView> = ({ tag }) => {
   const onPressPostThumbnail = (post: PostType, index: number) => {
     // setCurrentPost(post);
     // onCurrentPostIndexChange(index);
-    spaceNavigation.navigate('ViewPostStackNavigator');
+    spaceNavigation.navigate({
+      name: 'ViewPostStackNavigator',
+      params: { screen: 'ViewGridPost', params: { tag, currentPostIndex: index } },
+    });
   };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {

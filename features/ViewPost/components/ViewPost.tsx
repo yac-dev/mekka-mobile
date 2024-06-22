@@ -29,16 +29,18 @@ import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackN
 
 type IViewPost = {
   posts: PostType[];
+  currentPostIndex: number;
+  currentPost: PostType;
+  onCurrentPostChange: (post: PostType) => void;
 };
 
-export const ViewPost: React.FC<IViewPost> = ({ posts }) => {
+export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPostChange, currentPostIndex }) => {
   const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
   const {
     getPostsApiResult,
     getPostsByTagIdAndRegionResult,
     setCurrentPost,
-    currentPost,
-    currentPostIndex,
+    // currentPost,
     onCurrentPostIndexChange,
     // viewPostsType,
   } = useContext(TagScreenContext);
@@ -95,8 +97,9 @@ export const ViewPost: React.FC<IViewPost> = ({ posts }) => {
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach((element) => {
       if (element.isViewable) {
-        onCurrentPostIndexChange(element.item);
-        setCurrentPost(element.item);
+        onCurrentPostChange(element.item);
+        // onCurrentPostIndexChange(element.item);
+        // setCurrentPost(element.item);
       }
     });
   });
@@ -140,6 +143,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts }) => {
         })}
       />
       <ViewPostMenu
+        post={currentPost}
         onReactionPress={handleReactionPress}
         onCommentsPress={handleCommentsPress}
         onAvatarPress={openUserInfoBottomSheetRefBottomSheetToIndex}

@@ -9,7 +9,7 @@ import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { ReportPost, ReportComment } from '../features';
-import { ViewGridPost } from '../features/ViewPost/pages';
+import { ViewGridPost, ViewRegionPost } from '../features/ViewPost/pages';
 
 type ViewPostStackNavigatotParams = {
   ViewGridPost: undefined;
@@ -67,7 +67,7 @@ export const ViewPostStackNavigator = () => {
         */}
         <ViewPostStack.Screen
           name='ViewRegionPost'
-          component={ViewPost}
+          component={ViewRegionPost}
           options={({ navigation }) => ({
             headerShown: true,
             title: '',

@@ -4,8 +4,10 @@ import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
 import { TagScreenContext } from '../../Space';
+import { PostType } from '../../../types';
 
 type ViewPostMenuProps = {
+  post: PostType;
   onReactionPress: () => void;
   onCommentsPress: () => void;
   onAvatarPress: () => void;
@@ -13,18 +15,19 @@ type ViewPostMenuProps = {
 };
 
 export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
+  post,
   onReactionPress,
   onCommentsPress,
   onAvatarPress,
   onHorizontalDotsPress,
 }) => {
-  const { currentPost } = useContext(TagScreenContext);
+  // const { currentPost } = useContext(TagScreenContext);
 
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
-        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{currentPost.createdBy.name}</Text>
+        <ExpoImage source={post.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{post.createdBy.name}</Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <AppButton.Icon

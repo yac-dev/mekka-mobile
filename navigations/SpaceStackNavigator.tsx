@@ -14,13 +14,26 @@ import { showMessage } from 'react-native-flash-message';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 import { Space } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
+import { TagType } from '../types';
 
 export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackParams>;
+export type ViewPostStackNavigatorProps = NativeStackNavigationProp<ViewPostStackNavigatorParams>;
+
+export type ViewPostStackNavigatorParams = {
+  ViewGridPost: {
+    tag: TagType;
+    currentPostIndex: number;
+  };
+  ViewRegionPost: {
+    tag: TagType;
+    currentPostIndex: number;
+  };
+};
 
 export type SpaceStackParams = {
   Space: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
-  ViewPostStackNavigator: undefined;
+  ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
   MomentsStackNavigator: undefined;
   SpaceInfoStackNavigator: undefined;
 };

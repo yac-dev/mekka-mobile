@@ -1,16 +1,28 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
 import { ViewPost } from '../components';
 import { getPostsByTagIdAtomFamily } from '../../Space/atoms';
-import { TagType } from '../../../types';
+import { PostType, TagType } from '../../../types';
 import { useRecoilValue } from 'recoil';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SpaceStackParams, ViewPostStackNavigatorParams } from '../../../navigations/SpaceStackNavigator';
 
-type IViewGridPost = {
-  tag: TagType;
-};
+type IViewGridPost = NativeStackScreenProps<ViewPostStackNavigatorParams, 'ViewGridPost'>;
 
-export const ViewGridPost: React.FC<IViewGridPost> = ({ tag }) => {
+export const ViewGridPost: React.FC<IViewGridPost> = ({ route }) => {
+  const { tag, currentPostIndex } = route.params;
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
+  const [currentPost, setCurrentPost] = useState(getPostsByTagIdResult.data.posts[currentPostIndex]);
+  // やっぱ、currentPostは必要だ。
+  const onCurrentPostChange = (post: PostType) => {
+    setCurrentPost(post);
+  };
 
-  return <ViewPost posts={getPostsByTagIdResult.data.posts} />;
+  return (
+    <ViewPost
+      posts={getPostsByTagIdResult.data.posts}
+      currentPost={currentPost}
+      onCurrentPostChange={onCurrentPostChange}
+      currentPostIndex={currentPostIndex}
+    />
+  );
 };

@@ -9,6 +9,7 @@ import { TagScreenStackNavigatorProps } from '../../../navigations';
 import { useRecoilValue } from 'recoil';
 import { getPostsByTagIdAndRegionResultAtomFamily, currentRegionAtomFamily } from '../atoms';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
+import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 
 type IRegionView = {
   tag: TagType;
@@ -20,7 +21,8 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   const currentRegion = useRecoilValue(currentRegionAtomFamily(tag._id));
 
   const { region, onRegionChangeComplete, setCurrentPost, onCurrentPostIndexChange } = useContext(TagScreenContext);
-  const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  // const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
 
   const mapRef = useRef<MapView>(null);
 
@@ -42,9 +44,10 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   }, [getPostsByTagIdAndRegionResult]);
 
   const onMapPostThumbnailPress = (post: PostType, index: number) => {
-    setCurrentPost(post);
-    onCurrentPostIndexChange(index);
-    navigation.navigate('ViewPostStackNavigator');
+    spaceNavigation.navigate({
+      name: 'ViewPostStackNavigator',
+      params: { screen: 'ViewRegionPost', params: { tag, currentPostIndex: index } },
+    });
   };
 
   const renderMarkers = () => {
