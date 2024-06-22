@@ -18,6 +18,8 @@ import { Image as ExpoImage } from 'expo-image';
 import { AppButton } from '../../../components';
 import { CurrentTagContext } from '../../../providers';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { AuthMenu, AddNewSpaceMenu } from '../components';
 
 const actionButtonContainerWidth = (Dimensions.get('screen').width - 40 - 16) / 3;
 const actionButtonWidth = actionButtonContainerWidth * 0.8;
@@ -659,6 +661,31 @@ export const Home = () => {
           </ScrollView>
         </View>
       </View>
+      <AppBottomSheet.Gorhom
+        ref={authMenuBottomSheetRef}
+        snapPoints={['60%']}
+        title='Settings'
+        onCloseButtonClose={closeAuthMenuBottomSheet}
+      >
+        <AuthMenu
+          onEditMyAccountPress={onEditMyAccountPress}
+          onNotificationSettingPress={onNotificationSettingPress}
+          onLogoutPress={onLogoutPress}
+          onDeleteMyAccountPress={onDeleteMyAccountPress}
+        />
+      </AppBottomSheet.Gorhom>
+      <AppBottomSheet.Gorhom
+        ref={addNewSpaceMenuBottomSheetRef}
+        snapPoints={['50%']}
+        title='Add Space'
+        onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
+      >
+        <AddNewSpaceMenu
+          onCreateNewSpacePress={onCreateNewSpacePress}
+          onEnterPrivateKeyPress={onEnterPrivateKeyPress}
+          onDiscoverPress={onDiscoverPress}
+        />
+      </AppBottomSheet.Gorhom>
     </View>
   );
 };

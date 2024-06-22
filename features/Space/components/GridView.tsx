@@ -10,6 +10,8 @@ import { getPostsByTagIdAtomFamily } from '../atoms';
 // tag Idが必要になるからな。そこの管理もすげーめんどいな。。。
 import { useRecoilValue } from 'recoil';
 import { useGetPostsByTagId } from '../hooks';
+import { HomeStackNavigatorProps } from '../../../navigations';
+import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 
 type IGridView = {
   tag: TagType;
@@ -18,7 +20,8 @@ type IGridView = {
 // tagごとにpostsのcomponentを表示するわけだが、、、
 
 export const GridView: React.FC<IGridView> = ({ tag }) => {
-  const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  // const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
   const { requestGetPostsByTagId } = useGetPostsByTagId(tag._id);
 
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
@@ -39,17 +42,18 @@ export const GridView: React.FC<IGridView> = ({ tag }) => {
     }
   }, []);
 
+  // tagごとにあるpostsをarrayに対して、選択したindexから見ていくっていうことだわな。
   const onPressPostThumbnail = (post: PostType, index: number) => {
     // setCurrentPost(post);
     // onCurrentPostIndexChange(index);
-    // navigation.navigate('ViewPostStackNavigator');
-    console.log('press thumbnail');
+    spaceNavigation.navigate('ViewPostStackNavigator');
   };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
+  // シンプルにcurrent tagでのpostをrecoilのstateで見る、そして、indexもrecoilのatom familyで見ればいいかな。。。多分。
   // これ配列なのかよ。。。そういうdata構造かよ。。。どうしよう。。。
   if (getPostsByTagIdResult.status === 'loading') {
     return (

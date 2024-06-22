@@ -13,12 +13,14 @@ import { SnackBar } from '../components';
 import { showMessage } from 'react-native-flash-message';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 import { Space } from '../features';
+import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 
-export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
+export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackParams>;
 
-export type SpaceRootStackParams = {
+export type SpaceStackParams = {
   Space: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
   CreateNewPostStackNavigator: undefined;
+  ViewPostStackNavigator: undefined;
   MomentsStackNavigator: undefined;
   SpaceInfoStackNavigator: undefined;
 };
@@ -32,7 +34,7 @@ type PostsTopTabNavigatorParams = {
   MapView: undefined;
 };
 
-const SpaceRootStack = createNativeStackNavigator<SpaceRootStackParams>();
+const SpaceStack = createNativeStackNavigator<SpaceStackParams>();
 const processingPostMessage = 'It takes couple seconds to finish processing.';
 const postSucceededMessage = 'Your post has been created successfully.';
 
@@ -65,16 +67,16 @@ export const SpaceStackNavigator: React.FC = (props) => {
   // reloadでpropsの影響でバグる。
 
   return (
-    <SpaceRootStack.Navigator
+    <SpaceStack.Navigator
       screenOptions={({ navigation }) => ({
         headerShown: false,
       })}
     >
-      <SpaceRootStack.Group>
-        <SpaceRootStack.Screen name='Space' component={Space} />
-      </SpaceRootStack.Group>
-      <SpaceRootStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
-        <SpaceRootStack.Screen
+      <SpaceStack.Group>
+        <SpaceStack.Screen name='Space' component={Space} />
+      </SpaceStack.Group>
+      <SpaceStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+        <SpaceStack.Screen
           name='CreateNewPostStackNavigator'
           component={CreateNewPostStackNavigator}
           options={({ navigation }) => ({
@@ -89,9 +91,24 @@ export const SpaceStackNavigator: React.FC = (props) => {
             },
           })}
         />
-      </SpaceRootStack.Group>
-      <SpaceRootStack.Group screenOptions={{ presentation: 'modal' }}>
-        <SpaceRootStack.Screen
+        <SpaceStack.Screen
+          name='ViewPostStackNavigator'
+          component={ViewPostStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: Colors.white,
+            },
+          })}
+        />
+      </SpaceStack.Group>
+      <SpaceStack.Group screenOptions={{ presentation: 'modal' }}>
+        <SpaceStack.Screen
           name='SpaceInfoStackNavigator'
           component={SpaceInfoStackNavigator}
           options={({ navigation }) => ({
@@ -106,8 +123,8 @@ export const SpaceStackNavigator: React.FC = (props) => {
             },
           })}
         />
-      </SpaceRootStack.Group>
+      </SpaceStack.Group>
       {/* viewPostsStackをここで持っておいた方がいいのかね。。 */}
-    </SpaceRootStack.Navigator>
+    </SpaceStack.Navigator>
   );
 };

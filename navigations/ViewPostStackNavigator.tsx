@@ -9,9 +9,11 @@ import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { ReportPost, ReportComment } from '../features';
+import { ViewGridPost } from '../features/ViewPost/pages';
 
 type ViewPostStackNavigatotParams = {
-  ViewPost: undefined;
+  ViewGridPost: undefined;
+  ViewRegionPost: undefined;
   CommentsPage: undefined;
   ReportPost: undefined;
   ReportComment: undefined;
@@ -28,7 +30,43 @@ export const ViewPostStackNavigator = () => {
     <ViewPostStack.Navigator>
       <ViewPostStack.Group>
         <ViewPostStack.Screen
-          name='ViewPost'
+          name='ViewGridPost'
+          component={ViewGridPost}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: '',
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerTransparent: true,
+            // headerTitle: () => (
+            //   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            //     <ExpoImage
+            //       style={{ width: 20, height: 20, marginRight: 10 }}
+            //       source={{ uri: currentTag.icon }}
+            //       contentFit='contain'
+            //       tintColor={currentTag.iconType === 'icon' ? currentTagObject.tag.color : null}
+            //     />
+            //     <Text style={{ color: 'white', fontSize: 20 }}>{currentTagObject.tag.name}</Text>
+            //   </View>
+            // ),
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+          })}
+        />
+        {/* view Region postっていうcomponentを作っておいて、そこでViewPostっていうreusable componentを消費する感じkなあ。
+        そのreusableにmapの方かgridのrecoilのpostを流す感じかな。おっけ。
+        */}
+        <ViewPostStack.Screen
+          name='ViewRegionPost'
           component={ViewPost}
           options={({ navigation }) => ({
             headerShown: true,

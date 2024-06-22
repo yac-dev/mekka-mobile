@@ -42,10 +42,7 @@ const tabs: TabType[] = [
 export const Posts: React.FC<IPosts> = ({ space, tag }) => {
   const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
   const pagerViewRef = useRef<PagerView>(null);
-  const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
-  ]);
+
   const { appState } = useContext(GlobalContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 

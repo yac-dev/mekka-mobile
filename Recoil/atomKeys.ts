@@ -5,4 +5,6 @@ export const atomKeys = {
   screenLoaded: 'screenLoaded',
   postsByTagIdAndRegion: 'postsByTagIdAndRegion',
   currentRegion: 'currentRegion',
+  currentPostIndex: 'currentPostIndex',
+  currentRegionPostIndex: 'currentRegionPostIndex',
 };
