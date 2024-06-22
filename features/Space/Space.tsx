@@ -76,7 +76,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
 
   const onCreatePostPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    // spaceRootStackNavigation.navigate('CreateNewPostStackNavigator');
+    spaceStackNavigation.navigate('CreateNewPostStackNavigator');
   };
 
   const renderTab = ({ item }) => {
@@ -133,7 +133,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
         initialRouteName={`Posts_${currentTag._id}`}
         screenOptions={({ route }) => ({
           lazy: true,
-          swipeEnabled: false,
+          swipeEnabled: true,
           animationEnabled: false,
         })}
       >

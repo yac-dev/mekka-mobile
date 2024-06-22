@@ -1,4 +1,5 @@
-import { CommentType, UserType, PostType, MapRegionType } from '../types';
+import { FormDataType } from '../features/CreateNewPost/contexts';
+import { CommentType, UserType, PostType, MapRegionType, ReactionType, TagType, IconType } from '../types';
 
 export type UpdateSpaceCheckedInDateInputType = {
   spaceId: string;
@@ -47,4 +48,36 @@ export type GetPostsByTagIdAndRegionInput = {
 
 export type GetPostsByTagIdAndRegionOutput = {
   posts: PostType[];
+};
+
+export type CreatePostInputType = FormDataType & {
+  userId: string;
+  spaceId: string;
+  reactions: ReactionType[];
+  disappearAfter: string;
+};
+
+export type CreatePostOutputType = {
+  post: PostType;
+  addedTags: string[]; // tagの_idが複数返ってくる。
+  createdTags?: TagType[];
+};
+
+export type CreateMomentInputType = FormDataType & {
+  userId: string;
+  spaceId: string;
+  reactions: ReactionType[];
+  disappearAfter: string;
+};
+
+export type CreateMomentOutputType = {
+  post: PostType;
+};
+
+export type GetTagIconsInputType = {
+  name: string;
+};
+
+export type GetTagIconsOutputType = {
+  icon: IconType;
 };

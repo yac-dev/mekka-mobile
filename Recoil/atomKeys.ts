@@ -7,4 +7,5 @@ export const atomKeys = {
   currentRegion: 'currentRegion',
   currentPostIndex: 'currentPostIndex',
   currentRegionPostIndex: 'currentRegionPostIndex',
+  createPost: 'createPost',
 };
