@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Linking, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Linking, ScrollView, Alert, Share } from 'react-native';
 import { AuthContext } from '../../../providers';
 import { MySpacesContext } from '../../../providers';
 import { SpaceUpdatesContext } from '../../../providers';
@@ -109,6 +109,15 @@ export const Home = () => {
       return `${hours} h ${remainingMinutes} m`;
     }
   }
+
+  const handleInvite = async () => {
+    Share.share({
+      title: 'Share Mekka',
+      message: `Access here to download Mekka: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
+        currentSpace.secretKey
+      }`,
+    });
+  };
 
   if (!mySpaces?.length) {
     return (
@@ -477,7 +486,7 @@ export const Home = () => {
                 {currentSpace.name}
               </Text>
               <AppButton.Icon
-                onButtonPress={() => console.log('move to Log page')}
+                onButtonPress={() => handleInvite()}
                 customStyle={{
                   width: 26,
                   height: 26,
@@ -610,7 +619,10 @@ export const Home = () => {
           </View>
           <View style={{ width: '90%', backgroundColor: 'rgb(80,80,80)', height: 0.3, alignSelf: 'center' }}></View>
           <ScrollView>
-            <View style={{ flexDirection: 'column', paddingVertical: 5 }}>
+            <View style={{ paddingLeft: 15, paddingTop: 10 }}>
+              <Text style={{ color: 'rgb(150,150,150)' }}>Features</Text>
+            </View>
+            <View style={{ flexDirection: 'column', paddingVertical: 10 }}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 style={{
@@ -643,7 +655,7 @@ export const Home = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}
-                onPress={() => {}}
+                onPress={() => onRollsPress()}
               >
                 <ExpoImage
                   style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
