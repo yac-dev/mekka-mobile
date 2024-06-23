@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { PostType, TagType } from '../../../types';
+import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { TagScreenContext } from '../providers';
@@ -12,40 +12,41 @@ import { useRecoilValue } from 'recoil';
 import { useGetPostsByTagId } from '../hooks';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { tagScreenOpenedAtomFamily } from '../atoms';
+import { createPostResultAtomFamily } from '../../../api/atoms';
 
 type IGridView = {
+  space: SpaceType;
   tag: TagType;
 };
 
 // tagごとにpostsのcomponentを表示するわけだが、、、
 
-export const GridView: React.FC<IGridView> = ({ tag }) => {
-  // const navigation = useNavigation<TagScreenStackNavigatorProps>();
+export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
-  const { requestGetPostsByTagId } = useGetPostsByTagId(tag._id);
-
+  const { requestGetPostsByTagId, addCreatedPost } = useGetPostsByTagId(tag._id);
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
-
-  // const renderLoader = () => {
-  //   if (getPostsApiResult.status === 'paging') {
-  //     return (
-  //       <View style={{ paddingTop: 30, alignItems: 'center' }}>
-  //         <ActivityIndicator />
-  //       </View>
-  //     );
-  //   }
-  // };
+  const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
+  const createPostResult = useRecoilValue(createPostResultAtomFamily(space._id));
 
   useEffect(() => {
-    if (getPostsByTagIdResult.status !== 'success') {
+    if (!tagScreenOpened) {
       requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
     }
-  }, []);
+    if (tagScreenOpened) {
+      console.log('already opend this tag screen');
+      // NOTE: refreshを実装する。
+    }
+  }, [tagScreenOpened]);
 
-  // tagごとにあるpostsをarrayに対して、選択したindexから見ていくっていうことだわな。
+  useEffect(() => {
+    if (createPostResult.status === 'success' && tagScreenOpened && createPostResult.data.addedTags.includes(tag._id)) {
+      addCreatedPost(createPostResult.data.post);
+    }
+  }, [createPostResult, tagScreenOpened]);
+
+  // NOTE: 多分、indexではなくpostでいんじゃないかなー。view post側でpostの_idでloopすればいいだけだから。。。ただ、postの数が多い場合はllopが面倒くさいか。
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    // setCurrentPost(post);
-    // onCurrentPostIndexChange(index);
     spaceNavigation.navigate({
       name: 'ViewPostStackNavigator',
       params: { screen: 'ViewGridPost', params: { tag, currentPostIndex: index } },
@@ -56,8 +57,6 @@ export const GridView: React.FC<IGridView> = ({ tag }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
-  // シンプルにcurrent tagでのpostをrecoilのstateで見る、そして、indexもrecoilのatom familyで見ればいいかな。。。多分。
-  // これ配列なのかよ。。。そういうdata構造かよ。。。どうしよう。。。
   if (getPostsByTagIdResult.status === 'loading') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>

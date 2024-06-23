@@ -1,17 +1,20 @@
 import { useState } from 'react';
-import { ApiResult } from '../../types';
+import { ApiResult, SpaceType } from '../../types';
 import { CreatePostInputType, CreatePostOutputType } from '../../api/types';
 import { createPost } from '../../api/post';
+import { useRecoilState } from 'recoil';
+import { createPostResultAtomFamily } from '../../features/Space/atoms/CreatePostResultAtomFamily';
 
-export const useCreatePost = () => {
-  const [apiResult, setApiResult] = useState<ApiResult<CreatePostOutputType>>({
-    status: 'idle',
-    data: void 0,
-  });
+type IUseCreatePost = {
+  space: SpaceType;
+};
+
+export const useCreatePostResult = ({ space }: IUseCreatePost) => {
+  const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
 
   const requestApi = async (input: CreatePostInputType) => {
     try {
-      setApiResult((previous) => {
+      setCreatePostResult((previous) => {
         return {
           ...previous,
           status: 'loading',
@@ -20,7 +23,7 @@ export const useCreatePost = () => {
       });
 
       const response = await createPost(input);
-      setApiResult((previous) => {
+      setCreatePostResult((previous) => {
         return {
           ...previous,
           status: 'success',
@@ -28,7 +31,7 @@ export const useCreatePost = () => {
         };
       });
     } catch (error) {
-      setApiResult((previous) => {
+      setCreatePostResult((previous) => {
         return {
           ...previous,
           status: 'error',
@@ -40,7 +43,6 @@ export const useCreatePost = () => {
   };
 
   return {
-    apiResult,
     requestApi,
   };
 };

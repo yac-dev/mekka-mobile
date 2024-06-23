@@ -78,6 +78,7 @@ export const SpaceStackNavigator: React.FC = (props) => {
     }
   }, [createPostResult]);
   // reloadでpropsの影響でバグる。
+  // ここはあくまで、spaceのtagを増やしているだけね。
 
   return (
     <SpaceStack.Navigator

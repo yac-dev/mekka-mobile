@@ -72,7 +72,6 @@ export const useGetPostsByTagId = (tagId: string) => {
     setGetPostsByTagIdResult((previous) => {
       const previousPosts = [createdPost, ...(previous.data?.posts || [])];
       // このunshiftとか、push methodって、最終的なarrayのlengthを返す仕様らしい。。。
-
       return {
         ...previous,
         status: 'success',

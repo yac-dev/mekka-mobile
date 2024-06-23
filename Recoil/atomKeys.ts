@@ -8,4 +8,5 @@ export const atomKeys = {
   currentPostIndex: 'currentPostIndex',
   currentRegionPostIndex: 'currentRegionPostIndex',
   createPost: 'createPost',
+  tagScreenOpened: 'tagScreenOpened',
 };

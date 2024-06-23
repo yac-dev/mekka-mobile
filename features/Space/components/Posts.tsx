@@ -10,8 +10,10 @@ import { GridView, RegionView } from '.';
 import { MapPosts } from './MapPosts';
 import { SpaceType, TagType } from '../../../types';
 import { viewPostsTypeAtomFamily } from '../atoms';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import PagerView from 'react-native-pager-view';
+import { tagScreenOpenedAtomFamily } from '../atoms';
+
 // postsに関してはそこまでnestするとも思えないからまあいいかな。。
 // tagはrouteでもらってくる想定。
 const PostsTab = createMaterialTopTabNavigator();
@@ -41,6 +43,8 @@ const tabs: TabType[] = [
 // 結局、apiの結果をcacheしたいから、やっぱ、recoil必要だね。
 export const Posts: React.FC<IPosts> = ({ space, tag }) => {
   const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
+  const [tagScreenOpened, setTagScreenOpened] = useRecoilState(tagScreenOpenedAtomFamily(tag._id));
+
   const pagerViewRef = useRef<PagerView>(null);
 
   const { appState } = useContext(GlobalContext);
@@ -111,15 +115,32 @@ export const Posts: React.FC<IPosts> = ({ space, tag }) => {
     pagerViewRef.current?.setPage(viewPostsType === 'grid' ? 0 : 1);
   }, [viewPostsType]);
 
+  // tagのscreenを開いたらそのtagが開かれたっていうことをboolで管理する。
+  useEffect(() => {
+    setTagScreenOpened(true);
+  }, []);
+
+  //  一応ここでscreen loadedをするとするか。
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View
+      style={styles.container}
+
+      // onLayout={() =>
+      //   setLoadedScreenTable((previous) => {
+      //     return {
+      //       ...previous,
+      //       [tag._id]: true,
+      //     };
+      //   })
+      // }
+    >
       <PagerView
         style={styles.pagerView}
         initialPage={viewPostsType === 'grid' ? 0 : 1}
         scrollEnabled={false}
         ref={pagerViewRef}
       >
-        <GridView tag={tag} />
+        <GridView space={space} tag={tag} />
         <RegionView tag={tag} />
       </PagerView>
     </View>
@@ -127,6 +148,10 @@ export const Posts: React.FC<IPosts> = ({ space, tag }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
   pagerView: {
     flex: 1,
     width: '100%',
