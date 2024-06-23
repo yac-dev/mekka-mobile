@@ -608,59 +608,58 @@ export const Home = () => {
               </View>
             </ScrollView>
           </View>
-          <View style={{ width: '90%', backgroundColor: 'rgb(150,150,150)', height: 0.3, alignSelf: 'center' }}></View>
-          <View style={{ flexDirection: 'column', paddingTop: 10 }}>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={{
-                paddingVertical: 10,
-                paddingLeft: 15,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-              onPress={() => {}}
-            >
-              <ExpoImage
-                style={{
-                  width: 20,
-                  aspectRatio: 1,
-                  marginRight: 10,
-                }}
-                source={require('../../../assets/forApp/ghost.png')}
-                contentFit='cover'
-                tintColor={'white'}
-              />
-              <View>
-                <Text style={{ color: 'white', fontSize: 15 }}>Moments</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={{
-                paddingVertical: 10,
-                paddingLeft: 15,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-              onPress={() => {}}
-            >
-              <ExpoImage
-                style={{
-                  width: 20,
-                  aspectRatio: 1,
-                  marginRight: 10,
-                }}
-                source={require('../../../assets/forApp/ghost.png')}
-                contentFit='cover'
-                tintColor={'white'}
-              />
-              <View>
-                <Text style={{ color: 'white', fontSize: 15 }}>Rolls</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-
+          <View style={{ width: '90%', backgroundColor: 'rgb(80,80,80)', height: 0.3, alignSelf: 'center' }}></View>
           <ScrollView>
+            <View style={{ flexDirection: 'column', paddingVertical: 5 }}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{
+                  paddingVertical: 8,
+                  paddingLeft: 15,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                onPress={() => {}}
+              >
+                <ExpoImage
+                  style={{
+                    width: 20,
+                    aspectRatio: 1,
+                    marginRight: 10,
+                  }}
+                  source={require('../../../assets/forApp/ghost.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 15 }}>Moments</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{
+                  paddingVertical: 10,
+                  paddingLeft: 15,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                onPress={() => {}}
+              >
+                <ExpoImage
+                  style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
+                  source={require('../../../assets/forApp/film-roll.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
+                <View>
+                  <Text style={{ color: 'white', fontSize: 15 }}>Rolls</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={{ width: '90%', backgroundColor: 'rgb(80,80,80)', height: 0.5, alignSelf: 'center' }}></View>
+            </View>
+            <View style={{ paddingLeft: 15, paddingTop: 10 }}>
+              <Text style={{ color: 'rgb(150,150,150)', marginBottom: 5 }}>Channels</Text>
+            </View>
             {currentSpace.tags.map((tag, index) => {
               const isFocused = currentTag?._id === tag._id;
               const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][tag._id];
@@ -669,7 +668,7 @@ export const Home = () => {
                   key={index}
                   activeOpacity={0.5}
                   style={{
-                    paddingVertical: 5,
+                    paddingVertical: 8,
                     paddingLeft: 10,
                     paddingRight: 5,
                     // backgroundColor: isFocused ? 'rgb(60,60,60)' : 'transparent',
@@ -687,33 +686,10 @@ export const Home = () => {
                         },
                       };
                     });
-                    // drawer側のnavigationをしたい場合には、↓を動かしたいんだよね。。。これでも一応動いてはいるがバグの温床になりそう。。。
-                    // あれか。。。currentSpaceの方はただtoggleをすればいいだけかな。。。
-                    // homeStackNavigation.navigate('SpaceRootStackNavigator', {
-                    //   screen: 'TagsTopTabNavigator',
-                    //   params: {
-                    //     screen: `Tag_${tag._id}`,
-                    //   },
-                    // });
-                    // ここnestedにspaceに行くようにすればいいか。そのspaceにidを渡せばいいだけだわ。
                     homeStackNavigation.navigate('SpaceStackNavigator', {
                       screen: 'Space',
                       params: { space: currentSpace },
                     });
-
-                    // if (currentSpace._id !== tag._id) {
-                    //   homeStackNavigation.navigate('SpaceRootStackNavigator', {
-                    //     screen: 'TagsTopTabNavigator',
-                    //     params: {
-                    //       screen: `Tag_${currentTag._id}`,
-                    //     },
-                    //   });
-                    // } else {
-                    //   // navigation.toggleDrawer();
-                    // }
-
-                    // console.log('current space', currentSpace._id);
-                    // navigation.navigate(`Space_${currentSpace._id}`);
                   }}
                   onLongPress={() => console.log('tag long pressed')}
                 >
@@ -721,10 +697,9 @@ export const Home = () => {
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
-                      paddingVertical: 8,
+                      // paddingVertical: 8,
                       paddingLeft: 5,
                       paddingRight: 10,
-                      // backgroundColor: isFocused ? 'rgb(40,40,40)' : 'transparent',
                       borderRadius: 8,
                       justifyContent: 'space-between',
                     }}
