@@ -28,20 +28,6 @@ export const Moments = () => {
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   useEffect(() => {
-    momentsStackNavigation.setOptions({
-      headerRight: () => (
-        <AppButton.Icon
-          onButtonPress={() => setModalVisible(true)}
-          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.AD name='question' size={18} color={Colors.white} />
-        </AppButton.Icon>
-      ),
-    });
-  }, []);
-
-  useEffect(() => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
@@ -141,61 +127,6 @@ export const Moments = () => {
           </Text>
         </View>
       )}
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <View
-            style={{
-              width: 300,
-              height: 300,
-              backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 10,
-              padding: 10,
-            }}
-          >
-            <AppButton.Icon
-              customStyle={{
-                width: 28,
-                height: 28,
-                backgroundColor: 'rgb(50,50,50)',
-                alignSelf: 'flex-end',
-                marginBottom: 10,
-              }}
-              onButtonPress={() => setModalVisible(!modalVisible)}
-              hasShadow
-            >
-              <VectorIcon.II name='close' size={20} color={'white'} />
-            </AppButton.Icon>
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: 18,
-                textAlign: 'center',
-                marginBottom: 30,
-              }}
-            >
-              What is Moments by the way?
-            </Text>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={styles.modalText}>
-                You can think of Moments as IG's Stories.{'\n'}By using Moments post, your photos/videos will disappear
-                after a certain time after posting. Instead of 24 hours, the disappearing time depends on Space setting.
-                {'\n'}In {currentSpace.name}, it is set to{'\n'}
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}.
-                </Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-      </Modal>
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => onCreateMomentPress()}

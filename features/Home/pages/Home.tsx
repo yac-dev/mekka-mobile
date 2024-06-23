@@ -631,7 +631,7 @@ export const Home = () => {
                   flexDirection: 'row',
                   alignItems: 'center',
                 }}
-                onPress={() => {}}
+                onPress={() => homeStackNavigation.navigate('MomentsStackNavigator')}
               >
                 <ExpoImage
                   style={{

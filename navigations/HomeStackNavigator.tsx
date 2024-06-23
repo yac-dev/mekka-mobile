@@ -105,7 +105,6 @@ export const HomeStackNavigator: React.FC = (props) => {
         />
         {/* ここに、spaceRootStackを入れる感じか。home component内で、SpaceRootStackへnavigationするようにしたいよね。そういう流れだ。 */}
 
-        {/* MomensStackもここに入れる感じかな多分。 */}
         <HomeStack.Screen
           name='ViewPost'
           component={ViewPost}
@@ -154,7 +153,7 @@ export const HomeStackNavigator: React.FC = (props) => {
           name='MomentsStackNavigator'
           component={MomentsStackNavigator}
           options={({ navigation }) => ({
-            headerShown: true,
+            headerShown: false,
             headerLeft: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
