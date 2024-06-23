@@ -9,12 +9,9 @@ import { LoadMeOutputType } from '../features/App/types';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
-// NOTE: こっちのParams使ってない。消そう。
 export type RootStackParams = {
   HomeStackNavigator: undefined;
   NonAuthNavigator: undefined;
-  // Signup: undefined;
-  // ForgotPasswordStackNavigator: undefined;
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;

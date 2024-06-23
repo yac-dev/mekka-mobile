@@ -100,7 +100,7 @@ export const SpaceTopTabNavigator = () => {
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 20 }}>
       <View style={{ paddingTop: 30, flexDirection: 'row' }}>
         <AppButton.Icon
-          onButtonPress={() => drawerNavigation.toggleDrawer()}
+          onButtonPress={() => spaceRootStackNavigation.goBack()}
           customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
           hasShadow={false}
         >
@@ -125,6 +125,8 @@ export const SpaceTopTabNavigator = () => {
           animationEnabled: false,
         })}
       >
+        {/* シンプルにさ、このtagだけ使って実現できるはずよ。。。 */}
+        {/* こうやってcontextがnestingするとめちゃくちゃ煩雑になる。っていうこともわかるね。シンプルにpostsっていうcomponentで解決できるはずなのよね。。。 */}
         {space?.tags.map((tag: TagType, index: number) => (
           <Tab.Screen key={index} name={`Tag_${tag._id}`} options={{ title: tag.name }}>
             {({ navigation }) => (

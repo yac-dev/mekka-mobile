@@ -6,14 +6,16 @@ import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
+import { useGetMembersBySpaceId } from '../hooks/useGetMembersBySpaceId';
 
 type MembersProps = {
   spaceId: string;
 };
 
 export const Members: React.FC<MembersProps> = () => {
-  const { apiResult, requestApi } = useGetMembersBySpaceIdState();
   const { currentSpace } = useContext(CurrentSpaceContext);
+  const { data, isLoading } = useGetMembersBySpaceId({ spaceId: currentSpace._id });
+  const { apiResult, requestApi } = useGetMembersBySpaceIdState();
 
   useEffect(() => {
     requestApi({ spaceId: currentSpace._id });
@@ -52,7 +54,7 @@ export const Members: React.FC<MembersProps> = () => {
     );
   }, []);
 
-  if (apiResult.status === 'loading') {
+  if (isLoading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator />
@@ -63,7 +65,7 @@ export const Members: React.FC<MembersProps> = () => {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.black, padding: 10 }}>
       <FlatList
-        data={apiResult.data?.users}
+        data={data.users}
         renderItem={renderUser}
         keyExtractor={(item, index) => `${index}`}
         ListHeaderComponent={

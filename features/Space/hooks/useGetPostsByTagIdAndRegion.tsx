@@ -2,25 +2,26 @@ import { useState } from 'react';
 import { ApiResultType } from '../../../types';
 import { getPostsByTagIdAndRegion } from '../apis';
 import { GetPostsByTagIdAndRegionInput, GetPostsByTagIdAndRegionOutput } from '../types';
+import { getPostsByTagIdAndRegionResultAtomFamily } from '../atoms';
+import { useRecoilState } from 'recoil';
 
-export const useGetPostsByTagIdAndRegion = () => {
-  const [apiResult, setApiResult] = useState<ApiResultType<GetPostsByTagIdAndRegionOutput>>({
-    status: 'idling',
-    data: void 0,
-    message: '',
-  });
+export const useGetPostsByTagIdAndRegion = (tagId: string) => {
+  const [getPostsByTagIdAndRegionResult, setGetPostsByTagIdAndRegionResult] = useRecoilState(
+    getPostsByTagIdAndRegionResultAtomFamily(tagId)
+  );
 
-  const requestApi = async (input: GetPostsByTagIdAndRegionInput) => {
+  const requestGetPostsByTagIdAndRegion = async (input: GetPostsByTagIdAndRegionInput) => {
     try {
-      setApiResult((previous) => {
+      setGetPostsByTagIdAndRegionResult((previous) => {
         return {
           ...previous,
           status: 'loading',
+          data: undefined,
         };
       });
 
       const response = await getPostsByTagIdAndRegion(input);
-      setApiResult((previous) => {
+      setGetPostsByTagIdAndRegionResult((previous) => {
         return {
           ...previous,
           status: 'success',
@@ -28,18 +29,18 @@ export const useGetPostsByTagIdAndRegion = () => {
         };
       });
     } catch (error) {
-      setApiResult((previous) => {
+      setGetPostsByTagIdAndRegionResult((previous) => {
         return {
           ...previous,
-          status: 'fail',
-          data: void 0,
+          status: 'error',
+          data: undefined,
+          message: 'OOPS. Something went wrong...',
         };
       });
     }
   };
 
   return {
-    apiResult,
-    requestApi,
+    requestGetPostsByTagIdAndRegion,
   };
 };

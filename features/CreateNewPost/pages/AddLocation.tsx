@@ -10,18 +10,22 @@ import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStack
 import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { CreatePostInputType } from '../types';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
+import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { useCreatePostResult } from '../../../api';
+import { HomeStackNavigatorProps } from '../../../navigations';
 
 const AddLocation = () => {
   const { formData, addLocation, removeLocation } = useContext(CreateNewPostContext);
-  const { requestCreatePost } = useContext(SpaceRootContext);
+  // const { requestCreatePost } = useContext(SpaceRootContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { auth } = useContext(AuthContext);
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
-  const spaceRootStackNavigation = useNavigation<SpaceRootStackNavigatorProp>();
-  const mapRef = useRef(null);
+  const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const { requestCreatePost } = useCreatePostResult(currentSpace);
 
   const onPostPress = () => {
-    spaceRootStackNavigation.navigate('TagsTopTabNavigator');
+    spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
     const input: CreatePostInputType = {
       ...formData,
       userId: auth._id,
@@ -30,6 +34,7 @@ const AddLocation = () => {
       disappearAfter: currentSpace.disappearAfter.toString(),
     };
     requestCreatePost(input);
+    // ここでrequestPostの実行を始めて、かつstatusをloadingにすると。
   };
 
   useEffect(() => {

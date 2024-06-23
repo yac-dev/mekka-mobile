@@ -52,6 +52,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
 
   return (
     <TouchableOpacity
+      activeOpacity={0.5}
       style={{ width: sideLength, height: sideLength, padding: 1 }}
       onPress={() => onPressPostThumbnail(post, index)}
     >

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SpaceRootContext } from '../providers/SpaceRootProvider';
 import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
@@ -8,23 +8,31 @@ import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { Colors } from '../../../themes/colors';
+import { SpaceType } from '../../../types';
+import { viewPostsTypeAtomFamily } from '../atoms';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 type ViewPostsTypeToggleButtonProps = {
-  onGridViewPress: () => void;
-  onMapViewPress: () => void;
+  space: SpaceType;
 };
 
-export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({
-  onGridViewPress,
-  onMapViewPress,
-}) => {
+export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({ space }) => {
   const navigation = useNavigation<SpaceRootStackNavigatorProp>();
-  const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
+  // const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
+  const [viewPostsType, setViewPostsType] = useRecoilState(viewPostsTypeAtomFamily(space._id));
   const { currentTag } = useContext(CurrentTagContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
+  const onGridViewPress = () => {
+    setViewPostsType('grid');
+  };
+
+  const onRegionViewPress = () => {
+    setViewPostsType('region');
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.shadow]}>
       <TouchableOpacity
         style={{
           marginRight: 15,
@@ -39,10 +47,10 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
       <TouchableOpacity
         style={{
           padding: 7,
-          backgroundColor: viewPostsType === 'map' ? 'rgb(80,80,80)' : null,
-          borderRadius: viewPostsType === 'map' ? 12 : 0,
+          backgroundColor: viewPostsType === 'region' ? 'rgb(80,80,80)' : null,
+          borderRadius: viewPostsType === 'region' ? 12 : 0,
         }}
-        onPress={() => onMapViewPress()}
+        onPress={() => onRegionViewPress()}
       >
         <ExpoImage
           style={{ width: 25, height: 25 }}
@@ -66,5 +74,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 15,
     paddingVertical: 10,
+  },
+  shadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 0.5,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
 });
