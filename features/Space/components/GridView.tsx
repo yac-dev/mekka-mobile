@@ -14,6 +14,7 @@ import { HomeStackNavigatorProps } from '../../../navigations';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 import { tagScreenOpenedAtomFamily } from '../atoms';
 import { createPostResultAtomFamily } from '../../../api/atoms';
+import { useRecoilState } from 'recoil';
 
 type IGridView = {
   space: SpaceType;
@@ -27,7 +28,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const { requestGetPostsByTagId, addCreatedPost } = useGetPostsByTagId(tag._id);
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
-  const createPostResult = useRecoilValue(createPostResultAtomFamily(space._id));
+  const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
 
   useEffect(() => {
     if (!tagScreenOpened) {
@@ -39,9 +40,12 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     }
   }, [tagScreenOpened]);
 
+  // そっか、毎回ここで足しちゃっているよね。。。これが問題になっている。
   useEffect(() => {
     if (createPostResult.status === 'success' && tagScreenOpened && createPostResult.data.addedTags.includes(tag._id)) {
       addCreatedPost(createPostResult.data.post);
+      setCreatePostResult({ status: 'idle', data: undefined });
+      // 終わった後に初期に戻すくらいかな。。。
     }
   }, [createPostResult, tagScreenOpened]);
 
@@ -86,7 +90,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
         // onEndReached={loadMoreItem}
         // ListFooterComponent={renderLoader}
         onEndReachedThreshold={0}
-        contentContainerStyle={{ paddingBottom: 30 }}
+        contentContainerStyle={{ paddingBottom: 70 }}
       />
       {/* {getPostsApiResult.status === 'refreshing' ? (
         <ActivityIndicator

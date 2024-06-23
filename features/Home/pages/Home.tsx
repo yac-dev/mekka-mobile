@@ -277,7 +277,7 @@ export const Home = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 30 }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ flexDirection: 'row', height: '100%' }}>
         <View
           style={{
@@ -456,21 +456,28 @@ export const Home = () => {
             onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
           >
             <ExpoImage
-              style={{ width: 80, height: 80, borderRadius: 40, marginRight: 20 }}
+              style={{ width: 55, height: 55, borderRadius: 40, marginRight: 20 }}
               source={{ uri: currentSpace.icon }}
               contentFit='cover'
             />
-            <View style={{}}>
-              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginRight: 20 }}>
                 {currentSpace.name}
               </Text>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginBottom: 3 }}>
-                {currentSpace.isPublic ? 'Public' : 'Private'}
-              </Text>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Ads free</Text>
+              <AppButton.Icon
+                onButtonPress={() => console.log('move to Log page')}
+                customStyle={{
+                  width: 26,
+                  height: 26,
+                  backgroundColor: 'rgb(50,50,50)',
+                }}
+                hasShadow={false}
+              >
+                <VectorIcon.MCI name='human-greeting-variant' size={15} color={'white'} />
+              </AppButton.Icon>
             </View>
           </TouchableOpacity>
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -481,38 +488,7 @@ export const Home = () => {
           >
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
               <AppButton.Icon
-                onButtonPress={() => console.log('move to Log page')}
-                customStyle={{
-                  width: 42,
-                  height: 42,
-                  backgroundColor: 'rgb(50,50,50)',
-                  marginBottom: 3,
-                }}
-                hasShadow={false}
-              >
-                <VectorIcon.FT name='activity' size={20} color={'white'} />
-              </AppButton.Icon>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Log</Text>
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
-              <AppButton.Icon
-                onButtonPress={() =>
-                  // homeStackNavigation.navigate('SpacesDrawerNavigator', {
-                  //   screen: `Moments_${currentSpace._id}`,
-                  //   // ここに変化がない限り、toggleしない。実際、確かにここより下はdrawerのnavigatorに登録しているわけではないからね。。。ここをどう克服するか。というか、仕組みが少しわかってきた。
-                  //   // 逆にでは、そうなら
-                  //   // params: {
-                  //   //   screen: 'TagsTopTabNavigator',
-                  //   //   params: {
-                  //   //     screen: `Tag_${tag._id}`,
-                  //   //     params: {
-                  //   //       screen: 'GridView',
-                  //   //     },
-                  //   //   },
-                  //   // },
-                  // })
-                  console.log('heloo')
-                }
+                onButtonPress={() => console.log('heloo')}
                 customStyle={{
                   width: 42,
                   height: 42,
@@ -550,7 +526,9 @@ export const Home = () => {
               </AppButton.Icon>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Rolls</Text>
             </View>
-          </View>
+          </View> */}
+
+          {/* <ScrollView horizontal></ScrollView> */}
           <ScrollView>
             {currentSpace.tags.map((tag, index) => {
               const isFocused = currentTag?._id === tag._id;
@@ -704,3 +682,27 @@ export const Home = () => {
 //             onDeleteMyAccountPress={onDeleteMyAccountPress}
 //           />
 //         </AppBottomSheet.Gorhom>
+{
+  /* <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginBottom: 3 }}>
+                {currentSpace.isPublic ? 'Public' : 'Private'}
+              </Text>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Ads free</Text> */
+}
+
+{
+  /* <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
+<AppButton.Icon
+  onButtonPress={() => console.log('move to Log page')}
+  customStyle={{
+    width: 42,
+    height: 42,
+    backgroundColor: 'rgb(50,50,50)',
+    marginBottom: 3,
+  }}
+  hasShadow={false}
+>
+  <VectorIcon.FT name='activity' size={20} color={'white'} />
+</AppButton.Icon>
+<Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Log</Text>
+</View> */
+}

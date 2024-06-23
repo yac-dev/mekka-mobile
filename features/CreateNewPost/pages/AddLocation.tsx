@@ -12,6 +12,7 @@ import { CreatePostInputType } from '../types';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 import { useCreatePostResult } from '../../../api';
+import { HomeStackNavigatorProps } from '../../../navigations';
 
 const AddLocation = () => {
   const { formData, addLocation, removeLocation } = useContext(CreateNewPostContext);
@@ -20,10 +21,11 @@ const AddLocation = () => {
   const { auth } = useContext(AuthContext);
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { requestCreatePost } = useCreatePostResult(currentSpace);
 
   const onPostPress = () => {
-    spaceStackNavigation.navigate('Space');
+    spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
     const input: CreatePostInputType = {
       ...formData,
       userId: auth._id,

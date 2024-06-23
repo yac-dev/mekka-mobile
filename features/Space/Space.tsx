@@ -25,6 +25,7 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import { useRecoilValue } from 'recoil';
 import { viewPostsTypeAtomFamily } from './atoms';
 import { useRecoilState } from 'recoil';
+import { createPostResultAtomFamily } from '../../api/atoms';
 // pagerviewはlazy loadingをサポートしていないという。。。
 // 使い方はtab viewの方が面倒臭いがlazy loadingサポートはいいね。
 
@@ -38,9 +39,9 @@ type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
 export const Space: React.FC<ISpace> = ({ route }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
+  const createPostResult = useRecoilValue(createPostResultAtomFamily(route.params.space._id));
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
-  const { createPostResult } = useContext(SpaceRootContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const scrollViewRef = useRef(null);
   // NOTE: これ、tagを作った後も動的に変わるようになるな。。。めんどいな。。。一回ここやめようか。。。キリがない。。。
@@ -106,7 +107,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 20 }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
       <View style={{ paddingTop: 30, flexDirection: 'row' }}>
         <AppButton.Icon

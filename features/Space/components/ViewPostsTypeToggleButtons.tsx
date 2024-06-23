@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SpaceRootContext } from '../providers/SpaceRootProvider';
 import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
@@ -32,7 +32,7 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.shadow]}>
       <TouchableOpacity
         style={{
           marginRight: 15,
@@ -74,5 +74,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 15,
     paddingVertical: 10,
+  },
+  shadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 0.5,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
 });
