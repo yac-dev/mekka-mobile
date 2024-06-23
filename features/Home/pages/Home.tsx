@@ -97,6 +97,19 @@ export const Home = () => {
     ]);
   };
 
+  function convertMinutesToHoursAndMinutes(minutes: number) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+      return `${minutes} m`;
+    } else if (remainingMinutes === 0) {
+      return `${hours} h`;
+    } else {
+      return `${hours} h ${remainingMinutes} m`;
+    }
+  }
+
   if (!mySpaces?.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100, paddingHorizontal: 20 }}>
@@ -451,7 +464,6 @@ export const Home = () => {
               paddingHorizontal: 20,
               paddingVertical: 10,
               alignItems: 'center',
-              marginBottom: 10,
             }}
             onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
           >
@@ -527,8 +539,127 @@ export const Home = () => {
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Rolls</Text>
             </View>
           </View> */}
+          <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
+            <ScrollView horizontal contentContainerStyle={{ paddingRight: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <StatBox
+                  title='Status'
+                  icon={<VectorIcon.MI name='public' color={'rgb(150,150,150)'} size={15} style={{ marginRight: 5 }} />}
+                  value={currentSpace.isPublic ? 'Public' : 'Private'}
+                  hasNext
+                />
+                <StatBox
+                  title='Content'
+                  icon={<VectorIcon.II name='camera' color={'rgb(150,150,150)'} size={15} style={{ marginRight: 5 }} />}
+                  value={
+                    currentSpace.contentType === 'photo'
+                      ? 'Photos'
+                      : currentSpace.contentType === 'video'
+                      ? 'Videos'
+                      : `Photos/Videos`
+                  }
+                  hasNext
+                />
+                {currentSpace.videoLength && (
+                  <StatBox
+                    title='Video length'
+                    icon={
+                      <VectorIcon.II
+                        name='play-circle'
+                        color={'rgb(150,150,150)'}
+                        size={15}
+                        style={{ marginRight: 5 }}
+                      />
+                    }
+                    value={`${currentSpace.videoLength}s`}
+                    hasNext
+                  />
+                )}
 
-          {/* <ScrollView horizontal></ScrollView> */}
+                <StatBox
+                  title='Moments'
+                  icon={
+                    <ExpoImage
+                      style={{ width: 15, height: 15, marginRight: 5 }}
+                      source={require('../../../assets/forApp/ghost.png')}
+                      contentFit='contain'
+                      tintColor={'rgb(150,150,150)'}
+                    />
+                  }
+                  value={convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
+                  hasNext
+                />
+                <StatBox
+                  title='Reactions'
+                  icon={
+                    <VectorIcon.MCI name='thumb-up' color={'rgb(150,150,150)'} size={15} style={{ marginRight: 5 }} />
+                  }
+                  value={String(currentSpace.reactions.length)}
+                  hasNext
+                />
+                <StatBox
+                  title='Ads'
+                  icon={
+                    <VectorIcon.FD name='megaphone' color={'rgb(150,150,150)'} size={15} style={{ marginRight: 5 }} />
+                  }
+                  value={'Free'}
+                  hasNext={false}
+                />
+              </View>
+            </ScrollView>
+          </View>
+          <View style={{ width: '90%', backgroundColor: 'rgb(150,150,150)', height: 0.3, alignSelf: 'center' }}></View>
+          <View style={{ flexDirection: 'column', paddingTop: 10 }}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={{
+                paddingVertical: 10,
+                paddingLeft: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+              onPress={() => {}}
+            >
+              <ExpoImage
+                style={{
+                  width: 20,
+                  aspectRatio: 1,
+                  marginRight: 10,
+                }}
+                source={require('../../../assets/forApp/ghost.png')}
+                contentFit='cover'
+                tintColor={'white'}
+              />
+              <View>
+                <Text style={{ color: 'white', fontSize: 15 }}>Moments</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={{
+                paddingVertical: 10,
+                paddingLeft: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+              onPress={() => {}}
+            >
+              <ExpoImage
+                style={{
+                  width: 20,
+                  aspectRatio: 1,
+                  marginRight: 10,
+                }}
+                source={require('../../../assets/forApp/ghost.png')}
+                contentFit='cover'
+                tintColor={'white'}
+              />
+              <View>
+                <Text style={{ color: 'white', fontSize: 15 }}>Rolls</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
           <ScrollView>
             {currentSpace.tags.map((tag, index) => {
               const isFocused = currentTag?._id === tag._id;
@@ -706,3 +837,41 @@ export const Home = () => {
 <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Log</Text>
 </View> */
 }
+
+type IStatBox = {
+  title: string;
+  icon: React.ReactNode;
+  value: string;
+  hasNext: boolean;
+};
+
+const StatBox: React.FC<IStatBox> = ({ title, icon, value, hasNext }) => {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View
+        style={{
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: 150,
+          paddingVertical: 10,
+          paddingHorizontal: 15,
+        }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+          {icon}
+          <Text style={{ color: 'rgb(150,150,150)' }}>{title}</Text>
+        </View>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{value}</Text>
+      </View>
+      {hasNext && (
+        <View
+          style={{
+            height: 25,
+            width: 1,
+            backgroundColor: 'rgb(150,150,150)',
+          }}
+        />
+      )}
+    </View>
+  );
+};
