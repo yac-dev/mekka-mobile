@@ -641,10 +641,10 @@ export const Home = () => {
                   }}
                   source={require('../../../assets/forApp/ghost.png')}
                   contentFit='cover'
-                  tintColor={'white'}
+                  tintColor={'rgb(150,150,150)'}
                 />
                 <View>
-                  <Text style={{ color: 'white', fontSize: 15 }}>Moments</Text>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 15 }}>Moments</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -661,10 +661,10 @@ export const Home = () => {
                   style={{ width: 20, aspectRatio: 1, marginRight: 10 }}
                   source={require('../../../assets/forApp/film-roll.png')}
                   contentFit='cover'
-                  tintColor={'white'}
+                  tintColor={'rgb(150,150,150)'}
                 />
                 <View>
-                  <Text style={{ color: 'white', fontSize: 15 }}>Rolls</Text>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 15 }}>Rolls</Text>
                 </View>
               </TouchableOpacity>
               <View style={{ width: '90%', backgroundColor: 'rgb(80,80,80)', height: 0.5, alignSelf: 'center' }}></View>
@@ -725,13 +725,10 @@ export const Home = () => {
                         }}
                         source={{ uri: tag.icon?.url }}
                         contentFit='cover'
-                        tintColor={isFocused ? 'white' : 'rgb(150,150,150)'}
+                        tintColor={tagLogs ? 'white' : 'rgb(150,150,150)'}
                       />
                       <View>
-                        <Text
-                          numberOfLines={1}
-                          style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 15 }}
-                        >
+                        <Text numberOfLines={1} style={{ color: tagLogs ? 'white' : 'rgb(150,150,150)', fontSize: 15 }}>
                           {tag.name}
                         </Text>
                       </View>
