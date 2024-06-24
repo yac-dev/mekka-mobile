@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { View, ActivityIndicator, Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Region } from 'react-native-maps';
 import { PostType, TagType } from '../../../types';
 import { MapPostThumbnail } from '../../../components/PostThumbnail/MapPostThumbnail';
 import { TagScreenContext } from '../providers';
@@ -10,6 +10,8 @@ import { useRecoilValue } from 'recoil';
 import { getPostsByTagIdAndRegionResultAtomFamily, currentRegionAtomFamily } from '../atoms';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { useRecoilState } from 'recoil';
+import * as Haptics from 'expo-haptics';
 
 type IRegionView = {
   tag: TagType;
@@ -18,20 +20,40 @@ type IRegionView = {
 export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   const { requestGetPostsByTagIdAndRegion } = useGetPostsByTagIdAndRegion(tag._id);
   const getPostsByTagIdAndRegionResult = useRecoilValue(getPostsByTagIdAndRegionResultAtomFamily(tag._id));
-  const currentRegion = useRecoilValue(currentRegionAtomFamily(tag._id));
-
-  const { region, onRegionChangeComplete, setCurrentPost, onCurrentPostIndexChange } = useContext(TagScreenContext);
-  // const navigation = useNavigation<TagScreenStackNavigatorProps>();
+  const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtomFamily(tag._id));
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
-
   const mapRef = useRef<MapView>(null);
+  const isFirstRender = useRef(true);
+  const [initialFetch, setInitialFetch] = useState<boolean>(false);
+
+  const onRegionChangeComplete = (region: Region) => {
+    setCurrentRegion(region);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  // firstRenderの時だけ
+  useEffect(() => {
+    // if (isFirstRender.current) {
+    //   isFirstRender.current = false;
+    //   return;
+    // }
+    requestGetPostsByTagIdAndRegion({ tagId: tag._id, region: currentRegion });
+  }, []);
+  // current region変わるたびに、requestを送る。
 
   useEffect(() => {
     requestGetPostsByTagIdAndRegion({ tagId: tag._id, region: currentRegion });
-  }, []);
+  }, [currentRegion]);
+
+  //1,  map postがあれば0に近づけるのね。
 
   useEffect(() => {
-    if (getPostsByTagIdAndRegionResult.status === 'success' && getPostsByTagIdAndRegionResult.data?.posts.length) {
+    if (
+      getPostsByTagIdAndRegionResult.status === 'success' &&
+      getPostsByTagIdAndRegionResult.data?.posts.length &&
+      !initialFetch
+    ) {
+      setInitialFetch(true);
       const firstPost = getPostsByTagIdAndRegionResult.data?.posts[0];
       const newLat = firstPost.location.coordinates[1] - 0.0065;
       mapRef.current?.animateToRegion({
@@ -71,7 +93,7 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
         showsCompass={true}
         scrollEnabled={true}
         zoomEnabled={true}
-        initialRegion={region}
+        initialRegion={currentRegion}
         onRegionChangeComplete={onRegionChangeComplete}
       >
         {renderMarkers()}

@@ -16,7 +16,6 @@ export const useGetPostsByTagIdAndRegion = (tagId: string) => {
         return {
           ...previous,
           status: 'loading',
-          data: undefined,
         };
       });
 

@@ -67,7 +67,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
-  if (getPostsByTagIdResult.status === 'loading' && !getPostsByTagIdResult.data.posts.length) {
+  if (getPostsByTagIdResult.status === 'loading' && !getPostsByTagIdResult.data?.posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
