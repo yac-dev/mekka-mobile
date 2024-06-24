@@ -81,3 +81,11 @@ export type GetTagIconsInputType = {
 export type GetTagIconsOutputType = {
   icon: IconType;
 };
+
+export type GetMomentsBySpaceIdInputType = {
+  spaceId: string;
+};
+
+export type GetMomentsBySpaceIdOutputType = {
+  posts: PostType[];
+};

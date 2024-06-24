@@ -36,6 +36,7 @@ export const MomentsStackNavigator = () => {
     }
   }
 
+  // momentsをcacheしておくのはいいが、開くたびにmomentsをrefreshせねばいかん。
   return (
     // ここ、providerが必要だな。。。createのapi statusをcontextで持たせよう。
     <View style={{ flex: 1 }}>
