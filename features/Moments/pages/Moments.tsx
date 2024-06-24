@@ -16,7 +16,7 @@ import { useCreatePost } from '../../CreateNewPost/hooks';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { MomentsContext } from '../../Space';
 import { Colors } from '../../../themes';
-import { showMessage } from 'react-native-flash-message';
+import { showMessage, hideMessage } from 'react-native-flash-message';
 import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../api/hooks';
 import { useRecoilValue } from 'recoil';
 import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
@@ -33,14 +33,17 @@ export const Moments = () => {
 
   const getMomentsBySpaceIdResult = useRecoilValue(getMomentsBySpaceIdResultAtomFamily(currentSpace._id));
   const createMomentResult = useRecoilValue(createMomentResultAtomFamily(currentSpace._id));
-  // そもそもさ、createに関してはいちいちcacheしなくていいよ。。。なんか思考停止でやっちゃっているがそれはいらない。
 
   useEffect(() => {
     requestGetMomentsBySpaceId({ spaceId: currentSpace._id });
   }, []);
 
   useEffect(() => {
+    if (createMomentResult.status === 'loading') {
+      showMessage({ type: 'info', message: 'Processing now...' });
+    }
     if (createMomentResult.status === 'success') {
+      showMessage({ type: 'success', message: 'Your moment has been processed successfully.' });
       addCreatedMoment(createMomentResult.data.post);
       revertCreateMomentResult();
     }

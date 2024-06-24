@@ -15,6 +15,7 @@ import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigat
 import { tagScreenOpenedAtomFamily } from '../atoms';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
+import { showMessage } from 'react-native-flash-message';
 
 type IGridView = {
   space: SpaceType;
@@ -41,8 +42,13 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   }, [tagScreenOpened]);
 
   // そっか、毎回ここで足しちゃっているよね。。。これが問題になっている。
+
   useEffect(() => {
+    if (createPostResult.status === 'loading') {
+      showMessage({ type: 'info', message: 'Processing now...' });
+    }
     if (createPostResult.status === 'success' && tagScreenOpened && createPostResult.data.addedTags.includes(tag._id)) {
+      showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
       addCreatedPost(createPostResult.data.post);
       setCreatePostResult({ status: 'idle', data: undefined });
       // 終わった後に初期に戻すくらいかな。。。
@@ -61,7 +67,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
-  if (getPostsByTagIdResult.status === 'loading') {
+  if (getPostsByTagIdResult.status === 'loading' && !getPostsByTagIdResult.data.posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />

@@ -26,6 +26,7 @@ import { useRecoilValue } from 'recoil';
 import { viewPostsTypeAtomFamily } from './atoms';
 import { useRecoilState } from 'recoil';
 import { createPostResultAtomFamily } from '../../api/atoms';
+import { showMessage } from 'react-native-flash-message';
 // pagerviewはlazy loadingをサポートしていないという。。。
 // 使い方はtab viewの方が面倒臭いがlazy loadingサポートはいいね。
 
