@@ -4,19 +4,23 @@ import { getPosts } from '../apis';
 import { GetPostsInputType, GetPostsOutputType } from '../types';
 import { getPostsByTagIdAtomFamily } from '../atoms';
 import { useRecoilState } from 'recoil';
+import { GetPostsByTagIdInputType } from '../../../api/types';
 
 // page開くたびにapi request支度ないからさ。それを防がないとな。。。
 export const useGetPostsByTagId = (tagId: string) => {
   // 正直、resultの方はいらないんだわな。だって、atomの方を消費するようにすればいいから。
   const [getPostsByTagIdResult, setGetPostsByTagIdResult] = useRecoilState(getPostsByTagIdAtomFamily(tagId));
 
-  const requestGetPostsByTagId = async (input: GetPostsInputType) => {
+  // currentPageもdefaultで持っておいた方がいいわな。
+  // pagingも必要だけど、
+  // 最初の1回目のrequestはあるんだが、画面閉じてその後に戻ってきた後にcurrentPageをそのまま使いたいわけよ。queryするから。その後用のpaginationも含めてな。
+  // いや、やっぱあれか、dataのpostsがある場合には、curretnPageを使うとかそういうやり方かね。
+  const requestGetPostsByTagId = async (input: GetPostsByTagIdInputType) => {
     try {
       setGetPostsByTagIdResult((previous) => {
         return {
           ...previous,
           status: 'loading',
-          data: undefined,
         };
       });
 
@@ -37,6 +41,35 @@ export const useGetPostsByTagId = (tagId: string) => {
       //   };
       // });
     }
+  };
+
+  // !hasNextPageなら、そもqueryしないようにする。
+  const requestMorePostsByTagId = async (input: GetPostsByTagIdInputType) => {
+    setGetPostsByTagIdResult((previous) => {
+      return {
+        ...previous,
+        status: 'paging',
+      };
+    });
+    const inputObject = {
+      tagId: input.tagId,
+      currentPage: getPostsByTagIdResult.data.currentPage,
+    };
+    const response = await getPosts(inputObject);
+
+    setGetPostsByTagIdResult((previous) => {
+      const previousPosts = [...previous.data.posts, ...response.posts];
+      const data = {
+        posts: previousPosts,
+        currentPage: response.currentPage,
+        hasNextPage: response.hasNextPage,
+      };
+      return {
+        ...previous,
+        status: 'success',
+        data,
+      };
+    });
   };
 
   // const requestRefresh = async (input: GetPostsInputType) => {
@@ -116,8 +149,8 @@ export const useGetPostsByTagId = (tagId: string) => {
     // requestApi,
     // requestRefresh,
     // loadMore,
-    getPostsByTagIdResult,
     requestGetPostsByTagId,
+    requestMorePostsByTagId,
     addCreatedPost,
   };
 };

@@ -26,7 +26,7 @@ type IGridView = {
 
 export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
-  const { requestGetPostsByTagId, addCreatedPost } = useGetPostsByTagId(tag._id);
+  const { requestGetPostsByTagId, requestMorePostsByTagId, addCreatedPost } = useGetPostsByTagId(tag._id);
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
@@ -63,6 +63,10 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     });
   };
 
+  const renderFooter = () => {
+    return <ActivityIndicator />;
+  };
+
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
@@ -92,10 +96,11 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
         keyExtractor={(item, index) => `${item._id}-${index}`}
         removeClippedSubviews
         estimatedItemSize={125}
-        // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
-        // onEndReached={loadMoreItem}
-        // ListFooterComponent={renderLoader}
-        onEndReachedThreshold={0}
+        // onEndReached={() =>
+        //   requestMorePostsByTagId({ tagId: tag._id, currentPage: getPostsByTagIdResult.data.currentPage })
+        // }
+        // ListFooterComponent={renderFooter}
+        onEndReachedThreshold={0.5}
         contentContainerStyle={{ paddingBottom: 70 }}
       />
       {/* {getPostsApiResult.status === 'refreshing' ? (

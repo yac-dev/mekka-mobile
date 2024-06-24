@@ -38,7 +38,8 @@ export type GetPostsByTagIdInputType = {
 
 export type GetPostsByTagIdOutputType = {
   posts: PostType[];
-  nextPage: number | null;
+  currentPage: number;
+  hasNextPage: number | null;
 };
 
 export type GetPostsByTagIdAndRegionInput = {

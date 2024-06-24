@@ -1,8 +1,5 @@
 import { atom, atomFamily, selectorFamily } from 'recoil';
-import { atomKeys } from '../../../Recoil';
-import { PostType } from '../../../types';
 import { ApiResult } from '../../../types';
-import { getPostsByTagId } from '../../../api';
 import { GetPostsByTagIdOutputType } from '../../../api/types';
 // ここのposts Stateはさ、keyに加えてidも持たせたいよね。
 
