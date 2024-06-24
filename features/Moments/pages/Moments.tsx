@@ -17,6 +17,9 @@ import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { MomentsContext } from '../../Space';
 import { Colors } from '../../../themes';
 import { showMessage } from 'react-native-flash-message';
+import { useGetMomentsBySpaceIdResult } from '../../../api/hooks/useGetMomentsBySpaceIdResult';
+import { useRecoilValue } from 'recoil';
+import { getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
@@ -26,17 +29,26 @@ export const Moments = () => {
   const { apiResult, requestApi, addCreatedMoment } = useGetMomentPosts();
   const { createMomentResult, requestCreateMoment } = useContext(MomentsContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
+  const { requestGetMomentsBySpaceId } = useGetMomentsBySpaceIdResult(currentSpace);
+  // refreshの実装。
+  const getMomentsBySpaceIdResult = useRecoilValue(getMomentsBySpaceIdResultAtomFamily(currentSpace._id));
 
   useEffect(() => {
     requestApi({ spaceId: currentSpace._id });
   }, []);
 
   useEffect(() => {
-    if (createMomentResult.status === 'success') {
-      addCreatedMoment(createMomentResult.data?.post);
-      showMessage({ message: 'Created new moment.', type: 'success' });
-    }
-  }, [createMomentResult.status]);
+    requestGetMomentsBySpaceId({ spaceId: currentSpace._id });
+  }, []);
+  // sucessの時はrefreshのfunctionを動かす、refreshというより、reloadっていう表現の方が正しいかもな。。。
+  // それか、dataがなくて、statusがloadingの時のみactivityIndicatorを出すっていう方が正しいか。
+
+  // useEffect(() => {
+  //   if (createMomentResult.status === 'success') {
+  //     addCreatedMoment(createMomentResult.data?.post);
+  //     showMessage({ message: 'Created new moment.', type: 'success' });
+  //   }
+  // }, [createMomentResult.status]);
 
   // useEffect(() => {
   //   if(createMomentResult.status === 'success'){
@@ -69,7 +81,8 @@ export const Moments = () => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPostThumbnailPress} />;
   };
 
-  if (apiResult.status === 'loading') {
+  // 今後は, loading時にもdataがある前提となる。
+  if (getMomentsBySpaceIdResult.status === 'loading' && !getMomentsBySpaceIdResult.data?.posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -89,10 +102,10 @@ export const Moments = () => {
           <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>No Moments now...</Text>
         </View>
       )} でたーこいつ */}
-      {apiResult.data?.posts.length ? (
+      {getMomentsBySpaceIdResult.data?.posts.length ? (
         <FlashList
           numColumns={3}
-          data={apiResult.data?.posts}
+          data={getMomentsBySpaceIdResult.data?.posts}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           removeClippedSubviews

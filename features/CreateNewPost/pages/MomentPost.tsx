@@ -215,12 +215,6 @@ const MomentPost = () => {
           </View>
         </Modal>
       </ScrollView>
-      <Text
-        onPress={() => setModalVisible(true)}
-        style={{ color: 'white', position: 'absolute', bottom: 10, alignSelf: 'center' }}
-      >
-        What is Moment by the way?
-      </Text>
     </View>
   );
 };

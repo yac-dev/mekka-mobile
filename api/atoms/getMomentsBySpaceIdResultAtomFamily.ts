@@ -7,7 +7,7 @@ import { GetMomentsBySpaceIdOutputType } from '../../api/types';
 export const getMomentsBySpaceIdResultAtomFamily = atomFamily<ApiResult<GetMomentsBySpaceIdOutputType>, string>({
   key: atomKeys.createPost,
   default: {
-    status: 'idle',
+    status: 'loading',
     data: undefined,
   },
 });

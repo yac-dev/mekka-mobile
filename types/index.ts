@@ -85,9 +85,9 @@ export type IdleType = {
   data: undefined;
 };
 
-export type LoadingType = {
+export type LoadingType<T> = {
   status: 'loading';
-  data: undefined;
+  data: T;
 };
 export type RefreshingType<T> = {
   status: 'refreshing';
@@ -102,7 +102,7 @@ export type ErrorType = {
 export type PagingType<T> = { status: 'paging'; data: T };
 export type SuccessType<T> = { status: 'success'; data: T };
 
-export type ApiResult<T> = IdleType | LoadingType | SuccessType<T> | PagingType<T> | RefreshingType<T> | ErrorType;
+export type ApiResult<T> = IdleType | LoadingType<T> | SuccessType<T> | PagingType<T> | RefreshingType<T> | ErrorType;
 
 export type ReactionType = {
   type: string;
