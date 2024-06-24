@@ -17,44 +17,34 @@ import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { MomentsContext } from '../../Space';
 import { Colors } from '../../../themes';
 import { showMessage } from 'react-native-flash-message';
-import { useGetMomentsBySpaceIdResult } from '../../../api/hooks/useGetMomentsBySpaceIdResult';
+import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../api/hooks';
 import { useRecoilValue } from 'recoil';
-import { getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
+import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
 export const Moments = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
-  const { apiResult, requestApi, addCreatedMoment } = useGetMomentPosts();
-  const { createMomentResult, requestCreateMoment } = useContext(MomentsContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const { requestGetMomentsBySpaceId } = useGetMomentsBySpaceIdResult(currentSpace);
+  const { requestGetMomentsBySpaceId, addCreatedMoment } = useGetMomentsBySpaceIdResult(currentSpace);
   // refreshの実装。
-  const getMomentsBySpaceIdResult = useRecoilValue(getMomentsBySpaceIdResultAtomFamily(currentSpace._id));
+  const { revertCreateMomentResult } = useCreateMomentResult(currentSpace);
 
-  useEffect(() => {
-    requestApi({ spaceId: currentSpace._id });
-  }, []);
+  const getMomentsBySpaceIdResult = useRecoilValue(getMomentsBySpaceIdResultAtomFamily(currentSpace._id));
+  const createMomentResult = useRecoilValue(createMomentResultAtomFamily(currentSpace._id));
+  // そもそもさ、createに関してはいちいちcacheしなくていいよ。。。なんか思考停止でやっちゃっているがそれはいらない。
 
   useEffect(() => {
     requestGetMomentsBySpaceId({ spaceId: currentSpace._id });
   }, []);
-  // sucessの時はrefreshのfunctionを動かす、refreshというより、reloadっていう表現の方が正しいかもな。。。
-  // それか、dataがなくて、statusがloadingの時のみactivityIndicatorを出すっていう方が正しいか。
 
-  // useEffect(() => {
-  //   if (createMomentResult.status === 'success') {
-  //     addCreatedMoment(createMomentResult.data?.post);
-  //     showMessage({ message: 'Created new moment.', type: 'success' });
-  //   }
-  // }, [createMomentResult.status]);
-
-  // useEffect(() => {
-  //   if(createMomentResult.status === 'success'){
-  //     // ここで、
-  //   }
-  // },[createMomentResult.status])
+  useEffect(() => {
+    if (createMomentResult.status === 'success') {
+      addCreatedMoment(createMomentResult.data.post);
+      revertCreateMomentResult();
+    }
+  }, [createMomentResult]);
 
   function convertMinutesToHoursAndMinutes(minutes: number) {
     const hours = Math.floor(minutes / 60);

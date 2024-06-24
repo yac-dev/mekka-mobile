@@ -28,17 +28,20 @@ import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStack
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { CreateMomentInputType } from '../types';
 import { MomentsContext } from '../../Space/providers/MomentsProvider';
+import { useCreateMomentResult } from '../../../api';
 
 const MomentPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [modalVisible, setModalVisible] = useState(false);
   const { currentSpace } = useContext(CurrentSpaceContext);
+
+  const { requestCreateMoment } = useCreateMomentResult(currentSpace);
   const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress, onCaptionChange } =
     useContext(CreateNewPostContext);
   const { auth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { isIpad } = useContext(GlobalContext);
-  const { requestCreateMoment, createMomentResult, space } = useContext(MomentsContext);
+  const { createMomentResult, space } = useContext(MomentsContext);
   const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
 
   // このpageに来た時点で、postTypeをmomentにする。

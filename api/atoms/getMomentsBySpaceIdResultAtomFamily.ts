@@ -5,7 +5,7 @@ import { GetMomentsBySpaceIdOutputType } from '../../api/types';
 
 // spaceIdでatomFamilyを管理するようにする。
 export const getMomentsBySpaceIdResultAtomFamily = atomFamily<ApiResult<GetMomentsBySpaceIdOutputType>, string>({
-  key: atomKeys.createPost,
+  key: atomKeys.getMoments,
   default: {
     status: 'loading',
     data: undefined,

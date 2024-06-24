@@ -1,4 +1,4 @@
-import { ApiResult, SpaceType } from '../../types';
+import { ApiResult, PostType, SpaceType } from '../../types';
 import { CreatePostInputType, CreatePostOutputType } from '../types';
 import { createPost } from '../post';
 import { useRecoilState } from 'recoil';
@@ -40,7 +40,24 @@ export const useGetMomentsBySpaceIdResult = (space: SpaceType) => {
     }
   };
 
+  // addする。
+  const addCreatedMoment = (createdPost: PostType) => {
+    setGetMomentsBySpaceIdResult((previous) => {
+      const previousPosts = [createdPost, ...(previous.data?.posts || [])];
+      // このunshiftとか、push methodって、最終的なarrayのlengthを返す仕様らしい。。。
+      return {
+        ...previous,
+        status: 'success',
+        data: {
+          ...previous.data,
+          posts: previousPosts,
+        },
+      };
+    });
+  };
+
   return {
     requestGetMomentsBySpaceId,
+    addCreatedMoment,
   };
 };
