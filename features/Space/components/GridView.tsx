@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
@@ -16,6 +16,7 @@ import { tagScreenOpenedAtomFamily } from '../atoms';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { showMessage } from 'react-native-flash-message';
+import { VideoPlayer } from '../../../components';
 
 type IGridView = {
   space: SpaceType;
@@ -30,6 +31,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
+  const videoRef = useRef(null);
 
   useEffect(() => {
     if (!tagScreenOpened) {
@@ -103,13 +105,13 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
         onEndReachedThreshold={0.5}
         contentContainerStyle={{ paddingBottom: 70 }}
       />
-      {/* {getPostsApiResult.status === 'refreshing' ? (
-        <ActivityIndicator
-          style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}
-          size={'large'}
-          color={'white'}
-        />
-      ) : null} */}
     </View>
   );
 };
+
+// <VideoPlayer
+//         ref={videoRef}
+//         source={{ uri: 'https://mekka-dev.s3.us-east-2.amazonaws.com/videos/C28C9158-EBEA-4E89-9974-E4A564907017.mp4' }}
+//         resizeMode='contain'
+//         componentStyle={{ width: '100%', height: '70%' }}
+//       />

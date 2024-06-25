@@ -71,6 +71,7 @@
     "react-native-screens": "~3.27.0",
     "react-native-svg": "13.14.0",
     "react-native-tab-view": "^3.5.2",
+    "react-native-video": "^6.3.0",
     "react-query": "^3.39.3",
     "recoil": "^0.7.7"
   },
