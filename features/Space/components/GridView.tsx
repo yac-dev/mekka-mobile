@@ -17,6 +17,7 @@ import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { showMessage } from 'react-native-flash-message';
 import { VideoPlayer } from '../../../components';
+import { FlatList } from 'react-native-gesture-handler';
 
 type IGridView = {
   space: SpaceType;
@@ -33,6 +34,9 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
   const videoRef = useRef(null);
 
+  // どうしてもskipしちゃうのがあって、それ困るよね。
+  // firstもinputで必要かもな。。。
+  // current pageが2なら、first(12) * page 2
   useEffect(() => {
     if (!tagScreenOpened) {
       requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
@@ -40,6 +44,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     if (tagScreenOpened) {
       console.log('already opend this tag screen');
       // NOTE: refreshを実装する。
+      // 今持っているpage（0 - 3とかで）分までqueryする感じだよな。。。
     }
   }, [tagScreenOpened]);
 
@@ -66,7 +71,9 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   };
 
   const renderFooter = () => {
-    return <ActivityIndicator />;
+    if (getPostsByTagIdResult.status === 'paging') {
+      return <ActivityIndicator />;
+    }
   };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
@@ -97,11 +104,12 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
         removeClippedSubviews
-        estimatedItemSize={125}
-        // onEndReached={() =>
-        //   requestMorePostsByTagId({ tagId: tag._id, currentPage: getPostsByTagIdResult.data.currentPage })
-        // }
-        // ListFooterComponent={renderFooter}
+        estimatedItemSize={1000}
+        onEndReached={() => {
+          getPostsByTagIdResult.data.hasNextPage &&
+            requestMorePostsByTagId({ tagId: tag._id, currentPage: getPostsByTagIdResult.data.currentPage });
+        }}
+        ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.5}
         contentContainerStyle={{ paddingBottom: 70 }}
       />

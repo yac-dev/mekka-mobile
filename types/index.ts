@@ -94,6 +94,8 @@ export type RefreshingType<T> = {
   data: T;
 };
 
+// このTは、outputの形によるっていうことよね。
+
 export type ErrorType = {
   status: 'error';
   data: undefined;
