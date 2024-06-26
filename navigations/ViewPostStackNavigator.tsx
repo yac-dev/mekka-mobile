@@ -10,6 +10,7 @@ import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { ReportPost, ReportComment } from '../features';
 import { ViewGridPost, ViewRegionPost } from '../features/ViewPost/pages';
+import { StatusBar } from 'react-native';
 
 type ViewPostStackNavigatotParams = {
   ViewGridPost: undefined;
@@ -38,7 +39,7 @@ export const ViewPostStackNavigator = () => {
             headerLeft: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
-                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginTop: 5 }}
                 hasShadow={false}
               >
                 <VectorIcon.II name='close' size={18} color={Colors.white} />

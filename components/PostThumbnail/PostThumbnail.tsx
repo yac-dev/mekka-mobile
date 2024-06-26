@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { PostType } from '../../types';
 import { Image as ExpoImage } from 'expo-image';
@@ -6,6 +6,7 @@ import { Video, ResizeMode } from 'expo-av';
 import LinearGradient from 'react-native-linear-gradient';
 import { Skeleton } from '../Skelton';
 import { Icons } from '../../assets/iconImages';
+import { VideoPlayer } from '../VideoPlayer';
 
 const sideLength = Dimensions.get('screen').width / 3;
 
@@ -45,6 +46,7 @@ type PostThumbnailProps = {
 export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPressPostThumbnail }) => {
   const [isLoading, setIsLoading] = useState(true); // statelessであるべきだが、これは特別。
   const { hours, minutes } = calculateLeftTime(post.disappearAt);
+  const videoRef = useRef(null);
 
   const handleImageLoad = () => {
     setIsLoading(false);

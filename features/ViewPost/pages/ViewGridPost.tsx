@@ -5,6 +5,7 @@ import { PostType, TagType } from '../../../types';
 import { useRecoilValue } from 'recoil';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SpaceStackParams, ViewPostStackNavigatorParams } from '../../../navigations/SpaceStackNavigator';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type IViewGridPost = NativeStackScreenProps<ViewPostStackNavigatorParams, 'ViewGridPost'>;
 

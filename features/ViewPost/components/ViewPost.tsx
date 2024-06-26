@@ -26,6 +26,7 @@ import { useGetReactionsByPostId } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { StatusBar } from 'react-native';
 
 type IViewPost = {
   posts: PostType[];
@@ -124,8 +125,11 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
     viewStackNavigation.navigate('ReportPost');
   };
 
+  // console.log('post', JSON.stringify(posts[currentPostIndex], null, 2));
+
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
+      <StatusBar hidden />
       <FlatList
         data={posts}
         renderItem={renderItem}
