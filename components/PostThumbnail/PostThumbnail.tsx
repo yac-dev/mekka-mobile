@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Skeleton } from '../Skelton';
 import { Icons } from '../../assets/iconImages';
 import { VideoPlayer } from '../VideoPlayer';
+import { VectorIcon } from '../../Icons';
 
 const sideLength = Dimensions.get('screen').width / 3;
 
@@ -109,6 +110,20 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
           </View>
         </View>
       )}
+      {post.contents.length > 1 ? (
+        // <View>
+        <VectorIcon.FD
+          name='page-multiple'
+          size={15}
+          color='white'
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 10,
+          }}
+        />
+      ) : // </View>
+      null}
     </TouchableOpacity>
   );
 };

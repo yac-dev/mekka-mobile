@@ -116,10 +116,3 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     </View>
   );
 };
-
-// <VideoPlayer
-//         ref={videoRef}
-//         source={{ uri: 'https://mekka-dev.s3.us-east-2.amazonaws.com/videos/C28C9158-EBEA-4E89-9974-E4A564907017.mp4' }}
-//         resizeMode='contain'
-//         componentStyle={{ width: '100%', height: '70%' }}
-//       />

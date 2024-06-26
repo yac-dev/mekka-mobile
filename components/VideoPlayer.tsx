@@ -1,9 +1,10 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
-import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, Text, StyleSheet, ActivityIndicator, Modal } from 'react-native';
 import Video, { ResizeMode } from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Slider from '@react-native-community/slider';
+import { VectorIcon } from '../Icons';
 
 interface IVideoPlayer {
   source: any; // Adjust the type according to what `source` should be, e.g., string, object, etc.
@@ -19,6 +20,7 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
   const videoPlayer = useRef(null);
   const [loading, setLoading] = useState(true);
   const [videoVolume, setVideoVolume] = useState(1.0);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   useImperativeHandle(ref, () => ({
     play: () => {
@@ -71,8 +73,16 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
 
   const toggleMute = () => setVideoVolume(videoVolume === 0.0 ? 1.0 : 0.0);
 
+  // if (loading) {
+  //   return (
+  //     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+  //       <ActivityIndicator />
+  //     </View>
+  //   );
+  // }
+
   return (
-    <View style={styles.container}>
+    <>
       <Video
         ref={videoPlayer}
         source={source}
@@ -93,22 +103,14 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           bufferForPlaybackAfterRebufferMs: 5000,
         }}
       />
-      {loading && (
-        // <Spinner color={colors.WHITE} style={styles.loader} visible={true} size="large" type="Circle" />
-        <View>
-          <Text style={{ color: 'red' }}>Loading</Text>
-        </View>
-      )}
-      <LinearGradient
-        colors={['#00000000', '#000000']}
-        // style={styles.controls}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
-      >
+      <View style={{ position: 'absolute', bottom: 50 }}>
         <View style={styles.controlRow}>
-          <TouchableOpacity onPress={togglePlayPause}>
-            {/* <Image style={styles.controlIcon} source={paused ? images.PLAY : images.PAUSE} /> */}
-            {paused ? <Text style={{ color: 'red' }}>Play</Text> : <Text style={{ color: 'red' }}>Pause</Text>}
+          <TouchableOpacity onPress={togglePlayPause} style={{ marginRight: 20 }}>
+            {paused ? (
+              <VectorIcon.FD name='play' size={20} color={'white'} />
+            ) : (
+              <VectorIcon.FD name='pause' size={20} color={'white'} />
+            )}
           </TouchableOpacity>
           <Slider
             style={styles.slider}
@@ -119,21 +121,38 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
             minimumTrackTintColor={'white'}
             maximumTrackTintColor={'gray'}
             thumbTintColor={'red'}
+            // thumbImage={require('../assets/forApp/ghost.png')}
           />
-          {/* {isSoundButton && (
-            <TouchableOpacity onPress={toggleMute} style={styles.controlButton}>
-              <Image style={styles.controlIcon} source={videoVolume === 0.0 ? images.SOUND_OFF : images.SOUND_ON} />
-            </TouchableOpacity>
-          )} */}
         </View>
         <View style={styles.timeRow}>
           <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
           <Text style={styles.timeText}>{formatTime(duration)}</Text>
         </View>
-      </LinearGradient>
-    </View>
+      </View>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={isModalVisible}
+        // onRequestClose={() => {
+        //   Alert.alert('Modal has been closed.');
+        //   setModalVisible(!modalVisible);
+        // }}
+      >
+        <View>
+          <Text>Hello</Text>
+        </View>
+      </Modal>
+    </>
   );
 });
+
+{
+  /* {isSoundButton && (
+            <TouchableOpacity onPress={toggleMute} style={styles.controlButton}>
+              <Image style={styles.controlIcon} source={videoVolume === 0.0 ? images.SOUND_OFF : images.SOUND_ON} />
+            </TouchableOpacity>
+          )} */
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -147,7 +166,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   slider: {
-    width: '100%',
+    width: '85%',
   },
   controlRow: {
     flexDirection: 'row',

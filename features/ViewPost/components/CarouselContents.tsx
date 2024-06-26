@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { ContentType, PostType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
+import { VideoPlayer } from '../../../components';
 
 type CarouselContentsProps = {
   post: PostType;
@@ -11,17 +12,25 @@ type CarouselContentsProps = {
 const width = Dimensions.get('window').width;
 export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const videoRef = useRef(null);
 
   const renderItem = ({ item, index }: { item: ContentType; index: number }) => {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        {item.type === 'photo' ? (
           <ExpoImage
             style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
             source={{ uri: item.data }}
             contentFit='cover'
           />
-        </View>
+        ) : (
+          <VideoPlayer
+            ref={videoRef}
+            source={{ uri: item.data }}
+            resizeMode='contain'
+            componentStyle={{ width: '100%', height: '100%' }}
+          />
+        )}
       </View>
     );
   };
@@ -59,14 +68,21 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
           />
         </View>
       ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          {post.contents[0].type === 'photo' ? (
             <ExpoImage
               style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
               source={{ uri: post.contents[0].data }}
               contentFit='cover'
             />
-          </View>
+          ) : (
+            <VideoPlayer
+              ref={videoRef}
+              source={{ uri: post.contents[0].data }}
+              resizeMode='contain'
+              componentStyle={{ width: '100%', height: '100%' }}
+            />
+          )}
         </View>
       )}
     </View>
