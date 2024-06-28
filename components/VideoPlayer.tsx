@@ -1,10 +1,20 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
-import { View, TouchableOpacity, Image, Text, StyleSheet, ActivityIndicator, Modal } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Video, { ResizeMode } from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Slider from '@react-native-community/slider';
 import { VectorIcon } from '../Icons';
+import { AppButton } from './Button';
 
 interface IVideoPlayer {
   source: any; // Adjust the type according to what `source` should be, e.g., string, object, etc.
@@ -103,15 +113,14 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           bufferForPlaybackAfterRebufferMs: 5000,
         }}
       />
+      <TouchableWithoutFeedback
+        onPress={() => console.log('Video touched')}
+        style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+      >
+        <View style={{ flex: 1 }} />
+      </TouchableWithoutFeedback>
       <View style={{ position: 'absolute', bottom: 50 }}>
         <View style={styles.controlRow}>
-          <TouchableOpacity onPress={togglePlayPause} style={{ marginRight: 20 }}>
-            {paused ? (
-              <VectorIcon.FD name='play' size={20} color={'white'} />
-            ) : (
-              <VectorIcon.FD name='pause' size={20} color={'white'} />
-            )}
-          </TouchableOpacity>
           <Slider
             style={styles.slider}
             minimumValue={0}
@@ -120,15 +129,28 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
             onValueChange={onSlide}
             minimumTrackTintColor={'white'}
             maximumTrackTintColor={'gray'}
-            thumbTintColor={'red'}
-            // thumbImage={require('../assets/forApp/ghost.png')}
+            thumbTintColor={'transparent'}
           />
         </View>
         <View style={styles.timeRow}>
           <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
-          <Text style={styles.timeText}>{formatTime(duration)}</Text>
+          <Text style={styles.timeText}>{formatTime(duration - currentTime)}</Text>
         </View>
       </View>
+      <AppButton.Icon
+        onButtonPress={togglePlayPause}
+        customStyle={{
+          width: 44,
+          height: 44,
+          backgroundColor: 'rgb(50,50,50)',
+          position: 'absolute',
+          bottom: 20,
+          alignSelf: 'center',
+        }}
+        hasShadow={false}
+      >
+        <VectorIcon.FD name={paused ? 'play' : 'pause'} size={25} color={'white'} />
+      </AppButton.Icon>
       <Modal
         animationType='fade'
         transparent={true}
@@ -138,7 +160,7 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
         //   setModalVisible(!modalVisible);
         // }}
       >
-        <View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <Text>Hello</Text>
         </View>
       </Modal>
@@ -160,16 +182,18 @@ const styles = StyleSheet.create({
   },
   timeRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   timeText: {
     color: 'white',
   },
   slider: {
-    width: '85%',
+    width: '95%',
   },
   controlRow: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
+    paddingLeft: 10,
+    marginBottom: 0,
   },
 });

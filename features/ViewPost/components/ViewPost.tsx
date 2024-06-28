@@ -84,8 +84,8 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
       <View
         style={{
           flex: 1,
-          height: Dimensions.get('window').height,
-          width: Dimensions.get('window').width,
+          // height: Dimensions.get('window').height,
+          // width: Dimensions.get('window').width,
           backgroundColor: 'black',
         }}
       >
@@ -146,6 +146,11 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
           index, // Pass the index
         })}
       />
+      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', top: 50, left: 20 }}>
+        <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{currentPost.createdBy.name}</Text>
+      </View>
+
       <ViewPostMenu
         post={currentPost}
         onReactionPress={handleReactionPress}

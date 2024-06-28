@@ -25,31 +25,20 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <ExpoImage source={post.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
-        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{post.createdBy.name}</Text>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <AppButton.Icon
-          onButtonPress={onReactionPress}
-          customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', marginRight: 15, borderRadius: 22 }}
-          hasShadow={false}
-        >
-          <Text style={{ fontSize: 25 }}>😁</Text>
-        </AppButton.Icon>
+      <View style={{ alignSelf: 'center' }}>
         <AppButton.Icon
           onButtonPress={onCommentsPress}
-          customStyle={{ width: 44, height: 44, marginRight: 15, backgroundColor: 'rgb(50,50,50)', borderRadius: 22 }}
+          customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', borderRadius: 22, marginBottom: 20 }}
           hasShadow={false}
         >
           <VectorIcon.MCI name='comment-multiple' size={20} style={{ color: 'white' }} />
         </AppButton.Icon>
         <AppButton.Icon
-          onButtonPress={onHorizontalDotsPress}
+          onButtonPress={onReactionPress}
           customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', borderRadius: 22 }}
           hasShadow={false}
         >
-          <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
+          <Text style={{ fontSize: 25 }}>😁</Text>
         </AppButton.Icon>
       </View>
     </View>
@@ -58,12 +47,8 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     position: 'absolute',
-    bottom: 30,
-    width: '100%',
-    paddingHorizontal: 15,
+    bottom: 150,
+    right: 20,
   },
 });

@@ -45,6 +45,21 @@ export const ViewPostStackNavigator = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
+            headerRight: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.navigate('ReportPost')}
+                customStyle={{
+                  width: 28,
+                  height: 28,
+                  backgroundColor: 'rgb(50,50,50)',
+                  marginTop: 5,
+                  borderRadius: 22,
+                }}
+                hasShadow={false}
+              >
+                <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
+              </AppButton.Icon>
+            ),
             headerTransparent: true,
             // headerTitle: () => (
             //   <View style={{ flexDirection: 'row', alignItems: 'center' }}>

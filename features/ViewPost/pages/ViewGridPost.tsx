@@ -3,6 +3,7 @@ import { ViewPost } from '../components';
 import { getPostsByTagIdAtomFamily } from '../../Space/atoms';
 import { PostType, TagType } from '../../../types';
 import { useRecoilValue } from 'recoil';
+import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SpaceStackParams, ViewPostStackNavigatorParams } from '../../../navigations/SpaceStackNavigator';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,11 +20,13 @@ export const ViewGridPost: React.FC<IViewGridPost> = ({ route }) => {
   };
 
   return (
-    <ViewPost
-      posts={getPostsByTagIdResult.data.posts}
-      currentPost={currentPost}
-      onCurrentPostChange={onCurrentPostChange}
-      currentPostIndex={currentPostIndex}
-    />
+    <View style={{ flex: 1 }}>
+      <ViewPost
+        posts={getPostsByTagIdResult.data.posts}
+        currentPost={currentPost}
+        onCurrentPostChange={onCurrentPostChange}
+        currentPostIndex={currentPostIndex}
+      />
+    </View>
   );
 };
