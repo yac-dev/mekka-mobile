@@ -119,7 +119,7 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
       >
         <View style={{ flex: 1 }} />
       </TouchableWithoutFeedback>
-      <View style={{ position: 'absolute', bottom: 50 }}>
+      <View style={{ position: 'absolute', bottom: 90 }}>
         <View style={styles.controlRow}>
           <Slider
             style={styles.slider}
@@ -144,7 +144,7 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           height: 44,
           backgroundColor: 'rgb(50,50,50)',
           position: 'absolute',
-          bottom: 20,
+          bottom: 65,
           alignSelf: 'center',
         }}
         hasShadow={false}

@@ -25,10 +25,10 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={{ alignSelf: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', gap: 20 }}>
         <AppButton.Icon
           onButtonPress={onCommentsPress}
-          customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', borderRadius: 22, marginBottom: 20 }}
+          customStyle={{ width: 44, height: 44, backgroundColor: 'rgb(50,50,50)', borderRadius: 22 }}
           hasShadow={false}
         >
           <VectorIcon.MCI name='comment-multiple' size={20} style={{ color: 'white' }} />
@@ -40,6 +40,18 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
         >
           <Text style={{ fontSize: 25 }}>😁</Text>
         </AppButton.Icon>
+        <AppButton.Icon
+          onButtonPress={onHorizontalDotsPress}
+          customStyle={{
+            width: 44,
+            height: 44,
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 22,
+          }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
+        </AppButton.Icon>
       </View>
     </View>
   );
@@ -48,7 +60,9 @@ export const ViewPostMenu: React.FC<ViewPostMenuProps> = ({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 150,
-    right: 20,
+    bottom: 0,
+    backgroundColor: 'black',
+    width: '100%',
+    padding: 5,
   },
 });

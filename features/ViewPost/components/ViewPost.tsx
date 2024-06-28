@@ -35,6 +35,32 @@ type IViewPost = {
   onCurrentPostChange: (post: PostType) => void;
 };
 
+function timeSince(date: Date) {
+  const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+
+  let interval = seconds / 31536000; // years
+  if (interval > 1) {
+    return `${Math.floor(interval)} year${Math.floor(interval) > 1 ? 's' : ''} ago`;
+  }
+  interval = seconds / 2592000; // months
+  if (interval > 1) {
+    return `${Math.floor(interval)} month${Math.floor(interval) > 1 ? 's' : ''} ago`;
+  }
+  interval = seconds / 86400; // days
+  if (interval > 1) {
+    return `${Math.floor(interval)} day${Math.floor(interval) > 1 ? 's' : ''} ago`;
+  }
+  interval = seconds / 3600; // hours
+  if (interval > 1) {
+    return `${Math.floor(interval)} hour${Math.floor(interval) > 1 ? 's' : ''} ago`;
+  }
+  interval = seconds / 60; // minutes
+  if (interval > 1) {
+    return `${Math.floor(interval)} minute${Math.floor(interval) > 1 ? 's' : ''} ago`;
+  }
+  return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
+}
+
 export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPostChange, currentPostIndex }) => {
   const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
   const {
@@ -78,6 +104,19 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   const flashMessageRef = useRef<FlashMessage>();
 
   const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
+
+  useEffect(() => {
+    const date = new Date(currentPost.createdAt);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+    viewStackNavigation.setOptions({
+      title: formattedDate,
+    });
+  }, [currentPost]);
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return (
@@ -148,7 +187,12 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
       />
       <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', top: 50, left: 20 }}>
         <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
-        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{currentPost.createdBy.name}</Text>
+        <View>
+          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginBottom: 5 }}>
+            {currentPost.createdBy.name}
+          </Text>
+          <Text style={{ color: 'white', fontSize: 14 }}>{currentPost.caption}</Text>
+        </View>
       </View>
 
       <ViewPostMenu

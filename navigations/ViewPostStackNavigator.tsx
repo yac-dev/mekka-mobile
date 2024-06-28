@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 // import ReportPost from '../features/ViewPost/pages/ReportPost';
@@ -35,29 +35,14 @@ export const ViewPostStackNavigator = () => {
           component={ViewGridPost}
           options={({ navigation }) => ({
             headerShown: true,
-            title: '',
-            headerLeft: () => (
+            // title: <Text>{currentPost.createdAt}</Text>,
+            headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
                 customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginTop: 5 }}
                 hasShadow={false}
               >
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
-              </AppButton.Icon>
-            ),
-            headerRight: () => (
-              <AppButton.Icon
-                onButtonPress={() => navigation.navigate('ReportPost')}
-                customStyle={{
-                  width: 28,
-                  height: 28,
-                  backgroundColor: 'rgb(50,50,50)',
-                  marginTop: 5,
-                  borderRadius: 22,
-                }}
-                hasShadow={false}
-              >
-                <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
               </AppButton.Icon>
             ),
             headerTransparent: true,

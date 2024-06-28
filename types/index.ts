@@ -198,6 +198,7 @@ export type PostType = {
   space: string;
   createdBy: UserType;
   disappearAt: string;
+  createdAt: string;
   totalComments?: number;
   totalReactions?: number;
   location: LocationType;
