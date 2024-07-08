@@ -5,6 +5,8 @@ import { TextInput } from 'react-native-gesture-handler';
 type UseBottomSheetOutputType = {
   isReactionsBottomSheetOpen: boolean;
   isCommentsBottomSheetOpen: boolean;
+  infoBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  openInfoBottomBottomSheet: () => void;
   reactionsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentInputBottomSheetRef: MutableRefObject<BottomSheetModal>;
@@ -29,7 +31,10 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   // full screen内でのmodalがなんかおかしい。。。だからuseState使ってさらに制御する。
   const [isReactionsBottomSheetOpen, setIsReactionsBottomSheetOpen] = useState<boolean>(false);
   const [isCommentsBottomSheetOpen, setIsCommentsBottomSheetOpen] = useState<boolean>(false);
+  const [isInfoBottomSheetOpen, setIsInfoBottomSheetOpen] = useState<boolean>(false);
+  const infoBottomSheetRef = useRef<BottomSheetModal>(null);
   const reactionsBottomSheetRef = useRef<BottomSheetModal>(null);
+
   const commentsBottomSheetRef = useRef<BottomSheetModal>(null);
   const userInfoBottomSheetRef = useRef<BottomSheetModal>(null);
   const othersBottomSheetRef = useRef<BottomSheetModal>(null);
@@ -39,6 +44,10 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const handleReactionBottomSheetVisibility = () => {
     reactionsBottomSheetRef.current?.snapToIndex(0);
     setIsReactionsBottomSheetOpen(true);
+  };
+
+  const openInfoBottomBottomSheet = () => {
+    infoBottomSheetRef.current?.snapToIndex(0);
   };
 
   const openCommentInputBottomSheet = (index: number) => {
@@ -84,6 +93,8 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   return {
     isReactionsBottomSheetOpen,
     isCommentsBottomSheetOpen,
+    infoBottomSheetRef,
+    openInfoBottomBottomSheet,
     reactionsBottomSheetRef,
     commentsBottomSheetRef,
     commentInputBottomSheetRef,

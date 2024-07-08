@@ -113,13 +113,13 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           bufferForPlaybackAfterRebufferMs: 5000,
         }}
       />
-      <TouchableWithoutFeedback
-        onPress={() => console.log('Video touched')}
+      <TouchableOpacity
+        onPress={() => togglePlayPause()}
         style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
       >
         <View style={{ flex: 1 }} />
-      </TouchableWithoutFeedback>
-      <View style={{ position: 'absolute', bottom: 90 }}>
+      </TouchableOpacity>
+      <View style={{ position: 'absolute', bottom: 100 }}>
         <View style={styles.controlRow}>
           <Slider
             style={styles.slider}
@@ -137,7 +137,7 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           <Text style={styles.timeText}>{formatTime(duration - currentTime)}</Text>
         </View>
       </View>
-      <AppButton.Icon
+      {/* <AppButton.Icon
         onButtonPress={togglePlayPause}
         customStyle={{
           width: 44,
@@ -150,7 +150,7 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
         hasShadow={false}
       >
         <VectorIcon.FD name={paused ? 'play' : 'pause'} size={25} color={'white'} />
-      </AppButton.Icon>
+      </AppButton.Icon> */}
       <Modal
         animationType='fade'
         transparent={true}

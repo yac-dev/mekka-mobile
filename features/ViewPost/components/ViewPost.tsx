@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, ScrollView, FlatList, Dimensions } from 'react-native';
+import { View, Text, ScrollView, FlatList, Dimensions, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import backendAPI from '../../../apis/backend';
 import { ViewPostContext } from '../contexts/ViewPostContext';
@@ -27,6 +27,9 @@ import FlashMessage from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 import { StatusBar } from 'react-native';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
 
 type IViewPost = {
   posts: PostType[];
@@ -81,6 +84,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   const {
     isReactionsBottomSheetOpen,
     isCommentsBottomSheetOpen,
+    infoBottomSheetRef,
     reactionsBottomSheetRef,
     commentsBottomSheetRef,
     userInfoBottomSheetRef,
@@ -99,24 +103,25 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
     openCommentInputBottomSheet,
     closeCommentInputBottomSheet,
     commentInputRef,
+    openInfoBottomBottomSheet,
   } = useBottomSheet();
 
   const flashMessageRef = useRef<FlashMessage>();
 
   const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
 
-  useEffect(() => {
-    const date = new Date(currentPost.createdAt);
-    const formattedDate = date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    viewStackNavigation.setOptions({
-      title: formattedDate,
-    });
-  }, [currentPost]);
+  // useEffect(() => {
+  //   const date = new Date(currentPost.createdAt);
+  //   const formattedDate = date.toLocaleDateString('en-US', {
+  //     weekday: 'long',
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //   });
+  //   viewStackNavigation.setOptions({
+  //     title: formattedDate,
+  //   });
+  // }, [currentPost]);
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return (
@@ -146,6 +151,10 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
 
   // handle reactionで開けようか。
   // これは絶対必要なものになる。
+  const handleInfoBottomSheet = () => {
+    openInfoBottomBottomSheet();
+  };
+
   const handleReactionPress = () => {
     requestGetReactionsByPostId({ postId: currentPost._id });
     openReactionsBottomSheetToIndex();
@@ -185,23 +194,140 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
           index, // Pass the index
         })}
       />
-      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', top: 50, left: 20 }}>
-        <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
-        <View>
-          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginBottom: 5 }}>
-            {currentPost.createdBy.name}
-          </Text>
-          <Text style={{ color: 'white', fontSize: 14 }}>{currentPost.caption}</Text>
+      <AppButton.Icon
+        onButtonPress={handleInfoBottomSheet}
+        customStyle={{
+          width: 44,
+          height: 44,
+          backgroundColor: 'rgb(50,50,50)',
+          borderRadius: 22,
+          position: 'absolute',
+          right: 10,
+          bottom: 10,
+        }}
+        hasShadow={false}
+      >
+        <VectorIcon.II name='arrow-up-circle' size={16} style={{ color: 'white' }} />
+      </AppButton.Icon>
+      <AppBottomSheet.Gorhom
+        ref={infoBottomSheetRef}
+        defaultSnapPointsIndex={0}
+        snapPoints={['13%', '30%']}
+        hasBackdrop={false}
+        onCloseButtonClose={closeCommentsBottomSheet}
+        handleComponent={() => {
+          return (
+            <View>
+              <View style={styles.indicator} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 15,
+                  paddingTop: 10,
+                  marginBottom: 10,
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+                  <View>
+                    <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 5 }}>
+                      {currentPost.createdBy.name}
+                    </Text>
+                    <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, fontWeight: 'bold' }}>
+                      {timeSince(new Date(currentPost.createdAt))}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <AppButton.Icon
+                      onButtonPress={handleCommentsPress}
+                      customStyle={{
+                        width: 40,
+                        height: 40,
+                        backgroundColor: 'rgb(50,50,50)',
+                        borderRadius: 20,
+                        marginRight: 8,
+                      }}
+                      hasShadow={false}
+                    >
+                      <VectorIcon.MCI name='comment-multiple' size={16} style={{ color: 'white' }} />
+                    </AppButton.Icon>
+                    <View
+                      style={{
+                        backgroundColor: 'rgb(50,50,50)',
+                        width: 20,
+                        height: 20,
+                        borderRadius: 100,
+                        position: 'absolute',
+                        top: -5,
+                        right: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>
+                        {currentPost.totalComments}
+                      </Text>
+                    </View>
+                  </View>
+                  <View>
+                    <AppButton.Icon
+                      onButtonPress={handleReactionPress}
+                      customStyle={{
+                        width: 40,
+                        height: 40,
+                        backgroundColor: 'rgb(50,50,50)',
+                        borderRadius: 20,
+                        marginRight: 8,
+                      }}
+                      hasShadow={false}
+                    >
+                      <Text style={{ fontSize: 20 }}>😁</Text>
+                    </AppButton.Icon>
+                    <View
+                      style={{
+                        backgroundColor: 'rgb(50,50,50)',
+                        width: 20,
+                        height: 20,
+                        borderRadius: 100,
+                        position: 'absolute',
+                        top: -5,
+                        right: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>
+                        {currentPost.totalReactions}
+                      </Text>
+                    </View>
+                  </View>
+                  <AppButton.Icon
+                    onButtonPress={handleHorizontalDotsPress}
+                    customStyle={{
+                      width: 40,
+                      height: 40,
+                      backgroundColor: 'rgb(50,50,50)',
+                      borderRadius: 20,
+                      marginRight: 5,
+                    }}
+                    hasShadow={false}
+                  >
+                    <VectorIcon.MCI name='dots-horizontal' size={16} style={{ color: 'white' }} />
+                  </AppButton.Icon>
+                </View>
+              </View>
+            </View>
+          );
+        }}
+      >
+        <View style={{ paddingHorizontal: 15 }}>
+          <Text style={{ color: 'white', fontSize: 14, fontWeight: 'bold' }}>{currentPost.caption}</Text>
         </View>
-      </View>
-
-      <ViewPostMenu
-        post={currentPost}
-        onReactionPress={handleReactionPress}
-        onCommentsPress={handleCommentsPress}
-        onAvatarPress={openUserInfoBottomSheetRefBottomSheetToIndex}
-        onHorizontalDotsPress={handleHorizontalDotsPress}
-      />
+      </AppBottomSheet.Gorhom>
       <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
@@ -235,3 +361,15 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
     </GestureHandlerRootView>
   );
 };
+
+const styles = StyleSheet.create({
+  indicator: {
+    width: 40,
+    height: 3,
+    backgroundColor: Colors.white,
+    borderRadius: 3,
+    alignSelf: 'center',
+    marginTop: 8,
+    // marginBottom: 5,
+  },
+});

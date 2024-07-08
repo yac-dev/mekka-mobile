@@ -9,51 +9,72 @@ import { AppButton } from '../Button';
 type Ref = BottomSheetModal;
 
 type GorhomBottomSheetRef = {
-  title: string;
+  title?: string;
   defaultSnapPointsIndex?: number;
+  hasBackdrop?: boolean;
   snapPoints: string[];
   children: ReactNode;
   onClose?: () => void;
   onCloseButtonClose: () => void;
+  handleComponent?: () => ReactNode;
+  enablePanDownToClose?: boolean;
 };
 
 export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
-  ({ title, defaultSnapPointsIndex = -1, snapPoints, children, onClose, onCloseButtonClose }, ref) => {
+  (
+    {
+      title,
+      defaultSnapPointsIndex = -1,
+      hasBackdrop = true,
+      snapPoints,
+      children,
+      onClose,
+      onCloseButtonClose,
+      handleComponent,
+      enablePanDownToClose = true,
+    },
+    ref
+  ) => {
     return (
       <BottomSheet
         ref={ref}
         index={defaultSnapPointsIndex}
         enableOverDrag={true}
-        enablePanDownToClose={true}
+        enablePanDownToClose={enablePanDownToClose}
         snapPoints={snapPoints}
-        backdropComponent={(props) => (
-          <BottomSheetBackdrop
-            {...props}
-            opacity={0.5}
-            enableTouchThrough={false}
-            appearsOnIndex={0}
-            disappearsOnIndex={-1}
-            style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]}
-            //この色をなんとか直したいね。薄く白くしたい。discordみたいに
-          />
-        )}
+        backdropComponent={(props) =>
+          hasBackdrop ? (
+            <BottomSheetBackdrop
+              {...props}
+              opacity={0.5}
+              enableTouchThrough={false}
+              appearsOnIndex={0}
+              disappearsOnIndex={-1}
+              style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]}
+            />
+          ) : null
+        }
         backgroundStyle={{ backgroundColor: Colors.black }}
         handleIndicatorStyle={{ backgroundColor: Colors.white }}
         onClose={onClose}
-        handleComponent={() => {
-          return (
-            <View style={styles.container}>
-              <Text style={styles.text}>{title}</Text>
-              <AppButton.Icon
-                onButtonPress={onCloseButtonClose}
-                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                hasShadow={false}
-              >
-                <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
-              </AppButton.Icon>
-            </View>
-          );
-        }}
+        handleComponent={
+          handleComponent
+            ? handleComponent
+            : () => {
+                return (
+                  <View style={styles.container}>
+                    <Text style={styles.text}>{title}</Text>
+                    <AppButton.Icon
+                      onButtonPress={onCloseButtonClose}
+                      customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                      hasShadow={false}
+                    >
+                      <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
+                    </AppButton.Icon>
+                  </View>
+                );
+              }
+        }
       >
         {children}
       </BottomSheet>

@@ -28,7 +28,7 @@ export const ViewPostStackNavigator = () => {
   const { currentTag } = useContext(CurrentTagContext);
 
   return (
-    <ViewPostStack.Navigator>
+    <ViewPostStack.Navigator screenOptions={{ title: '' }}>
       <ViewPostStack.Group>
         <ViewPostStack.Screen
           name='ViewGridPost'
