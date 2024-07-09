@@ -215,6 +215,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
         snapPoints={['13%', '30%']}
         hasBackdrop={false}
         onCloseButtonClose={closeCommentsBottomSheet}
+        backgroundColor='rgb(25,25,25)'
         handleComponent={() => {
           return (
             <View>

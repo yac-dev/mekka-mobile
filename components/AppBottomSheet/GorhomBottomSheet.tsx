@@ -18,6 +18,7 @@ type GorhomBottomSheetRef = {
   onCloseButtonClose: () => void;
   handleComponent?: () => ReactNode;
   enablePanDownToClose?: boolean;
+  backgroundColor?: string;
 };
 
 export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
@@ -32,6 +33,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
       onCloseButtonClose,
       handleComponent,
       enablePanDownToClose = true,
+      backgroundColor = Colors.black,
     },
     ref
   ) => {
@@ -54,7 +56,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
             />
           ) : null
         }
-        backgroundStyle={{ backgroundColor: Colors.black }}
+        backgroundStyle={{ backgroundColor }}
         handleIndicatorStyle={{ backgroundColor: Colors.white }}
         onClose={onClose}
         handleComponent={
