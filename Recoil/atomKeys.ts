@@ -11,4 +11,5 @@ export const atomKeys = {
   tagScreenOpened: 'tagScreenOpened',
   getMoments: 'getMoments',
   createMoment: 'createMoment',
+  getReactionsByPostId: 'getReactionsByPostId',
 };

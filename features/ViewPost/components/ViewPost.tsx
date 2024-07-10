@@ -209,7 +209,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
         }}
         hasShadow={false}
       >
-        <VectorIcon.II name='arrow-up-circle' size={16} style={{ color: 'white' }} />
+        <VectorIcon.II name='arrow-up' size={20} style={{ color: 'white' }} />
       </AppButton.Icon>
       <AppBottomSheet.Gorhom
         ref={infoBottomSheetRef}
