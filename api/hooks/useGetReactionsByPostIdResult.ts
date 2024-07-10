@@ -1,17 +1,14 @@
-import { useState } from 'react';
-import { ApiResultType } from '../../types';
 import { getReactionsByPostId } from '../apis';
 import { GetReactionsByPostIdInputType } from '../types';
 import { getReactionsByPostIdResultAtomFamily } from '../atoms';
 import { useRecoilState } from 'recoil';
 
-// いやrecoil使おうかな。
 export const useGetReactionsByPostIdResult = (postId: string) => {
   const [getReactionsByPostIdResult, setGetReactionsByPostIResult] = useRecoilState(
     getReactionsByPostIdResultAtomFamily(postId)
   );
 
-  const requestGetMomentsBySpaceId = async (input: GetReactionsByPostIdInputType) => {
+  const requestGetReactionsBySpaceId = async (input: GetReactionsByPostIdInputType) => {
     try {
       setGetReactionsByPostIResult((previous) => {
         return {
@@ -58,6 +55,6 @@ export const useGetReactionsByPostIdResult = (postId: string) => {
 
   return {
     getReactionsByPostIdResult,
-    requestGetMomentsBySpaceId,
+    requestGetReactionsBySpaceId,
   };
 };

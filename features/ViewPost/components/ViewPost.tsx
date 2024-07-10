@@ -31,6 +31,9 @@ import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
 import { CurrentSpaceContext } from '../../../providers';
+import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
+import { useRecoilState } from 'recoil';
+import { useGetReactionsByPostIdResult } from '../../../api';
 
 type IViewPost = {
   posts: PostType[];
@@ -79,7 +82,10 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
-  const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
+  // const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
+
+  const { requestGetReactionsBySpaceId } = useGetReactionsByPostIdResult(currentPost._id);
+  const [getReactionsByPostIdResult] = useRecoilState(getReactionsByPostIdResultAtomFamily(currentPost._id));
 
   const { viewPostsType } = useContext(SpaceRootContext);
 
@@ -158,7 +164,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   };
 
   const handleReactionPress = () => {
-    requestGetReactionsByPostId({ postId: currentPost._id });
+    requestGetReactionsBySpaceId({ postId: currentPost._id });
     openReactionsBottomSheetToIndex();
   };
 
@@ -355,7 +361,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
         onCloseButtonClose={closeReactionsBottomSheet}
         onClose={onReactionsBottomSheetClose}
       >
-        <Reactions getReactionsByPostIdResult={getReactionsByPostIdResult} />
+        <Reactions currentPost={currentPost} />
       </AppBottomSheet.Gorhom>
 
       <AppBottomSheet.Gorhom

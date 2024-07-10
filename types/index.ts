@@ -107,11 +107,13 @@ export type SuccessType<T> = { status: 'success'; data: T };
 export type ApiResult<T> = IdleType | LoadingType<T> | SuccessType<T> | PagingType<T> | RefreshingType<T> | ErrorType;
 
 export type ReactionType = {
+  _id: string;
   type: string;
   emoji: string;
   sticker: StickerType;
   caption: string;
   space: SpaceType;
+  count?: number;
 };
 
 export type ReactionStatus = {

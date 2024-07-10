@@ -16,22 +16,24 @@ import { useGetReactionsByPostId } from '../hooks';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '../../../themes';
-import { ApiResultType } from '../../../types';
+import { ApiResultType, PostType } from '../../../types';
 import { GetReactionsByPostIdOutputType } from '../types';
+import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
+import { useRecoilValue } from 'recoil';
 
 type Ref = BottomSheetModal;
 
 type IReactions = {
-  getReactionsByPostIdResult: ApiResultType<GetReactionsByPostIdOutputType>;
+  currentPost: PostType;
 };
 
 const itemWidth = Dimensions.get('window').width / 3;
 const reactionContainerWidth = itemWidth * 0.7;
 
-export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) => {
+export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const { currentPost } = useContext(TagScreenContext);
   const { auth, setAuth } = useContext(AuthContext);
+  const getReactionsByPostIdResult = useRecoilValue(getReactionsByPostIdResultAtomFamily(currentPost._id));
   // const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
 
   // console.log(reactionContainerWidth * 0.6);
@@ -49,15 +51,10 @@ export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) 
   //   });
   // };
 
-  // console.log('bottom sheet state', isReactionsBottomSheetOpen);
-  // useEffect(() => {
-  //   requestGetReactionsByPostId({ postId: currentPost._id });
-  // }, []);
-
-  // とりあえず、1以上のものだけ、0のものをextractする感じでいいか。
+  // spaceのreactionをrenderしておいて、そのid毎にcountを表示する。
 
   const renderReactionStatuses = () => {
-    const list = getReactionsByPostIdResult.data?.reactionStatuses.map((reactionStatus, index) => {
+    const list = currentSpace.reactions.map((reaction, index) => {
       return (
         <View
           key={index}
@@ -89,7 +86,7 @@ export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) 
             // onPress={() => upvoteReaction(reactionStatus, index)}
             onPress={() => console.log('react!!!')}
           >
-            {reactionStatus.reaction.type === 'emoji' ? (
+            {reaction.type === 'emoji' ? (
               <View>
                 <View
                   style={{
@@ -105,24 +102,34 @@ export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) 
                       fontSize: (reactionContainerWidth / 2) * 1.15,
                     }}
                   >
-                    {reactionStatus.reaction.emoji}
+                    {reaction.emoji}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: -20,
-                    right: -20,
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 30,
-                    height: 30,
-                    borderRadius: 15,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white' }}>{reactionStatus.count}</Text>
-                </View>
+                {getReactionsByPostIdResult.data?.reactions.some(
+                  (reactionObject) => reactionObject._id === reaction._id && reactionObject.count > 0
+                ) && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -20,
+                      right: -20,
+                      backgroundColor: 'rgb(50,50,50)',
+                      width: 30,
+                      height: 30,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: 'white' }}>
+                      {
+                        getReactionsByPostIdResult.data?.reactions.find(
+                          (reactionObject) => reactionObject._id === reaction._id
+                        ).count
+                      }
+                    </Text>
+                  </View>
+                )}
               </View>
             ) : (
               <View>
@@ -140,30 +147,40 @@ export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) 
                       width: '100%',
                       height: '100%',
                     }}
-                    source={{ uri: reactionStatus.reaction.sticker.url }}
+                    source={{ uri: reaction.sticker.url }}
                     contentFit='contain'
                   />
                 </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: -20,
-                    right: -20,
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 30,
-                    height: 30,
-                    borderRadius: 15,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontWeight: 'bold' }}>{reactionStatus.count}</Text>
-                </View>
+                {getReactionsByPostIdResult.data?.reactions.some(
+                  (reactionObject) => reactionObject._id === reaction._id && reactionObject.count > 0
+                ) && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -20,
+                      right: -20,
+                      backgroundColor: 'rgb(50,50,50)',
+                      width: 30,
+                      height: 30,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: 'white' }}>
+                      {
+                        getReactionsByPostIdResult.data?.reactions.find(
+                          (reactionObject) => reactionObject._id === reaction._id
+                        ).count
+                      }
+                    </Text>
+                  </View>
+                )}
               </View>
             )}
           </TouchableOpacity>
 
-          {reactionStatus.reaction.caption.length ? (
+          {reaction.caption.length ? (
             <View
               style={{
                 flexDirection: 'row',
@@ -173,7 +190,7 @@ export const Reactions: React.FC<IReactions> = ({ getReactionsByPostIdResult }) 
               }}
             >
               <Text numberOfLines={1} style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
-                {reactionStatus.reaction.caption}
+                {reaction.caption}
               </Text>
             </View>
           ) : (
