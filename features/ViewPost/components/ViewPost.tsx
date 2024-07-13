@@ -164,7 +164,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   };
 
   const handleReactionPress = () => {
-    requestGetReactionsBySpaceId({ postId: currentPost._id });
+    requestGetReactionsBySpaceId({ postId: currentPost._id, spaceId: currentSpace._id });
     openReactionsBottomSheetToIndex();
   };
 

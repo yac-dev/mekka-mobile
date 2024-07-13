@@ -93,6 +93,7 @@ export type GetMomentsBySpaceIdOutputType = {
 
 export type GetReactionsByPostIdInputType = {
   postId: string;
+  spaceId: string;
 };
 
 export type GetReactionsByPostIdOutputType = {

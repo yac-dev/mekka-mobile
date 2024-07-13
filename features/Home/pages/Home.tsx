@@ -299,7 +299,7 @@ export const Home = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       <View style={{ flexDirection: 'row', height: '100%' }}>
         <View
           style={{

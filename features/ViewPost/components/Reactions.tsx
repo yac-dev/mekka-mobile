@@ -60,6 +60,8 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
 
   // spaceのreactionをrenderしておいて、そのid毎にcountを表示する。
 
+  console.log('reaction result', getReactionsByPostIdResult);
+
   useEffect(() => {
     if (apiResult.status === 'success') {
       // ここで、reactionId毎にcountを増やす。

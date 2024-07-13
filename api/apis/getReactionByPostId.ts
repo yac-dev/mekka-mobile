@@ -3,7 +3,7 @@ import { GetReactionsByPostIdInputType } from '../types';
 
 export const getReactionsByPostId = async (input: GetReactionsByPostIdInputType) => {
   try {
-    const response = await backendAPI.get(`/posts/${input.postId}/reactions`);
+    const response = await backendAPI.get(`/posts/${input.postId}/reactions/${input.spaceId}`);
     const { reactions } = response.data.data;
     return {
       reactions,
