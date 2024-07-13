@@ -14,6 +14,7 @@ export const useCreateReactionByPostIdAndReactionIdAndUserId = () => {
 
   const requestApi = async (input: CreateReactionByPostIdAndReactionIdAndUserIdInputType) => {
     try {
+      console.log('hey');
       setApiResult((previous) => {
         return {
           ...previous,

@@ -20,6 +20,9 @@ import { ApiResultType, PostType } from '../../../types';
 import { GetReactionsByPostIdOutputType } from '../types';
 import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
 import { useRecoilValue } from 'recoil';
+import { useCreateReactionByPostIdAndReactionIdAndUserId } from '../../../api/hooks/useCreateReactionByPostIdAndReactionIdAndUserId';
+
+import { useGetReactionsByPostIdResult } from '../../../api/hooks/useGetReactionsByPostIdResult';
 
 type Ref = BottomSheetModal;
 
@@ -33,6 +36,8 @@ const reactionContainerWidth = itemWidth * 0.7;
 export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { auth, setAuth } = useContext(AuthContext);
+  const { apiResult, requestApi } = useCreateReactionByPostIdAndReactionIdAndUserId();
+  const { addReaction } = useGetReactionsByPostIdResult(currentPost._id);
   // atomfamilyでpostId毎に状態持っているはずなのに。。。
   const getReactionsByPostIdResult = useRecoilValue(getReactionsByPostIdResultAtomFamily(currentPost._id));
   // lengthがある時はindicator出さなくていい。
@@ -54,6 +59,13 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
   // };
 
   // spaceのreactionをrenderしておいて、そのid毎にcountを表示する。
+
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      // ここで、reactionId毎にcountを増やす。
+      addReaction(apiResult.data.reactionId);
+    }
+  }, [apiResult]);
 
   const renderReactionStatuses = () => {
     const list = currentSpace.reactions.map((reaction, index) => {
@@ -85,8 +97,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
               backgroundColor: 'rgb(50,50,50)',
               marginBottom: 4,
             }}
-            // onPress={() => upvoteReaction(reactionStatus, index)}
-            onPress={() => console.log('react!!!')}
+            onPress={() => requestApi({ postId: currentPost._id, reactionId: reaction._id, userId: auth._id })}
           >
             {reaction.type === 'emoji' ? (
               <View>

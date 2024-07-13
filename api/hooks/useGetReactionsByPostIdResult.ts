@@ -40,25 +40,30 @@ export const useGetReactionsByPostIdResult = (postId: string) => {
     }
   };
 
-  // createしたreactionをここに足していく感じだよな。
-  // addする。
-  // const addCreatedMoment = (createdPost: PostType) => {
-  //   setGetMomentsBySpaceIdResult((previous) => {
-  //     const previousPosts = [createdPost, ...(previous.data?.posts || [])];
-  //     // このunshiftとか、push methodって、最終的なarrayのlengthを返す仕様らしい。。。
-  //     return {
-  //       ...previous,
-  //       status: 'success',
-  //       data: {
-  //         ...previous.data,
-  //         posts: previousPosts,
-  //       },
-  //     };
-  //   });
-  // };
+  //
+  const addReaction = (reactionId: string) => {
+    setGetReactionsByPostIResult((previous) => {
+      const previousReactions = previous.data?.reactions || [];
+      // const reaction = previousReactions.find((reaction) => reaction._id === reactionId);
+      const newReactions = previousReactions.map((reaction) => {
+        if (reaction._id === reactionId) {
+          return { ...reaction, count: reaction.count + 1 };
+        }
+        return reaction;
+      });
+      return {
+        ...previous,
+        data: {
+          ...previous.data,
+          reactions: newReactions,
+        },
+      };
+    });
+  };
 
   return {
     getReactionsByPostIdResult,
     requestGetReactionsBySpaceId,
+    addReaction,
   };
 };
