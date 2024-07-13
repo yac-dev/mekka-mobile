@@ -100,7 +100,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                 onPress={toggleNumberOfLines}
                 style={{ lineHeight: 21, marginTop: 10, color: 'rgb(170,170,170)', alignSelf: 'flex-end' }}
               >
-                {textShown ? 'Read less...' : 'Read more...'}
+                {textShown ? 'Read less' : 'Read more...'}
               </Text>
             ) : null}
           </View>
