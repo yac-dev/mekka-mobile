@@ -36,6 +36,8 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
   const getReactionsByPostIdResult = useRecoilValue(getReactionsByPostIdResultAtomFamily(currentPost._id));
   // const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
 
+  console.log('res', JSON.stringify(getReactionsByPostIdResult, null, 2));
+
   // console.log(reactionContainerWidth * 0.6);
 
   // const upvoteReaction = async (reactionStatus, index) => {
@@ -105,7 +107,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                     {reaction.emoji}
                   </Text>
                 </View>
-                {getReactionsByPostIdResult.data?.reactions.some(
+                {/* {getReactionsByPostIdResult.data?.reactions.some(
                   (reactionObject) => reactionObject._id === reaction._id && reactionObject.count > 0
                 ) && (
                   <View
@@ -129,7 +131,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                       }
                     </Text>
                   </View>
-                )}
+                )} */}
               </View>
             ) : (
               <View>
@@ -151,7 +153,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                     contentFit='contain'
                   />
                 </View>
-                {getReactionsByPostIdResult.data?.reactions.some(
+                {/* {getReactionsByPostIdResult.data?.reactions.some(
                   (reactionObject) => reactionObject._id === reaction._id && reactionObject.count > 0
                 ) && (
                   <View
@@ -175,12 +177,12 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                       }
                     </Text>
                   </View>
-                )}
+                )} */}
               </View>
             )}
           </TouchableOpacity>
 
-          {reaction.caption.length ? (
+          {reaction.caption?.length ? (
             <View
               style={{
                 flexDirection: 'row',

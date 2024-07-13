@@ -466,88 +466,45 @@ export const Home = () => {
           </View>
         </View>
         <View style={{ flex: 9, paddingTop: 15 }}>
-          <TouchableOpacity
-            activeOpacity={0.5}
+          <View
             style={{
               flexDirection: 'row',
               paddingHorizontal: 20,
               paddingVertical: 10,
               alignItems: 'center',
             }}
-            onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
           >
-            <ExpoImage
+            <TouchableOpacity
               style={{ width: 55, height: 55, borderRadius: 40, marginRight: 20 }}
-              source={{ uri: currentSpace.icon }}
-              contentFit='cover'
-            />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginRight: 20 }}>
+              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+            >
+              <ExpoImage
+                style={{ width: '100%', height: '100%', borderRadius: 40 }}
+                source={{ uri: currentSpace.icon }}
+                contentFit='cover'
+              />
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
                 {currentSpace.name}
               </Text>
-              <AppButton.Icon
-                onButtonPress={() => handleInvite()}
-                customStyle={{
-                  width: 26,
-                  height: 26,
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={{
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
                   backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}
-                hasShadow={false}
+                onPress={() => handleInvite()}
               >
-                <VectorIcon.MCI name='human-greeting-variant' size={15} color={'white'} />
-              </AppButton.Icon>
+                <VectorIcon.MCI name='human-greeting-variant' size={15} color={'white'} style={{ marginRight: 10 }} />
+                <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Invite Friend</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingTop: 5,
-              alignSelf: 'center',
-              marginBottom: 15,
-            }}
-          >
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
-              <AppButton.Icon
-                onButtonPress={() => console.log('heloo')}
-                customStyle={{
-                  width: 42,
-                  height: 42,
-                  backgroundColor: 'rgb(50,50,50)',
-                  marginBottom: 3,
-                }}
-                hasShadow={false}
-              >
-                <ExpoImage
-                  style={{ width: 20, aspectRatio: 1 }}
-                  source={require('../../../assets/forApp/ghost.png')}
-                  contentFit='cover'
-                  tintColor={'white'}
-                />
-              </AppButton.Icon>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Moments</Text>
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
-              <AppButton.Icon
-                onButtonPress={() => onRollsPress()}
-                customStyle={{
-                  width: 42,
-                  height: 42,
-                  backgroundColor: 'rgb(50,50,50)',
-                  marginBottom: 3,
-                }}
-                hasShadow={false}
-              >
-                <ExpoImage
-                  style={{ width: 20, aspectRatio: 1 }}
-                  source={require('../../../assets/forApp/film-roll.png')}
-                  contentFit='cover'
-                  tintColor={'white'}
-                />
-              </AppButton.Icon>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Rolls</Text>
-            </View>
-          </View> */}
+          </View>
           <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
             <ScrollView horizontal contentContainerStyle={{ paddingRight: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
