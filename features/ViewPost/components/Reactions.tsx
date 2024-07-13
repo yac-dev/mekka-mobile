@@ -33,10 +33,10 @@ const reactionContainerWidth = itemWidth * 0.7;
 export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { auth, setAuth } = useContext(AuthContext);
+  // atomfamilyでpostId毎に状態持っているはずなのに。。。
   const getReactionsByPostIdResult = useRecoilValue(getReactionsByPostIdResultAtomFamily(currentPost._id));
+  // lengthがある時はindicator出さなくていい。
   // const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
-
-  console.log('res', JSON.stringify(getReactionsByPostIdResult, null, 2));
 
   // console.log(reactionContainerWidth * 0.6);
 
@@ -74,7 +74,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
           }}
         >
           <TouchableOpacity
-            activeOpacity={0.5}
+            activeOpacity={0.7}
             style={{
               // backgroundColor: 'rgb(70, 70, 70)',
               width: reactionContainerWidth,
@@ -107,7 +107,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                     {reaction.emoji}
                   </Text>
                 </View>
-                {/* {getReactionsByPostIdResult.data?.reactions.some(
+                {getReactionsByPostIdResult.data?.reactions.some(
                   (reactionObject) => reactionObject._id === reaction._id && reactionObject.count > 0
                 ) && (
                   <View
@@ -123,7 +123,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <Text style={{ color: 'white' }}>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
                       {
                         getReactionsByPostIdResult.data?.reactions.find(
                           (reactionObject) => reactionObject._id === reaction._id
@@ -131,7 +131,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                       }
                     </Text>
                   </View>
-                )} */}
+                )}
               </View>
             ) : (
               <View>
@@ -153,7 +153,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                     contentFit='contain'
                   />
                 </View>
-                {/* {getReactionsByPostIdResult.data?.reactions.some(
+                {getReactionsByPostIdResult.data?.reactions.some(
                   (reactionObject) => reactionObject._id === reaction._id && reactionObject.count > 0
                 ) && (
                   <View
@@ -169,7 +169,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <Text style={{ color: 'white' }}>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>
                       {
                         getReactionsByPostIdResult.data?.reactions.find(
                           (reactionObject) => reactionObject._id === reaction._id
@@ -177,7 +177,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
                       }
                     </Text>
                   </View>
-                )} */}
+                )}
               </View>
             )}
           </TouchableOpacity>
@@ -221,7 +221,7 @@ export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
     );
   };
 
-  if (getReactionsByPostIdResult.status === 'loading') {
+  if (getReactionsByPostIdResult.status !== 'success') {
     return (
       <View style={styles.loading}>
         <ActivityIndicator color={Colors.white} />

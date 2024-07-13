@@ -11,10 +11,13 @@ export const useGetReactionsByPostIdResult = (postId: string) => {
   const requestGetReactionsBySpaceId = async (input: GetReactionsByPostIdInputType) => {
     try {
       setGetReactionsByPostIResult((previous) => {
-        return {
-          ...previous,
-          status: 'loading',
-        };
+        if (previous.status !== 'success') {
+          return {
+            ...previous,
+            status: 'loading',
+          };
+        }
+        return previous;
       });
 
       const response = await getReactionsByPostId(input);
@@ -37,6 +40,7 @@ export const useGetReactionsByPostIdResult = (postId: string) => {
     }
   };
 
+  // createしたreactionをここに足していく感じだよな。
   // addする。
   // const addCreatedMoment = (createdPost: PostType) => {
   //   setGetMomentsBySpaceIdResult((previous) => {

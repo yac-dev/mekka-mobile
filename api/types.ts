@@ -98,3 +98,13 @@ export type GetReactionsByPostIdInputType = {
 export type GetReactionsByPostIdOutputType = {
   reactions: ReactionType[];
 };
+
+export type CreateReactionByPostIdAndReactionIdAndUserIdInputType = {
+  postId: string;
+  reactionId: string;
+  userId: string;
+};
+
+export type CreateReactionByPostIdAndReactionIdAndUserIdOutputType = {
+  reactionId: string;
+};
