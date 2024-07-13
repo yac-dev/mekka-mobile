@@ -72,7 +72,7 @@ export const ViewPostStackNavigator = () => {
           options={({ navigation }) => ({
             headerShown: true,
             title: '',
-            headerLeft: () => (
+            headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
                 customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
