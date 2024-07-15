@@ -20,12 +20,16 @@ import { showMessage, hideMessage } from 'react-native-flash-message';
 import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../api/hooks';
 import { useRecoilValue } from 'recoil';
 import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
+import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { HomeStackNavigatorProps } from '../../../navigations/HomeStackNavigator';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
 export const Moments = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
+  const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { requestGetMomentsBySpaceId, addCreatedMoment } = useGetMomentsBySpaceIdResult(currentSpace);
   // refreshの実装。
@@ -64,11 +68,24 @@ export const Moments = () => {
 
   // うん、やっぱあれだわ、spaceRootの中に無かったからな。。。。ここがめんどいところだな。。。
   const onCreateMomentPress = () => {
-    momentsStackNavigation.navigate('CreateNewPostStackNavigator', { screen: 'MomentPost' });
+    spaceStackNavigation.navigate('CreateNewPostStackNavigator', {
+      screen: 'MomentPost',
+    });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
   };
 
-  const onPostThumbnailPress = () => {};
+  const onPostThumbnailPress = (moment: PostType, index: number) => {
+    homeStackNavigation.navigate({
+      name: 'ViewPostStackNavigator',
+      params: {
+        screen: 'ViewPost',
+        params: {
+          posts: getMomentsBySpaceIdResult.data?.posts,
+          index,
+        },
+      },
+    });
+  };
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPostThumbnailPress} />;
@@ -85,16 +102,6 @@ export const Moments = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
-      {/* {!apiResult.data?.posts.length && (
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 50, alignSelf: 'center' }}>
-          <ExpoImage
-            source={require('../../../assets/forApp/ghost-disappointed.png')}
-            style={{ width: 25, height: 25, marginRight: 20 }}
-            tintColor='white'
-          />
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 20 }}>No Moments now...</Text>
-        </View>
-      )} でたーこいつ */}
       {getMomentsBySpaceIdResult.data?.posts.length ? (
         <FlashList
           numColumns={3}

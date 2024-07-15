@@ -1,7 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import { CurrentSpaceContext, MySpacesContext } from '../providers';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { NavigatorScreenParams } from '@react-navigation/native';
@@ -14,29 +18,43 @@ import { showMessage } from 'react-native-flash-message';
 import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
 import { Space } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
-import { TagType } from '../types';
-
-export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackParams>;
-export type ViewPostStackNavigatorProps = NativeStackNavigationProp<ViewPostStackNavigatorParams>;
+import { PostType, SpaceType, TagType } from '../types';
+import { CreatedTagType } from '../features/CreateNewPost/contexts';
 
 export type ViewPostStackNavigatorParams = {
-  ViewGridPost: {
-    tag: TagType;
-    currentPostIndex: number;
+  ViewPost: {
+    posts: PostType[];
+    index: number;
   };
-  ViewRegionPost: {
-    tag: TagType;
-    currentPostIndex: number;
+  ViewGridPost: undefined;
+  ViewRegionPost: undefined;
+  CommentsPage: undefined;
+  ReportPost: undefined;
+  ReportComment: undefined;
+};
+
+export type CreateNewPostStackParams = {
+  SelectPostType: undefined;
+  NormalPost: undefined;
+  AddTags?: {
+    createdTag: CreatedTagType;
   };
+  AddLocation: undefined;
+  MomentPost: undefined;
+  CreateNewTag: undefined;
 };
 
 export type SpaceStackParams = {
-  Space: NavigatorScreenParams<SpaceTopTabNavigatorParams>;
-  CreateNewPostStackNavigator: undefined;
+  Space: {
+    space: SpaceType;
+  };
+  CreateNewPostStackNavigator: NavigatorScreenParams<CreateNewPostStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
-  MomentsStackNavigator: undefined;
   SpaceInfoStackNavigator: undefined;
 };
+
+export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackParams>;
+export type ViewPostStackNavigatorProps = NativeStackNavigationProp<ViewPostStackNavigatorParams>;
 
 type SpaceTopTabNavigatorParams = {
   [key: string]: NavigatorScreenParams<PostsTopTabNavigatorParams>;

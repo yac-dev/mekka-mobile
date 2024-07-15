@@ -73,7 +73,6 @@ export const Space: React.FC<ISpace> = ({ route }) => {
       params: { screen: `Posts_${tab._id}` },
       merge: true,
     });
-    console.log('route', route.params);
   };
 
   const onCreatePostPress = () => {

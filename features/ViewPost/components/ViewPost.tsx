@@ -25,7 +25,6 @@ import { useGetCommentsByPostIdState } from '../../../api/hooks/useGetCommentsBy
 import { useGetReactionsByPostId } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
-import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 import { StatusBar } from 'react-native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
@@ -34,13 +33,19 @@ import { CurrentSpaceContext } from '../../../providers';
 import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { useGetReactionsByPostIdResult } from '../../../api';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+// import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 
-type IViewPost = {
-  posts: PostType[];
-  currentPostIndex: number;
-  currentPost: PostType;
-  onCurrentPostChange: (post: PostType) => void;
-};
+// type IViewPost = {
+//   posts: PostType[];
+//   currentPostIndex: number;
+//   currentPost: PostType;
+//   onCurrentPostChange: (post: PostType) => void;
+// };
+
+type IViewPost = NativeStackScreenProps<ViewPostStackNavigatorParams, 'ViewPost'>;
 
 function timeSince(date: Date) {
   const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
@@ -68,21 +73,16 @@ function timeSince(date: Date) {
   return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
 }
 
-export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPostChange, currentPostIndex }) => {
+export const ViewPost: React.FC<IViewPost> = ({ route }) => {
+  const { posts, index } = route.params;
   const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
-  const {
-    getPostsApiResult,
-    getPostsByTagIdAndRegionResult,
-    setCurrentPost,
-    // currentPost,
-    onCurrentPostIndexChange,
-    // viewPostsType,
-  } = useContext(TagScreenContext);
   const viewPostFlashMessageRef = useRef<FlashMessage>();
   const { currentSpace } = useContext(CurrentSpaceContext);
+  const spaceStackNavigator = useNavigation<SpaceStackNavigatorProps>();
 
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
-  // const { apiResult: getReactionsByPostIdResult, requestApi: requestGetReactionsByPostId } = useGetReactionsByPostId();
+
+  const [currentPost, setCurrentPost] = useState<PostType>(posts[index]);
 
   const { requestGetReactionsBySpaceId } = useGetReactionsByPostIdResult(currentPost._id);
   const [getReactionsByPostIdResult] = useRecoilState(getReactionsByPostIdResultAtomFamily(currentPost._id));
@@ -150,7 +150,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach((element) => {
       if (element.isViewable) {
-        onCurrentPostChange(element.item);
+        setCurrentPost(element.item);
         // onCurrentPostIndexChange(element.item);
         // setCurrentPost(element.item);
       }
@@ -178,7 +178,12 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
   };
 
   const handleHorizontalDotsPress = () => {
-    viewStackNavigation.navigate('ReportPost');
+    spaceStackNavigator.navigate({
+      name: 'ViewPostStackNavigator',
+      params: {
+        screen: 'ReportPost',
+      },
+    });
   };
 
   // console.log('post', JSON.stringify(posts[currentPostIndex], null, 2));
@@ -195,7 +200,7 @@ export const ViewPost: React.FC<IViewPost> = ({ posts, currentPost, onCurrentPos
         decelerationRate={'normal'}
         onViewableItemsChanged={onViewableItemsChanged.current}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-        initialScrollIndex={currentPostIndex}
+        initialScrollIndex={index}
         getItemLayout={(data, index) => ({
           length: Dimensions.get('window').height, // Set the height of each item
           offset: Dimensions.get('window').height * index, // Calculate the offset based on the index

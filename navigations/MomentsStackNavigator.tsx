@@ -10,13 +10,16 @@ import { VectorIcon } from '../Icons';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
 import { CreateNewPostStackParams } from './CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../providers';
+import { MomentsStackParams } from '.';
 
-type MomentsStackParams = {
-  Moments: undefined;
-  ViewPostStackNavigator: undefined;
-  CreateNewPostStackNavigator: NativeStackScreenProps<CreateNewPostStackParams>;
-};
-export type MomentsStackNavigatorProps = NativeStackNavigationProp<MomentsStackParams>;
+// navigatior系を全部一箇所のまとめた方がいいよな。。すげー面倒くさくなってきている。。。
+// type MomentsStackParams = {
+//   Moments: undefined;
+//   ViewPostStackNavigator: undefined;
+//   CreateNewPostStackNavigator: NativeStackScreenProps<CreateNewPostStackParams>;
+// };
+
+// export type MomentsStackNavigatorProps = NativeStackNavigationProp<MomentsStackParams>;
 const MomentsStack = createNativeStackNavigator();
 
 export const MomentsStackNavigator = () => {
@@ -65,7 +68,7 @@ export const MomentsStackNavigator = () => {
                   <VectorIcon.AD name='question' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
-              headerTitle: 'Moments',
+              headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
               },
@@ -76,11 +79,13 @@ export const MomentsStackNavigator = () => {
               },
             })}
           />
+        </MomentsStack.Group>
+        <MomentsStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <MomentsStack.Screen
             name='ViewPostStackNavigator'
             component={ViewPostStackNavigator}
             options={({ navigation }) => ({
-              headerLeft: () => (
+              headerRight: () => (
                 <AppButton.Icon
                   onButtonPress={() => navigation.goBack()}
                   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
@@ -100,8 +105,6 @@ export const MomentsStackNavigator = () => {
               },
             })}
           />
-        </MomentsStack.Group>
-        <MomentsStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <MomentsStack.Screen
             name='CreateNewPostStackNavigator'
             component={CreateNewPostStackNavigator}

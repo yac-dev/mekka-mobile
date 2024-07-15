@@ -11,7 +11,7 @@ import ViewPost from '../features/ViewPost/pages/ViewPost';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount } from '../features';
 import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
-import { SpaceType } from '../types';
+import { PostType, SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
@@ -19,6 +19,7 @@ import { MomentsStackNavigator } from './MomentsStackNavigator';
 import { DiscoverStackNavigator } from './DiscoverStackNavigator';
 import { Home } from '../features/Home/pages';
 import { SpaceStackNavigator } from './SpaceStackNavigator';
+import { SpaceStackParams } from './SpaceStackNavigator';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -40,29 +41,35 @@ export type SpaceRootStackParams = {
   MomentsStackNavigator: undefined;
 };
 
+export type MomentsStackParams = {
+  Moments: undefined;
+};
+
+export type ViewPostStackNavigatorParams = {
+  ViewPost: {
+    posts: PostType[];
+    index: number;
+  };
+  ViewGridPost: undefined;
+  ViewRegionPost: undefined;
+  CommentsPage: undefined;
+  ReportPost: undefined;
+  ReportComment: undefined;
+};
+
+export type MomentsStackNavigatorProps = NativeStackNavigationProp<MomentsStackParams>;
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
-type SpacesDrawerParams = {
-  [key: string]: NavigatorScreenParams<SpaceRootStackParams>;
-  MomentsStackNavigator: undefined;
-};
-
-export type SpaceStackNavigatorParams = {
-  Space: {
-    space: SpaceType;
-  };
-  CreateNewPostStackNavigator: undefined;
-};
-
+// これviewPost共通となるとさ、、、多分ここにViewStackNavigatorを入れた方がいいのかね。。。なんかそんな感じする。
+// userのstack navigatorとかもここに入れる感じになるよね。。。
 export type HomeStackParams = {
   // Home: NavigatorScreenParams<SpacesDrawerParams>;
   Home: undefined;
-  // SpaceRootStackNavigator: NavigatorScreenParams<SpaceRootStackParams>;
-  SpaceStackNavigator: NavigatorScreenParams<SpaceStackNavigatorParams>;
+  SpaceStackNavigator: NavigatorScreenParams<SpaceStackParams>;
+  MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
+  ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
   ViewPost: undefined;
-  Comments: undefined;
   DiscoverStackNavigator: undefined;
-  MomentsStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
   EnterPrivateSpace: undefined;
   SpaceDetailStackNavigator: undefined;
@@ -80,7 +87,7 @@ export type HomeStackParams = {
 };
 
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
-export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackNavigatorParams>;
+export type SpaceStackNavigatorProps = NativeStackNavigationProp<SpaceStackParams>;
 
 const HomeStack = createNativeStackNavigator<HomeStackParams>();
 

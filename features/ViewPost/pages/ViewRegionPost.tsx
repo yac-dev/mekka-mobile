@@ -12,6 +12,7 @@ type IViewGridPost = {
 
 type IViewRegionPost = NativeStackScreenProps<ViewPostStackNavigatorParams, 'ViewGridPost'>;
 
+// 結局さ、tag自体はpropsで渡してくればいいよね、ていうことにはなっている。。。
 export const ViewRegionPost: React.FC<IViewRegionPost> = ({ route }) => {
   const { tag, currentPostIndex } = route.params;
   const getPostsByTagIdAndRegionResult = useRecoilValue(getPostsByTagIdAndRegionResultAtomFamily(tag._id));

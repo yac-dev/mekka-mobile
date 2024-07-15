@@ -32,6 +32,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
+  // currentPost自体はscrollのたびに更新しなきゃいけない罠。。
   const videoRef = useRef(null);
 
   // どうしてもskipしちゃうのがあって、それ困るよね。
@@ -64,9 +65,20 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
 
   // NOTE: 多分、indexではなくpostでいんじゃないかなー。view post側でpostの_idでloopすればいいだけだから。。。ただ、postの数が多い場合はllopが面倒くさいか。
   const onPressPostThumbnail = (post: PostType, index: number) => {
+    // spaceNavigation.navigate({
+    //   name: 'ViewPostStackNavigator',
+    //   params: { screen: 'ViewPost', params: { tag, currentPostIndex: index } },
+    // });
+    // const onCurrentPostChange = (post: PostType) => {
+    //   setCurrentPost(post);
+    // };
+
     spaceNavigation.navigate({
       name: 'ViewPostStackNavigator',
-      params: { screen: 'ViewGridPost', params: { tag, currentPostIndex: index } },
+      params: {
+        screen: 'ViewPost',
+        params: { posts: getPostsByTagIdResult.data.posts, index: index },
+      },
     });
   };
 
