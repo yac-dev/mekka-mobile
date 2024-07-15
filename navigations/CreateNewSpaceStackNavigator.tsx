@@ -21,6 +21,7 @@ import { showMessage } from 'react-native-flash-message';
 import FlashMessage from 'react-native-flash-message';
 import { useContext } from 'react';
 import { SnackBarContext } from '../providers';
+import { TemplateSelection } from '../features/CreateNewSpace/pages';
 
 export type CreateNewSpaceStackParams = {
   Overview: undefined;
@@ -44,6 +45,32 @@ const CreateNewSpaceStackNavigator = () => {
     <CreateNewSpaceProvider>
       <CreateNewSpaceStack.Navigator>
         <CreateNewSpaceStack.Group>
+          <CreateNewSpaceStack.Screen
+            name='TemplateSelection'
+            component={TemplateSelection}
+            options={({ navigation }) => ({
+              headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => {
+                    navigation.goBack();
+                  }}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
           <CreateNewSpaceStack.Screen
             name='Overview'
             component={Overview}
