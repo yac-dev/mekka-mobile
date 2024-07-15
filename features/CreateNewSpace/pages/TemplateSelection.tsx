@@ -1,8 +1,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { VectorIcon } from '../../../Icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+import * as ImagePicker from 'expo-image-picker';
+import { Image as ExpoImage } from 'expo-image';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 
 export const TemplateSelection = () => {
+  const createNewSpaceStackNavigation = useNavigation<CreateNewSpaceStackProps>();
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View
@@ -33,7 +41,7 @@ export const TemplateSelection = () => {
       </View>
       <TouchableOpacity
         style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-        onPress={() => console.log('hello')}
+        onPress={() => createNewSpaceStackNavigation.navigate('Base')}
         // baseに行きながらも、全てからでの状態でいく感じか。
         activeOpacity={0.5}
       >

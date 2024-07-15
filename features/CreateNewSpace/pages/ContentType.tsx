@@ -36,27 +36,6 @@ const ContentType = () => {
   const pickerMinRef = useRef();
   const pickerSecRef = useRef();
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Moment')}
-          disabled={formData.contentType.isValidated ? false : true}
-        >
-          <Text
-            style={{
-              color: formData.contentType.isValidated ? 'white' : 'rgb(100,100,100)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Next
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.contentType]);
-
   // 最初の初期設定60秒をここでまず設定する。
   useEffect(() => {
     const res = formatTime(formData.videoLength.value);

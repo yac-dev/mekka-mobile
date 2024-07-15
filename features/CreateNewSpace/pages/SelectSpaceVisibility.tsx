@@ -14,24 +14,6 @@ const SelectSpaceVisibility = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, onIsPubcliChange } = useContext(CreateNewSpaceContext);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('ContentType')} disabled={!formData.isPublic.isValidated}>
-          <Text
-            style={{
-              color: !formData.name.isValidated || !formData.icon.isValidated ? 'rgb(100,100,100)' : 'white',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Next
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.isPublic]);
-
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 50 }}>

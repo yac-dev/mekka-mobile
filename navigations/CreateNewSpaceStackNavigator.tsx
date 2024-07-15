@@ -21,9 +21,11 @@ import { showMessage } from 'react-native-flash-message';
 import FlashMessage from 'react-native-flash-message';
 import { useContext } from 'react';
 import { SnackBarContext } from '../providers';
-import { TemplateSelection } from '../features/CreateNewSpace/pages';
+import { TemplateSelection, Base } from '../features/CreateNewSpace/pages';
 
 export type CreateNewSpaceStackParams = {
+  TemplateSelection: undefined;
+  Base: undefined;
   Overview: undefined;
   SelectSpaceVisibility: undefined;
   ContentType: undefined;
@@ -49,7 +51,7 @@ const CreateNewSpaceStackNavigator = () => {
             name='TemplateSelection'
             component={TemplateSelection}
             options={({ navigation }) => ({
-              headerShown: true, // ここtrueにすると、,,,
+              headerShown: true,
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => {
@@ -59,6 +61,32 @@ const CreateNewSpaceStackNavigator = () => {
                   hasShadow={false}
                 >
                   <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <CreateNewSpaceStack.Screen
+            name='Base'
+            component={Base}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => {
+                    navigation.goBack();
+                  }}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
               headerTitle: '',
