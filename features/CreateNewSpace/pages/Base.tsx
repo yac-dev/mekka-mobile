@@ -175,7 +175,6 @@ const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value }) =
         marginBottom: 10,
       }}
       onPress={onCellPress}
-      // baseに行きながらも、全てからでの状態でいく感じか。
       activeOpacity={0.8}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
