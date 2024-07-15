@@ -11,7 +11,6 @@ export const createPost = async (input: CreatePostInputType): Promise<CreatePost
 
     payload.append('disappearAfter', input.disappearAfter);
     payload.append('type', input.postType.value);
-    payload.append('reactions', JSON.stringify(input.reactions));
     payload.append('caption', input.caption.value);
     payload.append('createdTags', JSON.stringify(filteredCreatedTags));
     payload.append('addedTags', JSON.stringify(filteredAddedTags));

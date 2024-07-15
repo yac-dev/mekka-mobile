@@ -7,12 +7,10 @@ export const createMoment = async (input: CreateMomentInputType): Promise<Create
     // const filteredAddedTags = Object.values(input.addedTagsTable.value)
     //   .filter((element) => !element.created)
     //   .map((element) => element._id);
-    console.log('working///');
     const payload = new FormData();
 
     payload.append('disappearAfter', input.disappearAfter);
     payload.append('type', input.postType.value);
-    payload.append('reactions', JSON.stringify(input.reactions));
     payload.append('caption', input.caption.value);
     // payload.append('createdTags', JSON.stringify(filteredCreatedTags));
     // payload.append('addedTags', JSON.stringify(filteredAddedTags));

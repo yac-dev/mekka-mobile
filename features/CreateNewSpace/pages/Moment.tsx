@@ -101,7 +101,7 @@ const Moment = () => {
   };
 
   const renderMinPickerItemsFromFiveToFiftyNine = () => {
-    const fromFiveToFityNine = Array.from({ length: 55 }, (x, i) => i + 5);
+    const fromFiveToFityNine = Array.from({ length: 59 }, (x, i) => i + 1);
     const list = fromFiveToFityNine.map((min, index) => {
       return <Picker.Item key={index} label={min.toString()} value={min.toString()} color='white' />;
     });
