@@ -26,23 +26,23 @@ const Description = () => {
   const { apiResult, requestApi } = useCreateSpace();
   const textInputRef = useRef(null);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={() => onCreate()} disabled={formData.description.isValidated ? false : true}>
-          <Text
-            style={{
-              color: formData.description.isValidated ? 'white' : 'rgb(170,170,170)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Create
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.description]);
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity onPress={() => onCreate()} disabled={formData.description.isValidated ? false : true}>
+  //         <Text
+  //           style={{
+  //             color: formData.description.isValidated ? 'white' : 'rgb(170,170,170)',
+  //             fontSize: 20,
+  //             fontWeight: 'bold',
+  //           }}
+  //         >
+  //           Create
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [formData.description]);
 
   useEffect(() => {
     if (apiResult.status === 'success') {
@@ -74,7 +74,7 @@ const Description = () => {
       <Text
         style={{
           fontSize: 20,
-          color: formData.description.isValidated ? 'rgb(170,170,170)' : 'red',
+          color: 'rgb(170,170,170)',
           textAlign: 'right',
           marginBottom: 10,
         }}

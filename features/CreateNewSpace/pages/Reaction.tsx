@@ -22,35 +22,35 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
     }
   }, [route?.params?.selectedReactions]);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Description')}
-          disabled={
-            (formData.isReactionAvailable.value && formData.reactions.isValidated) ||
-            !formData.isReactionAvailable.value
-              ? false
-              : true
-          }
-        >
-          <Text
-            style={{
-              color:
-                (formData.isReactionAvailable.value && formData.reactions.isValidated) ||
-                !formData.isReactionAvailable.value
-                  ? 'white'
-                  : 'rgb(170,170,170)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Next
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.isReactionAvailable, formData.reactions]);
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity
+  //         onPress={() => navigation.navigate('Description')}
+  //         disabled={
+  //           (formData.isReactionAvailable.value && formData.reactions.isValidated) ||
+  //           !formData.isReactionAvailable.value
+  //             ? false
+  //             : true
+  //         }
+  //       >
+  //         <Text
+  //           style={{
+  //             color:
+  //               (formData.isReactionAvailable.value && formData.reactions.isValidated) ||
+  //               !formData.isReactionAvailable.value
+  //                 ? 'white'
+  //                 : 'rgb(170,170,170)',
+  //             fontSize: 20,
+  //             fontWeight: 'bold',
+  //           }}
+  //         >
+  //           Next
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [formData.isReactionAvailable, formData.reactions]);
 
   const renderSelectedReactions = () => {
     if (formData.isReactionAvailable.value) {

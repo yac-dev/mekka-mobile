@@ -35,24 +35,24 @@ const Moment = () => {
     setSelectedMin(res.minutes.toString());
   }, []);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('Reaction')}>
-          <Text
-            style={{
-              color: 'white',
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity onPress={() => navigation.navigate('Reaction')}>
+  //         <Text
+  //           style={{
+  //             color: 'white',
 
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Next
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, []);
+  //             fontSize: 20,
+  //             fontWeight: 'bold',
+  //           }}
+  //         >
+  //           Next
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, []);
 
   useEffect(() => {
     const minutes = calculateMinutes(selectedHour, selectedMin);
