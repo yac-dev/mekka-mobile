@@ -118,6 +118,7 @@ export const Base = () => {
           icon={<VectorIcon.MI name='public' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Visibility'
           value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
+          requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
@@ -132,6 +133,7 @@ export const Base = () => {
                 : 'Photo & Video'
               : ''
           }
+          requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Moment')}
@@ -150,18 +152,25 @@ export const Base = () => {
           icon={<VectorIcon.II name='thumbs-up-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Reaction'
           value={formData.isReactionAvailable.value ? 'Available' : 'Unavailable'}
+          requirementText={
+            formData.isReactionAvailable.value && !formData.reactions.value.length
+              ? 'Please set at least one option.'
+              : undefined
+          }
         />
         <MenuCell
           onCellPress={() => null}
           icon={<VectorIcon.FD name='comments' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Comment'
           value={formData.isCommentAvailable.value ? 'Available' : 'Unavailable'}
+          requirementText={'Required to choose'}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Description')}
           icon={<VectorIcon.MI name='public' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Description'
-          value={formData.description.value}
+          value={formData.description.value.replace(/\n/g, '')}
+          requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
         />
       </ScrollView>
     </View>
@@ -173,9 +182,10 @@ type MenuCellProp = {
   icon: React.ReactNode;
   title: string;
   value: string;
+  requirementText?: string;
 };
 
-const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value }) => {
+const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, requirementText }) => {
   return (
     <TouchableOpacity
       style={{
@@ -184,17 +194,29 @@ const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value }) =
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 10,
+        marginBottom: 5,
       }}
       onPress={onCellPress}
       activeOpacity={0.8}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {icon}
-        <Text style={{ color: 'white', fontSize: 17 }}>{title}</Text>
+        <View>
+          <Text style={{ color: 'white', fontSize: 17, marginBottom: requirementText !== undefined ? 0 : 4 }}>
+            {title}
+          </Text>
+          {requirementText !== undefined && (
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>{requirementText}</Text>
+          )}
+        </View>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ fontSize: 15, color: 'rgb(170,170,170)', marginRight: 5 }}> {value}</Text>
+        <Text
+          numberOfLines={1}
+          style={{ fontSize: 15, color: 'rgb(170,170,170)', marginRight: 5, width: 100, textAlign: 'right' }}
+        >
+          {value}
+        </Text>
         <VectorIcon.MCI name='chevron-right' size={20} color='white' />
       </View>
     </TouchableOpacity>
