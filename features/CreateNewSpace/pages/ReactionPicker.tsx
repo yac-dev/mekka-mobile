@@ -1,5 +1,5 @@
 import React, { useState, useContext, memo, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions, TextInput } from 'react-native';
 import { emojis } from '../../../utils/emojis';
 import { ReactionPickerContext, ReactionPickerProvider } from '../contexts/ReactionPickerProvider';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,7 +17,8 @@ import { Image as ExpoImage } from 'expo-image';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewSpaceStackParams, CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 import { useNavigation } from '@react-navigation/native';
-import { SelectedReactions, ReactionCategoryBottomTab } from '../components';
+import { SelectedReactions, ReactionCategoryBottomTab, SelectedReaction } from '../components';
+import { VectorIcon } from '../../../Icons';
 
 // まずreacttionをどういう形で作っているか、それを見るべきだよね。。。
 const Tab = createBottomTabNavigator();
@@ -29,9 +30,10 @@ const emojiTypes = ['People', 'Symbols', 'Nature', 'Food', 'Activity', 'Travel',
 
 const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
+  const { selectedReactionOption, onCaptionChange } = useContext(ReactionPickerContext);
   // const [selectedReactions, setSelectedReactions] = useState({}); // {emoji: true}
   // ここでemojiOptionsを持っておかないとだめかね。。。
+  // ここでcontextとれないわな。。。ミスったわ。。。
 
   // useEffect(() => {
   //   if (route.params.reactions) {
@@ -210,10 +212,14 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   //   }
   // };
 
+  // ここ、scrollの挙動遊ぶの面白そう。。。
+
+  console.log('selected', selectedReactionOption);
+
   return (
     <ReactionPickerProvider>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 10 }}>
+        {/* <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 10 }}>
           <Text
             style={{
               color: 'white',
@@ -225,8 +231,9 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
           >
             Add Reactions
           </Text>
-        </View>
-        <SelectedReactions reactions={route.params.reactions} />
+        </View> */}
+        <SelectedReaction />
+        {/* <SelectedReactions reactions={route.params.reactions} /> */}
         <ReactionCategoryBottomTab />
       </View>
     </ReactionPickerProvider>

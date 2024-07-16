@@ -12,9 +12,16 @@ type EmojisCategoryProps = {
   category: string;
 };
 
-export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category }) => {
+export const EmojisByCategory: React.FC<EmojisCategoryProps> = ({ category }) => {
   const { setSnackBar } = useContext(SnackBarContext);
-  const { selectedReactions, setSelectedReactions, onEmojiPress } = useContext(ReactionPickerContext);
+  const {
+    selectedReactions,
+    setSelectedReactions,
+    onEmojiPress,
+    onEmojiChange,
+    onCaptionChange,
+    selectedReactionOption,
+  } = useContext(ReactionPickerContext);
   // まずは、ここでcontextをconsumeすることで、componentのrerenderingがおこってしまっていると。
   const oneGridWidth = Dimensions.get('window').width / 9;
 
@@ -31,7 +38,8 @@ export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category 
             alignItems: 'center',
             borderRadius: 10,
           }}
-          onPress={() => onEmojiPress(item)}
+          onPress={() => onEmojiChange(item)}
+          activeOpacity={0.7}
         >
           <Text style={{ fontSize: 35 }}>{emojis[`:${item}:`]}</Text>
         </TouchableOpacity>
@@ -39,7 +47,6 @@ export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category 
     );
   };
 
-  // flashlistすごいな。なんか早くなったぞ。。。
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
@@ -48,6 +55,7 @@ export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category 
         keyExtractor={(item) => item}
         numColumns={9}
         contentContainerStyle={{ paddingTop: 5 }}
+        // extraData={selectedReactionOption}
         // removeClippedSubviews
         // initialNumToRender={300}
         // maxToRenderPerBatch={}
@@ -55,4 +63,55 @@ export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category 
       />
     </View>
   );
-});
+};
+// export const EmojisByCategory: React.FC<EmojisCategoryProps> = memo(({ category }) => {
+//   const { setSnackBar } = useContext(SnackBarContext);
+//   const {
+//     selectedReactions,
+//     setSelectedReactions,
+//     onEmojiPress,
+//     onEmojiChange,
+//     onCaptionChange,
+//     selectedReactionOption,
+//   } = useContext(ReactionPickerContext);
+//   // まずは、ここでcontextをconsumeすることで、componentのrerenderingがおこってしまっていると。
+//   const oneGridWidth = Dimensions.get('window').width / 9;
+
+//   const renderItem = ({ item }: { item: string }) => {
+//     return (
+//       <View style={{ width: oneGridWidth, aspectRatio: 1, padding: 3 }}>
+//         <TouchableOpacity
+//           style={{
+//             width: '100%',
+//             height: '100%',
+//             // backgroundColor: selectedReactions[emojis[`:${item}:`]] ? 'rgb(70,70,70)' : 'black',
+//             backgroundColor: 'black',
+//             justifyContent: 'center',
+//             alignItems: 'center',
+//             borderRadius: 10,
+//           }}
+//           onPress={() => onEmojiChange(item)}
+//         >
+//           <Text style={{ fontSize: 35 }}>{emojis[`:${item}:`]}</Text>
+//         </TouchableOpacity>
+//       </View>
+//     );
+//   };
+
+//   return (
+//     <View style={{ flex: 1, backgroundColor: 'black' }}>
+//       <FlashList
+//         data={emojisByCategory[category]}
+//         renderItem={renderItem}
+//         keyExtractor={(item) => item}
+//         numColumns={9}
+//         contentContainerStyle={{ paddingTop: 5 }}
+//         // extraData={selectedReactionOption}
+//         // removeClippedSubviews
+//         // initialNumToRender={300}
+//         // maxToRenderPerBatch={}
+//         estimatedItemSize={300}
+//       />
+//     </View>
+//   );
+// });

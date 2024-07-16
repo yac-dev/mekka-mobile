@@ -98,9 +98,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center', marginLeft: 10 }}>
-                    Add reaction options
-                  </Text>
+                  <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center', marginLeft: 10 }}>Add New</Text>
                 </View>
               </View>
               <MaterialCommunityIcons name='plus' color='white' size={20} style={{ marginRight: 10 }} />
@@ -138,7 +136,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => onReactionAvailabilityChange(true)}
-          activeOpacity={0.5}
+          activeOpacity={0.7}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name='thumbs-up' color='white' size={20} style={{ marginRight: 20 }} />
@@ -155,7 +153,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => onReactionAvailabilityChange(false)}
-          activeOpacity={0.5}
+          activeOpacity={0.7}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ marginRight: 20 }}>

@@ -7,10 +7,20 @@ type StickerType = {
   url: string;
 };
 
-export type ReactionType = {
-  type: 'emoji' | 'sticker';
-  emoji: string | undefined;
-  sticker: StickerType | undefined;
+export type ReactionType = EmojiReactionType | StickerReactionType | undefined;
+
+export type EmojiReactionType = {
+  type: 'emoji';
+  emoji: string;
+  sticker: undefined;
+  caption: string;
+};
+
+export type StickerReactionType = {
+  type: 'sticker';
+  emoji: undefined;
+  sticker: StickerType;
+  caption: string;
 };
 
 type SelectedReactionsType = {
@@ -21,12 +31,18 @@ type ReactionPickerContextType = {
   selectedReactions: SelectedReactionsType;
   setSelectedReactions: React.Dispatch<React.SetStateAction<SelectedReactionsType>>;
   onEmojiPress: (emoji: string) => void;
+  selectedReactionOption: ReactionType | undefined;
+  onEmojiChange: (emoji: string) => void;
+  onCaptionChange: (caption: string) => void;
 };
 
 export const ReactionPickerContext = createContext<ReactionPickerContextType>({
   selectedReactions: {},
   setSelectedReactions: () => {},
   onEmojiPress: () => {},
+  selectedReactionOption: undefined,
+  onEmojiChange: () => {},
+  onCaptionChange: () => {},
 });
 
 type ReactionPickerProviderProps = {
@@ -36,6 +52,42 @@ type ReactionPickerProviderProps = {
 export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ children }) => {
   const { setSnackBar } = useContext(SnackBarContext);
   const [selectedReactions, setSelectedReactions] = useState<SelectedReactionsType>({});
+  const [selectedReactionOption, setSelectedReactionOption] = useState<ReactionType | undefined>(undefined);
+
+  // const onEmojiChange = useCallback(
+  //   (emoji: string) => {
+  //     setSelectedReactionOption((previous) => {
+  //       return {
+  //         ...previous,
+  //         type: 'emoji',
+  //         emoji: emojis[`:${emoji}:`],
+  //         sticker: undefined,
+  //       };
+  //     });
+  //   },
+  //   [selectedReactionOption]
+  // );
+
+  const onEmojiChange = (emoji: string) => {
+    console.log('happening???');
+    setSelectedReactionOption((previous) => {
+      return {
+        ...previous,
+        type: 'emoji',
+        emoji: emojis[`:${emoji}:`],
+        sticker: undefined,
+      };
+    });
+  };
+
+  const onCaptionChange = (caption: string) => {
+    setSelectedReactionOption((previous) => {
+      return {
+        ...previous,
+        caption,
+      };
+    });
+  };
 
   const onEmojiPress = useCallback(
     (emoji: string) => {
@@ -71,6 +123,9 @@ export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ 
         selectedReactions,
         setSelectedReactions,
         onEmojiPress,
+        selectedReactionOption,
+        onEmojiChange,
+        onCaptionChange,
       }}
     >
       {children}

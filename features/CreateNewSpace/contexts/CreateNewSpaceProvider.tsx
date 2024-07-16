@@ -57,6 +57,7 @@ type ReactionType = {
   type: 'emoji' | 'sticker';
   emoji: string | undefined;
   sticker: StickerType | undefined;
+  caption: string;
 };
 
 type FormType<T> = {
