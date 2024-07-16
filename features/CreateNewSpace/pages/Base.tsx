@@ -9,6 +9,18 @@ import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceSta
 import { VectorIcon } from '../../../Icons';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
+const convertMinutesToHoursAndMinutes = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (hours === 0) {
+    return `${minutes} m`;
+  } else if (remainingMinutes === 0) {
+    return `${hours} h`;
+  } else {
+    return `${hours} h ${remainingMinutes} m`;
+  }
+};
 
 export const Base = () => {
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
@@ -112,7 +124,7 @@ export const Base = () => {
           icon={<VectorIcon.II name='image' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Content'
           value={
-            formData.contentType.value !== undefined
+            formData.contentType.value
               ? formData.contentType.value === 'photo'
                 ? 'Only Photo'
                 : formData.contentType.value === 'video'
@@ -131,20 +143,20 @@ export const Base = () => {
             />
           }
           title='Moment'
-          value={String(formData.disappearAfter.value)}
+          value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Reaction')}
           icon={<VectorIcon.II name='thumbs-up-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Reaction'
-          value='Image'
+          value={formData.isReactionAvailable.value ? 'Available' : 'Unavailable'}
         />
-        {/* <MenuCell
-          onCellPress={() => createNewSpaceNavigation.navigate('Comment')}
+        <MenuCell
+          onCellPress={() => null}
           icon={<VectorIcon.FD name='comments' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Comment'
-          value='Image'
-        /> */}
+          value={formData.isCommentAvailable.value ? 'Available' : 'Unavailable'}
+        />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Description')}
           icon={<VectorIcon.MI name='public' size={20} color='white' style={{ marginRight: 10 }} />}
