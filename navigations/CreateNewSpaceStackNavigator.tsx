@@ -31,11 +31,11 @@ export type CreateNewSpaceStackParams = {
   ContentType: undefined;
   Moment: undefined;
   Reaction: {
-    selectedReactions?: ReactionType[];
+    selectedReaction?: ReactionType;
   };
   Description: undefined;
   ReactionPicker: {
-    reactions?: ReactionType[];
+    index?: number;
   };
   CreateNewSticker: undefined;
 };

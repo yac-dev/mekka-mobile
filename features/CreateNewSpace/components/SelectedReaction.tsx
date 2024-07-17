@@ -6,9 +6,11 @@ import { VectorIcon } from '../../../Icons';
 import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 
 export const SelectedReaction = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const { formData, setFormData } = useContext(CreateNewSpaceContext);
   const { selectedReactionOption, onCaptionChange } = useContext(ReactionPickerContext);
 
   // useEffect(() => {
@@ -27,20 +29,42 @@ export const SelectedReaction = () => {
   //   }
   // }, [reactions]);
 
+  // paramsじゃなくて、もうここでformDateを更新するようにしようか。。。
+  const onAddPress = () => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        reactions: {
+          ...previous.reactions,
+          value: [...previous.reactions.value, selectedReactionOption],
+          isValidated: true,
+        },
+      };
+    });
+    // ここでもうaddすればよくて、わざわざreactionへもっていってaddする必要はないね。
+    navigation.navigate('Reaction');
+  };
+
+  const isAddInValid = () => {
+    if (!selectedReactionOption) return true;
+    if (selectedReactionOption && selectedReactionOption.type === 'emoji' && !selectedReactionOption.emoji) return true;
+    if (selectedReactionOption && selectedReactionOption.type === 'sticker' && !selectedReactionOption.sticker)
+      return true;
+
+    return false;
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => console.log('hllo')}
-          // disabled={Object.keys(selectedReactions).length && Object.keys(selectedReactions).length < 7 ? false : true}
+          onPress={() => onAddPress()}
+          // selectedOptionがあるかつ、type emojiでemojiがある場合、またはselectedOptionがあるかつtypeがstickerでstickerがあるときのみfalseにする。
+          disabled={isAddInValid()}
         >
           <Text
             style={{
-              color:
-                (selectedReactionOption && selectedReactionOption.emoji) ||
-                (selectedReactionOption && selectedReactionOption.sticker)
-                  ? 'white'
-                  : 'rgb(117,117, 117)',
+              color: isAddInValid() ? 'rgb(117,117,117)' : 'white',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -67,8 +91,6 @@ export const SelectedReaction = () => {
       );
     }
   };
-
-  console.log('selected', selectedReactionOption);
 
   return (
     <View>
@@ -104,7 +126,7 @@ export const SelectedReaction = () => {
               flex: 1,
               paddingVertical: 10,
             }}
-            placeholder='e.g.) Nice'
+            placeholder='e.g.) Like it!'
             placeholderTextColor={'rgb(170,170,170)'}
             autoCapitalize='none'
             value={selectedReactionOption?.caption}

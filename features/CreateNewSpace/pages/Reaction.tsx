@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
@@ -12,15 +12,18 @@ import { VectorIcon } from '../../../Icons';
 
 type ReactionProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'Reaction'>;
 
+const itemWidth = Dimensions.get('window').width / 3.5;
+const reactionContainerWidth = itemWidth * 0.7;
+
 const Reaction: React.FC<ReactionProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, onReactionAvailabilityChange, onReactionsChange } = useContext(CreateNewSpaceContext);
 
-  useEffect(() => {
-    if (route?.params?.selectedReactions) {
-      onReactionsChange(route?.params?.selectedReactions);
-    }
-  }, [route?.params?.selectedReactions]);
+  // useEffect(() => {
+  //   if (route?.params?.selectedReactions) {
+  //     onReactionsChange(route?.params?.selectedReactions);
+  //   }
+  // }, [route?.params?.selectedReactions]);
 
   // useEffect(() => {
   //   navigation.setOptions({
@@ -56,57 +59,138 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
     if (formData.isReactionAvailable.value) {
       const list = formData.reactions.value.map((reactionObject, index) => {
         return (
-          <TouchableOpacity
+          <View
             key={index}
             style={{
-              width: 50,
-              height: 50,
-              backgroundColor: 'rgb(80, 80, 80)',
-              borderRadius: 15,
+              // backgroundColor: 'blue',
+              // backgroundColor: 'rgb(70, 70, 70)',
+              // borderRadius: 10,
               justifyContent: 'center',
               alignItems: 'center',
-              marginRight: 8,
+              // marginRight: 10,
+              width: itemWidth,
+              aspectRatio: 1,
+              padding: 5,
+              // marginBottom: 10,
             }}
-            onPress={() => navigation.navigate('ReactionPicker', { reactions: formData.reactions.value })}
           >
-            {reactionObject.type === 'emoji' ? (
-              <Text style={{ fontSize: 40 }}>{reactionObject.emoji}</Text>
+            <View
+              style={{
+                // backgroundColor: 'rgb(70, 70, 70)',
+                width: reactionContainerWidth,
+                aspectRatio: 1,
+                borderRadius: reactionContainerWidth / 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                marginBottom: 4,
+              }}
+            >
+              {reactionObject.type === 'emoji' ? (
+                <View>
+                  <View
+                    style={{
+                      width: reactionContainerWidth * 0.6,
+                      aspectRatio: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // marginBottom: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: (reactionContainerWidth / 2) * 1.15,
+                      }}
+                    >
+                      {reactionObject.emoji}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <View>
+                  <View
+                    style={{
+                      width: reactionContainerWidth * 0.6,
+                      aspectRatio: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginBottom: 5,
+                    }}
+                  >
+                    <ExpoImage
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                      source={{ uri: reactionObject.sticker.url }}
+                      contentFit='contain'
+                    />
+                  </View>
+                </View>
+              )}
+            </View>
+
+            {reactionObject.caption?.length ? (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  // backgroundColor: 'rgb(70,70,70)',
+                  maxWidth: itemWidth,
+                }}
+              >
+                <Text numberOfLines={1} style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
+                  {reactionObject.caption}
+                </Text>
+              </View>
             ) : (
-              <ExpoImage
-                style={{ width: 40, height: 40 }}
-                source={{ uri: reactionObject.sticker.url }}
-                contentFit='cover'
-              />
+              <View>
+                <Text></Text>
+              </View>
             )}
-          </TouchableOpacity>
+          </View>
         );
       });
 
       return (
         <View>
-          {formData.reactions.value.length === 6 ? null : (
-            <TouchableOpacity
-              style={{
-                padding: 15,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 15,
-              }}
-              onPress={() => navigation.navigate('ReactionPicker', { reactions: formData.reactions.value })}
-              activeOpacity={1}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View>
-                  <Text style={{ color: 'rgb(180, 180, 180)', textAlign: 'center', marginLeft: 10 }}>Add New</Text>
+          <ScrollView horizontal>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {formData.reactions.value.length === 6 ? null : (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // marginRight: 10,
+                    width: itemWidth,
+                    aspectRatio: 1,
+                    padding: 5,
+                    // marginBottom: 10,
+                  }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => navigation.navigate('ReactionPicker')}
+                    style={{
+                      // backgroundColor: 'rgb(70, 70, 70)',
+                      width: reactionContainerWidth,
+                      aspectRatio: 1,
+                      borderRadius: reactionContainerWidth / 2,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'rgb(50,50,50)',
+                      marginBottom: 4,
+                    }}
+                  >
+                    <VectorIcon.MCI name='plus' size={30} color={'white'} />
+                  </TouchableOpacity>
+                  <Text style={{ color: 'white', fontSize: 15 }}>Add new</Text>
                 </View>
-              </View>
-              <MaterialCommunityIcons name='plus' color='white' size={20} style={{ marginRight: 10 }} />
-            </TouchableOpacity>
-          )}
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 20 }}>
-            {formData.reactions.value.length ? list : null}
-          </View>
+              )}
+
+              {formData.reactions.value.length ? list : null}
+            </View>
+          </ScrollView>
         </View>
       );
     } else {
