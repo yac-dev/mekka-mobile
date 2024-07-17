@@ -74,7 +74,9 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
               // marginBottom: 10,
             }}
           >
-            <View
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('ReactionPicker', { defaultReactionIndex: index })}
               style={{
                 // backgroundColor: 'rgb(70, 70, 70)',
                 width: reactionContainerWidth,
@@ -107,7 +109,6 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                   </View>
                   <TouchableOpacity
                     activeOpacity={0.7}
-                    // formData.reactions.value.filter((_, index) => index !== index)
                     onPress={() =>
                       setFormData((previous) => {
                         return {
@@ -154,9 +155,36 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                       contentFit='contain'
                     />
                   </View>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() =>
+                      setFormData((previous) => {
+                        return {
+                          ...previous,
+                          reactions: {
+                            ...previous.reactions,
+                            value: previous.reactions.value.filter((_, idx) => index !== idx),
+                          },
+                        };
+                      })
+                    }
+                    style={{
+                      position: 'absolute',
+                      top: -20,
+                      right: -20,
+                      backgroundColor: 'rgb(70,70,70)',
+                      width: 30,
+                      height: 30,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <VectorIcon.II name='remove' size={20} color={'white'} />
+                  </TouchableOpacity>
                 </View>
               )}
-            </View>
+            </TouchableOpacity>
 
             {reactionObject.caption?.length ? (
               <View

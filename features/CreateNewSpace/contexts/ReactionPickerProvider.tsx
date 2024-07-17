@@ -34,6 +34,7 @@ type ReactionPickerContextType = {
   selectedReactionOption: ReactionType | undefined;
   onEmojiChange: (emoji: string) => void;
   onCaptionChange: (caption: string) => void;
+  setDefaultReaction: (reaction: ReactionType) => void;
 };
 
 export const ReactionPickerContext = createContext<ReactionPickerContextType>({
@@ -43,6 +44,7 @@ export const ReactionPickerContext = createContext<ReactionPickerContextType>({
   selectedReactionOption: undefined,
   onEmojiChange: () => {},
   onCaptionChange: () => {},
+  setDefaultReaction: () => {},
 });
 
 type ReactionPickerProviderProps = {
@@ -117,6 +119,10 @@ export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ 
     [selectedReactions]
   );
 
+  const setDefaultReaction = (reaction: ReactionType) => {
+    setSelectedReactionOption(reaction);
+  };
+
   return (
     <ReactionPickerContext.Provider
       value={{
@@ -126,6 +132,7 @@ export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ 
         selectedReactionOption,
         onEmojiChange,
         onCaptionChange,
+        setDefaultReaction,
       }}
     >
       {children}

@@ -4,6 +4,7 @@ import { AuthContext } from '../../../providers';
 import { MySpacesContext } from '../../../providers';
 import * as ImagePicker from 'expo-image-picker';
 import FlashMessage from 'react-native-flash-message';
+import { ReactionType } from './ReactionPickerProvider';
 // data構造から見直そう
 const initialFormData = {
   name: {
@@ -53,12 +54,12 @@ type StickerType = {
   url: string;
 };
 
-type ReactionType = {
-  type: 'emoji' | 'sticker';
-  emoji: string | undefined;
-  sticker: StickerType | undefined;
-  caption: string;
-};
+// type ReactionType = {
+//   type: 'emoji' | 'sticker';
+//   emoji: string | undefined;
+//   sticker: StickerType | undefined;
+//   caption: string;
+// };
 
 type FormType<T> = {
   value: T;

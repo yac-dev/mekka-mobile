@@ -30,7 +30,6 @@ const emojiTypes = ['People', 'Symbols', 'Nature', 'Food', 'Activity', 'Travel',
 
 const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const { selectedReactionOption, onCaptionChange } = useContext(ReactionPickerContext);
   // const [selectedReactions, setSelectedReactions] = useState({}); // {emoji: true}
   // ここでemojiOptionsを持っておかないとだめかね。。。
   // ここでcontextとれないわな。。。ミスったわ。。。
@@ -212,10 +211,6 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   //   }
   // };
 
-  // ここ、scrollの挙動遊ぶの面白そう。。。
-
-  console.log('selected', selectedReactionOption);
-
   return (
     <ReactionPickerProvider>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -232,7 +227,7 @@ const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
             Add Reactions
           </Text>
         </View> */}
-        <SelectedReaction />
+        <SelectedReaction defaultReactionIndex={route.params?.defaultReactionIndex} />
         {/* <SelectedReactions reactions={route.params.reactions} /> */}
         <ReactionCategoryBottomTab />
       </View>

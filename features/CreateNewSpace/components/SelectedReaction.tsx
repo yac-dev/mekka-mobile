@@ -8,10 +8,28 @@ import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 
-export const SelectedReaction = () => {
+type SelectedReactionProps = {
+  defaultReactionIndex?: number;
+};
+
+export const SelectedReaction: React.FC<SelectedReactionProps> = ({ defaultReactionIndex }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, setFormData } = useContext(CreateNewSpaceContext);
-  const { selectedReactionOption, onCaptionChange } = useContext(ReactionPickerContext);
+  const { selectedReactionOption, onCaptionChange, setDefaultReaction } = useContext(ReactionPickerContext);
+
+  // そっか, addの挙動ね。defaultがある場合は、pushではなく該当のものを変えるだけでいいのか。
+  // ここの挙動が面倒だったんだが、まあいいか。
+  console.log(defaultReactionIndex);
+  useEffect(() => {
+    if (defaultReactionIndex !== undefined) {
+      setDefaultReaction(formData.reactions.value[defaultReactionIndex]);
+    }
+  }, [defaultReactionIndex]);
+  // useEffect(() => {
+  //   if (route.params.reaction) {
+  //     setDefaultReaction(route.params.reaction);
+  //   }
+  // }, [route.params.reaction]);
 
   // useEffect(() => {
   //   if (reactions) {
@@ -29,18 +47,36 @@ export const SelectedReaction = () => {
   //   }
   // }, [reactions]);
 
+  // やっぱindex baseの方がいいわ。探索しないといかんから。。。
   // paramsじゃなくて、もうここでformDateを更新するようにしようか。。。
   const onAddPress = () => {
-    setFormData((previous) => {
-      return {
-        ...previous,
-        reactions: {
-          ...previous.reactions,
-          value: [...previous.reactions.value, selectedReactionOption],
-          isValidated: true,
-        },
-      };
-    });
+    // 編集の時
+    if (defaultReactionIndex !== undefined) {
+      setFormData((previous) => {
+        const newReactions = [...previous.reactions.value];
+        newReactions[defaultReactionIndex] = selectedReactionOption;
+        return {
+          ...previous,
+          reactions: {
+            ...previous.reactions,
+            value: newReactions,
+            isValidated: true,
+          },
+        };
+      });
+    } else {
+      //追加の時
+      setFormData((previous) => {
+        return {
+          ...previous,
+          reactions: {
+            ...previous.reactions,
+            value: [...previous.reactions.value, selectedReactionOption],
+            isValidated: true,
+          },
+        };
+      });
+    }
     // ここでもうaddすればよくて、わざわざreactionへもっていってaddする必要はないね。
     navigation.navigate('Reaction');
   };

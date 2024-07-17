@@ -35,7 +35,7 @@ export type CreateNewSpaceStackParams = {
   };
   Description: undefined;
   ReactionPicker: {
-    index?: number;
+    defaultReactionIndex?: number;
   };
   CreateNewSticker: undefined;
 };
