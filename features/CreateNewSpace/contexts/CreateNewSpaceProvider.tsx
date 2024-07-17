@@ -37,7 +37,7 @@ const initialFormData = {
   },
   disappearAfter: {
     value: 1439, // 5 分から 1399 分(23 hours 59 min), 720 minutes(12 hours) defautlで23時間59分
-    isValidated: false,
+    isValidated: true,
   },
   reactions: {
     value: [],

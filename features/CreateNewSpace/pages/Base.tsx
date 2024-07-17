@@ -31,11 +31,32 @@ export const Base = () => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
-          disabled={!formData.name.isValidated || !formData.icon.isValidated}
+          disabled={
+            !formData.name.isValidated ||
+            !formData.icon.isValidated ||
+            !formData.disappearAfter.isValidated ||
+            !formData.isPublic.isValidated ||
+            !formData.isReactionAvailable.isValidated ||
+            !formData.isCommentAvailable.isValidated ||
+            !formData.description.isValidated ||
+            !formData.contentType.isValidated ||
+            !formData.reactions.isValidated
+          }
         >
           <Text
             style={{
-              color: !formData.name.isValidated || !formData.icon.isValidated ? 'rgb(100,100,100)' : 'white',
+              color:
+                !formData.name.isValidated ||
+                !formData.icon.isValidated ||
+                !formData.disappearAfter.isValidated ||
+                !formData.isPublic.isValidated ||
+                !formData.isReactionAvailable.isValidated ||
+                !formData.isCommentAvailable.isValidated ||
+                !formData.description.isValidated ||
+                !formData.contentType.isValidated ||
+                !formData.reactions.isValidated
+                  ? 'rgb(100,100,100)'
+                  : 'white',
               fontSize: 20,
               fontWeight: 'bold',
             }}

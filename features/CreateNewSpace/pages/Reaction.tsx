@@ -111,11 +111,14 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                     activeOpacity={0.7}
                     onPress={() =>
                       setFormData((previous) => {
+                        const newReactions = [...previous.reactions.value].filter((_, idx) => index !== idx);
+
                         return {
                           ...previous,
                           reactions: {
                             ...previous.reactions,
-                            value: previous.reactions.value.filter((_, idx) => index !== idx),
+                            value: newReactions,
+                            isValidated: newReactions.length > 0,
                           },
                         };
                       })
@@ -159,11 +162,14 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                     activeOpacity={0.7}
                     onPress={() =>
                       setFormData((previous) => {
+                        const newReactions = [...previous.reactions.value].filter((_, idx) => index !== idx);
+
                         return {
                           ...previous,
                           reactions: {
                             ...previous.reactions,
-                            value: previous.reactions.value.filter((_, idx) => index !== idx),
+                            value: newReactions,
+                            isValidated: newReactions.length > 0,
                           },
                         };
                       })
