@@ -213,7 +213,7 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
     setFormData((previous) => {
       return {
         ...previous,
-        moment: {
+        disappearAfter: {
           value: minutes,
           isValidated: true,
         },

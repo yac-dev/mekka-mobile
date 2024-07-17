@@ -306,7 +306,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
               />
             </View>
             <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Disabled</Text>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Disallowed</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
                 Enjoy sharing without worrying about upvotes from others.
               </Text>

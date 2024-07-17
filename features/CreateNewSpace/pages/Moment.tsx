@@ -56,6 +56,7 @@ const Moment = () => {
 
   useEffect(() => {
     const minutes = calculateMinutes(selectedHour, selectedMin);
+    console.log('minutes changed', minutes);
     onDisapperAfterChange(minutes);
   }, [selectedHour, selectedMin]);
 
