@@ -17,7 +17,7 @@ const reactionContainerWidth = itemWidth * 0.7;
 
 const Reaction: React.FC<ReactionProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const { formData, onReactionAvailabilityChange, onReactionsChange } = useContext(CreateNewSpaceContext);
+  const { formData, onReactionAvailabilityChange, onReactionsChange, setFormData } = useContext(CreateNewSpaceContext);
 
   // useEffect(() => {
   //   if (route?.params?.selectedReactions) {
@@ -105,6 +105,34 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                       {reactionObject.emoji}
                     </Text>
                   </View>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    // formData.reactions.value.filter((_, index) => index !== index)
+                    onPress={() =>
+                      setFormData((previous) => {
+                        return {
+                          ...previous,
+                          reactions: {
+                            ...previous.reactions,
+                            value: previous.reactions.value.filter((_, idx) => index !== idx),
+                          },
+                        };
+                      })
+                    }
+                    style={{
+                      position: 'absolute',
+                      top: -20,
+                      right: -20,
+                      backgroundColor: 'rgb(70,70,70)',
+                      width: 30,
+                      height: 30,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <VectorIcon.II name='remove' size={20} color={'white'} />
+                  </TouchableOpacity>
                 </View>
               ) : (
                 <View>
