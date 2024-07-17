@@ -139,7 +139,7 @@ const ContentType = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name='image' color='white' size={20} style={{ marginRight: 20 }} />
             <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Photos</Text>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Photo</Text>
             </View>
           </View>
           {formData.contentType.value === 'photo' ? (
@@ -152,9 +152,9 @@ const ContentType = () => {
           activeOpacity={1}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Entypo name='video' color='white' size={20} style={{ marginRight: 20 }} />
+            <VectorIcon.MCI name='movie-open' color='white' size={20} style={{ marginRight: 20 }} />
             <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Videos</Text>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Video</Text>
             </View>
           </View>
           {formData.contentType.value === 'video' ? (
@@ -170,10 +170,15 @@ const ContentType = () => {
             <View style={{ marginRight: 20 }}>
               <Ionicons name='image' color='white' size={20} />
 
-              <Entypo name='video' color='white' size={20} style={{ position: 'absolute', top: -10, right: -10 }} />
+              <VectorIcon.MCI
+                name='movie-open'
+                color='white'
+                size={20}
+                style={{ position: 'absolute', top: -8, right: -8 }}
+              />
             </View>
             <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photos & Videos</Text>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo & Video</Text>
             </View>
           </View>
           {formData.contentType.value === 'photoAndVideo' ? (

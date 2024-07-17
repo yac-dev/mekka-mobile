@@ -122,7 +122,7 @@ export const Base = () => {
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
-          icon={<VectorIcon.II name='image' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={<VectorIcon.MCI name='movie-open' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Content'
           value={
             formData.contentType.value
