@@ -60,6 +60,7 @@ export const Base = () => {
       <ScrollView>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
         <TouchableOpacity
+          activeOpacity={0.7}
           style={{
             alignSelf: 'center',
             backgroundColor: 'rgb(50,50,50)',
@@ -151,7 +152,7 @@ export const Base = () => {
           onCellPress={() => createNewSpaceNavigation.navigate('Reaction')}
           icon={<VectorIcon.II name='thumbs-up-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Reaction'
-          value={formData.isReactionAvailable.value ? 'Available' : 'Unavailable'}
+          value={formData.isReactionAvailable.value ? 'Allowed' : 'Disallowed'}
           requirementText={
             formData.isReactionAvailable.value && !formData.reactions.value.length
               ? 'Please set at least one option.'
@@ -159,15 +160,14 @@ export const Base = () => {
           }
         />
         <MenuCell
-          onCellPress={() => null}
+          onCellPress={() => createNewSpaceNavigation.navigate('Comment')}
           icon={<VectorIcon.FD name='comments' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Comment'
-          value={formData.isCommentAvailable.value ? 'Available' : 'Unavailable'}
-          requirementText={'Required to choose'}
+          value={formData.isCommentAvailable.value ? 'Allowed' : 'Disallowed'}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Description')}
-          icon={<VectorIcon.MI name='public' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={<VectorIcon.MCI name='lead-pencil' size={20} color='white' style={{ marginRight: 10 }} />}
           title='Description'
           value={formData.description.value.replace(/\n/g, '')}
           requirementText={!formData.description.value ? 'Required to fill out.' : undefined}

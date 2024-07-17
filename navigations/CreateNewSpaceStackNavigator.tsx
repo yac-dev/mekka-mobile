@@ -21,7 +21,7 @@ import { showMessage } from 'react-native-flash-message';
 import FlashMessage from 'react-native-flash-message';
 import { useContext } from 'react';
 import { SnackBarContext } from '../providers';
-import { TemplateSelection, Base } from '../features/CreateNewSpace/pages';
+import { TemplateSelection, Base, Comment } from '../features/CreateNewSpace/pages';
 
 export type CreateNewSpaceStackParams = {
   TemplateSelection: undefined;
@@ -33,6 +33,7 @@ export type CreateNewSpaceStackParams = {
   Reaction: {
     selectedReaction?: ReactionType;
   };
+  Comment: undefined;
   Description: undefined;
   ReactionPicker: {
     defaultReactionIndex?: number;
@@ -200,6 +201,30 @@ const CreateNewSpaceStackNavigator = () => {
           <CreateNewSpaceStack.Screen
             name='Reaction'
             component={Reaction}
+            options={({ navigation }) => ({
+              headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <CreateNewSpaceStack.Screen
+            name='Comment'
+            component={Comment}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
               headerLeft: () => (
