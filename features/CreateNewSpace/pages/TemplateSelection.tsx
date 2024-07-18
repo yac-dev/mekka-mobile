@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,9 +7,16 @@ import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import {
+  initialFormData,
+  photoLoversFormData,
+  noCommentNoReactionFormData,
+  busySpaceFormData,
+} from '../contexts/CreateNewSpaceProvider';
 
 export const TemplateSelection = () => {
   const createNewSpaceStackNavigation = useNavigation<CreateNewSpaceStackProps>();
+  const { setFormData } = useContext(CreateNewSpaceContext);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -43,8 +50,10 @@ export const TemplateSelection = () => {
         <View>
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
-            // baseに行きながらも、全てからでの状態でいく感じか。
+            onPress={() => {
+              setFormData(initialFormData);
+              createNewSpaceStackNavigation.navigate('Base');
+            }}
             activeOpacity={0.5}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -68,7 +77,10 @@ export const TemplateSelection = () => {
         <View>
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            onPress={() => {
+              setFormData(photoLoversFormData);
+              createNewSpaceStackNavigation.navigate('Base');
+            }}
             activeOpacity={0.5}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -83,7 +95,10 @@ export const TemplateSelection = () => {
 
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            onPress={() => {
+              setFormData(noCommentNoReactionFormData);
+              createNewSpaceStackNavigation.navigate('Base');
+            }}
             activeOpacity={0.5}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -100,7 +115,10 @@ export const TemplateSelection = () => {
 
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            onPress={() => {
+              setFormData(busySpaceFormData);
+              createNewSpaceStackNavigation.navigate('Base');
+            }}
             activeOpacity={0.5}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
