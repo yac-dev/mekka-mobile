@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
@@ -13,47 +13,109 @@ export const TemplateSelection = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View
-        style={{
-          paddingLeft: 30,
-          paddingRight: 30,
-          paddingTop: 20,
-          paddingBottom: 30,
-        }}
-      >
-        <View style={{ marginBottom: 40 }}>
-          <Text
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: 20,
-              marginBottom: 10,
-            }}
-          >
-            Create new Space
-          </Text>
-          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            The space is where you and your friends get together and share photos/videos. {'\n'}Design yours and start
-            sharing.
-          </Text>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-        onPress={() => createNewSpaceStackNavigation.navigate('Base')}
-        // baseに行きながらも、全てからでの状態でいく感じか。
-        activeOpacity={0.5}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <VectorIcon.MCI name='file-edit' size={20} color='white' style={{ marginRight: 20 }} />
-          <View style={{ width: 250 }}>
-            <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Create from Scratch</Text>
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Design your space based on your preference.</Text>
+      <ScrollView>
+        <View
+          style={{
+            paddingLeft: 30,
+            paddingRight: 30,
+            paddingTop: 20,
+            paddingBottom: 30,
+          }}
+        >
+          <View style={{ marginBottom: 40 }}>
+            <Text
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 20,
+                marginBottom: 10,
+              }}
+            >
+              Create new Space
+            </Text>
+            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+              The space is where you and your friends get together and share photos/videos. {'\n'}Design yours and start
+              sharing.
+            </Text>
           </View>
         </View>
-        <VectorIcon.MCI name='chevron-right' size={20} color='white' />
-      </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            // baseに行きながらも、全てからでの状態でいく感じか。
+            activeOpacity={0.5}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.MCI name='file-edit' size={20} color='white' style={{ marginRight: 20 }} />
+              <View style={{ width: 250 }}>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Create from Scratch</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                  Design your space based on your preference.
+                </Text>
+              </View>
+            </View>
+            <VectorIcon.MCI name='chevron-right' size={20} color='white' />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+          <View style={{ height: 0.5, width: 80, backgroundColor: 'rgb(170,170,170)' }}></View>
+          <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>Or start from template</Text>
+          <View style={{ height: 0.5, width: 80, backgroundColor: 'rgb(170,170,170)' }}></View>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            activeOpacity={0.5}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.II name='camera' size={20} color='white' style={{ marginRight: 20 }} />
+              <View style={{ width: 250 }}>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No video posts. Only photos.</Text>
+              </View>
+            </View>
+            <VectorIcon.MCI name='chevron-right' size={20} color='white' />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            activeOpacity={0.5}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.II name='heart-dislike' size={20} color='white' style={{ marginRight: 20 }} />
+              <View style={{ width: 250 }}>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>No Pressure</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                  No comment feature, no like feature. No more worrying about reactions from others.
+                </Text>
+              </View>
+            </View>
+            <VectorIcon.MCI name='chevron-right' size={20} color='white' />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => createNewSpaceStackNavigation.navigate('Base')}
+            activeOpacity={0.5}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.MCI name='clock-fast' size={20} color='white' style={{ marginRight: 20 }} />
+              <View style={{ width: 250 }}>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Busy Space</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                  5 seconds video, moments will be dissapear after 30 minutes.
+                </Text>
+              </View>
+            </View>
+            <VectorIcon.MCI name='chevron-right' size={20} color='white' />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
