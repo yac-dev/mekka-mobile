@@ -16,7 +16,9 @@ import {
 
 export const TemplateSelection = () => {
   const createNewSpaceStackNavigation = useNavigation<CreateNewSpaceStackProps>();
-  const { setFormData } = useContext(CreateNewSpaceContext);
+  const { setFormData, formData } = useContext(CreateNewSpaceContext);
+
+  // console.log('reaction', formData.reactions.value);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>

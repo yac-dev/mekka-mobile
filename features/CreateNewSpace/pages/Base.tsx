@@ -87,24 +87,24 @@ export const Base = () => {
             backgroundColor: 'rgb(50,50,50)',
             justifyContent: 'center',
             alignItems: 'center',
-            width: 100,
-            height: 100,
+            width: 110,
+            height: 110,
             padding: 2,
-            borderRadius: 100 / 2,
+            borderRadius: 110 / 2,
             marginBottom: 20,
           }}
           onPress={() => onIconChange()}
         >
           {formData.icon.value ? (
             <ExpoImage
-              style={{ width: 100, height: 100, borderRadius: 100 / 2, alignSelf: 'center' }}
+              style={{ width: 110, height: 110, borderRadius: 110 / 2, alignSelf: 'center' }}
               source={{ uri: formData.icon.value }}
               contentFit='cover'
             />
           ) : (
             <>
               <MaterialCommunityIcons name='camera-plus' size={30} color='white' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15, textAlign: 'center' }}>Space icon</Text>
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15, textAlign: 'center' }}>Choose icon</Text>
             </>
           )}
         </TouchableOpacity>
@@ -124,7 +124,7 @@ export const Base = () => {
               flex: 1,
               padding: 10,
             }}
-            placeholder='Space name'
+            placeholder='Write space name'
             placeholderTextColor={'rgb(170,170,170)'}
             autoCapitalize='none'
             value={formData.name.value}

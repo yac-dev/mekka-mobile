@@ -51,14 +51,39 @@ export const initialFormData = {
 
 export const photoLoversFormData = {
   ...initialFormData,
+  isPublic: {
+    value: false,
+    isValidated: true,
+  },
   contentType: {
     value: 'photo',
+    isValidated: true,
+  },
+  isReactionAvailable: {
+    value: true,
+    isValidated: true,
+  },
+  reactions: {
+    value: [
+      { caption: 'nice', emoji: '😃', sticker: undefined, type: 'emoji' },
+      { caption: 'beautiful ', emoji: '😎', sticker: undefined, type: 'emoji' },
+      { caption: 'omg', emoji: '😱', sticker: undefined, type: 'emoji' },
+      { caption: 'lmao', emoji: '😂', sticker: undefined, type: 'emoji' },
+    ] as ReactionType[], // そっか、これunion typeでemojiかsticker typeどちらかだもんな。。。だからas keywordが必要なのか。
+    isValidated: true,
+  },
+  description: {
+    value: 'This is the space for photo lovers.',
     isValidated: true,
   },
 };
 
 export const noCommentNoReactionFormData = {
   ...initialFormData,
+  isPublic: {
+    value: false,
+    isValidated: true,
+  },
   isCommentAvailable: {
     value: false,
     isValidated: true,
@@ -67,12 +92,28 @@ export const noCommentNoReactionFormData = {
     value: false,
     isValidated: true,
   },
+  description: {
+    value: 'No more reactions in this space.',
+    isValidated: true,
+  },
 };
 
 export const busySpaceFormData = {
   ...initialFormData,
+  isPublic: {
+    value: false,
+    isValidated: true,
+  },
   contentType: {
     value: 'video',
+    isValidated: true,
+  },
+  isCommentAvailable: {
+    value: true,
+    isValidated: true,
+  },
+  isReactionAvailable: {
+    value: true,
     isValidated: true,
   },
   videoLength: {
@@ -81,6 +122,19 @@ export const busySpaceFormData = {
   },
   disappearAfter: {
     value: 30,
+    isValidated: true,
+  },
+  reactions: {
+    value: [
+      { caption: 'nice', emoji: '😃', sticker: undefined, type: 'emoji' },
+      { caption: 'beautiful ', emoji: '😎', sticker: undefined, type: 'emoji' },
+      { caption: 'omg', emoji: '😱', sticker: undefined, type: 'emoji' },
+      { caption: 'lmao', emoji: '😂', sticker: undefined, type: 'emoji' },
+    ] as ReactionType[],
+    isValidated: false,
+  },
+  description: {
+    value: 'This is the space for busy people.',
     isValidated: true,
   },
 };
