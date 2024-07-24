@@ -556,16 +556,16 @@ export const Home = () => {
                   value={convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
                   hasNext
                 />
-                {currentSpace.isReactionAvailable && (
-                  <StatBox
-                    title='Reactions'
-                    icon={
-                      <VectorIcon.MCI name='thumb-up' color={'rgb(150,150,150)'} size={15} style={{ marginRight: 5 }} />
-                    }
-                    value={String(currentSpace.reactions.length)}
-                    hasNext
-                  />
-                )}
+                <StatBox
+                  title='Reactions'
+                  icon={
+                    <VectorIcon.MCI name='thumb-up' color={'rgb(150,150,150)'} size={15} style={{ marginRight: 5 }} />
+                  }
+                  value={
+                    currentSpace.isReactionAvailable ? `Available (${String(currentSpace.reactions.length)})` : 'N/A'
+                  }
+                  hasNext
+                />
                 <StatBox
                   title='Comment'
                   icon={
@@ -576,7 +576,7 @@ export const Home = () => {
                       style={{ marginRight: 5 }}
                     />
                   }
-                  value={currentSpace.isCommentAvailable ? 'Available' : 'Disabled'}
+                  value={currentSpace.isCommentAvailable ? 'Available' : 'N/A'}
                   hasNext
                 />
 

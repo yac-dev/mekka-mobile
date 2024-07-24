@@ -17,6 +17,7 @@ import {
   AuthContext,
 } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
+import { LoadingSpinner } from '../../../components';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -100,12 +101,14 @@ export const Base = () => {
           };
         });
       }
+      homeStackNavigation.navigate('Home');
       showMessage({ message: 'Created new space successfully.', type: 'success' });
     }
   }, [apiResult.status]);
 
+  console.log('form -> ', JSON.stringify(formData, null, 2));
+
   const onCreateSpace = () => {
-    homeStackNavigation.navigate('Home');
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
     requestApi(input);
   };
@@ -236,6 +239,7 @@ export const Base = () => {
           requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
         />
       </ScrollView>
+      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Creating a space...' />
     </View>
   );
 };

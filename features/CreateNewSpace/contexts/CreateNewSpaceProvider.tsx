@@ -92,12 +92,17 @@ export const noCommentNoReactionFormData = {
     value: false,
     isValidated: true,
   },
+  reactions: {
+    value: [],
+    isValidated: true,
+  },
   description: {
     value: 'No more reactions in this space.',
     isValidated: true,
   },
 };
 
+// この下二つがおかしいな。。。
 export const busySpaceFormData = {
   ...initialFormData,
   isPublic: {
@@ -131,7 +136,7 @@ export const busySpaceFormData = {
       { caption: 'omg', emoji: '😱', sticker: undefined, type: 'emoji' },
       { caption: 'lmao', emoji: '😂', sticker: undefined, type: 'emoji' },
     ] as ReactionType[],
-    isValidated: false,
+    isValidated: true,
   },
   description: {
     value: 'This is the space for busy people.',
