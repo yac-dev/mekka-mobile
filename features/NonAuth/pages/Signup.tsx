@@ -85,7 +85,7 @@ export const Signup = () => {
             keyboardType='email-address'
           />
           <AppTextInput.Underline
-            placeholder='Password'
+            placeholder='Password at least 10 characters'
             value={formData.password.value}
             onTextChange={onPasswordChange}
             labelIcon={<VectorIcon.MCI name='key' color={'white'} size={20} />}

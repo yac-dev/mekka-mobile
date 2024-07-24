@@ -69,7 +69,7 @@ export const useSignupForm = (): UseSignupFormOutputType => {
         ...previous,
         password: {
           value: text,
-          isValidated: text.length ? true : false,
+          isValidated: text.length >= 10 ? true : false,
         },
       };
     });
