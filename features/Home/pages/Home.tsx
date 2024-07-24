@@ -210,12 +210,12 @@ export const Home = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              activeOpacity={0.5}
+              activeOpacity={0.7}
               onPress={() => homeStackNavigation.navigate('EnterPrivateSpace')}
             >
               <VectorIcon.II name='key' color={Colors.white} size={40} />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} onPress={() => openLink(urls.howToCreateNewSpace)}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => openLink(urls.howToCreateNewSpace)}>
               <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
                 <Text
                   style={{
@@ -261,7 +261,7 @@ export const Home = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              activeOpacity={0.5}
+              activeOpacity={0.7}
               onPress={() => homeStackNavigation.navigate('DiscoverStackNavigator')}
             >
               <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
@@ -325,7 +325,7 @@ export const Home = () => {
               }}
             >
               <TouchableOpacity
-                activeOpacity={0.5}
+                activeOpacity={0.7}
                 style={{
                   width: 45,
                   aspectRatio: 1,
@@ -352,7 +352,7 @@ export const Home = () => {
 
               return (
                 <TouchableOpacity
-                  activeOpacity={0.5}
+                  activeOpacity={0.7}
                   key={space._id}
                   style={{
                     flexDirection: 'column',
@@ -477,6 +477,7 @@ export const Home = () => {
             <TouchableOpacity
               style={{ width: 55, height: 55, borderRadius: 40, marginRight: 20 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+              activeOpacity={0.7}
             >
               <ExpoImage
                 style={{ width: '100%', height: '100%', borderRadius: 40 }}
@@ -489,7 +490,7 @@ export const Home = () => {
                 {currentSpace.name}
               </Text>
               <TouchableOpacity
-                activeOpacity={0.5}
+                activeOpacity={0.7}
                 style={{
                   paddingVertical: 5,
                   paddingHorizontal: 10,
@@ -597,7 +598,7 @@ export const Home = () => {
             </View>
             <View style={{ flexDirection: 'column', paddingVertical: 10 }}>
               <TouchableOpacity
-                activeOpacity={0.5}
+                activeOpacity={0.7}
                 style={{
                   paddingVertical: 8,
                   paddingLeft: 15,
@@ -621,7 +622,7 @@ export const Home = () => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                activeOpacity={0.5}
+                activeOpacity={0.7}
                 style={{
                   paddingVertical: 10,
                   paddingLeft: 15,
@@ -651,7 +652,7 @@ export const Home = () => {
               return (
                 <TouchableOpacity
                   key={index}
-                  activeOpacity={0.5}
+                  activeOpacity={0.7}
                   style={{
                     paddingVertical: 8,
                     paddingLeft: 10,

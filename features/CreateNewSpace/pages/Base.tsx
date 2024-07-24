@@ -6,7 +6,17 @@ import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { HomeStackNavigatorProps } from '../../../navigations';
 import { VectorIcon } from '../../../Icons';
+import { useCreateSpace } from '../hooks';
+import {
+  LogsTableContext,
+  CurrentTagContext,
+  CurrentSpaceContext,
+  MySpacesContext,
+  AuthContext,
+} from '../../../providers';
+import { showMessage } from 'react-native-flash-message';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -24,13 +34,20 @@ const convertMinutesToHoursAndMinutes = (minutes: number) => {
 
 export const Base = () => {
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
+  const { apiResult, requestApi } = useCreateSpace();
+  const { mySpaces, setMySpaces } = useContext(MySpacesContext);
+  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const { setCurrentTag } = useContext(CurrentTagContext);
+  const { setLogsTable } = useContext(LogsTableContext);
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     createNewSpaceNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
+          onPress={() => onCreateSpace()}
           disabled={
             !formData.name.isValidated ||
             !formData.icon.isValidated ||
@@ -67,6 +84,31 @@ export const Base = () => {
       ),
     });
   }, [formData]);
+
+  useEffect(() => {
+    if (apiResult.status === 'success') {
+      setMySpaces((previous) => [...previous, apiResult.data.space]);
+      if (!mySpaces?.length) {
+        setCurrentSpace(apiResult.data?.space);
+        setCurrentTag(apiResult.data?.space.tags[0]);
+        setLogsTable((previous) => {
+          return {
+            ...previous,
+            [apiResult.data?.space._id]: {
+              [apiResult.data?.space.tags[0]._id]: 0,
+            },
+          };
+        });
+      }
+      showMessage({ message: 'Created new space successfully.', type: 'success' });
+    }
+  }, [apiResult.status]);
+
+  const onCreateSpace = () => {
+    homeStackNavigation.navigate('Home');
+    const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
+    requestApi(input);
+  };
 
   const renderText = () => {
     return (
