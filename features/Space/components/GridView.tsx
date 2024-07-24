@@ -32,12 +32,12 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
-  // currentPost自体はscrollのたびに更新しなきゃいけない罠。。
   const videoRef = useRef(null);
 
   // どうしてもskipしちゃうのがあって、それ困るよね。
   // firstもinputで必要かもな。。。
   // current pageが2なら、first(12) * page 2
+  // えーと。。。tagがすでにopenされている状態になっていた、なぜか。。。故に、requestが動いていなかった。
   useEffect(() => {
     if (!tagScreenOpened) {
       requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
@@ -48,8 +48,6 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
       // 今持っているpage（0 - 3とかで）分までqueryする感じだよな。。。
     }
   }, [tagScreenOpened]);
-
-  // そっか、毎回ここで足しちゃっているよね。。。これが問題になっている。
 
   useEffect(() => {
     if (createPostResult.status === 'loading') {
@@ -65,14 +63,6 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
 
   // NOTE: 多分、indexではなくpostでいんじゃないかなー。view post側でpostの_idでloopすればいいだけだから。。。ただ、postの数が多い場合はllopが面倒くさいか。
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    // spaceNavigation.navigate({
-    //   name: 'ViewPostStackNavigator',
-    //   params: { screen: 'ViewPost', params: { tag, currentPostIndex: index } },
-    // });
-    // const onCurrentPostChange = (post: PostType) => {
-    //   setCurrentPost(post);
-    // };
-
     spaceNavigation.navigate({
       name: 'ViewPostStackNavigator',
       params: {

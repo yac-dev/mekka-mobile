@@ -86,6 +86,24 @@ export const TemplateSelection = () => {
             activeOpacity={0.5}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.MCI name='checkbox-blank-circle' size={20} color='white' style={{ marginRight: 20 }} />
+              <View style={{ width: 250 }}>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Vanilla</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Plain space.</Text>
+              </View>
+            </View>
+            <VectorIcon.MCI name='chevron-right' size={20} color='white' />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={() => {
+              setFormData(photoLoversFormData);
+              createNewSpaceStackNavigation.navigate('Base');
+            }}
+            activeOpacity={0.5}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='camera' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers</Text>
