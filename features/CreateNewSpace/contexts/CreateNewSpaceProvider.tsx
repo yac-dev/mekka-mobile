@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import FlashMessage from 'react-native-flash-message';
 import { ReactionType } from './ReactionPickerProvider';
 // data構造から見直そう
-export const initialFormData = {
+export const initialFormData: FormDataType = {
   name: {
     value: '',
     isValidated: false,
@@ -32,7 +32,7 @@ export const initialFormData = {
     isValidated: true,
   },
   videoLength: {
-    value: 60,
+    value: 90,
     isValidated: true,
   },
   disappearAfter: {
@@ -78,7 +78,7 @@ export const photoLoversFormData = {
   },
 };
 
-export const noCommentNoReactionFormData = {
+export const noCommentNoReactionFormData: FormDataType = {
   ...initialFormData,
   isPublic: {
     value: false,

@@ -413,43 +413,12 @@ export const Home = () => {
                         </View>
                       ) : null}
                     </View>
-                    {/* <Text numberOfLines={1} style={{ color: 'white', fontSize: 15 }}>
-                    {space.name}
-                  </Text> */}
                   </View>
-                  {/* {sum ? (
-                <View
-                  style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: 12,
-                    backgroundColor: 'red',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white' }}>{sum}</Text>
-                </View>
-              ) : null} */}
                 </TouchableOpacity>
               );
             })}
           </ScrollView>
           <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            {/* 基本、自分のpost向けのcommentやreactionの通知をここで出すようにしたい。 */}
-            {/* <AppButton.Icon
-              onButtonPress={() => openAuthMenuBottomSheet(0)}
-              customStyle={{
-                width: 45,
-                aspectRatio: 1,
-                backgroundColor: 'rgb(50,50,50)',
-                position: 'absolute',
-                bottom: 60,
-              }}
-              hasShadow={false}
-            >
-              <VectorIcon.II name='notifications-sharp' size={20} color={Colors.white} />
-            </AppButton.Icon> */}
             <AppButton.Icon
               onButtonPress={() => openAuthMenuBottomSheet(0)}
               customStyle={{
@@ -527,7 +496,8 @@ export const Home = () => {
                   }
                   hasNext
                 />
-                {currentSpace.videoLength && (
+                {/* video lengthがおかしいのか。。。 */}
+                {/* {currentSpace.videoLength && (
                   <StatBox
                     title='Video length'
                     icon={
@@ -541,7 +511,7 @@ export const Home = () => {
                     value={`${currentSpace.videoLength}s`}
                     hasNext
                   />
-                )}
+                )} */}
 
                 <StatBox
                   title='Moments'

@@ -106,11 +106,10 @@ export const Base = () => {
     }
   }, [apiResult.status]);
 
-  console.log('form -> ', JSON.stringify(formData, null, 2));
-
   const onCreateSpace = () => {
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
-    requestApi(input);
+    console.log('input is this -> ', JSON.stringify(input, null, 2));
+    // requestApi(input);
   };
 
   const renderText = () => {
@@ -136,7 +135,7 @@ export const Base = () => {
             height: 110,
             padding: 2,
             borderRadius: 110 / 2,
-            marginBottom: 20,
+            marginBottom: 10,
           }}
           onPress={() => onIconChange()}
         >
@@ -148,11 +147,11 @@ export const Base = () => {
             />
           ) : (
             <>
-              <MaterialCommunityIcons name='camera-plus' size={30} color='white' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15, textAlign: 'center' }}>Choose icon</Text>
+              <VectorIcon.II name='add' size={35} color='white' />
             </>
           )}
         </TouchableOpacity>
+        <Text style={{ color: 'white', fontSize: 17, textAlign: 'center', marginBottom: 20 }}>Icon</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -169,7 +168,7 @@ export const Base = () => {
               flex: 1,
               padding: 10,
             }}
-            placeholder='Write space name'
+            placeholder='Name'
             placeholderTextColor={'rgb(170,170,170)'}
             autoCapitalize='none'
             value={formData.name.value}
@@ -284,7 +283,7 @@ const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, req
         >
           {value}
         </Text>
-        <VectorIcon.MCI name='chevron-right' size={20} color='white' />
+        <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
       </View>
     </TouchableOpacity>
   );

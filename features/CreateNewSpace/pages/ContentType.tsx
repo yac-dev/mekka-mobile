@@ -39,13 +39,14 @@ const ContentType = () => {
   // 最初の初期設定60秒をここでまず設定する。
   useEffect(() => {
     const res = formatTime(formData.videoLength.value);
-    console.log(res);
+    console.log('res ->', res);
     setSelectedMin(res.minutes.toString());
     setSelectedSec(res.seconds.toString());
   }, []);
 
   useEffect(() => {
     const seconds = calculateSeconds(selectedMin, selectedSec);
+    console.log('seconds -> ', seconds);
     onVideoLengthChange(seconds);
   }, [selectedMin, selectedSec]);
 

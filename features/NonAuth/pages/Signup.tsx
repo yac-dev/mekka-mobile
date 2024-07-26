@@ -46,7 +46,7 @@ export const Signup = () => {
 
   useEffect(() => {
     if (signupResult.status === 'success') {
-      showMessage({ message: 'Your accout was created.', type: 'success' });
+      showMessage({ message: 'Welcome to Mekka', type: 'success' });
     }
   }, [signupResult]);
 
@@ -72,7 +72,7 @@ export const Signup = () => {
             Signup
           </Text>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            Don't hava an account yet?{'\n'}To get started, please provide your name, email and password.
+            Don't hava an account yet? To get started, {'\n'}please provide your name, email and password.
           </Text>
         </View>
         <View style={{ flexDirection: 'column' }}>
