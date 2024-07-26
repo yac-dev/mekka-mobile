@@ -50,6 +50,12 @@ export const Signup = () => {
     }
   }, [signupResult]);
 
+  useEffect(() => {
+    if (signupResult.status === 'error') {
+      showMessage({ message: signupResult.message, type: 'danger' });
+    }
+  }, [signupResult]);
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView style={{ flex: 1 }}>

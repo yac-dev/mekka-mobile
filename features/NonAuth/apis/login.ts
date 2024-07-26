@@ -13,7 +13,7 @@ export const login = async (input: LoginInput): Promise<LoginOutput> => {
       jwt: response.jwt,
     };
   } catch (error) {
-    throw error;
+    throw error.response.data;
   }
   // ここで、secureeをさらにsetする感じか。
 };

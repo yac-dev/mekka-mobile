@@ -12,6 +12,6 @@ export const signup = async (input: SignupInputType): Promise<SignupOutputType> 
       jwt: response.jwt,
     };
   } catch (error) {
-    throw error;
+    throw error.response.data;
   }
 };

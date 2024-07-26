@@ -33,7 +33,8 @@ export const useLogin = (): UseLoginOutput => {
       setApiResult((previous) => {
         return {
           ...previous,
-          status: 'fail',
+          status: 'error',
+          message: error.message,
         };
       });
     }

@@ -72,7 +72,9 @@ export const TemplateSelection = () => {
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
           <View style={{ height: 0.5, width: 80, backgroundColor: 'rgb(170,170,170)' }}></View>
-          <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>Or start from template</Text>
+          <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>
+            Or start from a template
+          </Text>
           <View style={{ height: 0.5, width: 80, backgroundColor: 'rgb(170,170,170)' }}></View>
         </View>
 

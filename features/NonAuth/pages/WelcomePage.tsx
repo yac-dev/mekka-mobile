@@ -8,6 +8,7 @@ import { AppButton } from '../../../components/Button';
 import { useLogin } from '../hooks';
 import { LoadingSpinner } from '../../../components';
 import { NonAuthStackNavigatorProps } from '../../../navigations/NonAuthNavigator';
+import { showMessage } from 'react-native-flash-message';
 
 export const WelcomePage = () => {
   const nonAuthStackNavigation = useNavigation<NonAuthStackNavigatorProps>();
@@ -64,6 +65,12 @@ export const WelcomePage = () => {
     // }
   }, [apiResult]);
 
+  useEffect(() => {
+    if (apiResult.status === 'error') {
+      showMessage({ message: apiResult.message, type: 'danger' });
+    }
+  }, [apiResult]);
+
   const onLoginPress = () => {
     requestApi({ email: formData.email.value, password: formData.password.value });
   };
@@ -110,7 +117,7 @@ export const WelcomePage = () => {
             keyboardType='email-address'
           />
           <AppTextInput.Underline
-            placeholder='Password at least 10 characters'
+            placeholder='Password'
             value={formData.password.value}
             onTextChange={onPasswordChange}
             labelIcon={<VectorIcon.MCI name='key' color={'white'} size={20} />}
