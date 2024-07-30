@@ -27,6 +27,7 @@ import { viewPostsTypeAtomFamily } from './atoms';
 import { useRecoilState } from 'recoil';
 import { createPostResultAtomFamily } from '../../api/atoms';
 import { showMessage } from 'react-native-flash-message';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // pagerviewはlazy loadingをサポートしていないという。。。
 // 使い方はtab viewの方が面倒臭いがlazy loadingサポートはいいね。
 
@@ -107,60 +108,62 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
-      <View style={{ paddingTop: 30, flexDirection: 'row' }}>
-        <AppButton.Icon
-          onButtonPress={() => spaceStackNavigation.goBack()}
-          customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
-          hasShadow={false}
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
+        {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
+        <View style={{ flexDirection: 'row' }}>
+          <AppButton.Icon
+            onButtonPress={() => spaceStackNavigation.goBack()}
+            customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
+            hasShadow={false}
+          >
+            <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
+          </AppButton.Icon>
+
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={currentSpace?.tags}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+            style={{ marginBottom: 10 }}
+          />
+        </View>
+
+        <Tab.Navigator
+          tabBar={() => null}
+          initialRouteName={`Posts_${currentTag._id}`}
+          screenOptions={({ route }) => ({
+            lazy: true,
+            swipeEnabled: true,
+            animationEnabled: false,
+          })}
         >
-          <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
-        </AppButton.Icon>
-
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ref={scrollViewRef}
-          data={currentSpace?.tags}
-          renderItem={renderTab}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-          style={{ marginBottom: 10 }}
-        />
-      </View>
-
-      <Tab.Navigator
-        tabBar={() => null}
-        initialRouteName={`Posts_${currentTag._id}`}
-        screenOptions={({ route }) => ({
-          lazy: true,
-          swipeEnabled: true,
-          animationEnabled: false,
-        })}
-      >
-        {currentSpace?.tags.map((tag: TagType, index: number) => (
-          <Tab.Screen key={index} name={`Posts_${tag._id}`} options={{ title: tag.name }}>
-            {() => <Posts space={route.params.space} tag={tag} />}
-          </Tab.Screen>
-        ))}
-      </Tab.Navigator>
-      {/* NOTE: TabViewへ切り替える。　material toptab はroutingがnestしてくそうざい。performance考えて実装する。 */}
-      {/* {route.params.space.tags.map((tag: TagType, index: number) => (
+          {currentSpace?.tags.map((tag: TagType, index: number) => (
+            <Tab.Screen key={index} name={`Posts_${tag._id}`} options={{ title: tag.name }}>
+              {() => <Posts space={route.params.space} tag={tag} />}
+            </Tab.Screen>
+          ))}
+        </Tab.Navigator>
+        {/* NOTE: TabViewへ切り替える。　material toptab はroutingがnestしてくそうざい。performance考えて実装する。 */}
+        {/* {route.params.space.tags.map((tag: TagType, index: number) => (
           <Posts space={route.params.space} tag={tag} />
         ))} */}
-      <AppButton.Icon
-        customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
-        onButtonPress={() => onCreatePostPress()}
-        isPressDisabled={createPostResult.status === 'loading' ? true : false} // createのstatusをここに足す感じだな。
-        hasShadow
-      >
-        {createPostResult.status === 'loading' ? (
-          <ActivityIndicator size={'small'} color={'white'} />
-        ) : (
-          <VectorIcon.II name='add' size={32} color={'white'} />
-        )}
-      </AppButton.Icon>
-      <ViewPostsTypeToggleButton space={route.params.space} />
-    </View>
+        <AppButton.Icon
+          customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
+          onButtonPress={() => onCreatePostPress()}
+          isPressDisabled={createPostResult.status === 'loading' ? true : false} // createのstatusをここに足す感じだな。
+          hasShadow
+        >
+          {createPostResult.status === 'loading' ? (
+            <ActivityIndicator size={'small'} color={'white'} />
+          ) : (
+            <VectorIcon.II name='add' size={32} color={'white'} />
+          )}
+        </AppButton.Icon>
+        <ViewPostsTypeToggleButton space={route.params.space} />
+      </View>
+    </SafeAreaView>
   );
 };

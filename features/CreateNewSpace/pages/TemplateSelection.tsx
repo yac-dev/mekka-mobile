@@ -88,10 +88,12 @@ export const TemplateSelection = () => {
             activeOpacity={0.5}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <VectorIcon.MCI name='checkbox-blank-circle' size={20} color='white' style={{ marginRight: 20 }} />
+              <VectorIcon.II name='ice-cream' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Vanilla</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Plain space.</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                  Plain space with no special feature. Start from here if you are not sure what to choose.
+                </Text>
               </View>
             </View>
             <VectorIcon.MCI name='chevron-right' size={20} color='white' />
@@ -109,7 +111,7 @@ export const TemplateSelection = () => {
               <VectorIcon.II name='camera' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No video posts. Only photos.</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No videos. Just photos.</Text>
               </View>
             </View>
             <VectorIcon.MCI name='chevron-right' size={20} color='white' />
