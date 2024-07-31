@@ -151,7 +151,7 @@ export const TemplateSelection = () => {
               <View style={{ width: 250 }}>
                 <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Busy Space</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  5 seconds video, moments will be dissapear after 30 minutes.
+                  5 seconds video, moments will be dissapeared after 30 minutes.
                 </Text>
               </View>
             </View>
