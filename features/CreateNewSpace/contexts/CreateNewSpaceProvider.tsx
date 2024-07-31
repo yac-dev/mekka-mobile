@@ -49,6 +49,38 @@ export const initialFormData: FormDataType = {
   },
 };
 
+export const vanillaFormData = {
+  ...initialFormData,
+  isPublic: {
+    value: false,
+    isValidated: true,
+  },
+  contentType: {
+    value: 'photoAndVideo',
+    isValidated: true,
+  },
+  isReactionAvailable: {
+    value: true,
+    isValidated: true,
+  },
+  isCommentAvailable: {
+    value: true,
+    isValidated: true,
+  },
+  videoLength: {
+    value: 90,
+    isValidated: true,
+  },
+  reactions: {
+    value: [{ caption: 'Like', emoji: '❤️', sticker: undefined, type: 'emoji' }] as ReactionType[], // そっか、これunion typeでemojiかsticker typeどちらかだもんな。。。だからas keywordが必要なのか。
+    isValidated: true,
+  },
+  description: {
+    value: 'Delete this and write about your space.',
+    isValidated: true,
+  },
+};
+
 export const photoLoversFormData = {
   ...initialFormData,
   isPublic: {
@@ -73,7 +105,7 @@ export const photoLoversFormData = {
     isValidated: true,
   },
   description: {
-    value: 'This is the space for photo lovers.',
+    value: 'Delete this and write about your space.',
     isValidated: true,
   },
 };
@@ -97,7 +129,7 @@ export const noCommentNoReactionFormData: FormDataType = {
     isValidated: true,
   },
   description: {
-    value: 'No more reactions in this space.',
+    value: 'Delete this and write about your space.',
     isValidated: true,
   },
 };
@@ -139,7 +171,7 @@ export const busySpaceFormData = {
     isValidated: true,
   },
   description: {
-    value: 'This is the space for busy people.',
+    value: 'Delete this and write about your space.',
     isValidated: true,
   },
 };

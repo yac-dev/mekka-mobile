@@ -12,6 +12,7 @@ import {
   photoLoversFormData,
   noCommentNoReactionFormData,
   busySpaceFormData,
+  vanillaFormData,
 } from '../contexts/CreateNewSpaceProvider';
 
 export const TemplateSelection = () => {
@@ -41,7 +42,7 @@ export const TemplateSelection = () => {
                 marginBottom: 10,
               }}
             >
-              Create new Space
+              Create New Space
             </Text>
             <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
               The space is where you and your friends get together and share photos/videos. {'\n'}Design yours and start
@@ -82,7 +83,7 @@ export const TemplateSelection = () => {
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
             onPress={() => {
-              setFormData(photoLoversFormData);
+              setFormData(vanillaFormData);
               createNewSpaceStackNavigation.navigate('Base');
             }}
             activeOpacity={0.5}
@@ -90,9 +91,9 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='ice-cream' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Vanilla</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Vanilla Space</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  Plain space with no special feature. Start from here if you are not sure what to choose.
+                  Traditional space with like, comment and 24 hours disappearing posts features.
                 </Text>
               </View>
             </View>
@@ -110,8 +111,8 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='camera' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No videos. Just photos.</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers Space</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No video posts. Just photos.</Text>
               </View>
             </View>
             <VectorIcon.MCI name='chevron-right' size={20} color='white' />
@@ -128,9 +129,9 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='heart-dislike' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>No Pressure</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>No Pressure Space</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  No comment feature, no like feature. No more worrying about reactions from others.
+                  No comments, no likes. No more worrying about reactions from others.
                 </Text>
               </View>
             </View>
