@@ -78,12 +78,6 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
       />
       {post.contents[0].type === 'video' && (
         <>
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.5)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={{ position: 'absolute', right: 0, left: 0, top: 0, height: 30 }}
-          />
           <View style={{ position: 'absolute', right: 5, top: 5 }}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>{millisecondsToTime(post.contents[0].duration)}</Text>
           </View>

@@ -137,20 +137,6 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           <Text style={styles.timeText}>{formatTime(duration - currentTime)}</Text>
         </View>
       </View>
-      {/* <AppButton.Icon
-        onButtonPress={togglePlayPause}
-        customStyle={{
-          width: 44,
-          height: 44,
-          backgroundColor: 'rgb(50,50,50)',
-          position: 'absolute',
-          bottom: 65,
-          alignSelf: 'center',
-        }}
-        hasShadow={false}
-      >
-        <VectorIcon.FD name={paused ? 'play' : 'pause'} size={25} color={'white'} />
-      </AppButton.Icon> */}
       <Modal
         animationType='fade'
         transparent={true}
