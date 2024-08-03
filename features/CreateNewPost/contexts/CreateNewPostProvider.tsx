@@ -47,6 +47,7 @@ export type ContentType = {
   fileName: string;
   type: ContentTypeType;
   duration: number | undefined;
+  userId: string;
 };
 
 export type BufferContentTypeType = 'image/jpg' | 'video/mp4';
@@ -166,9 +167,14 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
       for (const asset of result.assets) {
         if (asset.type === 'video') {
           if (asset.duration / 1000 <= currentSpace.videoLength) {
-            adding.push({ fileName, type: 'video', duration: asset.duration ? asset.duration : null });
+            adding.push({
+              fileName: `${fileName}.mp4`,
+              type: 'video',
+              duration: asset.duration ? asset.duration : null,
+              userId: auth._id,
+            });
             bufferContents.push({
-              name: fileName,
+              name: `${fileName}.mp4`,
               uri: asset.uri,
               type: 'video/mp4',
             });
@@ -181,9 +187,15 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
             // });
           }
         } else if (asset.type === 'image') {
-          adding.push({ fileName, type: 'photo', duration: asset.duration ? asset.duration : null });
+          // mymetypeではwebpを指定できない。基本、jpgかpng。
+          adding.push({
+            fileName: `${fileName}.webp`,
+            type: 'photo',
+            duration: asset.duration ? asset.duration : null,
+            userId: auth._id,
+          });
           bufferContents.push({
-            name: fileName,
+            name: `${fileName}.webp`,
             uri: asset.uri,
             type: 'image/jpg',
           });

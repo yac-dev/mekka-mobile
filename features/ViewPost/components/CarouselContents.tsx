@@ -4,6 +4,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { ContentType, PostType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { VideoPlayer } from '../../../components';
+import { CustomImage } from '../../../components';
 
 type CarouselContentsProps = {
   post: PostType;
@@ -18,11 +19,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         {item.type === 'photo' ? (
-          <ExpoImage
-            style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
-            source={{ uri: item.data }}
-            contentFit='cover'
-          />
+          <CustomImage source={item.data} contentFit='cover' />
         ) : (
           <VideoPlayer
             ref={videoRef}
@@ -70,11 +67,12 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
       ) : (
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
           {post.contents[0].type === 'photo' ? (
-            <ExpoImage
-              style={{ width: '100%', aspectRatio: 1, marginBottom: 10 }}
-              source={{ uri: post.contents[0].data }}
-              contentFit='cover'
-            />
+            // <ExpoImage
+            //   style={{ width: '100%', aspectRatio: 1 }}
+            //   source={{ uri: post.contents[0].data }}
+            //   contentFit='cover'
+            // />
+            <CustomImage source={post.contents[0].data} contentFit='cover' />
           ) : (
             <VideoPlayer
               ref={videoRef}

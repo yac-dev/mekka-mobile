@@ -18,7 +18,10 @@ export const createPost = async (input: CreatePostInputType): Promise<CreatePost
     payload.append('createdBy', input.userId);
     payload.append('spaceId', input.spaceId);
     payload.append('contents', JSON.stringify(input.contents.value));
-    payload.append('bufferContents', JSON.stringify(input.bufferContents.value));
+    input.bufferContents.value.map((content) => {
+      payload.append('bufferContents', JSON.parse(JSON.stringify(content)));
+    });
+    // payload.append('bufferContents', JSON.parse(JSON.stringify(input.bufferContents.value)));
 
     // ここでobjectを作っているのも面倒くさいんだよな。。。
     // えーと。。。何したいんだっけ？？buffer側は
