@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import backendAPI from '../../../apis/backend';
 import * as ImagePicker from 'expo-image-picker';
-import { CurrentSpaceContext } from '../../../providers';
+import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { IconType, TagType, LocationType } from '../../../types';
 import { useGetTagIcons } from '../hooks';
 
@@ -9,6 +9,10 @@ const initialFormData: FormDataType = {
   postType: {
     value: 'normal',
     isValidated: true,
+  },
+  bufferContents: {
+    value: [],
+    isValidated: false,
   },
   contents: {
     value: [],
@@ -40,9 +44,17 @@ type PostTypeType = 'normal' | 'moment';
 type ContentTypeType = 'photo' | 'video';
 
 export type ContentType = {
-  uri: string;
+  fileName: string;
   type: ContentTypeType;
   duration: number | undefined;
+};
+
+export type BufferContentTypeType = 'image/jpg' | 'video/mp4';
+
+export type BufferContentType = {
+  name: string;
+  uri: string;
+  type: BufferContentTypeType;
 };
 
 type FormType<T> = {
@@ -53,15 +65,6 @@ type FormType<T> = {
 type AddedTagsTableType = {
   [key: string]: AddedTagType;
 };
-
-// _id: string;
-//   name: string;
-//   icon: IconType;
-//   color: string;
-//   count: number;
-//   space: SpaceType;
-//   updatedAt: string;
-//   createdBy: UserType;
 
 export type CreatedTagType = {
   _id: string;
@@ -77,6 +80,7 @@ export type TagOptionType = AddedTagType;
 export type FormDataType = {
   postType: FormType<PostTypeType>;
   contents: FormType<ContentType[]>;
+  bufferContents: FormType<BufferContentType[]>;
   caption: FormType<string>;
   addedTagsTable: FormType<AddedTagsTableType>;
   location: FormType<LocationType | undefined>;
@@ -115,6 +119,7 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
 });
 
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { auth } = useContext(AuthContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
   const [tagOptions, setTagOptions] = useState<TagOptionType[]>(currentSpace.tags);
@@ -139,7 +144,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const pickUpContents = async () => {
     const pickerOption = {
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
-      allowsMultipleSelection: true,
+      allowsMultipleSelection: false,
       quality: 1,
       storageOptions: {
         skipBackup: true,
@@ -154,11 +159,19 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
 
     let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
     if (!result.canceled && result.assets) {
+      const fileName = `${auth._id}_${new Date().getTime()}`;
       const adding = [];
+      const bufferContents = [];
+
       for (const asset of result.assets) {
         if (asset.type === 'video') {
           if (asset.duration / 1000 <= currentSpace.videoLength) {
-            adding.push({ uri: asset.uri, type: 'video', duration: asset.duration ? asset.duration : null });
+            adding.push({ fileName, type: 'video', duration: asset.duration ? asset.duration : null });
+            bufferContents.push({
+              name: fileName,
+              uri: asset.uri,
+              type: 'video/mp4',
+            });
           } else {
             // setSnackBar({
             //   isVisible: true,
@@ -168,7 +181,12 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
             // });
           }
         } else if (asset.type === 'image') {
-          adding.push({ uri: asset.uri, type: 'photo', duration: asset.duration ? asset.duration : null });
+          adding.push({ fileName, type: 'photo', duration: asset.duration ? asset.duration : null });
+          bufferContents.push({
+            name: fileName,
+            uri: asset.uri,
+            type: 'image/jpg',
+          });
         }
       }
       setFormData((previous) => {
@@ -177,6 +195,10 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
           contents: {
             value: adding,
             isValidated: adding.length ? true : false,
+          },
+          bufferContents: {
+            value: bufferContents,
+            isValidated: bufferContents.length ? true : false,
           },
         };
       });

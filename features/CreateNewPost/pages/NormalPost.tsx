@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
-import { ContentType, CreateNewPostContext } from '../contexts';
+import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../../../providers';
 
@@ -41,8 +41,10 @@ const NormalPost = () => {
   }, [formData.contents, formData.caption]);
 
   const renderContents = () => {
-    const list = formData.contents.value.map((content: ContentType, index) => {
-      return <ContentThumbnail key={index} content={content} index={index} onRemovePress={onRemoveContentPress} />;
+    const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
+      return (
+        <ContentThumbnail key={index} bufferContent={content} index={index} onRemovePress={onRemoveContentPress} />
+      );
     });
 
     return (
@@ -93,8 +95,8 @@ const NormalPost = () => {
     } else {
       return (
         <Text style={{ color: 'rgb(180, 180, 180)' }}>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>Photos or Videos</Text>.{'\n'}Video length
-          is limited to&nbsp;
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>photo or video</Text>.{'\n'}Video length is
+          limited to&nbsp;
           <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>{currentSpace.videoLength} seconds</Text>
         </Text>
       );
@@ -118,7 +120,7 @@ const NormalPost = () => {
               {formData.postType.value === 'normal' ? 'Normal Post' : 'Moment Post'}
             </Text>
             <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-              Please select at most 6 {renderContentType()}.
+              Please select a {renderContentType()}.
             </Text>
             {formData.postType.value === 'moment' ? (
               <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>

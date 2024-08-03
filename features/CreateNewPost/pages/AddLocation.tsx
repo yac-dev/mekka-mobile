@@ -42,7 +42,7 @@ const AddLocation = () => {
       headerRight: () => (
         <TouchableOpacity
           activeOpacity={0.5}
-          onPress={() => onPostPress()}
+          onPress={() => console.log('form data -> ', JSON.stringify(formData, null, 2))}
           disabled={formData.location.isValidated ? false : true}
         >
           <Text

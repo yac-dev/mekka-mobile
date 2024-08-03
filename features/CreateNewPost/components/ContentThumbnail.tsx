@@ -5,24 +5,24 @@ import { Ionicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import * as VideoThumbnail from 'expo-video-thumbnails';
-import { ContentType } from '../contexts';
+import { ContentType, BufferContentType } from '../contexts';
 
 type ContentThumbnailProps = {
-  content: ContentType;
+  bufferContent: BufferContentType;
   index: number;
   onRemovePress: (index: number) => void;
 };
 
-export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ content, onRemovePress, index }) => {
+export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferContent, onRemovePress, index }) => {
   const oneAssetWidth = Dimensions.get('window').width / 3;
 
   return (
     <View style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 1 }}>
-      {content.type === 'photo' ? (
+      {bufferContent.type === 'image/jpg' ? (
         <>
           <ExpoImage
             style={{ width: '100%', height: '100%', marginRight: 10 }}
-            source={{ uri: content.uri }}
+            source={{ uri: bufferContent.uri }}
             contentFit='cover'
             transition={100}
           />
@@ -30,7 +30,7 @@ export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ content, onR
       ) : (
         <>
           <Video
-            source={{ uri: content.uri }}
+            source={{ uri: bufferContent.uri }}
             style={{ width: '100%', height: '100%', marginRight: 10 }}
             resizeMode={ResizeMode.COVER}
           />
