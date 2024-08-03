@@ -37,6 +37,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { FlashList } from '@shopify/flash-list';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -191,7 +192,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar hidden />
-      <FlatList
+      <FlashList
         data={posts}
         renderItem={renderItem}
         pagingEnabled
@@ -201,11 +202,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         onViewableItemsChanged={onViewableItemsChanged.current}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
         initialScrollIndex={index}
-        getItemLayout={(data, index) => ({
-          length: Dimensions.get('window').height, // Set the height of each item
-          offset: Dimensions.get('window').height * index, // Calculate the offset based on the index
-          index, // Pass the index
-        })}
+        estimatedItemSize={Dimensions.get('window').height}
       />
       <AppButton.Icon
         onButtonPress={handleInfoBottomSheet}
