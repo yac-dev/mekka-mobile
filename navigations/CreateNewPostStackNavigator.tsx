@@ -14,6 +14,7 @@ import { CreateNewPostProvider } from '../features/CreateNewPost/contexts';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { CreatedTagType } from '../features/CreateNewPost/contexts';
+import FlashMessage from 'react-native-flash-message';
 
 export type CreateNewPostStackParams = {
   SelectPostType: undefined;
@@ -157,6 +158,7 @@ const CreateNewPostStackNavigator = () => {
           />
         </CreateNewPosyStack.Group>
       </CreateNewPosyStack.Navigator>
+      <FlashMessage />
     </CreateNewPostProvider>
   );
 };

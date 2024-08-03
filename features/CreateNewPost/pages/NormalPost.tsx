@@ -11,8 +11,14 @@ import { CurrentSpaceContext } from '../../../providers';
 
 const NormalPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
-  const { formData, onCaptionChange, pickUpContents, onRemoveContentPress, onPostTypeChange } =
-    useContext(CreateNewPostContext);
+  const {
+    formData,
+    onCaptionChange,
+    pickUpContents,
+    onRemoveContentPress,
+    onPostTypeChange,
+    createNewPostFlashMessageRef,
+  } = useContext(CreateNewPostContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
 
   useEffect(() => {

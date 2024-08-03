@@ -1,9 +1,10 @@
-import React, { useState, createContext, useContext, useEffect } from 'react';
+import React, { useState, createContext, useContext, useEffect, useRef } from 'react';
 import backendAPI from '../../../apis/backend';
 import * as ImagePicker from 'expo-image-picker';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { IconType, TagType, LocationType } from '../../../types';
 import { useGetTagIcons } from '../hooks';
+import FlashMessage from 'react-native-flash-message';
 
 const initialFormData: FormDataType = {
   postType: {
@@ -101,6 +102,7 @@ type CreateNewPostContextType = {
   addLocation: (coordinates: number[]) => void;
   removeLocation: () => void;
   defaultTagIcon?: IconType;
+  createNewPostFlashMessageRef: React.RefObject<FlashMessage>;
 };
 
 export const CreateNewPostContext = createContext<CreateNewPostContextType>({
@@ -117,6 +119,7 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
   addLocation: (coordinates: number[]) => {},
   removeLocation: () => {},
   defaultTagIcon: void 0,
+  createNewPostFlashMessageRef: null,
 });
 
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -125,6 +128,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
   const [tagOptions, setTagOptions] = useState<TagOptionType[]>(currentSpace.tags);
   const { apiResult, requestApi } = useGetTagIcons();
+  const createNewPostFlashMessageRef = useRef<FlashMessage>(null);
 
   useEffect(() => {
     requestApi({ name: 'hash' });
@@ -179,12 +183,11 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
               type: 'video/mp4',
             });
           } else {
-            // setSnackBar({
-            //   isVisible: true,
-            //   status: 'warning',
-            //   message: `OOPS. Video length is limited to ${space.videoLength} in this space.`,
-            //   duration: 5000,
-            // });
+            createNewPostFlashMessageRef.current?.showMessage({
+              message: `Video length is limited to ${currentSpace.videoLength} in this space.`,
+              type: 'warning',
+              duration: 5000,
+            });
           }
         } else if (asset.type === 'image') {
           // mymetypeではwebpを指定できない。基本、jpgかpng。
@@ -331,9 +334,11 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
         addLocation,
         removeLocation,
         defaultTagIcon: apiResult.data?.icon,
+        createNewPostFlashMessageRef,
       }}
     >
       {children}
+      <FlashMessage ref={createNewPostFlashMessageRef} />
     </CreateNewPostContext.Provider>
   );
 };
