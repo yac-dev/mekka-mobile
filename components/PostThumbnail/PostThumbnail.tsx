@@ -61,22 +61,23 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
     >
       {/* skeltonここじゃないと,そもそもhandleLoadingされない。 */}
       {isLoading && <Skeleton />}
-      {post.contents[0].type === 'photo' && (
+      {/* {post.contents[0].type === 'photo' && (
         <ExpoImage
           style={{ width: '100%', height: '100%' }}
           source={{ uri: post.contents[0].data }}
           contentFit='cover'
           onLoad={handleImageLoad}
         />
-      )}
+      )} */}
+
+      <ExpoImage
+        style={{ width: '100%', height: '100%' }}
+        source={{ uri: post.contents[0].type === 'photo' ? post.contents[0].data : post.contents[0].thumbnail }}
+        contentFit='cover'
+        onLoad={handleImageLoad}
+      />
       {post.contents[0].type === 'video' && (
         <>
-          <Video
-            source={{ uri: post.contents[0].data }}
-            style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
-            onLoad={handleImageLoad}
-            resizeMode={ResizeMode.COVER}
-          />
           <LinearGradient
             colors={['transparent', 'rgba(0,0,0,0.5)']}
             start={{ x: 0, y: 0 }}

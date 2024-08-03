@@ -190,6 +190,7 @@ export type ContentType = {
   duration: number;
   createdBy: UserType;
   createdAt: string;
+  thumbnail: string;
 };
 
 export type PostType = {

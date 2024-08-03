@@ -75,6 +75,7 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   const renderMarkers = () => {
     return getPostsByTagIdAndRegionResult.data?.posts.map((post: PostType, index: number) => (
       <MapPostThumbnail
+        key={index}
         post={post}
         index={index}
         onMapPostThumbnailPress={onMapPostThumbnailPress}

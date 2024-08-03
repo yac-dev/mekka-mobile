@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { ContentType, PostType } from '../../../types';
-import { Image as ExpoImage } from 'expo-image';
 import { VideoPlayer } from '../../../components';
 import { CustomImage } from '../../../components';
 
@@ -67,11 +66,6 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
       ) : (
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
           {post.contents[0].type === 'photo' ? (
-            // <ExpoImage
-            //   style={{ width: '100%', aspectRatio: 1 }}
-            //   source={{ uri: post.contents[0].data }}
-            //   contentFit='cover'
-            // />
             <CustomImage source={post.contents[0].data} contentFit='cover' />
           ) : (
             <VideoPlayer
