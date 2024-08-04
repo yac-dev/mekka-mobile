@@ -2,6 +2,7 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import { WelcomePage } from '../features';
 import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
 import { SignupStackNavigator } from './SignupStackNavigator';
+import { CustomWebView } from '../components';
 
 // welcome pageとsignupstack, forgot my password stack.
 
@@ -9,6 +10,7 @@ type NonAuthStackNavigatorParams = {
   WelcomePage: undefined;
   SignupStackNavigator: undefined;
   ForgotPasswordStackNavigator: undefined;
+  WebView: undefined;
 };
 
 export type NonAuthStackNavigatorProps = NativeStackNavigationProp<NonAuthStackNavigatorParams>;
@@ -33,6 +35,20 @@ export const NonAuthNavigator = () => {
             },
           })}
           // headerRight（headerLeft）はcomponent側で出してあげる。
+        />
+        <NonAuthStack.Screen
+          name='WebView'
+          component={CustomWebView}
+          options={({ navigation }) => ({
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+          })}
         />
       </NonAuthStack.Group>
       <NonAuthStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>

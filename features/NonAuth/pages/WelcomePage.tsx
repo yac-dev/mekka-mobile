@@ -135,6 +135,21 @@ export const WelcomePage = () => {
           </View>
         </View>
       </View>
+      <Text
+        style={{
+          color: 'rgb(170,170,170)',
+          fontSize: 16,
+          fontWeight: 'bold',
+          position: 'absolute',
+          bottom: 0,
+          alignSelf: 'center',
+          marginBottom: 10,
+          textDecorationLine: 'underline',
+        }}
+        onPress={() => nonAuthStackNavigation.navigate('WebView')}
+      >
+        What is Mekka??
+      </Text>
       <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </SafeAreaView>
   );
