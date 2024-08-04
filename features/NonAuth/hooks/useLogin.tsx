@@ -29,12 +29,11 @@ export const useLogin = (): UseLoginOutput => {
         };
       });
     } catch (error) {
-      // login  api側でthrow errorされて、こっちがわに流れてくるっていうことね。
       setApiResult((previous) => {
         return {
           ...previous,
           status: 'error',
-          message: error.message,
+          message: 'OOPS. Something went wrong with your email or password. Please try again.',
         };
       });
     }

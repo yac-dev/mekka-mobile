@@ -67,7 +67,7 @@ export const WelcomePage = () => {
 
   useEffect(() => {
     if (apiResult.status === 'error') {
-      showMessage({ message: apiResult.message, type: 'danger' });
+      showMessage({ message: apiResult.message, type: 'danger', duration: 5000 });
     }
   }, [apiResult]);
 

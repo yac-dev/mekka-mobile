@@ -52,7 +52,8 @@ export const useSignupState = () => {
       setApiResult((previous) => {
         return {
           ...previous,
-          status: 'fail',
+          status: 'error',
+          message: 'OOPS. Something went wrong with your email or password. Please try again.',
         };
       });
     }
