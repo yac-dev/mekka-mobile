@@ -140,7 +140,6 @@ export const WelcomePage = () => {
         style={{
           color: 'rgb(170,170,170)',
           fontSize: 16,
-          fontWeight: 'bold',
           position: 'absolute',
           bottom: 0,
           alignSelf: 'center',

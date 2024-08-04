@@ -124,7 +124,7 @@ export const Home = () => {
     return (
       <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100, paddingHorizontal: 20 }}>
         <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17, marginBottom: 20 }}>
-          You haven't joined any spaces now.
+          You haven't joined any spaces now
         </Text>
         <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
         <View style={{ marginTop: 50, gap: 8, flexDirection: 'row', alignItems: 'center' }}>
@@ -155,7 +155,10 @@ export const Home = () => {
             >
               <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} onPress={() => openLink(urls.howToCreateNewSpace)}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
+            >
               <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
                 <Text
                   style={{
@@ -212,7 +215,7 @@ export const Home = () => {
                 alignItems: 'center',
               }}
               activeOpacity={0.7}
-              onPress={() => homeStackNavigation.navigate('EnterPrivateSpace')}
+              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
             >
               <VectorIcon.II name='key' color={Colors.white} size={40} />
             </TouchableOpacity>
@@ -267,7 +270,10 @@ export const Home = () => {
             >
               <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} onPress={() => openLink(urls.howToCreateNewSpace)}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
+            >
               <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
                 <Text
                   style={{
