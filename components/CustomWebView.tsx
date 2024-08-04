@@ -9,7 +9,7 @@ type CustomWebViewProps = {
 export const CustomWebView: React.FC<CustomWebViewProps> = ({ uri }) => {
   return (
     <View style={styles.container}>
-      <WebView source={{ uri }} style={{ marginTop: 20 }} />
+      <WebView source={{ uri }} />
     </View>
   );
 };
@@ -17,7 +17,5 @@ export const CustomWebView: React.FC<CustomWebViewProps> = ({ uri }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

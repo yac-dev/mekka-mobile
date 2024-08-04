@@ -9,6 +9,7 @@ import { useLogin } from '../hooks';
 import { LoadingSpinner } from '../../../components';
 import { NonAuthStackNavigatorProps } from '../../../navigations/NonAuthNavigator';
 import { showMessage } from 'react-native-flash-message';
+import { urls } from '../../../settings';
 
 export const WelcomePage = () => {
   const nonAuthStackNavigation = useNavigation<NonAuthStackNavigatorProps>();
@@ -146,7 +147,7 @@ export const WelcomePage = () => {
           marginBottom: 10,
           textDecorationLine: 'underline',
         }}
-        onPress={() => nonAuthStackNavigation.navigate('WebView')}
+        onPress={() => nonAuthStackNavigation.navigate('AboutApp', { url: urls.briefIntroduction })}
       >
         What is Mekka??
       </Text>

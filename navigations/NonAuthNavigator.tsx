@@ -2,15 +2,18 @@ import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-na
 import { WelcomePage } from '../features';
 import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
 import { SignupStackNavigator } from './SignupStackNavigator';
-import { CustomWebView } from '../components';
+import { AboutApp } from '../features';
+import { AppButton } from '../components';
+import { VectorIcon } from '../Icons';
+import { Colors } from '../themes';
 
 // welcome pageとsignupstack, forgot my password stack.
 
-type NonAuthStackNavigatorParams = {
+export type NonAuthStackNavigatorParams = {
   WelcomePage: undefined;
   SignupStackNavigator: undefined;
   ForgotPasswordStackNavigator: undefined;
-  WebView: undefined;
+  AboutApp: { url: string };
 };
 
 export type NonAuthStackNavigatorProps = NativeStackNavigationProp<NonAuthStackNavigatorParams>;
@@ -37,10 +40,10 @@ export const NonAuthNavigator = () => {
           // headerRight（headerLeft）はcomponent側で出してあげる。
         />
         <NonAuthStack.Screen
-          name='WebView'
-          component={CustomWebView}
+          name='AboutApp'
+          component={AboutApp}
           options={({ navigation }) => ({
-            headerTitle: '',
+            headerTitle: 'About Mekka',
             headerStyle: {
               backgroundColor: 'black',
             },
@@ -48,6 +51,15 @@ export const NonAuthNavigator = () => {
               fontWeight: 'bold',
               color: 'white',
             },
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
           })}
         />
       </NonAuthStack.Group>
