@@ -37,7 +37,7 @@ export const MapPostThumbnail: React.FC<MapPostThumbnailProps> = ({
               height: '100%',
               borderRadius: 9,
             }}
-            source={{ uri: post.contents[0].data }}
+            source={{ uri: post.contents[0].type === 'photo' ? post.contents[0].data : post.contents[0].thumbnail }}
             contentFit='cover'
             transition={200}
           />

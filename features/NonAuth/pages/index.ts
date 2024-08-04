@@ -5,3 +5,4 @@ export * from './EnterPIN';
 export * from './SetNewPassword';
 export * from './Signup';
 export * from './EULA';
+export * from "./AboutApp"

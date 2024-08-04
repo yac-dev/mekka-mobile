@@ -26,25 +26,23 @@ const App: React.FC = function () {
     <RecoilRoot>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-        <QueryClientProvider client={queryClient}>
-          <Composer
-            components={[
-              PaperProvider,
-              GlobalProvider,
-              BottomSheetModalProvider,
-              AuthProvider,
-              SnackBarProvider,
-              MySpacesProvider,
-              SpaceUpdatesProvider,
-              CurrentSpaceProvider,
-              CurrentTagProvider,
-              AppStateProvider,
-              LogsTableProvider,
-            ]}
-          >
-            <Root />
-          </Composer>
-        </QueryClientProvider>
+        <Composer
+          components={[
+            PaperProvider,
+            GlobalProvider,
+            BottomSheetModalProvider,
+            AuthProvider,
+            SnackBarProvider,
+            MySpacesProvider,
+            SpaceUpdatesProvider,
+            CurrentSpaceProvider,
+            CurrentTagProvider,
+            AppStateProvider,
+            LogsTableProvider,
+          ]}
+        >
+          <Root />
+        </Composer>
         <FlashMessage />
       </GestureHandlerRootView>
     </RecoilRoot>

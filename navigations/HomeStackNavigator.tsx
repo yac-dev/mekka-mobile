@@ -20,6 +20,7 @@ import { DiscoverStackNavigator } from './DiscoverStackNavigator';
 import { Home } from '../features/Home/pages';
 import { SpaceStackNavigator } from './SpaceStackNavigator';
 import { SpaceStackParams } from './SpaceStackNavigator';
+import { AboutApp } from '../features';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -84,6 +85,7 @@ export type HomeStackParams = {
   CreateNewLocationTag: undefined;
   SpaceInfoStackNavigator: { space: SpaceType };
   DeleteMyAccount: undefined;
+  AboutApp: { url: string };
 };
 
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
@@ -130,6 +132,22 @@ export const HomeStackNavigator: React.FC = (props) => {
               fontWeight: 'bold',
               color: 'white',
             },
+          })}
+        />
+        <HomeStack.Screen
+          name='AboutApp'
+          component={AboutApp}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
           })}
         />
         <HomeStack.Screen

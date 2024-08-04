@@ -9,6 +9,7 @@ import { useLogin } from '../hooks';
 import { LoadingSpinner } from '../../../components';
 import { NonAuthStackNavigatorProps } from '../../../navigations/NonAuthNavigator';
 import { showMessage } from 'react-native-flash-message';
+import { urls } from '../../../settings';
 
 export const WelcomePage = () => {
   const nonAuthStackNavigation = useNavigation<NonAuthStackNavigatorProps>();
@@ -67,7 +68,7 @@ export const WelcomePage = () => {
 
   useEffect(() => {
     if (apiResult.status === 'error') {
-      showMessage({ message: apiResult.message, type: 'danger' });
+      showMessage({ message: apiResult.message, type: 'danger', duration: 5000 });
     }
   }, [apiResult]);
 
@@ -135,6 +136,20 @@ export const WelcomePage = () => {
           </View>
         </View>
       </View>
+      <Text
+        style={{
+          color: 'rgb(170,170,170)',
+          fontSize: 16,
+          position: 'absolute',
+          bottom: 0,
+          alignSelf: 'center',
+          marginBottom: 10,
+          textDecorationLine: 'underline',
+        }}
+        onPress={() => nonAuthStackNavigation.navigate('AboutApp', { url: urls.briefIntroduction })}
+      >
+        What is Mekka??
+      </Text>
       <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </SafeAreaView>
   );

@@ -46,13 +46,13 @@ export const Signup = () => {
 
   useEffect(() => {
     if (signupResult.status === 'success') {
-      showMessage({ message: 'Welcome to Mekka', type: 'success' });
+      showMessage({ message: 'Welcome to Mekka', type: 'success', duration: 5000 });
     }
   }, [signupResult]);
 
   useEffect(() => {
     if (signupResult.status === 'error') {
-      showMessage({ message: signupResult.message, type: 'danger' });
+      showMessage({ message: signupResult.message, type: 'danger', duration: 5000 });
     }
   }, [signupResult]);
 

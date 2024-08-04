@@ -108,7 +108,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
         <View style={{ flexDirection: 'row' }}>

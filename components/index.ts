@@ -9,3 +9,4 @@ export * from './SnackBar';
 export * from './Report';
 export * from './VideoPlayer';
 export * from './CustomImage';
+export * from './CustomWebView';
