@@ -5,6 +5,7 @@ import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { IconType, TagType, LocationType } from '../../../types';
 import { useGetTagIcons } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
+import uuid from 'react-native-uuid';
 
 const initialFormData: FormDataType = {
   postType: {
@@ -149,7 +150,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const pickUpContents = async () => {
     const pickerOption = {
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
-      allowsMultipleSelection: true,
+      allowsMultipleSelection: false,
       quality: 1,
       storageOptions: {
         skipBackup: true,
@@ -168,29 +169,8 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
       const adding = [];
       const bufferContents = [];
 
-      // 前のcontentsとresult.assetsの合計のlengthが6以上の場合はエラーを出して、追加しない様にする。
-      if (formData.contents.value.length + result.assets.length >= 7) {
-        createNewPostFlashMessageRef.current?.showMessage({
-          message: 'You can add up to 6 contents.',
-          type: 'warning',
-          duration: 5000,
-        });
-        return;
-      }
-
-      const existingVideoCount = formData.contents.value.filter((content) => content.type === 'video').length;
-
       for (const asset of result.assets) {
         if (asset.type === 'video') {
-          if (existingVideoCount > 0 || adding.some((item) => item.type === 'video')) {
-            createNewPostFlashMessageRef.current?.showMessage({
-              message: 'Only one video is allowed.',
-              type: 'warning',
-              duration: 5000,
-            });
-            continue;
-          }
-
           if (asset.duration / 1000 <= currentSpace.videoLength) {
             adding.push({
               fileName: `${fileName}.mp4`,
@@ -229,11 +209,11 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...previous,
           contents: {
-            value: [...previous.contents.value, ...adding],
+            value: adding,
             isValidated: adding.length ? true : false,
           },
           bufferContents: {
-            value: [...previous.bufferContents.value, ...bufferContents],
+            value: bufferContents,
             isValidated: bufferContents.length ? true : false,
           },
         };

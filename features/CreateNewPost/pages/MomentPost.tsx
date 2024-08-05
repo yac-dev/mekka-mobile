@@ -100,7 +100,7 @@ const MomentPost = () => {
     if (formData.bufferContents.value.length) {
       const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
         return (
-          <ContentThumbnail key={index} bufferContent={content} index={index} onRemovePress={onRemoveContentPress} />
+          <ContentThumbnail key={index} bufferContent={content} index={index} onBufferContentPress={pickUpContents} />
         );
       });
 

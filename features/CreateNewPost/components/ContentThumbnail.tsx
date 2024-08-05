@@ -10,15 +10,17 @@ import { ContentType, BufferContentType } from '../contexts';
 type ContentThumbnailProps = {
   bufferContent: BufferContentType;
   index: number;
-  onRemovePress: (index: number) => void;
+  onBufferContentPress: () => void;
 };
 
-export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferContent, onRemovePress, index }) => {
-  const oneAssetWidth = Dimensions.get('window').width / 3;
-  const oneAssetHeight = oneAssetWidth;
-
+const oneAssetWidth = 150;
+export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferContent, index, onBufferContentPress }) => {
   return (
-    <View style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 1 }}>
+    <TouchableOpacity
+      style={{ width: oneAssetWidth, height: oneAssetWidth * (16 / 9), padding: 1 }}
+      activeOpacity={0.7}
+      onPress={() => onBufferContentPress()}
+    >
       {bufferContent.type === 'image/jpg' ? (
         <>
           <ExpoImage
@@ -34,10 +36,12 @@ export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferConten
             source={{ uri: bufferContent.uri }}
             style={{ width: '100%', height: '100%', marginRight: 10 }}
             resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping
           />
         </>
       )}
-      <View
+      {/* <View
         style={{
           width: 40,
           height: 40,
@@ -63,7 +67,7 @@ export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferConten
         >
           <Ionicons name='close' size={20} color={'black'} />
         </TouchableOpacity>
-      </View>
-    </View>
+      </View> */}
+    </TouchableOpacity>
   );
 };

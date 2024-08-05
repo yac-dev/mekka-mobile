@@ -46,7 +46,7 @@ const NormalPost = () => {
         >
           <Text
             style={{
-              color: formData.postType.isValidated && formData.caption.isValidated ? 'white' : 'rgb(100,100,100)',
+              color: formData.contents.isValidated && formData.caption.isValidated ? 'white' : 'rgb(100,100,100)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -62,32 +62,12 @@ const NormalPost = () => {
     if (formData.bufferContents.value.length) {
       const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
         return (
-          <ContentThumbnail key={index} bufferContent={content} index={index} onRemovePress={onRemoveContentPress} />
+          <ContentThumbnail key={index} bufferContent={content} index={index} onBufferContentPress={pickUpContents} />
         );
       });
 
       return (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-          {formData.bufferContents.value.length >= 6 ? null : (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                alignSelf: 'center',
-                backgroundColor: 'rgb(50,50,50)',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: oneAssetWidth,
-                aspectRatio: 1,
-                borderRadius: oneAssetWidth / 2,
-              }}
-              onPress={() => pickUpContents()}
-            >
-              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'white', fontSize: 17 }}>Add more</Text>
-            </TouchableOpacity>
-          )}
-          {formData.contents.value.length ? list : null}
-        </View>
+        <View style={{ marginBottom: 30, alignItems: 'center' }}>{formData.contents.value.length ? list : null}</View>
       );
     } else {
       return null;
