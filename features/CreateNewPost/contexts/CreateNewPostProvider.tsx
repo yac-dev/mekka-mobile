@@ -178,8 +178,19 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
         return;
       }
 
+      const existingVideoCount = formData.contents.value.filter((content) => content.type === 'video').length;
+
       for (const asset of result.assets) {
         if (asset.type === 'video') {
+          if (existingVideoCount > 0 || adding.some((item) => item.type === 'video')) {
+            createNewPostFlashMessageRef.current?.showMessage({
+              message: 'Only one video is allowed.',
+              type: 'warning',
+              duration: 5000,
+            });
+            continue;
+          }
+
           if (asset.duration / 1000 <= currentSpace.videoLength) {
             adding.push({
               fileName: `${fileName}.mp4`,

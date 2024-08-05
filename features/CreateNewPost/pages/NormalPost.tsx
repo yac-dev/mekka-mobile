@@ -1,5 +1,14 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Dimensions,
+} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { ContentThumbnail } from '../components/ContentThumbnail';
@@ -9,6 +18,8 @@ import { BufferContentType, ContentType, CreateNewPostContext } from '../context
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
+
+const oneAssetWidth = Dimensions.get('window').width / 3;
 
 const NormalPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
@@ -57,6 +68,24 @@ const NormalPost = () => {
 
       return (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
+          {formData.bufferContents.value.length >= 6 ? null : (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                alignSelf: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: oneAssetWidth,
+                aspectRatio: 1,
+                borderRadius: oneAssetWidth / 2,
+              }}
+              onPress={() => pickUpContents()}
+            >
+              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Add more</Text>
+            </TouchableOpacity>
+          )}
           {formData.contents.value.length ? list : null}
         </View>
       );
@@ -106,8 +135,8 @@ const NormalPost = () => {
     } else {
       return (
         <Text style={{ color: 'rgb(180, 180, 180)' }}>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>photo or video</Text>.{'\n'}Video length is
-          limited to&nbsp;
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>photos or videos</Text>.{'\n'}Video length
+          is limited to&nbsp;
           <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>{currentSpace.videoLength} seconds</Text>
         </Text>
       );
@@ -128,10 +157,10 @@ const NormalPost = () => {
                 marginBottom: 10,
               }}
             >
-              {formData.postType.value === 'normal' ? 'Normal Post' : 'Moment Post'}
+              {formData.postType.value === 'normal' ? 'New Post' : 'Moment Post'}
             </Text>
             <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-              Please select a {renderContentType()}.
+              Please select {renderContentType()}.
             </Text>
             {formData.postType.value === 'moment' ? (
               <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
@@ -142,25 +171,24 @@ const NormalPost = () => {
               </Text>
             ) : null}
           </View>
-          {formData.contents.value.length >= 6 ? null : (
+          {formData.contents.value.length === 0 && (
             <TouchableOpacity
+              activeOpacity={0.7}
               style={{
-                padding: 15,
-                flexDirection: 'row',
+                alignSelf: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                justifyContent: 'center',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 15,
+                width: 110,
+                height: 110,
+                padding: 2,
+                borderRadius: 110 / 2,
+                marginBottom: 10,
               }}
               onPress={() => pickUpContents()}
-              activeOpacity={1}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
-                <View>
-                  <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
-                </View>
-              </View>
-              <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
             </TouchableOpacity>
           )}
           {renderContents()}
