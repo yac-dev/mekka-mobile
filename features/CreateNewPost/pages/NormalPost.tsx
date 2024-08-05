@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../../../providers';
+import { VectorIcon } from '../../../Icons';
 
 const NormalPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
@@ -47,17 +48,21 @@ const NormalPost = () => {
   }, [formData.contents, formData.caption]);
 
   const renderContents = () => {
-    const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
-      return (
-        <ContentThumbnail key={index} bufferContent={content} index={index} onRemovePress={onRemoveContentPress} />
-      );
-    });
+    if (formData.bufferContents.value.length) {
+      const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
+        return (
+          <ContentThumbnail key={index} bufferContent={content} index={index} onRemovePress={onRemoveContentPress} />
+        );
+      });
 
-    return (
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-        {formData.contents.value.length ? list : null}
-      </View>
-    );
+      return (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
+          {formData.contents.value.length ? list : null}
+        </View>
+      );
+    } else {
+      return null;
+    }
   };
 
   const calcurateMinutes = () => {

@@ -15,6 +15,7 @@ type ContentThumbnailProps = {
 
 export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferContent, onRemovePress, index }) => {
   const oneAssetWidth = Dimensions.get('window').width / 3;
+  const oneAssetHeight = oneAssetWidth;
 
   return (
     <View style={{ width: oneAssetWidth, height: oneAssetWidth, padding: 1 }}>

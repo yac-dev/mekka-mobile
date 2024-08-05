@@ -149,7 +149,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const pickUpContents = async () => {
     const pickerOption = {
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
-      allowsMultipleSelection: false,
+      allowsMultipleSelection: true,
       quality: 1,
       storageOptions: {
         skipBackup: true,
@@ -167,6 +167,16 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
       const fileName = `${auth._id}_${new Date().getTime()}`;
       const adding = [];
       const bufferContents = [];
+
+      // 前のcontentsとresult.assetsの合計のlengthが6以上の場合はエラーを出して、追加しない様にする。
+      if (formData.contents.value.length + result.assets.length >= 7) {
+        createNewPostFlashMessageRef.current?.showMessage({
+          message: 'You can add up to 6 contents.',
+          type: 'warning',
+          duration: 5000,
+        });
+        return;
+      }
 
       for (const asset of result.assets) {
         if (asset.type === 'video') {
@@ -208,11 +218,11 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
         return {
           ...previous,
           contents: {
-            value: adding,
+            value: [...previous.contents.value, ...adding],
             isValidated: adding.length ? true : false,
           },
           bufferContents: {
-            value: bufferContents,
+            value: [...previous.bufferContents.value, ...bufferContents],
             isValidated: bufferContents.length ? true : false,
           },
         };
@@ -223,11 +233,16 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const onRemoveContentPress = (index: number) => {
     setFormData((previous) => {
       const updatedContents = [...previous.contents.value].filter((_, idx: number) => index !== idx);
+      const updatedBufferContents = [...previous.bufferContents.value].filter((_, idx: number) => index !== idx);
       return {
         ...previous,
         contents: {
           value: updatedContents,
           isValidated: updatedContents.length ? true : false,
+        },
+        bufferContents: {
+          value: updatedBufferContents,
+          isValidated: updatedBufferContents.length ? true : false,
         },
       };
     });

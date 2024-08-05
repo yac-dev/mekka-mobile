@@ -21,7 +21,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { AuthContext, SnackBarContext } from '../../../providers';
 import { SnackBar } from '../../../components';
 import { CurrentSpaceContext } from '../../../providers';
-import { ContentType, CreateNewPostContext } from '../contexts';
+import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
@@ -29,6 +29,7 @@ import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { CreateMomentInputType } from '../types';
 import { MomentsContext } from '../../Space/providers/MomentsProvider';
 import { useCreateMomentResult } from '../../../api';
+import { VectorIcon } from '../../../Icons';
 
 const MomentPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
@@ -96,15 +97,40 @@ const MomentPost = () => {
   }
 
   const renderContents = () => {
-    const list = formData.contents.value.map((content: ContentType, index) => {
-      return <ContentThumbnail key={index} content={content} index={index} onRemovePress={onRemoveContentPress} />;
-    });
+    if (formData.bufferContents.value.length) {
+      const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
+        return (
+          <ContentThumbnail key={index} bufferContent={content} index={index} onRemovePress={onRemoveContentPress} />
+        );
+      });
 
-    return (
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-        {formData.contents.value.length ? list : null}
-      </View>
-    );
+      return (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
+          {formData.bufferContents.value.length >= 6 ? null : (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                alignSelf: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: oneAssetWidth,
+                aspectRatio: 1,
+                borderRadius: oneAssetWidth / 2,
+              }}
+              onPress={() => pickUpContents()}
+            >
+              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Add more</Text>
+            </TouchableOpacity>
+          )}
+
+          {formData.bufferContents.value.length ? list : null}
+        </View>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -137,27 +163,27 @@ const MomentPost = () => {
             </Text>
           </View>
         </View>
-        {formData.contents.value.length >= 6 ? null : (
+        {formData.contents.value.length === 0 && (
           <TouchableOpacity
+            activeOpacity={0.7}
             style={{
-              padding: 15,
-              flexDirection: 'row',
+              alignSelf: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              justifyContent: 'center',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: 15,
+              width: 110,
+              height: 110,
+              padding: 2,
+              borderRadius: 110 / 2,
+              marginBottom: 10,
             }}
             onPress={() => pickUpContents()}
-            activeOpacity={1}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name='add-circle-sharp' size={25} color='white' style={{ marginRight: 20 }} />
-              <View>
-                <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
-              </View>
-            </View>
-            <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
+            <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
+            <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
           </TouchableOpacity>
         )}
+
         {renderContents()}
         <TextInput
           style={{
