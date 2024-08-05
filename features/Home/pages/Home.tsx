@@ -122,185 +122,213 @@ export const Home = () => {
 
   if (!mySpaces?.length) {
     return (
-      <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 100, paddingHorizontal: 20 }}>
-        <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17, marginBottom: 20 }}>
-          You haven't joined any spaces now
-        </Text>
-        <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
-        <View style={{ marginTop: 50, gap: 8, flexDirection: 'row', alignItems: 'center' }}>
-          <View
-            style={{
-              width: actionButtonContainerWidth,
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
+        <View style={{ paddingTop: 30, alignItems: 'flex-end', paddingRight: 10 }}>
+          <AppButton.Icon
+            onButtonPress={() => openAuthMenuBottomSheet(0)}
+            customStyle={{
+              width: 45,
               aspectRatio: 1,
-              padding: 10,
+              backgroundColor: 'rgb(50,50,50)',
             }}
-            // onPress={() => console.log('hello')}
+            hasShadow={false}
           >
-            <TouchableOpacity
-              activeOpacity={0.5}
+            <VectorIcon.MCI name='account' size={20} color={Colors.white} />
+          </AppButton.Icon>
+        </View>
+        <View style={{ paddingTop: 100, paddingHorizontal: 20 }}>
+          <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 17, marginBottom: 20 }}>
+            You haven't joined any spaces now
+          </Text>
+          <Text style={{ color: 'white', textAlign: 'center' }}>Let's get started down below.</Text>
+          <View style={{ marginTop: 50, gap: 8, flexDirection: 'row', alignItems: 'center' }}>
+            <View
               style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 100,
-                width: actionButtonWidth,
+                width: actionButtonContainerWidth,
                 aspectRatio: 1,
-                marginBottom: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
+                padding: 10,
               }}
-              onPress={() => {
-                homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
-              }}
-              // ここのnavigationがおかしいね。enterprivateも。discoverは大丈夫そう。
-              // あとは、spaceが無からアリになった時用な。
+              // onPress={() => console.log('hello')}
             >
-              <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
-            >
-              <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: '700',
-                  }}
-                >
-                  Create new
-                </Text>
-              </View>
-              <View
+              <TouchableOpacity
+                activeOpacity={0.5}
                 style={{
-                  borderBottomColor: 'white',
-                  borderBottomWidth: 0.3,
-                  alignSelf: 'center',
-                  flexDirection: 'row',
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  width: actionButtonWidth,
+                  aspectRatio: 1,
+                  marginBottom: 10,
+                  justifyContent: 'center',
                   alignItems: 'center',
                 }}
+                onPress={() => {
+                  homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
+                }}
+                // ここのnavigationがおかしいね。enterprivateも。discoverは大丈夫そう。
+                // あとは、spaceが無からアリになった時用な。
               >
-                <Text
+                <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
+              >
+                <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}
+                  >
+                    Create new
+                  </Text>
+                </View>
+                <View
                   style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: '700',
-                    marginRight: 5,
+                    borderBottomColor: 'white',
+                    borderBottomWidth: 0.3,
+                    alignSelf: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
                   }}
                 >
-                  space
-                </Text>
-                {/* <VectorIcon.OI name='link-external' size={15} color='white' /> */}
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            // activeOpacity={0.5}
-            style={{
-              width: actionButtonContainerWidth,
-              aspectRatio: 1,
-              padding: 10,
-            }}
-            // onPress={() => console.log('hello')}
-          >
-            <TouchableOpacity
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '700',
+                      marginRight: 5,
+                    }}
+                  >
+                    space
+                  </Text>
+                  {/* <VectorIcon.OI name='link-external' size={15} color='white' /> */}
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
+              // activeOpacity={0.5}
               style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 100,
-                width: actionButtonWidth,
+                width: actionButtonContainerWidth,
                 aspectRatio: 1,
-                marginBottom: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
+                padding: 10,
               }}
-              activeOpacity={0.7}
-              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
+              // onPress={() => console.log('hello')}
             >
-              <VectorIcon.II name='key' color={Colors.white} size={40} />
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} onPress={() => openLink(urls.howToCreateNewSpace)}>
-              <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: '700',
-                  }}
-                >
-                  Join private
-                </Text>
-              </View>
-              <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: '700',
-                  }}
-                >
-                  space
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            // activeOpacity={0.5}
-            style={{
-              width: actionButtonContainerWidth,
-              aspectRatio: 1,
-              padding: 10,
-            }}
-            // onPress={() => console.log('hello')}
-          >
-            <TouchableOpacity
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  width: actionButtonWidth,
+                  aspectRatio: 1,
+                  marginBottom: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                activeOpacity={0.7}
+                onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
+              >
+                <VectorIcon.II name='key' color={Colors.white} size={40} />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.7} onPress={() => openLink(urls.howToCreateNewSpace)}>
+                <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}
+                  >
+                    Join private
+                  </Text>
+                </View>
+                <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}
+                  >
+                    space
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
+              // activeOpacity={0.5}
               style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 100,
-                width: actionButtonWidth,
+                width: actionButtonContainerWidth,
                 aspectRatio: 1,
-                marginBottom: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
+                padding: 10,
               }}
-              activeOpacity={0.7}
-              onPress={() => homeStackNavigation.navigate('DiscoverStackNavigator')}
+              // onPress={() => console.log('hello')}
             >
-              <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
-            >
-              <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: '700',
-                  }}
-                >
-                  Discover new
-                </Text>
-              </View>
-              <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    color: 'white',
-                    fontSize: 15,
-                    fontWeight: '700',
-                  }}
-                >
-                  space
-                </Text>
-              </View>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  width: actionButtonWidth,
+                  aspectRatio: 1,
+                  marginBottom: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                activeOpacity={0.7}
+                onPress={() => homeStackNavigation.navigate('DiscoverStackNavigator')}
+              >
+                <VectorIcon.MCI name='compass' color={Colors.white} size={40} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
+              >
+                <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}
+                  >
+                    Discover new
+                  </Text>
+                </View>
+                <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}
+                  >
+                    space
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+        <AppBottomSheet.Gorhom
+          ref={authMenuBottomSheetRef}
+          snapPoints={['60%']}
+          title='Settings'
+          onCloseButtonClose={closeAuthMenuBottomSheet}
+        >
+          <AuthMenu
+            onEditMyAccountPress={onEditMyAccountPress}
+            onNotificationSettingPress={onNotificationSettingPress}
+            onLogoutPress={onLogoutPress}
+            onDeleteMyAccountPress={onDeleteMyAccountPress}
+          />
+        </AppBottomSheet.Gorhom>
       </View>
     );
   }
