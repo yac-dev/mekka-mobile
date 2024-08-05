@@ -105,28 +105,7 @@ const MomentPost = () => {
       });
 
       return (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 30 }}>
-          {formData.bufferContents.value.length >= 6 ? null : (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{
-                alignSelf: 'center',
-                backgroundColor: 'rgb(50,50,50)',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: oneAssetWidth,
-                aspectRatio: 1,
-                borderRadius: oneAssetWidth / 2,
-              }}
-              onPress={() => pickUpContents()}
-            >
-              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
-              <Text style={{ color: 'white', fontSize: 17 }}>Add more</Text>
-            </TouchableOpacity>
-          )}
-
-          {formData.bufferContents.value.length ? list : null}
-        </View>
+        <View style={{ marginBottom: 30, alignItems: 'center' }}>{formData.contents.value.length ? list : null}</View>
       );
     } else {
       return null;
