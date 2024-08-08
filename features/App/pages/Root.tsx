@@ -14,6 +14,8 @@ import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
 import { LogsTableContext } from '../../../providers';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
+import { momentLogsAtom } from '../../../atoms';
+import { useRecoilState } from 'recoil';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -42,6 +44,7 @@ export const Root = () => {
   const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
 
   const { apiResult: getLogsResult, requestApi: requestGetLogs, requestRefresh } = useGetLogsByUserId();
+  const [_, setMomentLogs] = useRecoilState(momentLogsAtom);
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
@@ -83,9 +86,11 @@ export const Root = () => {
     }
   }, [getMySpacesApiResult]);
 
+  // 最初でlogとmomentLogsをセットする。
   useEffect(() => {
     if (getLogsResult.status === 'success') {
       setLogsTable(getLogsResult.data?.logs);
+      setMomentLogs(getLogsResult.data?.momentLogs);
     }
   }, [getLogsResult.status]);
 

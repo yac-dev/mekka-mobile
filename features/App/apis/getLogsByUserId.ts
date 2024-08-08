@@ -5,9 +5,10 @@ import { GetLogsByUserIdInputType, GetLogsByUserIdOutputType } from '../types';
 export const getLogsByUserId = async (input: GetLogsByUserIdInputType): Promise<GetLogsByUserIdOutputType> => {
   try {
     const result = await backendAPI.get(`/logs/${input.userId}`);
-    const { logs } = result.data.data;
+    const { logs, momentLogs } = result.data.data;
     return {
       logs,
+      momentLogs,
     };
   } catch (error) {
     throw error;

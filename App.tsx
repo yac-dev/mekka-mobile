@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -11,6 +11,7 @@ import {
   AppStateProvider,
   GlobalProvider,
   LogsTableProvider,
+  MomentLogsProvider,
 } from './providers';
 import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -18,8 +19,6 @@ import { Composer } from './providers/Providers';
 import { Root } from './features/App/pages/Root';
 import FlashMessage from 'react-native-flash-message';
 import { RecoilRoot } from 'recoil';
-import { QueryClient, QueryClientProvider } from 'react-query';
-const queryClient = new QueryClient();
 
 const App: React.FC = function () {
   return (

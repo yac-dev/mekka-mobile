@@ -5,7 +5,6 @@ import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { IconType, TagType, LocationType } from '../../../types';
 import { useGetTagIcons } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
-import uuid from 'react-native-uuid';
 
 const initialFormData: FormDataType = {
   postType: {

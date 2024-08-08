@@ -222,3 +222,7 @@ export type LogsTagTableType = {
 export type LogsTableType = {
   [key: string]: LogsTagTableType;
 };
+
+export type MomentLogsType = {
+  [key: string]: number;
+};

@@ -27,4 +27,7 @@ export type GetLogsByUserIdOutputType = {
   logs: {
     [key: string]: TagTable;
   };
+  momentLogs: {
+    [key: string]: number;
+  };
 };

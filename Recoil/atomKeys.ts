@@ -12,4 +12,5 @@ export const atomKeys = {
   getMoments: 'getMoments',
   createMoment: 'createMoment',
   getReactionsByPostId: 'getReactionsByPostId',
+  momentLogs: 'momentLogs',
 };
