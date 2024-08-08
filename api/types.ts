@@ -109,3 +109,11 @@ export type CreateReactionByPostIdAndReactionIdAndUserIdInputType = {
 export type CreateReactionByPostIdAndReactionIdAndUserIdOutputType = {
   reactionId: string;
 };
+
+export type CreatePushNotificationsInputType = {
+  postId: string;
+  spaceId: string;
+  userId: string;
+};
+
+export type CreatePushNotificationsOutputType = {};
