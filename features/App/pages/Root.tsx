@@ -44,7 +44,7 @@ export const Root = () => {
   const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
 
   const { apiResult: getLogsResult, requestApi: requestGetLogs, requestRefresh } = useGetLogsByUserId();
-  const [_, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {

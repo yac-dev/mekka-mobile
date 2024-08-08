@@ -21,6 +21,8 @@ import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { AuthMenu, AddNewSpaceMenu } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { momentLogsAtom } from '../../../atoms';
+import { useRecoilState } from 'recoil';
 
 const actionButtonContainerWidth = (Dimensions.get('screen').width - 40 - 16) / 3;
 const actionButtonWidth = actionButtonContainerWidth * 0.8;
@@ -42,6 +44,8 @@ export const Home = () => {
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
+
+  const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
@@ -382,9 +386,12 @@ export const Home = () => {
               {/* space tapで、spaceAndUserRelationshipのlastCheckedInでupdateしような。 */}
               {mySpaces.map((space: SpaceType) => {
                 const isFocused = currentSpace._id === space._id;
-                const totalLogs =
+                const momentLogsCount = momentLogs[space._id] ? momentLogs[space._id] : 0;
+                const logs =
                   logsTable[space._id] &&
                   Object.values(logsTable[space._id]).reduce((accumlator, logs) => accumlator + logs, 0);
+
+                const totalLogs = logs + momentLogsCount;
 
                 return (
                   <TouchableOpacity
@@ -621,22 +628,46 @@ export const Home = () => {
                     paddingLeft: 15,
                     flexDirection: 'row',
                     alignItems: 'center',
+                    justifyContent: 'space-between',
                   }}
-                  onPress={() => homeStackNavigation.navigate('MomentsStackNavigator')}
+                  onPress={() => {
+                    setMomentLogs((previous) => {
+                      return {
+                        ...previous,
+                        [currentSpace._id]: 0,
+                      };
+                    });
+                    homeStackNavigation.navigate('MomentsStackNavigator');
+                  }}
                 >
-                  <ExpoImage
-                    style={{
-                      width: 20,
-                      aspectRatio: 1,
-                      marginRight: 10,
-                    }}
-                    source={require('../../../assets/forApp/ghost.png')}
-                    contentFit='cover'
-                    tintColor={'white'}
-                  />
-                  <View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <ExpoImage
+                      style={{
+                        width: 20,
+                        aspectRatio: 1,
+                        marginRight: 10,
+                      }}
+                      source={require('../../../assets/forApp/ghost.png')}
+                      contentFit='cover'
+                      tintColor={'white'}
+                    />
                     <Text style={{ color: 'white', fontSize: 15 }}>Moments</Text>
                   </View>
+                  {momentLogs[currentSpace._id] ? (
+                    <View
+                      style={{
+                        width: 16,
+                        height: 16,
+                        marginRight: 15,
+                        borderRadius: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'red',
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
+                    </View>
+                  ) : null}
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={0.7}
