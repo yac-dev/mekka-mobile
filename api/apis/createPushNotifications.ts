@@ -1,4 +1,3 @@
-// createNotificationsをな。。。
 import backendAPI from '../../apis/backend';
 import { CreatePushNotificationsInputType } from '../types';
 

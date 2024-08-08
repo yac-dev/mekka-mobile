@@ -6,7 +6,7 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import { CurrentSpaceContext, MySpacesContext } from '../providers';
+import { AuthContext, CurrentSpaceContext, MySpacesContext } from '../providers';
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { Colors } from '../themes/colors';
@@ -20,6 +20,7 @@ import { Space } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { PostType, SpaceType, TagType } from '../types';
 import { CreatedTagType } from '../features/CreateNewPost/contexts';
+import { useCreatePushNotificationsResult } from '../api/hooks';
 
 export type ViewPostStackNavigatorParams = {
   ViewPost: {
@@ -75,7 +76,10 @@ export const SpaceStackNavigator: React.FC = (props) => {
   const { createPostResult } = useContext(SpaceRootContext);
   const { setMySpaces } = useContext(MySpacesContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
+  const { requestCreatePushNotifications } = useCreatePushNotificationsResult();
+  const { auth } = useContext(AuthContext);
 
+  // ここか、createは
   useEffect(() => {
     if (createPostResult.status === 'loading') {
       // showSnackBar('info', processingPostMessage, 5000);
@@ -92,6 +96,12 @@ export const SpaceStackNavigator: React.FC = (props) => {
           return space;
         });
         return updatingSpace;
+      });
+      // postが完了したら、push通知。
+      requestCreatePushNotifications({
+        postId: createPostResult.data?.post._id,
+        spaceId: currentSpace._id,
+        userId: auth._id,
       });
     }
   }, [createPostResult]);
