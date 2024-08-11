@@ -13,6 +13,11 @@ import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigat
 import { useRecoilState } from 'recoil';
 import * as Haptics from 'expo-haptics';
 
+import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
+
+Mapbox.setAccessToken('sk.eyJ1IjoieWFiYmVlIiwiYSI6ImNsenBuZG1oeDFiZnIycXI0amdvdXBiOHEifQ.pOL8IkNHAnru0_fSCKhNyg');
+
+// sk.eyJ1IjoieWFiYmVlIiwiYSI6ImNsenBuZG1oeDFiZnIycXI0amdvdXBiOHEifQ.pOL8IkNHAnru0_fSCKhNyg
 type IRegionView = {
   tag: TagType;
 };
@@ -85,8 +90,22 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <MapView
+    <Mapbox.MapView
+      style={{ flex: 1 }}
+      compassEnabled={false}
+      logoEnabled={false}
+      scaleBarEnabled={false}
+      attributionPosition={{ bottom: -20, right: -20 }}
+      styleURL='mapbox://styles/yabbee/cl93j1d3a000714ntdoue4ucq'
+    >
+      <Camera zoomLevel={5} animationMode={'flyTo'} animationDuration={1100} centerCoordinate={[74.006, 40.7128]} />
+      {/* {renderMarkers()} */}
+    </Mapbox.MapView>
+  );
+};
+
+{
+  /* <MapView
         userInterfaceStyle='dark'
         ref={mapRef}
         style={{ flex: 1, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
@@ -103,7 +122,5 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
         <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
           <ActivityIndicator size={'small'} color={'white'} />
         </View>
-      )}
-    </View>
-  );
-};
+      )} */
+}

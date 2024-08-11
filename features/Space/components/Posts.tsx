@@ -13,6 +13,7 @@ import { viewPostsTypeAtomFamily } from '../atoms';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import PagerView from 'react-native-pager-view';
 import { tagScreenOpenedAtomFamily } from '../atoms';
+import { CurrentTagContext } from '../../../providers';
 
 // postsに関してはそこまでnestするとも思えないからまあいいかな。。
 // tagはrouteでもらってくる想定。
@@ -42,8 +43,9 @@ const tabs: TabType[] = [
 // ここら辺のatomも作ろうか。。。
 // 結局、apiの結果をcacheしたいから、やっぱ、recoil必要だね。
 export const Posts: React.FC<IPosts> = ({ space, tag }) => {
+  const { currentTag } = useContext(CurrentTagContext);
   const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
-  const [tagScreenOpened, setTagScreenOpened] = useRecoilState(tagScreenOpenedAtomFamily(tag._id));
+  const [tagScreenOpened, setTagScreenOpened] = useRecoilState(tagScreenOpenedAtomFamily(currentTag._id));
 
   const pagerViewRef = useRef<PagerView>(null);
 
@@ -140,8 +142,8 @@ export const Posts: React.FC<IPosts> = ({ space, tag }) => {
         scrollEnabled={false}
         ref={pagerViewRef}
       >
-        <GridView space={space} tag={tag} />
-        <RegionView tag={tag} />
+        <GridView space={space} tag={currentTag} />
+        <RegionView tag={currentTag} />
       </PagerView>
     </View>
   );

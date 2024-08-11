@@ -130,8 +130,9 @@ export const Space: React.FC<ISpace> = ({ route }) => {
             style={{ marginBottom: 10 }}
           />
         </View>
+        <Posts space={route.params.space} />
 
-        <Tab.Navigator
+        {/* <Tab.Navigator
           tabBar={() => null}
           initialRouteName={`Posts_${currentTag._id}`}
           screenOptions={({ route }) => ({
@@ -145,7 +146,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
               {() => <Posts space={route.params.space} tag={tag} />}
             </Tab.Screen>
           ))}
-        </Tab.Navigator>
+        </Tab.Navigator> */}
         {/* NOTE: TabViewへ切り替える。　material toptab はroutingがnestしてくそうざい。performance考えて実装する。 */}
         {/* {route.params.space.tags.map((tag: TagType, index: number) => (
           <Posts space={route.params.space} tag={tag} />

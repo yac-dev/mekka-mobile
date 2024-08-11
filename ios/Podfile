@@ -87,6 +87,7 @@ abstract_target 'MekkaCommonPods' do
         end
       end
     end
+    $RNMapboxMaps.post_install(installer)
   end
 
   post_integrate do |installer|
@@ -96,4 +97,8 @@ abstract_target 'MekkaCommonPods' do
       Pod::UI.warn e
     end
   end
+end
+
+pre_install do |installer|
+  $RNMapboxMaps.pre_install(installer)
 end

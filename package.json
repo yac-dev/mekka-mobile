@@ -32,6 +32,7 @@
     "@react-navigation/material-top-tabs": "^6.6.5",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.16",
+    "@rnmapbox/maps": "^10.1.28",
     "@shopify/flash-list": "1.4.3",
     "@types/react": "~18.2.34",
     "axios": "^1.6.0",
