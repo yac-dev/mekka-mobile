@@ -18,6 +18,7 @@ export const createPost = async (input: CreatePostInputType): Promise<CreatePost
     payload.append('createdBy', input.userId);
     payload.append('spaceId', input.spaceId);
     payload.append('contents', JSON.stringify(input.contents.value));
+    // この段階でcompresorにかけたいよね。。
     input.bufferContents.value.map((content) => {
       payload.append('bufferContents', JSON.parse(JSON.stringify(content)));
     });

@@ -37,7 +37,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
         flex: 1,
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-        backgroundColor: 'black',
+        backgroundColor: 'red',
       }}
     >
       {post.contents.length > 1 ? (
@@ -71,7 +71,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
             <VideoPlayer
               ref={videoRef}
               source={{ uri: post.contents[0].data }}
-              resizeMode='contain'
+              resizeMode='cover'
               componentStyle={{ width: '100%', height: '100%' }}
             />
           )}

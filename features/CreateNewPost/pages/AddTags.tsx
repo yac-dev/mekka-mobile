@@ -66,8 +66,6 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
   const renderTagOptions = () => {
     // if (Object.values(tagOptions).length) {
     const list = tagOptions.map((tag: TagOptionType, index: number) => {
-      console.log('current table', formData.addedTagsTable.value);
-
       return (
         <TouchableOpacity
           activeOpacity={0.5}

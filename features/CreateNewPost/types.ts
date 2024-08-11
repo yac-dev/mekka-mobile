@@ -1,11 +1,15 @@
 import { PostType, TagType, IconType, ReactionType } from '../../types';
-import { FormDataType } from './contexts';
+import { BufferContentType, FormDataType } from './contexts';
 
 export type CreatePostInputType = FormDataType & {
   userId: string;
   spaceId: string;
   reactions: ReactionType[];
   disappearAfter: string;
+  bufferContents: {
+    value: BufferContentType[];
+    isValidated: boolean;
+  };
 };
 
 export type CreatePostOutputType = {

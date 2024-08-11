@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { removeEmojis } from '../utils/removeEmoji';
 import MapView, { Marker, MapPressEvent } from 'react-native-maps';
-import { CreateNewPostContext } from '../contexts';
+import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { Image as ExpoImage } from 'expo-image';
 import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { useNavigation } from '@react-navigation/native';
@@ -13,9 +13,10 @@ import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 import { useCreatePostResult } from '../../../api';
 import { HomeStackNavigatorProps } from '../../../navigations';
+import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
 
 const AddLocation = () => {
-  const { formData, addLocation, removeLocation } = useContext(CreateNewPostContext);
+  const { formData, addLocation, removeLocation, setFormData } = useContext(CreateNewPostContext);
   // const { requestCreatePost } = useContext(SpaceRootContext);
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { auth } = useContext(AuthContext);
@@ -24,17 +25,72 @@ const AddLocation = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { requestCreatePost } = useCreatePostResult(currentSpace);
 
-  const onPostPress = () => {
+  const onPostPress = async () => {
     spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
+    // ここの段階でbufferContentsたちを圧縮したい。
+    // const bufferContentsBeforeCompressor = formData.bufferContents.value;
+    // const bufferContentsAfterCompressor = [];
+    // for (const content of bufferContentsBeforeCompressor) {
+    //   if (content.type === 'image/jpg') {
+    //     const result = await ImageCompressor.compress(content.uri, {
+    //       compressionMethod: 'manual',
+    //       quality: 0.7,
+    //     });
+
+    //     const compressedObject = {
+    //       name: content.name,
+    //       uri: result,
+    //       type: content.type,
+    //     };
+    //     bufferContentsAfterCompressor.push(compressedObject);
+    //   } else if (content.type === 'video/mp4') {
+    //     const result = await VideoCompressor.compress(content.uri, {
+    //       compressionMethod: 'auto',
+    //       progressDivider: 10,
+    //     });
+    //     const compressedObject = {
+    //       name: content.name,
+    //       uri: result,
+    //       type: content.type,
+    //     };
+    //     bufferContentsAfterCompressor.push(compressedObject);
+    //   }
+    // }
+    const compressContent = async (content: BufferContentType) => {
+      const { type, uri } = content;
+      if (type === 'image/jpg') {
+        const result = await ImageCompressor.compress(uri, {
+          compressionMethod: 'manual',
+          quality: 0.7,
+        });
+        return { ...content, uri: result };
+      } else if (type === 'video/mp4') {
+        const result = await VideoCompressor.compress(uri, {
+          progressDivider: 20,
+          maxSize: 1920,
+          compressionMethod: 'manual',
+        });
+        return { ...content, uri: result };
+      }
+      return content;
+    };
+
+    const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
+      formData.bufferContents.value.map(compressContent)
+    );
+
     const input: CreatePostInputType = {
       ...formData,
       userId: auth._id,
       spaceId: currentSpace._id,
       reactions: currentSpace.reactions,
       disappearAfter: currentSpace.disappearAfter.toString(),
+      bufferContents: {
+        value: bufferContentsAfterCompressor,
+        isValidated: true, // Adjust this value as needed
+      },
     };
     requestCreatePost(input);
-    // ここでrequestPostの実行を始めて、かつstatusをloadingにすると。
   };
 
   useEffect(() => {
