@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { atomFamily } from 'recoil';
 import { atomKeys } from '../../../Recoil';
-import { MapRegionType, PostType } from '../../../types';
+import { MapRegionType } from '../../../types';
 
 export const currentRegionAtomFamily = atomFamily<MapRegionType, string>({
   key: atomKeys.currentRegion,
@@ -12,3 +12,4 @@ export const currentRegionAtomFamily = atomFamily<MapRegionType, string>({
     longitudeDelta: 100.0421,
   },
 });
+// previous

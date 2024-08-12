@@ -18,6 +18,7 @@ import { useRecoilState } from 'recoil';
 import { showMessage } from 'react-native-flash-message';
 import { VideoPlayer } from '../../../components';
 import { FlatList } from 'react-native-gesture-handler';
+import { CurrentTagContext } from '../../../providers';
 
 type IGridView = {
   space: SpaceType;
@@ -27,27 +28,28 @@ type IGridView = {
 // tagごとにpostsのcomponentを表示するわけだが、、、
 
 export const GridView: React.FC<IGridView> = ({ space, tag }) => {
+  const { currentTag } = useContext(CurrentTagContext);
+  const { requestGetPostsByTagId, requestMorePostsByTagId, addCreatedPost } = useGetPostsByTagId(currentTag._id);
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
-  const { requestGetPostsByTagId, requestMorePostsByTagId, addCreatedPost } = useGetPostsByTagId(tag._id);
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
   const videoRef = useRef(null);
 
-  // どうしてもskipしちゃうのがあって、それ困るよね。
-  // firstもinputで必要かもな。。。
-  // current pageが2なら、first(12) * page 2
-  // えーと。。。tagがすでにopenされている状態になっていた、なぜか。。。故に、requestが動いていなかった。
+  // useEffect(() => {
+  //   if (!tagScreenOpened) {
+  //     requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
+  //   }
+  //   if (tagScreenOpened) {
+  //     console.log('already opend this tag screen');
+  //   }
+  // }, [tagScreenOpened]);
+
   useEffect(() => {
-    if (!tagScreenOpened) {
-      requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
-    }
-    if (tagScreenOpened) {
-      console.log('already opend this tag screen');
-      // NOTE: refreshを実装する。
-      // 今持っているpage（0 - 3とかで）分までqueryする感じだよな。。。
-    }
-  }, [tagScreenOpened]);
+    // if (getPostsByTagIdResult.status === 'idle') {
+    requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
+    // }
+  }, [currentTag]);
 
   useEffect(() => {
     if (createPostResult.status === 'loading') {

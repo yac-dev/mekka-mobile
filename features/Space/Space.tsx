@@ -1,6 +1,6 @@
 import { useEffect, useContext, useRef, useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, Text, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, FlatList, LayoutChangeEvent, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
@@ -39,6 +39,8 @@ type TagsNavigationParams = {
 
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
+const windowWidth = Dimensions.get('window').width;
+
 export const Space: React.FC<ISpace> = ({ route }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const createPostResult = useRecoilValue(createPostResultAtomFamily(route.params.space._id));
@@ -46,6 +48,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const scrollViewRef = useRef(null);
+  const [itemWidths, setItemWidths] = useState<number[]>([]);
   // NOTE: これ、tagを作った後も動的に変わるようになるな。。。めんどいな。。。一回ここやめようか。。。キリがない。。。
   // const [routes, setRoutes] = useState(
   //   route.params.space.tags.map((tag) => {
@@ -57,13 +60,13 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   // );
   // const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
-  useEffect(() => {
-    const currentIndex = currentSpace?.tags.findIndex((tag) => currentTag._id === tag._id);
-    scrollViewRef.current.scrollToOffset({
-      offset: (currentIndex - 1) * 120,
-      animated: true,
-    });
-  }, [currentTag]);
+  // useEffect(() => {
+  //   const currentIndex = currentSpace?.tags.findIndex((tag) => currentTag._id === tag._id);
+  //   scrollViewRef.current.scrollToOffset({
+  //     offset: (currentIndex - 1) * 120,
+  //     animated: true,
+  //   });
+  // }, [currentTag]);
   // currentTag
   // ここのparamsのmerge trueにしないといかんかった。
   const onTabPress = (tab) => {
@@ -81,29 +84,57 @@ export const Space: React.FC<ISpace> = ({ route }) => {
     spaceStackNavigation.navigate('CreateNewPostStackNavigator');
   };
 
-  const renderTab = ({ item }) => {
+  const onItemLayout = (event: LayoutChangeEvent, index: number) => {
+    const { width } = event.nativeEvent.layout;
+    setItemWidths((prevWidths) => {
+      const newWidths = [...prevWidths];
+      newWidths[index] = width;
+      return newWidths;
+    });
+  };
+
+  const scrollToCenter = () => {
+    const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTag._id);
+    if (itemWidths.length === currentSpace.tags.length) {
+      const itemWidth = itemWidths[currentIndex];
+      const offset =
+        itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
+      scrollViewRef.current?.scrollToOffset({
+        offset: Math.max(0, offset) + 40,
+        animated: true,
+      });
+    }
+  };
+
+  useEffect(() => {
+    scrollToCenter();
+  }, [currentTag, itemWidths, currentSpace.tags.length]);
+
+  const renderTab = ({ item, index }) => {
     const isFocused = currentTag._id === item._id;
     return (
-      <TouchableOpacity key={route.key} onPress={() => onTabPress(item)} onLongPress={() => console.log('hello')}>
-        <View
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginRight: 10,
-            padding: 5,
-          }}
-        >
-          <ExpoImage
-            style={{ width: 20, height: 20, marginBottom: 5 }}
-            source={{ uri: item.icon?.url }}
-            tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
-          />
-          <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
-            {item.name}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <View onLayout={(event) => onItemLayout(event, index)}>
+        <TouchableOpacity key={route.key} onPress={() => onTabPress(item)} onLongPress={() => console.log('hello')}>
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 10,
+              padding: 5,
+            }}
+          >
+            <ExpoImage
+              style={{ width: 20, height: 20, marginBottom: 5 }}
+              source={{ uri: item.icon?.url }}
+              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+            />
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
+              {item.name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
 

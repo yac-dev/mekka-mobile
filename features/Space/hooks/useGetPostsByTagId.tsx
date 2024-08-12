@@ -25,7 +25,6 @@ export const useGetPostsByTagId = (tagId: string) => {
       });
 
       const response = await getPosts(input);
-      console.log('res', response);
       setGetPostsByTagIdResult((previous) => {
         return {
           ...previous,

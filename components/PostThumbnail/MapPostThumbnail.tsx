@@ -3,6 +3,8 @@ import { View, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { PostType } from '../../types';
 import { Image as ExpoImage } from 'expo-image';
+import { MarkerView } from '@rnmapbox/maps';
+import { VectorIcon } from '../../Icons';
 
 type MapPostThumbnailProps = {
   post: PostType;
@@ -18,12 +20,11 @@ export const MapPostThumbnail: React.FC<MapPostThumbnailProps> = ({
   isPressDisabled,
 }) => {
   return (
-    <Marker
-      tracksViewChanges={false}
-      coordinate={{
-        latitude: post.location.coordinates[1],
-        longitude: post.location.coordinates[0],
-      }}
+    <MarkerView
+      id={post._id}
+      coordinate={[post.location.coordinates[0], post.location.coordinates[1]]}
+      allowOverlap={true}
+      // allowOverlap={false}で、マーカーが重なった時にマーカーが全部表示されないようになる。結構便利。
     >
       <TouchableOpacity
         style={{ width: 54, height: 54, padding: 3, borderRadius: 8, backgroundColor: 'white' }}
@@ -43,6 +44,6 @@ export const MapPostThumbnail: React.FC<MapPostThumbnailProps> = ({
           />
         </View>
       </TouchableOpacity>
-    </Marker>
+    </MarkerView>
   );
 };

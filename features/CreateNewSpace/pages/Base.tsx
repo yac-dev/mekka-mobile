@@ -108,8 +108,7 @@ export const Base = () => {
 
   const onCreateSpace = () => {
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
-    console.log('input is this -> ', JSON.stringify(input, null, 2));
-    // requestApi(input);
+    requestApi(input);
   };
 
   const renderText = () => {
