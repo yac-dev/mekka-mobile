@@ -98,7 +98,7 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
         longitudeDelta: longitudeDelta,
       },
     });
-    getCityAndCountry(feature.properties.center[1], feature.properties.center[0]);
+    // getCityAndCountry(feature.properties.center[1], feature.properties.center[0]);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
