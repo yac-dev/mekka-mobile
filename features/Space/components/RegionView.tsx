@@ -71,14 +71,6 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
 
   // 結局は、これを使ってユーザーにどう楽しんで欲しいかだよね。「すごく綺麗な公園！」なんて投稿がされたら、それを見たユーザーがこの地図を頼りにいく感じなのかな。。。あくまで補助的な役割なのかな、意味的には。
   const onMapIdle = (feature: Mapbox.MapState) => {
-    // これで、
-    // requestGetPostsByTagIdAndRegion({
-    //   tagId: tag._id,
-    //   mapBounds: {
-    //     neCoordinates: feature.properties.bounds.ne,
-    //     swCoordinates: feature.properties.bounds.sw,
-    //   },
-    // });
     const { bounds } = feature.properties;
     const [neLng, neLat] = bounds.ne;
     const [swLng, swLat] = bounds.sw;
@@ -86,9 +78,6 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
     const latitudeDelta = neLat - swLat;
     const longitudeDelta = neLng - swLng;
 
-    // console.log('onMapIdle', JSON.stringify(feature, null, 2));
-    // console.log('Latitude Delta:', latitudeDelta);
-    // console.log('Longitude Delta:', longitudeDelta);
     requestGetPostsByTagIdAndRegion({
       tagId: tag._id,
       region: {
@@ -98,8 +87,6 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
         longitudeDelta: longitudeDelta,
       },
     });
-    // getCityAndCountry(feature.properties.center[1], feature.properties.center[0]);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   // 最初は、currentRegionは使わず、locationがあるpostを最大30個程程
@@ -139,7 +126,10 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   const onMapPostThumbnailPress = (post: PostType, index: number) => {
     spaceNavigation.navigate({
       name: 'ViewPostStackNavigator',
-      params: { screen: 'ViewRegionPost', params: { tag, currentPostIndex: index } },
+      params: {
+        screen: 'ViewPost',
+        params: { posts: getPostsByTagIdAndRegionResult.data?.posts, index: index },
+      },
     });
   };
 
