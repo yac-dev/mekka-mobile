@@ -1,15 +1,10 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { useContext } from 'react';
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-// import ReportPost from '../features/ViewPost/pages/ReportPost';
-import { Ionicons } from '@expo/vector-icons';
 import { CurrentTagContext } from '../providers';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
 import { ReportPost, ReportComment } from '../features';
-import { ViewGridPost, ViewRegionPost } from '../features/ViewPost/pages';
-import { StatusBar } from 'react-native';
 import { ViewPost } from '../features/ViewPost/components';
 
 type ViewMomentPostStackNavigatotParams = {

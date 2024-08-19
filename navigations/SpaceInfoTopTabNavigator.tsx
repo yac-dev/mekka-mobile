@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Feature, Members } from '../features';
@@ -8,8 +8,6 @@ const Tab = createMaterialTopTabNavigator();
 type SpaceInfoTopTabNavigatorProps = {};
 
 export const SpaceInfoTopTabNavigator: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
-  const reportBottomSheetRef = useRef(null);
-
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
       <View style={{ alignItems: 'center' }}>

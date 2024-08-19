@@ -1,24 +1,20 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import backendAPI from '../../../apis/backend';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpace';
-import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SnackBar } from '../../../components';
 import { SnackBarContext } from '../../../providers';
 import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 
 const Stickers = (props) => {
   const { setSnackBar } = useContext(SnackBarContext);
-  const { isIpad } = useContext(GlobalContext);
   const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
   const { navigation } = useContext(CreateNewSpaceContext);
   const [stickers, setStickers] = useState([]);
-  const oneGridWidth = isIpad ? Dimensions.get('window').width / 15 : Dimensions.get('window').width / 9;
+  const oneGridWidth = Dimensions.get('window').width / 9;
 
   useEffect(() => {
     if (props.route?.params?.createdSticker) {
