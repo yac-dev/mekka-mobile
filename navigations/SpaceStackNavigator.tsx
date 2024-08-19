@@ -10,7 +10,6 @@ import { AuthContext, CurrentSpaceContext, MySpacesContext } from '../providers'
 import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { Colors } from '../themes/colors';
-import { SpaceTopTabNavigator } from './SpaceTopTabNavigator';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import { useSnackBar } from '../hooks';
 import { SnackBar } from '../components';

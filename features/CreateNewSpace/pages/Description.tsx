@@ -1,73 +1,13 @@
-import React, { useContext, useRef, useEffect } from 'react';
-import { View, Text, TextInput, KeyboardAvoidingView, ScrollView, Platform, TouchableOpacity } from 'react-native';
+import { useContext, useRef } from 'react';
+import { View, Text, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
-import { AuthContext } from '../../../providers';
 import { useCreateSpace } from '../hooks';
-import { HomeStackNavigatorProps, RootStackNavigatorProps } from '../../../navigations';
-import { MySpacesContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
-import { CurrentSpaceContext } from '../../../providers';
-import { CurrentTagContext } from '../../../providers';
-import { LogsTableContext } from '../../../providers';
-import { showMessage } from 'react-native-flash-message';
 
 const Description = () => {
-  const { auth } = useContext(AuthContext);
-  const { setMySpaces, mySpaces } = useContext(MySpacesContext);
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
-  const { setCurrentTag } = useContext(CurrentTagContext);
-  const { setLogsTable } = useContext(LogsTableContext);
-  const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onDescriptionChange } = useContext(CreateNewSpaceContext);
   const { apiResult, requestApi } = useCreateSpace();
   const textInputRef = useRef(null);
-
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity onPress={() => onCreate()} disabled={formData.description.isValidated ? false : true}>
-  //         <Text
-  //           style={{
-  //             color: formData.description.isValidated ? 'white' : 'rgb(170,170,170)',
-  //             fontSize: 20,
-  //             fontWeight: 'bold',
-  //           }}
-  //         >
-  //           Create
-  //         </Text>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, [formData.description]);
-
-  useEffect(() => {
-    if (apiResult.status === 'success') {
-      setMySpaces((previous) => [...previous, apiResult.data.space]);
-      if (!mySpaces?.length) {
-        setCurrentSpace(apiResult.data?.space);
-        setCurrentTag(apiResult.data?.space.tags[0]);
-        setLogsTable((previous) => {
-          return {
-            ...previous,
-            [apiResult.data?.space._id]: {
-              [apiResult.data?.space.tags[0]._id]: 0,
-            },
-          };
-        });
-      }
-      homeStackNavigation.navigate('SpacesDrawerNavigator');
-      showMessage({ message: 'Created new space successfully.', type: 'success' });
-    }
-  }, [apiResult.status]);
-
-  const onCreate = () => {
-    const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
-    requestApi(input);
-  };
 
   const renderDescriptionLength = () => {
     return (

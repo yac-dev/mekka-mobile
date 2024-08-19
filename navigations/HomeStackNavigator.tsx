@@ -10,7 +10,6 @@ import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import ViewPost from '../features/ViewPost/pages/ViewPost';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount } from '../features';
-import { SpacesDrawerNavigator } from './SpacesDrawerNavigator';
 import { PostType, SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { AppButton } from '../components';

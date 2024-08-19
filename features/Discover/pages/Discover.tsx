@@ -1,17 +1,5 @@
-import React, { useReducer, useState, useEffect, useContext, useCallback } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import { FlashList } from '@shopify/flash-list';
-import { NavigationProp } from '@react-navigation/native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
+import React, { useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useGetSpacesState } from '../hooks';

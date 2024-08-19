@@ -1,13 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { Text, TouchableWithoutFeedback } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import * as SecureStore from 'expo-secure-store';
 import { useDeleteMe, useForm } from '../hooks';
 import { AppTextInput, PageScreen } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
 import { AuthContext, SnackBarContext, MySpacesContext, CurrentSpaceContext } from '../../../providers';
-import { SnackBar, LoadingSpinner } from '../../../components';
+import { LoadingSpinner } from '../../../components';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,14 +16,6 @@ export const DeleteMyAccount = () => {
   const { setMySpaces } = useContext(MySpacesContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { setCurrentSpace } = useContext(CurrentSpaceContext);
-  const {
-    setLoading,
-    setIsAuthenticated,
-    // setSpaceAndUserRelationships,
-    // setCurrentSpaceAndUserRelationship,
-    // setCurrentSpace,
-    // setCurrentTagObject,
-  } = useContext(GlobalContext);
   const { apiResult, requestApi } = useDeleteMe();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
 

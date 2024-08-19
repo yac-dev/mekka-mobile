@@ -10,22 +10,15 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons';
 import backendAPI from '../../../apis/backend';
 import { Video } from 'expo-av';
-import { AntDesign } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { AuthContext, SnackBarContext } from '../../../providers';
-import { SnackBar } from '../../../components';
 import { CurrentSpaceContext } from '../../../providers';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
-import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { CreateMomentInputType } from '../types';
 import { MomentsContext } from '../../Space/providers/MomentsProvider';
 import { useCreateMomentResult } from '../../../api';
@@ -41,9 +34,8 @@ const MomentPost = () => {
     useContext(CreateNewPostContext);
   const { auth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
-  const { isIpad } = useContext(GlobalContext);
   const { createMomentResult, space } = useContext(MomentsContext);
-  const oneAssetWidth = isIpad ? Dimensions.get('window').width / 6 : Dimensions.get('window').width / 3;
+  const oneAssetWidth = Dimensions.get('window').width / 3;
 
   // このpageに来た時点で、postTypeをmomentにする。
   useEffect(() => {
