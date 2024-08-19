@@ -66,7 +66,7 @@ export const SideBar: React.FC<SideBarProps> = ({ openAddNewSpaceMenuBottomSheet
         </View>
         {mySpaces.map((space: SpaceType) => {
           const isFocused = currentSpace._id === space._id;
-          const momentLogsCount = momentLogs[space._id] ? momentLogs[space._id] : 0;
+          const momentLogsCount = momentLogs[space._id] || 0;
           const logs =
             logsTable[space._id] &&
             Object.values(logsTable[space._id]).reduce((accumlator, logs) => accumlator + logs, 0);
