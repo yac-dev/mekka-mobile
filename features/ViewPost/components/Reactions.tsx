@@ -11,17 +11,12 @@ import {
 } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
-import { TagScreenContext } from '../../Space';
-import { useGetReactionsByPostId } from '../hooks';
-import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '../../../themes';
-import { ApiResultType, PostType } from '../../../types';
-import { GetReactionsByPostIdOutputType } from '../types';
+import { PostType } from '../../../types';
 import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
 import { useRecoilValue } from 'recoil';
 import { useCreateReactionByPostIdAndReactionIdAndUserId } from '../../../api/hooks/useCreateReactionByPostIdAndReactionIdAndUserId';
-
 import { useGetReactionsByPostIdResult } from '../../../api/hooks/useGetReactionsByPostIdResult';
 
 type Ref = BottomSheetModal;

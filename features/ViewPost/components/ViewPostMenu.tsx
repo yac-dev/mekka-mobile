@@ -1,9 +1,7 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Image as ExpoImage } from 'expo-image';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
-import { TagScreenContext } from '../../Space';
 import { PostType } from '../../../types';
 
 type ViewPostMenuProps = {

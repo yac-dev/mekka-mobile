@@ -1,19 +1,11 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, ScrollView, FlatList, Dimensions, StyleSheet } from 'react-native';
+import React, { useState, useRef, useContext } from 'react';
+import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import backendAPI from '../../../apis/backend';
-import { ViewPostContext } from '../contexts/ViewPostContext';
-import Header from '../components/Header';
-import Content from '../components/Content';
 import { CommentInput } from '../components/CommentInput';
-import BottomMenu from '../components/BottomMenu';
-// import ReactionOptions from '../compoReactionOptions';
 import { Comments } from '../components';
-import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
 import { PostType } from '../../../types';
 import { CarouselContents } from '../components/CarouselContents';
-import { ViewPostMenu } from '../components';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { useBottomSheet, useModal } from '../hooks';
 import { Reactions } from '../components/Reactions';
@@ -29,7 +21,6 @@ import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { useGetReactionsByPostIdResult } from '../../../api';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-// import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 import { FlashList } from '@shopify/flash-list';
@@ -71,8 +62,6 @@ function timeSince(date: Date) {
 
 export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { posts, index } = route.params;
-  const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
-  const viewPostFlashMessageRef = useRef<FlashMessage>();
   const { currentSpace } = useContext(CurrentSpaceContext);
   const spaceStackNavigator = useNavigation<SpaceStackNavigatorProps>();
 
@@ -179,8 +168,6 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       },
     });
   };
-
-  // console.log('post', JSON.stringify(posts[currentPostIndex], null, 2));
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>

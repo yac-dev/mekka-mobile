@@ -1,8 +1,4 @@
-import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import backendAPI from '../../../apis/backend';
-import { iconColorTable } from '../../../themes/color';
-import { Feather } from '@expo/vector-icons';
+import { View, Text, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { ApiResultType, CommentType } from '../../../types';
 import { GetCommentsByPostIdOutputType } from '../../../api/types';
