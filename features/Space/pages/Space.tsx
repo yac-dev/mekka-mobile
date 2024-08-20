@@ -1,41 +1,18 @@
 import { useEffect, useContext, useRef, useState } from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, Text, ActivityIndicator, TouchableOpacity, FlatList, LayoutChangeEvent, Dimensions } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
-import { SpaceRootContext } from '../../features/Space/providers/SpaceRootProvider';
-import { CurrentSpaceContext, CurrentTagContext } from '../../providers';
-import { TagType } from '../../types';
+import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
-import { TagScreenProvider } from '../../features';
-import { AppButton } from '../../components';
-import { VectorIcon } from '../../Icons/VectorIcons';
-import { ViewPostsTypeToggleButton } from '../../features/Space/components';
-import { Posts } from '../../features/Space/components';
-import {
-  HomeStackNavigatorProps,
-  HomeStackParams,
-  SpaceRootStackNavigatorProp,
-  SpaceStackNavigatorProps,
-} from '../../navigations';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { SpaceStackNavigatorParams } from '../../navigations';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Posts, ViewPostsTypeToggleButton } from '../components';
+import { SpaceStackNavigatorProps } from '../../../navigations';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SpaceStackNavigatorParams } from '../../../navigations';
 import { useRecoilValue } from 'recoil';
-import { viewPostsTypeAtomFamily } from './atoms';
-import { useRecoilState } from 'recoil';
-import { createPostResultAtomFamily } from '../../api/atoms';
-import { showMessage } from 'react-native-flash-message';
+import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// pagerviewはlazy loadingをサポートしていないという。。。
-// 使い方はtab viewの方が面倒臭いがlazy loadingサポートはいいね。
-
-const Tab = createMaterialTopTabNavigator<TagsNavigationParams>();
-
-type TagsNavigationParams = {
-  [key: string]: undefined;
-};
 
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
@@ -44,39 +21,13 @@ const windowWidth = Dimensions.get('window').width;
 export const Space: React.FC<ISpace> = ({ route }) => {
   const { currentSpace } = useContext(CurrentSpaceContext);
   const createPostResult = useRecoilValue(createPostResultAtomFamily(route.params.space._id));
-  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const scrollViewRef = useRef(null);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
-  // NOTE: これ、tagを作った後も動的に変わるようになるな。。。めんどいな。。。一回ここやめようか。。。キリがない。。。
-  // const [routes, setRoutes] = useState(
-  //   route.params.space.tags.map((tag) => {
-  //     return {
-  //       key: tag._id,
-  //       title: tag.name,
-  //     };
-  //   })
-  // );
-  // const [currentTabIndex, setCurrentTabIndex] = useState(0);
-
-  // useEffect(() => {
-  //   const currentIndex = currentSpace?.tags.findIndex((tag) => currentTag._id === tag._id);
-  //   scrollViewRef.current.scrollToOffset({
-  //     offset: (currentIndex - 1) * 120,
-  //     animated: true,
-  //   });
-  // }, [currentTag]);
-  // currentTag
-  // ここのparamsのmerge trueにしないといかんかった。
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
-    homeStackNavigation.navigate({
-      name: 'Space',
-      params: { screen: `Posts_${tab._id}` },
-      merge: true,
-    });
   };
 
   const onCreatePostPress = () => {
@@ -141,7 +92,6 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
-        {/* 上tabは別でcomponent分けた方がいい。 ただ、navigatorにはしなくていいよ。 */}
         <View style={{ flexDirection: 'row' }}>
           <AppButton.Icon
             onButtonPress={() => spaceStackNavigation.goBack()}
@@ -162,26 +112,6 @@ export const Space: React.FC<ISpace> = ({ route }) => {
           />
         </View>
         <Posts space={route.params.space} />
-
-        {/* <Tab.Navigator
-          tabBar={() => null}
-          initialRouteName={`Posts_${currentTag._id}`}
-          screenOptions={({ route }) => ({
-            lazy: true,
-            swipeEnabled: true,
-            animationEnabled: false,
-          })}
-        >
-          {currentSpace?.tags.map((tag: TagType, index: number) => (
-            <Tab.Screen key={index} name={`Posts_${tag._id}`} options={{ title: tag.name }}>
-              {() => <Posts space={route.params.space} tag={tag} />}
-            </Tab.Screen>
-          ))}
-        </Tab.Navigator> */}
-        {/* NOTE: TabViewへ切り替える。　material toptab はroutingがnestしてくそうざい。performance考えて実装する。 */}
-        {/* {route.params.space.tags.map((tag: TagType, index: number) => (
-          <Posts space={route.params.space} tag={tag} />
-        ))} */}
         <AppButton.Icon
           customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
           onButtonPress={() => onCreatePostPress()}

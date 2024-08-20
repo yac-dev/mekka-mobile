@@ -1,23 +1,12 @@
-import React, { useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import React from 'react';
 import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
-import { AuthContext, CurrentSpaceContext, MySpacesContext } from '../providers';
-import { SpaceRootContext } from '../features/Space/providers/SpaceRootProvider';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { Colors } from '../themes/colors';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
-import { useSnackBar } from '../hooks';
-import { SnackBar } from '../components';
-import { showMessage } from 'react-native-flash-message';
-import { SpaceRootProvider } from '../features/Space/providers/SpaceRootProvider';
+import { Colors } from '../themes/colors';
 import { Space } from '../features';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
-import { PostType, SpaceType, TagType } from '../types';
+import { PostType, SpaceType } from '../types';
 import { CreatedTagType } from '../features/CreateNewPost/contexts';
 import { useCreatePushNotificationsResult } from '../api/hooks';
 
@@ -66,46 +55,15 @@ type PostsTopTabNavigatorParams = {
 };
 
 const SpaceStack = createNativeStackNavigator<SpaceStackParams>();
-const processingPostMessage = 'It takes couple seconds to finish processing.';
-const postSucceededMessage = 'Your post has been created successfully.';
 
-// 命名的に、SpaceStackNavigator の方がいいね。そんで、最初のscreenにspaceを割り当てる感じだな。
-export const SpaceStackNavigator: React.FC = (props) => {
-  const { snackBar, showSnackBar, hideSnackBar } = useSnackBar();
-  const { createPostResult } = useContext(SpaceRootContext);
-  const { setMySpaces } = useContext(MySpacesContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
-  const { requestCreatePushNotifications } = useCreatePushNotificationsResult();
-  const { auth } = useContext(AuthContext);
-
-  // ここか、createは
-  useEffect(() => {
-    if (createPostResult.status === 'loading') {
-      // showSnackBar('info', processingPostMessage, 5000);
-      showMessage({ message: 'Takes couple seconds to finish.', type: 'info' });
-    }
-    if (createPostResult.status === 'success' && createPostResult.data?.createdTags) {
-      // NOTE: 新しく作ったtagをここに追加する。
-      showMessage({ message: 'Created new post.', type: 'success' });
-      setMySpaces((previous) => {
-        const updatingSpace = [...previous].map((space) => {
-          if (space._id === currentSpace._id) {
-            space.tags.push(...createPostResult.data?.createdTags);
-          }
-          return space;
-        });
-        return updatingSpace;
-      });
-      // postが完了したら、push通知。
-      requestCreatePushNotifications({
-        postId: createPostResult.data?.post._id,
-        spaceId: currentSpace._id,
-        userId: auth._id,
-      });
-    }
-  }, [createPostResult]);
-  // reloadでpropsの影響でバグる。
-  // ここはあくまで、spaceのtagを増やしているだけね。
+export const SpaceStackNavigator: React.FC = () => {
+  // NOTE: これは逆にこの後使うぞ。。。
+  // const { requestCreatePushNotifications } = useCreatePushNotificationsResult();
+  // requestCreatePushNotifications({
+  //   postId: createPostResult.data?.post._id,
+  //   spaceId: currentSpace._id,
+  //   userId: auth._id,
+  // });
 
   return (
     <SpaceStack.Navigator
@@ -165,7 +123,6 @@ export const SpaceStackNavigator: React.FC = (props) => {
           })}
         />
       </SpaceStack.Group>
-      {/* viewPostsStackをここで持っておいた方がいいのかね。。 */}
     </SpaceStack.Navigator>
   );
 };

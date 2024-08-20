@@ -3,21 +3,15 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
-import { TagScreenContext } from '../providers';
 import { useNavigation } from '@react-navigation/native';
-import { TagScreenStackNavigatorProps } from '../../../navigations';
 import { getPostsByTagIdAtomFamily } from '../atoms';
-// tag Idが必要になるからな。そこの管理もすげーめんどいな。。。
 import { useRecoilValue } from 'recoil';
 import { useGetPostsByTagId } from '../hooks';
-import { HomeStackNavigatorProps } from '../../../navigations';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 import { tagScreenOpenedAtomFamily } from '../atoms';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { showMessage } from 'react-native-flash-message';
-import { VideoPlayer } from '../../../components';
-import { FlatList } from 'react-native-gesture-handler';
 import { CurrentTagContext } from '../../../providers';
 
 type IGridView = {
@@ -34,16 +28,6 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
-  const videoRef = useRef(null);
-
-  // useEffect(() => {
-  //   if (!tagScreenOpened) {
-  //     requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
-  //   }
-  //   if (tagScreenOpened) {
-  //     console.log('already opend this tag screen');
-  //   }
-  // }, [tagScreenOpened]);
 
   useEffect(() => {
     // if (getPostsByTagIdResult.status === 'idle') {

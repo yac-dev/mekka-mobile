@@ -9,20 +9,15 @@ import { CommentInput } from '../components/CommentInput';
 import BottomMenu from '../components/BottomMenu';
 // import ReactionOptions from '../compoReactionOptions';
 import { Comments } from '../components';
-import { TagViewContext } from '../../Space/contexts/TagViewContext';
 import { Video } from 'expo-av';
 import { Image as ExpoImage } from 'expo-image';
-import { TagScreenContext } from '../../Space';
 import { PostType } from '../../../types';
 import { CarouselContents } from '../components/CarouselContents';
 import { ViewPostMenu } from '../components';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { useBottomSheet, useModal } from '../hooks';
-import { ReactionsBottomSheet } from '../components/ReactionsBottomSheet';
 import { Reactions } from '../components/Reactions';
-import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
 import { useGetCommentsByPostIdState } from '../../../api/hooks/useGetCommentsByPostIdState';
-import { useGetReactionsByPostId } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
@@ -87,8 +82,6 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
 
   const { requestGetReactionsBySpaceId } = useGetReactionsByPostIdResult(currentPost._id);
   const [getReactionsByPostIdResult] = useRecoilState(getReactionsByPostIdResultAtomFamily(currentPost._id));
-
-  const { viewPostsType } = useContext(SpaceRootContext);
 
   const {
     isReactionsBottomSheetOpen,

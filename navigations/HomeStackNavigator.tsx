@@ -7,7 +7,6 @@ import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
-import ViewPost from '../features/ViewPost/pages/ViewPost';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount } from '../features';
 import { PostType, SpaceType } from '../types';
@@ -112,27 +111,6 @@ export const HomeStackNavigator: React.FC = (props) => {
           options={({ navigation }) => ({})}
         />
         {/* ここに、spaceRootStackを入れる感じか。home component内で、SpaceRootStackへnavigationするようにしたいよね。そういう流れだ。 */}
-
-        <HomeStack.Screen
-          name='ViewPost'
-          component={ViewPost}
-          options={({ navigation }) => ({
-            headerShown: true,
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons name='arrow-back-circle-sharp' size={30} color={'white'} />
-              </TouchableOpacity>
-            ),
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
-          })}
-        />
         <HomeStack.Screen
           name='AboutApp'
           component={AboutApp}
