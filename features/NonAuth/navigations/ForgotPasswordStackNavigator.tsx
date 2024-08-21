@@ -1,11 +1,9 @@
-import React from 'react';
-import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const ForgotPasswordStack = createNativeStackNavigator();
-import { ForgotPassword, EnterPIN, SetNewPassword } from '../features';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
+import { ForgotPassword, EnterPIN, SetNewPassword } from '../..';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
 
 export const ForgotPasswordStackNavigator = () => {
   return (

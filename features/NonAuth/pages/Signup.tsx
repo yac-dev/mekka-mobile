@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSignupForm, useSignupState } from '../hooks';
-import { SignupStackNavigatorProp } from '../../../navigations/SignupStackNavigator';
+import { SignupStackNavigatorProp } from '../navigations/SignupStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { AppTextInput } from '../../../components';
 import { LoadingSpinner } from '../../../components';

@@ -1,9 +1,8 @@
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ForgotPassword, EnterPIN, SetNewPassword } from '../features';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
-import { Signup, EULA } from '../features';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
+import { Signup, EULA } from '../..';
 
 type SignupStackNavigatorParams = {
   Signup: undefined;
