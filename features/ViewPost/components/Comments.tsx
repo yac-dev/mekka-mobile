@@ -4,7 +4,7 @@ import { ApiResultType, CommentType } from '../../../types';
 import { GetCommentsByPostIdOutputType } from '../../../api/types';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
-import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { ViewPostStackNavigatorProps } from '../navigations/ViewPostStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 
 type IComments = {

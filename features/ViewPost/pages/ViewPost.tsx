@@ -21,7 +21,7 @@ import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { useGetReactionsByPostIdResult } from '../../../api';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../navigations/ViewPostStackNavigator';
 import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
 import { FlashList } from '@shopify/flash-list';
 

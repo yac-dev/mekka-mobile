@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Report } from '../../../components';
 import { AppButton } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
-import { ViewPostStackNavigatorProps } from '../../../navigations/ViewPostStackNavigator';
+import { ViewPostStackNavigatorProps } from '../../ViewPost/navigations/ViewPostStackNavigator';
 import { VectorIcon } from '../../../Icons';
 
 class ReportPostOption implements ReportPostOptionType {

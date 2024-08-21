@@ -1,9 +1,9 @@
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
-import { ReportPost, ReportComment, ViewPost } from '../features';
-import { PostType } from '../types';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
+import { ReportPost, ReportComment, ViewPost } from '../..';
+import { PostType } from '../../../types';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {

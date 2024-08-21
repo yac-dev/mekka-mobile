@@ -5,7 +5,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
 import { Colors } from '../themes/colors';
 import { Space } from '../features';
-import { ViewPostStackNavigator } from './ViewPostStackNavigator';
+import { ViewPostStackNavigator } from '../features/ViewPost/navigations/ViewPostStackNavigator';
 import { PostType, SpaceType } from '../types';
 import { CreatedTagType } from '../features/CreateNewPost/contexts';
 import { useCreatePushNotificationsResult } from '../api/hooks';

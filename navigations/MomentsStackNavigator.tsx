@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../themes/colors';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Moments } from '../features/Moments/pages/Moments';
-import { ViewPostStackNavigator } from './ViewPostStackNavigator';
+import { ViewPostStackNavigator } from '../features/ViewPost/navigations/ViewPostStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import CreateNewPostStackNavigator from '../features/CreateNewPost/navigations/CreateNewPostStackNavigator';
