@@ -1,14 +1,11 @@
-import React, { useContext, useCallback, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Share, Platform, ScrollView } from 'react-native';
-import { SpaceInfoTopTabNavigator } from '../../../navigations/SpaceInfoTopTabNavigator';
+import { useContext } from 'react';
+import { View, Text } from 'react-native';
+import { Tabs } from '../components';
 import { Image as ExpoImage } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
-import { SpaceInfoStackNavigatorProps } from '../../../navigations';
 import { CurrentSpaceContext } from '../../../providers';
 
 export const SpaceInfo = () => {
   const { currentSpace } = useContext(CurrentSpaceContext);
-  const navigation = useNavigation<SpaceInfoStackNavigatorProps>();
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -30,7 +27,7 @@ export const SpaceInfo = () => {
           </Text>
         </View>
       </View>
-      <SpaceInfoTopTabNavigator />
+      <Tabs />
     </View>
   );
 };

@@ -3,7 +3,7 @@ import { AuthContext } from '../providers';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from './HomeStackNavigator';
-import { NonAuthNavigator } from './NonAuthNavigator';
+import { NonAuthNavigator } from '../features/NonAuth/navigations/NonAuthNavigator';
 import { ApiResultType } from '../types';
 import { LoadMeOutputType } from '../features/App/types';
 

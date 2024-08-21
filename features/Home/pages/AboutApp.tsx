@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { CustomWebView } from '../../../components';
-import { NonAuthStackNavigatorParams } from '../../../navigations/NonAuthNavigator';
+import { NonAuthStackNavigatorParams } from '../../NonAuth/navigations/NonAuthNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParams } from '../../../navigations/HomeStackNavigator';
 

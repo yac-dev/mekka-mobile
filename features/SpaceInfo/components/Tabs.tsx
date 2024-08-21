@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Feature, Members } from '../features';
+import { Feature, Members } from '.';
 
 const Tab = createMaterialTopTabNavigator();
 
 type SpaceInfoTopTabNavigatorProps = {};
 
-export const SpaceInfoTopTabNavigator: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
+export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
       <View style={{ alignItems: 'center' }}>

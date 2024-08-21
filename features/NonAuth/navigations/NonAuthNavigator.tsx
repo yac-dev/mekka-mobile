@@ -1,11 +1,11 @@
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-import { WelcomePage } from '../features';
-import { ForgotPasswordStackNavigator } from './ForgotPasswordStackNavigator';
-import { SignupStackNavigator } from './SignupStackNavigator';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
-import { AboutApp } from '../features';
+import { WelcomePage } from '../..';
+import { ForgotPasswordStackNavigator } from '../../../navigations/ForgotPasswordStackNavigator';
+import { SignupStackNavigator } from '../../../navigations/SignupStackNavigator';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
+import { AboutApp } from '../..';
 
 // welcome pageとsignupstack, forgot my password stack.
 

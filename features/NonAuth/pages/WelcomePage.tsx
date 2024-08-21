@@ -7,7 +7,7 @@ import { useForm } from '../hooks';
 import { AppButton } from '../../../components/Button';
 import { useLogin } from '../hooks';
 import { LoadingSpinner } from '../../../components';
-import { NonAuthStackNavigatorProps } from '../../../navigations/NonAuthNavigator';
+import { NonAuthStackNavigatorProps } from '../navigations/NonAuthNavigator';
 import { showMessage } from 'react-native-flash-message';
 import { urls } from '../../../settings';
 

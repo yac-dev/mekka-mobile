@@ -1,9 +1,5 @@
 import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { ReactionType, SpaceType } from '../../../types';
 import { CurrentSpaceContext } from '../../../providers';
