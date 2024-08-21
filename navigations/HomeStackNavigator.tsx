@@ -7,7 +7,7 @@ import { CreateNewSpaceStackNavigator } from '../features';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from '../features/SpaceInfo/navigations/SpaceInfoStackNavigator';
-import { EditProfileStackNavigator } from './EditProfileStackNavigator';
+import { EditProfileStackNavigator } from '../features/EditAccount/navigations/EditProfileStackNavigator';
 import { DeleteMyAccount } from '../features';
 import { PostType, SpaceType } from '../types';
 import { NavigatorScreenParams } from '@react-navigation/native';

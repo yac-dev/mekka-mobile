@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { EditAccount } from '../features/EditAccount';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
+import { EditAccount } from '..';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
 
 export type EditProfileStackParams = {
   EditProfile: undefined;
