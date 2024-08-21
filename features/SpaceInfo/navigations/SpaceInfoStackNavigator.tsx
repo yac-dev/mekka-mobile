@@ -1,13 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { SpaceInfo } from '../features/SpaceInfo/pages/SpaceInfo';
-import { Colors } from '../themes/colors';
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HomeStackNavigatorProps, HomeStackParams } from './HomeStackNavigator';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
+import { SpaceInfo } from '../pages/SpaceInfo';
+import { Colors } from '../../../themes/colors';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
 
 type SpaceInfoStackParams = {
   SpaceInfo: undefined;

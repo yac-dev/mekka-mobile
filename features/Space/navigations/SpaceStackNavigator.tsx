@@ -2,7 +2,7 @@ import React from 'react';
 import { CreateNewPostStackNavigator } from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { SpaceInfoStackNavigator } from '../../../navigations/SpaceInfoStackNavigator';
+import { SpaceInfoStackNavigator } from '../../SpaceInfo/navigations/SpaceInfoStackNavigator';
 import { Colors } from '../../../themes/colors';
 import { Space } from '../..';
 import { ViewPostStackNavigator } from '../../ViewPost/navigations/ViewPostStackNavigator';

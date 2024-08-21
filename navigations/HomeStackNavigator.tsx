@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { CreateNewSpaceStackNavigator } from '../features';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
-import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
+import { SpaceInfoStackNavigator } from '../features/SpaceInfo/navigations/SpaceInfoStackNavigator';
 import { EditProfileStackNavigator } from './EditProfileStackNavigator';
 import { DeleteMyAccount } from '../features';
 import { PostType, SpaceType } from '../types';
