@@ -7,8 +7,8 @@ import { Moments } from '../features/Moments/pages/Moments';
 import { ViewPostStackNavigator } from './ViewPostStackNavigator';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
-import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
-import { CreateNewPostStackParams } from './CreateNewPostStackNavigator';
+import CreateNewPostStackNavigator from '../features/CreateNewPost/navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackParams } from '../features/CreateNewPost/navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../providers';
 import { MomentsStackParams } from '.';
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { removeEmojis } from '../utils/removeEmoji';
 import { Image as ExpoImage } from 'expo-image';
-import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackProps } from '..';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostContext } from '../contexts';
 import { useCreateTag } from '../hooks/useCreateTag';

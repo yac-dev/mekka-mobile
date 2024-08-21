@@ -6,7 +6,7 @@ import { CurrentSpaceContext } from '../../../providers';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackProps } from '..';
 import { CreateMomentInputType } from '../types';
 import { useCreateMomentResult } from '../../../api';
 import { VectorIcon } from '../../../Icons';

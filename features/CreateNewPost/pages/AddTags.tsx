@@ -3,16 +3,14 @@ import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback } fr
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Image as ExpoImage } from 'expo-image';
-import { SpaceRootContext } from '../../Space/contexts/SpaceRootContext';
 import { CreateNewPostContext, TagOptionType } from '../contexts';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../../../providers';
 import { TagType } from '../../../types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CreateNewPostStackParams } from '../../../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackParams } from '../navigations/CreateNewPostStackNavigator';
 
 type IAddTags = NativeStackScreenProps<CreateNewPostStackParams, 'AddTags'>;
 

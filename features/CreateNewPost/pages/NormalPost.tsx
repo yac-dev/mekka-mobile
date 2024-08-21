@@ -15,7 +15,7 @@ import { ContentThumbnail } from '../components/ContentThumbnail';
 import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
-import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { CurrentSpaceContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
 

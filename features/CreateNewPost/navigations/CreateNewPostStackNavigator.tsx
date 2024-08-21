@@ -2,18 +2,17 @@ import { TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const CreateNewPosyStack = createNativeStackNavigator();
 import { Ionicons } from '@expo/vector-icons';
-import NormalPost from '../features/CreateNewPost/pages/NormalPost';
-import AddTags from '../features/CreateNewPost/pages/AddTags';
-import AddLocation from '../features/CreateNewPost/pages/AddLocation';
-import MomentPost from '../features/CreateNewPost/pages/MomentPost';
-import CreateNewTag from '../features/CreateNewPost/pages/CreateNewTag';
-import CreateNewLocationTag from '../features/CreateNewPost/pages/CreateNewLocationTag';
-import { SnackBar, AppButton } from '../components';
+import NormalPost from '../pages/NormalPost';
+import AddTags from '../pages/AddTags';
+import AddLocation from '../pages/AddLocation';
+import MomentPost from '../pages/MomentPost';
+import CreateNewTag from '../pages/CreateNewTag';
+import { SnackBar, AppButton } from '../../../components';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CreateNewPostProvider } from '../features/CreateNewPost/contexts';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
-import { CreatedTagType } from '../features/CreateNewPost/contexts';
+import { CreateNewPostProvider } from '../contexts';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
+import { CreatedTagType } from '../contexts';
 import FlashMessage from 'react-native-flash-message';
 
 export type CreateNewPostStackParams = {
@@ -29,7 +28,7 @@ export type CreateNewPostStackParams = {
 
 export type CreateNewPostStackProps = NativeStackNavigationProp<CreateNewPostStackParams>;
 
-const CreateNewPostStackNavigator = () => {
+export const CreateNewPostStackNavigator = () => {
   return (
     <CreateNewPostProvider>
       <CreateNewPosyStack.Navigator>
@@ -136,31 +135,9 @@ const CreateNewPostStackNavigator = () => {
               },
             })}
           />
-          <CreateNewPosyStack.Screen
-            name='CreateNewLocationTag'
-            component={CreateNewLocationTag}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
         </CreateNewPosyStack.Group>
       </CreateNewPosyStack.Navigator>
       <FlashMessage />
     </CreateNewPostProvider>
   );
 };
-
-export default CreateNewPostStackNavigator;

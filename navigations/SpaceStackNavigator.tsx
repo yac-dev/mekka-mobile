@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateNewPostStackNavigator from './CreateNewPostStackNavigator';
+import { CreateNewPostStackNavigator } from '../features';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
