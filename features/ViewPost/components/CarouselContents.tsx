@@ -4,6 +4,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { ContentType, PostType } from '../../../types';
 import { VideoPlayer } from '../../../components';
 import { CustomImage } from '../../../components';
+import { ResizeMode } from 'react-native-video';
 
 type CarouselContentsProps = {
   post: PostType;
@@ -23,7 +24,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
           <VideoPlayer
             ref={videoRef}
             source={{ uri: item.data }}
-            resizeMode='contain'
+            resizeMode={ResizeMode.CONTAIN}
             componentStyle={{ width: '100%', height: '100%' }}
           />
         )}
@@ -71,7 +72,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
             <VideoPlayer
               ref={videoRef}
               source={{ uri: post.contents[0].data }}
-              resizeMode='cover'
+              resizeMode={ResizeMode.CONTAIN}
               componentStyle={{ width: '100%', height: '100%' }}
             />
           )}

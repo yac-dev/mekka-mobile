@@ -1,27 +1,17 @@
-import React, { useMemo, useContext, useState, useEffect, forwardRef, MutableRefObject } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Dimensions,
-  ScrollView,
-  InputAccessoryView,
-  Keyboard,
-  StyleSheet,
-} from 'react-native';
+import React, { useContext, useState, useEffect, forwardRef } from 'react';
+import { View, Text, TouchableOpacity, InputAccessoryView, Keyboard, StyleSheet } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { AuthContext, SnackBarContext } from '../../../providers';
-import { SnackBar } from '../../../components';
+import { AuthContext } from '../../../providers';
 import { CurrentSpaceContext } from '../../../providers';
 import { TextInput } from 'react-native-gesture-handler';
 import { useCreateCommentState } from '../../../api';
-import { TagScreenContext } from '../../Space';
 import { LoadingSpinner } from '../../../components';
 import FlashMessage from 'react-native-flash-message';
+import { PostType } from '../../../types';
 
 type ICommentinput = {
   closeCommentInputBottomSheet: () => void;
+  currentPost: PostType;
   refs: {
     commentInputRef: React.RefObject<TextInput>;
     flashMessageRef: React.RefObject<FlashMessage>;
@@ -32,12 +22,11 @@ type ICommentinput = {
 const inputAccessoryViewID = 'COMMENT_INPUT';
 
 export const CommentInput = forwardRef((props: ICommentinput, ref) => {
-  const { closeCommentInputBottomSheet, refs } = props;
+  const { closeCommentInputBottomSheet, refs, currentPost } = props;
   const { currentSpace } = useContext(CurrentSpaceContext);
   const { auth } = useContext(AuthContext);
   const [commentInput, setCommentInput] = useState('');
   const { apiResult: createCommentResultState, requestApi: requestCreateComment } = useCreateCommentState();
-  const { currentPost } = useContext(TagScreenContext);
 
   if (!currentSpace.isCommentAvailable) {
     return (

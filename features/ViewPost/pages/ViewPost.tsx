@@ -363,6 +363,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         <CommentInput
           refs={{ commentInputRef: commentInputRef, flashMessageRef: flashMessageRef }}
           closeCommentInputBottomSheet={closeCommentInputBottomSheet}
+          currentPost={currentPost}
         />
       </AppBottomSheet.Gorhom>
       <FlashMessage ref={flashMessageRef} position={'top'} />
