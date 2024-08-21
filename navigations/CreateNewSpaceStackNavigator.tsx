@@ -1,6 +1,5 @@
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 const CreateNewSpaceStack = createNativeStackNavigator();
-import Overview from '../features/CreateNewSpace/pages/Overview';
 import SelectSpaceVisibility from '../features/CreateNewSpace/pages/SelectSpaceVisibility';
 import ContentType from '../features/CreateNewSpace/pages/ContentType';
 import Moment from '../features/CreateNewSpace/pages/Moment';
@@ -88,32 +87,6 @@ const CreateNewSpaceStackNavigator = () => {
                   hasShadow={false}
                 >
                   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
-                </AppButton.Icon>
-              ),
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <CreateNewSpaceStack.Screen
-            name='Overview'
-            component={Overview}
-            options={({ navigation }) => ({
-              headerShown: true, // ここtrueにすると、,,,
-              headerLeft: () => (
-                <AppButton.Icon
-                  onButtonPress={() => {
-                    navigation.goBack();
-                  }}
-                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.II name='close' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
               headerTitle: '',

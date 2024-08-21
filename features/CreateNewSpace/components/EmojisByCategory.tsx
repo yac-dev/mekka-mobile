@@ -1,12 +1,10 @@
-import React, { useCallback, memo, useContext } from 'react';
-import { View, Text, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { emojisByCategory } from '../../../utils/Emoji/emojis';
 import { emojis } from '../../../utils/Emoji/shortNameToUnicode';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 import { FlashList } from '@shopify/flash-list';
 import { SnackBarContext } from '../../../providers';
-import { SnackBar } from '../../../components';
 
 type EmojisCategoryProps = {
   category: string;
