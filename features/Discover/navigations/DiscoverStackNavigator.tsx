@@ -1,12 +1,7 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import React from 'react';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { NavigatorScreenParams } from '@react-navigation/native';
-import Discover from '../features/Discover/pages/Discover';
+import Discover from '../pages/Discover';
 import { SpaceDetailStackNavigator } from './SpaceDetailStackNavigator';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import { Colors } from '../themes';
 
 export type SpaceDetailStackNavigatorScreens = {
   SpaceDetail: undefined;

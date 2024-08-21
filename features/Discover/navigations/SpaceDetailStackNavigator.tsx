@@ -1,15 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AppButton } from '../components';
-import { primaryBackgroundColor } from '../themes/color';
-import SpaceDetail from '../features/Discover/pages/SpaceDetail';
-import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '../themes';
-import { VectorIcon } from '../Icons';
+import { AppButton } from '../../../components';
+import SpaceDetail from '../pages/SpaceDetail';
+import { Colors } from '../../../themes';
+import { VectorIcon } from '../../../Icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { AuthContext } from '../providers';
-import { MySpacesContext } from '../providers';
-import { useGetSpaceByIdState } from '../features/Discover/hooks/useGetSpaceByIdState';
+import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
 
 export type SpaceDetailStackNavigatorScreens = {
   SpaceDetail: { _id: string };

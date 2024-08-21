@@ -5,7 +5,7 @@ import { AuthContext, SnackBarContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
 import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
 import { MySpacesContext } from '../../../providers';
-import { SpaceDetailStackNavigatorProp } from '../../../navigations/SpaceDetailStackNavigator';
+import { SpaceDetailStackNavigatorProp } from '../navigations/SpaceDetailStackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { Image as ExpoImage } from 'expo-image';
 import { useJoinPublicSpaceByIdState } from '../hooks';

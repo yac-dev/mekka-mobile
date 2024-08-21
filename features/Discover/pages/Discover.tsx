@@ -6,7 +6,7 @@ import { useGetSpacesState } from '../hooks';
 import { SpaceType } from '../../../types';
 import { VectorIcon } from '../../../Icons';
 import { useNavigation } from '@react-navigation/native';
-import { DiscoverStackNavigatorProp } from '../../../navigations/DiscoverStackNavigator';
+import { DiscoverStackNavigatorProp } from '../navigations/DiscoverStackNavigator';
 
 const Discover: React.FC = () => {
   const discoverStackNavigation = useNavigation<DiscoverStackNavigatorProp>();

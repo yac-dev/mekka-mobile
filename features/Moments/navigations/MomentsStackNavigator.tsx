@@ -1,16 +1,14 @@
 import { useContext, useState } from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Colors } from '../themes/colors';
+import { Colors } from '../../../themes/colors';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Moments } from '../features/Moments/pages/Moments';
-import { ViewPostStackNavigator } from '../features/ViewPost/navigations/ViewPostStackNavigator';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons';
-import CreateNewPostStackNavigator from '../features/CreateNewPost/navigations/CreateNewPostStackNavigator';
-import { CreateNewPostStackParams } from '../features/CreateNewPost/navigations/CreateNewPostStackNavigator';
-import { CurrentSpaceContext } from '../providers';
-import { MomentsStackParams } from '.';
+import { Moments } from '../pages/Moments';
+import { ViewPostStackNavigator } from '../../ViewPost/navigations/ViewPostStackNavigator';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { CreateNewPostStackNavigator } from '../..';
+import { CurrentSpaceContext } from '../../../providers';
 
 // navigatior系を全部一箇所のまとめた方がいいよな。。すげー面倒くさくなってきている。。。
 // type MomentsStackParams = {
