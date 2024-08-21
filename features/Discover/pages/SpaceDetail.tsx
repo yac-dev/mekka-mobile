@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, BackHandler, StyleSheet } from 'react-native';
-import Header from '../components/SpaceDetail/Header';
-import { SpaceDetailTopTabNavigator } from './SpaceDetailTopTabNavigator';
+import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { Tabs } from '../components';
 import { AuthContext, SnackBarContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
 import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
@@ -104,7 +103,7 @@ const SpaceDetail: React.FC = () => {
           </Text>
         </View>
       </View>
-      <SpaceDetailTopTabNavigator />
+      <Tabs />
       <LoadingSpinner isVisible={joinPublicSpaceByIdResult.status === 'loading'} message={'Processing now...'} />
     </View>
   );

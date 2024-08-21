@@ -1,7 +1,5 @@
 import React, { useContext, useCallback, useEffect, useState } from 'react';
 import { View, Text, Dimensions, ActivityIndicator, FlatList, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
-import MomentThumbnail from '../components/MomentThumbnail';
 import { AppButton, PostThumbnail } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { useGetMomentPosts } from '../hooks/useGetMomentPosts';
@@ -12,9 +10,6 @@ import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { MomentsStackNavigatorProps } from '../../../navigations';
 import * as Haptics from 'expo-haptics';
-import { useCreatePost } from '../../CreateNewPost/hooks';
-import { SpaceRootContext } from '../../Space/providers/SpaceRootProvider';
-import { MomentsContext } from '../../Space';
 import { Colors } from '../../../themes';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../api/hooks';
