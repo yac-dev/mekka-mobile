@@ -1,26 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  ScrollView,
-  Modal,
-  Pressable,
-  StyleSheet,
-  TextInput,
-} from 'react-native';
-import backendAPI from '../../../apis/backend';
-import { Video } from 'expo-av';
+import { View, Text, TouchableOpacity, ScrollView, Modal, Pressable, StyleSheet, TextInput } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { AuthContext, SnackBarContext } from '../../../providers';
+import { AuthContext } from '../../../providers';
 import { CurrentSpaceContext } from '../../../providers';
-import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
+import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../../../navigations/CreateNewPostStackNavigator';
 import { CreateMomentInputType } from '../types';
-import { MomentsContext } from '../../Space/providers/MomentsProvider';
 import { useCreateMomentResult } from '../../../api';
 import { VectorIcon } from '../../../Icons';
 
@@ -33,9 +20,6 @@ const MomentPost = () => {
   const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress, onCaptionChange } =
     useContext(CreateNewPostContext);
   const { auth } = useContext(AuthContext);
-  const { setSnackBar } = useContext(SnackBarContext);
-  const { createMomentResult, space } = useContext(MomentsContext);
-  const oneAssetWidth = Dimensions.get('window').width / 3;
 
   // このpageに来た時点で、postTypeをmomentにする。
   useEffect(() => {

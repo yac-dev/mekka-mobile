@@ -1,11 +1,8 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { View, ActivityIndicator, Dimensions } from 'react-native';
-import MapView, { Region } from 'react-native-maps';
+import { View, ActivityIndicator } from 'react-native';
 import { PostType, TagType } from '../../../types';
 import { MapPostThumbnail } from '../../../components/PostThumbnail/MapPostThumbnail';
-import { TagScreenContext } from '../providers';
 import { useNavigation } from '@react-navigation/native';
-import { TagScreenStackNavigatorProps } from '../../../navigations';
 import { useRecoilValue } from 'recoil';
 import { getPostsByTagIdAndRegionResultAtomFamily, currentRegionAtomFamily, getPostsByTagIdAtomFamily } from '../atoms';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';

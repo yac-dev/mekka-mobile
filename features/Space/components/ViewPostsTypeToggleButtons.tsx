@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { SpaceRootContext } from '../providers/SpaceRootProvider';
+import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
 import { Icons } from '../../../Icons/images';
