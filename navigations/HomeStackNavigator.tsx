@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { Colors } from '../themes';
 import { primaryBackgroundColor } from '../themes/color';
 import { Ionicons } from '@expo/vector-icons';
-import CreateNewSpaceStackNavigator from './CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackNavigator } from '../features';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { EnterPrivateSpace } from '../features/EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';

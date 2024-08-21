@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { ReactionPickerProvider } from '../contexts/ReactionPickerProvider';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CreateNewSpaceStackParams } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackParams } from '../navigations/CreateNewSpaceStackNavigator';
 import { ReactionCategoryBottomTab, SelectedReaction } from '../components';
 
 type ReactionPickerProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'ReactionPicker'>;

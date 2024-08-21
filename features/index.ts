@@ -1,5 +1,6 @@
 export * from './App';
 export * from './CreateNewPost';
+export * from './CreateNewSpace';
 export * from './EditAccount';
 export * from './DeleteAccount';
 export * from './NonAuth';

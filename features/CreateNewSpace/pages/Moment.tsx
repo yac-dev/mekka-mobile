@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackProps } from '../navigations/CreateNewSpaceStackNavigator';
 
 const formatTime = (inputMinutes: number): { hours: number; minutes: number } => {
   const hours = Math.floor(inputMinutes / 60);

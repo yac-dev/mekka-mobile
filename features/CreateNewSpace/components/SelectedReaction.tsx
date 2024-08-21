@@ -5,7 +5,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackProps } from '../navigations/CreateNewSpaceStackNavigator';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 
 type SelectedReactionProps = {

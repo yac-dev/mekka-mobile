@@ -1,26 +1,23 @@
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
 const CreateNewSpaceStack = createNativeStackNavigator();
-import SelectSpaceVisibility from '../features/CreateNewSpace/pages/SelectSpaceVisibility';
-import ContentType from '../features/CreateNewSpace/pages/ContentType';
-import Moment from '../features/CreateNewSpace/pages/Moment';
-import Reaction from '../features/CreateNewSpace/pages/Reaction';
-import Description from '../features/CreateNewSpace/pages/Description';
-import ReactionPicker from '../features/CreateNewSpace/pages/ReactionPicker';
-import CreateNewSticker from '../features/CreateNewSpace/pages/CreateSticker';
-import { SnackBar, LoadingSpinner } from '../components';
-import { AppButton } from '../components';
-import { VectorIcon } from '../Icons/VectorIcons';
-import { Colors } from '../themes';
-import {
-  CreateNewSpaceProvider,
-  CreateNewSpaceContext,
-} from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
-import { ReactionType } from '../features/CreateNewSpace/contexts/ReactionPickerProvider';
+import SelectSpaceVisibility from '../pages/SelectSpaceVisibility';
+import ContentType from '../pages/ContentType';
+import Moment from '../pages/Moment';
+import Reaction from '../pages/Reaction';
+import Description from '../pages/Description';
+import ReactionPicker from '../pages/ReactionPicker';
+import CreateNewSticker from '../pages/CreateSticker';
+import { SnackBar, LoadingSpinner } from '../../../components';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons/VectorIcons';
+import { Colors } from '../../../themes';
+import { CreateNewSpaceProvider, CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { showMessage } from 'react-native-flash-message';
 import FlashMessage from 'react-native-flash-message';
 import { useContext } from 'react';
-import { SnackBarContext } from '../providers';
-import { TemplateSelection, Base, Comment } from '../features/CreateNewSpace/pages';
+import { SnackBarContext } from '../../../providers';
+import { TemplateSelection, Base, Comment } from '../pages';
 
 export type CreateNewSpaceStackParams = {
   TemplateSelection: undefined;
@@ -42,7 +39,7 @@ export type CreateNewSpaceStackParams = {
 
 export type CreateNewSpaceStackProps = NativeStackNavigationProp<CreateNewSpaceStackParams>;
 
-const CreateNewSpaceStackNavigator = () => {
+export const CreateNewSpaceStackNavigator = () => {
   return (
     <CreateNewSpaceProvider>
       <CreateNewSpaceStack.Navigator>
@@ -298,5 +295,3 @@ const CreateNewSpaceStackNavigator = () => {
     </CreateNewSpaceProvider>
   );
 };
-
-export default CreateNewSpaceStackNavigator;

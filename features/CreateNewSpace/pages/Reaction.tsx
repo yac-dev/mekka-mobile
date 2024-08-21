@@ -6,7 +6,7 @@ import { Foundation } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewSpaceStackProps, CreateNewSpaceStackParams } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackProps, CreateNewSpaceStackParams } from '../navigations/CreateNewSpaceStackNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { VectorIcon } from '../../../Icons';
 

@@ -6,7 +6,7 @@ import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackProps } from '../navigations/CreateNewSpaceStackNavigator';
 import {
   initialFormData,
   photoLoversFormData,

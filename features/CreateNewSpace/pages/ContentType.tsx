@@ -8,7 +8,7 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewSpaceStackProps } from '../../../navigations/CreateNewSpaceStackNavigator';
+import { CreateNewSpaceStackProps } from '../navigations/CreateNewSpaceStackNavigator';
 import { AppButton } from '../../../components';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { VectorIcon } from '../../../Icons';
