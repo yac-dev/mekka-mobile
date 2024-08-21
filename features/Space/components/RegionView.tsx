@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { getPostsByTagIdAndRegionResultAtomFamily, currentRegionAtomFamily, getPostsByTagIdAtomFamily } from '../atoms';
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
-import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { SpaceStackNavigatorProps } from '../navigations/SpaceStackNavigator';
 import { useRecoilState } from 'recoil';
 import * as Haptics from 'expo-haptics';
 import { CurrentTagContext } from '../../../providers';

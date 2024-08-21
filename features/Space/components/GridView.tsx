@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getPostsByTagIdAtomFamily } from '../atoms';
 import { useRecoilValue } from 'recoil';
 import { useGetPostsByTagId } from '../hooks';
-import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { SpaceStackNavigatorProps } from '../navigations/SpaceStackNavigator';
 import { tagScreenOpenedAtomFamily } from '../atoms';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';

@@ -22,7 +22,7 @@ import { useRecoilState } from 'recoil';
 import { useGetReactionsByPostIdResult } from '../../../api';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../navigations/ViewPostStackNavigator';
-import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { FlashList } from '@shopify/flash-list';
 
 // type IViewPost = {

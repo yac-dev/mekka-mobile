@@ -1,14 +1,14 @@
 import React from 'react';
-import { CreateNewPostStackNavigator } from '../features';
+import { CreateNewPostStackNavigator } from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { SpaceInfoStackNavigator } from './SpaceInfoStackNavigator';
-import { Colors } from '../themes/colors';
-import { Space } from '../features';
-import { ViewPostStackNavigator } from '../features/ViewPost/navigations/ViewPostStackNavigator';
-import { PostType, SpaceType } from '../types';
-import { CreatedTagType } from '../features/CreateNewPost/contexts';
-import { useCreatePushNotificationsResult } from '../api/hooks';
+import { SpaceInfoStackNavigator } from '../../../navigations/SpaceInfoStackNavigator';
+import { Colors } from '../../../themes/colors';
+import { Space } from '../..';
+import { ViewPostStackNavigator } from '../../ViewPost/navigations/ViewPostStackNavigator';
+import { PostType, SpaceType } from '../../../types';
+import { CreatedTagType } from '../../CreateNewPost/contexts';
+import { useCreatePushNotificationsResult } from '../../../api/hooks';
 
 export type ViewPostStackNavigatorParams = {
   ViewPost: {

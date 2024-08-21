@@ -16,8 +16,8 @@ import { VectorIcon } from '../Icons';
 import { MomentsStackNavigator } from './MomentsStackNavigator';
 import { DiscoverStackNavigator } from './DiscoverStackNavigator';
 import { Home } from '../features/Home/pages';
-import { SpaceStackNavigator } from './SpaceStackNavigator';
-import { SpaceStackParams } from './SpaceStackNavigator';
+import { SpaceStackNavigator } from '../features/Space/navigations/SpaceStackNavigator';
+import { SpaceStackParams } from '../features/Space/navigations/SpaceStackNavigator';
 import { AboutApp } from '../features';
 
 type TagScreenTopTabNavigatorParams = {

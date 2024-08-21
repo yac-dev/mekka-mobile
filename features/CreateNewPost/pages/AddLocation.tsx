@@ -9,7 +9,7 @@ import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNaviga
 import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { CreatePostInputType } from '../types';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
-import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { useCreatePostResult } from '../../../api';
 import { HomeStackNavigatorProps } from '../../../navigations';
 import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';

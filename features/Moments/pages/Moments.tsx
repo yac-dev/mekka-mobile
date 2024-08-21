@@ -15,7 +15,7 @@ import { showMessage, hideMessage } from 'react-native-flash-message';
 import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../api/hooks';
 import { useRecoilValue } from 'recoil';
 import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
-import { SpaceStackNavigatorProps } from '../../../navigations/SpaceStackNavigator';
+import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { HomeStackNavigatorProps } from '../../../navigations/HomeStackNavigator';
 
 const ItemWidth = Dimensions.get('window').width / 3;
