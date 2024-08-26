@@ -1,5 +1,5 @@
 import { atomFamily } from 'recoil';
-import { atomKeys } from '../../../Recoil';
+import { atomKeys } from '../../../recoil';
 
 // tagのidでatomFamilyを管理する。
 export const tagScreenOpenedAtomFamily = atomFamily<boolean, string>({

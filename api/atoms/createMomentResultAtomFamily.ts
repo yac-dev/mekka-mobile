@@ -1,5 +1,5 @@
 import { atomFamily } from 'recoil';
-import { atomKeys } from '../../Recoil';
+import { atomKeys } from '../../recoil';
 import { ApiResult } from '../../types';
 import { CreateMomentOutputType } from '../../api/types';
 

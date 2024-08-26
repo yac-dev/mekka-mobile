@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { atomFamily } from 'recoil';
-import { atomKeys } from '../../../Recoil';
+import { atomKeys } from '../../../recoil';
 import { MapRegionType } from '../../../types';
 
 export const currentRegionAtomFamily = atomFamily<MapRegionType, string>({

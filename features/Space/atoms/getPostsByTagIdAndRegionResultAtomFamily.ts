@@ -1,5 +1,5 @@
 import { atom, atomFamily, selectorFamily } from 'recoil';
-import { atomKeys } from '../../../Recoil';
+import { atomKeys } from '../../../recoil';
 import { PostType } from '../../../types';
 import { ApiResult } from '../../../types';
 import { getPostsByTagId } from '../../../api';
