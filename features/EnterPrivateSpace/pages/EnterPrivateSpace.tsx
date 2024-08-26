@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { AuthContext, MySpacesContext, SnackBarContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useEnterPrivateSpace } from '../hooks';
 import { CurrentSpaceContext } from '../../../providers';
 import { CurrentTagContext } from '../../../providers';
 import { LogsTableContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
+import { useRecoilState } from 'recoil';
+import { mySpacesAtom } from '../../../recoil';
 
 export const EnterPrivateSpace = () => {
   const { auth } = useContext(AuthContext);
-  const { setMySpaces, mySpaces } = useContext(MySpacesContext);
+  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const { setSnackBar } = useContext(SnackBarContext);
   const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);

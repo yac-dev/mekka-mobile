@@ -4,7 +4,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   AuthProvider,
   SnackBarProvider,
-  MySpacesProvider,
   SpaceUpdatesProvider,
   CurrentSpaceProvider,
   CurrentTagProvider,
@@ -32,7 +31,6 @@ const App: React.FC = function () {
             BottomSheetModalProvider,
             AuthProvider,
             SnackBarProvider,
-            MySpacesProvider,
             SpaceUpdatesProvider,
             CurrentSpaceProvider,
             CurrentTagProvider,

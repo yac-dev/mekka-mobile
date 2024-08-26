@@ -2,7 +2,6 @@ import { useEffect, useContext } from 'react';
 import { View, ActivityIndicator, AppState } from 'react-native';
 import { useLoadMe } from '../hooks/useLoadMe';
 import { AuthContext } from '../../../providers/AuthProvider';
-import { MySpacesContext } from '../../../providers/MySpacesProvider';
 import { CurrentSpaceContext } from '../../../providers/CurrentSpaceProvider';
 import { SpaceUpdatesContext } from '../../../providers/SpaceUpdatesProvider';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -16,6 +15,7 @@ import { LogsTableContext } from '../../../providers';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { momentLogsAtom } from '../../../atoms';
 import { useRecoilState } from 'recoil';
+import { mySpacesAtom } from '../../../recoil';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -28,9 +28,9 @@ export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>
 // 1, loadme
 // 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
+  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const { appState, onAppStateChange } = useContext(GlobalContext);
   const { auth, setAuth } = useContext(AuthContext);
-  const { setMySpaces } = useContext(MySpacesContext);
   const { setCurrentSpace, currentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
   const { setSpaceUpdates } = useContext(SpaceUpdatesContext);

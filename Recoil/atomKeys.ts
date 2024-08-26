@@ -14,4 +14,5 @@ export const atomKeys = {
   getReactionsByPostId: 'getReactionsByPostId',
   momentLogs: 'momentLogs',
   mySpaces: 'mySpaces',
+  currentSpace: 'currentSpace',
 };

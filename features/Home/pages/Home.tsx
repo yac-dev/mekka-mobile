@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { View, Linking, StyleSheet } from 'react-native';
-import { AuthContext, SpaceUpdatesContext, MySpacesContext } from '../../../providers';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { AuthContext, SpaceUpdatesContext } from '../../../providers';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomSheet } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
@@ -10,10 +10,12 @@ import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
+import { useRecoilState } from 'recoil';
+import { mySpacesAtom } from '../../../recoil';
 
 export const Home = () => {
   const { setAuth } = useContext(AuthContext);
-  const { mySpaces, setMySpaces } = useContext(MySpacesContext);
+  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const { setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const {

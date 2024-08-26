@@ -1,7 +1,4 @@
 import React, { useState, createContext, useContext, useRef } from 'react';
-import backendAPI from '../../../apis/backend';
-import { AuthContext } from '../../../providers';
-import { MySpacesContext } from '../../../providers';
 import * as ImagePicker from 'expo-image-picker';
 import FlashMessage from 'react-native-flash-message';
 import { ReactionType } from './ReactionPickerProvider';
