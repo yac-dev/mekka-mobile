@@ -8,6 +8,8 @@ import { useCreateCommentState } from '../../../api';
 import { LoadingSpinner } from '../../../components';
 import FlashMessage from 'react-native-flash-message';
 import { PostType } from '../../../types';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 type ICommentinput = {
   closeCommentInputBottomSheet: () => void;
@@ -23,7 +25,7 @@ const inputAccessoryViewID = 'COMMENT_INPUT';
 
 export const CommentInput = forwardRef((props: ICommentinput, ref) => {
   const { closeCommentInputBottomSheet, refs, currentPost } = props;
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { auth } = useContext(AuthContext);
   const [commentInput, setCommentInput] = useState('');
   const { apiResult: createCommentResultState, requestApi: requestCreateComment } = useCreateCommentState();

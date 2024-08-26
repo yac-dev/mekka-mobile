@@ -6,18 +6,19 @@ import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
-import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { CreatePostInputType } from '../types';
 import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { useCreatePostResult } from '../../../api';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 const AddLocation = () => {
   const { formData, addLocation, removeLocation, setFormData } = useContext(CreateNewPostContext);
   // const { requestCreatePost } = useContext(SpaceRootContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { auth } = useContext(AuthContext);
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();

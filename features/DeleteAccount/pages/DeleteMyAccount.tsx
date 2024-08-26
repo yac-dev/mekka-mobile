@@ -10,14 +10,14 @@ import { LoadingSpinner } from '../../../components';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
 export const DeleteMyAccount = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { auth, setAuth } = useContext(AuthContext);
-  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { setSnackBar } = useContext(SnackBarContext);
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const { apiResult, requestApi } = useDeleteMe();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
 

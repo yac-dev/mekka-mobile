@@ -15,7 +15,7 @@ import { LogsTableContext } from '../../../providers';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { momentLogsAtom } from '../../../atoms';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -28,10 +28,10 @@ export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>
 // 1, loadme
 // 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
-  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { appState, onAppStateChange } = useContext(GlobalContext);
   const { auth, setAuth } = useContext(AuthContext);
-  const { setCurrentSpace, currentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
   const { setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const { setLogsTable } = useContext(LogsTableContext);

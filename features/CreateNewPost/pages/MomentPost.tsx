@@ -10,12 +10,13 @@ import { CreateNewPostStackProps } from '..';
 import { CreateMomentInputType } from '../types';
 import { useCreateMomentResult } from '../../../api';
 import { VectorIcon } from '../../../Icons';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 const MomentPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [modalVisible, setModalVisible] = useState(false);
-  const { currentSpace } = useContext(CurrentSpaceContext);
-
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { requestCreateMoment } = useCreateMomentResult(currentSpace);
   const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress, onCaptionChange } =
     useContext(CreateNewPostContext);

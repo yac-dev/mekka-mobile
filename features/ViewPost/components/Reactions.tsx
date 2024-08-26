@@ -15,9 +15,10 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '../../../themes';
 import { PostType } from '../../../types';
 import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { useCreateReactionByPostIdAndReactionIdAndUserId } from '../../../api/hooks/useCreateReactionByPostIdAndReactionIdAndUserId';
 import { useGetReactionsByPostIdResult } from '../../../api/hooks/useGetReactionsByPostIdResult';
+import { currentSpaceAtom } from '../../../recoil';
 
 type Ref = BottomSheetModal;
 
@@ -29,7 +30,7 @@ const itemWidth = Dimensions.get('window').width / 3;
 const reactionContainerWidth = itemWidth * 0.7;
 
 export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { auth, setAuth } = useContext(AuthContext);
   const { apiResult, requestApi } = useCreateReactionByPostIdAndReactionIdAndUserId();
   const { addReaction } = useGetReactionsByPostIdResult(currentPost._id);

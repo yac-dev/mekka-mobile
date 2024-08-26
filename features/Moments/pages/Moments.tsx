@@ -16,13 +16,15 @@ import { useRecoilValue } from 'recoil';
 import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { HomeStackNavigatorProps } from '../../Home/navigations/HomeStackNavigator';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
 export const Moments = () => {
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { requestGetMomentsBySpaceId, addCreatedMoment } = useGetMomentsBySpaceIdResult(currentSpace);
   // refreshの実装。
   const { revertCreateMomentResult } = useCreateMomentResult(currentSpace);

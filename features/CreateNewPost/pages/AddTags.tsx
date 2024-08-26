@@ -7,8 +7,6 @@ import { Image as ExpoImage } from 'expo-image';
 import { CreateNewPostContext, TagOptionType } from '../contexts';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
-import { CurrentSpaceContext } from '../../../providers';
-import { TagType } from '../../../types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewPostStackParams } from '../navigations/CreateNewPostStackNavigator';
 
@@ -16,7 +14,6 @@ type IAddTags = NativeStackScreenProps<CreateNewPostStackParams, 'AddTags'>;
 
 const AddTags: React.FC<IAddTags> = ({ route }) => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
-  const { currentSpace } = useContext(CurrentSpaceContext);
   const {
     // navigation,
     // route,

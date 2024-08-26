@@ -10,13 +10,13 @@ import { CurrentTagContext } from '../../../providers';
 import { LogsTableContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
 export const EnterPrivateSpace = () => {
   const { auth } = useContext(AuthContext);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const { setSnackBar } = useContext(SnackBarContext);
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const { setLogsTable } = useContext(LogsTableContext);
   const { apiResult, requestApi } = useEnterPrivateSpace();

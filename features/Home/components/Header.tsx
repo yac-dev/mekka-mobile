@@ -5,11 +5,13 @@ import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
 import { CurrentSpaceContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../navigations';
 import { urls } from '../../../settings';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 export const Header = () => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   const handleInvite = async () => {

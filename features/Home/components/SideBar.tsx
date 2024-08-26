@@ -9,7 +9,7 @@ import { momentLogsAtom } from '../../../atoms';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { AppButton } from '../../../components';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
-import { mySpacesAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
 type SideBarProps = {
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
@@ -19,7 +19,7 @@ type SideBarProps = {
 export const SideBar: React.FC<SideBarProps> = ({ openAddNewSpaceMenuBottomSheet, openAuthMenuBottomSheet }) => {
   const mySpaces = useRecoilValue(mySpacesAtom);
   const { logsTable } = useContext(LogsTableContext);
-  const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { auth } = useContext(AuthContext);
   const [momentLogs] = useRecoilState(momentLogsAtom);
 

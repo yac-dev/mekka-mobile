@@ -11,7 +11,7 @@ import { LogsTableContext, CurrentTagContext, CurrentSpaceContext, AuthContext }
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -29,11 +29,11 @@ const convertMinutesToHoursAndMinutes = (minutes: number) => {
 
 export const Base = () => {
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
   const { apiResult, requestApi } = useCreateSpace();
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
   const { setLogsTable } = useContext(LogsTableContext);
   const { auth } = useContext(AuthContext);

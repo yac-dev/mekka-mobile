@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { CurrentSpaceContext, LogsTableContext, CurrentTagContext } from '../../../providers';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../navigations';
 import { TagType } from '../../../types';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 export const Channels = () => {
-  const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { logsTable, setLogsTable } = useContext(LogsTableContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();

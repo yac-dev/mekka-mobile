@@ -24,6 +24,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../navigations/ViewPostStackNavigator';
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { FlashList } from '@shopify/flash-list';
+import { currentSpaceAtom } from '../../../recoil';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -62,7 +63,7 @@ function timeSince(date: Date) {
 
 export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { posts, index } = route.params;
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const spaceStackNavigator = useNavigation<SpaceStackNavigatorProps>();
 
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();

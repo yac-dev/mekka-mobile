@@ -11,18 +11,18 @@ import { useJoinPublicSpaceByIdState } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import { CurrentSpaceContext, CurrentTagContext, LogsTableContext } from '../../../providers';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
 // ここに、spaceのthumbnailから始まり、
 const SpaceDetail: React.FC = () => {
   const spaceDetailStackNavigation = useNavigation<SpaceDetailStackNavigatorProp>();
   const { auth, setAuth } = useContext(AuthContext);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { apiResult } = useGetSpaceByIdState();
   const { apiResult: joinPublicSpaceByIdResult, requestApi: requestJoinPublicSpaceById } =
     useJoinPublicSpaceByIdState();
 
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
   const { setLogsTable } = useContext(LogsTableContext);
 
