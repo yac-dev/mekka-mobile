@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { CustomWebView } from '../../../components';
 import { NonAuthStackNavigatorParams } from '../../NonAuth/navigations/NonAuthNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HomeStackParams } from '../../../navigations/HomeStackNavigator';
+import { HomeStackParams } from '../navigations/HomeStackNavigator';
 
 type IAboutApp = NativeStackScreenProps<HomeStackParams, 'AboutApp'>;
 

@@ -1,11 +1,11 @@
 import { useContext } from 'react';
-import { AuthContext } from '../providers';
+import { AuthContext } from '../../../providers';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { HomeStackNavigator } from './HomeStackNavigator';
-import { NonAuthNavigator } from '../features/NonAuth/navigations/NonAuthNavigator';
-import { ApiResultType } from '../types';
-import { LoadMeOutputType } from '../features/App/types';
+import { HomeStackNavigator } from '../../Home/navigations/HomeStackNavigator';
+import { NonAuthNavigator } from '../../NonAuth/navigations/NonAuthNavigator';
+import { ApiResultType } from '../../../types';
+import { LoadMeOutputType } from '../types';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 

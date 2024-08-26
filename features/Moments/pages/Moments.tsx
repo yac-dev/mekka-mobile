@@ -8,7 +8,6 @@ import { PostType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
-import { MomentsStackNavigatorProps } from '../../../navigations';
 import * as Haptics from 'expo-haptics';
 import { Colors } from '../../../themes';
 import { showMessage, hideMessage } from 'react-native-flash-message';
@@ -16,13 +15,11 @@ import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../ap
 import { useRecoilValue } from 'recoil';
 import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
-import { HomeStackNavigatorProps } from '../../../navigations/HomeStackNavigator';
+import { HomeStackNavigatorProps } from '../../Home/navigations/HomeStackNavigator';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
 export const Moments = () => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const momentsStackNavigation = useNavigation<MomentsStackNavigatorProps>();
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { currentSpace } = useContext(CurrentSpaceContext);

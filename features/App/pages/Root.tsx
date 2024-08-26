@@ -8,7 +8,7 @@ import { SpaceUpdatesContext } from '../../../providers/SpaceUpdatesProvider';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
-import { RootStackNavigator } from '../../../navigations/RootStackNavigator';
+import { RootStackNavigator } from '../navigations/RootStackNavigator';
 import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
