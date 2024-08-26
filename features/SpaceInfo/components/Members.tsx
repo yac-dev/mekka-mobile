@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useContext } from 'react';
 import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { useGetMembersBySpaceIdState } from '../hooks';
-import { CurrentSpaceContext } from '../../../providers';
 import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';

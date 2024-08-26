@@ -5,7 +5,7 @@ import { useDeleteMe, useForm } from '../hooks';
 import { AppTextInput, PageScreen } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
-import { AuthContext, SnackBarContext, CurrentSpaceContext } from '../../../providers';
+import { AuthContext, SnackBarContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';

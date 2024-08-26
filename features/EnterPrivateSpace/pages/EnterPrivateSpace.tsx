@@ -5,7 +5,6 @@ import { SnackBar, LoadingSpinner } from '../../../components';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useEnterPrivateSpace } from '../hooks';
-import { CurrentSpaceContext } from '../../../providers';
 import { CurrentTagContext } from '../../../providers';
 import { LogsTableContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';

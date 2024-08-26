@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Modal, Pressable, StyleSheet, TextInput } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { AuthContext } from '../../../providers';
-import { CurrentSpaceContext } from '../../../providers';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';

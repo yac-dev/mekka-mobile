@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, forwardRef } from 'react';
 import { View, Text, TouchableOpacity, InputAccessoryView, Keyboard, StyleSheet } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { AuthContext } from '../../../providers';
-import { CurrentSpaceContext } from '../../../providers';
 import { TextInput } from 'react-native-gesture-handler';
 import { useCreateCommentState } from '../../../api';
 import { LoadingSpinner } from '../../../components';

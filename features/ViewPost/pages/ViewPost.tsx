@@ -16,7 +16,6 @@ import { StatusBar } from 'react-native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
-import { CurrentSpaceContext } from '../../../providers';
 import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { useGetReactionsByPostIdResult } from '../../../api';

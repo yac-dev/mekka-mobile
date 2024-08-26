@@ -8,7 +8,6 @@ import { ViewPostStackNavigator } from '../../ViewPost/navigations/ViewPostStack
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { CreateNewPostStackNavigator } from '../..';
-import { CurrentSpaceContext } from '../../../providers';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 

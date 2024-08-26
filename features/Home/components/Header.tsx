@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Share, ScrollView } from 'rea
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
-import { CurrentSpaceContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { urls } from '../../../settings';

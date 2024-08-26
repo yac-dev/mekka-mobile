@@ -10,7 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { AuthContext, CurrentSpaceContext } from '../../../providers';
+import { AuthContext } from '../../../providers';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '../../../themes';
 import { PostType } from '../../../types';

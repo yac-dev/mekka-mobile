@@ -16,7 +16,6 @@ import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
-import { CurrentSpaceContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';

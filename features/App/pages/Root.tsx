@@ -2,7 +2,6 @@ import { useEffect, useContext } from 'react';
 import { View, ActivityIndicator, AppState } from 'react-native';
 import { useLoadMe } from '../hooks/useLoadMe';
 import { AuthContext } from '../../../providers/AuthProvider';
-import { CurrentSpaceContext } from '../../../providers/CurrentSpaceProvider';
 import { SpaceUpdatesContext } from '../../../providers/SpaceUpdatesProvider';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';

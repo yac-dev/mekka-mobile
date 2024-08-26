@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { CurrentSpaceContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { momentLogsAtom } from '../../../atoms';

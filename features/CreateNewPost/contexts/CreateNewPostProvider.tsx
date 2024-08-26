@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, useEffect, useRef } from 'react';
 import backendAPI from '../../../apis/backend';
 import * as ImagePicker from 'expo-image-picker';
-import { AuthContext, CurrentSpaceContext } from '../../../providers';
+import { AuthContext } from '../../../providers';
 import { IconType, TagType, LocationType } from '../../../types';
 import { useGetTagIcons } from '../hooks';
 import FlashMessage from 'react-native-flash-message';

@@ -7,7 +7,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { CreatePostInputType } from '../types';
-import { AuthContext, CurrentSpaceContext } from '../../../providers';
+import { AuthContext } from '../../../providers';
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { useCreatePostResult } from '../../../api';
 import { HomeStackNavigatorProps } from '../../Home/navigations';

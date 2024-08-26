@@ -3,7 +3,6 @@ import { View, Text, Dimensions, ActivityIndicator, FlatList, StyleSheet, Modal,
 import { AppButton, PostThumbnail } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { useGetMomentPosts } from '../hooks/useGetMomentPosts';
-import { CurrentSpaceContext } from '../../../providers';
 import { PostType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { Image as ExpoImage } from 'expo-image';

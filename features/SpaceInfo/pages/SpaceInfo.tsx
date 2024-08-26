@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { View, Text } from 'react-native';
 import { Tabs } from '../components';
 import { Image as ExpoImage } from 'expo-image';
-import { CurrentSpaceContext } from '../../../providers';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 

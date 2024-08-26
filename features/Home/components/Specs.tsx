@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { VectorIcon } from '../../../Icons';
-import { CurrentSpaceContext } from '../../../providers';
 import { Image as ExpoImage } from 'expo-image';
 import { Times } from '../../../utils';
 import { useRecoilState } from 'recoil';

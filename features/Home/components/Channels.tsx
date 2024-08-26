@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { CurrentSpaceContext, LogsTableContext, CurrentTagContext } from '../../../providers';
+import { LogsTableContext, CurrentTagContext } from '../../../providers';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';

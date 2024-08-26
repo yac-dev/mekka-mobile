@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
-import { LogsTableContext, CurrentSpaceContext, AuthContext } from '../../../providers';
+import { LogsTableContext, AuthContext } from '../../../providers';
 import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { momentLogsAtom } from '../../../atoms';

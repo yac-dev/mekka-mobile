@@ -2,7 +2,6 @@ import { useEffect, useContext, useRef, useState } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, FlatList, LayoutChangeEvent, Dimensions } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
-import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';

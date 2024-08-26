@@ -7,7 +7,7 @@ import { CreateNewSpaceStackProps } from '../navigations';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { VectorIcon } from '../../../Icons';
 import { useCreateSpace } from '../hooks';
-import { LogsTableContext, CurrentTagContext, CurrentSpaceContext, AuthContext } from '../../../providers';
+import { LogsTableContext, CurrentTagContext, AuthContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';

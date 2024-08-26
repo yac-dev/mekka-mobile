@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Image as ExpoImage } from 'expo-image';
 import { useJoinPublicSpaceByIdState } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
-import { CurrentSpaceContext, CurrentTagContext, LogsTableContext } from '../../../providers';
+import { CurrentTagContext, LogsTableContext } from '../../../providers';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 
