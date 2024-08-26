@@ -6,11 +6,9 @@ import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
 import { Colors } from '../../../themes';
 import { SnackBarContext } from '../../../providers';
-import { SnackBar, LoadingSpinner } from '../../../components';
-import { AuthContext } from '../../../providers';
+import { LoadingSpinner } from '../../../components';
 
 export const Login = ({ navigation }) => {
-  const { setAuth } = useContext(AuthContext);
   const { setSnackBar } = useContext(SnackBarContext);
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange, onLoginSuccess } =
     useForm();

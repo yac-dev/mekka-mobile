@@ -1,11 +1,11 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { EditAccountFormType } from '../types';
-import { AuthContext } from '../../../providers';
-import { GlobalContext } from '../../../contexts/GlobalContext';
+import { useRecoilState } from 'recoil';
+import { authAtom } from '../../../recoil';
 
 export const useEditAccount = () => {
-  const { auth } = useContext(AuthContext);
+  const [auth] = useRecoilState(authAtom);
   const [formData, setFormData] = useState<EditAccountFormType>({
     name: {
       hasChanged: false,
@@ -27,7 +27,7 @@ export const useEditAccount = () => {
       isValidated: true,
       value: auth.avatar,
     },
-  }); 
+  });
   const [isFormValidated, setIsFormValidates] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 

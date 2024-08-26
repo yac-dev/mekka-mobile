@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { Tabs } from '../components';
-import { AuthContext, SnackBarContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
 import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
 import { SpaceDetailStackNavigatorProp } from '../navigations/SpaceDetailStackNavigator';
@@ -11,12 +10,12 @@ import { useJoinPublicSpaceByIdState } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import { CurrentTagContext, LogsTableContext } from '../../../providers';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom } from '../../../recoil';
 
 // ここに、spaceのthumbnailから始まり、
 const SpaceDetail: React.FC = () => {
   const spaceDetailStackNavigation = useNavigation<SpaceDetailStackNavigatorProp>();
-  const { auth, setAuth } = useContext(AuthContext);
+  const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { apiResult } = useGetSpaceByIdState();

@@ -1,9 +1,11 @@
 import React, { useCallback, useState, useContext } from 'react';
-import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBarContext } from '../../../providers';
 import { AuthType } from '../../../types';
 import * as SecureStore from 'expo-secure-store';
 import { LoginOutput } from '../types';
 import { showMessage } from 'react-native-flash-message';
+import { useRecoilState } from 'recoil';
+import { authAtom } from '../../../recoil';
 
 type FormType<T> = {
   value: T;
@@ -36,7 +38,7 @@ type useFormOutput = {
 };
 
 export const useForm = (): useFormOutput => {
-  const { setAuth } = useContext(AuthContext);
+  const [, setAuth] = useRecoilState(authAtom);
   const { setSnackBar } = useContext(SnackBarContext);
   const [formData, setFormData] = useState<FormDataType>(INITIAL_FORM_DATA);
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);

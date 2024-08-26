@@ -2,7 +2,6 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
-  AuthProvider,
   SnackBarProvider,
   SpaceUpdatesProvider,
   CurrentTagProvider,
@@ -28,7 +27,6 @@ const App: React.FC = function () {
             PaperProvider,
             GlobalProvider,
             BottomSheetModalProvider,
-            AuthProvider,
             SnackBarProvider,
             SpaceUpdatesProvider,
             CurrentTagProvider,

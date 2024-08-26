@@ -7,11 +7,11 @@ import { CreateNewSpaceStackProps } from '../navigations';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { VectorIcon } from '../../../Icons';
 import { useCreateSpace } from '../hooks';
-import { LogsTableContext, CurrentTagContext, AuthContext } from '../../../providers';
+import { LogsTableContext, CurrentTagContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom } from '../../../recoil';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -28,6 +28,7 @@ const convertMinutesToHoursAndMinutes = (minutes: number) => {
 };
 
 export const Base = () => {
+  const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
@@ -36,7 +37,6 @@ export const Base = () => {
   const { apiResult, requestApi } = useCreateSpace();
   const { setCurrentTag } = useContext(CurrentTagContext);
   const { setLogsTable } = useContext(LogsTableContext);
-  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     createNewSpaceNavigation.setOptions({

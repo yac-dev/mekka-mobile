@@ -1,4 +1,3 @@
-export * from './AuthProvider';
 export * from './SnackBarProvider';
 export * from './SpaceUpdatesProvider';
 export * from './CurrentTagProvider';

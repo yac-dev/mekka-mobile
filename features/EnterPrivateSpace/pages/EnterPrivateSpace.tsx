@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { AuthContext, SnackBarContext } from '../../../providers';
+import { SnackBarContext } from '../../../providers';
 import { SnackBar, LoadingSpinner } from '../../../components';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
@@ -10,9 +10,10 @@ import { LogsTableContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
+import { authAtom } from '../../../recoil';
 
 export const EnterPrivateSpace = () => {
-  const { auth } = useContext(AuthContext);
+  const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const { setSnackBar } = useContext(SnackBarContext);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
