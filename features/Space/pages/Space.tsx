@@ -14,6 +14,7 @@ import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { CurrentTagContext } from '../../../providers';
 
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
