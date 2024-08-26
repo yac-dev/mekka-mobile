@@ -17,4 +17,5 @@ export const atomKeys = {
   mySpaces: 'mySpaces',
   currentSpace: 'currentSpace',
   logsTable: 'logsTable',
+  currentTag: 'currentTag',
 };
