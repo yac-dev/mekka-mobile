@@ -3,9 +3,7 @@ import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   SnackBarProvider,
-  SpaceUpdatesProvider,
   CurrentTagProvider,
-  AppStateProvider,
   GlobalProvider,
   LogsTableProvider,
   MomentLogsProvider,
@@ -25,12 +23,10 @@ const App: React.FC = function () {
         <Composer
           components={[
             PaperProvider,
-            GlobalProvider,
             BottomSheetModalProvider,
+            GlobalProvider,
             SnackBarProvider,
-            SpaceUpdatesProvider,
             CurrentTagProvider,
-            AppStateProvider,
             LogsTableProvider,
           ]}
         >

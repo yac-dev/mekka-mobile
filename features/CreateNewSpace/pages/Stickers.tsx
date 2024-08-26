@@ -6,11 +6,9 @@ import { Image as ExpoImage } from 'expo-image';
 import { FlashList } from '@shopify/flash-list';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SnackBarContext } from '../../../providers';
 import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
 
 const Stickers = (props) => {
-  const { setSnackBar } = useContext(SnackBarContext);
   const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
   const { navigation } = useContext(CreateNewSpaceContext);
   const [stickers, setStickers] = useState([]);
@@ -61,12 +59,6 @@ const Stickers = (props) => {
                 });
               } else {
                 if (Object.keys(selectedReactions).length >= 6) {
-                  setSnackBar({
-                    isVisible: true,
-                    status: 'warning',
-                    message: 'OOPS. The number of reaction options is limited to 6 at most.',
-                    duration: 5000,
-                  });
                 } else {
                   setSelectedReactions((previous) => {
                     return {

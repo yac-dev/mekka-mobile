@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { View, Linking, StyleSheet } from 'react-native';
-import { SpaceUpdatesContext } from '../../../providers';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomSheet } from '../hooks';
@@ -11,12 +10,12 @@ import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace } from '../components'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, authAtom } from '../../../recoil';
+import { mySpacesAtom, authAtom, logsTableAtom } from '../../../recoil';
 
 export const Home = () => {
   const [, setAuth] = useRecoilState(authAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
-  const { setSpaceUpdates } = useContext(SpaceUpdatesContext);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const {
     authMenuBottomSheetRef,
@@ -32,7 +31,7 @@ export const Home = () => {
     // ここでauthに関してもdefaultに戻さんといかんし、
     setAuth(void 0);
     setMySpaces(void 0);
-    setSpaceUpdates(void 0);
+    setLogsTable(void 0);
     showMessage({ message: 'Logged out successfully.', type: 'success' });
   };
 
