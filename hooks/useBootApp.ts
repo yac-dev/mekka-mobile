@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from '../providers';
 import backendAPI from '../apis/backend';
+import { useRecoilState } from 'recoil';
+import { authAtom } from '../recoil';
 
 export const useBootApp = () => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const [, setAuth] = useRecoilState(authAtom);
 
   // ここでapiに関するもんをつくっておいたほうがいいよな。。
   const loadMe = async () => {

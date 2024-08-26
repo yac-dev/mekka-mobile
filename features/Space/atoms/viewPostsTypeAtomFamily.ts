@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { atomKeys } from '../../../Recoil';
+import { atomKeys } from '../../../recoil';
 import { atomFamily } from 'recoil';
 
 export type ViewPostsTypeType = 'grid' | 'region';

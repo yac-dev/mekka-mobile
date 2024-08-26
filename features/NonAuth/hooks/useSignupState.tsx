@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import { ApiResultType } from '../../../types';
 import { SignupInputType, SignupOutputType } from '../types';
 import { signup } from '../apis';
-import { AuthContext } from '../../../providers';
 import * as SecureStore from 'expo-secure-store';
+import { authAtom } from '../../../recoil';
+import { useRecoilState } from 'recoil';
 
 type UseSignupStateOutputType = {
   apiResult: string;
@@ -20,7 +21,7 @@ type UseSignupStateOutputType = {
 //     });
 
 export const useSignupState = () => {
-  const { setAuth } = useContext(AuthContext);
+  const [, setAuth] = useRecoilState(authAtom);
   const [apiResult, setApiResult] = useState<ApiResultType<void>>({
     status: 'idling',
     data: void 0,

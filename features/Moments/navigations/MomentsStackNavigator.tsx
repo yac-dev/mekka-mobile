@@ -8,7 +8,8 @@ import { ViewPostStackNavigator } from '../../ViewPost/navigations/ViewPostStack
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { CreateNewPostStackNavigator } from '../..';
-import { CurrentSpaceContext } from '../../../providers';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 // navigatior系を全部一箇所のまとめた方がいいよな。。すげー面倒くさくなってきている。。。
 // type MomentsStackParams = {
@@ -22,7 +23,7 @@ const MomentsStack = createNativeStackNavigator();
 
 export const MomentsStackNavigator = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   function convertMinutesToHoursAndMinutes(minutes: number) {
     const hours = Math.floor(minutes / 60);

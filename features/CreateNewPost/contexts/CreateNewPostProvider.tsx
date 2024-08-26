@@ -1,10 +1,11 @@
 import React, { useState, createContext, useContext, useEffect, useRef } from 'react';
 import backendAPI from '../../../apis/backend';
 import * as ImagePicker from 'expo-image-picker';
-import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { IconType, TagType, LocationType } from '../../../types';
 import { useGetTagIcons } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom, authAtom } from '../../../recoil';
 
 const initialFormData: FormDataType = {
   postType: {
@@ -123,8 +124,8 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
 });
 
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { auth } = useContext(AuthContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [auth] = useRecoilState(authAtom);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [formData, setFormData] = useState<FormDataType>(initialFormData);
   const [tagOptions, setTagOptions] = useState<TagOptionType[]>(currentSpace.tags);
   const { apiResult, requestApi } = useGetTagIcons();

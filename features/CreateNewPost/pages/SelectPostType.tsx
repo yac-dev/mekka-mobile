@@ -4,14 +4,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import { CreateNewPostContext } from '../contexts';
-import { CurrentSpaceContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 const SelectPostType = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const { onPostTypeChange, formData } = useContext(CreateNewPostContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   return (
     <View style={{ backgroundColor: 'black', flex: 1 }}>

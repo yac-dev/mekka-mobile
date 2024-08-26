@@ -13,10 +13,6 @@ import { VectorIcon } from '../../../Icons/VectorIcons';
 import { Colors } from '../../../themes';
 import { CreateNewSpaceProvider, CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { ReactionType } from '../contexts/ReactionPickerProvider';
-import { showMessage } from 'react-native-flash-message';
-import FlashMessage from 'react-native-flash-message';
-import { useContext } from 'react';
-import { SnackBarContext } from '../../../providers';
 import { TemplateSelection, Base, Comment } from '../pages';
 
 export type CreateNewSpaceStackParams = {

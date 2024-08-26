@@ -10,14 +10,14 @@ import {
   FlatList,
 } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { AuthContext, CurrentSpaceContext } from '../../../providers';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Colors } from '../../../themes';
 import { PostType } from '../../../types';
 import { getReactionsByPostIdResultAtomFamily } from '../../../api/atoms';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { useCreateReactionByPostIdAndReactionIdAndUserId } from '../../../api/hooks/useCreateReactionByPostIdAndReactionIdAndUserId';
 import { useGetReactionsByPostIdResult } from '../../../api/hooks/useGetReactionsByPostIdResult';
+import { currentSpaceAtom, authAtom } from '../../../recoil';
 
 type Ref = BottomSheetModal;
 
@@ -29,8 +29,8 @@ const itemWidth = Dimensions.get('window').width / 3;
 const reactionContainerWidth = itemWidth * 0.7;
 
 export const Reactions: React.FC<IReactions> = ({ currentPost }) => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
-  const { auth, setAuth } = useContext(AuthContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth] = useRecoilState(authAtom);
   const { apiResult, requestApi } = useCreateReactionByPostIdAndReactionIdAndUserId();
   const { addReaction } = useGetReactionsByPostIdResult(currentPost._id);
   // atomfamilyでpostId毎に状態持っているはずなのに。。。

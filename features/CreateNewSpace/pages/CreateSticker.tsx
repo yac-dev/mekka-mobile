@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import backendAPI from '../../../apis/backend';
 import baseURL from '../../../apis/baseURL';
 import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { AuthContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
 import { useLoadingSpinner } from '../../../hooks';
+import { useRecoilState } from 'recoil';
+import { authAtom } from '../../../recoil';
 
 const CreateCustomEmoji = (props) => {
-  const { auth } = useContext(AuthContext);
+  const [auth] = useRecoilState(authAtom);
   const { isVisibleLoadingSpinner, showLoadingSpinner, hideLoadingSpinner } = useLoadingSpinner();
   const [previewEmoji, setPreviewEmoji] = useState('');
   const [fileName, setFileName] = useState('');

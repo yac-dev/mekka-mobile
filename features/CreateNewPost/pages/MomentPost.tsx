@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Modal, Pressable, StyleSheet, TextInput } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
-import { AuthContext } from '../../../providers';
-import { CurrentSpaceContext } from '../../../providers';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
@@ -10,16 +8,17 @@ import { CreateNewPostStackProps } from '..';
 import { CreateMomentInputType } from '../types';
 import { useCreateMomentResult } from '../../../api';
 import { VectorIcon } from '../../../Icons';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom, authAtom } from '../../../recoil';
 
 const MomentPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [modalVisible, setModalVisible] = useState(false);
-  const { currentSpace } = useContext(CurrentSpaceContext);
-
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth] = useRecoilState(authAtom);
   const { requestCreateMoment } = useCreateMomentResult(currentSpace);
   const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress, onCaptionChange } =
     useContext(CreateNewPostContext);
-  const { auth } = useContext(AuthContext);
 
   // このpageに来た時点で、postTypeをmomentにする。
   useEffect(() => {

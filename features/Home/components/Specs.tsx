@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { VectorIcon } from '../../../Icons';
-import { CurrentSpaceContext } from '../../../providers';
 import { Image as ExpoImage } from 'expo-image';
 import { Times } from '../../../utils';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 export const Specs = () => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   return (
     <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
       <ScrollView horizontal contentContainerStyle={{ paddingRight: 10 }}>

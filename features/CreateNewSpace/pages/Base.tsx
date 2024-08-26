@@ -1,23 +1,17 @@
 import React, { useCallback, useContext, useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
-import * as ImagePicker from 'expo-image-picker';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps } from '../navigations';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { VectorIcon } from '../../../Icons';
 import { useCreateSpace } from '../hooks';
-import {
-  LogsTableContext,
-  CurrentTagContext,
-  CurrentSpaceContext,
-  MySpacesContext,
-  AuthContext,
-} from '../../../providers';
+import { CurrentTagContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
+import { useRecoilState } from 'recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom } from '../../../recoil';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -34,15 +28,15 @@ const convertMinutesToHoursAndMinutes = (minutes: number) => {
 };
 
 export const Base = () => {
+  const [auth] = useRecoilState(authAtom);
+  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
   const { apiResult, requestApi } = useCreateSpace();
-  const { mySpaces, setMySpaces } = useContext(MySpacesContext);
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
-  const { setLogsTable } = useContext(LogsTableContext);
-  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     createNewSpaceNavigation.setOptions({

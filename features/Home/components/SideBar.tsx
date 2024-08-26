@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
-import { MySpacesContext, LogsTableContext, CurrentSpaceContext, AuthContext } from '../../../providers';
 import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { momentLogsAtom } from '../../../atoms';
-import { useRecoilState } from 'recoil';
 import { AppButton } from '../../../components';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
+import { useRecoilState } from 'recoil';
+import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
+import { authAtom, logsTableAtom } from '../../../recoil';
 
 type SideBarProps = {
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
@@ -16,10 +17,10 @@ type SideBarProps = {
 };
 
 export const SideBar: React.FC<SideBarProps> = ({ openAddNewSpaceMenuBottomSheet, openAuthMenuBottomSheet }) => {
-  const { mySpaces } = useContext(MySpacesContext);
-  const { logsTable } = useContext(LogsTableContext);
-  const { currentSpace, setCurrentSpace } = useContext(CurrentSpaceContext);
-  const { auth } = useContext(AuthContext);
+  const [mySpaces] = useRecoilState(mySpacesAtom);
+  const [logsTable] = useRecoilState(logsTableAtom);
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth] = useRecoilState(authAtom);
   const [momentLogs] = useRecoilState(momentLogsAtom);
 
   const { requestApi: requestUpdateSpaceCheckedInDate } = useUpdateSpaceCheckedInDate();

@@ -5,17 +5,19 @@ import { useDeleteMe, useForm } from '../hooks';
 import { AppTextInput, PageScreen } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { DeleteMeInput } from '../types';
-import { AuthContext, SnackBarContext, MySpacesContext, CurrentSpaceContext } from '../../../providers';
+import { SnackBarContext } from '../../../providers';
 import { LoadingSpinner } from '../../../components';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
+import { useRecoilState } from 'recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom } from '../../../recoil';
 
 export const DeleteMyAccount = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  const { auth, setAuth } = useContext(AuthContext);
-  const { setMySpaces } = useContext(MySpacesContext);
+  const [, setAuth] = useRecoilState(authAtom);
+  const [, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const { setSnackBar } = useContext(SnackBarContext);
-  const { setCurrentSpace } = useContext(CurrentSpaceContext);
   const { apiResult, requestApi } = useDeleteMe();
   const { formData, onEmailChange, onPasswordChange, isPasswordHidden, onPasswordHiddenChange } = useForm();
 

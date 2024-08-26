@@ -1,11 +1,11 @@
-import { useContext } from 'react';
-import { AuthContext } from '../../../providers';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from '../../Home/navigations/HomeStackNavigator';
 import { NonAuthNavigator } from '../../NonAuth/navigations/NonAuthNavigator';
 import { ApiResultType } from '../../../types';
 import { LoadMeOutputType } from '../types';
+import { useRecoilState } from 'recoil';
+import { authAtom } from '../../../recoil';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -21,7 +21,7 @@ type IRootStackNavigator = {
 };
 
 export const RootStackNavigator: React.FC<IRootStackNavigator> = ({ loadMeApiResult }) => {
-  const { auth } = useContext(AuthContext);
+  const [auth] = useRecoilState(authAtom);
 
   if (!auth) {
     return (

@@ -1,26 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
 import { Icons } from '../../../Icons/images';
 import { Image as ExpoImage } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
-import { SpaceRootStackNavigatorProp } from '../../../navigations';
 import { Colors } from '../../../themes/colors';
 import { SpaceType } from '../../../types';
 import { viewPostsTypeAtomFamily } from '../atoms';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 type ViewPostsTypeToggleButtonProps = {
   space: SpaceType;
 };
 
 export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({ space }) => {
-  const navigation = useNavigation<SpaceRootStackNavigatorProp>();
-  // const { viewPostsType, setViewPostsType } = useContext(SpaceRootContext);
   const [viewPostsType, setViewPostsType] = useRecoilState(viewPostsTypeAtomFamily(space._id));
-  const { currentTag } = useContext(CurrentTagContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
 
   const onGridViewPress = () => {
     setViewPostsType('grid');

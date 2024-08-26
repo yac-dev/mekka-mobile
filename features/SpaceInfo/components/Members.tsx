@@ -1,19 +1,20 @@
 import React, { useEffect, useCallback, useContext } from 'react';
 import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { useGetMembersBySpaceIdState } from '../hooks';
-import { CurrentSpaceContext } from '../../../providers';
 import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { useGetMembersBySpaceId } from '../hooks/useGetMembersBySpaceId';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 type MembersProps = {
   spaceId: string;
 };
 
 export const Members: React.FC<MembersProps> = () => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { data, isLoading } = useGetMembersBySpaceId({ spaceId: currentSpace._id });
   const { apiResult, requestApi } = useGetMembersBySpaceIdState();
 

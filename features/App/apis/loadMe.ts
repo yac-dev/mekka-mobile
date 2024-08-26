@@ -1,5 +1,3 @@
-import { useState, useEffect, useContext } from 'react';
-import * as SecureStore from 'expo-secure-store';
 import backendAPI from '../../../apis/backend';
 import { LoadMeInput, LoadMeOutputType } from '../types';
 

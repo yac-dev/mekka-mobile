@@ -2,14 +2,15 @@ import React, { useContext, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { ReactionType, SpaceType } from '../../../types';
-import { CurrentSpaceContext } from '../../../providers';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 type FeatureProps = {};
 
 export const Feature: React.FC<FeatureProps> = () => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [textShown, setTextShown] = useState<boolean>(false);
   const [lengthMore, setLengthMore] = useState(false);
 

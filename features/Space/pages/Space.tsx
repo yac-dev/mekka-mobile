@@ -2,7 +2,6 @@ import { useEffect, useContext, useRef, useState } from 'react';
 import { View, Text, ActivityIndicator, TouchableOpacity, FlatList, LayoutChangeEvent, Dimensions } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
-import { CurrentSpaceContext, CurrentTagContext } from '../../../providers';
 import { useNavigation } from '@react-navigation/native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
@@ -13,13 +12,16 @@ import { SpaceStackNavigatorParams } from '../../../navigations';
 import { useRecoilValue } from 'recoil';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
+import { CurrentTagContext } from '../../../providers';
 
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
 const windowWidth = Dimensions.get('window').width;
 
 export const Space: React.FC<ISpace> = ({ route }) => {
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const createPostResult = useRecoilValue(createPostResultAtomFamily(route.params.space._id));
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);

@@ -16,8 +16,9 @@ import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
-import { CurrentSpaceContext } from '../../../providers';
 import { VectorIcon } from '../../../Icons';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
 
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
@@ -31,7 +32,7 @@ const NormalPost = () => {
     onPostTypeChange,
     createNewPostFlashMessageRef,
   } = useContext(CreateNewPostContext);
-  const { currentSpace } = useContext(CurrentSpaceContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   useEffect(() => {
     onPostTypeChange('normal');

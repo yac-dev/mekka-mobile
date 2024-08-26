@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect, forwardRef } from 'react';
 import { View, Text, TouchableOpacity, InputAccessoryView, Keyboard, StyleSheet } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { AuthContext } from '../../../providers';
-import { CurrentSpaceContext } from '../../../providers';
 import { TextInput } from 'react-native-gesture-handler';
 import { useCreateCommentState } from '../../../api';
 import { LoadingSpinner } from '../../../components';
 import FlashMessage from 'react-native-flash-message';
 import { PostType } from '../../../types';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom, authAtom } from '../../../recoil';
 
 type ICommentinput = {
   closeCommentInputBottomSheet: () => void;
@@ -23,8 +23,8 @@ const inputAccessoryViewID = 'COMMENT_INPUT';
 
 export const CommentInput = forwardRef((props: ICommentinput, ref) => {
   const { closeCommentInputBottomSheet, refs, currentPost } = props;
-  const { currentSpace } = useContext(CurrentSpaceContext);
-  const { auth } = useContext(AuthContext);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth] = useRecoilState(authAtom);
   const [commentInput, setCommentInput] = useState('');
   const { apiResult: createCommentResultState, requestApi: requestCreateComment } = useCreateCommentState();
 

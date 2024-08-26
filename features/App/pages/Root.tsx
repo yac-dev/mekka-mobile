@@ -1,10 +1,6 @@
 import { useEffect, useContext } from 'react';
 import { View, ActivityIndicator, AppState } from 'react-native';
 import { useLoadMe } from '../hooks/useLoadMe';
-import { AuthContext } from '../../../providers/AuthProvider';
-import { MySpacesContext } from '../../../providers/MySpacesProvider';
-import { CurrentSpaceContext } from '../../../providers/CurrentSpaceProvider';
-import { SpaceUpdatesContext } from '../../../providers/SpaceUpdatesProvider';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
@@ -12,10 +8,10 @@ import { RootStackNavigator } from '../navigations/RootStackNavigator';
 import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
-import { LogsTableContext } from '../../../providers';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { momentLogsAtom } from '../../../atoms';
 import { useRecoilState } from 'recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom } from '../../../recoil';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -28,13 +24,14 @@ export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>
 // 1, loadme
 // 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
+  const [, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
+  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [auth, setAuth] = useRecoilState(authAtom);
+
   const { appState, onAppStateChange } = useContext(GlobalContext);
-  const { auth, setAuth } = useContext(AuthContext);
-  const { setMySpaces } = useContext(MySpacesContext);
-  const { setCurrentSpace, currentSpace } = useContext(CurrentSpaceContext);
   const { setCurrentTag } = useContext(CurrentTagContext);
-  const { setSpaceUpdates } = useContext(SpaceUpdatesContext);
-  const { setLogsTable } = useContext(LogsTableContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const {
     apiResult: getMySpacesApiResult,
@@ -44,7 +41,6 @@ export const Root = () => {
   const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
 
   const { apiResult: getLogsResult, requestApi: requestGetLogs, requestRefresh } = useGetLogsByUserId();
-  const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
   const loadMe = async () => {
     const jwt = await SecureStore.getItemAsync('secure_token');
     if (jwt) {
@@ -78,7 +74,6 @@ export const Root = () => {
       if (getMySpacesApiResult.data?.mySpaces?.length) {
         setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
         setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
-        setSpaceUpdates(getMySpacesApiResult.data.updateTable);
         const firstSpace = getMySpacesApiResult.data?.mySpaces[0];
         requestApi({ spaceId: firstSpace._id, userId: auth._id });
       }
