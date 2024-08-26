@@ -6,19 +6,17 @@ import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useEnterPrivateSpace } from '../hooks';
 import { CurrentTagContext } from '../../../providers';
-import { LogsTableContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
-import { authAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom, logsTableAtom, authAtom } from '../../../recoil';
 
 export const EnterPrivateSpace = () => {
   const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
-  const { setSnackBar } = useContext(SnackBarContext);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
+  const { setSnackBar } = useContext(SnackBarContext);
   const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
-  const { setLogsTable } = useContext(LogsTableContext);
   const { apiResult, requestApi } = useEnterPrivateSpace();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [secretKey, setSecretKey] = useState('');

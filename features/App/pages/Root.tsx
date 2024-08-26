@@ -8,7 +8,6 @@ import { RootStackNavigator } from '../navigations/RootStackNavigator';
 import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
-import { LogsTableContext } from '../../../providers';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { momentLogsAtom } from '../../../atoms';
 import { useRecoilState } from 'recoil';

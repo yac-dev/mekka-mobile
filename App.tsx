@@ -1,13 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import {
-  SnackBarProvider,
-  CurrentTagProvider,
-  GlobalProvider,
-  LogsTableProvider,
-  MomentLogsProvider,
-} from './providers';
+import { SnackBarProvider, CurrentTagProvider, GlobalProvider, MomentLogsProvider } from './providers';
 import { PaperProvider } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Composer } from './providers/Providers';
@@ -21,14 +15,7 @@ const App: React.FC = function () {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
         <Composer
-          components={[
-            PaperProvider,
-            BottomSheetModalProvider,
-            GlobalProvider,
-            SnackBarProvider,
-            CurrentTagProvider,
-            LogsTableProvider,
-          ]}
+          components={[PaperProvider, BottomSheetModalProvider, GlobalProvider, SnackBarProvider, CurrentTagProvider]}
         >
           <Root />
         </Composer>

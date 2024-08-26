@@ -7,11 +7,11 @@ import { CreateNewSpaceStackProps } from '../navigations';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { VectorIcon } from '../../../Icons';
 import { useCreateSpace } from '../hooks';
-import { LogsTableContext, CurrentTagContext } from '../../../providers';
+import { CurrentTagContext } from '../../../providers';
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom, authAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom } from '../../../recoil';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -31,12 +31,12 @@ export const Base = () => {
   const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
   const { apiResult, requestApi } = useCreateSpace();
   const { setCurrentTag } = useContext(CurrentTagContext);
-  const { setLogsTable } = useContext(LogsTableContext);
 
   useEffect(() => {
     createNewSpaceNavigation.setOptions({
