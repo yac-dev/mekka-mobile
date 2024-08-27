@@ -12,7 +12,7 @@ import { tagScreenOpenedAtomFamily } from '../atoms';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { showMessage } from 'react-native-flash-message';
-import { CurrentTagContext } from '../../../providers';
+import { currentTagAtom } from '../../../recoil';
 
 type IGridView = {
   space: SpaceType;
@@ -22,7 +22,7 @@ type IGridView = {
 // tagごとにpostsのcomponentを表示するわけだが、、、
 
 export const GridView: React.FC<IGridView> = ({ space, tag }) => {
-  const { currentTag } = useContext(CurrentTagContext);
+  const [currentTag] = useRecoilState(currentTagAtom);
   const { requestGetPostsByTagId, requestMorePostsByTagId, addCreatedPost } = useGetPostsByTagId(currentTag._id);
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
   const getPostsByTagIdResult = useRecoilValue(getPostsByTagIdAtomFamily(tag._id));

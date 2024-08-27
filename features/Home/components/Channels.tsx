@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { CurrentTagContext } from '../../../providers';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { TagType } from '../../../types';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom, logsTableAtom } from '../../../recoil';
+import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 
 export const Channels = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);
-  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
+  const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   const onTagPress = (tag: TagType) => {

@@ -5,13 +5,18 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../navigations/RootStackNavigator';
-import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
-import { momentLogsAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom } from '../../../recoil';
+import {
+  mySpacesAtom,
+  currentSpaceAtom,
+  authAtom,
+  logsTableAtom,
+  currentTagAtom,
+  momentLogsAtom,
+} from '../../../recoil';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -28,10 +33,10 @@ export const Root = () => {
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const [auth, setAuth] = useRecoilState(authAtom);
 
   const { appState, onAppStateChange } = useContext(GlobalContext);
-  const { setCurrentTag } = useContext(CurrentTagContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
   const {
     apiResult: getMySpacesApiResult,

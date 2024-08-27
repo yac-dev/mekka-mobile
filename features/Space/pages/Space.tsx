@@ -13,8 +13,7 @@ import { useRecoilValue } from 'recoil';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom } from '../../../recoil';
-import { CurrentTagContext } from '../../../providers';
+import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
 
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
@@ -24,7 +23,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const createPostResult = useRecoilValue(createPostResultAtomFamily(route.params.space._id));
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
-  const { currentTag, setCurrentTag } = useContext(CurrentTagContext);
+  const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const scrollViewRef = useRef(null);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const onTabPress = (tab) => {

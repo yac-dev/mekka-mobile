@@ -8,8 +8,7 @@ import { getPostsByTagIdAndRegionResultAtomFamily, currentRegionAtomFamily, getP
 import { useGetPostsByTagIdAndRegion } from '../hooks/useGetPostsByTagIdAndRegion';
 import { SpaceStackNavigatorProps } from '../navigations/SpaceStackNavigator';
 import { useRecoilState } from 'recoil';
-import * as Haptics from 'expo-haptics';
-import { CurrentTagContext } from '../../../providers';
+import { currentTagAtom } from '../../../recoil';
 import axios from 'axios';
 import Config from 'react-native-config';
 
@@ -53,7 +52,7 @@ export const RegionView: React.FC<IRegionView> = ({ tag }) => {
   const { requestGetPostsByTagIdAndRegion } = useGetPostsByTagIdAndRegion(tag._id);
   const getPostsByTagIdAndRegionResult = useRecoilValue(getPostsByTagIdAndRegionResultAtomFamily(tag._id));
   const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtomFamily(tag._id));
-  const { currentTag } = useContext(CurrentTagContext);
+  const [currentTag] = useRecoilState(currentTagAtom);
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
   const mapRef = useRef<Mapbox.MapView>(null);
   const isFirstRender = useRef(true);

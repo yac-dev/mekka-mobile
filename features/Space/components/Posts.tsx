@@ -6,14 +6,14 @@ import { viewPostsTypeAtomFamily } from '../atoms';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import PagerView from 'react-native-pager-view';
 import { tagScreenOpenedAtomFamily } from '../atoms';
-import { CurrentTagContext } from '../../../providers';
+import { currentTagAtom } from '../../../recoil';
 
 type IPosts = {
   space: SpaceType;
 };
 
 export const Posts: React.FC<IPosts> = ({ space }) => {
-  const { currentTag } = useContext(CurrentTagContext);
+  const [currentTag] = useRecoilState(currentTagAtom);
   const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
   const [tagScreenOpened, setTagScreenOpened] = useRecoilState(tagScreenOpenedAtomFamily(currentTag._id));
 

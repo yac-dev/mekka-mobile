@@ -8,9 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Image as ExpoImage } from 'expo-image';
 import { useJoinPublicSpaceByIdState } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
-import { CurrentTagContext } from '../../../providers';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom } from '../../../recoil';
+import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 
 // ここに、spaceのthumbnailから始まり、
 const SpaceDetail: React.FC = () => {
@@ -19,11 +18,10 @@ const SpaceDetail: React.FC = () => {
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
+  const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const { apiResult } = useGetSpaceByIdState();
   const { apiResult: joinPublicSpaceByIdResult, requestApi: requestJoinPublicSpaceById } =
     useJoinPublicSpaceByIdState();
-
-  const { setCurrentTag } = useContext(CurrentTagContext);
 
   const isJoinSpaceValidated = () => {
     if (mySpaces.some((space) => space._id === apiResult.data?.space._id)) {
