@@ -8,18 +8,23 @@ import { Composer } from './providers/Providers';
 import { Root } from './features/App/pages/Root';
 import FlashMessage from 'react-native-flash-message';
 import { RecoilRoot } from 'recoil';
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const App: React.FC = function () {
   return (
-    <RecoilRoot>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
-        <Composer components={[PaperProvider, BottomSheetModalProvider, GlobalProvider, SnackBarProvider]}>
-          <Root />
-        </Composer>
-        <FlashMessage />
-      </GestureHandlerRootView>
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar hidden={false} translucent={true} backgroundColor='blue' barStyle='light-content' />
+          <Composer components={[PaperProvider, BottomSheetModalProvider, GlobalProvider, SnackBarProvider]}>
+            <Root />
+          </Composer>
+          <FlashMessage />
+        </GestureHandlerRootView>
+      </RecoilRoot>
+    </QueryClientProvider>
   );
 };
 
