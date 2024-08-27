@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
-import { momentLogsAtom } from '../../../atoms';
+import { momentLogsAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 

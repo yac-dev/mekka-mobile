@@ -4,7 +4,7 @@ import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
 import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
-import { momentLogsAtom } from '../../../atoms';
+import { momentLogsAtom } from '../../../recoil';
 import { AppButton } from '../../../components';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { useRecoilState } from 'recoil';

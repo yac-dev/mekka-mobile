@@ -9,7 +9,7 @@ import { CurrentTagContext } from '../../../providers';
 import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
 import { useUpdateSpaceCheckedInDate } from '../../../api';
-import { momentLogsAtom } from '../../../atoms';
+import { momentLogsAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom } from '../../../recoil';
 
