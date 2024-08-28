@@ -1,4 +1,4 @@
-import { SpaceType, SpaceUpdatesType } from '../types';
+import { SpaceType } from '../types';
 
 export type GetMySpacesInput = {
   userId: string;
@@ -6,5 +6,4 @@ export type GetMySpacesInput = {
 
 export type GetMySpacesOutput = {
   mySpaces: SpaceType[];
-  updateTable: SpaceUpdatesType;
 };

@@ -17,6 +17,8 @@ import {
   currentTagAtom,
   momentLogsAtom,
 } from '../../../recoil';
+import { useQuery } from '@tanstack/react-query';
+import { queryKeys, getMySpaces } from '../../../query';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -35,6 +37,16 @@ export const Root = () => {
   const [, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const [auth, setAuth] = useRecoilState(authAtom);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: [queryKeys.mySpaces],
+    queryFn: () => {
+      const response = getMySpaces({ userId: auth._id });
+      return response;
+    },
+  });
+
+  // console.log('mySpaces data', JSON.stringify(data, null, 2));
 
   const { appState, onAppStateChange } = useContext(GlobalContext);
   const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
