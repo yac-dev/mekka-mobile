@@ -11,8 +11,8 @@ import {
   momentLogsAtom,
   mySpacesAtom,
 } from '../../../recoil';
-import { queryKeys, getMySpaces, getLogsByUserId } from '../../../query';
-import { useQuery } from '@tanstack/react-query';
+import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -31,6 +31,10 @@ export const RootStackNavigator = () => {
   const [, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
 
+  const updateSpaceCheckedInMutation = useMutation({
+    mutationFn: updateSpaceCheckedInDate,
+  });
+
   const { isLoading: isGetMySpacesLoading, error: isGetMySpacesError } = useQuery({
     queryKey: [queryKeys.mySpaces, auth],
     queryFn: async () => {
@@ -40,11 +44,12 @@ export const RootStackNavigator = () => {
       if (response.mySpaces?.length) {
         setCurrentSpace(response.mySpaces[0]);
         setCurrentTag(response.mySpaces[0].tags[0]);
-        // const firstSpace = response.mySpaces[0];
-        // requestApi({ spaceId: firstSpace._id, userId: auth._id }); // ここでupdateするんだよね。別でまたやろう。
+        const firstSpace = response.mySpaces[0];
+        updateSpaceCheckedInMutation.mutate({ spaceId: firstSpace._id, userId: auth._id });
       }
       return response;
     },
+    // onSuccessでupdateする方がいいのかな？？
   });
 
   const { isLoading: isGetLogsLoading, error: isGetLogsError } = useQuery({

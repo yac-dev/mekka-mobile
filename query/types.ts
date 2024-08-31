@@ -30,3 +30,8 @@ export type GetLogsByUserIdOutputType = {
     [key: string]: number;
   };
 };
+
+export type UpdateSpaceCheckedInDateInputType = {
+  spaceId: string;
+  userId: string;
+};

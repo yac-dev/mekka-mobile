@@ -49,16 +49,10 @@ export const Root = () => {
   } = useQuery({
     queryKey: [queryKeys.loadMe],
     queryFn: async () => {
-      // ここではjwtが必要になるよな。。。
-      // jwtがない場合は、シンプルにサーバーから返せばいいわな。分岐書影してさ。。
       const jwt = await SecureStore.getItemAsync('secure_token');
-      console.log('jwt', jwt);
-      // if (jwt) {
       const response = await loadMe({ jwt });
       setAuth(response);
       return response;
-      // }
-      // return undefined;
     },
   });
 
