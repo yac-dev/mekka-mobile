@@ -5,14 +5,13 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../navigations/RootStackNavigator';
-import { GlobalContext } from '../../../providers';
 import { useGetLogsByUserId } from '../hooks';
-import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { useRecoilState } from 'recoil';
 import {
   mySpacesAtom,
   currentSpaceAtom,
   authAtom,
+  appStateAtom,
   logsTableAtom,
   currentTagAtom,
   momentLogsAtom,
@@ -40,6 +39,7 @@ export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>
 // 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
   const [auth, setAuth] = useRecoilState(authAtom);
+  const [appState, setAppState] = useRecoilState(appStateAtom);
 
   const {
     data: loadMeData,
@@ -56,35 +56,25 @@ export const Root = () => {
     },
   });
 
-  const { appState, onAppStateChange } = useContext(GlobalContext);
-  const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
+  // 多分、functionをarrayに持たせてPromise.allするとかの方向性かなー。。。
+  // useEffect(() => {
+  //   if (auth) {
+  //     const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+  //       if (appState.match(/inactive|background/) && nextAppState === 'active') {
+  //         refetchMySpaces();
+  //         refetchLogs();
+  //         console.log('App has come to the foreground 👀');
+  //       } else if (appState === 'active' && nextAppState === 'inactive') {
+  //         console.log('App has come to the background 💤');
+  //       }
+  //       setAppState(nextAppState);
+  //     });
 
-  useEffect(() => {
-    if (auth) {
-      const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-        if (appState.match(/inactive|background/) && nextAppState === 'active') {
-          // appが再び開かれたら起こす。
-          // ここで後で直す。
-          // refreshGetMySpaces({ userId: auth._id });
-          // requestRefresh({ userId: auth._id });
-          // ここもrefreshに直したほうがいいと思う。
-          // requestApi({ spaceId: currentSpace._id, userId: auth._id });
-          // こんな感じか。。。
-          console.log('App has come to the foreground!');
-        } else if (appState === 'active' && nextAppState === 'inactive') {
-          // appを閉じてbackgroundになる寸前にここを起こす感じ。
-          // inactiveになったときに、何かapiを送る。
-          // updateSpaceCheckedInDate(); // 一時停止
-        }
-        console.log('Next AppState is: ', nextAppState);
-        onAppStateChange(nextAppState);
-      });
-
-      return () => {
-        appStateListener.remove();
-      };
-    }
-  }, [auth, appState]);
+  //     return () => {
+  //       appStateListener.remove();
+  //     };
+  //   }
+  // }, [auth, appState]);
 
   if (isLoadMeLoading) {
     return (

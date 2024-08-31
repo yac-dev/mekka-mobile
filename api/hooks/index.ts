@@ -1,4 +1,3 @@
-export * from './useUpdateSpaceCheckedInState';
 export * from './useCreateCommentState';
 export * from './useCreatePostResult';
 export * from './useCreateMomentResult';

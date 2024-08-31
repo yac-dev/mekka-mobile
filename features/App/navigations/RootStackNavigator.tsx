@@ -1,9 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { ActivityIndicator, View } from 'react-native';
+import { useEffect } from 'react';
+import { ActivityIndicator, View, AppState } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from '../../Home/navigations/HomeStackNavigator';
 import { useRecoilState } from 'recoil';
 import {
+  appStateAtom,
   authAtom,
   currentSpaceAtom,
   currentTagAtom,
@@ -25,6 +27,7 @@ export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>
 
 export const RootStackNavigator = () => {
   const [auth] = useRecoilState(authAtom);
+  const [appState, setAppState] = useRecoilState(appStateAtom);
   const [, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
@@ -35,7 +38,11 @@ export const RootStackNavigator = () => {
     mutationFn: updateSpaceCheckedInDate,
   });
 
-  const { isLoading: isGetMySpacesLoading, error: isGetMySpacesError } = useQuery({
+  const {
+    isLoading: isGetMySpacesLoading,
+    error: isGetMySpacesError,
+    refetch: refetchMySpaces,
+  } = useQuery({
     queryKey: [queryKeys.mySpaces, auth],
     queryFn: async () => {
       if (!auth) return null;
@@ -52,7 +59,11 @@ export const RootStackNavigator = () => {
     // onSuccessでupdateする方がいいのかな？？
   });
 
-  const { isLoading: isGetLogsLoading, error: isGetLogsError } = useQuery({
+  const {
+    isLoading: isGetLogsLoading,
+    error: isGetLogsError,
+    refetch: refetchLogs,
+  } = useQuery({
     queryKey: [queryKeys.logs, auth],
     queryFn: async () => {
       if (!auth) return null;
@@ -62,6 +73,25 @@ export const RootStackNavigator = () => {
       return response;
     },
   });
+
+  useEffect(() => {
+    if (auth) {
+      const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+        if (appState.match(/inactive|background/) && nextAppState === 'active') {
+          refetchMySpaces();
+          refetchLogs();
+          console.log('App has come to the foreground 👀');
+        } else if (appState === 'active' && nextAppState === 'inactive') {
+          console.log('App has come to the background 💤');
+        }
+        setAppState(nextAppState);
+      });
+
+      return () => {
+        appStateListener.remove();
+      };
+    }
+  }, [auth, appState]);
 
   if (isGetMySpacesLoading || isGetLogsLoading) {
     return (

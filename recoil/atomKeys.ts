@@ -1,5 +1,6 @@
 export const atomKeys = {
   auth: 'auth',
+  appState: 'appState',
   viewPostsType: 'viewPostsType',
   currentPost: 'currentPost',
   currentMapPost: 'currentMapPost',

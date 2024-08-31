@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
@@ -6,10 +6,11 @@ import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { momentLogsAtom } from '../../../recoil';
 import { AppButton } from '../../../components';
-import { useUpdateSpaceCheckedInDate } from '../../../api';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom } from '../../../recoil';
 import { authAtom, logsTableAtom } from '../../../recoil';
+import { useMutation } from '@tanstack/react-query';
+import { updateSpaceCheckedInDate } from '../../../query';
 
 type SideBarProps = {
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
@@ -23,11 +24,13 @@ export const SideBar: React.FC<SideBarProps> = ({ openAddNewSpaceMenuBottomSheet
   const [auth] = useRecoilState(authAtom);
   const [momentLogs] = useRecoilState(momentLogsAtom);
 
-  const { requestApi: requestUpdateSpaceCheckedInDate } = useUpdateSpaceCheckedInDate();
+  const updateSpaceCheckedInMutation = useMutation({
+    mutationFn: updateSpaceCheckedInDate,
+  });
 
   const onSpacePress = (space: SpaceType) => {
     setCurrentSpace(space);
-    requestUpdateSpaceCheckedInDate({ spaceId: space._id, userId: auth._id });
+    updateSpaceCheckedInMutation.mutate({ spaceId: space._id, userId: auth._id });
   };
 
   const onAddNewSpacePress = () => {

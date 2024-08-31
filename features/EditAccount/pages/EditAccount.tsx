@@ -1,14 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { GlobalContext } from '../../../contexts/GlobalContext';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { AppTextInput } from '../../../components';
 import { useEditAccount, useUpdateUser } from '../hooks';
 import { UpdateUserInputType } from '../types';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../../../navigations';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
 
 export const EditAccount = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
