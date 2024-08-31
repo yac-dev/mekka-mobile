@@ -2,8 +2,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from '../../Home/navigations/HomeStackNavigator';
-import { ApiResultType } from '../../../types';
-import { LoadMeOutputType } from '../types';
 import { useRecoilState } from 'recoil';
 import {
   authAtom,

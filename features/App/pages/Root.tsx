@@ -50,12 +50,15 @@ export const Root = () => {
     queryKey: [queryKeys.loadMe],
     queryFn: async () => {
       // ここではjwtが必要になるよな。。。
+      // jwtがない場合は、シンプルにサーバーから返せばいいわな。分岐書影してさ。。
       const jwt = await SecureStore.getItemAsync('secure_token');
-      if (jwt) {
-        const response = await loadMe({ jwt });
-        setAuth(response);
-        return response;
-      }
+      console.log('jwt', jwt);
+      // if (jwt) {
+      const response = await loadMe({ jwt });
+      setAuth(response);
+      return response;
+      // }
+      // return undefined;
     },
   });
 
@@ -97,7 +100,7 @@ export const Root = () => {
     );
   }
 
-  if (isLoadMeSuccess && loadMeData && !auth) {
+  if (isLoadMeSuccess && !auth) {
     return (
       <NavigationContainer>
         <NonAuthStack.Navigator>
@@ -113,15 +116,15 @@ export const Root = () => {
     );
   }
 
-  if (isLoadMeError) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
-        <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Failed to load your data...</Text>
-      </View>
-    );
+  if (isLoadMeSuccess && auth) {
+    return <RootStackNavigator />;
   }
 
-  return <RootStackNavigator />;
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+      <ActivityIndicator />
+    </View>
+  );
 };
 
 // push notificationに関するcallback実行
