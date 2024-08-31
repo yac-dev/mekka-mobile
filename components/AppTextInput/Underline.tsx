@@ -37,6 +37,7 @@ export const UnderlineTextInput: React.FC<UnderlineTextInputProps> = ({
         value={value}
         secureTextEntry={secureTextEntry}
         onChangeText={onTextChange}
+        textContentType='oneTimeCode'
       />
       {secureTextEntry !== undefined && (
         <TouchableOpacity
