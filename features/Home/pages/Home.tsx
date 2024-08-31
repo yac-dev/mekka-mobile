@@ -15,9 +15,13 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../../query/queryKeys';
 
 export const Home = () => {
-  const { isFetching } = useQuery({
+  const { isFetching: isFetchingMySpaces, isSuccess: isGetMySpacesSuccess } = useQuery({
     queryKey: [queryKeys.mySpaces],
   });
+  const { isSuccess: isGetLogsSuccess } = useQuery({
+    queryKey: [queryKeys.logs],
+  });
+
   const [, setAuth] = useRecoilState(authAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
@@ -30,8 +34,6 @@ export const Home = () => {
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
-
-  console.log('fetching myspaces', isFetching);
 
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');

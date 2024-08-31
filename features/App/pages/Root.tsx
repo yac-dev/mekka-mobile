@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
-import { View, ActivityIndicator, AppState } from 'react-native';
+import { View, ActivityIndicator, AppState, Text } from 'react-native';
 import { useLoadMe } from '../hooks/useLoadMe';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../navigations/RootStackNavigator';
@@ -18,7 +18,9 @@ import {
   momentLogsAtom,
 } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys, getMySpaces } from '../../../query';
+import { queryKeys, getMySpaces, getLogsByUserId, loadMe } from '../../../query';
+import { NavigationContainer } from '@react-navigation/native';
+import { NonAuthNavigator } from '../../NonAuth';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -26,92 +28,48 @@ export type RootStackParams = {
   ForgotPasswordStackNavigator: undefined;
 };
 
+const NonAuthStack = createNativeStackNavigator<NonAuthStackParams>();
+
+export type NonAuthStackParams = {
+  NonAuthNavigator: undefined;
+};
+
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
 // NOTE: 初期読み込み
 // 1, loadme
 // 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
-  const [, setMySpaces] = useRecoilState(mySpacesAtom);
-  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
-  const [, setLogsTable] = useRecoilState(logsTableAtom);
-  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
-  const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const [auth, setAuth] = useRecoilState(authAtom);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: [queryKeys.mySpaces],
-    queryFn: () => {
-      const response = getMySpaces({ userId: auth._id });
-      return response;
+  const {
+    data: loadMeData,
+    isLoading: isLoadMeLoading,
+    error: isLoadMeError,
+    isSuccess: isLoadMeSuccess,
+  } = useQuery({
+    queryKey: [queryKeys.loadMe],
+    queryFn: async () => {
+      // ここではjwtが必要になるよな。。。
+      const jwt = await SecureStore.getItemAsync('secure_token');
+      if (jwt) {
+        const response = await loadMe({ jwt });
+        setAuth(response);
+        return response;
+      }
     },
   });
 
-  // console.log('mySpaces data', JSON.stringify(data, null, 2));
-
   const { appState, onAppStateChange } = useContext(GlobalContext);
-  const { apiResult: loadMeApiResult, requestApi: requestLoadMe } = useLoadMe();
-  const {
-    apiResult: getMySpacesApiResult,
-    requestApi: requestGetMySpaces,
-    requestRefresh: refreshGetMySpaces,
-  } = useGetMySpaces();
   const { apiResult, requestApi } = useUpdateSpaceCheckedInDate();
-
-  const { apiResult: getLogsResult, requestApi: requestGetLogs, requestRefresh } = useGetLogsByUserId();
-  const loadMe = async () => {
-    const jwt = await SecureStore.getItemAsync('secure_token');
-    if (jwt) {
-      requestLoadMe({ jwt });
-    }
-  };
-  // そもそもloadme動いてないね。。。
-  // そもそもjwtがない場合はここを動かさないもんな。。。
-
-  useEffect(() => {
-    loadMe();
-  }, []);
-
-  useEffect(() => {
-    if (loadMeApiResult.status === 'success') {
-      setAuth(loadMeApiResult.data);
-    }
-  }, [loadMeApiResult]);
-
-  useEffect(() => {
-    if (auth) {
-      requestGetMySpaces({ userId: auth._id });
-      requestGetLogs({ userId: auth._id });
-    }
-  }, [auth]);
-
-  useEffect(() => {
-    if (getMySpacesApiResult.status === 'success') {
-      setMySpaces(getMySpacesApiResult.data?.mySpaces);
-      if (getMySpacesApiResult.data?.mySpaces?.length) {
-        setCurrentSpace(getMySpacesApiResult.data.mySpaces[0]);
-        setCurrentTag(getMySpacesApiResult.data.mySpaces[0].tags[0]);
-        const firstSpace = getMySpacesApiResult.data?.mySpaces[0];
-        requestApi({ spaceId: firstSpace._id, userId: auth._id });
-      }
-      // 最初のspace fetchで最初のspaceのcheckedin の日付だけ更新する。
-    }
-  }, [getMySpacesApiResult]);
-
-  // 最初でlogとmomentLogsをセットする。
-  useEffect(() => {
-    if (getLogsResult.status === 'success') {
-      setLogsTable(getLogsResult.data?.logs);
-      setMomentLogs(getLogsResult.data?.momentLogs);
-    }
-  }, [getLogsResult.status]);
 
   useEffect(() => {
     if (auth) {
       const appStateListener = AppState.addEventListener('change', (nextAppState) => {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
           // appが再び開かれたら起こす。
-          refreshGetMySpaces({ userId: auth._id });
-          requestRefresh({ userId: auth._id });
+          // ここで後で直す。
+          // refreshGetMySpaces({ userId: auth._id });
+          // requestRefresh({ userId: auth._id });
           // ここもrefreshに直したほうがいいと思う。
           // requestApi({ spaceId: currentSpace._id, userId: auth._id });
           // こんな感じか。。。
@@ -131,11 +89,7 @@ export const Root = () => {
     }
   }, [auth, appState]);
 
-  if (
-    loadMeApiResult.status === 'loading' ||
-    getMySpacesApiResult.status === 'loading' ||
-    getLogsResult.status === 'loading'
-  ) {
+  if (isLoadMeLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -143,7 +97,31 @@ export const Root = () => {
     );
   }
 
-  return <RootStackNavigator loadMeApiResult={loadMeApiResult} />;
+  if (isLoadMeSuccess && loadMeData && !auth) {
+    return (
+      <NavigationContainer>
+        <NonAuthStack.Navigator>
+          <NonAuthStack.Screen
+            name='NonAuthNavigator'
+            component={NonAuthNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+            })}
+          />
+        </NonAuthStack.Navigator>
+      </NavigationContainer>
+    );
+  }
+
+  if (isLoadMeError) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+        <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Failed to load your data...</Text>
+      </View>
+    );
+  }
+
+  return <RootStackNavigator />;
 };
 
 // push notificationに関するcallback実行

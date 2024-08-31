@@ -1,11 +1,20 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { ActivityIndicator, View } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackNavigator } from '../../Home/navigations/HomeStackNavigator';
-import { NonAuthNavigator } from '../../NonAuth/navigations/NonAuthNavigator';
 import { ApiResultType } from '../../../types';
 import { LoadMeOutputType } from '../types';
 import { useRecoilState } from 'recoil';
-import { authAtom } from '../../../recoil';
+import {
+  authAtom,
+  currentSpaceAtom,
+  currentTagAtom,
+  logsTableAtom,
+  momentLogsAtom,
+  mySpacesAtom,
+} from '../../../recoil';
+import { queryKeys, getMySpaces, getLogsByUserId } from '../../../query';
+import { useQuery } from '@tanstack/react-query';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -16,26 +25,46 @@ export type RootStackParams = {
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
 
-type IRootStackNavigator = {
-  loadMeApiResult: ApiResultType<LoadMeOutputType>;
-};
-
-export const RootStackNavigator: React.FC<IRootStackNavigator> = ({ loadMeApiResult }) => {
+export const RootStackNavigator = () => {
   const [auth] = useRecoilState(authAtom);
+  const [, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
+  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [, setCurrentTag] = useRecoilState(currentTagAtom);
 
-  if (!auth) {
+  const { isLoading: isGetMySpacesLoading, error: isGetMySpacesError } = useQuery({
+    queryKey: [queryKeys.mySpaces, auth],
+    queryFn: async () => {
+      if (!auth) return null;
+      const response = await getMySpaces({ userId: auth._id });
+      setMySpaces(response.mySpaces);
+      if (response.mySpaces?.length) {
+        setCurrentSpace(response.mySpaces[0]);
+        setCurrentTag(response.mySpaces[0].tags[0]);
+        // const firstSpace = response.mySpaces[0];
+        // requestApi({ spaceId: firstSpace._id, userId: auth._id }); // ここでupdateするんだよね。別でまたやろう。
+      }
+      return response;
+    },
+  });
+
+  const { isLoading: isGetLogsLoading, error: isGetLogsError } = useQuery({
+    queryKey: [queryKeys.logs, auth],
+    queryFn: async () => {
+      if (!auth) return null;
+      const response = await getLogsByUserId({ userId: auth._id });
+      setLogsTable(response.logs);
+      setMomentLogs(response.momentLogs);
+      return response;
+    },
+  });
+
+  if (isGetMySpacesLoading || isGetLogsLoading) {
     return (
-      <NavigationContainer>
-        <RootStack.Navigator>
-          <RootStack.Screen
-            name='NonAuthNavigator'
-            component={NonAuthNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-            })}
-          />
-        </RootStack.Navigator>
-      </NavigationContainer>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+        <ActivityIndicator />
+      </View>
     );
   }
 
