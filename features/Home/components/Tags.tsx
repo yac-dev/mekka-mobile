@@ -7,7 +7,7 @@ import { TagType } from '../../../types';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 
-export const Channels = () => {
+export const Tags = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
@@ -33,7 +33,7 @@ export const Channels = () => {
   return (
     <View style={styles.container}>
       <View style={{ paddingLeft: 15, paddingTop: 10 }}>
-        <Text style={{ color: 'rgb(150,150,150)', marginBottom: 5 }}>Channels</Text>
+        <Text style={{ color: 'rgb(150,150,150)', marginBottom: 5 }}>Tags</Text>
       </View>
       {currentSpace.tags.map((tag, index) => {
         const isFocused = currentTag?._id === tag._id;

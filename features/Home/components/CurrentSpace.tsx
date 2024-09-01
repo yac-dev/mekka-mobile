@@ -1,5 +1,5 @@
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Header, Specs, Features, Channels } from '.';
+import { Header, Specs, Features, Tags } from '.';
 
 export const CurrentSpace = () => {
   return (
@@ -9,7 +9,7 @@ export const CurrentSpace = () => {
       <Divider />
       <ScrollView>
         <Features />
-        <Channels />
+        <Tags />
       </ScrollView>
     </View>
   );
