@@ -1,6 +1,7 @@
 export const atomKeys = {
   auth: 'auth',
   appState: 'appState',
+  isPushNotificationEnabled: 'isPushNotificationEnabled',
   viewPostsType: 'viewPostsType',
   currentPost: 'currentPost',
   currentMapPost: 'currentMapPost',

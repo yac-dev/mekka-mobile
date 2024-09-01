@@ -5,3 +5,4 @@ export * from './currentSpaceAtom';
 export * from './logsTableAtom';
 export * from './currentTagAtom';
 export * from './momentLogsAtom';
+export * from './isPushNotificationEnabledAtom';

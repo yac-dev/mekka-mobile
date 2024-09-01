@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NonAuthNavigator } from '../../NonAuth';
 import { NoConnection } from '../components';
 import { PageView } from '../../../components';
+import { setUpPushNotification } from '../hooks';
 
 export type RootStackParams = {
   HomeStackNavigator: undefined;
@@ -40,6 +41,8 @@ export const Root = () => {
       return response;
     },
   });
+
+  setUpPushNotification();
 
   if (isLoadMeError) {
     return <NoConnection />;

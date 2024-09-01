@@ -35,3 +35,8 @@ export type UpdateSpaceCheckedInDateInputType = {
   spaceId: string;
   userId: string;
 };
+
+export type RegisterPushTokenInputType = {
+  userId: string;
+  pushToken: string;
+};
