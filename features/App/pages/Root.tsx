@@ -9,6 +9,8 @@ import { queryKeys, loadMe } from '../../../query';
 import { NavigationContainer } from '@react-navigation/native';
 import { NonAuthNavigator } from '../../NonAuth';
 import { NoConnection } from '../components';
+import { PageView } from '../../../components';
+
 export type RootStackParams = {
   HomeStackNavigator: undefined;
   Signup: undefined;
@@ -45,9 +47,9 @@ export const Root = () => {
 
   if (isLoadMeLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+      <PageView>
         <ActivityIndicator />
-      </View>
+      </PageView>
     );
   }
 
@@ -72,9 +74,9 @@ export const Root = () => {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+    <PageView>
       <ActivityIndicator />
-    </View>
+    </PageView>
   );
 };
 

@@ -8,6 +8,7 @@ export * from './PostThumbnail';
 export * from './Skelton';
 export * from './SnackBar';
 export * from './Report';
+export * from './PageView';
 export * from './VideoPlayer';
 export * from './CustomImage';
 export * from './CustomWebView';
