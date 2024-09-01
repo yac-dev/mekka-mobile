@@ -7,6 +7,10 @@ export const loadMe = async (input: LoadMeInput): Promise<LoadMeOutputType> => {
     const { user } = result.data.data;
     return user;
   } catch (error) {
-    throw error;
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error('An error occurred during loading your data...');
+    }
   }
 };

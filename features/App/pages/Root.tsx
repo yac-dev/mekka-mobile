@@ -1,26 +1,15 @@
-import { useEffect, useContext } from 'react';
-import { View, ActivityIndicator, AppState, Text } from 'react-native';
-import { useLoadMe } from '../hooks/useLoadMe';
+import { View, ActivityIndicator, Text } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useGetMySpaces } from '../hooks/useGetMySpaces';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../navigations/RootStackNavigator';
-import { useGetLogsByUserId } from '../hooks';
 import { useRecoilState } from 'recoil';
-import {
-  mySpacesAtom,
-  currentSpaceAtom,
-  authAtom,
-  appStateAtom,
-  logsTableAtom,
-  currentTagAtom,
-  momentLogsAtom,
-} from '../../../recoil';
+import { authAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys, getMySpaces, getLogsByUserId, loadMe } from '../../../query';
+import { queryKeys, loadMe } from '../../../query';
 import { NavigationContainer } from '@react-navigation/native';
 import { NonAuthNavigator } from '../../NonAuth';
-
+import { EmptyView, AppPressable } from '../../../components';
+import { NoConnection } from '../components';
 export type RootStackParams = {
   HomeStackNavigator: undefined;
   Signup: undefined;
@@ -34,15 +23,10 @@ export type NonAuthStackParams = {
 };
 
 export type RootStackNavigatorProps = NativeStackNavigationProp<RootStackParams>;
-// NOTE: 初期読み込み
-// 1, loadme
-// 2, userId使って自分のspaceとlogを読み込み
 export const Root = () => {
   const [auth, setAuth] = useRecoilState(authAtom);
-  const [appState, setAppState] = useRecoilState(appStateAtom);
 
   const {
-    data: loadMeData,
     isLoading: isLoadMeLoading,
     error: isLoadMeError,
     isSuccess: isLoadMeSuccess,
@@ -56,25 +40,9 @@ export const Root = () => {
     },
   });
 
-  // 多分、functionをarrayに持たせてPromise.allするとかの方向性かなー。。。
-  // useEffect(() => {
-  //   if (auth) {
-  //     const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-  //       if (appState.match(/inactive|background/) && nextAppState === 'active') {
-  //         refetchMySpaces();
-  //         refetchLogs();
-  //         console.log('App has come to the foreground 👀');
-  //       } else if (appState === 'active' && nextAppState === 'inactive') {
-  //         console.log('App has come to the background 💤');
-  //       }
-  //       setAppState(nextAppState);
-  //     });
-
-  //     return () => {
-  //       appStateListener.remove();
-  //     };
-  //   }
-  // }, [auth, appState]);
+  if (isLoadMeError) {
+    return <NoConnection />;
+  }
 
   if (isLoadMeLoading) {
     return (
