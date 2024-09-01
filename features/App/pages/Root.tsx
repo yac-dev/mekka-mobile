@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, Text } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
 import { RootStackNavigator } from '../navigations/RootStackNavigator';
@@ -8,7 +8,6 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys, loadMe } from '../../../query';
 import { NavigationContainer } from '@react-navigation/native';
 import { NonAuthNavigator } from '../../NonAuth';
-import { EmptyView, AppPressable } from '../../../components';
 import { NoConnection } from '../components';
 export type RootStackParams = {
   HomeStackNavigator: undefined;
