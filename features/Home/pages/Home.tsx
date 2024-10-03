@@ -6,7 +6,7 @@ import { useBottomSheet } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
-import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace } from '../components';
+import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace, BottomTab } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
@@ -82,11 +82,11 @@ export const Home = () => {
         <NoSpaces openAuthMenuBottomSheet={openAuthMenuBottomSheet} />
       ) : (
         <View style={{ flexDirection: 'row', height: '100%' }}>
-          <SideBar
+          <CurrentSpace />
+          <BottomTab
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
           />
-          <CurrentSpace />
         </View>
       )}
 
