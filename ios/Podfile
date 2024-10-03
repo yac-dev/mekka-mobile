@@ -87,7 +87,45 @@ abstract_target 'MekkaCommonPods' do
         end
       end
     end
+
+    installer.pods_project.targets.each do |target|
+      if target.name == 'MapboxMobileEvents'
+        `xcrun -sdk iphoneos bitcode_strip -r Pods/MapboxMobileEvents/MapboxMobileEvents.xcframework/ios-arm64_armv7/MapboxMobileEvents.framework/MapboxMobileEvents -o Pods/MapboxMobileEvents/MapboxMobileEvents.xcframework/ios-arm64_armv7/MapboxMobileEvents.framework/MapboxMobileEvents`
+      end
+
+      if target.name == 'MapboxCommon'
+        `xcrun -sdk iphoneos bitcode_strip -r Pods/MapboxCommon/MapboxCommon.xcframework/ios-arm64/MapboxCommon.framework/MapboxCommon -o Pods/MapboxCommon/MapboxCommon.xcframework/ios-arm64/MapboxCommon.framework/MapboxCommon`
+      end
+
+      if target.name == 'MapboxCoreMaps'
+        `xcrun -sdk iphoneos bitcode_strip -r Pods/MapboxCoreMaps/MapboxCoreMaps.xcframework/ios-arm64/MapboxCoreMaps.framework/MapboxCoreMaps -o Pods/MapboxCoreMaps/MapboxCoreMaps.xcframework/ios-arm64/MapboxCoreMaps.framework/MapboxCoreMaps`
+      end
+    end
+
     $RNMapboxMaps.post_install(installer)
+
+    
+
+    bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
+    def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
+      framework_path = File.join(Dir.pwd, framework_relative_path)
+      command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
+      puts "Stripping bitcode: #{command}"
+      system(command)
+    end
+
+   framework_paths = [
+     "Pods/LogRocket/LogRocket.xcframework/ios-arm64/LogRocket.framework/LogRocket",
+     "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/hermes",
+     "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/Versions/Current/hermes",
+     "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64/hermes.framework/hermes",
+     "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64_x86_64-maccatalyst/hermes.framework/hermes"
+    ]
+
+   framework_paths.each do |framework_relative_path|
+     strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
+   end
+
   end
 
   post_integrate do |installer|
