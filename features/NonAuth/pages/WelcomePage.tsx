@@ -101,13 +101,13 @@ export const WelcomePage = () => {
             marginBottom: 10,
           }}
         >
-          Welcome to Mekka
+          Welcome to Var
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
           Please fill in your email and password to login.
         </Text>
       </View>
-      <Text>Welcome to Mekka. Please signup or login to proceed.</Text>
+      <Text>Welcome to Var. Please signup or login to proceed.</Text>
       <View style={{ flexDirection: 'column' }}>
         <View style={{ paddingHorizontal: 10, marginBottom: 0 }}>
           <AppTextInput.Underline
@@ -148,7 +148,7 @@ export const WelcomePage = () => {
         }}
         onPress={() => nonAuthStackNavigation.navigate('AboutApp', { url: urls.briefIntroduction })}
       >
-        What is Mekka??
+        What is Var??
       </Text>
       <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </SafeAreaView>

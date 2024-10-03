@@ -46,7 +46,7 @@ export const Signup = () => {
 
   useEffect(() => {
     if (signupResult.status === 'success') {
-      showMessage({ message: 'Welcome to Mekka', type: 'success', duration: 5000 });
+      showMessage({ message: 'Welcome to Var', type: 'success', duration: 5000 });
     }
   }, [signupResult]);
 
@@ -104,7 +104,7 @@ export const Signup = () => {
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-          <Text style={{ color: 'rgb(150,150,150)' }}>By signing up, you accept and read Mekka's&nbsp;</Text>
+          <Text style={{ color: 'rgb(150,150,150)' }}>By signing up, you accept and read Var's&nbsp;</Text>
           <TouchableOpacity
             style={{ borderBottomWidth: 0.5, borderBottomColor: 'rgb(150, 150,150)' }}
             onPress={() => navigation.navigate('EULA')}

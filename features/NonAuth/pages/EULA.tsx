@@ -4,42 +4,42 @@ import { View, Text, ScrollView } from 'react-native';
 const conditions = [
   {
     title: 'Purpose of the app',
-    description: 'Mekka is a platform for fun and collaborative photo or video sharing among close friends.',
+    description: 'Var is a platform for fun and collaborative photo or video sharing among close friends.',
   },
   {
     title: 'License Grant',
     description:
-      'Mekka hereby grants you a personal, non-transferable, non-exclusive licence to use the Mekka software on your devices in accordance with the terms of this EULA agreement. You are permitted to load the Mekka software(for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the Mekka software. You are not permitted to:',
+      'Var hereby grants you a personal, non-transferable, non-exclusive licence to use the Var software on your devices in accordance with the terms of this EULA agreement. You are permitted to load the Var software(for example a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the Var software. You are not permitted to:',
   },
   {
     title: 'Objectionable Content and Abusive Users',
     description:
-      'You understand and agree that the App may contain content that is offensive, inappropriate, or otherwise objectionable. You also understand and agree that there is no tolerance for abusive users in the App. Mekka reserves the right to remove any content or block any user that violates this Agreement or any applicable laws.',
+      'You understand and agree that the App may contain content that is offensive, inappropriate, or otherwise objectionable. You also understand and agree that there is no tolerance for abusive users in the App. Var reserves the right to remove any content or block any user that violates this Agreement or any applicable laws.',
   },
   {
     title: 'User-Generated Content',
     description:
-      'You acknowledge that any content that you upload or post on the App, including but not limited to photos and videos, is your responsibility and you represent and warrant that you have all necessary rights to the content. You grant Mekka a worldwide, non-exclusive, transferable, royalty-free, perpetual license to use, copy,modify, create derivative works from, distribute, sublicense, and display the content in connection with the App.',
+      'You acknowledge that any content that you upload or post on the App, including but not limited to photos and videos, is your responsibility and you represent and warrant that you have all necessary rights to the content. You grant Var a worldwide, non-exclusive, transferable, royalty-free, perpetual license to use, copy,modify, create derivative works from, distribute, sublicense, and display the content in connection with the App.',
   },
   {
     title: 'Proprietary Rights',
     description:
-      'You acknowledge and agree that the App, and any necessary software used in connection with the App, containsproprietary and confidential information that is protected by applicable intellectual property and other laws.You also acknowledge and agree that the content contained in the App or in advertisements displayed in the App is protected by copyrights, trademarks, service marks, patents, or other proprietary rights and laws. Except as expressly authorized by Mekka, you agree not to modify, rent, lease, loan, sell, distribute, or create derivative works based on the App or the content contained therein, in whole or in part.',
+      'You acknowledge and agree that the App, and any necessary software used in connection with the App, containsproprietary and confidential information that is protected by applicable intellectual property and other laws.You also acknowledge and agree that the content contained in the App or in advertisements displayed in the App is protected by copyrights, trademarks, service marks, patents, or other proprietary rights and laws. Except as expressly authorized by Var, you agree not to modify, rent, lease, loan, sell, distribute, or create derivative works based on the App or the content contained therein, in whole or in part.',
   },
   {
     title: 'Disclaimer of Warranties',
     description:
-      'The App is provided on an “as is” basis without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. Mekka does not warrant that the App will meet your requirements, or that the operation of the App will beuninterrupted or error-free.',
+      'The App is provided on an “as is” basis without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and non-infringement. Var does not warrant that the App will meet your requirements, or that the operation of the App will beuninterrupted or error-free.',
   },
   {
     title: 'Limitation of Liability',
     description:
-      'To the maximum extent permitted by law, Mekka shall not be liable for any damages whatsoever, including but not limited to direct, indirect, incidental, special, consequential, or exemplary damages, arising out of or in connection with your use of the App.',
+      'To the maximum extent permitted by law, Var shall not be liable for any damages whatsoever, including but not limited to direct, indirect, incidental, special, consequential, or exemplary damages, arising out of or in connection with your use of the App.',
   },
   {
     title: 'Indemnification',
     description:
-      "You agree to indemnify and hold Mekka, its affiliates, officers, agents, employees, and partners harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your use of the App, your violation of this Agreement, or your violation of any rights of another.",
+      "You agree to indemnify and hold Var, its affiliates, officers, agents, employees, and partners harmless from any claim or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your use of the App, your violation of this Agreement, or your violation of any rights of another.",
   },
 ];
 
@@ -48,7 +48,7 @@ const licenceGrantPermissions = [
   'Reproduce, copy, distribute, resell or otherwise use the Software for any commercial purpose',
   'Allow any third party to use the Software on behalf of or for the benefit of any third party',
   'Use the Software in any way which breaches any applicable local, national or international law',
-  'Use the Software for any purpose that Mekka considers is a breach of this EULA agreement',
+  'Use the Software for any purpose that Var considers is a breach of this EULA agreement',
 ];
 
 export const EULA = () => {
@@ -84,11 +84,11 @@ export const EULA = () => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'black', padding: 20 }}>
       <Text style={{ color: 'white', fontSize: 22, fontWeight: 'bold', marginBottom: 10 }}>
-        End User License Agreement of Mekka
+        End User License Agreement of Var
       </Text>
       <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, marginBottom: 10, lineHeight: 25 }}>
         This End User License Agreement (“Agreement”) is a legally binding agreement between you (“End User” or “you”)
-        and Mekka. By downloading, installing, accessing, or using the App, you agree to be bound by the terms and
+        and Var. By downloading, installing, accessing, or using the App, you agree to be bound by the terms and
         conditions of this Agreement. If you do not agree to the terms of this Agreement, do not download, install,
         access, or use the App.
       </Text>

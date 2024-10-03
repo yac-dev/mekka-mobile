@@ -42,7 +42,7 @@ export const NonAuthNavigator = () => {
           name='AboutApp'
           component={AboutApp}
           options={({ navigation }) => ({
-            headerTitle: 'About Mekka',
+            headerTitle: 'About Var',
             headerStyle: {
               backgroundColor: 'black',
             },

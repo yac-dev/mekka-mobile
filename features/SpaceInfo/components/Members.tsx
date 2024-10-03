@@ -24,8 +24,8 @@ export const Members: React.FC<MembersProps> = () => {
 
   const handleInvite = async () => {
     Share.share({
-      title: 'Share Mekka',
-      message: `Access here to download Mekka: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
+      title: 'Share Var',
+      message: `Access here to download Var: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
         currentSpace.secretKey
       }`,
     });
