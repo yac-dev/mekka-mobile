@@ -35,8 +35,8 @@ export const Tags = () => {
 
   const renderItem = ({ item }: { item: TagType }) => {
     return (
-      <View style={{ width: tagOuterWidth, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-        <View
+      <View style={{ width: tagOuterWidth, height: 110, alignItems: 'center' }}>
+        <TouchableOpacity
           style={{
             width: tagSquareWidth,
             aspectRatio: 1,
@@ -44,7 +44,9 @@ export const Tags = () => {
             backgroundColor: 'rgb(40,40,40)',
             justifyContent: 'center',
             alignItems: 'center',
+            marginBottom: 5,
           }}
+          onPress={() => onTagPress(item)}
         >
           <ExpoImage
             style={{
@@ -55,7 +57,10 @@ export const Tags = () => {
             // contentFit='cover'
             tintColor={'white'}
           />
-        </View>
+        </TouchableOpacity>
+        <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
+          {item.name}
+        </Text>
       </View>
     );
   };
