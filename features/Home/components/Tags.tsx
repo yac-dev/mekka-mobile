@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { TagType } from '../../../types';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+
+const tagOuterWidth = Dimensions.get('window').width / 4;
+const tagSquareWidth = tagOuterWidth * 0.7;
 
 export const Tags = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -30,12 +33,39 @@ export const Tags = () => {
     });
   };
 
+  const renderItem = ({ item }: { item: TagType }) => {
+    return (
+      <View style={{ width: tagOuterWidth, height: 100, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{
+            width: tagSquareWidth,
+            aspectRatio: 1,
+            borderRadius: 18,
+            backgroundColor: 'rgb(40,40,40)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ExpoImage
+            style={{
+              width: tagSquareWidth * 0.45,
+              aspectRatio: 1,
+            }}
+            source={{ uri: item.icon?.url }}
+            // contentFit='cover'
+            tintColor={'white'}
+          />
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{ paddingLeft: 15, paddingTop: 10 }}>
+      {/* <View style={{ paddingLeft: 15, paddingTop: 10 }}>
         <Text style={{ color: 'rgb(150,150,150)', marginBottom: 5 }}>Tags</Text>
-      </View>
-      {currentSpace.tags.map((tag, index) => {
+      </View> */}
+      {/* {currentSpace.tags.map((tag, index) => {
         const isFocused = currentTag?._id === tag._id;
         const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][tag._id];
         return (
@@ -95,7 +125,14 @@ export const Tags = () => {
             </View>
           </TouchableOpacity>
         );
-      })}
+      })} */}
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        numColumns={4}
+        data={currentSpace.tags}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+      />
     </View>
   );
 };

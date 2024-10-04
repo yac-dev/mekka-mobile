@@ -5,12 +5,12 @@ export const CurrentSpace = () => {
   return (
     <View style={styles.container}>
       <Header />
-      <Specs />
-      <Divider />
-      <ScrollView>
-        <Features />
-        <Tags />
-      </ScrollView>
+      {/* <Specs /> */}
+      {/* <Divider /> */}
+      {/* <ScrollView> */}
+      {/* <Features /> */}
+      <Tags />
+      {/* </ScrollView> */}
     </View>
   );
 };

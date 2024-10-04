@@ -82,6 +82,10 @@ export const Home = () => {
         <NoSpaces openAuthMenuBottomSheet={openAuthMenuBottomSheet} />
       ) : (
         <View style={{ flexDirection: 'row', height: '100%' }}>
+          {/* <SideBar
+            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+          /> */}
           <CurrentSpace />
           <BottomTab
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}

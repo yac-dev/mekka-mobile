@@ -7,6 +7,19 @@ import { momentLogsAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 
+const features = [
+  {
+    icon: require('../../../assets/forApp/ghost.png'),
+    feature: 'Moments',
+    onPress: () => console.log('Moments'),
+  },
+  {
+    icon: require('../../../assets/forApp/film-roll.png'),
+    feature: 'Rolls',
+    onPress: () => console.log('Rolls'),
+  },
+];
+
 export const Features = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
@@ -30,9 +43,9 @@ export const Features = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ paddingLeft: 15, paddingTop: 10 }}>
+      {/* <View style={{ paddingLeft: 15, paddingTop: 10 }}>
         <Text style={{ color: 'rgb(150,150,150)' }}>Features</Text>
-      </View>
+      </View> */}
       <View style={{ flexDirection: 'column', paddingVertical: 10 }}>
         <TouchableOpacity
           activeOpacity={0.7}
