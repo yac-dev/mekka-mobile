@@ -146,7 +146,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({}) => {
           customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
           hasShadow={false}
         >
-          <VectorIcon.II name='settings-outline' size={18} color={Colors.white} />
+          <VectorIcon.MCI name='account' size={20} color={Colors.white} />
         </AppButton.Icon>
       </View>
     </SafeAreaView>

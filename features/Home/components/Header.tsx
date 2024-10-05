@@ -43,9 +43,7 @@ export const Header = () => {
         />
       </TouchableOpacity>
       <View style={{ flexDirection: 'column' }}>
-        <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23, marginBottom: 8 }}>
-          {currentSpace.name}
-        </Text>
+        <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
       </View>
     </View>
   );

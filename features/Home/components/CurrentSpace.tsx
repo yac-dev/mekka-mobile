@@ -21,7 +21,7 @@ const Divider = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 9,
+    // flex: 9,
   },
   divider: {
     width: '90%',
