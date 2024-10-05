@@ -6,9 +6,10 @@ import { HomeStackNavigatorProps } from '../navigations';
 import { TagType } from '../../../types';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+import { Header } from './Header';
 
 const tagOuterWidth = Dimensions.get('window').width / 4;
-const tagSquareWidth = tagOuterWidth * 0.7;
+const tagSquareWidth = tagOuterWidth * 0.63;
 
 //ここでFlatListのheaderでfeatureなりをやるのは設計面で見ても違和感ある。
 //配列で展開するほうがいいだろうな。。。
@@ -139,6 +140,7 @@ export const Tags = () => {
         data={currentSpace.tags}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
+        ListHeaderComponent={<Header />}
       />
     </View>
   );

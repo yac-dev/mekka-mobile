@@ -32,7 +32,7 @@ export const Header = () => {
       }}
     >
       <TouchableOpacity
-        style={{ width: 55, height: 55, borderRadius: 40, marginRight: 20 }}
+        style={{ width: 60, height: 60, borderRadius: 40, marginRight: 20 }}
         onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
         activeOpacity={0.7}
       >
@@ -43,24 +43,9 @@ export const Header = () => {
         />
       </TouchableOpacity>
       <View style={{ flexDirection: 'column' }}>
-        <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
+        <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23, marginBottom: 8 }}>
           {currentSpace.name}
         </Text>
-        {/* <TouchableOpacity
-          activeOpacity={0.7}
-          style={{
-            paddingVertical: 5,
-            paddingHorizontal: 10,
-            backgroundColor: 'rgb(50,50,50)',
-            borderRadius: 100,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          onPress={() => handleInvite()}
-        >
-          <VectorIcon.MCI name='human-greeting-variant' size={15} color={'white'} style={{ marginRight: 10 }} />
-          <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Invite Friend</Text>
-        </TouchableOpacity> */}
       </View>
     </View>
   );

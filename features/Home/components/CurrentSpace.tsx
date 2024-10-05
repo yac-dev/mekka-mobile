@@ -4,12 +4,12 @@ import { Header, Specs, Features, Tags } from '.';
 export const CurrentSpace = () => {
   return (
     <View style={styles.container}>
-      <Header />
+      {/* <Header /> */}
       {/* <Specs /> */}
       {/* <Divider /> */}
       {/* <ScrollView> */}
-      <Features />
       <Tags />
+      <Features />
       {/* </ScrollView> */}
     </View>
   );
