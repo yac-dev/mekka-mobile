@@ -3,8 +3,9 @@ import { TouchableOpacity } from 'react-native';
 import { Colors } from '../../../themes';
 import { primaryBackgroundColor } from '../../../themes/color';
 import { Ionicons } from '@expo/vector-icons';
-import { CreateNewSpaceStackNavigator } from '../..';
+import { CreateNewSpaceStackNavigator, SpacesHeader } from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Text } from 'react-native';
 import { EnterPrivateSpace } from '../../EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from '../../SpaceInfo/navigations/SpaceInfoStackNavigator';
 import { EditProfileStackNavigator } from '../../EditAccount/navigations/EditProfileStackNavigator';
@@ -96,7 +97,7 @@ export const HomeStackNavigator: React.FC = (props) => {
   return (
     <HomeStack.Navigator
       screenOptions={({ navigation }) => ({
-        headerShown: false,
+        // headerShown: false,
         title: '',
         headerStyle: {
           backgroundColor: 'black',
@@ -104,11 +105,30 @@ export const HomeStackNavigator: React.FC = (props) => {
       })}
     >
       <HomeStack.Group>
-        <HomeStack.Screen name='Home' component={Home} options={({ navigation }) => ({})} />
+        <HomeStack.Screen
+          name='Home'
+          component={Home}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerLeft: () => (
+              // <AppButton.Icon
+              //   onButtonPress={() => navigation.goBack()}
+              //   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              //   hasShadow={false}
+              // >
+              //   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+              // </AppButton.Icon>
+              <SpacesHeader />
+            ),
+            headerRight: () => <Text>test</Text>,
+          })}
+        />
         <HomeStack.Screen
           name='SpaceStackNavigator'
           component={SpaceStackNavigator}
-          options={({ navigation }) => ({})}
+          options={({ navigation }) => ({
+            headerShown: false,
+          })}
         />
         {/* ここに、spaceRootStackを入れる感じか。home component内で、SpaceRootStackへnavigationするようにしたいよね。そういう流れだ。 */}
         <HomeStack.Screen

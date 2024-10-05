@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, FlatList, Dimensions } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
@@ -7,20 +7,79 @@ import { momentLogsAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 
-const features = [
-  {
-    icon: require('../../../assets/forApp/ghost.png'),
-    feature: 'Moments',
-    onPress: () => console.log('Moments'),
-  },
-  {
-    icon: require('../../../assets/forApp/film-roll.png'),
-    feature: 'Rolls',
-    onPress: () => console.log('Rolls'),
-  },
-];
+// 多分、componsnetのほうがいいかもな。。
+const tagOuterWidth = Dimensions.get('window').width / 4;
+const tagSquareWidth = tagOuterWidth * 0.7;
 
 export const Features = () => {
+  // iconはシンプルにcomponentをまんま入れ込んだほうがいいね。
+  const features = [
+    {
+      icon: (
+        <ExpoImage
+          style={{
+            width: 20,
+            aspectRatio: 1,
+            marginRight: 10,
+          }}
+          source={require('../../../assets/forApp/ghost.png')}
+          contentFit='cover'
+          tintColor={'white'}
+        />
+      ),
+      feature: 'Add',
+      action: () => console.log('Moments'),
+    },
+    {
+      icon: (
+        <ExpoImage
+          style={{
+            width: 20,
+            aspectRatio: 1,
+            marginRight: 10,
+          }}
+          source={require('../../../assets/forApp/ghost.png')}
+          contentFit='cover'
+          tintColor={'white'}
+        />
+      ),
+      feature: 'Moments',
+      action: () => console.log('Moments'),
+    },
+    {
+      icon: (
+        <ExpoImage
+          style={{
+            width: 20,
+            aspectRatio: 1,
+            marginRight: 10,
+          }}
+          source={require('../../../assets/forApp/film-roll.png')}
+          contentFit='cover'
+          tintColor={'white'}
+        />
+      ),
+      feature: 'Rolls',
+      action: () => console.log('Rolls'),
+    },
+    {
+      icon: (
+        <ExpoImage
+          style={{
+            width: 20,
+            aspectRatio: 1,
+            marginRight: 10,
+          }}
+          source={require('../../../assets/forApp/film-roll.png')}
+          contentFit='cover'
+          tintColor={'white'}
+        />
+      ),
+      feature: 'Invite',
+      action: () => console.log('Invite'),
+    },
+  ];
+
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
@@ -41,12 +100,63 @@ export const Features = () => {
     homeStackNavigation.navigate('MomentsStackNavigator');
   };
 
+  const renderItem = ({ item }: { item: (typeof features)[number] }) => {
+    return (
+      // <View style={{ width: tagOuterWidth, height: 110, alignItems: 'center' }}>
+      //   <TouchableOpacity
+      //     style={{
+      //       width: tagSquareWidth,
+      //       aspectRatio: 1,
+      //       borderRadius: 18,
+      //       backgroundColor: 'rgb(40,40,40)',
+      //       justifyContent: 'center',
+      //       alignItems: 'center',
+      //       marginBottom: 5,
+      //     }}
+      //     onPress={item.action}
+      //   >
+      //     {item.icon}
+      //   </TouchableOpacity>
+      //   <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
+      //     {item.feature}
+      //   </Text>
+      // </View>
+      <TouchableOpacity style={{ width: tagOuterWidth, alignItems: 'center' }} onPress={item.action}>
+        {item.icon}
+        <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
+          {item.feature}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      {/* <View style={{ paddingLeft: 15, paddingTop: 10 }}>
+      <FlatList horizontal data={features} scrollEnabled={false} renderItem={renderItem} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    paddingVertical: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopWidth: 1,
+    borderTopColor: 'rgb(70,70,70)',
+  },
+});
+
+{
+  /* <View style={{ paddingLeft: 15, paddingTop: 10 }}>
         <Text style={{ color: 'rgb(150,150,150)' }}>Features</Text>
-      </View> */}
-      <View style={{ flexDirection: 'column', paddingVertical: 10 }}>
+      </View> */
+}
+{
+  /* <View style={{ flexDirection: 'column', paddingVertical: 10 }}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
@@ -108,13 +218,5 @@ export const Features = () => {
           </View>
         </TouchableOpacity>
         <View style={{ width: '90%', backgroundColor: 'rgb(80,80,80)', height: 0.5, alignSelf: 'center' }}></View>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+      </View> */
+}

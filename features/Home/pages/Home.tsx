@@ -1,12 +1,12 @@
-import { useContext } from 'react';
-import { View, Linking, StyleSheet } from 'react-native';
+import { useContext, useEffect } from 'react';
+import { View, Linking, StyleSheet, Text } from 'react-native';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomSheet } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
-import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace, BottomTab } from '../components';
+import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace, BottomTab, SpacesHeader } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
@@ -34,6 +34,12 @@ export const Home = () => {
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
+
+  // useEffect(() => {
+  //   homeStackNavigation.setOptions({
+  //     headerLeft: () => <SpacesHeader />,
+  //   });
+  // }, [mySpaces]);
 
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
@@ -87,10 +93,10 @@ export const Home = () => {
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
           /> */}
           <CurrentSpace />
-          <BottomTab
+          {/* <BottomTab
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-          />
+          /> */}
         </View>
       )}
 
@@ -127,6 +133,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    paddingTop: 10,
+    // paddingTop: 10,
   },
 });

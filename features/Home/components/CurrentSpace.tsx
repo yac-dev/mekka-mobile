@@ -8,7 +8,7 @@ export const CurrentSpace = () => {
       {/* <Specs /> */}
       {/* <Divider /> */}
       {/* <ScrollView> */}
-      {/* <Features /> */}
+      <Features />
       <Tags />
       {/* </ScrollView> */}
     </View>

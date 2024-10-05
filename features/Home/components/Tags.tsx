@@ -10,6 +10,8 @@ import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil
 const tagOuterWidth = Dimensions.get('window').width / 4;
 const tagSquareWidth = tagOuterWidth * 0.7;
 
+//ここでFlatListのheaderでfeatureなりをやるのは設計面で見ても違和感ある。
+//配列で展開するほうがいいだろうな。。。
 export const Tags = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);

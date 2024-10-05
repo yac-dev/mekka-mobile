@@ -46,7 +46,7 @@ export const Header = () => {
         <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 20, marginBottom: 8 }}>
           {currentSpace.name}
         </Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.7}
           style={{
             paddingVertical: 5,
@@ -60,7 +60,7 @@ export const Header = () => {
         >
           <VectorIcon.MCI name='human-greeting-variant' size={15} color={'white'} style={{ marginRight: 10 }} />
           <Text style={{ color: 'white', fontSize: 13, textAlign: 'center' }}>Invite Friend</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
