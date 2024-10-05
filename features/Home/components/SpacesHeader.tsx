@@ -52,7 +52,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          marginHorizontal: 4,
+          marginHorizontal: 6,
           // borderRightWidth: isFocused ? 1 : 0,
           // borderRightColor: 'white',
         }}

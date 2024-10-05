@@ -18,7 +18,7 @@ export const Features = () => {
       icon: (
         <ExpoImage
           style={{
-            width: 20,
+            width: 18,
             aspectRatio: 1,
             marginRight: 10,
           }}
@@ -34,7 +34,7 @@ export const Features = () => {
       icon: (
         <ExpoImage
           style={{
-            width: 20,
+            width: 18,
             aspectRatio: 1,
             marginRight: 10,
           }}
@@ -50,7 +50,7 @@ export const Features = () => {
       icon: (
         <ExpoImage
           style={{
-            width: 20,
+            width: 18,
             aspectRatio: 1,
             marginRight: 10,
           }}
@@ -66,7 +66,7 @@ export const Features = () => {
       icon: (
         <ExpoImage
           style={{
-            width: 20,
+            width: 18,
             aspectRatio: 1,
             marginRight: 10,
           }}
