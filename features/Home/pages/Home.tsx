@@ -35,11 +35,21 @@ export const Home = () => {
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
 
-  // useEffect(() => {
-  //   homeStackNavigation.setOptions({
-  //     headerLeft: () => <SpacesHeader />,
-  //   });
-  // }, [mySpaces]);
+  useEffect(() => {
+    homeStackNavigation.setOptions({
+      header: () => <SpacesHeader />,
+      // headerLeft: () => <SpacesHeader />,
+      // headerRight: () => (
+      //   <AppButton.Icon
+      //     onButtonPress={() => console.log('test')}
+      //     customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+      //     hasShadow={false}
+      //   >
+      //     <VectorIcon.II name='settings-outline' size={18} color={Colors.white} />
+      //   </AppButton.Icon>
+      // ),
+    });
+  }, [mySpaces]);
 
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');

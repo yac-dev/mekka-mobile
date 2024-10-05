@@ -104,23 +104,18 @@ export const HomeStackNavigator: React.FC = (props) => {
         },
       })}
     >
+      {/* customのdrawerを入れないといけないな。。。 */}
       <HomeStack.Group>
         <HomeStack.Screen
           name='Home'
           component={Home}
           options={({ navigation }) => ({
             headerShown: true,
-            headerLeft: () => (
-              // <AppButton.Icon
-              //   onButtonPress={() => navigation.goBack()}
-              //   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-              //   hasShadow={false}
-              // >
-              //   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
-              // </AppButton.Icon>
-              <SpacesHeader />
-            ),
-            headerRight: () => <Text>test</Text>,
+            // headerStyle: {
+            //   backgroundColor: 'black',
+            //   borderWidth: 1,
+            //   borderBottomColor: 'white',
+            // },
           })}
         />
         <HomeStack.Screen

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
@@ -10,12 +10,9 @@ import { updateSpaceCheckedInDate } from '../../../query';
 import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 
-type BottomTabProps = {
-  openAddNewSpaceMenuBottomSheet: (index: number) => void;
-  openAuthMenuBottomSheet: (index: number) => void;
-};
+type BottomTabProps = {};
 
-export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBottomSheet, openAuthMenuBottomSheet }) => {
+export const SpacesHeader: React.FC<BottomTabProps> = ({}) => {
   const [mySpaces] = useRecoilState(mySpacesAtom);
   const [logsTable] = useRecoilState(logsTableAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -31,9 +28,9 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
     updateSpaceCheckedInMutation.mutate({ spaceId: space._id, userId: auth._id });
   };
 
-  const onAddNewSpacePress = () => {
-    openAddNewSpaceMenuBottomSheet(0);
-  };
+  // const onAddNewSpacePress = () => {
+  //   openAddNewSpaceMenuBottomSheet(0);
+  // };
 
   const renderItem = ({ item }: { item: SpaceType }) => {
     const isFocused = currentSpace._id === item._id;
@@ -52,7 +49,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          marginHorizontal: 6,
+          marginRight: 8,
           // borderRightWidth: isFocused ? 1 : 0,
           // borderRightColor: 'white',
         }}
@@ -61,7 +58,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
         <View style={{ flexDirection: 'column', alignItems: 'center' }}>
           <View
             style={{
-              width: 35,
+              width: 32,
               aspectRatio: 1,
               borderRadius: 22.5,
               borderColor: 'white',
@@ -77,8 +74,8 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
             {totalLogs ? (
               <View
                 style={{
-                  width: 24,
-                  height: 24,
+                  width: 20,
+                  height: 20,
                   borderRadius: 12,
                   backgroundColor: 'black',
                   position: 'absolute',
@@ -109,56 +106,70 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={mySpaces}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-        horizontal
-        contentContainerStyle={
-          {
-            // paddingHorizontal: 20,
+    <SafeAreaView style={{ backgroundColor: 'black' }}>
+      <View style={styles.container}>
+        <FlatList
+          data={mySpaces}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          horizontal
+          contentContainerStyle={{ paddingVertical: 4 }}
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={
+            <View
+              style={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 8,
+              }}
+            >
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={{
+                  width: 32,
+                  aspectRatio: 1,
+                  borderRadius: 25,
+                  backgroundColor: 'rgb(50,50,50)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                // onPress={onAddNewSpacePress}
+              >
+                <VectorIcon.MCI name='plus' color={Colors.white} size={20} />
+              </TouchableOpacity>
+            </View>
           }
-        }
-        showsHorizontalScrollIndicator={false}
-        // ListHeaderComponent={
-        //   <View
-        //     style={{
-        //       flexDirection: 'column',
-        //       alignItems: 'center',
-        //       justifyContent: 'center',
-        //     }}
-        //   >
-        //     <TouchableOpacity
-        //       activeOpacity={0.7}
-        //       style={{
-        //         width: 45,
-        //         aspectRatio: 1,
-        //         borderRadius: 25,
-        //         backgroundColor: 'rgb(50,50,50)',
-        //         justifyContent: 'center',
-        //         alignItems: 'center',
-        //       }}
-        //       onPress={onAddNewSpacePress}
-        //     >
-        //       <VectorIcon.MCI name='plus' color={Colors.white} size={25} />
-        //     </TouchableOpacity>
-        //   </View>
-        // }
-      />
-    </View>
+        />
+        <AppButton.Icon
+          onButtonPress={() => console.log('test')}
+          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.II name='settings-outline' size={18} color={Colors.white} />
+        </AppButton.Icon>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'black',
     // flex: 1,
     // position: 'absolute',
     // bottom: 0,
     // left: 0,
     // right: 0,
     // backgroundColor: 'rgb(40,40,40)',
+    paddingHorizontal: 10,
     paddingVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 0.3,
+    borderBottomColor: 'rgb(100,100,100)',
+
     // borderBottomWidth: 0.3,
     // borderBottomColor: 'white',
   },
