@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { Colors } from '../../../themes';
 import { primaryBackgroundColor } from '../../../themes/color';
 import { Ionicons } from '@expo/vector-icons';
-import { CreateNewSpaceStackNavigator, SpacesHeader } from '../..';
+import { CreateNewPostStackNavigator, CreateNewSpaceStackNavigator, SpacesHeader } from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 import { EnterPrivateSpace } from '../../EnterPrivateSpace/pages/EnterPrivateSpace';
@@ -71,6 +71,7 @@ export type HomeStackParams = {
   ViewPost: undefined;
   DiscoverStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
+  CreateNewPostStackNavigator: undefined;
   EnterPrivateSpace: undefined;
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;
@@ -201,6 +202,21 @@ export const HomeStackNavigator: React.FC = (props) => {
             headerTitle: '',
             headerStyle: {
               backgroundColor: primaryBackgroundColor,
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: Colors.white,
+            },
+          })}
+        />
+        <HomeStack.Screen
+          name='CreateNewPostStackNavigator'
+          component={CreateNewPostStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
             },
             headerTitleStyle: {
               fontWeight: 'bold',

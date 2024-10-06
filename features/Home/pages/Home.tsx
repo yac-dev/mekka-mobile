@@ -98,21 +98,23 @@ export const Home = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {!mySpaces?.length ? (
         <NoSpaces openAuthMenuBottomSheet={openAuthMenuBottomSheet} />
       ) : (
-        <View style={{ flexDirection: 'row', height: '100%' }}>
-          {/* <SideBar
-            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
-            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-          /> */}
-          <CurrentSpace />
-          {/* <BottomTab
-            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
-            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-          /> */}
-        </View>
+        // <View style={{ flexDirection: 'row', height: '100%' }}>
+        //   <SideBar
+        //     openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+        //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+        //   />
+        //   <CurrentSpace />
+
+        //   <BottomTab
+        //     openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+        //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+        //   />
+        // </View>
+        <CurrentSpace />
       )}
 
       <AppBottomSheet.Gorhom
@@ -140,7 +142,7 @@ export const Home = () => {
           onDiscoverPress={onDiscoverPress}
         />
       </AppBottomSheet.Gorhom>
-    </SafeAreaView>
+    </View>
   );
 };
 

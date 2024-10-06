@@ -27,7 +27,7 @@ export const Header = () => {
       style={{
         flexDirection: 'row',
         paddingHorizontal: 20,
-        paddingBottom: 20,
+        paddingBottom: 10,
         alignItems: 'center',
       }}
     >

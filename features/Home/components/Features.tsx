@@ -14,8 +14,10 @@ const tagOuterWidth = Dimensions.get('window').width / 4;
 const tagSquareWidth = tagOuterWidth * 0.7;
 
 export const Features = () => {
-  // iconはシンプルにcomponentをまんま入れ込んだほうがいいね。
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
+
   const features = [
     {
       icon: (
@@ -38,7 +40,7 @@ export const Features = () => {
       ),
       feature: 'Add',
       subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
-      action: () => console.log('Add photo'),
+      action: () => homeStackNavigation.navigate('CreateNewPostStackNavigator'),
     },
     // ここのpostを足さないといけない。
     {
@@ -76,9 +78,6 @@ export const Features = () => {
     },
   ];
   const tagOuterWidth = Dimensions.get('window').width / features.length;
-
-  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
   const onRollsPress = () => {
     Alert.alert('Not available now', 'The Rolls feature will be available in the next update.', [

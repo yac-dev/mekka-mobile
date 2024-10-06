@@ -155,12 +155,13 @@ export const Tags = () => {
         );
       })} */}
       <FlatList
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         numColumns={4}
+        scrollEnabled={false}
+        contentContainerStyle={{ paddingTop: 10 }}
         data={currentSpace.tags}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
-        ListHeaderComponent={<Header />}
       />
     </View>
   );
