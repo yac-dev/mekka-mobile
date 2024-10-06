@@ -37,6 +37,8 @@ export const Tags = () => {
   };
 
   const renderItem = ({ item }: { item: TagType }) => {
+    const isFocused = currentTag?._id === item._id;
+    const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][item._id];
     return (
       <View style={{ width: tagOuterWidth, height: 110, alignItems: 'center' }}>
         <TouchableOpacity
@@ -60,6 +62,23 @@ export const Tags = () => {
             // contentFit='cover'
             tintColor={'white'}
           />
+          {tagLogs ? (
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+                position: 'absolute',
+                top: -5,
+                right: -5,
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+            </View>
+          ) : null}
         </TouchableOpacity>
         <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
           {item.name}

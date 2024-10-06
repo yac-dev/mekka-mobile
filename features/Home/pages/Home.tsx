@@ -37,7 +37,12 @@ export const Home = () => {
 
   useEffect(() => {
     homeStackNavigation.setOptions({
-      header: () => <SpacesHeader />,
+      header: () => (
+        <SpacesHeader
+          openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+          openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+        />
+      ),
       // headerLeft: () => <SpacesHeader />,
       // headerRight: () => (
       //   <AppButton.Icon

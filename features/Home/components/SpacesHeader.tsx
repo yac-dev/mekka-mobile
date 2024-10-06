@@ -10,9 +10,12 @@ import { updateSpaceCheckedInDate } from '../../../query';
 import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 
-type BottomTabProps = {};
+type BottomTabProps = {
+  openAddNewSpaceMenuBottomSheet: (index: number) => void;
+  openAuthMenuBottomSheet: (index: number) => void;
+};
 
-export const SpacesHeader: React.FC<BottomTabProps> = ({}) => {
+export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBottomSheet, openAuthMenuBottomSheet }) => {
   const [mySpaces] = useRecoilState(mySpacesAtom);
   const [logsTable] = useRecoilState(logsTableAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -134,7 +137,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                // onPress={onAddNewSpacePress}
+                onPress={() => openAddNewSpaceMenuBottomSheet(0)}
               >
                 <VectorIcon.MCI name='plus' color={Colors.white} size={20} />
               </TouchableOpacity>
@@ -142,7 +145,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({}) => {
           }
         />
         <AppButton.Icon
-          onButtonPress={() => console.log('test')}
+          onButtonPress={() => openAuthMenuBottomSheet(0)}
           customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
           hasShadow={false}
         >
