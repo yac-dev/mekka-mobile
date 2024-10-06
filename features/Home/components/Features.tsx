@@ -38,8 +38,9 @@ export const Features = () => {
       ),
       feature: 'Add',
       subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
-      action: () => console.log('Moments'),
+      action: () => console.log('Add photo'),
     },
+    // ここのpostを足さないといけない。
     {
       icon: (
         <ExpoImage
@@ -55,7 +56,7 @@ export const Features = () => {
       ),
       feature: 'Moments',
       subtitle: Times.minutesToHoursAndMinutes(currentSpace.disappearAfter),
-      action: () => console.log('Moments'),
+      action: () => onMomentsPress(),
     },
     {
       icon: (
@@ -71,7 +72,7 @@ export const Features = () => {
         />
       ),
       feature: 'Rolls',
-      action: () => console.log('Rolls'),
+      action: () => onRollsPress(),
     },
   ];
   const tagOuterWidth = Dimensions.get('window').width / features.length;
@@ -95,6 +96,24 @@ export const Features = () => {
     homeStackNavigation.navigate('MomentsStackNavigator');
   };
 
+  // {momentLogs[currentSpace._id] ? (
+  //   <View
+  //     style={{
+  //       width: 16,
+  //       height: 16,
+  //       marginRight: 15,
+  //       borderRadius: 8,
+  //       justifyContent: 'center',
+  //       alignItems: 'center',
+  //       backgroundColor: 'red',
+  //     }}
+  //   >
+  //     <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
+  //   </View>
+  // ) : null}
+
+  // feature arrayを型付けしたい。
+
   const renderItem = ({ item }: { item: (typeof features)[number] }) => {
     return (
       // <View style={{ width: tagOuterWidth, height: 110, alignItems: 'center' }}>
@@ -116,7 +135,7 @@ export const Features = () => {
       //     {item.feature}
       //   </Text>
       // </View>
-      <TouchableOpacity style={{ width: tagOuterWidth }} onPress={item.action}>
+      <TouchableOpacity activeOpacity={0.7} style={{ width: tagOuterWidth }} onPress={item.action}>
         <View style={{ flexDirection: 'column', alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {item.icon}

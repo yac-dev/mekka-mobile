@@ -36,6 +36,7 @@ export const BottomTab: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBottomS
   };
 
   const renderItem = ({ item }: { item: SpaceType }) => {
+    // momentに関しては、log表示するようにしないとあかん。
     const isFocused = currentSpace._id === item._id;
     const momentLogsCount = momentLogs[item._id] || 0;
     const logs =

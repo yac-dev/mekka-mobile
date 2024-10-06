@@ -42,6 +42,7 @@ export const Tags = () => {
     return (
       <View style={{ width: tagOuterWidth, height: 110, alignItems: 'center' }}>
         <TouchableOpacity
+          activeOpacity={0.7}
           style={{
             width: tagSquareWidth,
             aspectRatio: 1,
