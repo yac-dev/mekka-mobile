@@ -6,6 +6,8 @@ import { HomeStackNavigatorProps } from '../navigations';
 import { momentLogsAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { VectorIcon } from '../../../Icons';
+import { Times } from '../../../utils';
 
 // 多分、componsnetのほうがいいかもな。。
 const tagOuterWidth = Dimensions.get('window').width / 4;
@@ -13,6 +15,7 @@ const tagSquareWidth = tagOuterWidth * 0.7;
 
 export const Features = () => {
   // iconはシンプルにcomponentをまんま入れ込んだほうがいいね。
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const features = [
     {
       icon: (
@@ -20,14 +23,21 @@ export const Features = () => {
           style={{
             width: 18,
             aspectRatio: 1,
-            marginRight: 10,
+            marginRight: 4,
           }}
-          source={require('../../../assets/forApp/ghost.png')}
+          source={
+            currentSpace.contentType === 'photo'
+              ? require('../../../assets/forApp/photo.png')
+              : currentSpace.contentType === 'video'
+              ? require('../../../assets/forApp/video.png')
+              : require('../../../assets/forApp/photo-video.png')
+          }
           contentFit='cover'
           tintColor={'white'}
         />
       ),
       feature: 'Add',
+      subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
       action: () => console.log('Moments'),
     },
     {
@@ -36,7 +46,7 @@ export const Features = () => {
           style={{
             width: 18,
             aspectRatio: 1,
-            marginRight: 10,
+            marginRight: 4,
           }}
           source={require('../../../assets/forApp/ghost.png')}
           contentFit='cover'
@@ -44,6 +54,7 @@ export const Features = () => {
         />
       ),
       feature: 'Moments',
+      subtitle: Times.minutesToHoursAndMinutes(currentSpace.disappearAfter),
       action: () => console.log('Moments'),
     },
     {
@@ -52,7 +63,7 @@ export const Features = () => {
           style={{
             width: 18,
             aspectRatio: 1,
-            marginRight: 10,
+            marginRight: 4,
           }}
           source={require('../../../assets/forApp/film-roll.png')}
           contentFit='cover'
@@ -62,25 +73,9 @@ export const Features = () => {
       feature: 'Rolls',
       action: () => console.log('Rolls'),
     },
-    {
-      icon: (
-        <ExpoImage
-          style={{
-            width: 18,
-            aspectRatio: 1,
-            marginRight: 10,
-          }}
-          source={require('../../../assets/forApp/film-roll.png')}
-          contentFit='cover'
-          tintColor={'white'}
-        />
-      ),
-      feature: 'Invite',
-      action: () => console.log('Invite'),
-    },
   ];
+  const tagOuterWidth = Dimensions.get('window').width / features.length;
 
-  const [currentSpace] = useRecoilState(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
@@ -121,11 +116,14 @@ export const Features = () => {
       //     {item.feature}
       //   </Text>
       // </View>
-      <TouchableOpacity style={{ width: tagOuterWidth, alignItems: 'center' }} onPress={item.action}>
-        {item.icon}
-        <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
-          {item.feature}
-        </Text>
+      <TouchableOpacity style={{ width: tagOuterWidth }} onPress={item.action}>
+        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {item.icon}
+            <Text style={{ color: 'white', fontSize: 12, fontWeight: '700' }}>{item.feature}</Text>
+          </View>
+          {item.subtitle && <Text style={{ color: 'rgb(100,100,100)', fontSize: 12 }}>{item.subtitle}</Text>}
+        </View>
       </TouchableOpacity>
     );
   };

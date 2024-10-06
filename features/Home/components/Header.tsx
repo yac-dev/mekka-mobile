@@ -32,7 +32,7 @@ export const Header = () => {
       }}
     >
       <TouchableOpacity
-        style={{ width: 60, height: 60, borderRadius: 40, marginRight: 20 }}
+        style={{ width: 70, height: 70, borderRadius: 40, marginRight: 20 }}
         onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
         activeOpacity={0.7}
       >

@@ -4,11 +4,11 @@ export namespace Times {
     const remainingMinutes = minutes % 60;
 
     if (hours === 0) {
-      return `${minutes} m`;
+      return `${minutes}m`;
     } else if (remainingMinutes === 0) {
-      return `${hours} h`;
+      return `${hours}h`;
     } else {
-      return `${hours} h ${remainingMinutes} m`;
+      return `${hours}h ${remainingMinutes}m`;
     }
   };
 }

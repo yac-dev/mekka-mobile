@@ -61,7 +61,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
         <View style={{ flexDirection: 'column', alignItems: 'center' }}>
           <View
             style={{
-              width: 32,
+              width: 28,
               aspectRatio: 1,
               borderRadius: 22.5,
               borderColor: 'white',
@@ -77,8 +77,8 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
             {totalLogs ? (
               <View
                 style={{
-                  width: 20,
-                  height: 20,
+                  width: 16,
+                  height: 16,
                   borderRadius: 12,
                   backgroundColor: 'black',
                   position: 'absolute',
@@ -90,15 +90,15 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
               >
                 <View
                   style={{
-                    width: 16,
-                    height: 16,
+                    width: 12,
+                    height: 12,
                     borderRadius: 8,
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: 'red',
                   }}
                 >
-                  <Text style={{ color: 'white', fontSize: 12 }}>{totalLogs}</Text>
+                  <Text style={{ color: 'white', fontSize: 10 }}>{totalLogs}</Text>
                 </View>
               </View>
             ) : null}
