@@ -3,8 +3,9 @@ import { TouchableOpacity } from 'react-native';
 import { Colors } from '../../../themes';
 import { primaryBackgroundColor } from '../../../themes/color';
 import { Ionicons } from '@expo/vector-icons';
-import { CreateNewSpaceStackNavigator } from '../..';
+import { CreateNewPostStackNavigator, CreateNewSpaceStackNavigator, SpacesHeader } from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Text } from 'react-native';
 import { EnterPrivateSpace } from '../../EnterPrivateSpace/pages/EnterPrivateSpace';
 import { SpaceInfoStackNavigator } from '../../SpaceInfo/navigations/SpaceInfoStackNavigator';
 import { EditProfileStackNavigator } from '../../EditAccount/navigations/EditProfileStackNavigator';
@@ -70,6 +71,7 @@ export type HomeStackParams = {
   ViewPost: undefined;
   DiscoverStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
+  CreateNewPostStackNavigator: undefined;
   EnterPrivateSpace: undefined;
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;
@@ -96,19 +98,33 @@ export const HomeStackNavigator: React.FC = (props) => {
   return (
     <HomeStack.Navigator
       screenOptions={({ navigation }) => ({
-        headerShown: false,
+        // headerShown: false,
         title: '',
         headerStyle: {
           backgroundColor: 'black',
         },
       })}
     >
+      {/* customのdrawerを入れないといけないな。。。 */}
       <HomeStack.Group>
-        <HomeStack.Screen name='Home' component={Home} options={({ navigation }) => ({})} />
+        <HomeStack.Screen
+          name='Home'
+          component={Home}
+          options={({ navigation }) => ({
+            headerShown: true,
+            // headerStyle: {
+            //   backgroundColor: 'black',
+            //   borderWidth: 1,
+            //   borderBottomColor: 'white',
+            // },
+          })}
+        />
         <HomeStack.Screen
           name='SpaceStackNavigator'
           component={SpaceStackNavigator}
-          options={({ navigation }) => ({})}
+          options={({ navigation }) => ({
+            headerShown: false,
+          })}
         />
         {/* ここに、spaceRootStackを入れる感じか。home component内で、SpaceRootStackへnavigationするようにしたいよね。そういう流れだ。 */}
         <HomeStack.Screen
@@ -186,6 +202,21 @@ export const HomeStackNavigator: React.FC = (props) => {
             headerTitle: '',
             headerStyle: {
               backgroundColor: primaryBackgroundColor,
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: Colors.white,
+            },
+          })}
+        />
+        <HomeStack.Screen
+          name='CreateNewPostStackNavigator'
+          component={CreateNewPostStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
             },
             headerTitleStyle: {
               fontWeight: 'bold',

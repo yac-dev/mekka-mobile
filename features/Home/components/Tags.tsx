@@ -1,12 +1,18 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { TagType } from '../../../types';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+import { Header } from './Header';
 
+const tagOuterWidth = Dimensions.get('window').width / 4;
+const tagSquareWidth = tagOuterWidth * 0.63;
+
+//ここでFlatListのheaderでfeatureなりをやるのは設計面で見ても違和感ある。
+//配列で展開するほうがいいだろうな。。。
 export const Tags = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);
@@ -30,12 +36,64 @@ export const Tags = () => {
     });
   };
 
+  const renderItem = ({ item }: { item: TagType }) => {
+    const isFocused = currentTag?._id === item._id;
+    const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][item._id];
+    return (
+      <View style={{ width: tagOuterWidth, height: 110, alignItems: 'center' }}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            width: tagSquareWidth,
+            aspectRatio: 1,
+            borderRadius: 18,
+            backgroundColor: 'rgb(40,40,40)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 5,
+          }}
+          onPress={() => onTagPress(item)}
+        >
+          <ExpoImage
+            style={{
+              width: tagSquareWidth * 0.45,
+              aspectRatio: 1,
+            }}
+            source={{ uri: item.icon?.url }}
+            // contentFit='cover'
+            tintColor={'white'}
+          />
+          {tagLogs ? (
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+                position: 'absolute',
+                top: -5,
+                right: -5,
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+            </View>
+          ) : null}
+        </TouchableOpacity>
+        <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
+          {item.name}
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{ paddingLeft: 15, paddingTop: 10 }}>
+      {/* <View style={{ paddingLeft: 15, paddingTop: 10 }}>
         <Text style={{ color: 'rgb(150,150,150)', marginBottom: 5 }}>Tags</Text>
-      </View>
-      {currentSpace.tags.map((tag, index) => {
+      </View> */}
+      {/* {currentSpace.tags.map((tag, index) => {
         const isFocused = currentTag?._id === tag._id;
         const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][tag._id];
         return (
@@ -95,7 +153,16 @@ export const Tags = () => {
             </View>
           </TouchableOpacity>
         );
-      })}
+      })} */}
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        numColumns={4}
+        scrollEnabled={false}
+        contentContainerStyle={{ paddingTop: 10 }}
+        data={currentSpace.tags}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+      />
     </View>
   );
 };

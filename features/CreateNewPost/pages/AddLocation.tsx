@@ -14,6 +14,8 @@ import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
 
+//ちょうど、post機能の再設計しようとも思っててね。。。治そうかこの際。
+// postした時のfunction を渡してくるようにしたほうがいいな。
 const AddLocation = () => {
   const { formData, addLocation, removeLocation, setFormData } = useContext(CreateNewPostContext);
   const [currentSpace] = useRecoilState(currentSpaceAtom);

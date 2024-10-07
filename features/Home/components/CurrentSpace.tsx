@@ -3,14 +3,16 @@ import { Header, Specs, Features, Tags } from '.';
 
 export const CurrentSpace = () => {
   return (
-    <View style={styles.container}>
-      <Header />
-      <Specs />
-      <Divider />
-      <ScrollView>
-        <Features />
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: 15 }}>
+        <Header />
+        {/* <Specs /> */}
+        {/* <Divider /> */}
+        {/* <ScrollView> */}
         <Tags />
+        {/* </ScrollView> */}
       </ScrollView>
+      <Features />
     </View>
   );
 };
@@ -21,7 +23,8 @@ const Divider = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 9,
+    // flex: 9,
+    flex: 1,
   },
   divider: {
     width: '90%',

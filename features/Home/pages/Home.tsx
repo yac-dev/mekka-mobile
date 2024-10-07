@@ -1,12 +1,12 @@
-import { useContext } from 'react';
-import { View, Linking, StyleSheet } from 'react-native';
+import { useContext, useEffect } from 'react';
+import { View, Linking, StyleSheet, Text } from 'react-native';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomSheet } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
-import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace } from '../components';
+import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace, BottomTab, SpacesHeader } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
@@ -34,6 +34,27 @@ export const Home = () => {
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
   } = useBottomSheet();
+
+  useEffect(() => {
+    homeStackNavigation.setOptions({
+      header: () => (
+        <SpacesHeader
+          openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+          openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+        />
+      ),
+      // headerLeft: () => <SpacesHeader />,
+      // headerRight: () => (
+      //   <AppButton.Icon
+      //     onButtonPress={() => console.log('test')}
+      //     customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+      //     hasShadow={false}
+      //   >
+      //     <VectorIcon.II name='settings-outline' size={18} color={Colors.white} />
+      //   </AppButton.Icon>
+      // ),
+    });
+  }, [mySpaces]);
 
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
@@ -77,17 +98,23 @@ export const Home = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {!mySpaces?.length ? (
         <NoSpaces openAuthMenuBottomSheet={openAuthMenuBottomSheet} />
       ) : (
-        <View style={{ flexDirection: 'row', height: '100%' }}>
-          <SideBar
-            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
-            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-          />
-          <CurrentSpace />
-        </View>
+        // <View style={{ flexDirection: 'row', height: '100%' }}>
+        //   <SideBar
+        //     openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+        //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+        //   />
+        //   <CurrentSpace />
+
+        //   <BottomTab
+        //     openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+        //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+        //   />
+        // </View>
+        <CurrentSpace />
       )}
 
       <AppBottomSheet.Gorhom
@@ -115,7 +142,7 @@ export const Home = () => {
           onDiscoverPress={onDiscoverPress}
         />
       </AppBottomSheet.Gorhom>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -123,6 +150,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    paddingTop: 10,
+    // paddingTop: 10,
   },
 });

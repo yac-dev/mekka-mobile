@@ -6,3 +6,5 @@ export * from './Specs';
 export * from './Features';
 export * from './Tags';
 export * from './SideBar';
+export * from './BottomTab';
+export * from './SpacesHeader';
