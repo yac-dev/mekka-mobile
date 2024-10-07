@@ -19,29 +19,29 @@ export const Features = () => {
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
   const features = [
-    // {
-    //   icon: (
-    //     <ExpoImage
-    //       style={{
-    //         width: 18,
-    //         aspectRatio: 1,
-    //         marginRight: 4,
-    //       }}
-    //       source={
-    //         currentSpace.contentType === 'photo'
-    //           ? require('../../../assets/forApp/photo.png')
-    //           : currentSpace.contentType === 'video'
-    //           ? require('../../../assets/forApp/video.png')
-    //           : require('../../../assets/forApp/photo-video.png')
-    //       }
-    //       contentFit='cover'
-    //       tintColor={'white'}
-    //     />
-    //   ),
-    //   feature: 'Add',
-    //   subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
-    //   action: () => homeStackNavigation.navigate('CreateNewPostStackNavigator'),
-    // },
+    {
+      icon: (
+        <ExpoImage
+          style={{
+            width: 18,
+            aspectRatio: 1,
+            marginRight: 4,
+          }}
+          source={
+            currentSpace.contentType === 'photo'
+              ? require('../../../assets/forApp/photo.png')
+              : currentSpace.contentType === 'video'
+              ? require('../../../assets/forApp/video.png')
+              : require('../../../assets/forApp/photo-video.png')
+          }
+          contentFit='cover'
+          tintColor={'white'}
+        />
+      ),
+      feature: 'Add',
+      subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
+      action: () => homeStackNavigation.navigate('CreateNewPostStackNavigator'),
+    },
     // ここのpostを足さないといけない。
     {
       icon: (
