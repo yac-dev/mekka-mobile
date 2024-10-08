@@ -6,13 +6,13 @@ export const CurrentSpace = () => {
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: 15 }}>
         <Header />
+        <Features />
         {/* <Specs /> */}
         {/* <Divider /> */}
         {/* <ScrollView> */}
         <Tags />
         {/* </ScrollView> */}
       </ScrollView>
-      <Features />
     </View>
   );
 };
