@@ -36,15 +36,16 @@ export const Header = () => {
   };
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: 20,
-          paddingBottom: 10,
-          alignItems: 'center',
-        }}
-      >
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+        paddingBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity
           style={{ width: 70, height: 70, borderRadius: 40, marginRight: 20 }}
           onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
@@ -56,19 +57,20 @@ export const Header = () => {
             contentFit='cover'
           />
         </TouchableOpacity>
-        <View style={{ flexDirection: 'column' }}>
-          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23, marginBottom: 5 }}>
-            {currentSpace.name}
-          </Text>
-          <TouchableOpacity
-            onPress={handleInvite}
-            style={{ backgroundColor: 'rgb(70,70,70)', padding: 5, borderRadius: 80, width: 60 }}
-          >
-            <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>Invite</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
       </View>
-      {/* <View style={{ marginRight: 20 }}>
+      <TouchableOpacity
+        onPress={handleInvite}
+        style={{ backgroundColor: 'rgb(70,70,70)', padding: 5, borderRadius: 80, width: 60 }}
+      >
+        <Text style={{ color: 'white', fontSize: 15, textAlign: 'center', fontWeight: 'bold' }}>Invite</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+{
+  /* <View style={{ marginRight: 20 }}>
         <FlatList
           numColumns={2}
           scrollEnabled={false}
@@ -104,7 +106,5 @@ export const Header = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item.spec}
         />
-      </View> */}
-    </View>
-  );
-};
+      </View> */
+}
