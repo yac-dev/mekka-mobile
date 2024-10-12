@@ -40,24 +40,15 @@ export const Header = () => {
       style={{
         flexDirection: 'row',
         paddingHorizontal: 20,
-        paddingBottom: 15,
+        paddingBottom: 20,
         alignItems: 'center',
         justifyContent: 'space-between',
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity
-          style={{ width: 70, height: 70, borderRadius: 40, marginRight: 20 }}
-          onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-          activeOpacity={0.7}
-        >
-          <ExpoImage
-            style={{ width: '100%', height: '100%', borderRadius: 40 }}
-            source={{ uri: currentSpace.icon }}
-            contentFit='cover'
-          />
+        <TouchableOpacity onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')} activeOpacity={0.7}>
+          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
         </TouchableOpacity>
-        <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
       </View>
       <TouchableOpacity
         onPress={handleInvite}

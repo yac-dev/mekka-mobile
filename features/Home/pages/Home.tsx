@@ -67,6 +67,8 @@ export const Home = () => {
     });
   }, [mySpaces]);
 
+  //あれだよな。。。シンプルに。post押した後のnavigationだけ変えればいいんだよな。結局今は、、、、recoil使ったりで割と便利ではあるしね。
+  // navigatonのものだけfunction をpassして実行するようにするか。
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
     // ここでauthに関してもdefaultに戻さんといかんし、

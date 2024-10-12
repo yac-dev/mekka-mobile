@@ -24,12 +24,16 @@ export type ViewPostStackNavigatorParams = {
 
 export type CreateNewPostStackParams = {
   SelectPostType: undefined;
-  NormalPost: undefined;
+  NormalPost?: {
+    onPostPress: () => void;
+  };
   AddTags?: {
     createdTag: CreatedTagType;
   };
   AddLocation: undefined;
-  MomentPost: undefined;
+  MomentPost?: {
+    onPostPress: () => void;
+  };
   CreateNewTag: undefined;
 };
 
