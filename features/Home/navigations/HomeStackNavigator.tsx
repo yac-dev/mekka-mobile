@@ -3,7 +3,12 @@ import { TouchableOpacity } from 'react-native';
 import { Colors } from '../../../themes';
 import { primaryBackgroundColor } from '../../../themes/color';
 import { Ionicons } from '@expo/vector-icons';
-import { CreateNewPostStackNavigator, CreateNewSpaceStackNavigator, SpacesHeader } from '../..';
+import {
+  CreateNewPostStackNavigator,
+  CreateNewPostStackParams,
+  CreateNewSpaceStackNavigator,
+  SpacesHeader,
+} from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 import { EnterPrivateSpace } from '../../EnterPrivateSpace/pages/EnterPrivateSpace';
@@ -71,7 +76,7 @@ export type HomeStackParams = {
   ViewPost: undefined;
   DiscoverStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
-  CreateNewPostStackNavigator: undefined;
+  CreateNewPostStackNavigator: NavigatorScreenParams<CreateNewPostStackParams>;
   EnterPrivateSpace: undefined;
   SpaceDetailStackNavigator: undefined;
   Signup: undefined;

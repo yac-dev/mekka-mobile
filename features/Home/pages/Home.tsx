@@ -110,12 +110,16 @@ export const Home = () => {
 
   const onAddNewPostPress = () => {
     closeAddNewPostMenuBottomSheet();
-    homeStackNavigation.navigate('CreateNewPostStackNavigator');
+    homeStackNavigation.navigate('CreateNewPostStackNavigator', {
+      screen: 'NormalPost',
+    });
   };
 
   const onAddNewMomentPress = () => {
     closeAddNewPostMenuBottomSheet();
-    homeStackNavigation.navigate('CreateNewPostStackNavigator');
+    homeStackNavigation.navigate('CreateNewPostStackNavigator', {
+      screen: 'MomentPost',
+    });
   };
 
   return (
