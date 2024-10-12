@@ -9,11 +9,13 @@ import { currentSpaceAtom } from '../../../recoil';
 import { Times } from '../../../utils';
 
 type AddNewPostMenuProps = {
-  onCreateNewPostPress: () => void;
-  onEnterPrivateKeyPress: () => void;
+  onAddNewPostPress: () => void;
+  onAddNewMomentPress: () => void;
 };
 
-export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onCreateNewPostPress, onEnterPrivateKeyPress }) => {
+// create new post stackへのnavigattionと、create new momentへのnavigationだな。ただ、ここも一気にやりたくはないな。。。
+// どっかで区切りたい。
+export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPress, onAddNewMomentPress }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   return (
@@ -21,7 +23,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onCreateNewPostP
       <AppButton.Cell
         title={'New Post'}
         subTitle={currentSpace.videoLength ? `${currentSpace.videoLength}s` : ''}
-        onButtonPress={onCreateNewPostPress}
+        onButtonPress={onAddNewPostPress}
         customStyle={{ marginBottom: 10 }}
       >
         <ExpoImage
@@ -44,7 +46,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onCreateNewPostP
       <AppButton.Cell
         title='New Moment'
         subTitle={Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}
-        onButtonPress={onEnterPrivateKeyPress}
+        onButtonPress={onAddNewMomentPress}
         customStyle={{ marginBottom: 10 }}
       >
         <ExpoImage

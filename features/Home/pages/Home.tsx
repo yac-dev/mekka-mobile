@@ -108,8 +108,14 @@ export const Home = () => {
     homeStackNavigation.navigate('DiscoverStackNavigator');
   };
 
-  const onCreateNewPostPress = () => {
-    openAddNewPostMenuBottomSheet(0);
+  const onAddNewPostPress = () => {
+    closeAddNewPostMenuBottomSheet();
+    homeStackNavigation.navigate('CreateNewPostStackNavigator');
+  };
+
+  const onAddNewMomentPress = () => {
+    closeAddNewPostMenuBottomSheet();
+    homeStackNavigation.navigate('CreateNewPostStackNavigator');
   };
 
   return (
@@ -129,16 +135,16 @@ export const Home = () => {
         //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         //   />
         // </View>
-        <CurrentSpace onCreateNewPostPress={onCreateNewPostPress} />
+        <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
       )}
 
       <AppBottomSheet.Gorhom
         ref={addNewPostMenuBottomSheetRef}
-        snapPoints={['50%']}
+        snapPoints={['40%']}
         title='Something New?'
         onCloseButtonClose={closeAddNewPostMenuBottomSheet}
       >
-        <AddNewPostMenu onCreateNewPostPress={onCreateNewPostPress} onEnterPrivateKeyPress={onEnterPrivateKeyPress} />
+        <AddNewPostMenu onAddNewPostPress={onAddNewPostPress} onAddNewMomentPress={onAddNewMomentPress} />
       </AppBottomSheet.Gorhom>
 
       <AppBottomSheet.Gorhom

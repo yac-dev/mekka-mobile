@@ -7,10 +7,10 @@ import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 
 type CurrentSpaceProps = {
-  onCreateNewPostPress: () => void;
+  openAddNewPostMenuBottomSheet: (index: number) => void;
 };
 
-export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ onCreateNewPostPress }) => {
+export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBottomSheet }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   return (
     <View style={{ flex: 1 }}>
@@ -26,7 +26,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ onCreateNewPostPress
       <TouchableOpacity
         style={{ position: 'absolute', bottom: 20, right: 20 }}
         activeOpacity={0.7}
-        onPress={onCreateNewPostPress}
+        onPress={() => openAddNewPostMenuBottomSheet(0)}
       >
         <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 48, height: 48, borderRadius: 30 }} />
         <AddIcon />
