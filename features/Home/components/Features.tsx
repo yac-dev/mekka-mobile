@@ -21,22 +21,22 @@ export const Features = () => {
   const features = [
     // {
     //   icon: (
-    //     <ExpoImage
-    //       style={{
-    //         width: tagSquareWidth * 0.45,
-    //         aspectRatio: 1,
-    //         marginRight: 4,
-    //       }}
-    //       source={
-    //         currentSpace.contentType === 'photo'
-    //           ? require('../../../assets/forApp/photo.png')
-    //           : currentSpace.contentType === 'video'
-    //           ? require('../../../assets/forApp/video.png')
-    //           : require('../../../assets/forApp/photo-video.png')
-    //       }
-    //       contentFit='cover'
-    //       tintColor={'white'}
-    //     />
+    // <ExpoImage
+    //   style={{
+    //     width: tagSquareWidth * 0.45,
+    //     aspectRatio: 1,
+    //     marginRight: 4,
+    //   }}
+    //   source={
+    //     currentSpace.contentType === 'photo'
+    //       ? require('../../../assets/forApp/photo.png')
+    //       : currentSpace.contentType === 'video'
+    //       ? require('../../../assets/forApp/video.png')
+    //       : require('../../../assets/forApp/photo-video.png')
+    //   }
+    //   contentFit='cover'
+    //   tintColor={'white'}
+    // />
     //   ),
     //   feature: 'New Post',
     //   subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,

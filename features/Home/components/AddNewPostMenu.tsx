@@ -3,6 +3,10 @@ import { View, Text } from 'react-native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
+import { Image as ExpoImage } from 'expo-image';
+import { useRecoilState } from 'recoil';
+import { currentSpaceAtom } from '../../../recoil';
+import { Times } from '../../../utils';
 
 type AddNewPostMenuProps = {
   onCreateNewPostPress: () => void;
@@ -10,23 +14,49 @@ type AddNewPostMenuProps = {
 };
 
 export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onCreateNewPostPress, onEnterPrivateKeyPress }) => {
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
+
   return (
     <View style={{ flexDirection: 'column' }}>
       <AppButton.Cell
-        title='Add New Post'
-        subTitle='Open your own space from here'
+        title={'New Post'}
+        subTitle={currentSpace.videoLength ? `${currentSpace.videoLength}s` : ''}
         onButtonPress={onCreateNewPostPress}
         customStyle={{ marginBottom: 10 }}
       >
-        <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={20} style={{ marginRight: 20 }} />
+        <ExpoImage
+          style={{
+            width: 20,
+            aspectRatio: 1,
+            marginRight: 20,
+          }}
+          source={
+            currentSpace.contentType === 'photo'
+              ? require('../../../assets/forApp/photo.png')
+              : currentSpace.contentType === 'video'
+              ? require('../../../assets/forApp/video.png')
+              : require('../../../assets/forApp/photo-video.png')
+          }
+          contentFit='cover'
+          tintColor={'white'}
+        />
       </AppButton.Cell>
       <AppButton.Cell
-        title='Add New Moment'
-        subTitle='Got invitation keys?'
+        title='New Moment'
+        subTitle={Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}
         onButtonPress={onEnterPrivateKeyPress}
         customStyle={{ marginBottom: 10 }}
       >
-        <VectorIcon.II name='key' color={Colors.white} size={20} style={{ marginRight: 20 }} />
+        <ExpoImage
+          style={{
+            width: 20,
+            aspectRatio: 1,
+            marginRight: 20,
+          }}
+          source={require('../../../assets/forApp/ghost.png')}
+          contentFit='cover'
+          tintColor={'white'}
+        />
       </AppButton.Cell>
     </View>
   );

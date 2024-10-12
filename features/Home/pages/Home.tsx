@@ -109,8 +109,7 @@ export const Home = () => {
   };
 
   const onCreateNewPostPress = () => {
-    closeAddNewPostMenuBottomSheet();
-    homeStackNavigation.navigate('CreateNewPostStackNavigator');
+    openAddNewPostMenuBottomSheet(0);
   };
 
   return (
@@ -130,13 +129,13 @@ export const Home = () => {
         //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         //   />
         // </View>
-        <CurrentSpace />
+        <CurrentSpace onCreateNewPostPress={onCreateNewPostPress} />
       )}
 
       <AppBottomSheet.Gorhom
         ref={addNewPostMenuBottomSheetRef}
         snapPoints={['50%']}
-        title='Add New Post'
+        title='Something New?'
         onCloseButtonClose={closeAddNewPostMenuBottomSheet}
       >
         <AddNewPostMenu onCreateNewPostPress={onCreateNewPostPress} onEnterPrivateKeyPress={onEnterPrivateKeyPress} />

@@ -6,7 +6,11 @@ import { currentSpaceAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 
-export const CurrentSpace = () => {
+type CurrentSpaceProps = {
+  onCreateNewPostPress: () => void;
+};
+
+export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ onCreateNewPostPress }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   return (
     <View style={{ flex: 1 }}>
@@ -19,7 +23,11 @@ export const CurrentSpace = () => {
         <Tags />
         {/* </ScrollView> */}
       </ScrollView>
-      <TouchableOpacity style={{ position: 'absolute', bottom: 20, right: 20 }} activeOpacity={0.7} onPress={() => {}}>
+      <TouchableOpacity
+        style={{ position: 'absolute', bottom: 20, right: 20 }}
+        activeOpacity={0.7}
+        onPress={onCreateNewPostPress}
+      >
         <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 48, height: 48, borderRadius: 30 }} />
         <AddIcon />
       </TouchableOpacity>
