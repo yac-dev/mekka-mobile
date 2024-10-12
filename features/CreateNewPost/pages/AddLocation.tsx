@@ -26,7 +26,9 @@ const AddLocation = () => {
   const { requestCreatePost } = useCreatePostResult(currentSpace);
 
   const onPostPress = async () => {
-    spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
+    // spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
+    homeStackNavigation.navigate('Home');
+
     // ここの段階でbufferContentsたちを圧縮したい。
     // const bufferContentsBeforeCompressor = formData.bufferContents.value;
     // const bufferContentsAfterCompressor = [];
@@ -56,6 +58,7 @@ const AddLocation = () => {
     //     bufferContentsAfterCompressor.push(compressedObject);
     //   }
     // }
+
     const compressContent = async (content: BufferContentType) => {
       const { type, uri } = content;
       if (type === 'image/jpg') {
