@@ -8,3 +8,4 @@ export * from './Tags';
 export * from './SideBar';
 export * from './BottomTab';
 export * from './SpacesHeader';
+export * from './AddNewPostMenu';

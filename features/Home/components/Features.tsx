@@ -19,29 +19,29 @@ export const Features = () => {
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
   const features = [
-    {
-      icon: (
-        <ExpoImage
-          style={{
-            width: tagSquareWidth * 0.45,
-            aspectRatio: 1,
-            marginRight: 4,
-          }}
-          source={
-            currentSpace.contentType === 'photo'
-              ? require('../../../assets/forApp/photo.png')
-              : currentSpace.contentType === 'video'
-              ? require('../../../assets/forApp/video.png')
-              : require('../../../assets/forApp/photo-video.png')
-          }
-          contentFit='cover'
-          tintColor={'white'}
-        />
-      ),
-      feature: 'New Post',
-      subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
-      action: () => homeStackNavigation.navigate('CreateNewPostStackNavigator'),
-    },
+    // {
+    //   icon: (
+    //     <ExpoImage
+    //       style={{
+    //         width: tagSquareWidth * 0.45,
+    //         aspectRatio: 1,
+    //         marginRight: 4,
+    //       }}
+    //       source={
+    //         currentSpace.contentType === 'photo'
+    //           ? require('../../../assets/forApp/photo.png')
+    //           : currentSpace.contentType === 'video'
+    //           ? require('../../../assets/forApp/video.png')
+    //           : require('../../../assets/forApp/photo-video.png')
+    //       }
+    //       contentFit='cover'
+    //       tintColor={'white'}
+    //     />
+    //   ),
+    //   feature: 'New Post',
+    //   subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
+    //   action: () => homeStackNavigation.navigate('CreateNewPostStackNavigator'),
+    // },
     // ここのpostを足さないといけない。
     {
       icon: (
@@ -74,7 +74,8 @@ export const Features = () => {
         </View>
       ),
       feature: 'Moments',
-      subtitle: Times.minutesToHoursAndMinutes(currentSpace.disappearAfter),
+      // subtitle: Times.minutesToHoursAndMinutes(currentSpace.disappearAfter),
+      subtitle: '',
       action: () => onMomentsPress(),
     },
     {
@@ -132,7 +133,7 @@ export const Features = () => {
 
   const renderItem = ({ item }: { item: (typeof features)[number] }) => {
     return (
-      <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center' }}>
+      <View style={{ width: tagOuterWidth, height: 90, alignItems: 'center' }}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{

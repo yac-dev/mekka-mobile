@@ -40,7 +40,7 @@ export const Header = () => {
       style={{
         flexDirection: 'row',
         paddingHorizontal: 20,
-        paddingBottom: 10,
+        paddingBottom: 15,
         alignItems: 'center',
         justifyContent: 'space-between',
       }}

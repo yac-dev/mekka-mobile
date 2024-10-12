@@ -6,7 +6,15 @@ import { useBottomSheet } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
-import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace, BottomTab, SpacesHeader } from '../components';
+import {
+  AuthMenu,
+  AddNewSpaceMenu,
+  SideBar,
+  CurrentSpace,
+  BottomTab,
+  SpacesHeader,
+  AddNewPostMenu,
+} from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
@@ -33,6 +41,9 @@ export const Home = () => {
     addNewSpaceMenuBottomSheetRef,
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
+    addNewPostMenuBottomSheetRef,
+    openAddNewPostMenuBottomSheet,
+    closeAddNewPostMenuBottomSheet,
   } = useBottomSheet();
 
   useEffect(() => {
@@ -97,6 +108,11 @@ export const Home = () => {
     homeStackNavigation.navigate('DiscoverStackNavigator');
   };
 
+  const onCreateNewPostPress = () => {
+    closeAddNewPostMenuBottomSheet();
+    homeStackNavigation.navigate('CreateNewPostStackNavigator');
+  };
+
   return (
     <View style={styles.container}>
       {!mySpaces?.length ? (
@@ -116,6 +132,15 @@ export const Home = () => {
         // </View>
         <CurrentSpace />
       )}
+
+      <AppBottomSheet.Gorhom
+        ref={addNewPostMenuBottomSheetRef}
+        snapPoints={['50%']}
+        title='Add New Post'
+        onCloseButtonClose={closeAddNewPostMenuBottomSheet}
+      >
+        <AddNewPostMenu onCreateNewPostPress={onCreateNewPostPress} onEnterPrivateKeyPress={onEnterPrivateKeyPress} />
+      </AppBottomSheet.Gorhom>
 
       <AppBottomSheet.Gorhom
         ref={authMenuBottomSheetRef}
