@@ -19,10 +19,11 @@ import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNaviga
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { Image as ExpoImage } from 'expo-image';
 
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
-const NormalPost = () => {
+export const NormalPost = () => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const {
     formData,
@@ -47,17 +48,24 @@ const NormalPost = () => {
         >
           <Text
             style={{
-              color: formData.contents.isValidated && formData.caption.isValidated ? 'white' : 'rgb(100,100,100)',
+              color:
+                formData.contents.isValidated && formData.caption.isValidated && formData.addedTagsTable.isValidated
+                  ? 'white'
+                  : 'rgb(100,100,100)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
           >
-            Next
+            Submit
           </Text>
         </TouchableOpacity>
       ),
     });
-  }, [formData.contents, formData.caption]);
+  }, [formData.contents, formData.caption, formData.addedTagsTable.isValidated]);
+
+  console.log('tags ->', formData.addedTagsTable);
+
+  // sumbitのvalidationを書かないといかんな。
 
   const renderContents = () => {
     if (formData.bufferContents.value.length) {
@@ -124,8 +132,20 @@ const NormalPost = () => {
     }
   }, []);
 
+  const renderTagTexts = () => {
+    const list = Object.values(formData.addedTagsTable.value).map((tag, index) => {
+      return (
+        <Text key={index} style={{ color: 'white' }}>
+          {tag.name}
+        </Text>
+      );
+    });
+
+    return <View style={{ flexDirection: 'row', marginRight: 5, width: 100 }}>{list}</View>;
+  };
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'black' }} automaticallyAdjustKeyboardInsets={true}>
+    <ScrollView style={{ flex: 1, backgroundColor: 'black', padding: 10 }} automaticallyAdjustKeyboardInsets={true}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
           <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
@@ -140,7 +160,7 @@ const NormalPost = () => {
             >
               {formData.postType.value === 'normal' ? 'New Post' : 'Moment Post'}
             </Text>
-            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+            {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
               Please select {renderContentType()}.
             </Text>
             {formData.postType.value === 'moment' ? (
@@ -150,7 +170,7 @@ const NormalPost = () => {
                   {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
                 </Text>
               </Text>
-            ) : null}
+            ) : null} */}
           </View>
           {formData.contents.value.length === 0 && (
             <TouchableOpacity
@@ -191,9 +211,62 @@ const NormalPost = () => {
           />
         </View>
       </TouchableWithoutFeedback>
+      <MenuCell
+        onCellPress={() => createNewPostStackNavigation.navigate('AddTags')}
+        icon={<VectorIcon.OI name='hash' size={20} color='white' style={{ marginRight: 10 }} />}
+        title='Tags'
+        value={renderTagTexts()}
+      />
+      <MenuCell
+        onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
+        icon={<VectorIcon.II name='location-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
+        title='Location (optional)'
+        value={''}
+      />
     </ScrollView>
     // </KeyboardAvoidingView>
   );
 };
 
-export default NormalPost;
+type MenuCellProp = {
+  onCellPress: () => void;
+  icon: React.ReactNode;
+  title: string;
+  value: React.ReactNode;
+  requirementText?: string;
+};
+
+export const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, requirementText }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+      }}
+      onPress={onCellPress}
+      activeOpacity={0.8}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {icon}
+        <View>
+          <Text style={{ color: 'white', fontSize: 17, marginBottom: requirementText !== undefined ? 0 : 4 }}>
+            {title}
+          </Text>
+          {requirementText !== undefined && (
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>{requirementText}</Text>
+          )}
+        </View>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text numberOfLines={1} style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right' }}>
+          {value}
+        </Text>
+        <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+      </View>
+    </TouchableOpacity>
+  );
+};

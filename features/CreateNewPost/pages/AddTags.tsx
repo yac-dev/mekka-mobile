@@ -36,28 +36,6 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
     }
   }, [route?.params?.createdTag]);
 
-  useEffect(() => {
-    createNewPostStackNavigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => createNewPostStackNavigation.navigate('AddLocation')}
-          disabled={formData.addedTagsTable.isValidated ? false : true}
-        >
-          <Text
-            style={{
-              color: formData.addedTagsTable.isValidated ? 'white' : 'rgb(100,100,100)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Next
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.addedTagsTable]);
-
   const renderTagOptions = () => {
     // if (Object.values(tagOptions).length) {
     const list = tagOptions.map((tag: TagOptionType, index: number) => {

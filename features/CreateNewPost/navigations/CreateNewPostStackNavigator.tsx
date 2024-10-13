@@ -1,8 +1,8 @@
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const CreateNewPosyStack = createNativeStackNavigator();
 import { Ionicons } from '@expo/vector-icons';
-import NormalPost from '../pages/NormalPost';
+import { NormalPost } from '../pages/NormalPost';
 import AddTags from '../pages/AddTags';
 import AddLocation from '../pages/AddLocation';
 import MomentPost from '../pages/MomentPost';

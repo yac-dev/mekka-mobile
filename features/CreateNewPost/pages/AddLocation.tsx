@@ -96,28 +96,28 @@ const AddLocation = () => {
     requestCreatePost(input);
   };
 
-  useEffect(() => {
-    createNewPostStackNavigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          activeOpacity={0.5}
-          // onPress={() => console.log('form data -> ', JSON.stringify(formData, null, 2))}
-          onPress={() => onPostPress()}
-          disabled={formData.location.isValidated ? false : true}
-        >
-          <Text
-            style={{
-              color: formData.location.isValidated ? 'white' : 'rgb(100,100,100)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Post
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.location]);
+  // useEffect(() => {
+  //   createNewPostStackNavigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity
+  //         activeOpacity={0.5}
+  //         // onPress={() => console.log('form data -> ', JSON.stringify(formData, null, 2))}
+  //         onPress={() => onPostPress()}
+  //         disabled={formData.location.isValidated ? false : true}
+  //       >
+  //         <Text
+  //           style={{
+  //             color: formData.location.isValidated ? 'white' : 'rgb(100,100,100)',
+  //             fontSize: 20,
+  //             fontWeight: 'bold',
+  //           }}
+  //         >
+  //           Post
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [formData.location]);
 
   const onMapPress = (event: MapPressEvent) => {
     event.persist();
