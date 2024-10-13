@@ -17,12 +17,16 @@ import FlashMessage from 'react-native-flash-message';
 
 export type CreateNewPostStackParams = {
   SelectPostType: undefined;
-  NormalPost: undefined;
+  NormalPost: {
+    handleNavigation: () => void;
+  };
+  MomentPost: {
+    handleNavigation: () => void;
+  };
   AddTags?: {
     createdTag: CreatedTagType;
   };
   AddLocation: undefined;
-  MomentPost: undefined;
   CreateNewTag: undefined;
 };
 
@@ -36,6 +40,26 @@ export const CreateNewPostStackNavigator = () => {
           <CreateNewPosyStack.Screen
             name='NormalPost'
             component={NormalPost}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              title: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+            })}
+          />
+          <CreateNewPosyStack.Screen
+            name='MomentPost'
+            component={MomentPost}
             options={({ navigation }) => ({
               headerShown: true,
               headerLeft: () => (
@@ -85,26 +109,6 @@ export const CreateNewPostStackNavigator = () => {
                   hasShadow={false}
                 >
                   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
-                </AppButton.Icon>
-              ),
-              title: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-            })}
-          />
-          <CreateNewPosyStack.Screen
-            name='MomentPost'
-            component={MomentPost}
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerLeft: () => (
-                <AppButton.Icon
-                  onButtonPress={() => navigation.goBack()}
-                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.II name='close' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
               title: '',

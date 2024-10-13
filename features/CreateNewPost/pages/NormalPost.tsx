@@ -15,16 +15,27 @@ import { ContentThumbnail } from '../components/ContentThumbnail';
 import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
-import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackParams, CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
+import { CreatePostInputType } from '../types';
+import { authAtom } from '../../../recoil';
+import { useCreatePostResult } from '../../../api';
 
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
-export const NormalPost = () => {
+type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'>;
+
+export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const [auth] = useRecoilState(authAtom);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
+
+  const { requestCreatePost } = useCreatePostResult(currentSpace);
   const {
     formData,
     onCaptionChange,
@@ -33,17 +44,56 @@ export const NormalPost = () => {
     onPostTypeChange,
     createNewPostFlashMessageRef,
   } = useContext(CreateNewPostContext);
-  const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   useEffect(() => {
     onPostTypeChange('normal');
   }, []);
 
+  const onSubmitPress = async () => {
+    route.params.handleNavigation();
+
+    const compressContent = async (content: BufferContentType) => {
+      const { type, uri } = content;
+      if (type === 'image/jpg') {
+        const result = await ImageCompressor.compress(uri, {
+          compressionMethod: 'manual',
+          quality: 0.7,
+        });
+        return { ...content, uri: result };
+      } else if (type === 'video/mp4') {
+        const result = await VideoCompressor.compress(uri, {
+          progressDivider: 20,
+          maxSize: 1920,
+          compressionMethod: 'manual',
+        });
+        return { ...content, uri: result };
+      }
+      return content;
+    };
+
+    const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
+      formData.bufferContents.value.map(compressContent)
+    );
+
+    const input: CreatePostInputType = {
+      ...formData,
+      userId: auth._id,
+      spaceId: currentSpace._id,
+      reactions: currentSpace.reactions,
+      disappearAfter: currentSpace.disappearAfter.toString(),
+      bufferContents: {
+        value: bufferContentsAfterCompressor,
+        isValidated: true, // Adjust this value as needed
+      },
+    };
+    requestCreatePost(input);
+  };
+
   useEffect(() => {
     createNewPostStackNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => createNewPostStackNavigation.navigate('AddTags')}
+          onPress={onSubmitPress}
           disabled={formData.contents.isValidated && formData.caption.isValidated ? false : true}
         >
           <Text
@@ -62,10 +112,6 @@ export const NormalPost = () => {
       ),
     });
   }, [formData.contents, formData.caption, formData.addedTagsTable.isValidated]);
-
-  console.log('tags ->', formData.addedTagsTable);
-
-  // sumbitのvalidationを書かないといかんな。
 
   const renderContents = () => {
     if (formData.bufferContents.value.length) {
@@ -159,17 +205,6 @@ export const NormalPost = () => {
             >
               {formData.postType.value === 'normal' ? 'New Post' : 'Moment Post'}
             </Text>
-            {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-              Please select {renderContentType()}.
-            </Text>
-            {formData.postType.value === 'moment' ? (
-              <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-                Your moment post will disappear within{'\n'}
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
-                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
-                </Text>
-              </Text>
-            ) : null} */}
           </View>
           {formData.contents.value.length === 0 && (
             <TouchableOpacity
@@ -224,7 +259,6 @@ export const NormalPost = () => {
         value={''}
       />
     </ScrollView>
-    // </KeyboardAvoidingView>
   );
 };
 

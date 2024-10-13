@@ -54,16 +54,6 @@ export const Home = () => {
           openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         />
       ),
-      // headerLeft: () => <SpacesHeader />,
-      // headerRight: () => (
-      //   <AppButton.Icon
-      //     onButtonPress={() => console.log('test')}
-      //     customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
-      //     hasShadow={false}
-      //   >
-      //     <VectorIcon.II name='settings-outline' size={18} color={Colors.white} />
-      //   </AppButton.Icon>
-      // ),
     });
   }, [mySpaces]);
 
@@ -114,6 +104,11 @@ export const Home = () => {
     closeAddNewPostMenuBottomSheet();
     homeStackNavigation.navigate('CreateNewPostStackNavigator', {
       screen: 'NormalPost',
+      params: {
+        handleNavigation: () => {
+          homeStackNavigation.goBack();
+        },
+      },
     });
   };
 
@@ -121,6 +116,11 @@ export const Home = () => {
     closeAddNewPostMenuBottomSheet();
     homeStackNavigation.navigate('CreateNewPostStackNavigator', {
       screen: 'MomentPost',
+      params: {
+        handleNavigation: () => {
+          homeStackNavigation.goBack();
+        },
+      },
     });
   };
 
