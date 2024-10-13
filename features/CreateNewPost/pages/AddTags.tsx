@@ -117,7 +117,7 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
 
   return (
     <View style={{ flex: 1, padding: 10, backgroundColor: 'black' }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
+      <View style={{ paddingHorizontal: 30, paddingTop: 20, paddingBottom: 20 }}>
         <Text
           style={{
             color: 'white',

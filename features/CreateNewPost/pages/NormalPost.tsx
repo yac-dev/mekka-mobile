@@ -132,23 +132,22 @@ export const NormalPost = () => {
     }
   }, []);
 
-  const renderTagTexts = () => {
-    const list = Object.values(formData.addedTagsTable.value).map((tag, index) => {
-      return (
-        <Text key={index} style={{ color: 'white' }}>
-          {tag.name}
-        </Text>
-      );
+  const renderTagTexts = (): string => {
+    let tagString: string = '';
+    Object.values(formData.addedTagsTable.value).forEach((tag, index) => {
+      tagString += tag.name;
+      if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
+        tagString += ',';
+      }
     });
-
-    return <View style={{ flexDirection: 'row', marginRight: 5, width: 100 }}>{list}</View>;
+    return tagString;
   };
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'black', padding: 10 }} automaticallyAdjustKeyboardInsets={true}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-          <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
+          <View style={{ paddingHorizontal: 30, paddingTop: 20, paddingBottom: 10 }}>
             <Text
               style={{
                 color: 'white',
@@ -216,6 +215,7 @@ export const NormalPost = () => {
         icon={<VectorIcon.OI name='hash' size={20} color='white' style={{ marginRight: 10 }} />}
         title='Tags'
         value={renderTagTexts()}
+        requirementText={!formData.addedTagsTable.isValidated ? 'Required to choose or create.' : undefined}
       />
       <MenuCell
         onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
@@ -232,7 +232,7 @@ type MenuCellProp = {
   onCellPress: () => void;
   icon: React.ReactNode;
   title: string;
-  value: React.ReactNode;
+  value: string;
   requirementText?: string;
 };
 
@@ -262,7 +262,10 @@ export const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, val
         </View>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text numberOfLines={1} style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right' }}>
+        <Text
+          numberOfLines={1}
+          style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right', marginRight: 5, width: 100 }}
+        >
           {value}
         </Text>
         <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
