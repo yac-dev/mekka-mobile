@@ -8,6 +8,7 @@ import { HomeStackNavigatorProps } from '../navigations';
 import { urls } from '../../../settings';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { AppButton } from '../../../components';
 
 export const Header = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -46,16 +47,21 @@ export const Header = () => {
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={{ marginRight: 20 }}
+          onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+          activeOpacity={0.7}
+        >
           <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
         </TouchableOpacity>
+        <AppButton.Icon
+          onButtonPress={handleInvite}
+          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.II name='person-add' size={17} color={Colors.white} />
+        </AppButton.Icon>
       </View>
-      <TouchableOpacity
-        onPress={handleInvite}
-        style={{ backgroundColor: 'rgb(70,70,70)', padding: 5, borderRadius: 80, width: 60 }}
-      >
-        <Text style={{ color: 'white', fontSize: 15, textAlign: 'center', fontWeight: 'bold' }}>Invite</Text>
-      </TouchableOpacity>
     </View>
   );
 };

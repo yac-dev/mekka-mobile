@@ -49,60 +49,55 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
         activeOpacity={0.7}
         key={item._id}
         style={{
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
           marginRight: 8,
-          // borderRightWidth: isFocused ? 1 : 0,
-          // borderRightColor: 'white',
+          borderBottomWidth: isFocused ? 1 : 0,
+          borderBottomColor: 'white',
+          paddingVertical: 5,
         }}
         onPress={() => onSpacePress(item)}
       >
-        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-          <View
-            style={{
-              width: 28,
-              aspectRatio: 1,
-              borderRadius: 22.5,
-              borderColor: 'white',
-              borderWidth: 0.3,
-            }}
-          >
-            <ExpoImage
-              style={{ width: '100%', height: '100%', borderRadius: 22.5 }}
-              source={{ uri: item.icon }}
-              contentFit='contain'
-            />
-            <View></View>
-            {totalLogs ? (
+        <View
+          style={{
+            width: 30,
+            aspectRatio: 1,
+            borderRadius: 22.5,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <ExpoImage
+            style={{ width: '100%', height: '100%', borderRadius: 22.5 }}
+            source={{ uri: item.icon }}
+            contentFit='contain'
+          />
+          {totalLogs ? (
+            <View
+              style={{
+                width: 16,
+                height: 16,
+                borderRadius: 12,
+                backgroundColor: 'black',
+                position: 'absolute',
+                top: -5,
+                right: -5,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <View
                 style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: 12,
-                  backgroundColor: 'black',
-                  position: 'absolute',
-                  top: -5,
-                  right: -5,
+                  width: 12,
+                  height: 12,
+                  borderRadius: 8,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  backgroundColor: 'red',
                 }}
               >
-                <View
-                  style={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'red',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontSize: 10 }}>{totalLogs}</Text>
-                </View>
+                <Text style={{ color: 'white', fontSize: 10 }}>{totalLogs}</Text>
               </View>
-            ) : null}
-          </View>
+            </View>
+          ) : null}
         </View>
       </TouchableOpacity>
     );
@@ -116,7 +111,6 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           horizontal
-          contentContainerStyle={{ paddingVertical: 4 }}
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={
             <View
@@ -125,6 +119,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginRight: 8,
+                paddingVertical: 5,
               }}
             >
               <TouchableOpacity
@@ -166,7 +161,7 @@ const styles = StyleSheet.create({
     // right: 0,
     // backgroundColor: 'rgb(40,40,40)',
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    // paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
