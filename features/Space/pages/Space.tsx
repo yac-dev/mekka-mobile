@@ -33,7 +33,9 @@ export const Space: React.FC<ISpace> = ({ route }) => {
 
   const onCreatePostPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    spaceStackNavigation.navigate('CreateNewPostStackNavigator');
+    spaceStackNavigation.navigate('CreateNewPostStackNavigator', {
+      handleNavigation: () => spaceStackNavigation.goBack(),
+    });
   };
 
   const onItemLayout = (event: LayoutChangeEvent, index: number) => {
@@ -113,7 +115,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
           />
         </View>
         <Posts space={route.params.space} />
-        {/* <AppButton.Icon
+        <AppButton.Icon
           customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
           onButtonPress={() => onCreatePostPress()}
           isPressDisabled={createPostResult.status === 'loading' ? true : false} // createのstatusをここに足す感じだな。
@@ -124,7 +126,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
           ) : (
             <VectorIcon.II name='add' size={32} color={'white'} />
           )}
-        </AppButton.Icon> */}
+        </AppButton.Icon>
         <ViewPostsTypeToggleButton space={route.params.space} />
       </View>
     </SafeAreaView>

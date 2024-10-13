@@ -158,26 +158,6 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
     }
   }
 
-  const renderContentType = useCallback(() => {
-    if (currentSpace.contentType === 'photo') {
-      return <Text style={{ color: 'rgb(180, 180, 180)' }}>Photos</Text>;
-    } else if (currentSpace.contentType === 'video') {
-      return (
-        <Text style={{ color: 'rgb(180, 180, 180)' }}>
-          Videos.{'\n'}Video length is limited to {currentSpace.videoLength} seconds
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={{ color: 'rgb(180, 180, 180)' }}>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>photos or videos</Text>.{'\n'}Video length
-          is limited to&nbsp;
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>{currentSpace.videoLength} seconds</Text>
-        </Text>
-      );
-    }
-  }, []);
-
   const renderTagTexts = (): string => {
     let tagString: string = '';
     Object.values(formData.addedTagsTable.value).forEach((tag, index) => {
@@ -222,7 +202,17 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
               }}
               onPress={() => pickUpContents()}
             >
-              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
+              <ExpoImage
+                style={{ width: 35, aspectRatio: 1, marginBottom: 10 }}
+                source={
+                  currentSpace.contentType === 'photo'
+                    ? require('../../../assets/forApp/photo.png')
+                    : currentSpace.contentType === 'video'
+                    ? require('../../../assets/forApp/video.png')
+                    : require('../../../assets/forApp/photo-video.png')
+                }
+                tintColor={'white'}
+              />
               <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
             </TouchableOpacity>
           )}
@@ -259,6 +249,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
         value={''}
       />
     </ScrollView>
+    // </KeyboardAvoidingView>
   );
 };
 

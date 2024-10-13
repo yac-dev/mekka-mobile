@@ -162,7 +162,7 @@ export const Features = () => {
   return (
     <View style={styles.container}>
       <FlatList horizontal data={features} renderItem={renderItem} />
-      <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+      <View style={{ paddingHorizontal: 30, marginBottom: 15 }}>
         <View style={{ height: 1, backgroundColor: 'rgb(70,70,70)' }} />
       </View>
     </View>

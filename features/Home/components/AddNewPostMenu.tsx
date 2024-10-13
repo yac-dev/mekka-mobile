@@ -18,11 +18,23 @@ type AddNewPostMenuProps = {
 export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPress, onAddNewMomentPress }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
 
+  const renderContentType = () => {
+    let text: string = '';
+    if (currentSpace.contentType === 'photo') {
+      text = 'Photo';
+    } else if (currentSpace.contentType === 'video') {
+      text = `Video. Video length is limited to ${currentSpace.videoLength}s`;
+    } else {
+      text = `Photo and Video. Video length is limited to ${currentSpace.videoLength}s`;
+    }
+    return text;
+  };
+
   return (
     <View style={{ flexDirection: 'column' }}>
       <AppButton.Cell
         title={'New Post'}
-        subTitle={currentSpace.videoLength ? `${currentSpace.videoLength}s` : ''}
+        subTitle={renderContentType()}
         onButtonPress={onAddNewPostPress}
         customStyle={{ marginBottom: 10 }}
       >
@@ -45,7 +57,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
       </AppButton.Cell>
       <AppButton.Cell
         title='New Moment'
-        subTitle={Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}
+        subTitle={`Your moment will disappear within ${Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}.`}
         onButtonPress={onAddNewMomentPress}
         customStyle={{ marginBottom: 10 }}
       >
