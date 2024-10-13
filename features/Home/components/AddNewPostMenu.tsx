@@ -25,7 +25,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
     } else if (currentSpace.contentType === 'video') {
       text = `Video. Video length is limited to ${currentSpace.videoLength}s`;
     } else {
-      text = `Photo and Video. Video length is limited to ${currentSpace.videoLength}s`;
+      text = `Photo and Video. ${currentSpace.videoLength} seconds video post`;
     }
     return text;
   };
@@ -57,7 +57,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
       </AppButton.Cell>
       <AppButton.Cell
         title='New Moment'
-        subTitle={`Your moment will disappear within ${Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}.`}
+        subTitle={`Disappear within ${Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}`}
         onButtonPress={onAddNewMomentPress}
         customStyle={{ marginBottom: 10 }}
       >

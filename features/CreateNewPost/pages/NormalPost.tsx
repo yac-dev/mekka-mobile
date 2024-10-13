@@ -203,7 +203,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
               onPress={() => pickUpContents()}
             >
               <ExpoImage
-                style={{ width: 35, aspectRatio: 1, marginBottom: 10 }}
+                style={{ width: 40, aspectRatio: 1, marginBottom: 10 }}
                 source={
                   currentSpace.contentType === 'photo'
                     ? require('../../../assets/forApp/photo.png')
@@ -213,7 +213,32 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
                 }
                 tintColor={'white'}
               />
-              <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
+              <View
+                style={{
+                  backgroundColor: 'black',
+                  width: 38,
+                  height: 38,
+                  borderRadius: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: 28,
+                    height: 28,
+                    borderRadius: 20,
+                  }}
+                >
+                  <VectorIcon.II name='add' size={20} color={'black'} />
+                </View>
+              </View>
             </TouchableOpacity>
           )}
           {renderContents()}

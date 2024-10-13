@@ -4,14 +4,17 @@ import { Image as ExpoImage } from 'expo-image';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
-import { CreateNewPostStackProps } from '..';
+import { CreateNewPostStackParams, CreateNewPostStackProps } from '..';
 import { CreateMomentInputType } from '../types';
 import { useCreateMomentResult } from '../../../api';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const MomentPost = () => {
+type IMomentPost = NativeStackScreenProps<CreateNewPostStackParams, 'MomentPost'>;
+
+const MomentPost: React.FC<IMomentPost> = ({ route }) => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [modalVisible, setModalVisible] = useState(false);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -39,7 +42,7 @@ const MomentPost = () => {
               fontWeight: 'bold',
             }}
           >
-            Post
+            Submit
           </Text>
         </TouchableOpacity>
       ),
@@ -92,11 +95,6 @@ const MomentPost = () => {
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
         <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 10 }}>
-            <ExpoImage
-              source={require('../../../assets/forApp/ghost.png')}
-              style={{ width: 20, height: 20, marginRight: 10 }}
-              tintColor='white'
-            />
             <Text
               style={{
                 color: 'white',
@@ -105,17 +103,17 @@ const MomentPost = () => {
                 fontSize: 20,
               }}
             >
-              New Moments?
+              New Moments
             </Text>
           </View>
-          <View style={{ flexDirection: 'column' }}>
+          {/* <View style={{ flexDirection: 'column' }}>
             <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
               Your moment post will disappeare within
             </Text>
             <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
               {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
             </Text>
-          </View>
+          </View> */}
         </View>
         {formData.contents.value.length === 0 && (
           <TouchableOpacity
@@ -133,8 +131,37 @@ const MomentPost = () => {
             }}
             onPress={() => pickUpContents()}
           >
-            <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
-            <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
+            <ExpoImage
+              source={require('../../../assets/forApp/ghost.png')}
+              style={{ width: 35, height: 35 }}
+              tintColor='white'
+            />
+            <View
+              style={{
+                backgroundColor: 'black',
+                width: 38,
+                height: 38,
+                borderRadius: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 20,
+                }}
+              >
+                <VectorIcon.II name='add' size={20} color={'black'} />
+              </View>
+            </View>
           </TouchableOpacity>
         )}
 
