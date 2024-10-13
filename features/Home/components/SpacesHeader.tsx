@@ -134,7 +134,33 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
                 }}
                 onPress={() => openAddNewSpaceMenuBottomSheet(0)}
               >
-                <VectorIcon.MCI name='plus' color={Colors.white} size={20} />
+                <VectorIcon.MCI name='home' color={Colors.white} size={20} />
+                <View
+                  style={{
+                    backgroundColor: 'black',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    bottom: -4,
+                    right: -5,
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: 10,
+                      height: 10,
+                      borderRadius: 20,
+                    }}
+                  >
+                    <VectorIcon.II name='add' size={11} color={'black'} />
+                  </View>
+                </View>
               </TouchableOpacity>
             </View>
           }
