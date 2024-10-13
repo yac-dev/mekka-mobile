@@ -6,7 +6,15 @@ import { useBottomSheet } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
-import { AuthMenu, AddNewSpaceMenu, SideBar, CurrentSpace, BottomTab, SpacesHeader } from '../components';
+import {
+  AuthMenu,
+  AddNewSpaceMenu,
+  SideBar,
+  CurrentSpace,
+  BottomTab,
+  SpacesHeader,
+  AddNewPostMenu,
+} from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
@@ -33,6 +41,9 @@ export const Home = () => {
     addNewSpaceMenuBottomSheetRef,
     openAddNewSpaceMenuBottomSheet,
     closeAddNewSpaceMenuBottomSheet,
+    addNewPostMenuBottomSheetRef,
+    openAddNewPostMenuBottomSheet,
+    closeAddNewPostMenuBottomSheet,
   } = useBottomSheet();
 
   useEffect(() => {
@@ -43,19 +54,11 @@ export const Home = () => {
           openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         />
       ),
-      // headerLeft: () => <SpacesHeader />,
-      // headerRight: () => (
-      //   <AppButton.Icon
-      //     onButtonPress={() => console.log('test')}
-      //     customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
-      //     hasShadow={false}
-      //   >
-      //     <VectorIcon.II name='settings-outline' size={18} color={Colors.white} />
-      //   </AppButton.Icon>
-      // ),
     });
   }, [mySpaces]);
 
+  //あれだよな。。。シンプルに。post押した後のnavigationだけ変えればいいんだよな。結局今は、、、、recoil使ったりで割と便利ではあるしね。
+  // navigatonのものだけfunction をpassして実行するようにするか。
   const onLogoutPress = async () => {
     await SecureStore.deleteItemAsync('secure_token');
     // ここでauthに関してもdefaultに戻さんといかんし、
@@ -97,6 +100,30 @@ export const Home = () => {
     homeStackNavigation.navigate('DiscoverStackNavigator');
   };
 
+  const onAddNewPostPress = () => {
+    closeAddNewPostMenuBottomSheet();
+    homeStackNavigation.navigate('CreateNewPostStackNavigator', {
+      screen: 'NormalPost',
+      params: {
+        handleNavigation: () => {
+          homeStackNavigation.goBack();
+        },
+      },
+    });
+  };
+
+  const onAddNewMomentPress = () => {
+    closeAddNewPostMenuBottomSheet();
+    homeStackNavigation.navigate('CreateNewPostStackNavigator', {
+      screen: 'MomentPost',
+      params: {
+        handleNavigation: () => {
+          homeStackNavigation.goBack();
+        },
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
       {!mySpaces?.length ? (
@@ -114,8 +141,17 @@ export const Home = () => {
         //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         //   />
         // </View>
-        <CurrentSpace />
+        <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
       )}
+
+      <AppBottomSheet.Gorhom
+        ref={addNewPostMenuBottomSheetRef}
+        snapPoints={['40%']}
+        title='Something New?'
+        onCloseButtonClose={closeAddNewPostMenuBottomSheet}
+      >
+        <AddNewPostMenu onAddNewPostPress={onAddNewPostPress} onAddNewMomentPress={onAddNewMomentPress} />
+      </AppBottomSheet.Gorhom>
 
       <AppBottomSheet.Gorhom
         ref={authMenuBottomSheetRef}

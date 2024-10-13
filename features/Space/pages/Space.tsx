@@ -33,7 +33,12 @@ export const Space: React.FC<ISpace> = ({ route }) => {
 
   const onCreatePostPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    spaceStackNavigation.navigate('CreateNewPostStackNavigator');
+    spaceStackNavigation.navigate('CreateNewPostStackNavigator', {
+      screen: 'NormalPost',
+      params: {
+        handleNavigation: () => spaceStackNavigation.goBack(),
+      },
+    });
   };
 
   const onItemLayout = (event: LayoutChangeEvent, index: number) => {

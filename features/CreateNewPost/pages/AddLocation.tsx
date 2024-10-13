@@ -26,7 +26,9 @@ const AddLocation = () => {
   const { requestCreatePost } = useCreatePostResult(currentSpace);
 
   const onPostPress = async () => {
-    spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
+    // spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
+    homeStackNavigation.navigate('Home');
+
     // ここの段階でbufferContentsたちを圧縮したい。
     // const bufferContentsBeforeCompressor = formData.bufferContents.value;
     // const bufferContentsAfterCompressor = [];
@@ -56,6 +58,7 @@ const AddLocation = () => {
     //     bufferContentsAfterCompressor.push(compressedObject);
     //   }
     // }
+
     const compressContent = async (content: BufferContentType) => {
       const { type, uri } = content;
       if (type === 'image/jpg') {
@@ -93,28 +96,28 @@ const AddLocation = () => {
     requestCreatePost(input);
   };
 
-  useEffect(() => {
-    createNewPostStackNavigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          activeOpacity={0.5}
-          // onPress={() => console.log('form data -> ', JSON.stringify(formData, null, 2))}
-          onPress={() => onPostPress()}
-          disabled={formData.location.isValidated ? false : true}
-        >
-          <Text
-            style={{
-              color: formData.location.isValidated ? 'white' : 'rgb(100,100,100)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Post
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [formData.location]);
+  // useEffect(() => {
+  //   createNewPostStackNavigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity
+  //         activeOpacity={0.5}
+  //         // onPress={() => console.log('form data -> ', JSON.stringify(formData, null, 2))}
+  //         onPress={() => onPostPress()}
+  //         disabled={formData.location.isValidated ? false : true}
+  //       >
+  //         <Text
+  //           style={{
+  //             color: formData.location.isValidated ? 'white' : 'rgb(100,100,100)',
+  //             fontSize: 20,
+  //             fontWeight: 'bold',
+  //           }}
+  //         >
+  //           Post
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [formData.location]);
 
   const onMapPress = (event: MapPressEvent) => {
     event.persist();

@@ -15,15 +15,27 @@ import { ContentThumbnail } from '../components/ContentThumbnail';
 import { SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
-import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
+import { CreateNewPostStackParams, CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { Image as ExpoImage } from 'expo-image';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
+import { CreatePostInputType } from '../types';
+import { authAtom } from '../../../recoil';
+import { useCreatePostResult } from '../../../api';
 
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
-const NormalPost = () => {
+type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'>;
+
+export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
+  const [auth] = useRecoilState(authAtom);
+  const [currentSpace] = useRecoilState(currentSpaceAtom);
+
+  const { requestCreatePost } = useCreatePostResult(currentSpace);
   const {
     formData,
     onCaptionChange,
@@ -32,32 +44,74 @@ const NormalPost = () => {
     onPostTypeChange,
     createNewPostFlashMessageRef,
   } = useContext(CreateNewPostContext);
-  const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   useEffect(() => {
     onPostTypeChange('normal');
   }, []);
 
+  const onSubmitPress = async () => {
+    route.params.handleNavigation();
+
+    const compressContent = async (content: BufferContentType) => {
+      const { type, uri } = content;
+      if (type === 'image/jpg') {
+        const result = await ImageCompressor.compress(uri, {
+          compressionMethod: 'manual',
+          quality: 0.7,
+        });
+        return { ...content, uri: result };
+      } else if (type === 'video/mp4') {
+        const result = await VideoCompressor.compress(uri, {
+          progressDivider: 20,
+          maxSize: 1920,
+          compressionMethod: 'manual',
+        });
+        return { ...content, uri: result };
+      }
+      return content;
+    };
+
+    const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
+      formData.bufferContents.value.map(compressContent)
+    );
+
+    const input: CreatePostInputType = {
+      ...formData,
+      userId: auth._id,
+      spaceId: currentSpace._id,
+      reactions: currentSpace.reactions,
+      disappearAfter: currentSpace.disappearAfter.toString(),
+      bufferContents: {
+        value: bufferContentsAfterCompressor,
+        isValidated: true, // Adjust this value as needed
+      },
+    };
+    requestCreatePost(input);
+  };
+
   useEffect(() => {
     createNewPostStackNavigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => createNewPostStackNavigation.navigate('AddTags')}
+          onPress={onSubmitPress}
           disabled={formData.contents.isValidated && formData.caption.isValidated ? false : true}
         >
           <Text
             style={{
-              color: formData.contents.isValidated && formData.caption.isValidated ? 'white' : 'rgb(100,100,100)',
+              color:
+                formData.contents.isValidated && formData.caption.isValidated && formData.addedTagsTable.isValidated
+                  ? 'white'
+                  : 'rgb(100,100,100)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
           >
-            Next
+            Submit
           </Text>
         </TouchableOpacity>
       ),
     });
-  }, [formData.contents, formData.caption]);
+  }, [formData.contents, formData.caption, formData.addedTagsTable.isValidated]);
 
   const renderContents = () => {
     if (formData.bufferContents.value.length) {
@@ -104,31 +158,22 @@ const NormalPost = () => {
     }
   }
 
-  const renderContentType = useCallback(() => {
-    if (currentSpace.contentType === 'photo') {
-      return <Text style={{ color: 'rgb(180, 180, 180)' }}>Photos</Text>;
-    } else if (currentSpace.contentType === 'video') {
-      return (
-        <Text style={{ color: 'rgb(180, 180, 180)' }}>
-          Videos.{'\n'}Video length is limited to {currentSpace.videoLength} seconds
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={{ color: 'rgb(180, 180, 180)' }}>
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>photos or videos</Text>.{'\n'}Video length
-          is limited to&nbsp;
-          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>{currentSpace.videoLength} seconds</Text>
-        </Text>
-      );
-    }
-  }, []);
+  const renderTagTexts = (): string => {
+    let tagString: string = '';
+    Object.values(formData.addedTagsTable.value).forEach((tag, index) => {
+      tagString += tag.name;
+      if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
+        tagString += ',';
+      }
+    });
+    return tagString;
+  };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'black' }} automaticallyAdjustKeyboardInsets={true}>
+    <ScrollView style={{ flex: 1, backgroundColor: 'black', padding: 10 }} automaticallyAdjustKeyboardInsets={true}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-          <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
+          <View style={{ paddingHorizontal: 30, paddingTop: 20, paddingBottom: 10 }}>
             <Text
               style={{
                 color: 'white',
@@ -140,17 +185,6 @@ const NormalPost = () => {
             >
               {formData.postType.value === 'normal' ? 'New Post' : 'Moment Post'}
             </Text>
-            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-              Please select {renderContentType()}.
-            </Text>
-            {formData.postType.value === 'moment' ? (
-              <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-                Your moment post will disappear within{'\n'}
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center' }}>
-                  {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
-                </Text>
-              </Text>
-            ) : null}
           </View>
           {formData.contents.value.length === 0 && (
             <TouchableOpacity
@@ -168,7 +202,17 @@ const NormalPost = () => {
               }}
               onPress={() => pickUpContents()}
             >
-              <VectorIcon.II name='add' size={35} color='white' style={{ marginBottom: 10 }} />
+              <ExpoImage
+                style={{ width: 35, aspectRatio: 1, marginBottom: 10 }}
+                source={
+                  currentSpace.contentType === 'photo'
+                    ? require('../../../assets/forApp/photo.png')
+                    : currentSpace.contentType === 'video'
+                    ? require('../../../assets/forApp/video.png')
+                    : require('../../../assets/forApp/photo-video.png')
+                }
+                tintColor={'white'}
+              />
               <Text style={{ color: 'white', fontSize: 17 }}>Add</Text>
             </TouchableOpacity>
           )}
@@ -191,9 +235,66 @@ const NormalPost = () => {
           />
         </View>
       </TouchableWithoutFeedback>
+      <MenuCell
+        onCellPress={() => createNewPostStackNavigation.navigate('AddTags')}
+        icon={<VectorIcon.OI name='hash' size={20} color='white' style={{ marginRight: 10 }} />}
+        title='Tags'
+        value={renderTagTexts()}
+        requirementText={!formData.addedTagsTable.isValidated ? 'Required to choose or create.' : undefined}
+      />
+      <MenuCell
+        onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
+        icon={<VectorIcon.II name='location-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
+        title='Location (optional)'
+        value={''}
+      />
     </ScrollView>
     // </KeyboardAvoidingView>
   );
 };
 
-export default NormalPost;
+type MenuCellProp = {
+  onCellPress: () => void;
+  icon: React.ReactNode;
+  title: string;
+  value: string;
+  requirementText?: string;
+};
+
+export const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, requirementText }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+      }}
+      onPress={onCellPress}
+      activeOpacity={0.8}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {icon}
+        <View>
+          <Text style={{ color: 'white', fontSize: 17, marginBottom: requirementText !== undefined ? 0 : 4 }}>
+            {title}
+          </Text>
+          {requirementText !== undefined && (
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>{requirementText}</Text>
+          )}
+        </View>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text
+          numberOfLines={1}
+          style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right', marginRight: 5, width: 100 }}
+        >
+          {value}
+        </Text>
+        <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+      </View>
+    </TouchableOpacity>
+  );
+};

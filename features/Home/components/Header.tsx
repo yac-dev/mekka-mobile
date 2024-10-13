@@ -8,6 +8,7 @@ import { HomeStackNavigatorProps } from '../navigations';
 import { urls } from '../../../settings';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { AppButton } from '../../../components';
 
 export const Header = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -36,39 +37,37 @@ export const Header = () => {
   };
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: 20,
-          paddingBottom: 10,
-          alignItems: 'center',
-        }}
-      >
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+        paddingBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity
-          style={{ width: 70, height: 70, borderRadius: 40, marginRight: 20 }}
+          style={{ marginRight: 20 }}
           onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
           activeOpacity={0.7}
         >
-          <ExpoImage
-            style={{ width: '100%', height: '100%', borderRadius: 40 }}
-            source={{ uri: currentSpace.icon }}
-            contentFit='cover'
-          />
+          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
         </TouchableOpacity>
-        <View style={{ flexDirection: 'column' }}>
-          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23, marginBottom: 5 }}>
-            {currentSpace.name}
-          </Text>
-          <TouchableOpacity
-            onPress={handleInvite}
-            style={{ backgroundColor: 'rgb(70,70,70)', padding: 5, borderRadius: 80, width: 60 }}
-          >
-            <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>Invite</Text>
-          </TouchableOpacity>
-        </View>
+        <AppButton.Icon
+          onButtonPress={handleInvite}
+          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.II name='person-add' size={17} color={Colors.white} />
+        </AppButton.Icon>
       </View>
-      {/* <View style={{ marginRight: 20 }}>
+    </View>
+  );
+};
+
+{
+  /* <View style={{ marginRight: 20 }}>
         <FlatList
           numColumns={2}
           scrollEnabled={false}
@@ -104,7 +103,5 @@ export const Header = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item.spec}
         />
-      </View> */}
-    </View>
-  );
-};
+      </View> */
+}
