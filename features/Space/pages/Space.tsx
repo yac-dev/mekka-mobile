@@ -34,7 +34,10 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   const onCreatePostPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     spaceStackNavigation.navigate('CreateNewPostStackNavigator', {
-      handleNavigation: () => spaceStackNavigation.goBack(),
+      screen: 'NormalPost',
+      params: {
+        handleNavigation: () => spaceStackNavigation.goBack(),
+      },
     });
   };
 

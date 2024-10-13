@@ -50,7 +50,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
         key={item._id}
         style={{
           marginRight: 8,
-          borderBottomWidth: isFocused ? 1 : 0,
+          borderBottomWidth: isFocused ? 2 : 0,
           borderBottomColor: 'white',
           paddingVertical: 5,
         }}
