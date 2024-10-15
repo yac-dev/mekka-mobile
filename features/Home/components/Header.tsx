@@ -52,9 +52,9 @@ export const Header = () => {
         activeOpacity={0.7}
       >
         <View style={{ marginRight: 5 }}>
-          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
+          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
         </View>
-        <VectorIcon.MI name='chevron-right' size={20} color={Colors.white} />
+        <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
       </TouchableOpacity>
     </View>
   );

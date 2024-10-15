@@ -1,12 +1,22 @@
 import { useContext } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, Share } from 'react-native';
 import { Tabs } from '../components';
 import { Image as ExpoImage } from 'expo-image';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { VectorIcon } from '../../../Icons';
 
 export const SpaceInfo = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+
+  const handleInvite = async () => {
+    Share.share({
+      title: 'Share Var',
+      message: `Access here to download Var: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
+        currentSpace.secretKey
+      }`,
+    });
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -17,15 +27,32 @@ export const SpaceInfo = () => {
             source={{ uri: currentSpace.icon }}
             contentFit='cover'
           />
-          <Text
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: 25,
-            }}
-          >
-            {currentSpace.name}
-          </Text>
+          <View>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 26,
+                marginBottom: 10,
+              }}
+            >
+              {currentSpace.name}
+            </Text>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 10,
+                backgroundColor: 'rgb(50, 50, 50)',
+                borderRadius: 100,
+              }}
+              activeOpacity={0.7}
+              onPress={handleInvite}
+            >
+              <VectorIcon.MCI name='human-greeting-variant' color='white' size={20} style={{ marginRight: 5 }} />
+              <Text style={{ color: 'white', fontSize: 17 }}>Invite</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <Tabs />

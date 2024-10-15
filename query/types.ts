@@ -1,4 +1,4 @@
-import { SpaceType, AuthType } from '../types';
+import { SpaceType, AuthType, UserType } from '../types';
 
 export type LoadMeInput = {
   jwt: string | undefined;
@@ -39,4 +39,12 @@ export type UpdateSpaceCheckedInDateInputType = {
 export type RegisterPushTokenInputType = {
   userId: string;
   pushToken: string;
+};
+
+export type GetMembersBySpaceIdInputType = {
+  spaceId: string;
+};
+
+export type GetMembersBySpaceIdOutputType = {
+  users: UserType[];
 };

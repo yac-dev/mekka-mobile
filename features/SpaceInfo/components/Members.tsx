@@ -8,28 +8,21 @@ import { VectorIcon } from '../../../Icons';
 import { useGetMembersBySpaceId } from '../hooks/useGetMembersBySpaceId';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { useQuery } from '@tanstack/react-query';
+import { getMembersBySpaceId } from '../../../api';
+import { queryKeys } from '../../../query';
 
 type MembersProps = {
   spaceId: string;
 };
 
+// 久々にtan stackやってみよっか。
 export const Members: React.FC<MembersProps> = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
-  const { data, isLoading } = useGetMembersBySpaceId({ spaceId: currentSpace._id });
-  const { apiResult, requestApi } = useGetMembersBySpaceIdState();
-
-  useEffect(() => {
-    requestApi({ spaceId: currentSpace._id });
-  }, []);
-
-  const handleInvite = async () => {
-    Share.share({
-      title: 'Share Var',
-      message: `Access here to download Var: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
-        currentSpace.secretKey
-      }`,
-    });
-  };
+  const { data, isLoading } = useQuery({
+    queryKey: [queryKeys.members, currentSpace._id],
+    queryFn: () => getMembersBySpaceId({ spaceId: currentSpace._id }),
+  });
 
   const renderUser = useCallback(({ item }: { item: UserType }) => {
     return (
@@ -37,7 +30,7 @@ export const Members: React.FC<MembersProps> = () => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          padding: 15,
+          padding: 10,
           justifyContent: 'space-between',
         }}
         activeOpacity={0.5}
@@ -65,29 +58,7 @@ export const Members: React.FC<MembersProps> = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.black, padding: 10 }}>
-      <FlatList
-        data={data.users}
-        renderItem={renderUser}
-        keyExtractor={(item, index) => `${index}`}
-        ListHeaderComponent={
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 15,
-              justifyContent: 'space-between',
-            }}
-            activeOpacity={0.5}
-            onPress={handleInvite}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <VectorIcon.II name='add' color='white' size={30} style={{ marginRight: 20 }} />
-              <Text style={{ color: 'white', fontSize: 17 }}>Invite new member</Text>
-            </View>
-            <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
-          </TouchableOpacity>
-        }
-      />
+      <FlatList data={data.users} renderItem={renderUser} keyExtractor={(item, index) => `${index}`} />
     </View>
   );
 };

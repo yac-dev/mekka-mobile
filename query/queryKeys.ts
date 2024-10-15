@@ -4,4 +4,5 @@ export const queryKeys = {
   logs: 'logs',
   createPost: 'createPost',
   updateSpaceCheckedInDate: 'updateSpaceCheckedInDate',
+  members: 'members',
 };
