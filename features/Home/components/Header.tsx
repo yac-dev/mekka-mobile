@@ -46,22 +46,16 @@ export const Header = () => {
         justifyContent: 'space-between',
       }}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity
-          style={{ marginRight: 20 }}
-          onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-          activeOpacity={0.7}
-        >
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+        activeOpacity={0.7}
+      >
+        <View style={{ marginRight: 5 }}>
           <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 23 }}>{currentSpace.name}</Text>
-        </TouchableOpacity>
-        <AppButton.Icon
-          onButtonPress={handleInvite}
-          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.II name='person-add' size={17} color={Colors.white} />
-        </AppButton.Icon>
-      </View>
+        </View>
+        <VectorIcon.MI name='chevron-right' size={20} color={Colors.white} />
+      </TouchableOpacity>
     </View>
   );
 };
