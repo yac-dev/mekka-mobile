@@ -155,7 +155,7 @@ export const Home = () => {
       <AppBottomSheet.Gorhom
         ref={addNewPostMenuBottomSheetRef}
         snapPoints={['40%']}
-        title='Something New?'
+        title='Something to Share?'
         onCloseButtonClose={closeAddNewPostMenuBottomSheet}
       >
         <AddNewPostMenu onAddNewPostPress={onAddNewPostPress} onAddNewMomentPress={onAddNewMomentPress} />

@@ -138,12 +138,38 @@ export const Base = () => {
               contentFit='cover'
             />
           ) : (
-            <>
-              <VectorIcon.II name='add' size={35} color='white' />
-            </>
+            <View>
+              <VectorIcon.II name='image' size={35} color='white' style={{ marginBottom: 5 }} />
+              <Text style={{ color: 'white', fontSize: 17, textAlign: 'center' }}>Icon</Text>
+            </View>
           )}
+          <View
+            style={{
+              backgroundColor: 'black',
+              width: 38,
+              height: 38,
+              borderRadius: 30,
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 28,
+                height: 28,
+                borderRadius: 20,
+              }}
+            >
+              <VectorIcon.II name='add' size={20} color={'black'} />
+            </View>
+          </View>
         </TouchableOpacity>
-        <Text style={{ color: 'white', fontSize: 17, textAlign: 'center', marginBottom: 20 }}>Icon</Text>
         <View
           style={{
             flexDirection: 'row',

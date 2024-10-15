@@ -5,6 +5,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 import { VectorIcon } from '../../../Icons';
+import { urls } from '../../../settings/urls';
 
 export const SpaceInfo = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -12,7 +13,7 @@ export const SpaceInfo = () => {
   const handleInvite = async () => {
     Share.share({
       title: 'Share Var',
-      message: `Access here to download Var: https://apps.apple.com/us/app/mekka/id6472717148${'\n'} and then enter this private key: ${
+      message: `Access here to download Var: ${urls.appStore}${'\n'} and then enter this private key: ${
         currentSpace.secretKey
       }`,
     });

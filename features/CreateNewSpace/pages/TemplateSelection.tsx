@@ -91,7 +91,7 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='ice-cream' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Vanilla Space</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Vanilla</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
                   Traditional space with like, comment and 24 hours disappearing posts features.
                 </Text>
@@ -111,7 +111,7 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='camera' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers Space</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo Lovers</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>No video posts. Just photos.</Text>
               </View>
             </View>
@@ -129,7 +129,7 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.II name='heart-dislike' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>No Pressure Space</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>No Pressure</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
                   No comments, no likes. No more worrying about reactions from others.
                 </Text>
@@ -149,9 +149,9 @@ export const TemplateSelection = () => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.MCI name='clock-fast' size={20} color='white' style={{ marginRight: 20 }} />
               <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Busy Space</Text>
+                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Busy</Text>
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  5 seconds video, moments will be dissapeared　 after 30 minutes.
+                  5 seconds video, moments will be dissapeared after 30 minutes.
                 </Text>
               </View>
             </View>

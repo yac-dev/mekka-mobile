@@ -1,2 +1,2 @@
 App store page
-https://apps.apple.com/us/app/mekka/id6472717148
+https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148
