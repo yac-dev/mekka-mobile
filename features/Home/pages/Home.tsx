@@ -46,14 +46,22 @@ export const Home = () => {
     closeAddNewPostMenuBottomSheet,
   } = useBottomSheet();
 
+  // authがある場合にのみrenderしたいね。
+
   useEffect(() => {
     homeStackNavigation.setOptions({
-      header: () => (
-        <SpacesHeader
-          openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
-          openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-        />
-      ),
+      header: () => {
+        if (mySpaces?.length) {
+          return (
+            <SpacesHeader
+              openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+              openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+            />
+          );
+        } else {
+          return null;
+        }
+      },
     });
   }, [mySpaces]);
 
