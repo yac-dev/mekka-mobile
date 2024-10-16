@@ -40,7 +40,7 @@ export const Tags = () => {
     const isFocused = currentTag?._id === item._id;
     const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][item._id];
     return (
-      <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center' }}>
+      <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center', marginBottom: 5 }}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
@@ -158,7 +158,7 @@ export const Tags = () => {
         showsVerticalScrollIndicator={false}
         numColumns={4}
         scrollEnabled={false}
-        // contentContainerStyle={{ paddingTop: 10 }}
+        contentContainerStyle={{ paddingTop: 5 }}
         data={currentSpace.tags}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}

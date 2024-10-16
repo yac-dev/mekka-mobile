@@ -19,33 +19,9 @@ export const Features = () => {
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
   const features = [
-    // {
-    //   icon: (
-    // <ExpoImage
-    //   style={{
-    //     width: tagSquareWidth * 0.45,
-    //     aspectRatio: 1,
-    //     marginRight: 4,
-    //   }}
-    //   source={
-    //     currentSpace.contentType === 'photo'
-    //       ? require('../../../assets/forApp/photo.png')
-    //       : currentSpace.contentType === 'video'
-    //       ? require('../../../assets/forApp/video.png')
-    //       : require('../../../assets/forApp/photo-video.png')
-    //   }
-    //   contentFit='cover'
-    //   tintColor={'white'}
-    // />
-    //   ),
-    //   feature: 'New Post',
-    //   subtitle: currentSpace.videoLength ? `${currentSpace.videoLength}s` : undefined,
-    //   action: () => homeStackNavigation.navigate('CreateNewPostStackNavigator'),
-    // },
-    // ここのpostを足さないといけない。
     {
       icon: (
-        <View>
+        <>
           <ExpoImage
             style={{
               width: tagSquareWidth * 0.45,
@@ -59,9 +35,11 @@ export const Features = () => {
           {momentLogs[currentSpace._id] ? (
             <View
               style={{
+                position: 'absolute',
+                top: -5,
+                right: -5,
                 width: 20,
                 height: 20,
-                marginRight: 15,
                 borderRadius: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -71,7 +49,7 @@ export const Features = () => {
               <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
             </View>
           ) : null}
-        </View>
+        </>
       ),
       feature: 'Moments',
       // subtitle: Times.minutesToHoursAndMinutes(currentSpace.disappearAfter),
@@ -95,7 +73,6 @@ export const Features = () => {
       action: () => onRollsPress(),
     },
   ];
-  const tagOuterWidth = Dimensions.get('window').width / 4;
 
   const onRollsPress = () => {
     Alert.alert('Not available now', 'The Rolls feature will be available in the next update.', [
@@ -161,8 +138,13 @@ export const Features = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList horizontal data={features} renderItem={renderItem} />
-      <View style={{ paddingHorizontal: 30, marginBottom: 15 }}>
+      <FlatList
+        horizontal
+        data={features}
+        renderItem={renderItem}
+        contentContainerStyle={{ paddingTop: 5, marginBottom: 5 }}
+      />
+      <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
         <View style={{ height: 1, backgroundColor: 'rgb(70,70,70)' }} />
       </View>
     </View>
