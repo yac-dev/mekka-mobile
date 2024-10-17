@@ -5,4 +5,5 @@ export const queryKeys = {
   createPost: 'createPost',
   updateSpaceCheckedInDate: 'updateSpaceCheckedInDate',
   members: 'members',
+  postsByTagId: 'postsByTagId',
 };

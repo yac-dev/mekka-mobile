@@ -14,7 +14,9 @@ import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
+// id毎でqueryをcacheしたいのよね。
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
 const windowWidth = Dimensions.get('window').width;

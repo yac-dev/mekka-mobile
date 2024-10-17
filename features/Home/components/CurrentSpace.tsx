@@ -10,6 +10,7 @@ type CurrentSpaceProps = {
   openAddNewPostMenuBottomSheet: (index: number) => void;
 };
 
+// tan stack使うかね？
 export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBottomSheet }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   return (

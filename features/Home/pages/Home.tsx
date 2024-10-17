@@ -18,10 +18,12 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, authAtom, logsTableAtom } from '../../../recoil';
+import { mySpacesAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../../query/queryKeys';
 
+// 結局、my spacesとかもさ、tan stackで制御できちゃうよな。。。なんで俺recoilでstate管理してるんだろ。。。
+// currentSpaceとかはいいんだけど、apiの結果はapp戦隊で持てるからな。。。
 export const Home = () => {
   const { isFetching: isFetchingMySpaces, isSuccess: isGetMySpacesSuccess } = useQuery({
     queryKey: [queryKeys.mySpaces],

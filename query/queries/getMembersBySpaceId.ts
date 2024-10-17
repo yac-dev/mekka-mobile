@@ -1,11 +1,11 @@
-import backendAPI from '../../apis/backend';
+import { axiosClient } from '../axiosClient';
 import { GetMembersBySpaceIdInputType, GetMembersBySpaceIdOutputType } from '../types';
 
 export const getMembersBySpaceId = async (
   input: GetMembersBySpaceIdInputType
 ): Promise<GetMembersBySpaceIdOutputType> => {
   try {
-    const result = await backendAPI.get(`/users/${input.spaceId}/space`);
+    const result = await axiosClient.get(`/users/${input.spaceId}/space`);
     const { users } = result.data.data;
 
     return {
