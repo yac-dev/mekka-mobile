@@ -9,70 +9,12 @@ import { currentSpaceAtom } from '../../../recoil';
 import { VectorIcon } from '../../../Icons';
 import { Times } from '../../../utils';
 
-// 多分、componsnetのほうがいいかもな。。
 const tagOuterWidth = Dimensions.get('window').width / 4;
-const tagSquareWidth = tagOuterWidth * 0.63;
 
 export const Features = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
-
-  const features = [
-    {
-      icon: (
-        <>
-          <ExpoImage
-            style={{
-              width: tagSquareWidth * 0.45,
-              aspectRatio: 1,
-              marginRight: 4,
-            }}
-            source={require('../../../assets/forApp/ghost.png')}
-            contentFit='cover'
-            tintColor={'white'}
-          />
-          {momentLogs[currentSpace._id] ? (
-            <View
-              style={{
-                position: 'absolute',
-                top: -5,
-                right: -5,
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'red',
-              }}
-            >
-              <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
-            </View>
-          ) : null}
-        </>
-      ),
-      feature: 'Moments',
-      // subtitle: Times.minutesToHoursAndMinutes(currentSpace.disappearAfter),
-      subtitle: '',
-      action: () => onMomentsPress(),
-    },
-    {
-      icon: (
-        <ExpoImage
-          style={{
-            width: tagSquareWidth * 0.45,
-            aspectRatio: 1,
-            marginRight: 4,
-          }}
-          source={require('../../../assets/forApp/film-roll.png')}
-          contentFit='cover'
-          tintColor={'white'}
-        />
-      ),
-      feature: 'Rolls',
-      action: () => onRollsPress(),
-    },
-  ];
 
   const onRollsPress = () => {
     Alert.alert('Not available now', 'The Rolls feature will be available in the next update.', [
@@ -90,73 +32,80 @@ export const Features = () => {
     homeStackNavigation.navigate('MomentsStackNavigator');
   };
 
-  // {momentLogs[currentSpace._id] ? (
-  //   <View
-  //     style={{
-  //       width: 16,
-  //       height: 16,
-  //       marginRight: 15,
-  //       borderRadius: 8,
-  //       justifyContent: 'center',
-  //       alignItems: 'center',
-  //       backgroundColor: 'red',
-  //     }}
-  //   >
-  //     <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
-  //   </View>
-  // ) : null}
-
-  // feature arrayを型付けしたい。
-
-  const renderItem = ({ item }: { item: (typeof features)[number] }) => {
-    return (
-      <View style={{ width: tagOuterWidth, height: 90, alignItems: 'center' }}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{
-            width: tagSquareWidth,
-            aspectRatio: 1,
-            borderRadius: 18,
-            backgroundColor: 'rgb(40,40,40)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 5,
-          }}
-          onPress={item.action}
-        >
-          {item.icon}
-        </TouchableOpacity>
-        <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
-          {item.feature}
-        </Text>
-        <Text numberOfLines={2} style={{ color: 'rgb(150,150,150)', fontSize: 11, textAlign: 'center' }}>
-          {item.subtitle}
-        </Text>
-      </View>
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <FlatList
-        horizontal
-        data={features}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingTop: 5, marginBottom: 5 }}
-      />
-      <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
-        <View style={{ height: 1, backgroundColor: 'rgb(70,70,70)' }} />
-      </View>
+    <View
+      style={{
+        width: 200,
+        height: 45,
+        backgroundColor: 'rgb(70,70,70)',
+        position: 'absolute',
+        bottom: 30,
+        alignSelf: 'center',
+        borderRadius: 1100,
+        flexDirection: 'row',
+      }}
+    >
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        onPress={() => onMomentsPress()}
+      >
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ width: 18, aspectRatio: 1, marginBottom: 3 }}>
+            <ExpoImage
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+              source={require('../../../assets/forApp/ghost.png')}
+              contentFit='cover'
+              tintColor={'white'}
+            />
+          </View>
+          <Text style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>Moments</Text>
+          {momentLogs[currentSpace._id] ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -5,
+                right: -5,
+                width: 20,
+                height: 20,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
+            </View>
+          ) : null}
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        onPress={() => onRollsPress()}
+      >
+        <View style={{ width: 18, aspectRatio: 1, marginBottom: 3 }}>
+          <ExpoImage
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+            source={require('../../../assets/forApp/film-roll.png')}
+            contentFit='cover'
+            tintColor={'white'}
+          />
+        </View>
+        <Text style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>Rolls</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'rgb(70,70,70)',
-  },
+  container: {},
 });
 
 {
