@@ -35,7 +35,7 @@ export const Features = () => {
   return (
     <View
       style={{
-        width: 150,
+        width: 160,
         height: 45,
         backgroundColor: 'rgb(70,70,70)',
         position: 'absolute',
