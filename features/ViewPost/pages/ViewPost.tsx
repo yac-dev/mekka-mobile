@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CommentInput } from '../components/CommentInput';
@@ -24,6 +24,7 @@ import { ViewPostStackNavigatorParams, ViewPostStackNavigatorProps } from '../na
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { FlashList } from '@shopify/flash-list';
 import { currentSpaceAtom } from '../../../recoil';
+import { ViewPostStackNavigator } from '../navigations/ViewPostStackNavigator';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -64,6 +65,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { posts, index } = route.params;
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const spaceStackNavigator = useNavigation<SpaceStackNavigatorProps>();
+  const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
 
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
 
@@ -100,6 +102,31 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const flashMessageRef = useRef<FlashMessage>();
 
   const { isCommentsModalVisible, handleCommentsModalVisibility } = useModal();
+
+  useEffect(() => {
+    viewStackNavigation.setOptions({
+      headerLeft: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}>
+          <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+          <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
+                {currentPost.createdBy.name}
+              </Text>
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 11, fontWeight: 'bold' }}>
+                {timeSince(new Date(currentPost.createdAt))}
+              </Text>
+            </View>
+            <View>
+              <Text numberOfLines={1} style={{ color: 'white', fontSize: 14 }}>
+                {currentPost.caption}
+              </Text>
+            </View>
+          </View>
+        </View>
+      ),
+    });
+  }, [currentPost]);
 
   // useEffect(() => {
   //   const date = new Date(currentPost.createdAt);
@@ -184,158 +211,99 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         initialScrollIndex={index}
         estimatedItemSize={Dimensions.get('window').height}
       />
-      <AppButton.Icon
-        onButtonPress={handleInfoBottomSheet}
-        customStyle={{
-          width: 44,
-          height: 44,
-          backgroundColor: 'rgb(50,50,50)',
-          borderRadius: 22,
-          position: 'absolute',
-          right: 10,
-          bottom: 10,
-        }}
-        hasShadow={false}
-      >
-        <VectorIcon.II name='arrow-up' size={20} style={{ color: 'white' }} />
-      </AppButton.Icon>
-      <AppBottomSheet.Gorhom
-        ref={infoBottomSheetRef}
-        defaultSnapPointsIndex={0}
-        snapPoints={['13%', '30%']}
-        hasBackdrop={false}
-        onCloseButtonClose={closeCommentsBottomSheet}
-        backgroundColor='rgb(25,25,25)'
-        handleComponent={() => {
-          return (
+      <View style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {currentSpace.isCommentAvailable && (
             <View>
-              <View style={styles.indicator} />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 15,
-                  paddingTop: 10,
-                  marginBottom: 10,
+              <AppButton.Icon
+                onButtonPress={handleCommentsPress}
+                customStyle={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  marginRight: 8,
                 }}
+                hasShadow={false}
               >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
-                  <View>
-                    <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 5 }}>
-                      {currentPost.createdBy.name}
-                    </Text>
-                    <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, fontWeight: 'bold' }}>
-                      {timeSince(new Date(currentPost.createdAt))}
-                    </Text>
-                  </View>
+                <VectorIcon.MCI name='comment-multiple' size={20} style={{ color: 'white' }} />
+              </AppButton.Icon>
+              {currentPost.totalComments >= 1 && (
+                <View
+                  style={{
+                    backgroundColor: 'rgb(50,50,50)',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 100,
+                    position: 'absolute',
+                    top: -3,
+                    right: 2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{currentPost.totalComments}</Text>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {currentSpace.isCommentAvailable && (
-                    <View>
-                      <AppButton.Icon
-                        onButtonPress={handleCommentsPress}
-                        customStyle={{
-                          width: 40,
-                          height: 40,
-                          backgroundColor: 'rgb(50,50,50)',
-                          borderRadius: 20,
-                          marginRight: 8,
-                        }}
-                        hasShadow={false}
-                      >
-                        <VectorIcon.MCI name='comment-multiple' size={16} style={{ color: 'white' }} />
-                      </AppButton.Icon>
-                      {currentPost.totalComments >= 1 && (
-                        <View
-                          style={{
-                            backgroundColor: 'rgb(50,50,50)',
-                            width: 20,
-                            height: 20,
-                            borderRadius: 100,
-                            position: 'absolute',
-                            top: -5,
-                            right: 0,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>
-                            {currentPost.totalComments}
-                          </Text>
-                        </View>
-                      )}
-                    </View>
-                  )}
-
-                  {currentSpace.isReactionAvailable && (
-                    <View>
-                      <AppButton.Icon
-                        onButtonPress={handleReactionPress}
-                        customStyle={{
-                          width: 40,
-                          height: 40,
-                          backgroundColor: 'rgb(50,50,50)',
-                          borderRadius: 20,
-                          marginRight: 8,
-                        }}
-                        hasShadow={false}
-                      >
-                        {currentSpace.reactions[0].type === 'emoji' ? (
-                          <Text style={{ fontSize: 20 }}>{currentSpace.reactions[0].emoji}</Text>
-                        ) : (
-                          <ExpoImage
-                            source={{ uri: currentSpace.reactions[0].sticker.url }}
-                            style={{ width: 20, height: 20 }}
-                          />
-                        )}
-                      </AppButton.Icon>
-                      {currentPost.totalReactions >= 1 && (
-                        <View
-                          style={{
-                            backgroundColor: 'rgb(50,50,50)',
-                            width: 20,
-                            height: 20,
-                            borderRadius: 100,
-                            position: 'absolute',
-                            top: -5,
-                            right: 0,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>
-                            {currentPost.totalReactions}
-                          </Text>
-                        </View>
-                      )}
-                    </View>
-                  )}
-
-                  <AppButton.Icon
-                    onButtonPress={handleHorizontalDotsPress}
-                    customStyle={{
-                      width: 40,
-                      height: 40,
-                      backgroundColor: 'rgb(50,50,50)',
-                      borderRadius: 20,
-                      marginRight: 5,
-                    }}
-                    hasShadow={false}
-                  >
-                    <VectorIcon.MCI name='dots-horizontal' size={16} style={{ color: 'white' }} />
-                  </AppButton.Icon>
-                </View>
-              </View>
+              )}
             </View>
-          );
-        }}
-      >
-        <View style={{ paddingHorizontal: 15 }}>
-          <Text style={{ color: 'white', fontSize: 14, fontWeight: 'bold' }}>{currentPost.caption}</Text>
+          )}
+
+          {currentSpace.isReactionAvailable && (
+            <View>
+              <AppButton.Icon
+                onButtonPress={handleReactionPress}
+                customStyle={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  marginRight: 8,
+                }}
+                hasShadow={false}
+              >
+                {currentSpace.reactions[0].type === 'emoji' ? (
+                  <Text style={{ fontSize: 30 }}>{currentSpace.reactions[0].emoji}</Text>
+                ) : (
+                  <ExpoImage
+                    source={{ uri: currentSpace.reactions[0].sticker.url }}
+                    style={{ width: 30, height: 30 }}
+                  />
+                )}
+              </AppButton.Icon>
+              {currentPost.totalReactions >= 1 && (
+                <View
+                  style={{
+                    backgroundColor: 'rgb(50,50,50)',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 100,
+                    position: 'absolute',
+                    top: -3,
+                    right: 2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>{currentPost.totalReactions}</Text>
+                </View>
+              )}
+            </View>
+          )}
+
+          <AppButton.Icon
+            onButtonPress={handleHorizontalDotsPress}
+            customStyle={{
+              width: 50,
+              height: 50,
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 100,
+            }}
+            hasShadow={false}
+          >
+            <VectorIcon.MCI name='dots-horizontal' size={25} style={{ color: 'white' }} />
+          </AppButton.Icon>
         </View>
-      </AppBottomSheet.Gorhom>
+      </View>
       <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
