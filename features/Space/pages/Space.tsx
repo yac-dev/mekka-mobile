@@ -130,10 +130,10 @@ export const Space: React.FC<ISpace> = ({ route }) => {
         <AppButton.Icon
           customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
           onButtonPress={() => onCreatePostPress()}
-          isPressDisabled={createPostResult.status === 'loading' ? true : false} // createのstatusをここに足す感じだな。
+          isPressDisabled={createPostStatus === 'pending' ? true : false} // createのstatusをここに足す感じだな。
           hasShadow
         >
-          {createPostResult.status === 'loading' ? (
+          {createPostStatus === 'pending' ? (
             <ActivityIndicator size={'small'} color={'white'} />
           ) : (
             <VectorIcon.II name='add' size={32} color={'white'} />

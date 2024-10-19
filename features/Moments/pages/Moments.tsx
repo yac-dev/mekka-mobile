@@ -147,10 +147,10 @@ export const Moments = () => {
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => onCreateMomentPress()}
-        isPressDisabled={createMomentResult.status === 'loading' ? true : false}
+        isPressDisabled={createMomentStatus === 'pending' ? true : false}
         hasShadow
       >
-        {createMomentResult.status === 'loading' ? (
+        {createMomentStatus === 'pending' ? (
           <ActivityIndicator color={'white'} />
         ) : (
           <VectorIcon.II name='add' size={32} color={'white'} />
