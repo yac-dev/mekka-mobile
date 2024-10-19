@@ -339,7 +339,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
-        title='How do you feel?'
+        header={<Text style={styles.text}>How do you feel?</Text>}
         onCloseButtonClose={closeReactionsBottomSheet}
         onClose={onReactionsBottomSheetClose}
       >
@@ -349,7 +349,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       <AppBottomSheet.Gorhom
         ref={commentsBottomSheetRef}
         snapPoints={['80%']}
-        title='Comments'
+        header={<Text style={styles.text}>Comments</Text>}
         onCloseButtonClose={closeCommentsBottomSheet}
       >
         <Comments getCommentsResult={getCommentsResult} handleCommentInputPress={handleCommentInputPress} />
@@ -357,7 +357,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       <AppBottomSheet.Gorhom
         ref={commentInputBottomSheetRef}
         snapPoints={['40%']}
-        title='What are your thoughts?'
+        header={<Text style={styles.text}>What are your thoughts?</Text>}
         onCloseButtonClose={closeCommentInputBottomSheet}
       >
         <CommentInput
@@ -380,5 +380,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 8,
     // marginBottom: 5,
+  },
+  text: {
+    color: 'white',
+    fontSize: 23,
+    fontWeight: 'bold',
   },
 });

@@ -18,24 +18,74 @@ import { BufferContentType, ContentType, CreateNewPostContext } from '../context
 import { CreateNewPostStackParams, CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom } from '../../../recoil';
+import { currentSpaceAtom, currentTagAtom, mySpacesAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
 import { CreatePostInputType } from '../types';
 import { authAtom } from '../../../recoil';
 import { useCreatePostResult } from '../../../api';
-
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createPost, mutationKeys, queryKeys } from '../../../query';
+import { PostType, SpaceType } from '../../../types';
+import { showMessage } from 'react-native-flash-message';
+import { GetPostsByTagIdOutputType } from '../../../query/types';
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
 type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'>;
 
+// createdTagsは結局、currentSpaceとmySpacesを更新せなあかんよな。
+// myspacesの更新とcurrentSpaceの更新だよね。。
+// myspacesの方もあれよ絵。tan stackにかえたい、recoilから。
+// でもな。。。
 export const NormalPost: React.FC<INormalPost> = ({ route }) => {
+  const queryClient = useQueryClient();
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [auth] = useRecoilState(authAtom);
-  const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
+  const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
 
   const { requestCreatePost } = useCreatePostResult(currentSpace);
+
+  // 動的にpostが入っていないんだよね。。。addedTagsにcurrentTagが含まれて絵いた場合に、postを加えたい、ただそれだけなんだよね。
+  //別に難しいことはない。
+  // isPendingとかもういらないじゃんこれ。すごいな。。
+  const { mutate: createPostMutate } = useMutation({
+    mutationKey: [mutationKeys.createPost, currentSpace._id],
+    mutationFn: (input: CreatePostInputType) => createPost(input),
+    onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }), // mutation実行前に起こすcallack func
+    onSuccess: (data) => {
+      showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
+      // そっか、addedTagにこのcurrentTagが含まれていたら、dynamicにpostを追加しなきゃだったんだね。
+      if (data.addedTags.includes(currentTag._id)) {
+        queryClient.setQueryData([queryKeys.postsByTagId, currentTag._id], (previous: GetPostsByTagIdOutputType) => {
+          console.log('previous posts', previous.posts);
+          return {
+            ...previous,
+            posts: [data.post, ...previous.posts],
+          };
+        });
+        // queryClient.setQueryData([queryKeys.postsByTagId, currentTag._id], data.post);
+      }
+      setMySpaces((previous: SpaceType[]) => {
+        const updatingSpace = previous.find((space) => space._id === currentSpace._id);
+        const updatedSpace = {
+          ...updatingSpace,
+          tags: [...updatingSpace.tags, ...data.createdTags],
+        };
+        const updatedSpaces = previous.map((space) => (space._id === currentSpace._id ? updatedSpace : space));
+        return updatedSpaces;
+      });
+      setCurrentSpace((previous) => {
+        return {
+          ...previous,
+          tags: [...previous.tags, ...data.createdTags],
+        };
+      });
+    },
+  });
+
   const {
     formData,
     onCaptionChange,
@@ -86,7 +136,8 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
         isValidated: true, // Adjust this value as needed
       },
     };
-    requestCreatePost(input);
+    // requestCreatePost(input);
+    createPostMutate(input);
   };
 
   useEffect(() => {

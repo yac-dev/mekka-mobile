@@ -15,6 +15,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { showMessage } from 'react-native-flash-message';
+import { mutationKeys } from '../../../query';
 
 // id毎でqueryをcacheしたいのよね。
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
@@ -28,6 +30,11 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const scrollViewRef = useRef(null);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
+
+  const { isPending: isCreatePostPending, status: createPostStatus } = useMutation({
+    mutationKey: [mutationKeys.createPost, currentSpace._id],
+  });
+
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);

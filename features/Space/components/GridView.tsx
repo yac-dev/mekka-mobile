@@ -22,7 +22,7 @@ type IGridView = {
 };
 
 // tagごとにpostsのcomponentを表示するわけだが、、、
-
+// regionPostの方も直さないとはいけないけど、こっちはそこまでやる必要もないか。。。
 export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const [currentTag] = useRecoilState(currentTagAtom);
   const { requestGetPostsByTagId, requestMorePostsByTagId, addCreatedPost } = useGetPostsByTagId(currentTag._id);
@@ -54,7 +54,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
       name: 'ViewPostStackNavigator',
       params: {
         screen: 'ViewPost',
-        params: { posts: getPostsByTagIdResult.data.posts, index: index },
+        params: { posts: data.posts, index: index },
       },
     });
   };
