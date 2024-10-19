@@ -10,6 +10,7 @@ import { VectorIcon } from '../../../Icons';
 import { CreateNewPostStackNavigator } from '../..';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { Image as ExpoImage } from 'expo-image';
 
 // navigatior系を全部一箇所のまとめた方がいいよな。。すげー面倒くさくなってきている。。。
 // type MomentsStackParams = {
@@ -67,7 +68,15 @@ export const MomentsStackNavigator = () => {
                   <VectorIcon.AD name='question' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
-              headerTitle: '',
+              headerTitle: () => (
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <ExpoImage
+                    source={{ uri: currentSpace.icon }}
+                    style={{ width: 28, height: 28, borderRadius: 30, marginRight: 5 }}
+                  />
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 17 }}>Moments</Text>
+                </View>
+              ),
               headerStyle: {
                 backgroundColor: 'black',
               },
