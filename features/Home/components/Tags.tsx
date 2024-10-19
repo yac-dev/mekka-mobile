@@ -66,18 +66,32 @@ export const Tags = () => {
           {tagLogs ? (
             <View
               style={{
-                width: 20,
-                height: 20,
-                borderRadius: 20,
-                justifyContent: 'center',
+                backgroundColor: 'black',
+                width: 28,
+                height: 28,
+                borderRadius: 30,
                 alignItems: 'center',
-                backgroundColor: 'red',
+                justifyContent: 'center',
                 position: 'absolute',
-                top: -5,
-                right: -5,
+                top: -8,
+                right: -8,
               }}
             >
-              <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'red',
+                  // position: 'absolute',
+                  // top: -5,
+                  // right: -5,
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+              </View>
             </View>
           ) : null}
         </TouchableOpacity>
