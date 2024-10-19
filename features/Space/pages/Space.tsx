@@ -14,7 +14,11 @@ import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { showMessage } from 'react-native-flash-message';
+import { mutationKeys } from '../../../query';
 
+// id毎でqueryをcacheしたいのよね。
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
 const windowWidth = Dimensions.get('window').width;
@@ -26,6 +30,11 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const scrollViewRef = useRef(null);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
+
+  const { isPending: isCreatePostPending, status: createPostStatus } = useMutation({
+    mutationKey: [mutationKeys.createPost, currentSpace._id],
+  });
+
   const onTabPress = (tab) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
@@ -121,10 +130,10 @@ export const Space: React.FC<ISpace> = ({ route }) => {
         <AppButton.Icon
           customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
           onButtonPress={() => onCreatePostPress()}
-          isPressDisabled={createPostResult.status === 'loading' ? true : false} // createのstatusをここに足す感じだな。
+          isPressDisabled={createPostStatus === 'pending' ? true : false} // createのstatusをここに足す感じだな。
           hasShadow
         >
-          {createPostResult.status === 'loading' ? (
+          {createPostStatus === 'pending' ? (
             <ActivityIndicator size={'small'} color={'white'} />
           ) : (
             <VectorIcon.II name='add' size={32} color={'white'} />

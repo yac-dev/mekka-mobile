@@ -40,7 +40,7 @@ export const Tags = () => {
     const isFocused = currentTag?._id === item._id;
     const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][item._id];
     return (
-      <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center' }}>
+      <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center', marginBottom: 5 }}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
@@ -66,18 +66,32 @@ export const Tags = () => {
           {tagLogs ? (
             <View
               style={{
-                width: 20,
-                height: 20,
-                borderRadius: 20,
-                justifyContent: 'center',
+                backgroundColor: 'black',
+                width: 28,
+                height: 28,
+                borderRadius: 30,
                 alignItems: 'center',
-                backgroundColor: 'red',
+                justifyContent: 'center',
                 position: 'absolute',
-                top: -5,
-                right: -5,
+                top: -8,
+                right: -8,
               }}
             >
-              <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'red',
+                  // position: 'absolute',
+                  // top: -5,
+                  // right: -5,
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+              </View>
             </View>
           ) : null}
         </TouchableOpacity>
@@ -158,7 +172,7 @@ export const Tags = () => {
         showsVerticalScrollIndicator={false}
         numColumns={4}
         scrollEnabled={false}
-        // contentContainerStyle={{ paddingTop: 10 }}
+        contentContainerStyle={{ paddingTop: 5 }}
         data={currentSpace.tags}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}

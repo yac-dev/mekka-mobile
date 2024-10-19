@@ -5,4 +5,7 @@ export const queryKeys = {
   createPost: 'createPost',
   updateSpaceCheckedInDate: 'updateSpaceCheckedInDate',
   members: 'members',
+  postsByTagId: 'postsByTagId',
+  momentsBySpaceId: 'momentsBySpaceId',
+  // ここら辺のkey名、apiのエンドポイントに則った方がいいよね多分。
 };

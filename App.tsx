@@ -8,7 +8,7 @@ import { Composer } from './providers/Providers';
 import { Root } from './features/App/pages/Root';
 import FlashMessage from 'react-native-flash-message';
 import { RecoilRoot } from 'recoil';
-import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 

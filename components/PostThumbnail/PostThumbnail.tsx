@@ -8,6 +8,7 @@ import { Skeleton } from '../Skelton';
 import { Icons } from '../../assets/iconImages';
 import { VideoPlayer } from '../VideoPlayer';
 import { VectorIcon } from '../../Icons';
+import { Times } from '../../utils';
 
 const sideLength = Dimensions.get('screen').width / 3;
 
@@ -99,8 +100,8 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
               tintColor={'white'}
             />
             <Text style={{ color: 'white' }}>
-              {hours && `${hours} h`}
-              {minutes && `${minutes} min`}
+              {hours && `${hours}h`}&nbsp;
+              {minutes && `${minutes}min`}
             </Text>
           </View>
         </View>

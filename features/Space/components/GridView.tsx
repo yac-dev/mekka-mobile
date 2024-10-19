@@ -13,6 +13,8 @@ import { createPostResultAtomFamily } from '../../../api/atoms';
 import { useRecoilState } from 'recoil';
 import { showMessage } from 'react-native-flash-message';
 import { currentTagAtom } from '../../../recoil';
+import { useQuery } from '@tanstack/react-query';
+import { getPostsByTagId, queryKeys } from '../../../query';
 
 type IGridView = {
   space: SpaceType;
@@ -20,7 +22,7 @@ type IGridView = {
 };
 
 // tagごとにpostsのcomponentを表示するわけだが、、、
-
+// regionPostの方も直さないとはいけないけど、こっちはそこまでやる必要もないか。。。
 export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const [currentTag] = useRecoilState(currentTagAtom);
   const { requestGetPostsByTagId, requestMorePostsByTagId, addCreatedPost } = useGetPostsByTagId(currentTag._id);
@@ -29,23 +31,22 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
   const tagScreenOpened = useRecoilValue(tagScreenOpenedAtomFamily(tag._id));
   const [createPostResult, setCreatePostResult] = useRecoilState(createPostResultAtomFamily(space._id));
 
-  useEffect(() => {
-    // if (getPostsByTagIdResult.status === 'idle') {
-    requestGetPostsByTagId({ tagId: tag._id, currentPage: 0 });
-    // }
-  }, [currentTag]);
+  const { data, isLoading: isGetPostsByTagIdLoading } = useQuery({
+    queryKey: [queryKeys.postsByTagId, currentTag._id],
+    queryFn: () => getPostsByTagId({ tagId: currentTag._id, currentPage: 0 }),
+  });
 
-  useEffect(() => {
-    if (createPostResult.status === 'loading') {
-      showMessage({ type: 'info', message: 'Processing now...' });
-    }
-    if (createPostResult.status === 'success' && tagScreenOpened && createPostResult.data.addedTags.includes(tag._id)) {
-      showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
-      addCreatedPost(createPostResult.data.post);
-      setCreatePostResult({ status: 'idle', data: undefined });
-      // 終わった後に初期に戻すくらいかな。。。
-    }
-  }, [createPostResult, tagScreenOpened]);
+  // useEffect(() => {
+  //   if (createPostResult.status === 'loading') {
+  //     showMessage({ type: 'info', message: 'Processing now...' });
+  //   }
+  //   if (createPostResult.status === 'success' && tagScreenOpened && createPostResult.data.addedTags.includes(tag._id)) {
+  //     showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
+  //     addCreatedPost(createPostResult.data.post);
+  //     setCreatePostResult({ status: 'idle', data: undefined });
+  //     // 終わった後に初期に戻すくらいかな。。。
+  //   }
+  // }, [createPostResult, tagScreenOpened]);
 
   // NOTE: 多分、indexではなくpostでいんじゃないかなー。view post側でpostの_idでloopすればいいだけだから。。。ただ、postの数が多い場合はllopが面倒くさいか。
   const onPressPostThumbnail = (post: PostType, index: number) => {
@@ -53,7 +54,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
       name: 'ViewPostStackNavigator',
       params: {
         screen: 'ViewPost',
-        params: { posts: getPostsByTagIdResult.data.posts, index: index },
+        params: { posts: data.posts, index: index },
       },
     });
   };
@@ -68,7 +69,7 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
   };
 
-  if (getPostsByTagIdResult.status === 'loading' && !getPostsByTagIdResult.data?.posts.length) {
+  if (isGetPostsByTagIdLoading) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -76,10 +77,12 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     );
   }
 
-  if (!getPostsByTagIdResult.data.posts.length) {
+  if (!data?.posts.length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts tagged by [tag name]</Text>
+        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>
+          No posts tagged by ${currentTag.name}
+        </Text>
       </View>
     );
   }
@@ -88,15 +91,15 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
         numColumns={3}
-        data={getPostsByTagIdResult.data.posts}
+        data={data?.posts}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
         removeClippedSubviews
         estimatedItemSize={1000}
-        onEndReached={() => {
-          getPostsByTagIdResult.data.hasNextPage &&
-            requestMorePostsByTagId({ tagId: tag._id, currentPage: getPostsByTagIdResult.data.currentPage });
-        }}
+        // onEndReached={() => {
+        //   getPostsByTagIdResult.data.hasNextPage &&
+        //     requestMorePostsByTagId({ tagId: tag._id, currentPage: getPostsByTagIdResult.data.currentPage });
+        // }}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.5}
         contentContainerStyle={{ paddingBottom: 70 }}

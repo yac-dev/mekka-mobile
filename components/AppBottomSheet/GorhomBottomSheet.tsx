@@ -9,7 +9,7 @@ import { AppButton } from '../Button';
 type Ref = BottomSheetModal;
 
 type GorhomBottomSheetRef = {
-  title?: string;
+  header?: ReactNode;
   defaultSnapPointsIndex?: number;
   hasBackdrop?: boolean;
   snapPoints: string[];
@@ -24,7 +24,7 @@ type GorhomBottomSheetRef = {
 export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
   (
     {
-      title,
+      header,
       defaultSnapPointsIndex = -1,
       hasBackdrop = true,
       snapPoints,
@@ -65,7 +65,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
             : () => {
                 return (
                   <View style={styles.container}>
-                    <Text style={styles.text}>{title}</Text>
+                    {header}
                     <AppButton.Icon
                       onButtonPress={onCloseButtonClose}
                       customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}

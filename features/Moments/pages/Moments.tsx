@@ -1,22 +1,18 @@
-import React, { useContext, useCallback, useEffect, useState } from 'react';
-import { View, Text, Dimensions, ActivityIndicator, FlatList, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, Dimensions, ActivityIndicator, StyleSheet } from 'react-native';
 import { AppButton, PostThumbnail } from '../../../components';
 import { VectorIcon } from '../../../Icons';
-import { useGetMomentPosts } from '../hooks/useGetMomentPosts';
 import { PostType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
-import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
-import { Colors } from '../../../themes';
-import { showMessage, hideMessage } from 'react-native-flash-message';
-import { useGetMomentsBySpaceIdResult, useCreateMomentResult } from '../../../api/hooks';
-import { useRecoilValue } from 'recoil';
-import { createMomentResultAtomFamily, getMomentsBySpaceIdResultAtomFamily } from '../../../api/atoms';
+import { showMessage } from 'react-native-flash-message';
 import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
 import { HomeStackNavigatorProps } from '../../Home/navigations/HomeStackNavigator';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { queryKeys, getMomentsBySpaceId, mutationKeys } from '../../../query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
@@ -24,27 +20,23 @@ export const Moments = () => {
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [currentSpace] = useRecoilState(currentSpaceAtom);
-  const { requestGetMomentsBySpaceId, addCreatedMoment } = useGetMomentsBySpaceIdResult(currentSpace);
-  // refreshの実装。
-  const { revertCreateMomentResult } = useCreateMomentResult(currentSpace);
+  const { data, status } = useQuery({
+    queryKey: [queryKeys.momentsBySpaceId, currentSpace._id],
+    queryFn: () => getMomentsBySpaceId({ spaceId: currentSpace._id }),
+  });
 
-  const getMomentsBySpaceIdResult = useRecoilValue(getMomentsBySpaceIdResultAtomFamily(currentSpace._id));
-  const createMomentResult = useRecoilValue(createMomentResultAtomFamily(currentSpace._id));
-
-  useEffect(() => {
-    requestGetMomentsBySpaceId({ spaceId: currentSpace._id });
-  }, []);
+  const { status: createMomentStatus } = useMutation({
+    mutationKey: [mutationKeys.createMoment],
+  });
 
   useEffect(() => {
-    if (createMomentResult.status === 'loading') {
+    if (createMomentStatus === 'pending') {
       showMessage({ type: 'info', message: 'Processing now...' });
     }
-    if (createMomentResult.status === 'success') {
+    if (createMomentStatus === 'success') {
       showMessage({ type: 'success', message: 'Your moment has been processed successfully.' });
-      addCreatedMoment(createMomentResult.data.post);
-      revertCreateMomentResult();
     }
-  }, [createMomentResult]);
+  }, [createMomentStatus]);
 
   function convertMinutesToHoursAndMinutes(minutes: number) {
     const hours = Math.floor(minutes / 60);
@@ -59,7 +51,6 @@ export const Moments = () => {
     }
   }
 
-  // うん、やっぱあれだわ、spaceRootの中に無かったからな。。。。ここがめんどいところだな。。。
   const onCreateMomentPress = () => {
     spaceStackNavigation.navigate('CreateNewPostStackNavigator', {
       screen: 'MomentPost',
@@ -73,7 +64,7 @@ export const Moments = () => {
       params: {
         screen: 'ViewPost',
         params: {
-          posts: getMomentsBySpaceIdResult.data?.posts,
+          posts: data?.posts,
           index,
         },
       },
@@ -84,8 +75,7 @@ export const Moments = () => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPostThumbnailPress} />;
   };
 
-  // 今後は, loading時にもdataがある前提となる。
-  if (getMomentsBySpaceIdResult.status === 'loading' && !getMomentsBySpaceIdResult.data?.posts.length) {
+  if (status === 'pending') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -95,17 +85,14 @@ export const Moments = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
-      {getMomentsBySpaceIdResult.data?.posts.length ? (
+      {data?.posts.length ? (
         <FlashList
           numColumns={3}
-          data={getMomentsBySpaceIdResult.data?.posts}
+          data={data?.posts}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           removeClippedSubviews
           estimatedItemSize={ItemWidth}
-          // refreshControl={<RefreshControl colors={['red']} refreshing={isRefreshing} onRefresh={() => onRefresh()} />}
-          // onEndReached={loadMoreItem}
-          // ListFooterComponent={renderLoader}
           onEndReachedThreshold={0}
           contentContainerStyle={{ paddingBottom: 30 }}
         />
@@ -136,10 +123,10 @@ export const Moments = () => {
       <AppButton.Icon
         customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
         onButtonPress={() => onCreateMomentPress()}
-        isPressDisabled={createMomentResult.status === 'loading' ? true : false}
+        isPressDisabled={createMomentStatus === 'pending' ? true : false}
         hasShadow
       >
-        {createMomentResult.status === 'loading' ? (
+        {createMomentStatus === 'pending' ? (
           <ActivityIndicator color={'white'} />
         ) : (
           <VectorIcon.II name='add' size={32} color={'white'} />

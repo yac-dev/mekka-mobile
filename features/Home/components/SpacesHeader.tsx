@@ -52,7 +52,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
           marginRight: 8,
           borderBottomWidth: isFocused ? 2 : 0,
           borderBottomColor: 'white',
-          paddingVertical: 5,
+          paddingVertical: 10,
         }}
         onPress={() => onSpacePress(item)}
       >
@@ -119,7 +119,7 @@ export const SpacesHeader: React.FC<BottomTabProps> = ({ openAddNewSpaceMenuBott
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginRight: 14,
-                paddingVertical: 5,
+                paddingVertical: 10,
               }}
             >
               <TouchableOpacity

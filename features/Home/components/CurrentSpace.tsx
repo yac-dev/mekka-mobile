@@ -10,6 +10,7 @@ type CurrentSpaceProps = {
   openAddNewPostMenuBottomSheet: (index: number) => void;
 };
 
+// tan stack使うかね？
 export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBottomSheet }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   return (
@@ -24,7 +25,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
         {/* </ScrollView> */}
       </ScrollView>
       <TouchableOpacity
-        style={{ position: 'absolute', bottom: 20, right: 20 }}
+        style={{ position: 'absolute', bottom: 30, right: 20 }}
         activeOpacity={0.7}
         onPress={() => openAddNewPostMenuBottomSheet(0)}
       >

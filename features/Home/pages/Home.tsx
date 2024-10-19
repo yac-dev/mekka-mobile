@@ -18,11 +18,18 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, authAtom, logsTableAtom } from '../../../recoil';
-import { useQuery } from '@tanstack/react-query';
+import { mySpacesAtom, authAtom, logsTableAtom, currentSpaceAtom } from '../../../recoil';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../../query/queryKeys';
+import { CreatePostInputType } from '../../../query/types';
+import { mutationKeys } from '../../../query/mutationKeys';
+import { Image as ExpoImage } from 'expo-image';
 
+// 結局、my spacesとかもさ、tan stackで制御できちゃうよな。。。なんで俺recoilでstate管理してるんだろ。。。
+// currentSpaceとかはいいんだけど、apiの結果はapp戦隊で持てるからな。。。
 export const Home = () => {
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth, setAuth] = useRecoilState(authAtom);
   const { isFetching: isFetchingMySpaces, isSuccess: isGetMySpacesSuccess } = useQuery({
     queryKey: [queryKeys.mySpaces],
   });
@@ -30,7 +37,13 @@ export const Home = () => {
     queryKey: [queryKeys.logs],
   });
 
-  const [, setAuth] = useRecoilState(authAtom);
+  const { status: createPostStatus } = useMutation({
+    mutationKey: [mutationKeys.createPost, currentSpace._id],
+  });
+  const { status: createMomentStatus } = useMutation({
+    mutationKey: [mutationKeys.createMoment, currentSpace._id],
+  });
+
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
@@ -64,6 +77,25 @@ export const Home = () => {
       },
     });
   }, [mySpaces]);
+
+  // homeに関してはここで制御せんとかん。
+  useEffect(() => {
+    if (createPostStatus === 'pending') {
+      showMessage({ type: 'info', message: 'Processing now...' });
+    }
+    if (createPostStatus === 'success') {
+      showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
+    }
+  }, [createPostStatus]);
+
+  useEffect(() => {
+    if (createMomentStatus === 'pending') {
+      showMessage({ type: 'info', message: 'Processing now...' });
+    }
+    if (createMomentStatus === 'success') {
+      showMessage({ type: 'success', message: 'Your moment has been processed successfully.' });
+    }
+  }, [createMomentStatus]);
 
   //あれだよな。。。シンプルに。post押した後のnavigationだけ変えればいいんだよな。結局今は、、、、recoil使ったりで割と便利ではあるしね。
   // navigatonのものだけfunction をpassして実行するようにするか。
@@ -155,7 +187,13 @@ export const Home = () => {
       <AppBottomSheet.Gorhom
         ref={addNewPostMenuBottomSheetRef}
         snapPoints={['40%']}
-        title='Something to Share?'
+        header={
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[styles.text, { marginRight: 5 }]}>Something to share on</Text>
+            <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 30, height: 30, borderRadius: 20 }} />
+            <Text style={[styles.text, { marginLeft: 5 }]}>?</Text>
+          </View>
+        }
         onCloseButtonClose={closeAddNewPostMenuBottomSheet}
       >
         <AddNewPostMenu onAddNewPostPress={onAddNewPostPress} onAddNewMomentPress={onAddNewMomentPress} />
@@ -164,7 +202,7 @@ export const Home = () => {
       <AppBottomSheet.Gorhom
         ref={authMenuBottomSheetRef}
         snapPoints={['60%']}
-        title='Settings'
+        header={<Text style={styles.text}>Settings</Text>}
         onCloseButtonClose={closeAuthMenuBottomSheet}
       >
         <AuthMenu
@@ -177,7 +215,7 @@ export const Home = () => {
       <AppBottomSheet.Gorhom
         ref={addNewSpaceMenuBottomSheetRef}
         snapPoints={['50%']}
-        title='Add Space'
+        header={<Text style={styles.text}>Add Space</Text>}
         onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
       >
         <AddNewSpaceMenu
@@ -195,5 +233,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     // paddingTop: 10,
+  },
+  text: {
+    color: 'white',
+    fontSize: 23,
+    fontWeight: 'bold',
   },
 });
