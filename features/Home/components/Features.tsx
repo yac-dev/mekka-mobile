@@ -41,7 +41,7 @@ export const Features = () => {
         position: 'absolute',
         bottom: 30,
         alignSelf: 'center',
-        borderRadius: 1100,
+        borderRadius: 100,
         flexDirection: 'row',
       }}
     >
@@ -62,22 +62,22 @@ export const Features = () => {
               tintColor={'white'}
             />
           </View>
-          <Text style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>Moments</Text>
+          <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Moments</Text>
           {momentLogs[currentSpace._id] ? (
             <View
               style={{
                 position: 'absolute',
                 top: -5,
-                right: -5,
-                width: 20,
-                height: 20,
+                right: 0,
+                width: 16,
+                height: 16,
                 borderRadius: 10,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: 'red',
               }}
             >
-              <Text style={{ color: 'white', fontSize: 12 }}>{momentLogs[currentSpace._id]}</Text>
+              <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
             </View>
           ) : null}
         </View>
@@ -98,7 +98,7 @@ export const Features = () => {
             tintColor={'white'}
           />
         </View>
-        <Text style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>Rolls</Text>
+        <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Rolls</Text>
       </TouchableOpacity>
     </View>
   );

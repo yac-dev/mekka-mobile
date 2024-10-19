@@ -141,7 +141,7 @@ export const WelcomePage = () => {
           color: 'rgb(170,170,170)',
           fontSize: 16,
           position: 'absolute',
-          bottom: 0,
+          bottom: 20,
           alignSelf: 'center',
           marginBottom: 10,
           textDecorationLine: 'underline',
