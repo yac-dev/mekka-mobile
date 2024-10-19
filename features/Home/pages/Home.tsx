@@ -40,6 +40,9 @@ export const Home = () => {
   const { status: createPostStatus } = useMutation({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
+  const { status: createMomentStatus } = useMutation({
+    mutationKey: [mutationKeys.createMoment, currentSpace._id],
+  });
 
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
@@ -75,6 +78,7 @@ export const Home = () => {
     });
   }, [mySpaces]);
 
+  // homeに関してはここで制御せんとかん。
   useEffect(() => {
     if (createPostStatus === 'pending') {
       showMessage({ type: 'info', message: 'Processing now...' });
@@ -83,6 +87,15 @@ export const Home = () => {
       showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
     }
   }, [createPostStatus]);
+
+  useEffect(() => {
+    if (createMomentStatus === 'pending') {
+      showMessage({ type: 'info', message: 'Processing now...' });
+    }
+    if (createMomentStatus === 'success') {
+      showMessage({ type: 'success', message: 'Your moment has been processed successfully.' });
+    }
+  }, [createMomentStatus]);
 
   //あれだよな。。。シンプルに。post押した後のnavigationだけ変えればいいんだよな。結局今は、、、、recoil使ったりで割と便利ではあるしね。
   // navigatonのものだけfunction をpassして実行するようにするか。

@@ -73,3 +73,22 @@ export type CreatePostOutputType = {
   addedTags: string[]; // tagの_idが複数返ってくる。
   createdTags?: TagType[];
 };
+
+export type CreateMomentInputType = FormDataType & {
+  userId: string;
+  spaceId: string;
+  reactions: ReactionType[];
+  disappearAfter: string;
+};
+
+export type CreateMomentOutputType = {
+  post: PostType;
+};
+
+export type GetMomentsBySpaceIdInputType = {
+  spaceId: string;
+};
+
+export type GetMomentsBySpaceIdOutputType = {
+  posts?: PostType[];
+};

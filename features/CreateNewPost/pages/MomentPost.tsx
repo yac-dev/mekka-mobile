@@ -11,6 +11,10 @@ import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createMoment, mutationKeys, queryKeys } from '../../../query';
+import { showMessage } from 'react-native-flash-message';
+import { GetMomentsBySpaceIdOutputType } from '../../../query/types';
 
 type IMomentPost = NativeStackScreenProps<CreateNewPostStackParams, 'MomentPost'>;
 
@@ -19,7 +23,28 @@ const MomentPost: React.FC<IMomentPost> = ({ route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [auth] = useRecoilState(authAtom);
+  const queryClient = useQueryClient();
+
   const { requestCreateMoment } = useCreateMomentResult(currentSpace);
+
+  const { mutate: createMomentMutation } = useMutation({
+    mutationKey: [mutationKeys.createMoment],
+    mutationFn: (input: CreateMomentInputType) => createMoment(input),
+    onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }),
+    onSuccess: (data) => {
+      showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
+      queryClient.setQueryData(
+        [queryKeys.momentsBySpaceId, currentSpace._id],
+        (previous: GetMomentsBySpaceIdOutputType) => {
+          return {
+            ...previous,
+            posts: [data.post, ...previous.posts],
+          };
+        }
+      );
+    },
+  });
+
   const { onPostTypeChange, pickUpContents, formData, onRemoveContentPress, onCaptionChange } =
     useContext(CreateNewPostContext);
 
@@ -57,7 +82,7 @@ const MomentPost: React.FC<IMomentPost> = ({ route }) => {
       reactions: currentSpace.reactions,
       disappearAfter: currentSpace.disappearAfter.toString(),
     };
-    requestCreateMoment(input);
+    createMomentMutation(input);
     createNewPostStackNavigation.goBack();
   };
 
@@ -106,14 +131,6 @@ const MomentPost: React.FC<IMomentPost> = ({ route }) => {
               New Moments
             </Text>
           </View>
-          {/* <View style={{ flexDirection: 'column' }}>
-            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-              Your moment post will disappeare within
-            </Text>
-            <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
-              {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
-            </Text>
-          </View> */}
         </View>
         {formData.contents.value.length === 0 && (
           <TouchableOpacity

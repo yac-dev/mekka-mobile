@@ -33,6 +33,10 @@ export const createPost = async (input: CreatePostInputType): Promise<CreatePost
       createdTags,
     };
   } catch (error) {
-    throw error;
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error('An error occurred fetching your spaces...');
+    }
   }
 };

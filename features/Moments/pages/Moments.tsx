@@ -17,6 +17,9 @@ import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavi
 import { HomeStackNavigatorProps } from '../../Home/navigations/HomeStackNavigator';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
+import { queryKeys, getMomentsBySpaceId, createMoment, mutationKeys } from '../../../query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { CreateMomentInputType } from '../../../query/types';
 
 const ItemWidth = Dimensions.get('window').width / 3;
 
@@ -26,25 +29,33 @@ export const Moments = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const { requestGetMomentsBySpaceId, addCreatedMoment } = useGetMomentsBySpaceIdResult(currentSpace);
   // refreshの実装。
+  const { data, status } = useQuery({
+    queryKey: [queryKeys.momentsBySpaceId, currentSpace._id],
+    queryFn: () => getMomentsBySpaceId({ spaceId: currentSpace._id }),
+  });
+
+  const { status: createMomentStatus } = useMutation({
+    mutationKey: [mutationKeys.createMoment],
+  });
+
   const { revertCreateMomentResult } = useCreateMomentResult(currentSpace);
 
   const getMomentsBySpaceIdResult = useRecoilValue(getMomentsBySpaceIdResultAtomFamily(currentSpace._id));
   const createMomentResult = useRecoilValue(createMomentResultAtomFamily(currentSpace._id));
 
-  useEffect(() => {
-    requestGetMomentsBySpaceId({ spaceId: currentSpace._id });
-  }, []);
+  // useEffect(() => {
+  //   requestGetMomentsBySpaceId({ spaceId: currentSpace._id });
+  // }, []);
 
+  //
   useEffect(() => {
-    if (createMomentResult.status === 'loading') {
+    if (createMomentStatus === 'pending') {
       showMessage({ type: 'info', message: 'Processing now...' });
     }
-    if (createMomentResult.status === 'success') {
+    if (createMomentStatus === 'success') {
       showMessage({ type: 'success', message: 'Your moment has been processed successfully.' });
-      addCreatedMoment(createMomentResult.data.post);
-      revertCreateMomentResult();
     }
-  }, [createMomentResult]);
+  }, [createMomentStatus]);
 
   function convertMinutesToHoursAndMinutes(minutes: number) {
     const hours = Math.floor(minutes / 60);
@@ -73,7 +84,7 @@ export const Moments = () => {
       params: {
         screen: 'ViewPost',
         params: {
-          posts: getMomentsBySpaceIdResult.data?.posts,
+          posts: data?.posts,
           index,
         },
       },
@@ -85,7 +96,7 @@ export const Moments = () => {
   };
 
   // 今後は, loading時にもdataがある前提となる。
-  if (getMomentsBySpaceIdResult.status === 'loading' && !getMomentsBySpaceIdResult.data?.posts.length) {
+  if (status === 'pending') {
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ActivityIndicator />
@@ -95,10 +106,10 @@ export const Moments = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
-      {getMomentsBySpaceIdResult.data?.posts.length ? (
+      {data?.posts.length ? (
         <FlashList
           numColumns={3}
-          data={getMomentsBySpaceIdResult.data?.posts}
+          data={data?.posts}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           removeClippedSubviews
