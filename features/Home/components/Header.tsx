@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Share, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Share, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
@@ -7,11 +7,20 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { urls } from '../../../settings';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom } from '../../../recoil';
+import { authAtom, currentSpaceAtom } from '../../../recoil';
 import { AppButton } from '../../../components';
+import { useQuery } from '@tanstack/react-query';
+import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
 
 export const Header = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth] = useRecoilState(authAtom);
+  const { isRefetching: isRefetchingMySpaces } = useQuery({
+    queryKey: [queryKeys.mySpaces, auth],
+  });
+  const { isRefetching: isRefetchingLogs } = useQuery({
+    queryKey: [queryKeys.logs, auth],
+  });
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   const handleInvite = async () => {
@@ -44,16 +53,19 @@ export const Header = () => {
         paddingBottom: 20,
       }}
     >
-      <TouchableOpacity
-        style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}
-        onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-        activeOpacity={0.7}
-      >
-        <View style={{ marginRight: 5 }}>
-          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
-        </View>
-        <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}
+          onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+          activeOpacity={0.7}
+        >
+          <View style={{ marginRight: 5 }}>
+            <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
+          </View>
+          <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
+        </TouchableOpacity>
+        {isRefetchingMySpaces && isRefetchingLogs ? <ActivityIndicator size='small' color='white' /> : null}
+      </View>
       {/* <TouchableOpacity
         style={{ alignSelf: 'flex-end' }}
         onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}

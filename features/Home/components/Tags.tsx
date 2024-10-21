@@ -40,7 +40,6 @@ export const Tags = () => {
   const renderItem = ({ item }: { item: TagType }) => {
     const isFocused = currentTag?._id === item._id;
     const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][item._id];
-    console.log('item.color -> ', JSON.stringify(item.color, null, 2), JSON.stringify(item.name, null, 2));
     return (
       <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center', marginBottom: 5 }}>
         <TouchableOpacity

@@ -1,19 +1,27 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Header, Specs, Features, Tags } from '.';
 import { AppButton } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom } from '../../../recoil';
+import { authAtom, currentSpaceAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { momentLogsAtom } from '../../../recoil';
-
+import { useQuery } from '@tanstack/react-query';
+import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
 type CurrentSpaceProps = {
   openAddNewPostMenuBottomSheet: (index: number) => void;
 };
 
 // tan stack使うかね？
 export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBottomSheet }) => {
+  const [auth] = useRecoilState(authAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const { isRefetching: isRefetchingMySpaces } = useQuery({
+    queryKey: [queryKeys.mySpaces, auth],
+  });
+  const { isRefetching: isRefetchingLogs } = useQuery({
+    queryKey: [queryKeys.logs, auth],
+  });
 
   return (
     <View style={{ flex: 1 }}>
