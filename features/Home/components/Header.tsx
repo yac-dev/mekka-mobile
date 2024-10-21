@@ -50,11 +50,11 @@ export const Header = () => {
         activeOpacity={0.7}
       >
         <View style={{ marginRight: 5 }}>
-          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 26 }}>{currentSpace.name}</Text>
+          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
         </View>
         <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{ alignSelf: 'flex-end' }}
         onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
         activeOpacity={0.7}
@@ -80,7 +80,7 @@ export const Header = () => {
           />
           <VectorIcon.FD name='megaphone' size={16} color={'rgb(100,100,100)'} />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
