@@ -17,7 +17,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: 15 }}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: 20 }}>
         <Header />
         {/* <Specs /> */}
         {/* <Divider /> */}

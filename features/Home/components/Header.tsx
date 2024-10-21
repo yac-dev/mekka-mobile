@@ -39,22 +39,47 @@ export const Header = () => {
   return (
     <View
       style={{
-        flexDirection: 'row',
+        flexDirection: 'column',
         paddingHorizontal: 20,
         paddingBottom: 20,
-        alignItems: 'center',
-        justifyContent: 'space-between',
       }}
     >
       <TouchableOpacity
-        style={{ flexDirection: 'row', alignItems: 'center' }}
+        style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}
         onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
         activeOpacity={0.7}
       >
         <View style={{ marginRight: 5 }}>
-          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
+          <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 26 }}>{currentSpace.name}</Text>
         </View>
         <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ alignSelf: 'flex-end' }}
+        onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+        activeOpacity={0.7}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <VectorIcon.MI
+            name='public'
+            size={16}
+            color={currentSpace.isPublic ? 'white' : 'rgb(100,100,100)'}
+            style={{ marginRight: 5 }}
+          />
+          <VectorIcon.II
+            name='chatbubbles-sharp'
+            size={16}
+            color={currentSpace.isCommentAvailable ? 'white' : 'rgb(100,100,100)'}
+            style={{ marginRight: 5 }}
+          />
+          <VectorIcon.MCI
+            name='thumb-up'
+            size={16}
+            color={currentSpace.isReactionAvailable ? 'white' : 'rgb(100,100,100)'}
+            style={{ marginRight: 5 }}
+          />
+          <VectorIcon.FD name='megaphone' size={16} color={'rgb(100,100,100)'} />
+        </View>
       </TouchableOpacity>
     </View>
   );

@@ -7,6 +7,7 @@ import { TagType } from '../../../types';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 import { Header } from './Header';
+import { Colors } from '../../../themes';
 
 const tagOuterWidth = Dimensions.get('window').width / 4;
 const tagSquareWidth = tagOuterWidth * 0.63;
@@ -39,61 +40,71 @@ export const Tags = () => {
   const renderItem = ({ item }: { item: TagType }) => {
     const isFocused = currentTag?._id === item._id;
     const tagLogs = currentSpace && logsTable[currentSpace._id] && logsTable[currentSpace._id][item._id];
+    console.log('item.color -> ', JSON.stringify(item.color, null, 2), JSON.stringify(item.name, null, 2));
     return (
       <View style={{ width: tagOuterWidth, height: 95, alignItems: 'center', marginBottom: 5 }}>
         <TouchableOpacity
-          activeOpacity={0.7}
           style={{
             width: tagSquareWidth,
             aspectRatio: 1,
             borderRadius: 18,
-            backgroundColor: 'rgb(40,40,40)',
-            justifyContent: 'center',
-            alignItems: 'center',
+            backgroundColor: '#efefef',
             marginBottom: 5,
           }}
+          activeOpacity={0.7}
           onPress={() => onTagPress(item)}
         >
-          <ExpoImage
+          <View
             style={{
-              width: tagSquareWidth * 0.45,
+              width: tagSquareWidth,
               aspectRatio: 1,
+              borderRadius: 18,
+              backgroundColor: Colors.backgroundColors[item.color],
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
-            source={{ uri: item.icon?.url }}
-            // contentFit='cover'
-            tintColor={'white'}
-          />
-          {tagLogs ? (
-            <View
+          >
+            <ExpoImage
               style={{
-                backgroundColor: 'black',
-                width: 28,
-                height: 28,
-                borderRadius: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'absolute',
-                top: -8,
-                right: -8,
+                width: tagSquareWidth * 0.45,
+                aspectRatio: 1,
               }}
-            >
+              source={{ uri: item.icon?.url }}
+              // contentFit='cover'
+              tintColor={Colors.iconColors[item.color]}
+            />
+            {tagLogs ? (
               <View
                 style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 20,
-                  justifyContent: 'center',
+                  backgroundColor: 'black',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 30,
                   alignItems: 'center',
-                  backgroundColor: 'red',
-                  // position: 'absolute',
-                  // top: -5,
-                  // right: -5,
+                  justifyContent: 'center',
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
                 }}
               >
-                <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+                <View
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'red',
+                    // position: 'absolute',
+                    // top: -5,
+                    // right: -5,
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 12 }}>{tagLogs}</Text>
+                </View>
               </View>
-            </View>
-          ) : null}
+            ) : null}
+          </View>
         </TouchableOpacity>
         <Text numberOfLines={2} style={{ color: 'white', fontSize: 11, textAlign: 'center', fontWeight: '700' }}>
           {item.name}
