@@ -8,6 +8,8 @@ import { VectorIcon } from '../../../Icons';
 import { momentLogsAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
+import * as Haptics from 'expo-haptics';
+
 type CurrentSpaceProps = {
   openAddNewPostMenuBottomSheet: (index: number) => void;
 };
@@ -38,7 +40,10 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
       <TouchableOpacity
         style={{ position: 'absolute', bottom: 30, right: 20 }}
         activeOpacity={0.7}
-        onPress={() => openAddNewPostMenuBottomSheet(0)}
+        onPress={() => {
+          openAddNewPostMenuBottomSheet(0);
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }}
       >
         <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 48, height: 48, borderRadius: 30 }} />
         <AddIcon />

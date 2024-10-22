@@ -36,7 +36,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   });
 
   const onTabPress = (tab) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTag(tab);
   };
 

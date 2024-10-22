@@ -22,7 +22,6 @@ export const Tags = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   const onTagPress = (tag: TagType) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setCurrentTag(tag);
     setLogsTable((previous) => {
       return {
@@ -54,6 +53,9 @@ export const Tags = () => {
           }}
           activeOpacity={0.7}
           onPress={() => onTagPress(item)}
+          onLongPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          }}
         >
           <View
             style={{
