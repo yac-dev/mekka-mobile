@@ -125,9 +125,13 @@ export const CreateNewPostStackNavigator = () => {
             options={({ navigation }) => ({
               headerShown: true,
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='close' size={18} color={Colors.white} />
+                </AppButton.Icon>
               ),
               headerTitle: '',
               headerStyle: {

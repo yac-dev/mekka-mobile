@@ -32,6 +32,8 @@ import { showMessage } from 'react-native-flash-message';
 import { GetPostsByTagIdOutputType } from '../../../query/types';
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
+// create用のやつが反映されてないな。。。
+
 type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'>;
 
 // createdTagsは結局、currentSpaceとmySpacesを更新せなあかんよな。

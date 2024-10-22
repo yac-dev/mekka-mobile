@@ -131,6 +131,8 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const { apiResult, requestApi } = useGetTagIcons();
   const createNewPostFlashMessageRef = useRef<FlashMessage>(null);
 
+  console.log('checking tag table', formData.addedTagsTable.value);
+
   useEffect(() => {
     requestApi({ name: 'hash' });
   }, []);
@@ -271,14 +273,15 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const addCreatedTag = (createdTag: CreatedTagType) => {
     setFormData((previous) => {
+      const updatedAddedTag = {
+        ...previous.addedTagsTable.value,
+        [createdTag._id]: createdTag,
+      };
       return {
         ...previous,
         addedTagsTable: {
-          ...previous.addedTagsTable,
-          value: {
-            ...previous.addedTagsTable.value,
-            [createdTag._id]: createdTag,
-          },
+          value: updatedAddedTag,
+          isValidated: Object.values(updatedAddedTag).length ? true : false,
         },
       };
     });
