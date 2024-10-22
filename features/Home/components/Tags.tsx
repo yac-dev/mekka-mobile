@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 import { Header } from './Header';
 import { Colors } from '../../../themes';
+import * as Haptics from 'expo-haptics';
 
 const tagOuterWidth = Dimensions.get('window').width / 4;
 const tagSquareWidth = tagOuterWidth * 0.63;
@@ -21,6 +22,7 @@ export const Tags = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   const onTagPress = (tag: TagType) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setCurrentTag(tag);
     setLogsTable((previous) => {
       return {
