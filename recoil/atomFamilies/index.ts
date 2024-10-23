@@ -1,1 +1,1 @@
-export * from './CurrentPostsPageByTagId';
+export * from './currentPostsPageByTagId';
