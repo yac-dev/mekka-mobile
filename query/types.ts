@@ -1,4 +1,5 @@
 import { FormDataType } from '../features/CreateNewPost/contexts/CreateNewPostProvider';
+import { FormDataType as CreateNewSpaceFormDataType } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
 import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType } from '../types';
 
 export type LoadMeInput = {
@@ -91,4 +92,18 @@ export type GetMomentsBySpaceIdInputType = {
 
 export type GetMomentsBySpaceIdOutputType = {
   posts?: PostType[];
+};
+
+type UserDataPayloadType = {
+  user: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
+};
+
+export type CreateSpaceInputType = CreateNewSpaceFormDataType & UserDataPayloadType;
+
+export type CreateSpaceOutputType = {
+  space: SpaceType;
 };
