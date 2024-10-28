@@ -2,11 +2,12 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-na
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
-import { Signup, EULA } from '../..';
+import { Signup, EULA, EnterInvitationKey } from '../..';
 
 type SignupStackNavigatorParams = {
   Signup: undefined;
   EULA: undefined;
+  EnterInvitationKey: undefined;
 };
 
 export type SignupStackNavigatorProp = NativeStackNavigationProp<SignupStackNavigatorParams>;
@@ -53,6 +54,32 @@ export const SignupStackNavigator = () => {
                 hasShadow={false}
               >
                 <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+          })}
+        />
+      </SignupStack.Group>
+      <SignupStack.Group screenOptions={{ presentation: 'modal' }}>
+        <SignupStack.Screen
+          name='EnterInvitationKey'
+          component={EnterInvitationKey}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
             headerTitle: '',

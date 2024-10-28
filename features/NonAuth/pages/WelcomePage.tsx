@@ -101,10 +101,10 @@ export const WelcomePage = () => {
             marginBottom: 10,
           }}
         >
-          Welcome to Var
+          Login
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Please fill in your email and password to login.
+          Welcome back.{'\n'}Please fill in your email and password to login.
         </Text>
       </View>
       <Text>Welcome to Var. Please signup or login to proceed.</Text>

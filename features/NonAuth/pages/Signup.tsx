@@ -72,7 +72,7 @@ export const Signup = () => {
             Signup
           </Text>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            Don't hava an account yet? To get started, {'\n'}please provide your name, email and password.
+            Welcome to Var. To get started, {'\n'}please provide your name, email and password.
           </Text>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -100,6 +100,20 @@ export const Signup = () => {
             onTextEntryVisibilityChange={onPasswordHiddenChange}
           />
         </View>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('EnterInvitationKey')}
+          style={{
+            paddingVertical: 20,
+            borderRadius: 100,
+            backgroundColor: 'rgb(70,70,70)',
+          }}
+          activeOpacity={0.7}
+        >
+          <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
+            Already have an invitation key?
+          </Text>
+        </TouchableOpacity>
         <LoadingSpinner isVisible={signupResult.status === 'loading'} message='Processing now...' />
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
