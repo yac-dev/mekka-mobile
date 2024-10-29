@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 import { useNavigation } from '@react-navigation/native';
 import { SignupStackNavigatorProp } from '../navigations/SignupStackNavigator';
+import { useQuery } from '@tanstack/react-query';
+import { getSpaceBySecretKey } from '../../../query/queries';
+import { queryKeys } from '../../../query/queryKeys';
 
 export const EnterInvitationKey = () => {
   const navigation = useNavigation<SignupStackNavigatorProp>();
   const [secretKey, setSecretKey] = useState('');
 
+  const { data, refetch, isFetching, isSuccess } = useQuery({
+    queryKey: [queryKeys.spaceBySecretKey, secretKey],
+    queryFn: () => getSpaceBySecretKey({ secretKey }),
+    enabled: false,
+  });
+
+  const onRequestPress = () => {
+    Keyboard.dismiss();
+    refetch();
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity activeOpacity={0.5} onPress={() => console.log('submit')} disabled={false}>
+        <TouchableOpacity activeOpacity={0.5} onPress={onRequestPress} disabled={false}>
           <Text
             style={{
-              color:
-                // formData.name.isValidated && formData.email.isValidated && formData.password.isValidated
-                //   ? 'white'
-                //   : 'rgb(117,117, 117)',
-                'white',
+              color: secretKey ? 'white' : 'rgb(117,117, 117)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -28,7 +38,13 @@ export const EnterInvitationKey = () => {
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [secretKey]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigation.navigate({ name: 'Signup', params: { space: data?.space }, merge: true });
+    }
+  }, [isSuccess]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
@@ -75,7 +91,7 @@ export const EnterInvitationKey = () => {
           onChangeText={(text) => setSecretKey(text)}
         />
       </View>
-      {/* <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now' /> */}
+      <LoadingSpinner isVisible={isFetching} message='Processing now' />
     </View>
   );
 };

@@ -107,3 +107,11 @@ export type CreateSpaceInputType = CreateNewSpaceFormDataType & UserDataPayloadT
 export type CreateSpaceOutputType = {
   space: SpaceType;
 };
+
+export type GetSpaceBySecretKeyInputType = {
+  secretKey: string;
+};
+
+export type GetSpaceBySecretKeyOutputType = {
+  space?: SpaceType;
+};

@@ -3,9 +3,12 @@ import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
 import { Signup, EULA, EnterInvitationKey } from '../..';
+import { SpaceType } from '../../../types';
 
-type SignupStackNavigatorParams = {
-  Signup: undefined;
+export type SignupStackNavigatorParams = {
+  Signup: {
+    space?: SpaceType;
+  };
   EULA: undefined;
   EnterInvitationKey: undefined;
 };

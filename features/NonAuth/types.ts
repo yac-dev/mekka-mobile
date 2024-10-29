@@ -68,6 +68,7 @@ export type SignupInputType = {
   name: string;
   email: string;
   password: string;
+  spaceId?: string;
 };
 
 export type SignupOutputType = {

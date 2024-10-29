@@ -4,3 +4,4 @@ export * from './getLogsByUserId';
 export * from './getMembersBySpaceId';
 export * from './getPostsByTagId';
 export * from './getMomentsBySpaceId';
+export * from './getSpaceBySecretKey';
