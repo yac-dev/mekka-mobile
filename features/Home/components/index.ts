@@ -9,4 +9,3 @@ export * from './SideBar';
 export * from './BottomTab';
 export * from './SpacesHeader';
 export * from './AddNewPostMenu';
-export * from './ReloadingIndicator';

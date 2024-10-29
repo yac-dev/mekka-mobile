@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   Share,
+  Alert,
 } from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Image as ExpoImage } from 'expo-image';
@@ -65,12 +66,29 @@ export const Base = () => {
       homeStackNavigation.navigate('Home');
       showMessage({ type: 'success', message: 'Created new space successfully' });
       setTimeout(() => {
-        Share.share({
-          title: `Invite your friends to join ${data.space.name}`,
-          message: `Join ${data.space.name} to share your photos and videos.${'\n'}
-        Use this secret key to join 👉 ${data.space.secretKey}`,
-        });
-      }, 2000);
+        Alert.alert(
+          `Invite your friends to ${data.space.name}`,
+          `Var is the group photo/video sharing app. By sharing invitation code, ${'\n'}your friends can join your space.`,
+          [
+            {
+              text: 'Proceed',
+              onPress: () =>
+                Share.share({
+                  title: `Invite your friends to ${data.space.name}`,
+                  message: `Hey my friends!${'\n'}Download the app and join to my space.${'\n'}The invitation key code is this 👉 ${
+                    data.space.secretKey
+                  }`,
+                  url: 'https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148',
+                }),
+            },
+            {
+              text: 'Sip now',
+              onPress: () => null,
+              style: 'destructive',
+            },
+          ]
+        );
+      }, 1500);
     },
   });
 
