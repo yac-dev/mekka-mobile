@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CreateNewPostStackParams } from '../navigations/CreateNewPostStackNavigator';
+import { Colors } from '../../../themes';
 
 type IAddTags = NativeStackScreenProps<CreateNewPostStackParams, 'AddTags'>;
 
@@ -41,7 +42,7 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
     const list = tagOptions.map((tag: TagOptionType, index: number) => {
       return (
         <TouchableOpacity
-          activeOpacity={0.5}
+          activeOpacity={0.7}
           key={index}
           onPress={() => {
             if (formData.addedTagsTable.value[tag._id]) {
@@ -56,10 +57,10 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: 'rgb(60,60,60)',
+              backgroundColor: Colors.iconColors[tag.color],
               padding: 12,
               borderRadius: 20,
-              marginRight: 10,
+              marginRight: 12,
               marginBottom: 10,
               // borderWidth: 0.3,
               // borderColor: 'white',
@@ -70,15 +71,16 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
               style={{ width: 20, height: 20, marginRight: 10 }}
               source={{ uri: tag.icon.url }}
               contentFit='cover'
-              tintColor={tag.icon ? tag.color : null}
+              // tintColor={Colors.iconColors[tag.color]}
+              tintColor={'white'}
             />
             <Text style={{ color: 'white' }}>{tag.name}</Text>
             {formData.addedTagsTable.value[tag._id] ? (
               <View
                 style={{
                   position: 'absolute',
-                  top: -12,
-                  right: -15,
+                  top: -10,
+                  right: -13,
                   backgroundColor: 'black',
                   width: 30,
                   height: 30,

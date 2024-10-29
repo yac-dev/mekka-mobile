@@ -48,7 +48,7 @@ export const Tags = () => {
             width: tagSquareWidth,
             aspectRatio: 1,
             borderRadius: 16,
-            backgroundColor: '#efefef',
+            // backgroundColor: '#efefef',
             marginBottom: 5,
           }}
           activeOpacity={0.7}
@@ -62,7 +62,7 @@ export const Tags = () => {
               width: tagSquareWidth,
               aspectRatio: 1,
               borderRadius: 16,
-              backgroundColor: Colors.backgroundColors[item.color],
+              backgroundColor: Colors.iconColors[item.color],
               // backgroundColor: 'rgb(40,40,40)',
               justifyContent: 'center',
               alignItems: 'center',
@@ -75,8 +75,8 @@ export const Tags = () => {
               }}
               source={{ uri: item.icon?.url }}
               // contentFit='cover'
-              tintColor={Colors.iconColors[item.color]}
-              // tintColor={'white'}
+              // tintColor={Colors.iconColors[item.color]}
+              tintColor={'white'}
             />
             {tagLogs ? (
               <View

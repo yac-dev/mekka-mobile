@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { IconType } from '../../../types';
 import { CreateNewPostContext } from '../contexts';
 import { CreatedTagType } from '../contexts';
+import { Colors } from '../../../themes';
 // export type CreatingTagType = {
 //   _id: Date;
 //   iconType: 'icon';
@@ -11,6 +12,8 @@ import { CreatedTagType } from '../contexts';
 //   created: boolean;
 // };
 
+const colors = Object.keys(Colors.iconColors);
+
 export const useCreateTag = () => {
   const { defaultTagIcon } = useContext(CreateNewPostContext);
   const [creatingTag, setCreatingTag] = useState<CreatedTagType>({
@@ -18,7 +21,7 @@ export const useCreateTag = () => {
     iconType: 'icon',
     icon: defaultTagIcon,
     name: '',
-    color: 'white',
+    color: colors[Math.floor(Math.random() * colors.length)],
     created: true,
   });
 
