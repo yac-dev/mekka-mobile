@@ -23,6 +23,7 @@ export const WelcomePage = () => {
         <TouchableOpacity
           onPress={() => onLoginPress()}
           disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
+          activeOpacity={0.7}
         >
           <Text
             style={{
@@ -36,7 +37,7 @@ export const WelcomePage = () => {
         </TouchableOpacity>
       ),
       headerLeft: () => (
-        <TouchableOpacity onPress={() => onRegisterPress()}>
+        <TouchableOpacity onPress={() => onRegisterPress()} activeOpacity={0.7}>
           <Text
             style={{
               color: 'white',

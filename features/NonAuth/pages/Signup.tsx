@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -27,7 +27,7 @@ export const Signup: React.FC<ISignup> = ({ route }) => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          activeOpacity={0.5}
+          activeOpacity={0.7}
           onPress={() => {
             console.log('input', {
               name: formData.name.value,
@@ -66,8 +66,9 @@ export const Signup: React.FC<ISignup> = ({ route }) => {
   useEffect(() => {
     if (route.params?.space) {
       setRequestedSpace(route.params.space);
+      showMessage({ message: 'Space was added.', type: 'success', duration: 5000 });
     }
-  }, [route.params]);
+  }, [route.params?.space]);
 
   useEffect(() => {
     if (signupResult.status === 'success') {
@@ -194,9 +195,12 @@ export const Signup: React.FC<ISignup> = ({ route }) => {
             }}
             activeOpacity={0.7}
           >
-            <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
-              Already have an invitation key?
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+              <Text style={{ color: 'white', fontWeight: 'bold', marginRight: 10 }}>
+                Already have an invitation key?
+              </Text>
+              <VectorIcon.MCI name='chevron-down' color={'white'} size={20} />
+            </View>
           </TouchableOpacity>
         )}
 

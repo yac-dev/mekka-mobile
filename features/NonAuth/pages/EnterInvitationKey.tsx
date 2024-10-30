@@ -6,12 +6,13 @@ import { SignupStackNavigatorProp } from '../navigations/SignupStackNavigator';
 import { useQuery } from '@tanstack/react-query';
 import { getSpaceBySecretKey } from '../../../query/queries';
 import { queryKeys } from '../../../query/queryKeys';
+import { showMessage } from 'react-native-flash-message';
 
 export const EnterInvitationKey = () => {
   const navigation = useNavigation<SignupStackNavigatorProp>();
   const [secretKey, setSecretKey] = useState('');
 
-  const { data, refetch, isFetching, isSuccess } = useQuery({
+  const { data, refetch, isFetching, isSuccess, isError } = useQuery({
     queryKey: [queryKeys.spaceBySecretKey, secretKey],
     queryFn: () => getSpaceBySecretKey({ secretKey }),
     enabled: false,
@@ -44,7 +45,10 @@ export const EnterInvitationKey = () => {
     if (isSuccess) {
       navigation.navigate({ name: 'Signup', params: { space: data?.space }, merge: true });
     }
-  }, [isSuccess]);
+    if (isError) {
+      showMessage({ message: 'Invalid invitation key. Please try again.', type: 'danger', duration: 5000 });
+    }
+  }, [isSuccess, isError]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
@@ -58,10 +62,10 @@ export const EnterInvitationKey = () => {
             marginBottom: 10,
           }}
         >
-          Enter invitation key
+          Join a space at the same time
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Already got an invitation key from your friend? {'\n'} You can join a space at the same time.
+          Already got an invitation key from your friend? {'\n'} You can add and start sharing immidiately.
         </Text>
       </View>
       <View
