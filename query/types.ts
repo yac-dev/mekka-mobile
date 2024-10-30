@@ -115,3 +115,17 @@ export type GetSpaceBySecretKeyInputType = {
 export type GetSpaceBySecretKeyOutputType = {
   space?: SpaceType;
 };
+
+export type StickerContentType = {
+  name: string;
+  uri: string;
+  type: 'image/jpg';
+};
+
+export type PreviewStickerInputType = {
+  content: StickerContentType;
+};
+
+export type PreviewStickerOutputType = {
+  image: string;
+};

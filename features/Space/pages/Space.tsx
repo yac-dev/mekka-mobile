@@ -67,7 +67,7 @@ export const Space: React.FC<ISpace> = ({ route }) => {
       const offset =
         itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
-        offset: Math.max(0, offset) + 40,
+        offset: Math.max(0, offset) + 44,
         animated: true,
       });
     }

@@ -7,10 +7,13 @@ import { FlashList } from '@shopify/flash-list';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ReactionPickerContext } from '../contexts/ReactionPickerProvider';
+import { VectorIcon } from '../../../Icons';
+import { useNavigation } from '@react-navigation/native';
+import { CreateNewSpaceStackProps } from '../navigations';
 
 const Stickers = (props) => {
-  const { selectedReactions, setSelectedReactions } = useContext(ReactionPickerContext);
-  const { navigation } = useContext(CreateNewSpaceContext);
+  const { selectedReactions, setSelectedReactions, onStickerChange } = useContext(ReactionPickerContext);
+  const navigation = useNavigation<CreateNewSpaceStackProps>();
   const [stickers, setStickers] = useState([]);
   const oneGridWidth = Dimensions.get('window').width / 9;
 
@@ -41,6 +44,7 @@ const Stickers = (props) => {
       return (
         <View style={{ width: oneGridWidth, aspectRatio: 1, padding: 3 }}>
           <TouchableOpacity
+            activeOpacity={0.7}
             style={{
               width: '100%',
               height: '100%',
@@ -50,28 +54,28 @@ const Stickers = (props) => {
               borderRadius: 5,
             }}
             onPress={() => {
-              // setSelectedReaction({ type: 'emoji', emoji: emoji, sticker: undefined });
-              if (selectedReactions[item]) {
-                setSelectedReactions((previous) => {
-                  const updating = { ...previous };
-                  delete updating[item];
-                  return updating;
-                });
-              } else {
-                if (Object.keys(selectedReactions).length >= 6) {
-                } else {
-                  setSelectedReactions((previous) => {
-                    return {
-                      ...previous,
-                      [item._id]: {
-                        type: 'sticker',
-                        emoji: undefined,
-                        sticker: item,
-                      },
-                    };
-                  });
-                }
-              }
+              onStickerChange(item);
+              // if (selectedReactions[item]) {
+              //   setSelectedReactions((previous) => {
+              //     const updating = { ...previous };
+              //     delete updating[item];
+              //     return updating;
+              //   });
+              // } else {
+              //   if (Object.keys(selectedReactions).length >= 6) {
+              //   } else {
+              //     setSelectedReactions((previous) => {
+              //       return {
+              //         ...previous,
+              //         [item._id]: {
+              //           type: 'sticker',
+              //           emoji: undefined,
+              //           sticker: item,
+              //         },
+              //       };
+              //     });
+              //   }
+              // }
             }}
           >
             <ExpoImage style={{ width: 30, height: 30 }} source={{ uri: item.url }} contentFit='cover' />
@@ -85,29 +89,6 @@ const Stickers = (props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{}}>
-        {/* <TouchableOpacity
-          style={{ backgroundColor: 'white', padding: 10, borderRadius: 20 }}
-          onPress={() => navigation.navigate('CreateNewSticker')}
-        >
-          <Text style={{ color: 'black', alignSelf: 'center', fontWeight: 'bold' }}>Create new reaction</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => {
-            navigation.navigate('CreateNewSticker');
-          }}
-          activeOpacity={1}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <AntDesign name='edit' color='white' size={20} style={{ marginRight: 20 }} />
-            <View>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Create new one?</Text>
-            </View>
-          </View>
-          <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
-        </TouchableOpacity>
-      </View>
       <FlashList
         data={stickers}
         renderItem={renderItem}
@@ -116,6 +97,23 @@ const Stickers = (props) => {
         contentContainerStyle={{ paddingTop: 5 }}
         estimatedItemSize={200}
       />
+      <View style={{ position: 'absolute', bottom: 20, paddingHorizontal: 30, alignSelf: 'center', width: '100%' }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CreateNewSticker')}
+          style={{
+            paddingVertical: 15,
+            borderRadius: 100,
+            backgroundColor: 'rgb(70,70,70)',
+            paddingHorizontal: 20,
+          }}
+          activeOpacity={0.7}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', marginRight: 10 }}>Create new sticker?</Text>
+            <VectorIcon.MCI name='chevron-down' color={'white'} size={20} />
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

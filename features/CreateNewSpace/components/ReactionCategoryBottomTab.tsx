@@ -38,7 +38,7 @@ export const ReactionCategoryBottomTab = () => {
           options={({ navigation, route }) => ({
             tabBarShowLabel: false,
             tabBarIcon: ({ size, color, focused }) => (
-              <VectorIcon.II name='hammer' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
+              <VectorIcon.II name='cut' color={focused ? 'white' : 'rgb(120,120,120)'} size={25} />
             ),
           })}
         />

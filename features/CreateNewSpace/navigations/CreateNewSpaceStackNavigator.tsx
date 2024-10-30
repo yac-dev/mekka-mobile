@@ -6,7 +6,7 @@ import Moment from '../pages/Moment';
 import Reaction from '../pages/Reaction';
 import Description from '../pages/Description';
 import ReactionPicker from '../pages/ReactionPicker';
-import CreateNewSticker from '../pages/CreateSticker';
+import { CreateNewSticker } from '../pages';
 import { SnackBar, LoadingSpinner } from '../../../components';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons/VectorIcons';
@@ -269,7 +269,9 @@ export const CreateNewSpaceStackNavigator = () => {
               headerShown: true, // ここtrueにすると、,,,
               headerLeft: () => (
                 <AppButton.Icon
-                  onButtonPress={() => navigation.goBack()}
+                  onButtonPress={() => {
+                    navigation.goBack();
+                  }}
                   customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
                   hasShadow={false}
                 >

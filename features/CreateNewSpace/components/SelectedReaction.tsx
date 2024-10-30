@@ -15,7 +15,8 @@ type SelectedReactionProps = {
 export const SelectedReaction: React.FC<SelectedReactionProps> = ({ defaultReactionIndex }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, setFormData } = useContext(CreateNewSpaceContext);
-  const { selectedReactionOption, onCaptionChange, setDefaultReaction } = useContext(ReactionPickerContext);
+  const { selectedReactionOption, onCaptionChange, setDefaultReaction, onStickerChange } =
+    useContext(ReactionPickerContext);
 
   // そっか, addの挙動ね。defaultがある場合は、pushではなく該当のものを変えるだけでいいのか。
   // ここの挙動が面倒だったんだが、まあいいか。
