@@ -16,6 +16,7 @@ import { mutationKeys } from '../../../query/mutationKeys';
 import { PreviewStickerInputType, StickerContentType } from '../../../query/types';
 import { Image as ExpoImage } from 'expo-image';
 
+// doneした後のdata構造が少し面倒だがまあ考えるしかないな。。。
 export const CreateNewSticker = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const [auth] = useRecoilState(authAtom);
