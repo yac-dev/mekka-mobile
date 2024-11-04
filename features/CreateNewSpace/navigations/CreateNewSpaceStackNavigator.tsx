@@ -1,5 +1,4 @@
 import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
-const CreateNewSpaceStack = createNativeStackNavigator();
 import SelectSpaceVisibility from '../pages/SelectSpaceVisibility';
 import ContentType from '../pages/ContentType';
 import Moment from '../pages/Moment';
@@ -14,6 +13,17 @@ import { Colors } from '../../../themes';
 import { CreateNewSpaceProvider, CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { TemplateSelection, Base, Comment } from '../pages';
+import { ReactionPickerStackNavigator } from './ReactionPickerStackNavigator';
+import { NavigatorScreenParams } from '@react-navigation/native';
+
+export type ReactionPickerStackParams = {
+  ReactionPicker: {
+    defaultReactionIndex?: number;
+  };
+  CreateNewSticker: undefined;
+};
+
+export type ReactionPickerStackProps = NativeStackNavigationProp<ReactionPickerStackParams>;
 
 export type CreateNewSpaceStackParams = {
   TemplateSelection: undefined;
@@ -27,13 +37,13 @@ export type CreateNewSpaceStackParams = {
   };
   Comment: undefined;
   Description: undefined;
-  ReactionPicker: {
-    defaultReactionIndex?: number;
-  };
+  ReactionPickerStackNavigator: NavigatorScreenParams<ReactionPickerStackParams>;
   CreateNewSticker: undefined;
 };
 
 export type CreateNewSpaceStackProps = NativeStackNavigationProp<CreateNewSpaceStackParams>;
+
+const CreateNewSpaceStack = createNativeStackNavigator<CreateNewSpaceStackParams>();
 
 export const CreateNewSpaceStackNavigator = () => {
   return (
@@ -239,6 +249,30 @@ export const CreateNewSpaceStackNavigator = () => {
         </CreateNewSpaceStack.Group>
         <CreateNewSpaceStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <CreateNewSpaceStack.Screen
+            name='ReactionPickerStackNavigator'
+            component={ReactionPickerStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false, // ここtrueにすると、,,,
+              // headerLeft: () => (
+              //   <AppButton.Icon
+              //     onButtonPress={() => navigation.goBack()}
+              //     customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              //     hasShadow={false}
+              //   >
+              //     <VectorIcon.II name='close' size={18} color={Colors.white} />
+              //   </AppButton.Icon>
+              // ),
+              // headerTitle: '',
+              // headerStyle: {
+              //   backgroundColor: 'black',
+              // },
+              // headerTitleStyle: {
+              //   fontWeight: 'bold',
+              //   color: 'white',
+              // },
+            })}
+          />
+          {/* <CreateNewSpaceStack.Screen
             name='ReactionPicker'
             component={ReactionPicker}
             options={({ navigation }) => ({
@@ -287,7 +321,7 @@ export const CreateNewSpaceStackNavigator = () => {
                 color: 'white',
               },
             })}
-          />
+          /> */}
         </CreateNewSpaceStack.Group>
       </CreateNewSpaceStack.Navigator>
     </CreateNewSpaceProvider>

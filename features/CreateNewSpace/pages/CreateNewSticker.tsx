@@ -15,13 +15,20 @@ import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query/mutationKeys';
 import { PreviewStickerInputType, StickerContentType } from '../../../query/types';
 import { Image as ExpoImage } from 'expo-image';
+import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
+import { ReactionPickerContext, ReactionType } from '../contexts/ReactionPickerProvider';
+import { StickerType } from '../../../types';
 
 // doneした後のdata構造が少し面倒だがまあ考えるしかないな。。。
 export const CreateNewSticker = () => {
+  // const { formData, setFormData } = useContext(CreateNewSpaceContext);
+  const { onStickerChange } = useContext(ReactionPickerContext);
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const [auth] = useRecoilState(authAtom);
   const [content, setContent] = useState<StickerContentType | undefined>(void 0);
   const [stickerPreview, setStickerPreview] = useState<string | undefined>(void 0);
+
+  // console.log('previewStickerData', stickerPreview);
 
   const {
     mutate: previewStickerMutation,
@@ -49,10 +56,7 @@ export const CreateNewSticker = () => {
         </AppButton.Icon>
       ),
       headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          disabled={previewStickerStatus === 'success' ? false : true}
-        >
+        <TouchableOpacity onPress={onDonePress} disabled={previewStickerStatus === 'success' ? false : true}>
           <Text
             style={{
               color: previewStickerStatus === 'success' ? 'white' : 'rgb(117, 117, 117)',
@@ -65,7 +69,18 @@ export const CreateNewSticker = () => {
         </TouchableOpacity>
       ),
     });
-  }, [previewStickerStatus]);
+  }, [previewStickerStatus, stickerPreview]);
+
+  // currentのselectedにも入れないといかんよな。。。それも高ryしないといかん。。。
+  // というかsetFormよりもコッチな気がするわ。。。
+  const onDonePress = () => {
+    const creatingStickerObject = {
+      _id: new Date().toString(),
+      url: stickerPreview,
+    };
+    onStickerChange(creatingStickerObject);
+    navigation.goBack();
+  };
 
   // pickしたら、その画像をそのままserverに送って、removebgのcodeを動かす感じ。
   const pickImage = async () => {
@@ -124,15 +139,15 @@ export const CreateNewSticker = () => {
       >
         {stickerPreview ? (
           <ExpoImage
-            style={{ width: 80, height: 80, borderRadius: 110 / 2, alignSelf: 'center' }}
+            style={{ width: 80, height: 80, alignSelf: 'center' }}
             source={{ uri: stickerPreview }}
             contentFit='cover'
           />
         ) : (
-          <View>
+          <>
             <VectorIcon.II name='image' size={35} color='white' style={{ marginBottom: 5 }} />
-            <Text style={{ color: 'white', fontSize: 17, textAlign: 'center' }}>Pick</Text>
-          </View>
+            <Text style={{ color: 'white', fontSize: 17 }}>Choose</Text>
+          </>
         )}
         <View
           style={{
@@ -143,8 +158,8 @@ export const CreateNewSticker = () => {
             alignItems: 'center',
             justifyContent: 'center',
             position: 'absolute',
-            bottom: 0,
-            right: 0,
+            bottom: -5,
+            right: -5,
           }}
         >
           <View
@@ -161,20 +176,6 @@ export const CreateNewSticker = () => {
           </View>
         </View>
       </TouchableOpacity>
-
-      {/* {previewStickerData ? (
-        <ExpoImage
-          style={{
-            width: 80,
-            height: 80,
-            alignSelf: 'center',
-            marginBottom: 20,
-          }}
-          source={{
-            uri: previewStickerData.image,
-          }}
-        />
-      ) : null} */}
       <LoadingSpinner isVisible={previewStickerStatus === 'pending'} message={'Processing now'} />
     </View>
   );

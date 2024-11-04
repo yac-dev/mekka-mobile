@@ -16,6 +16,7 @@ export type EmojiReactionType = {
   caption: string;
 };
 
+// シンプルに urlに入れるのでいいのかね。。。分からん。。。
 export type StickerReactionType = {
   type: 'sticker';
   emoji: undefined;
@@ -73,7 +74,6 @@ export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ 
   // );
 
   const onEmojiChange = (emoji: string) => {
-    console.log('happening???');
     setSelectedReactionOption((previous) => {
       return {
         ...previous,
@@ -85,6 +85,7 @@ export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ 
   };
 
   const onStickerChange = (sticker: StickerType) => {
+    console.log('sticker -> ', sticker);
     setSelectedReactionOption((previous) => {
       return {
         ...previous,

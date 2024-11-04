@@ -163,7 +163,7 @@ export const SelectedReaction: React.FC<SelectedReactionProps> = ({ defaultReact
               flex: 1,
               paddingVertical: 10,
             }}
-            placeholder='e.g.) Like it!'
+            placeholder='e.g.) Like, Dislike, etc.'
             placeholderTextColor={'rgb(170,170,170)'}
             autoCapitalize='none'
             value={selectedReactionOption?.caption}

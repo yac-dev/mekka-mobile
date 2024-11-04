@@ -76,7 +76,15 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
           >
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('ReactionPicker', { defaultReactionIndex: index })}
+              onPress={() =>
+                navigation.navigate({
+                  name: 'ReactionPickerStackNavigator',
+                  params: {
+                    screen: 'ReactionPicker',
+                    params: { defaultReactionIndex: index },
+                  },
+                })
+              }
               style={{
                 // backgroundColor: 'rgb(70, 70, 70)',
                 width: reactionContainerWidth,
@@ -232,7 +240,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                 >
                   <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={() => navigation.navigate('ReactionPicker')}
+                    onPress={() => navigation.navigate('ReactionPickerStackNavigator')}
                     style={{
                       // backgroundColor: 'rgb(70, 70, 70)',
                       width: reactionContainerWidth,
