@@ -2,19 +2,18 @@ import React from 'react';
 import { View } from 'react-native';
 import { ReactionPickerProvider } from '../contexts/ReactionPickerProvider';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CreateNewSpaceStackParams } from '../navigations/CreateNewSpaceStackNavigator';
 import { ReactionCategoryBottomTab, SelectedReaction } from '../components';
+import { ReactionPickerStackParams } from '../navigations';
 
-type ReactionPickerProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'ReactionPicker'>;
+type ReactionPickerProps = NativeStackScreenProps<ReactionPickerStackParams, 'ReactionPicker'>;
 
+// データ構造的にまあcreateNewStickerのstacknavigatorを入れた方がいんだろうけど。。。どうだろ。。。
 const ReactionPicker: React.FC<ReactionPickerProps> = ({ route }) => {
   return (
-    <ReactionPickerProvider>
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <SelectedReaction defaultReactionIndex={route.params?.defaultReactionIndex} />
-        <ReactionCategoryBottomTab />
-      </View>
-    </ReactionPickerProvider>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <SelectedReaction defaultReactionIndex={route.params?.defaultReactionIndex} />
+      <ReactionCategoryBottomTab />
+    </View>
   );
 };
 

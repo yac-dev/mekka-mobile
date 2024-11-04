@@ -367,7 +367,7 @@ export const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, val
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text
           numberOfLines={1}
-          style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right', marginRight: 5, width: 100 }}
+          style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right', marginRight: 5, width: 150 }}
         >
           {value}
         </Text>

@@ -1,5 +1,6 @@
 import { FormDataType } from '../features/CreateNewPost/contexts/CreateNewPostProvider';
-import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType } from '../types';
+import { FormDataType as CreateNewSpaceFormDataType } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
+import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType, StickerType } from '../types';
 
 export type LoadMeInput = {
   jwt: string | undefined;
@@ -91,4 +92,46 @@ export type GetMomentsBySpaceIdInputType = {
 
 export type GetMomentsBySpaceIdOutputType = {
   posts?: PostType[];
+};
+
+type UserDataPayloadType = {
+  user: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
+};
+
+export type CreateSpaceInputType = CreateNewSpaceFormDataType & UserDataPayloadType;
+
+export type CreateSpaceOutputType = {
+  space: SpaceType;
+};
+
+export type GetSpaceBySecretKeyInputType = {
+  secretKey: string;
+};
+
+export type GetSpaceBySecretKeyOutputType = {
+  space?: SpaceType;
+};
+
+export type StickerContentType = {
+  name: string;
+  uri: string;
+  type: 'image/jpg';
+};
+
+export type PreviewStickerInputType = {
+  content: StickerContentType;
+};
+
+export type PreviewStickerOutputType = {
+  image: string;
+};
+
+export type GetStickersInputType = {};
+
+export type GetStickersOutputType = {
+  stickers: StickerType[];
 };

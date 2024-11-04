@@ -23,6 +23,7 @@ export const WelcomePage = () => {
         <TouchableOpacity
           onPress={() => onLoginPress()}
           disabled={formData.email.isValidated && formData.password.isValidated ? false : true}
+          activeOpacity={0.7}
         >
           <Text
             style={{
@@ -31,12 +32,12 @@ export const WelcomePage = () => {
               fontWeight: 'bold',
             }}
           >
-            Login
+            Submit
           </Text>
         </TouchableOpacity>
       ),
       headerLeft: () => (
-        <TouchableOpacity onPress={() => onRegisterPress()}>
+        <TouchableOpacity onPress={() => onRegisterPress()} activeOpacity={0.7}>
           <Text
             style={{
               color: 'white',
@@ -101,10 +102,10 @@ export const WelcomePage = () => {
             marginBottom: 10,
           }}
         >
-          Welcome to Var
+          Login
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Please fill in your email and password to login.
+          Welcome back.{'\n'}Please fill in your email and password to login.
         </Text>
       </View>
       <Text>Welcome to Var. Please signup or login to proceed.</Text>

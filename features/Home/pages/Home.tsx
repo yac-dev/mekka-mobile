@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react';
-import { View, Linking, StyleSheet, Text } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { View, Linking, StyleSheet, Text, Modal, Share } from 'react-native';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { useBottomSheet } from '../hooks';
@@ -19,7 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, authAtom, logsTableAtom, currentSpaceAtom } from '../../../recoil';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useMutationState } from '@tanstack/react-query';
 import { queryKeys } from '../../../query/queryKeys';
 import { CreatePostInputType } from '../../../query/types';
 import { mutationKeys } from '../../../query/mutationKeys';
@@ -29,19 +29,17 @@ import { Image as ExpoImage } from 'expo-image';
 // currentSpaceとかはいいんだけど、apiの結果はapp戦隊で持てるからな。。。
 export const Home = () => {
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
-  const [auth, setAuth] = useRecoilState(authAtom);
-  const { isFetching: isFetchingMySpaces, isSuccess: isGetMySpacesSuccess } = useQuery({
-    queryKey: [queryKeys.mySpaces],
-  });
-  const { isSuccess: isGetLogsSuccess } = useQuery({
-    queryKey: [queryKeys.logs],
-  });
+  const [_, setAuth] = useRecoilState(authAtom);
 
   const { status: createPostStatus } = useMutation({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
   const { status: createMomentStatus } = useMutation({
     mutationKey: [mutationKeys.createMoment, currentSpace._id],
+  });
+
+  const { mutate: createSpaceMutate, status: createSpaceStatus } = useMutation({
+    mutationKey: [mutationKeys.createSpace],
   });
 
   const [, setLogsTable] = useRecoilState(logsTableAtom);

@@ -1,5 +1,15 @@
 import React, { useCallback, useContext, useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  Share,
+  Alert,
+} from 'react-native';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +21,10 @@ import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+import { createSpace } from '../../../query';
+import { useMutation } from '@tanstack/react-query';
+import { mutationKeys } from '../../../query/mutationKeys';
+import { CreateSpaceInputType } from '../../../query/types';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -35,7 +49,47 @@ export const Base = () => {
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
-  const { apiResult, requestApi } = useCreateSpace();
+  const { mutate: createSpaceMutate, status } = useMutation({
+    mutationKey: [mutationKeys.createSpace],
+    mutationFn: (input: CreateSpaceInputType) => createSpace(input),
+    onSuccess: (data) => {
+      setMySpaces((previous) => [...previous, data.space]);
+      setCurrentSpace(data.space);
+      setLogsTable((previous) => {
+        return {
+          ...previous,
+          [data.space._id]: {
+            [data.space.tags[0]._id]: 0,
+          },
+        };
+      });
+      homeStackNavigation.navigate('Home');
+      showMessage({ type: 'success', message: 'Created new space successfully' });
+      setTimeout(() => {
+        Alert.alert(
+          `Invite your friends to ${data.space.name}`,
+          `Var is the group photo/video sharing app. By sharing invitation code, ${'\n'}your friends can join your space.`,
+          [
+            {
+              text: 'Proceed',
+              onPress: () =>
+                Share.share({
+                  title: `Invite your friends to ${data.space.name}`,
+                  message: `Hey my friends!${'\n'}Download the app and join to my space.${'\n'}The invitation key code is this 👉 ${
+                    data.space.secretKey
+                  }`,
+                  url: 'https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148',
+                }),
+            },
+            {
+              text: 'Skip now',
+              onPress: () => null,
+            },
+          ]
+        );
+      }, 1500);
+    },
+  });
 
   useEffect(() => {
     createNewSpaceNavigation.setOptions({
@@ -79,29 +133,29 @@ export const Base = () => {
     });
   }, [formData]);
 
-  useEffect(() => {
-    if (apiResult.status === 'success') {
-      setMySpaces((previous) => [...previous, apiResult.data.space]);
-      if (!mySpaces?.length) {
-        setCurrentSpace(apiResult.data?.space);
-        setCurrentTag(apiResult.data?.space.tags[0]);
-        setLogsTable((previous) => {
-          return {
-            ...previous,
-            [apiResult.data?.space._id]: {
-              [apiResult.data?.space.tags[0]._id]: 0,
-            },
-          };
-        });
-      }
-      homeStackNavigation.navigate('Home');
-      showMessage({ message: 'Created new space successfully.', type: 'success' });
-    }
-  }, [apiResult.status]);
+  // useEffect(() => {
+  //   if (status === 'success') {
+  //     setMySpaces((previous) => [...previous, apiResult.data.space]);
+  //     if (!mySpaces?.length) {
+  //       setCurrentSpace(apiResult.data?.space);
+  //       setCurrentTag(apiResult.data?.space.tags[0]);
+  //       setLogsTable((previous) => {
+  //         return {
+  //           ...previous,
+  //           [apiResult.data?.space._id]: {
+  //             [apiResult.data?.space.tags[0]._id]: 0,
+  //           },
+  //         };
+  //       });
+  //     }
+  //     homeStackNavigation.navigate('Home');
+  //     showMessage({ message: 'Created new space successfully.', type: 'success' });
+  //   }
+  // }, [status]);
 
   const onCreateSpace = () => {
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
-    requestApi(input);
+    createSpaceMutate(input);
   };
 
   const renderText = () => {
@@ -256,7 +310,7 @@ export const Base = () => {
           requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
         />
       </ScrollView>
-      <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Creating a space...' />
+      <LoadingSpinner isVisible={status === 'pending'} message='Creating a space...' />
     </View>
   );
 };

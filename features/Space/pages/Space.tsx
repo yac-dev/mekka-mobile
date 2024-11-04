@@ -17,6 +17,7 @@ import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
 import { mutationKeys } from '../../../query';
+import { Colors } from '../../../themes';
 
 // id毎でqueryをcacheしたいのよね。
 type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
@@ -61,12 +62,12 @@ export const Space: React.FC<ISpace> = ({ route }) => {
 
   const scrollToCenter = () => {
     const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTag._id);
-    if (itemWidths.length === currentSpace.tags.length) {
+    if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === currentSpace.tags.length) {
       const itemWidth = itemWidths[currentIndex];
       const offset =
         itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
-        offset: Math.max(0, offset) + 40,
+        offset: Math.max(0, offset) + 44,
         animated: true,
       });
     }
@@ -80,7 +81,12 @@ export const Space: React.FC<ISpace> = ({ route }) => {
     const isFocused = currentTag._id === item._id;
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
-        <TouchableOpacity key={route.key} onPress={() => onTabPress(item)} onLongPress={() => console.log('hello')}>
+        <TouchableOpacity
+          key={route.key}
+          activeOpacity={0.7}
+          onPress={() => onTabPress(item)}
+          onLongPress={() => console.log('hello')}
+        >
           <View
             style={{
               flexDirection: 'column',
@@ -90,11 +96,23 @@ export const Space: React.FC<ISpace> = ({ route }) => {
               padding: 5,
             }}
           >
-            <ExpoImage
-              style={{ width: 20, height: 20, marginBottom: 5 }}
-              source={{ uri: item.icon?.url }}
-              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
-            />
+            <View
+              style={{
+                backgroundColor: isFocused ? Colors.iconColors[item.color] : undefined,
+                width: 30,
+                height: 30,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 5,
+              }}
+            >
+              <ExpoImage
+                style={{ width: 20, height: 20 }}
+                source={{ uri: item.icon?.url }}
+                tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+              />
+            </View>
             <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
               {item.name}
             </Text>
