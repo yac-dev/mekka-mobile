@@ -281,6 +281,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                       </View>
                     </View>
                   </TouchableOpacity>
+                  <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}></Text>
                 </View>
               )}
 
