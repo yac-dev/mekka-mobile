@@ -252,9 +252,35 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                       marginBottom: 4,
                     }}
                   >
-                    <VectorIcon.MCI name='plus' size={30} color={'white'} />
+                    <VectorIcon.II name='thumbs-up-sharp' size={25} color={'white'} />
+                    <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>Add</Text>
+                    <View
+                      style={{
+                        backgroundColor: 'black',
+                        width: 28,
+                        height: 28,
+                        borderRadius: 30,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'absolute',
+                        bottom: -5,
+                        right: -5,
+                      }}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: 'white',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: 18,
+                          height: 18,
+                          borderRadius: 20,
+                        }}
+                      >
+                        <VectorIcon.II name='add' size={15} color={'black'} />
+                      </View>
+                    </View>
                   </TouchableOpacity>
-                  <Text style={{ color: 'white', fontSize: 15 }}>Add new</Text>
                 </View>
               )}
 
@@ -293,7 +319,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
           activeOpacity={0.7}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name='thumbs-up' color='white' size={20} style={{ marginRight: 20 }} />
+            <Ionicons name='thumbs-up-sharp' color='white' size={20} style={{ marginRight: 20 }} />
             <View style={{ width: 250 }}>
               <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Allowed</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Enjoy giving reactions with each other.</Text>
@@ -311,7 +337,7 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ marginRight: 20 }}>
-              <Ionicons name='thumbs-up' color='white' size={20} />
+              <Ionicons name='thumbs-up-sharp' color='white' size={20} />
               <Foundation
                 name='prohibited'
                 color='white'
