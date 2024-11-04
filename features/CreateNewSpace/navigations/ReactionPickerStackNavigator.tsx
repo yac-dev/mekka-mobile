@@ -50,12 +50,12 @@ export const ReactionPickerStackNavigator = () => {
             })}
           />
         </ReactionPickerStack.Group>
-        <ReactionPickerStack.Group screenOptions={{ presentation: 'modal' }}>
+        <ReactionPickerStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
           <ReactionPickerStack.Screen
             name='CreateNewSticker'
             component={CreateNewSticker}
             options={({ navigation }) => ({
-              headerShown: true, // ここtrueにすると、,,,
+              headerShown: true,
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => {

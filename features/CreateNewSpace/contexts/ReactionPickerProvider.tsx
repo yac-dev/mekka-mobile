@@ -85,7 +85,6 @@ export const ReactionPickerProvider: React.FC<ReactionPickerProviderProps> = ({ 
   };
 
   const onStickerChange = (sticker: StickerType) => {
-    console.log('sticker -> ', sticker);
     setSelectedReactionOption((previous) => {
       return {
         ...previous,

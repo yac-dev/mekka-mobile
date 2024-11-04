@@ -82,9 +82,8 @@ export const Base = () => {
                 }),
             },
             {
-              text: 'Sip now',
+              text: 'Skip now',
               onPress: () => null,
-              style: 'destructive',
             },
           ]
         );

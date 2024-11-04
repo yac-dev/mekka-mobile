@@ -1,6 +1,6 @@
 import { FormDataType } from '../features/CreateNewPost/contexts/CreateNewPostProvider';
 import { FormDataType as CreateNewSpaceFormDataType } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
-import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType } from '../types';
+import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType, StickerType } from '../types';
 
 export type LoadMeInput = {
   jwt: string | undefined;
@@ -128,4 +128,10 @@ export type PreviewStickerInputType = {
 
 export type PreviewStickerOutputType = {
   image: string;
+};
+
+export type GetStickersInputType = {};
+
+export type GetStickersOutputType = {
+  stickers: StickerType[];
 };
