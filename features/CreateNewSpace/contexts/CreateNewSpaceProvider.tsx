@@ -24,6 +24,10 @@ export const initialFormData: FormDataType = {
     value: true,
     isValidated: true,
   },
+  isFollowAvailable: {
+    value: false,
+    isValidated: true,
+  },
   isReactionAvailable: {
     value: true,
     isValidated: true,
@@ -64,6 +68,10 @@ export const vanillaFormData = {
     value: true,
     isValidated: true,
   },
+  isFollowAvailable: {
+    value: true,
+    isValidated: true,
+  },
   videoLength: {
     value: 90,
     isValidated: true,
@@ -89,6 +97,10 @@ export const photoLoversFormData = {
     isValidated: true,
   },
   isReactionAvailable: {
+    value: true,
+    isValidated: true,
+  },
+  isFollowAvailable: {
     value: true,
     isValidated: true,
   },
@@ -121,6 +133,10 @@ export const noCommentNoReactionFormData: FormDataType = {
     value: false,
     isValidated: true,
   },
+  isFollowAvailable: {
+    value: false,
+    isValidated: true,
+  },
   reactions: {
     value: [],
     isValidated: true,
@@ -147,6 +163,10 @@ export const busySpaceFormData = {
     isValidated: true,
   },
   isReactionAvailable: {
+    value: true,
+    isValidated: true,
+  },
+  isFollowAvailable: {
     value: true,
     isValidated: true,
   },
@@ -197,6 +217,7 @@ export type FormDataType = {
   isPublic: FormType<boolean | undefined>;
   isCommentAvailable: FormType<boolean>;
   isReactionAvailable: FormType<boolean>;
+  isFollowAvailable: FormType<boolean>;
   videoLength: FormType<number>;
   disappearAfter: FormType<number>;
   reactions: FormType<ReactionType[]>; //　ここのrteacttionの部分が大変だね。。。
@@ -212,6 +233,7 @@ type CreateNewSpaceContextType = {
   onIsPubcliChange: (bool: boolean) => void;
   onCommentAvailabilityChange: (bool: boolean) => void;
   onReactionAvailabilityChange: (bool: boolean) => void;
+  onFollowAvailabilityChange: (bool: boolean) => void;
   onVideoLengthChange: (seconds: number) => void;
   onDisapperAfterChange: (minutes: number) => void;
   onDescriptionChange: (text: string) => void;
@@ -228,6 +250,7 @@ export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
   onIsPubcliChange: () => {},
   onCommentAvailabilityChange: () => {},
   onReactionAvailabilityChange: () => {},
+  onFollowAvailabilityChange: () => {},
   onVideoLengthChange: () => {},
   onDisapperAfterChange: () => {},
   onDescriptionChange: () => {},
@@ -294,6 +317,10 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
           value: bool,
           isValidated: true,
         },
+        isFollowAvailable: {
+          value: bool ? true : false,
+          isValidated: true,
+        },
       };
     });
   };
@@ -356,6 +383,18 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
     });
   };
 
+  const onFollowAvailabilityChange = (bool: boolean) => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        isFollowAvailable: {
+          value: bool,
+          isValidated: true,
+        },
+      };
+    });
+  };
+
   const onDescriptionChange = (text: string) => {
     setFormData((previous) => {
       return {
@@ -379,6 +418,7 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
         onIsPubcliChange,
         onCommentAvailabilityChange,
         onReactionAvailabilityChange,
+        onFollowAvailabilityChange,
         onVideoLengthChange,
         onDisapperAfterChange,
         onDescriptionChange,
