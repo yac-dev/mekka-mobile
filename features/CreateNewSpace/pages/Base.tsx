@@ -260,14 +260,20 @@ export const Base = () => {
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
-          icon={<VectorIcon.MCI name='movie-open' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={
+            <ExpoImage
+              source={require('../../../assets/forApp/photo-video.png')}
+              style={{ marginRight: 10, width: 20, height: 20 }}
+              tintColor='white'
+            />
+          }
           title='Content'
           value={
             formData.contentType.value
               ? formData.contentType.value === 'photo'
-                ? 'Only Photo'
+                ? 'Photo'
                 : formData.contentType.value === 'video'
-                ? 'Only Video'
+                ? 'Video'
                 : 'Photo & Video'
               : ''
           }
@@ -311,6 +317,9 @@ export const Base = () => {
         />
       </ScrollView>
       <LoadingSpinner isVisible={status === 'pending'} message='Creating a space...' />
+      {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', fontSize: 11 }}>
+        Note: You can update these settings after creating a space.
+      </Text> こういう注意書きは親切ではあるが、デザインをごっちゃにさせる。。。なるべく表面は簡潔にしたいよね。 */}
     </View>
   );
 };

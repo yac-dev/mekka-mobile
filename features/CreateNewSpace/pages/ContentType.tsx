@@ -12,6 +12,7 @@ import { CreateNewSpaceStackProps } from '../navigations/CreateNewSpaceStackNavi
 import { AppButton } from '../../../components';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { VectorIcon } from '../../../Icons';
+import { Image as ExpoImage } from 'expo-image';
 
 const formatTime = (inputSeconds: number): { minutes: number; seconds: number } => {
   const minutes = Math.floor(inputSeconds / 60);
@@ -132,7 +133,7 @@ const ContentType = () => {
         </Text>
       </View>
       <View style={{ marginBottom: 30 }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => onContentTypeChange('photo')}
           activeOpacity={1}
@@ -146,8 +147,75 @@ const ContentType = () => {
           {formData.contentType.value === 'photo' ? (
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
         <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => onContentTypeChange('photoAndVideo')}
+          activeOpacity={0.7}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ExpoImage
+              style={{ width: 20, aspectRatio: 1, marginRight: 20 }}
+              source={require('../../../assets/forApp/photo-video.png')}
+              contentFit='cover'
+              tintColor={'white'}
+            />
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo & Video</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Both photo and video are available.</Text>
+            </View>
+          </View>
+          {formData.contentType.value === 'photoAndVideo' ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => onContentTypeChange('video')}
+          activeOpacity={0.7}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ExpoImage
+              style={{ width: 20, aspectRatio: 1, marginRight: 20 }}
+              source={require('../../../assets/forApp/video.png')}
+              contentFit='cover'
+              tintColor={'white'}
+            />
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Video</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only video is available.</Text>
+            </View>
+          </View>
+          {formData.contentType.value === 'video' ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+          onPress={() => onContentTypeChange('photo')}
+          activeOpacity={0.7}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ExpoImage
+              style={{ width: 20, aspectRatio: 1, marginRight: 20 }}
+              source={require('../../../assets/forApp/photo.png')}
+              contentFit='cover'
+              tintColor={'white'}
+            />
+            <View style={{ width: 250 }}>
+              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only photo is available.</Text>
+            </View>
+          </View>
+          {formData.contentType.value === 'photo' ? (
+            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+          ) : null}
+        </TouchableOpacity>
+
+        {/* <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => onContentTypeChange('video')}
           activeOpacity={1}
@@ -161,8 +229,9 @@ const ContentType = () => {
           {formData.contentType.value === 'video' ? (
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
-        </TouchableOpacity>
-        <TouchableOpacity
+        </TouchableOpacity> */}
+
+        {/* <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => onContentTypeChange('photoAndVideo')}
           activeOpacity={1}
@@ -185,7 +254,7 @@ const ContentType = () => {
           {formData.contentType.value === 'photoAndVideo' ? (
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {formData.contentType.value === 'video' || formData.contentType.value === 'photoAndVideo' ? (
