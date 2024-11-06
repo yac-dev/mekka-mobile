@@ -9,6 +9,7 @@ export const createSpace = async (input: CreateSpaceInputType): Promise<CreateSp
     payload.append('isPublic', input.isPublic.value.toString()); // ここ、booleanのdata送るのも大変だよな。。。
     payload.append('isCommentAvailable', input.isCommentAvailable.value.toString());
     payload.append('isReactionAvailable', input.isReactionAvailable.value.toString());
+    payload.append('isFollowAvailable', input.isFollowAvailable.value.toString());
     payload.append('reactions', JSON.stringify(input.reactions.value));
     payload.append('videoLength', input.videoLength.value.toString());
     payload.append('disappearAfter', input.disappearAfter.value.toString());

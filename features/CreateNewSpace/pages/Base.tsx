@@ -68,17 +68,19 @@ export const Base = () => {
       setTimeout(() => {
         Alert.alert(
           `Invite your friends to ${data.space.name}`,
-          `Var is the group photo/video sharing app. By sharing invitation code, ${'\n'}your friends can join your space.`,
+          `Var is the group photo/video sharing app.${'\n'}Your friends can join your space using ${
+            data.space.name
+          }'s invitation code. Would you like to share it?`,
           [
             {
-              text: 'Proceed',
+              text: 'Yes',
               onPress: () =>
                 Share.share({
                   title: `Invite your friends to ${data.space.name}`,
-                  message: `Hey my friends!${'\n'}Download the app and join to my space.${'\n'}The invitation key code is this 👉 ${
+                  message: `Hey my friends!${'\n'}Access and download the Var app down below${'\n'}https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148.${'\n'}Then enter invitation key code to join my space👉 ${
                     data.space.secretKey
                   }`,
-                  url: 'https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148',
+                  // url: 'https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148',
                 }),
             },
             {
@@ -133,6 +135,17 @@ export const Base = () => {
     });
   }, [formData]);
 
+  console.log('name validation', formData.name.isValidated);
+  console.log('icon validation', formData.icon.isValidated);
+  console.log('disappearAfter validation', formData.disappearAfter.isValidated);
+  console.log('isPublic validation', formData.isPublic.isValidated);
+  console.log('isReactionAvailable validation', formData.isReactionAvailable.isValidated);
+  console.log('isCommentAvailable validation', formData.isCommentAvailable.isValidated);
+  console.log('description validation', formData.description.isValidated);
+  console.log('contentType validation', formData.contentType.isValidated);
+  console.log('reactions validation', formData.reactions.isValidated);
+
+  // reaction のやつがダメみたいね。。。
   // useEffect(() => {
   //   if (status === 'success') {
   //     setMySpaces((previous) => [...previous, apiResult.data.space]);

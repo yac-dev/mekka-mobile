@@ -42,7 +42,7 @@ export const initialFormData: FormDataType = {
   },
   reactions: {
     value: [],
-    isValidated: false,
+    isValidated: true,
   },
   description: {
     value: '',

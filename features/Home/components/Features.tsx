@@ -17,7 +17,7 @@ export const Features = () => {
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
 
   const onRollsPress = () => {
-    Alert.alert('Not available now', 'The Rolls feature will be available in the next update.', [
+    Alert.alert('🛠️ Under Construction', 'Rolls feature will be available in the next update.', [
       { text: 'Got it', onPress: () => null },
     ]);
   };
