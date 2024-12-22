@@ -318,7 +318,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
         icon={<VectorIcon.OI name='hash' size={20} color='white' style={{ marginRight: 10 }} />}
         title='Tags'
         value={renderTagTexts()}
-        requirementText={!formData.addedTagsTable.isValidated ? 'Required to choose or create.' : undefined}
+        requirementText={!formData.addedTagsTable.isValidated ? 'Required' : undefined}
       />
       <MenuCell
         onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
