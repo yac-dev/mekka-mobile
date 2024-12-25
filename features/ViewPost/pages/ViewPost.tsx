@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CommentInput } from '../components/CommentInput';
 import { Comments } from '../components';
@@ -106,7 +106,13 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   useEffect(() => {
     viewStackNavigation.setOptions({
       headerLeft: () => (
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}
+          onPress={() => {
+            viewStackNavigation.navigate('UserStackNavigator', { userId: currentPost.createdBy._id });
+          }}
+          activeOpacity={0.7}
+        >
           <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
           <View style={{ flexDirection: 'column' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -123,7 +129,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ),
     });
   }, [currentPost]);

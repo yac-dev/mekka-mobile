@@ -4,6 +4,8 @@ import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
 import { ReportPost, ReportComment, ViewPost } from '../..';
 import { PostType } from '../../../types';
+import { UserStackNavigator } from '../../User';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {
@@ -16,11 +18,17 @@ export type ViewPostStackNavigatorParams = {
   CommentsPage: undefined;
   ReportPost: undefined;
   ReportComment: undefined;
+  UserStackNavigator: {
+    userId: string;
+  };
 };
+// ここら辺やっぱrecoil使ったほうがいいかね。。。
 
 const ViewPostStack = createNativeStackNavigator<ViewPostStackNavigatorParams>();
 
 export type ViewPostStackNavigatorProps = NativeStackNavigationProp<ViewPostStackNavigatorParams>;
+
+// type ViewPostStackNavigatorScreenProps = NativeStackScreenProps<ViewPostStackNavigatorParams, 'ViewPost'>;
 
 export const ViewPostStackNavigator = () => {
   return (
@@ -31,7 +39,6 @@ export const ViewPostStackNavigator = () => {
           component={ViewPost}
           options={({ navigation }) => ({
             headerShown: true,
-            // title: <Text>{currentPost.createdAt}</Text>,
             headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
@@ -45,6 +52,26 @@ export const ViewPostStackNavigator = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
               color: 'white',
+            },
+          })}
+        />
+        <ViewPostStack.Screen
+          name='UserStackNavigator'
+          component={UserStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            title: '',
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerStyle: {
+              backgroundColor: 'black',
             },
           })}
         />
