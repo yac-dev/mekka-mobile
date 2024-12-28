@@ -64,6 +64,7 @@ export type GetPostsByTagIdOutputType = {
 
 export type GetPostsByUserIdInputType = {
   userId: string;
+  spaceId: string;
   currentPage: number;
 };
 
