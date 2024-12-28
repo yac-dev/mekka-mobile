@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, FlatList } from 'react-native';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPostsByUserId, queryKeys } from '../../../query';
 import { FlashList } from '@shopify/flash-list';
@@ -7,6 +7,9 @@ import { PostType } from '../../../types';
 import { PostThumbnail } from '../../../components/PostThumbnail';
 import { currentSpaceAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
+import { Header } from './Header';
+import { useNavigation } from '@react-navigation/native';
+import { UserStackNavigatorProps } from '../navigations';
 
 type IPostsByGrid = {
   userId: string;
@@ -14,6 +17,7 @@ type IPostsByGrid = {
 
 export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const userStackNavigation = useNavigation<UserStackNavigatorProps>();
   const {
     data,
     status: getPostsByUserIdStatus,
@@ -29,13 +33,10 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   });
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    // spaceNavigation.navigate({
-    //   name: 'ViewPostStackNavigator',
-    //   params: {
-    //     screen: 'ViewPost',
-    //     params: { posts: data?.pages.flatMap((page) => page.posts), index: index },
-    //   },
-    // });
+    userStackNavigation.navigate('ViewPostStackNavigator', {
+      screen: 'ViewPost',
+      params: { posts: data?.pages.flatMap((page) => page.posts), index: index },
+    });
   };
 
   // next pageがなければもうfetch nextしたくないよね。
@@ -70,7 +71,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   }
 
   return (
-    <View style={{ flex: 1, height: '100%', width: '100%' }}>
+    <View style={{ flex: 1 }}>
       <FlashList
         numColumns={3}
         data={data?.pages.flatMap((page) => page.posts)}
@@ -82,6 +83,13 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
           fetchNextPage();
         }}
         // scrollEnabled={false}
+        ListHeaderComponent={
+          <Header
+            userId={userId}
+            viewPostsType='grid'
+            customStyle={{ backgroundColor: 'black', paddingVertical: 10, paddingHorizontal: 30, marginBottom: 20 }}
+          />
+        }
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{ paddingBottom: 100 }}

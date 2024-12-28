@@ -61,15 +61,15 @@ export const ViewPostStackNavigator = () => {
           options={({ navigation }) => ({
             headerShown: false,
             title: '',
-            headerLeft: () => (
-              <AppButton.Icon
-                onButtonPress={() => navigation.goBack()}
-                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                hasShadow={false}
-              >
-                <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
-              </AppButton.Icon>
-            ),
+            // headerLeft: () => (
+            //   <AppButton.Icon
+            //     onButtonPress={() => navigation.goBack()}
+            //     customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+            //     hasShadow={false}
+            //   >
+            //     <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+            //   </AppButton.Icon>
+            // ),
             headerStyle: {
               backgroundColor: 'black',
             },

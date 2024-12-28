@@ -1,27 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Icons } from '../../../Icons/images';
 import { Image as ExpoImage } from 'expo-image';
 import { Colors } from '../../../themes/colors';
 import { SpaceType } from '../../../types';
-import { viewPostsTypeAtomFamily } from '../atoms';
 import { useRecoilState } from 'recoil';
 
 type ViewPostsTypeToggleButtonProps = {
-  space: SpaceType;
+  viewPostsType: 'grid' | 'region';
+  onPostsTypeChangePress: (postsType: 'grid' | 'region') => void;
 };
 
-export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({ space }) => {
-  const [viewPostsType, setViewPostsType] = useRecoilState(viewPostsTypeAtomFamily(space._id));
-
+export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({
+  viewPostsType,
+  onPostsTypeChangePress,
+}) => {
   const onGridViewPress = () => {
-    setViewPostsType('grid');
+    onPostsTypeChangePress('grid');
   };
 
   const onRegionViewPress = () => {
-    setViewPostsType('region');
+    onPostsTypeChangePress('region');
   };
+
+  console.log(viewPostsType);
 
   return (
     <View style={[styles.container, styles.shadow]}>

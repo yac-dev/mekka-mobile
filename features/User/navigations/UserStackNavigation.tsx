@@ -9,11 +9,13 @@ import {
   ViewPostStackNavigatorParams,
 } from '../../ViewPost/navigations/ViewPostStackNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type UserStackNavigatorParams = {
   User: {
     userId: string;
   };
+  ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
 };
 
 const UserStack = createNativeStackNavigator();

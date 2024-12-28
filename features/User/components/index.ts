@@ -1,4 +1,5 @@
 export * from './PostsByGrid';
-export * from './postsByRegion';
+export * from './PostsByRegion';
 export * from './Header';
 export * from './Posts';
+export * from './ViewPostsTypeToggleButton';
