@@ -62,6 +62,17 @@ export type GetPostsByTagIdOutputType = {
   hasNextPage: number | null;
 };
 
+export type GetPostsByUserIdInputType = {
+  userId: string;
+  currentPage: number;
+};
+
+export type GetPostsByUserIdOutputType = {
+  posts: PostType[];
+  currentPage: number;
+  hasNextPage: number | null;
+};
+
 export type CreatePostInputType = FormDataType & {
   userId: string;
   spaceId: string;

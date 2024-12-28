@@ -6,3 +6,4 @@ export * from './logsTableAtom';
 export * from './currentTagAtom';
 export * from './momentLogsAtom';
 export * from './isPushNotificationEnabledAtom';
+export * from './currentUserAtom';

@@ -25,6 +25,7 @@ import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavi
 import { FlashList } from '@shopify/flash-list';
 import { currentSpaceAtom } from '../../../recoil';
 import { ViewPostStackNavigator } from '../navigations/ViewPostStackNavigator';
+import { currentUserAtom } from '../../../recoil';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -70,7 +71,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
 
   const [currentPost, setCurrentPost] = useState<PostType>(posts[index]);
-
+  const [_, setCurrentUser] = useRecoilState(currentUserAtom);
   const { requestGetReactionsBySpaceId } = useGetReactionsByPostIdResult(currentPost._id);
   const [getReactionsByPostIdResult] = useRecoilState(getReactionsByPostIdResultAtomFamily(currentPost._id));
 
@@ -109,6 +110,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}
           onPress={() => {
+            // setCurrentUser(currentPost.createdBy);
             viewStackNavigation.navigate('UserStackNavigator', { userId: currentPost.createdBy._id });
           }}
           activeOpacity={0.7}

@@ -24,7 +24,7 @@ import { queryKeys } from '../../../query/queryKeys';
 import { CreatePostInputType } from '../../../query/types';
 import { mutationKeys } from '../../../query/mutationKeys';
 import { Image as ExpoImage } from 'expo-image';
-
+import { currentUserBottomSheetRef } from '../../../Refs';
 // 結局、my spacesとかもさ、tan stackで制御できちゃうよな。。。なんで俺recoilでstate管理してるんだろ。。。
 // currentSpaceとかはいいんだけど、apiの結果はapp戦隊で持てるからな。。。
 export const Home = () => {
@@ -221,6 +221,19 @@ export const Home = () => {
           onEnterPrivateKeyPress={onEnterPrivateKeyPress}
           onDiscoverPress={onDiscoverPress}
         />
+      </AppBottomSheet.Gorhom>
+      {/* これもさ、refをglobalに持っておくことはできるんだろかね。recoilで。 */}
+      <AppBottomSheet.Gorhom
+        ref={currentUserBottomSheetRef}
+        snapPoints={['50%']}
+        header={<Text style={styles.text}>Add Space</Text>}
+        onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
+      >
+        <View>
+          <Text style={styles.text}>
+            ここでuser infoを出すようにする。だから、globalにuserの情報を持ってないとあかんな。recoilの登場だ。
+          </Text>
+        </View>
       </AppBottomSheet.Gorhom>
     </View>
   );
