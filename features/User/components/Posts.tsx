@@ -10,12 +10,11 @@ type IPosts = {
 export const Posts: React.FC<IPosts> = ({ userId }) => {
   const pagerViewRef = useRef<PagerView>(null);
   return (
-    <View style={styles.container}>
-      <PagerView style={styles.pagerView} initialPage={0} scrollEnabled={false} ref={pagerViewRef}>
-        <PostsByGrid userId={userId} />
-        <PostsByRegion userId={userId} />
-      </PagerView>
-    </View>
+    // <View style={styles.container}>
+    <PagerView style={styles.pagerView} initialPage={0} scrollEnabled={false} ref={pagerViewRef}>
+      <PostsByGrid userId={userId} />
+      <PostsByRegion userId={userId} />
+    </PagerView>
   );
 };
 
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
   },
   pagerView: {
     flex: 1,
-    width: '100%',
     height: '100%',
+    width: '100%',
   },
 });

@@ -10,5 +10,6 @@ export const queryKeys = {
   spaceBySecretKey: 'spaceBySecretKey',
   stickers: 'stickers',
   postsByUserId: 'postsByUserId',
+  userById: 'userById',
   // ここら辺のkey名、apiのエンドポイントに則った方がいいよね多分。
 };

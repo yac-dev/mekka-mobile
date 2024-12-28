@@ -70,7 +70,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, height: '100%', width: '100%' }}>
       <FlashList
         numColumns={3}
         data={data?.pages.flatMap((page) => page.posts)}
@@ -81,6 +81,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
         onMomentumScrollEnd={() => {
           fetchNextPage();
         }}
+        // scrollEnabled={false}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{ paddingBottom: 100 }}

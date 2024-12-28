@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { UserStackNavigatorParams } from '../navigations/UserStackNavigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -14,7 +14,7 @@ import { getPostsByTagId, getPostsByUserId, queryKeys } from '../../../query';
 
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { VectorIcon } from '../../../Icons';
-import { Posts } from '../components/Posts';
+import { Posts, Header } from '../components';
 
 // tabViewを使って地図を描画したい気持ちでいっぱいなんだが、
 // そもそもuser page自体をstackscreenで表示しなければいいのではないかね。。。？discordみたいにさ。
@@ -30,8 +30,11 @@ Mapbox.setAccessToken(Config.MAPBOX_ACCESS_TOKEN);
 export const User: React.FC<IUser> = ({ userId }) => {
   const [currentTag] = useRecoilState(currentTagAtom);
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={styles.container}>
+      {/* <ScrollView style={{ height: '100%', width: '100%', flex: 1 }}> */}
+      <Header userId={userId} />
       <Posts userId={userId} />
+      {/* </ScrollView> */}
     </View>
   );
 };

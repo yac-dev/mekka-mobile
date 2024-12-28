@@ -147,3 +147,11 @@ export type GetStickersInputType = {};
 export type GetStickersOutputType = {
   stickers: StickerType[];
 };
+
+export type GetUserByIdInputType = {
+  userId: string;
+};
+
+export type GetUserByIdOutputType = {
+  user: UserType;
+};
