@@ -6,6 +6,8 @@ import { Image as ExpoImage } from 'expo-image';
 import PagerView from 'react-native-pager-view';
 import { PostsByGrid } from './PostsByGrid';
 import { PostsByRegion } from './PostsByRegion';
+import { VectorIcon } from '../../../Icons';
+import { AppButton } from '../../../components';
 
 type IHeader = {
   userId: string;
@@ -32,25 +34,34 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
   return (
     <View style={[customStyle]}>
       <View style={styles.header}>
-        <View style={styles.leftContainer}>
-          <ExpoImage source={data.user.avatar} style={styles.avatar} />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.leftContainer}>
+            <ExpoImage source={data.user.avatar} style={styles.avatar} />
+          </View>
+          <View style={styles.rightContainer}>
+            <Text style={styles.name}>{data.user.name}</Text>
+            <Text style={styles.uniqueName}>@johndoe</Text>
+          </View>
         </View>
-        <View style={styles.rightContainer}>
-          <Text style={styles.name}>{data.user.name}</Text>
-          <TouchableOpacity style={styles.followButton}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity style={styles.followButton} activeOpacity={0.7}>
+            <VectorIcon.II name='person-add' size={15} color='white' style={{ marginRight: 5 }} />
             <Text style={styles.followButtonText}>Follow</Text>
           </TouchableOpacity>
+          <AppButton.Icon
+            onButtonPress={() => {}}
+            customStyle={{
+              width: 35,
+              height: 35,
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 100,
+            }}
+            hasShadow={false}
+          >
+            <VectorIcon.MCI name='dots-horizontal' size={15} style={{ color: 'white' }} />
+          </AppButton.Icon>
         </View>
       </View>
-      {/* <PagerView
-        style={styles.pagerView}
-        initialPage={viewPostsType === 'grid' ? 0 : 1}
-        scrollEnabled={false}
-        ref={pagerViewRef}
-      >
-        <PostsByGrid userId={userId} />
-        <PostsByRegion userId={userId} />
-      </PagerView> */}
     </View>
   );
 };
@@ -60,40 +71,48 @@ const styles = StyleSheet.create({
     // flex: 1,
     backgroundColor: 'black',
     paddingVertical: 10,
-    paddingLeft: 40,
-    paddingRight: 30,
+    paddingLeft: 15,
+    paddingRight: 15,
     marginBottom: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   leftContainer: {
-    width: 50,
-    height: 50,
+    width: 42,
+    height: 42,
     borderRadius: 50,
-    marginRight: 20,
+    marginRight: 15,
   },
   avatar: {
     width: '100%',
     height: '100%',
   },
-  rightContainer: {
-    flex: 1,
-  },
+  rightContainer: {},
   name: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 10,
+    marginBottom: 5,
+  },
+  uniqueName: {
+    fontSize: 14,
+    color: 'rgb(150,150,150)',
   },
   followButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(50,50,50)',
     padding: 10,
     borderRadius: 100,
+    height: 35,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 5,
   },
   followButtonText: {
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },

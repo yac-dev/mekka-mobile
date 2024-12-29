@@ -87,7 +87,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
           <Header
             userId={userId}
             viewPostsType='grid'
-            customStyle={{ backgroundColor: 'black', paddingVertical: 10, paddingHorizontal: 30, marginBottom: 20 }}
+            customStyle={{ backgroundColor: 'black', paddingVertical: 10, paddingHorizontal: 15, marginBottom: 20 }}
           />
         }
         ListFooterComponent={renderFooter}
