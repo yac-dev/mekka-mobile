@@ -1,5 +1,6 @@
 import { useRef, MutableRefObject } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { constSelector } from 'recoil';
 
 type UseBottomSheetOutputType = {
   addNewPostMenuBottomSheetRef: MutableRefObject<BottomSheetModal>;
@@ -14,6 +15,9 @@ type UseBottomSheetOutputType = {
   aboutSpaceBottomSheetRef: MutableRefObject<BottomSheetModal>;
   openAboutSpaceBottomSheet: (index: number) => void;
   closeAboutSpaceBottomSheet: () => void;
+  currentUserBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  openCurrentUserBottomSheet: (index: number) => void;
+  closeCurrentUserBottomSheet: () => void;
 };
 
 export const useBottomSheet = (): UseBottomSheetOutputType => {
@@ -21,6 +25,7 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const authMenuBottomSheetRef = useRef<BottomSheetModal>(null);
   const addNewSpaceMenuBottomSheetRef = useRef<BottomSheetModal>(null);
   const aboutSpaceBottomSheetRef = useRef<BottomSheetModal>(null);
+  const currentUserBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const openAddNewPostMenuBottomSheet = (index: number) => {
     addNewPostMenuBottomSheetRef.current?.snapToIndex(index);
@@ -54,6 +59,15 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     aboutSpaceBottomSheetRef.current?.close();
   };
 
+  // この関数をglobalに持っておくことできる？？
+  const openCurrentUserBottomSheet = (index: number) => {
+    currentUserBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeCurrentUserBottomSheet = () => {
+    currentUserBottomSheetRef.current?.close();
+  };
+
   return {
     addNewPostMenuBottomSheetRef,
     openAddNewPostMenuBottomSheet,
@@ -67,5 +81,8 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     aboutSpaceBottomSheetRef,
     openAboutSpaceBottomSheet,
     closeAboutSpaceBottomSheet,
+    currentUserBottomSheetRef,
+    openCurrentUserBottomSheet,
+    closeCurrentUserBottomSheet,
   };
 };

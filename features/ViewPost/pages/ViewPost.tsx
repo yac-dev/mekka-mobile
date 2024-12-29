@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CommentInput } from '../components/CommentInput';
 import { Comments } from '../components';
@@ -25,6 +25,7 @@ import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavi
 import { FlashList } from '@shopify/flash-list';
 import { currentSpaceAtom } from '../../../recoil';
 import { ViewPostStackNavigator } from '../navigations/ViewPostStackNavigator';
+import { currentUserAtom } from '../../../recoil';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -70,7 +71,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { apiResult: getCommentsResult, requestApi: requestGetCommentsByPostId } = useGetCommentsByPostIdState();
 
   const [currentPost, setCurrentPost] = useState<PostType>(posts[index]);
-
+  const [_, setCurrentUser] = useRecoilState(currentUserAtom);
   const { requestGetReactionsBySpaceId } = useGetReactionsByPostIdResult(currentPost._id);
   const [getReactionsByPostIdResult] = useRecoilState(getReactionsByPostIdResultAtomFamily(currentPost._id));
 
@@ -106,7 +107,14 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   useEffect(() => {
     viewStackNavigation.setOptions({
       headerLeft: () => (
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}>
+        <TouchableOpacity
+          style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}
+          onPress={() => {
+            // setCurrentUser(currentPost.createdBy);
+            viewStackNavigation.navigate('UserStackNavigator', { userId: currentPost.createdBy._id });
+          }}
+          activeOpacity={0.7}
+        >
           <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
           <View style={{ flexDirection: 'column' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -123,7 +131,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ),
     });
   }, [currentPost]);
@@ -198,7 +206,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-      <StatusBar hidden />
+      {/* <StatusBar hidden /> */}
       <FlashList
         data={posts}
         renderItem={renderItem}

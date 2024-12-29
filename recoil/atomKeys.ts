@@ -21,4 +21,5 @@ export const atomKeys = {
   logsTable: 'logsTable',
   currentTag: 'currentTag',
   currentPostsPageByTagId: 'currentPostsPageByTagId',
+  currentUser: 'currentUser',
 };

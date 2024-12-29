@@ -62,6 +62,27 @@ export type GetPostsByTagIdOutputType = {
   hasNextPage: number | null;
 };
 
+export type GetPostsByUserIdInputType = {
+  userId: string;
+  spaceId: string;
+  currentPage: number;
+};
+
+export type GetPostsByUserIdOutputType = {
+  posts: PostType[];
+  currentPage: number;
+  hasNextPage: number | null;
+};
+
+export type GetPostsByUserIdAndRegionInputType = {
+  userId: string;
+  spaceId: string;
+};
+
+export type GetPostsByUserIdAndRegionOutputType = {
+  posts: PostType[];
+};
+
 export type CreatePostInputType = FormDataType & {
   userId: string;
   spaceId: string;
@@ -134,4 +155,12 @@ export type GetStickersInputType = {};
 
 export type GetStickersOutputType = {
   stickers: StickerType[];
+};
+
+export type GetUserByIdInputType = {
+  userId: string;
+};
+
+export type GetUserByIdOutputType = {
+  user: UserType;
 };

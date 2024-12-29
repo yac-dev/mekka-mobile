@@ -9,6 +9,7 @@ import { momentLogsAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
 import * as Haptics from 'expo-haptics';
+import { currentUserBottomSheetRef } from '../../../Refs';
 
 type CurrentSpaceProps = {
   openAddNewPostMenuBottomSheet: (index: number) => void;

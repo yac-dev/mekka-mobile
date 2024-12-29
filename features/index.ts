@@ -11,3 +11,4 @@ export * from './Space';
 export * from './SpaceInfo';
 export * from './Report';
 export * from './ViewPost';
+export * from './User';

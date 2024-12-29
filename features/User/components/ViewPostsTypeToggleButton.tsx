@@ -1,27 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Icons } from '../../../Icons/images';
 import { Image as ExpoImage } from 'expo-image';
 import { Colors } from '../../../themes/colors';
 import { SpaceType } from '../../../types';
-import { viewPostsTypeAtomFamily } from '../atoms';
 import { useRecoilState } from 'recoil';
 
 type ViewPostsTypeToggleButtonProps = {
-  space: SpaceType;
+  viewPostsType: 'grid' | 'region';
+  onPostsTypeChangePress: (postsType: 'grid' | 'region') => void;
 };
 
-export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({ space }) => {
-  const [viewPostsType, setViewPostsType] = useRecoilState(viewPostsTypeAtomFamily(space._id));
-
+export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({
+  viewPostsType,
+  onPostsTypeChangePress,
+}) => {
   const onGridViewPress = () => {
-    setViewPostsType('grid');
+    onPostsTypeChangePress('grid');
   };
 
   const onRegionViewPress = () => {
-    setViewPostsType('region');
+    onPostsTypeChangePress('region');
   };
+
+  console.log(viewPostsType);
 
   return (
     <View style={[styles.container, styles.shadow]}>
@@ -42,6 +45,7 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
           padding: 7,
           backgroundColor: viewPostsType === 'region' ? 'rgb(80,80,80)' : null,
           borderRadius: viewPostsType === 'region' ? 12 : 0,
+          // marginRight: 15,
         }}
         activeOpacity={0.7}
         onPress={() => onRegionViewPress()}
@@ -53,6 +57,22 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
           tintColor={Colors.white}
         />
       </TouchableOpacity>
+      {/* <TouchableOpacity
+        style={{
+          padding: 7,
+          backgroundColor: viewPostsType === 'region' ? 'rgb(80,80,80)' : null,
+          borderRadius: viewPostsType === 'region' ? 12 : 0,
+        }}
+        activeOpacity={0.7}
+        onPress={() => onRegionViewPress()}
+      >
+        <ExpoImage
+          style={{ width: 25, height: 25 }}
+          source={Icons.globe}
+          contentFit='contain'
+          tintColor={Colors.white}
+        />
+      </TouchableOpacity> */}
     </View>
   );
 };

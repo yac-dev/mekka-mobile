@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { GridView, RegionView } from '.';
 import { SpaceType, TagType } from '../../../types';
 import { viewPostsTypeAtomFamily } from '../atoms';
