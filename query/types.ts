@@ -74,6 +74,15 @@ export type GetPostsByUserIdOutputType = {
   hasNextPage: number | null;
 };
 
+export type GetPostsByUserIdAndRegionInputType = {
+  userId: string;
+  spaceId: string;
+};
+
+export type GetPostsByUserIdAndRegionOutputType = {
+  posts: PostType[];
+};
+
 export type CreatePostInputType = FormDataType & {
   userId: string;
   spaceId: string;

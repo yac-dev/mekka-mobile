@@ -32,8 +32,8 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
   }
 
   return (
-    <View style={[customStyle]}>
-      <View style={styles.header}>
+    <View style={styles.container}>
+      <View style={[styles.header, customStyle]}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.leftContainer}>
             <ExpoImage source={data.user.avatar} style={styles.avatar} />
@@ -68,17 +68,17 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    backgroundColor: 'black',
+    flex: 1,
     paddingVertical: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingHorizontal: 15,
     marginBottom: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+
+    borderRadius: 10,
   },
   leftContainer: {
     width: 42,

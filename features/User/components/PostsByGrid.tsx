@@ -83,13 +83,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
           fetchNextPage();
         }}
         // scrollEnabled={false}
-        ListHeaderComponent={
-          <Header
-            userId={userId}
-            viewPostsType='grid'
-            customStyle={{ backgroundColor: 'black', paddingVertical: 10, paddingHorizontal: 15, marginBottom: 20 }}
-          />
-        }
+        ListHeaderComponent={<Header userId={userId} viewPostsType='grid' customStyle={{}} />}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{ paddingBottom: 100 }}

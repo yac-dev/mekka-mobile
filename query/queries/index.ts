@@ -8,3 +8,4 @@ export * from './getSpaceBySecretKey';
 export * from './getStickers';
 export * from './getPostsByUserId';
 export * from './getUserById';
+export * from './getPostsByUserIdAndRegion';

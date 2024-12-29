@@ -11,5 +11,6 @@ export const queryKeys = {
   stickers: 'stickers',
   postsByUserId: 'postsByUserId',
   userById: 'userById',
+  postsByUserIdAndRegion: 'postsByUserIdAndRegion',
   // ここら辺のkey名、apiのエンドポイントに則った方がいいよね多分。
 };
