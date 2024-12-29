@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, forwardRef } from 'react';
+import React, { useContext, useState, useEffect, forwardRef, useRef } from 'react';
 import { View, Text, TouchableOpacity, InputAccessoryView, Keyboard, StyleSheet } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-gesture-handler';
@@ -26,50 +26,64 @@ export const CommentInput = forwardRef((props: ICommentinput, ref) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [auth] = useRecoilState(authAtom);
   const [commentInput, setCommentInput] = useState('');
-  const { apiResult: createCommentResultState, requestApi: requestCreateComment } = useCreateCommentState();
-
-  if (!currentSpace.isCommentAvailable) {
-    return (
-      <View style={styles.commentIsNotAvailable}>
-        <Text style={{ color: 'white' }}>Commenting is not allowed</Text>
-      </View>
-    );
-  }
+  const commentInputRef = useRef<TextInput>(null);
 
   const onSendPress = () => {
-    requestCreateComment({ content: commentInput, postId: currentPost._id, userId: auth._id });
+    console.log('send');
   };
 
   const onCancelPress = () => {
     Keyboard.dismiss();
     setCommentInput('');
-    closeCommentInputBottomSheet();
   };
 
   useEffect(() => {
-    if (createCommentResultState.status === 'success') {
-      refs.flashMessageRef.current?.showMessage({ message: 'Your comment has been sent.', type: 'success' });
-      Keyboard.dismiss();
-      setCommentInput('');
-      closeCommentInputBottomSheet();
-    }
-  }, [createCommentResultState]);
+    // if (createCommentResultState.status === 'success') {
+    //   refs.flashMessageRef.current?.showMessage({ message: 'Your comment has been sent.', type: 'success' });
+    //   Keyboard.dismiss();
+    //   setCommentInput('');
+    //   closeCommentInputBottomSheet();
+    // }
+    commentInputRef.current?.focus();
+  }, []);
 
   return (
-    <View style={{ height: '100%', flexDirection: 'row' }}>
-      <BottomSheetTextInput
-        multiline={true}
+    // <View style={{ height: '100%', flexDirection: 'row' }}>
+    //   <BottomSheetTextInput
+    //     multiline={true}
+    //     placeholder={'Type here...'}
+    //     placeholderTextColor={'rgb(170,170,170)'}
+    //     inputAccessoryViewID={inputAccessoryViewID}
+    //     style={{
+    //       padding: 15,
+    //       height: '100%',
+    //       width: '100%',
+    //       color: 'white',
+    //       fontSize: 17,
+    //     }}
+    //     ref={refs.commentInputRef}
+    //     value={commentInput}
+    //     onChangeText={setCommentInput}
+    //     autoCapitalize='none'
+    //   />
+
+    //   <LoadingSpinner isVisible={createCommentResultState.status === 'loading'} message={'Processing now✈️'} />
+    // </View>
+    <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: 'rgb(100,100,100)', backgroundColor: 'black' }}>
+      <TextInput
+        // multiline={true}
         placeholder={'Type here...'}
         placeholderTextColor={'rgb(170,170,170)'}
         inputAccessoryViewID={inputAccessoryViewID}
         style={{
           padding: 15,
-          height: '100%',
           width: '100%',
           color: 'white',
           fontSize: 17,
+          backgroundColor: 'rgb(50,50,50)',
+          borderRadius: 5,
         }}
-        ref={refs.commentInputRef}
+        ref={commentInputRef}
         value={commentInput}
         onChangeText={setCommentInput}
         autoCapitalize='none'
@@ -95,7 +109,6 @@ export const CommentInput = forwardRef((props: ICommentinput, ref) => {
           </View>
         </View>
       </InputAccessoryView>
-      <LoadingSpinner isVisible={createCommentResultState.status === 'loading'} message={'Processing now✈️'} />
     </View>
   );
 });

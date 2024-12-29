@@ -78,10 +78,10 @@ export const SpaceStackNavigator: React.FC = () => {
       <SpaceStack.Group>
         <SpaceStack.Screen name='Space' component={Space} />
       </SpaceStack.Group>
-      <SpaceStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+      <SpaceStack.Group screenOptions={{ presentation: 'fullScreenModal', animation: 'fade', animationDuration: 200 }}>
         <SpaceStack.Screen
-          name='CreateNewPostStackNavigator'
-          component={CreateNewPostStackNavigator}
+          name='ViewPostStackNavigator'
+          component={ViewPostStackNavigator}
           options={({ navigation }) => ({
             headerShown: false,
             headerTitle: '',
@@ -94,9 +94,11 @@ export const SpaceStackNavigator: React.FC = () => {
             },
           })}
         />
+      </SpaceStack.Group>
+      <SpaceStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
         <SpaceStack.Screen
-          name='ViewPostStackNavigator'
-          component={ViewPostStackNavigator}
+          name='CreateNewPostStackNavigator'
+          component={CreateNewPostStackNavigator}
           options={({ navigation }) => ({
             headerShown: false,
             headerTitle: '',
