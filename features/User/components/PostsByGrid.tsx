@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, ActivityIndicator, FlatList, Animated } from 'react-native';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPostsByUserId, queryKeys } from '../../../query';
 import { FlashList } from '@shopify/flash-list';
@@ -31,6 +31,36 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
       return lastPage.hasNextPage ? lastPage.currentPage : undefined;
     },
   });
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const translateHeader = scrollY.interpolate({
+    inputRange: [0, 80],
+    outputRange: [0, -80],
+    extrapolate: 'clamp',
+  });
+  const opacityTitle = scrollY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  const translateTitle = scrollY.interpolate({
+    inputRange: [0, 80],
+    outputRange: [0, 40],
+    extrapolate: 'clamp',
+  });
+
+  // useEffect(() => {
+  //   userStackNavigation.setOptions({
+  //     header: () => (
+  //       <Animated.View style={[{ transform: [{ translateY: translateHeader }] }]}>
+  //         <Animated.Text style={[{ opacity: opacityTitle }, , { transform: [{ translateY: translateTitle }] }]}>
+  //           Cheap
+  //         </Animated.Text>
+  //       </Animated.View>
+  //     ),
+  //   });
+  // }, [userStackNavigation, scrollY]);
 
   const onPressPostThumbnail = (post: PostType, index: number) => {
     userStackNavigation.navigate('ViewPostStackNavigator', {
@@ -87,6 +117,10 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{ paddingBottom: 100 }}
+        // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+        //   useNativeDriver: true,
+        // })}
+        // scrollEventThrottle={16}
       />
     </View>
   );

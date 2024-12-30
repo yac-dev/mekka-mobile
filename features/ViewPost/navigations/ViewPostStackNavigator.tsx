@@ -6,6 +6,7 @@ import { ReportPost, ReportComment, ViewPost } from '../..';
 import { PostType } from '../../../types';
 import { UserStackNavigator } from '../../User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CommentsPage } from '../pages';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {
@@ -15,7 +16,9 @@ export type ViewPostStackNavigatorParams = {
   };
   ViewGridPost: undefined;
   ViewRegionPost: undefined;
-  CommentsPage: undefined;
+  Comments: {
+    postId: string;
+  };
   ReportPost: undefined;
   ReportComment: undefined;
   UserStackNavigator: {
@@ -55,6 +58,7 @@ export const ViewPostStackNavigator = () => {
             },
           })}
         />
+        {/* というか、そもそもここってstacknavigatorにする必要なくない。。？ */}
         <ViewPostStack.Screen
           name='UserStackNavigator'
           component={UserStackNavigator}
@@ -113,6 +117,34 @@ export const ViewPostStackNavigator = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            // headerTransparent: true,
+          })}
+        />
+      </ViewPostStack.Group>
+      <ViewPostStack.Group
+        screenOptions={{ presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
+      >
+        <ViewPostStack.Screen
+          name='Comments'
+          component={CommentsPage}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: 'Comments',
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerTitleStyle: {
+              color: 'white',
+            },
             headerStyle: {
               backgroundColor: 'black',
             },

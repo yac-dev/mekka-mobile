@@ -187,12 +187,14 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   };
 
   const handleCommentsPress = () => {
-    requestGetCommentsByPostId({ postId: currentPost._id });
-    openCommentsBottomSheetToIndex();
+    // requestGetCommentsByPostId({ postId: currentPost._id });
+    // openCommentsBottomSheetToIndex();
+    viewStackNavigation.navigate('Comments', { postId: currentPost._id });
   };
 
   const handleCommentInputPress = () => {
-    openCommentInputBottomSheet(0);
+    // openCommentInputBottomSheet(0);
+    // viewStackNavigation.navigate('Comments');
   };
 
   const handleHorizontalDotsPress = () => {
@@ -322,15 +324,15 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         <Reactions currentPost={currentPost} />
       </AppBottomSheet.Gorhom>
 
-      <AppBottomSheet.Gorhom
+      {/* <AppBottomSheet.Gorhom
         ref={commentsBottomSheetRef}
         snapPoints={['80%']}
         header={<Text style={styles.text}>Comments</Text>}
         onCloseButtonClose={closeCommentsBottomSheet}
       >
         <Comments getCommentsResult={getCommentsResult} handleCommentInputPress={handleCommentInputPress} />
-      </AppBottomSheet.Gorhom>
-      <AppBottomSheet.Gorhom
+      </AppBottomSheet.Gorhom> */}
+      {/* <AppBottomSheet.Gorhom
         ref={commentInputBottomSheetRef}
         snapPoints={['40%']}
         header={<Text style={styles.text}>What are your thoughts?</Text>}
@@ -341,7 +343,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           closeCommentInputBottomSheet={closeCommentInputBottomSheet}
           currentPost={currentPost}
         />
-      </AppBottomSheet.Gorhom>
+      </AppBottomSheet.Gorhom> */}
       <FlashMessage ref={flashMessageRef} position={'top'} />
     </GestureHandlerRootView>
   );

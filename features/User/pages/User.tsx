@@ -36,21 +36,9 @@ export const User: React.FC<IUser> = ({ userId }) => {
 
   const userStackNavigation = useNavigation<UserStackNavigatorProps>();
 
-  // useEffect(() => {
-  //   userStackNavigation.setOptions({
-  //     headerLeft: () => (
-  //       <View style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}>
-  //         {/* <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} /> */}
-  //         <View style={{ flexDirection: 'column' }}>
-  //           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-  //             <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>JonhDoe</Text>
-  //             <Text style={{ color: 'rgb(150,150,150)', fontSize: 11, fontWeight: 'bold' }}>@JonhDoe</Text>
-  //           </View>
-  //         </View>
-  //       </View>
-  //     ),
-  //   });
-  // }, []);
+  useEffect(() => {
+    userStackNavigation.setOptions({});
+  }, []);
 
   // scrollView兼pager viewがいけないのね。。。。どうだろ。。。
   return (
@@ -72,3 +60,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
 });
+
+// headerLeft: () => (
+//   <View style={{ flexDirection: 'row', alignItems: 'center', width: 200, paddingTop: 10 }}>
+//     {/* <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} /> */}
+//     <View style={{ flexDirection: 'column' }}>
+//       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>JonhDoe</Text>
+//         <Text style={{ color: 'rgb(150,150,150)', fontSize: 11, fontWeight: 'bold' }}>@JonhDoe</Text>
+//       </View>
+//     </View>
+//   </View>
+// ),

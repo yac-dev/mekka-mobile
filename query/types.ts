@@ -1,6 +1,6 @@
 import { FormDataType } from '../features/CreateNewPost/contexts/CreateNewPostProvider';
 import { FormDataType as CreateNewSpaceFormDataType } from '../features/CreateNewSpace/contexts/CreateNewSpaceProvider';
-import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType, StickerType } from '../types';
+import { SpaceType, AuthType, UserType, PostType, ReactionType, TagType, StickerType, CommentType } from '../types';
 
 export type LoadMeInput = {
   jwt: string | undefined;
@@ -107,6 +107,16 @@ export type CreateMomentOutputType = {
   post: PostType;
 };
 
+export type CreateCommentInputType = {
+  content: string;
+  postId: string;
+  userId: string;
+};
+
+export type CreateCommentOutputType = {
+  comment: CommentType;
+};
+
 export type GetMomentsBySpaceIdInputType = {
   spaceId: string;
 };
@@ -163,4 +173,12 @@ export type GetUserByIdInputType = {
 
 export type GetUserByIdOutputType = {
   user: UserType;
+};
+
+export type GetCommentsByPostIdInputType = {
+  postId: string;
+};
+
+export type GetCommentsByPostIdOutputType = {
+  comments: CommentType[];
 };

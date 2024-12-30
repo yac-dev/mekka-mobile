@@ -208,6 +208,7 @@ export type PostType = {
 };
 
 export type CommentType = {
+  _id: string;
   content: string;
   post: PostType;
   reply: CommentType;
