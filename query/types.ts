@@ -125,6 +125,15 @@ export type GetMomentsBySpaceIdOutputType = {
   posts?: PostType[];
 };
 
+export type GetReactionsByPostIdInputType = {
+  postId: string;
+  spaceId: string;
+};
+
+export type GetReactionsByPostIdOutputType = {
+  reactions: ReactionType[];
+};
+
 type UserDataPayloadType = {
   user: {
     _id: string;

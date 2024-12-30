@@ -6,7 +6,7 @@ import { ReportPost, ReportComment, ViewPost } from '../..';
 import { PostType } from '../../../types';
 import { UserStackNavigator } from '../../User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { CommentsPage } from '../pages';
+import { CommentsPage, HowDoYouFeel } from '../pages';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {
@@ -17,6 +17,9 @@ export type ViewPostStackNavigatorParams = {
   ViewGridPost: undefined;
   ViewRegionPost: undefined;
   Comments: {
+    postId: string;
+  };
+  HowDoYouFeel: {
     postId: string;
   };
   ReportPost: undefined;
@@ -133,7 +136,7 @@ export const ViewPostStackNavigator = () => {
           options={({ navigation }) => ({
             headerShown: true,
             title: 'Comments',
-            headerLeft: () => (
+            headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
                 customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
@@ -149,6 +152,30 @@ export const ViewPostStackNavigator = () => {
               backgroundColor: 'black',
             },
             // headerTransparent: true,
+          })}
+        />
+        <ViewPostStack.Screen
+          name='HowDoYouFeel'
+          component={HowDoYouFeel}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: 'How do you feel?',
+            headerRight: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerTitleStyle: {
+              color: 'white',
+            },
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTransparent: true,
           })}
         />
       </ViewPostStack.Group>

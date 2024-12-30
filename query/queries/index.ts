@@ -10,3 +10,4 @@ export * from './getPostsByUserId';
 export * from './getUserById';
 export * from './getPostsByUserIdAndRegion';
 export * from './getCommentsByPostId';
+export * from './getReactionsByPostId';

@@ -182,8 +182,9 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   };
 
   const handleReactionPress = () => {
-    requestGetReactionsBySpaceId({ postId: currentPost._id, spaceId: currentSpace._id });
-    openReactionsBottomSheetToIndex();
+    // requestGetReactionsBySpaceId({ postId: currentPost._id, spaceId: currentSpace._id });
+    // openReactionsBottomSheetToIndex();
+    viewStackNavigation.navigate('HowDoYouFeel', { postId: currentPost._id });
   };
 
   const handleCommentsPress = () => {
@@ -314,7 +315,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           </AppButton.Icon>
         </View>
       </View>
-      <AppBottomSheet.Gorhom
+      {/* <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
         header={<Text style={styles.text}>How do you feel?</Text>}
@@ -322,7 +323,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         onClose={onReactionsBottomSheetClose}
       >
         <Reactions currentPost={currentPost} />
-      </AppBottomSheet.Gorhom>
+      </AppBottomSheet.Gorhom> */}
 
       {/* <AppBottomSheet.Gorhom
         ref={commentsBottomSheetRef}
