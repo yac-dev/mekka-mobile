@@ -107,6 +107,16 @@ export type CreateMomentOutputType = {
   post: PostType;
 };
 
+export type CreateCommentInputType = {
+  content: string;
+  postId: string;
+  userId: string;
+};
+
+export type CreateCommentOutputType = {
+  comment: CommentType;
+};
+
 export type GetMomentsBySpaceIdInputType = {
   spaceId: string;
 };

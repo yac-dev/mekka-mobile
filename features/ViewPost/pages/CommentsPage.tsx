@@ -43,16 +43,16 @@ function timeSince(date: Date) {
   if (interval > 1) {
     return `${Math.floor(interval)} minute${Math.floor(interval) > 1 ? 's' : ''} ago`;
   }
-  return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
+  // return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
+  return 'Just Now';
 }
 
 export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
   const { postId } = route.params;
   const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
-  const [currentPost, _] = useRecoilState(currentPostAtom);
 
   const { data, status } = useQuery({
-    queryKey: [queryKeys.commentsByPostId, currentPost],
+    queryKey: [queryKeys.commentsByPostId, postId],
     queryFn: () => getCommentsByPostId({ postId }),
   });
 
@@ -89,10 +89,10 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
                   contentFit='contain'
                 />
                 <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ color: 'white', marginBottom: 5, fontSize: 15, fontWeight: 'bold' }}>
+                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>
                     {item.createdBy.name}
                   </Text>
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 11, fontWeight: 'bold' }}>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, fontWeight: 'bold' }}>
                     {timeSince(new Date(item.createdAt))}
                   </Text>
                 </View>
@@ -147,7 +147,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
         }
         estimatedItemSize={100}
       />
-      <CommentInput />
+      <CommentInput currentPost={postId} />
       {/* <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: 'rgb(100,100,100)', backgroundColor: 'black' }}>
         <TextInput
           // multiline={true}

@@ -3,4 +3,5 @@ export const mutationKeys = {
   createMoment: 'createMoment',
   createSpace: 'createSpace',
   previewSticker: 'previewSticker',
+  createComment: 'createComment',
 };

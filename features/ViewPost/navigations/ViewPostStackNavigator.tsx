@@ -132,7 +132,7 @@ export const ViewPostStackNavigator = () => {
           component={CommentsPage}
           options={({ navigation }) => ({
             headerShown: true,
-            title: '',
+            title: 'Comments',
             headerLeft: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
@@ -142,6 +142,9 @@ export const ViewPostStackNavigator = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
+            headerTitleStyle: {
+              color: 'white',
+            },
             headerStyle: {
               backgroundColor: 'black',
             },
