@@ -113,6 +113,16 @@ export type CreateCommentInputType = {
   userId: string;
 };
 
+export type IncrementReactionInputType = {
+  postId: string;
+  reactionId: string;
+  userId: string;
+};
+
+export type IncrementReactionOutputType = {
+  reaction: ReactionType;
+};
+
 export type CreateCommentOutputType = {
   comment: CommentType;
 };

@@ -5,3 +5,4 @@ export * from './registerPushToken';
 export * from './createSpace';
 export * from './previewSticker';
 export * from './createComment';
+export * from './incrementReaction';
