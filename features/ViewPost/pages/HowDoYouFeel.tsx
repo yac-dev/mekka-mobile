@@ -34,9 +34,6 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
   // debounce使ったやり方で行きたいね。
   //　多分、これも個々のreactionごとにcomponent作ってそれぞれでstateを持たせておいたほうがいいのかもしれん。。。
 
-  // console.log('data', data);
-  console.log('postid', postId);
-
   const renderReactionOption = ({ item, index }: { item: ReactionType; index: number }) => {
     const count = data?.reactions.find((reactionObject) => reactionObject._id === item._id)?.count;
     return <ReactionOption key={index} reaction={item} postId={postId} count={count} />;
@@ -192,6 +189,7 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
       </View>
     );
   }
+  console.log('current space reactions', currentSpace.reactions);
 
   return (
     <View style={styles.container}>

@@ -32,7 +32,7 @@ export const WelcomePage = () => {
               fontWeight: 'bold',
             }}
           >
-            Submit
+            Proceed
           </Text>
         </TouchableOpacity>
       ),

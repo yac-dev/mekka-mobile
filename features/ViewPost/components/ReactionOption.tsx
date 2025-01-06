@@ -17,9 +17,15 @@ type IReactionOptionProps = {
   count: number;
 };
 
+// 次は何から始めるんだっけ？？reaction関連の機能の修正か。次に、写真のfetchを修正する感じかね。
+// ここはredisの導入も絡むから一般公開後の作業になるかな。。。redi入れるとなるとdocker環境の方も変わるしね。。。あと、awsの本番運用を始めたいし。awsだtp勉強用だっつって会社の経費にしてくれそうだしw
+// ただ、今の状態はキープで一旦いいとは思う。
+
+// ok。今集中すべきはこのreactionのapiフェッチとデザインをまず修正することだねまずは。
+// reaction voteした時のanimationをやってみたいよね。midiumみたいなさ。ただ、これvote数に応じてdocumentを作るのでいいかな。。。？それとも誰が何回的な感じでやるほうがいいのか。。。？まあdocument作る方向性でいいかとりま。
+// あと、皆んなのreactionもみせる的なことは今は止めようと思う。
 export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postId, count }) => {
   // ここdebounceでincrementするのをやりたいね。
-  console.log(postId);
   const [currentCount, setCurrentCount] = useState<number>(count);
   const [incrementedCountByCurrentUser, setIncrementedCountByCurrentUser] = useState<number>(0);
   const [auth] = useRecoilState(authAtom);
@@ -30,11 +36,12 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
   // currentUserによるincrement自体も引っ張ってきたいよな。。。
 
   const onReactionOptionPress = () => {
+    // console.log('obj', { postId: postId, reactionId: reaction._id });
     incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
     setCurrentCount((previousCurrentCount) => previousCurrentCount + 1);
-    setIncrementedCountByCurrentUser(
-      (previousIncrementedCountByCurrentUser) => previousIncrementedCountByCurrentUser + 1
-    );
+    // setIncrementedCountByCurrentUser(
+    //   (previousIncrementedCountByCurrentUser) => previousIncrementedCountByCurrentUser + 1
+    // );
   };
 
   return (
