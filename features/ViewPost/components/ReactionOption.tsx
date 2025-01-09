@@ -5,8 +5,11 @@ import { Image as ExpoImage } from 'expo-image';
 import { incrementReaction } from '../../../query/mutations';
 import { useRecoilState } from 'recoil';
 import { authAtom } from '../../../recoil';
-import { useMutation } from '@tanstack/react-query';
-import { IncrementReactionInputType } from '../../../query/types';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { GetReactionsByPostIdOutputType, IncrementReactionInputType } from '../../../query/types';
+import { getReactionsByPostId } from '../../../query/queries';
+import { queryKeys } from '../../../query/queryKeys';
+import { useQueryClient } from '@tanstack/react-query';
 
 const itemWidth = Dimensions.get('window').width / 3;
 const reactionContainerWidth = itemWidth * 0.7;
@@ -26,11 +29,24 @@ type IReactionOptionProps = {
 // あと、皆んなのreactionもみせる的なことは今は止めようと思う。
 export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postId, count }) => {
   // ここdebounceでincrementするのをやりたいね。
+  const queryClient = useQueryClient();
   const [currentCount, setCurrentCount] = useState<number>(count);
   const [incrementedCountByCurrentUser, setIncrementedCountByCurrentUser] = useState<number>(0);
   const [auth] = useRecoilState(authAtom);
   const { mutate: incrementReactionMutate } = useMutation({
     mutationFn: (input: IncrementReactionInputType) => incrementReaction(input),
+    onMutate: () => {
+      // そもそも、ここってどういうデータ構造だっけ。。。？
+      queryClient.setQueryData([queryKeys.reactionsByPostId, postId], (previous: GetReactionsByPostIdOutputType) => {
+        const updatedReactions = previous.reactions.map((reactionObject) => {
+          if (reactionObject._id === reaction._id) {
+            return { ...reactionObject, count: reactionObject.count + 1 };
+          }
+          return reactionObject;
+        });
+        return updatedReactions;
+      });
+    },
   });
 
   // currentUserによるincrement自体も引っ張ってきたいよな。。。

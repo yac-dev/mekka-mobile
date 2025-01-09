@@ -189,7 +189,6 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
       </View>
     );
   }
-  console.log('current space reactions', currentSpace.reactions);
 
   return (
     <View style={styles.container}>
