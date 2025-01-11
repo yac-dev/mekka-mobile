@@ -231,7 +231,7 @@ export const RegionView = () => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {

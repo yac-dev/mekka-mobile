@@ -210,7 +210,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* <StatusBar hidden /> */}
+      <StatusBar hidden />
       <FlashList
         data={posts}
         renderItem={renderItem}

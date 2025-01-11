@@ -150,6 +150,12 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
           paddingVertical: 10,
         }}
         onPress={() => onSpacePress(item, index)}
+        onLongPress={() => {
+          if (currentSpace._id === item._id) {
+            homeStackNavigation.navigate('SpaceInfoStackNavigator');
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          }
+        }}
       >
         <View
           style={{
