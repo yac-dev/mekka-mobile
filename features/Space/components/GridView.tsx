@@ -6,7 +6,7 @@ import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceStackNavigatorProps } from '../navigations/SpaceStackNavigator';
 import { useRecoilState } from 'recoil';
-import { currentTagAtom, currentTagAtomFamily } from '../../../recoil';
+import { currentSpaceAtom, currentTagAtom, currentTagAtomFamily } from '../../../recoil';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPostsByTagId, queryKeys } from '../../../query';
 import { Colors } from '../../../themes';
@@ -22,6 +22,7 @@ const windowWidth = Dimensions.get('window').width;
 export const GridView: React.FC<IGridView> = ({ space }) => {
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
@@ -31,7 +32,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [queryKeys.postsByTagId, currentTagsTableBySpaceIds[space._id]._id],
+    queryKey: [queryKeys.postsByTagId, currentSpace, currentTagsTableBySpaceIds[currentSpace._id]._id],
     queryFn: ({ pageParam = 0 }) =>
       getPostsByTagId({ tagId: currentTagsTableBySpaceIds[space._id]._id, currentPage: pageParam }),
     initialPageParam: 0,
@@ -44,10 +45,8 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
   });
   const scrollViewRef = useRef(null);
 
-  console.log('currentTagsTableBySpaceIds', currentTagsTableBySpaceIds);
-
   const scrollToCenter = () => {
-    const currentIndex = space.tags.findIndex((tag) => tag._id === currentTag._id);
+    const currentIndex = space.tags.findIndex((tag) => tag._id === currentTagsTableBySpaceIds[space._id]._id);
     if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === space.tags.length) {
       const itemWidth = itemWidths[currentIndex];
       const offset =
@@ -61,7 +60,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
 
   useEffect(() => {
     scrollToCenter();
-  }, [currentTag, itemWidths, space.tags.length]);
+  }, [currentTagsTableBySpaceIds, itemWidths, space.tags.length]);
 
   // NOTE: 多分、indexではなくpostでいんじゃないかなー。view post側でpostの_idでloopすればいいだけだから。。。ただ、postの数が多い場合はllopが面倒くさいか。
   const onPressPostThumbnail = (post: PostType, index: number) => {
@@ -157,7 +156,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
         />
         <Text style={{ color: 'white', textAlign: 'center', fontSize: 17 }}>
           No posts tagged by{'\n'}
-          {currentTag.name}
+          {currentTagsTableBySpaceIds[space._id].name}
         </Text>
       </View>
     );

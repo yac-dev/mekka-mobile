@@ -90,7 +90,6 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   };
 
   const scrollToCenter = () => {
-    if (!currentTagsTableBySpaceIds) return;
     const currentIndex = currentSpace.tags.findIndex(
       (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
     );
@@ -117,18 +116,6 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   //     };
   //   });
   // }, [space]);
-
-  const pagerViewRef = useRef<PagerView>(null);
-
-  const [currentPostIndex, setCurrentPostIndex] = useState<number>(0);
-
-  const onCurrentPostIndexChange = (index: number) => {
-    setCurrentPostIndex(index);
-  };
-
-  useEffect(() => {
-    pagerViewRef.current?.setPage(viewPostsType === 'grid' ? 0 : 1);
-  }, [viewPostsType]);
 
   const renderTab = ({ item, index }) => {
     const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
@@ -166,20 +153,20 @@ export const Space: React.FC<ISpace> = ({ space }) => {
     );
   };
 
-  if (!currentTagsTableBySpaceIds) return null;
+  // if (!currentTagsTableBySpaceIds) return null;
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* <BlurView
-        style={{
-          zIndex: 1000,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-        }}
-        blurAmount={0}
-        reducedTransparencyFallbackColor='white'
+      <View
+        style={
+          {
+            // zIndex: 1000,
+            // position: 'absolute',
+            // top: 0,
+            // left: 0,
+            // right: 0,
+          }
+        }
       >
         <View
           style={{
@@ -190,14 +177,14 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >
               <View style={{ marginRight: 5 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{space.name}</Text>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 18 }}>{currentSpace.name}</Text>
               </View>
-              <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
+              <VectorIcon.MCI name='chevron-right' size={20} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -206,26 +193,14 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             ref={scrollViewRef}
-            data={space?.tags}
+            data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingTop: 6 }}
+            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3, paddingBottom: 6 }}
           />
         </View>
-      </BlurView> */}
-      <View>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ref={scrollViewRef}
-          data={space?.tags}
-          renderItem={renderTab}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-          contentContainerStyle={{ paddingLeft: 20, paddingVertical: 10 }}
-        />
       </View>
-
-      <GridView space={space} />
+      <GridView space={currentSpace} />
     </View>
   );
 };

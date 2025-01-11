@@ -32,6 +32,7 @@ const windowWidth = Dimensions.get('window').width;
 const viewItemContainerWidth = windowWidth / 3;
 const viewItemButtonWidth = viewItemContainerWidth * 0.7;
 
+// space変えて、mapに切り替えて、その後gridに変えると選択中のspaceでtag選択がなくなってしまう。。。
 export const Views: React.FC<{
   openAddNewPostMenuBottomSheet: (index: number) => void;
   openAuthMenuBottomSheet: (index: number) => void;
@@ -169,7 +170,7 @@ export const Views: React.FC<{
                 style={{
                   position: 'absolute',
                   top: -5,
-                  right: 0,
+                  right: -8,
                   width: 16,
                   height: 16,
                   borderRadius: 10,

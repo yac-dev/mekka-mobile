@@ -74,6 +74,8 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
   //   scrollToCenter();
   // }, [currentTagBySpaceId, itemWidths, currentSpace.tags.length]);
 
+  console.log(JSON.stringify(currentTagsTableBySpaceIds, null, 2));
+
   const scrollToCenter = () => {
     if (!currentTagsTableBySpaceIds) return;
     const currentIndex = currentSpace.tags.findIndex(

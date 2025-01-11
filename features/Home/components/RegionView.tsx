@@ -34,6 +34,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const windowWidth = Dimensions.get('window').width;
 
+// mapからgridに切り替えると、currentTagが切り替わってない感じ。。。多分何かおかしい。
 export const RegionView = () => {
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
@@ -371,7 +372,7 @@ export const RegionView = () => {
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        {/* <View
+        <View
           style={{
             flexDirection: 'column',
             paddingTop: 10,
@@ -380,17 +381,17 @@ export const RegionView = () => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >
               <View style={{ marginRight: 5 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 18 }}>{currentSpace.name}</Text>
               </View>
-              <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
+              <VectorIcon.MI name='chevron-right' size={20} color={Colors.white} />
             </TouchableOpacity>
           </View>
-        </View> */}
+        </View>
         <View>
           <FlatList
             horizontal
@@ -399,7 +400,7 @@ export const RegionView = () => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingVertical: 10 }}
+            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3, paddingBottom: 6 }}
           />
         </View>
         {/* defaultの位置はnew yorkでいい。fetchが */}
