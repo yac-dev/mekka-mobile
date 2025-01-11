@@ -1,31 +1,37 @@
-import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, ActivityIndicator, FlatList, TouchableOpacity, LayoutChangeEvent, Dimensions } from 'react-native';
 import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceStackNavigatorProps } from '../navigations/SpaceStackNavigator';
 import { useRecoilState } from 'recoil';
-import { currentTagAtom } from '../../../recoil';
+import { currentTagAtom, currentTagAtomFamily } from '../../../recoil';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPostsByTagId, queryKeys } from '../../../query';
-
+import { Colors } from '../../../themes';
+import { VectorIcon } from '../../../Icons';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
+import { Image as ExpoImage } from 'expo-image';
 type IGridView = {
   space: SpaceType;
-  tag: TagType;
 };
 
-export const GridView: React.FC<IGridView> = ({ space, tag }) => {
-  const [currentTag] = useRecoilState(currentTagAtom);
+const windowWidth = Dimensions.get('window').width;
+export const GridView: React.FC<IGridView> = ({ space }) => {
+  const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
+  const [currentTagBySpaceId, setCurrentTagBySpaceId] = useRecoilState(currentTagAtomFamily(space._id));
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
+  const [itemWidths, setItemWidths] = useState<number[]>([]);
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const {
     data,
     status: getPostsByTagIdStatus,
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [queryKeys.postsByTagId, currentTag._id],
-    queryFn: ({ pageParam = 0 }) => getPostsByTagId({ tagId: currentTag._id, currentPage: pageParam }),
+    queryKey: [queryKeys.postsByTagId, currentTagBySpaceId._id],
+    queryFn: ({ pageParam = 0 }) => getPostsByTagId({ tagId: currentTagBySpaceId._id, currentPage: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       // console.log('lastPage', lastPage);
@@ -34,10 +40,30 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
       return lastPage.hasNextPage ? lastPage.currentPage : undefined;
     },
   });
+  const scrollViewRef = useRef(null);
+
+  console.log('currentTagBySpaceId', currentTagBySpaceId);
+
+  const scrollToCenter = () => {
+    const currentIndex = space.tags.findIndex((tag) => tag._id === currentTag._id);
+    if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === space.tags.length) {
+      const itemWidth = itemWidths[currentIndex];
+      const offset =
+        itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
+      scrollViewRef.current?.scrollToOffset({
+        offset: Math.max(0, offset),
+        animated: true,
+      });
+    }
+  };
+
+  useEffect(() => {
+    scrollToCenter();
+  }, [currentTag, itemWidths, space.tags.length]);
 
   // NOTE: 多分、indexではなくpostでいんじゃないかなー。view post側でpostの_idでloopすればいいだけだから。。。ただ、postの数が多い場合はllopが面倒くさいか。
   const onPressPostThumbnail = (post: PostType, index: number) => {
-    spaceNavigation.navigate({
+    homeStackNavigation.navigate({
       name: 'ViewPostStackNavigator',
       params: {
         screen: 'ViewPost',
@@ -59,6 +85,55 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
 
   const renderItem = ({ item, index }: { item: PostType; index: number }) => {
     return <PostThumbnail post={item} index={index} onPressPostThumbnail={onPressPostThumbnail} />;
+  };
+
+  const onItemLayout = (event: LayoutChangeEvent, index: number) => {
+    const { width } = event.nativeEvent.layout;
+    setItemWidths((prevWidths) => {
+      const newWidths = [...prevWidths];
+      newWidths[index] = width;
+      return newWidths;
+    });
+  };
+
+  const onTabPress = (tab) => {
+    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setCurrentTag(tab);
+  };
+
+  const renderTab = ({ item, index }) => {
+    const isFocused = currentTagBySpaceId._id === item._id;
+    return (
+      <View onLayout={(event) => onItemLayout(event, index)}>
+        <TouchableOpacity
+          // key={route.key}
+          activeOpacity={0.7}
+          onPress={() => onTabPress(item)}
+          onLongPress={() => console.log('hello')}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 10,
+              padding: 5,
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : undefined,
+              borderRadius: 130,
+            }}
+          >
+            <ExpoImage
+              style={{ width: 20, height: 20, marginRight: 5 }}
+              source={{ uri: item.icon?.url }}
+              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+            />
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
+              {item.name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   if (getPostsByTagIdStatus === 'pending') {
@@ -87,7 +162,6 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
         removeClippedSubviews
         estimatedItemSize={1000}
         onMomentumScrollEnd={() => {
-          // console.log('hasNextPage?', hasNextPage);
           fetchNextPage();
         }}
         ListFooterComponent={renderFooter}
@@ -97,3 +171,13 @@ export const GridView: React.FC<IGridView> = ({ space, tag }) => {
     </View>
   );
 };
+
+{
+  /* <AppButton.Icon
+            onButtonPress={() => spaceStackNavigation.goBack()}
+            customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
+            hasShadow={false}
+          >
+            <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
+          </AppButton.Icon> */
+}

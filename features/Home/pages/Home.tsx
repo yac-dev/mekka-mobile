@@ -14,6 +14,7 @@ import {
   BottomTab,
   SpacesHeader,
   AddNewPostMenu,
+  Views,
 } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
@@ -59,22 +60,22 @@ export const Home = () => {
 
   // authがある場合にのみrenderしたいね。
 
-  useEffect(() => {
-    homeStackNavigation.setOptions({
-      header: () => {
-        if (mySpaces?.length) {
-          return (
-            <SpacesHeader
-              openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
-              openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-            />
-          );
-        } else {
-          return null;
-        }
-      },
-    });
-  }, [mySpaces]);
+  // useEffect(() => {
+  //   homeStackNavigation.setOptions({
+  //     header: () => {
+  //       if (mySpaces?.length) {
+  //         return (
+  //           <SpacesHeader
+  //             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+  //             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+  //           />
+  //         );
+  //       } else {
+  //         return null;
+  //       }
+  //     },
+  //   });
+  // }, [mySpaces]);
 
   // homeに関してはここで制御せんとかん。
   useEffect(() => {
@@ -179,7 +180,8 @@ export const Home = () => {
         //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         //   />
         // </View>
-        <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
+        // <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
+        <Views />
       )}
 
       <AppBottomSheet.Gorhom
