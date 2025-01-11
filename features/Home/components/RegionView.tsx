@@ -52,7 +52,7 @@ export const RegionView = () => {
     status: postsByTagIdAndRegionStatus,
     refetch: refetchPostsByTagIdAndRegion,
   } = useQuery({
-    queryKey: [queryKeys.postsByTagIdAndRegion, currentTagsTableBySpaceIds[currentSpace._id]._id],
+    queryKey: [queryKeys.postsByTagIdAndRegion, currentTagsTableBySpaceIds[currentSpace._id]._id, currentRegion],
     queryFn: () =>
       getPostsByTagIdAndRegion({
         tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
@@ -72,15 +72,15 @@ export const RegionView = () => {
     const latitudeDelta = neLat - swLat;
     const longitudeDelta = neLng - swLng;
 
-    getPostsByTagIdAndRegion({
-      tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
-      region: {
-        latitude: feature.properties.center[1],
-        longitude: feature.properties.center[0],
-        latitudeDelta: latitudeDelta,
-        longitudeDelta: longitudeDelta,
-      },
-    });
+    // getPostsByTagIdAndRegion({
+    //   tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
+    //   region: {
+    //     latitude: feature.properties.center[1],
+    //     longitude: feature.properties.center[0],
+    //     latitudeDelta: latitudeDelta,
+    //     longitudeDelta: longitudeDelta,
+    //   },
+    // });
     setCurrentRegion({
       latitude: feature.properties.center[1],
       longitude: feature.properties.center[0],
@@ -89,17 +89,17 @@ export const RegionView = () => {
     });
   };
 
-  useEffect(() => {
-    getPostsByTagIdAndRegion({
-      tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
-      region: {
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 100.0922,
-        longitudeDelta: 100.0421,
-      },
-    });
-  }, [currentTagsTableBySpaceIds, currentSpace, currentRegion]);
+  // useEffect(() => {
+  //   getPostsByTagIdAndRegion({
+  //     tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
+  //     region: {
+  //       latitude: 37.78825,
+  //       longitude: -122.4324,
+  //       latitudeDelta: 100.0922,
+  //       longitudeDelta: 100.0421,
+  //     },
+  //   });
+  // }, [currentTagsTableBySpaceIds, currentSpace, currentRegion]);
 
   useEffect(() => {
     scrollToCenter();
