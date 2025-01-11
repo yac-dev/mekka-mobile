@@ -23,4 +23,6 @@ export const atomKeys = {
   currentPostsPageByTagId: 'currentPostsPageByTagId',
   currentUser: 'currentUser',
   currentTagBySpaceId: 'currentTagBySpaceId',
+  currentSpaceAndTag: 'currentSpaceAndTag',
+  currentTagsBySpaceIds: 'currentTagsBySpaceIds',
 };

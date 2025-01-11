@@ -13,7 +13,7 @@ import {
 import { Header, Specs, Features, Tags } from '.';
 import { AppButton } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { authAtom, currentSpaceAtom, mySpacesAtom } from '../../../recoil';
+import { authAtom, currentSpaceAtom, currentTagsTableBySpaceIdsAtom, mySpacesAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { momentLogsAtom } from '../../../recoil';
@@ -55,8 +55,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
   // const [currentTag, setCurrentTag] = useState<TagType>(currentSpace.tags[0]);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const scrollViewRef = useRef(null);
-
-  const [currentTagBySpaceId, setCurrentTagBySpaceId] = useRecoilState(currentTagAtomFamily(currentSpace._id));
+  const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
 
   // const scrollToCenter = () => {
   //   const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTagBySpaceId._id);
@@ -76,8 +75,10 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
   // }, [currentTagBySpaceId, itemWidths, currentSpace.tags.length]);
 
   const scrollToCenter = () => {
-    if (!currentTagBySpaceId) return;
-    const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTagBySpaceId._id);
+    if (!currentTagsTableBySpaceIds) return;
+    const currentIndex = currentSpace.tags.findIndex(
+      (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
+    );
     if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === currentSpace.tags.length) {
       const itemWidth = itemWidths[currentIndex];
       const offset =
@@ -91,7 +92,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
 
   useEffect(() => {
     scrollToCenter();
-  }, [currentTagBySpaceId, itemWidths, currentSpace.tags.length]);
+  }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
 
   const { isRefetching: isRefetchingMySpaces } = useQuery({
     queryKey: [queryKeys.mySpaces, auth],
@@ -102,7 +103,12 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
 
   const onTabPress = (tab: TagType) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setCurrentTagBySpaceId(tab);
+    setCurrentTagsTableBySpaceIds((prev) => {
+      return {
+        ...prev,
+        [currentSpace._id]: tab,
+      };
+    });
   };
 
   const onItemLayout = (event: LayoutChangeEvent, index: number) => {
@@ -193,7 +199,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
   };
 
   const renderTab = ({ item, index }) => {
-    const isFocused = currentTagBySpaceId._id === item._id;
+    const isFocused = currentTagsTableBySpaceIds[currentSpace._id] === item._id;
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity

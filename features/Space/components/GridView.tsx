@@ -13,6 +13,7 @@ import { Colors } from '../../../themes';
 import { VectorIcon } from '../../../Icons';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { Image as ExpoImage } from 'expo-image';
+import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 type IGridView = {
   space: SpaceType;
 };
@@ -20,7 +21,7 @@ type IGridView = {
 const windowWidth = Dimensions.get('window').width;
 export const GridView: React.FC<IGridView> = ({ space }) => {
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
-  const [currentTagBySpaceId, setCurrentTagBySpaceId] = useRecoilState(currentTagAtomFamily(space._id));
+  const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
@@ -30,8 +31,9 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [queryKeys.postsByTagId, currentTagBySpaceId._id],
-    queryFn: ({ pageParam = 0 }) => getPostsByTagId({ tagId: currentTagBySpaceId._id, currentPage: pageParam }),
+    queryKey: [queryKeys.postsByTagId, currentTagsTableBySpaceIds[space._id]._id],
+    queryFn: ({ pageParam = 0 }) =>
+      getPostsByTagId({ tagId: currentTagsTableBySpaceIds[space._id]._id, currentPage: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       // console.log('lastPage', lastPage);
@@ -42,7 +44,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
   });
   const scrollViewRef = useRef(null);
 
-  console.log('currentTagBySpaceId', currentTagBySpaceId);
+  console.log('currentTagsTableBySpaceIds', currentTagsTableBySpaceIds);
 
   const scrollToCenter = () => {
     const currentIndex = space.tags.findIndex((tag) => tag._id === currentTag._id);
@@ -102,7 +104,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
   };
 
   const renderTab = ({ item, index }) => {
-    const isFocused = currentTagBySpaceId._id === item._id;
+    const isFocused = currentTagsTableBySpaceIds[space._id]._id === item._id;
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity

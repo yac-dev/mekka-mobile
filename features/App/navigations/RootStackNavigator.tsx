@@ -13,6 +13,7 @@ import {
   momentLogsAtom,
   mySpacesAtom,
   currentTagAtomFamily,
+  currentTagsTableBySpaceIdsAtom,
 } from '../../../recoil';
 import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -34,6 +35,7 @@ export const RootStackNavigator = () => {
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
+  const [, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
 
   const updateSpaceCheckedInMutation = useMutation({
     mutationFn: updateSpaceCheckedInDate,
@@ -51,7 +53,12 @@ export const RootStackNavigator = () => {
       setMySpaces(response.mySpaces);
       if (response.mySpaces?.length) {
         setCurrentSpace(response.mySpaces[0]);
-
+        setCurrentTagsTableBySpaceIds(() => {
+          return response.mySpaces.reduce((acc, space) => {
+            acc[space._id] = space.tags[0];
+            return acc;
+          }, {});
+        });
         setCurrentTag(response.mySpaces[0].tags[0]);
         const firstSpace = response.mySpaces[0];
         updateSpaceCheckedInMutation.mutate({ spaceId: firstSpace._id, userId: auth._id });

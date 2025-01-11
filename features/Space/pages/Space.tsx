@@ -32,7 +32,7 @@ import { SpaceType } from '../../../types';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import PagerView from 'react-native-pager-view';
 import { viewPostsTypeAtomFamily } from '../atoms';
-import { currentTagAtomFamily } from '../../../recoil';
+import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 import LinearGradient from 'react-native-linear-gradient';
 
 // id毎でqueryをcacheしたいのよね。
@@ -46,7 +46,7 @@ type ISpace = {
 
 export const Space: React.FC<ISpace> = ({ space }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
-  const [currentTagBySpaceId, setCurrentTagBySpaceId] = useRecoilState(currentTagAtomFamily(currentSpace._id));
+  const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
@@ -60,7 +60,12 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   const onTabPress = (tab) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setCurrentTagBySpaceId(tab);
+    setCurrentTagsTableBySpaceIds((prev) => {
+      return {
+        ...prev,
+        [currentSpace._id]: tab,
+      };
+    });
   };
 
   const onCreatePostPress = () => {
@@ -83,8 +88,10 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   };
 
   const scrollToCenter = () => {
-    if (!currentTagBySpaceId) return;
-    const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTagBySpaceId._id);
+    if (!currentTagsTableBySpaceIds) return;
+    const currentIndex = currentSpace.tags.findIndex(
+      (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
+    );
     if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === currentSpace.tags.length) {
       const itemWidth = itemWidths[currentIndex];
       const offset =
@@ -98,11 +105,16 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   useEffect(() => {
     scrollToCenter();
-  }, [currentTagBySpaceId, itemWidths, currentSpace.tags.length]);
+  }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
 
-  useEffect(() => {
-    setCurrentTagBySpaceId(space.tags[0]);
-  }, [space]);
+  // useEffect(() => {
+  //   setCurrentTagsTableBySpaceIds((prev) => {
+  //     return {
+  //       ...prev,
+  //       [currentSpace._id]: space.tags[0],
+  //     };
+  //   });
+  // }, [space]);
 
   const pagerViewRef = useRef<PagerView>(null);
 
@@ -117,7 +129,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   }, [viewPostsType]);
 
   const renderTab = ({ item, index }) => {
-    const isFocused = currentTagBySpaceId._id === item._id;
+    const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity
@@ -133,6 +145,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               alignItems: 'center',
               marginRight: 10,
               padding: 5,
+              paddingHorizontal: 10,
               backgroundColor: isFocused ? Colors.iconColors[item.color] : undefined,
               borderRadius: 130,
             }}
@@ -151,7 +164,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
     );
   };
 
-  if (!currentTagBySpaceId) return null;
+  if (!currentTagsTableBySpaceIds) return null;
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
