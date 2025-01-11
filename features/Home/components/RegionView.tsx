@@ -30,6 +30,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
 import { MapPostThumbnail } from '../../../components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -292,7 +293,7 @@ export const RegionView = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={styles.spacesContainer}>
         <FlatList
           data={mySpaces}
@@ -417,7 +418,7 @@ export const RegionView = () => {
           </View>
         )}
       </Mapbox.MapView>
-    </View>
+    </SafeAreaView>
   );
 };
 

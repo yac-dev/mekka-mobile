@@ -56,6 +56,9 @@ export const Home = () => {
     addNewPostMenuBottomSheetRef,
     openAddNewPostMenuBottomSheet,
     closeAddNewPostMenuBottomSheet,
+    chooseViewBottomSheetRef,
+    openChooseViewBottomSheet,
+    closeChooseViewBottomSheet,
   } = useBottomSheet();
 
   // authがある場合にのみrenderしたいね。
@@ -181,7 +184,11 @@ export const Home = () => {
         //   />
         // </View>
         // <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
-        <Views />
+        <Views
+          openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
+          openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+          openChooseViewBottomSheet={openChooseViewBottomSheet}
+        />
       )}
 
       <AppBottomSheet.Gorhom
@@ -226,16 +233,12 @@ export const Home = () => {
       </AppBottomSheet.Gorhom>
       {/* これもさ、refをglobalに持っておくことはできるんだろかね。recoilで。 */}
       <AppBottomSheet.Gorhom
-        ref={currentUserBottomSheetRef}
-        snapPoints={['50%']}
-        header={<Text style={styles.text}>Add Space</Text>}
-        onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
+        ref={chooseViewBottomSheetRef}
+        snapPoints={['40%']}
+        header={<Text style={styles.text}>Choose View</Text>}
+        onCloseButtonClose={closeChooseViewBottomSheet}
       >
-        <View>
-          <Text style={styles.text}>
-            ここでuser infoを出すようにする。だから、globalにuserの情報を持ってないとあかんな。recoilの登場だ。
-          </Text>
-        </View>
+        <View></View>
       </AppBottomSheet.Gorhom>
     </View>
   );
