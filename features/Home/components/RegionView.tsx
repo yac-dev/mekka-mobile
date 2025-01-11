@@ -8,6 +8,7 @@ import {
   LayoutChangeEvent,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
@@ -20,12 +21,15 @@ import {
   currentTagAtomFamily,
   currentTagsTableBySpaceIdsAtom,
 } from '../../../recoil';
-import { SpaceType } from '../../../types';
+import { PostType, SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
 import LinearGradient from 'react-native-linear-gradient';
+import { useQuery } from '@tanstack/react-query';
+import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
+import { MapPostThumbnail } from '../../../components';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -36,16 +40,66 @@ export const RegionView = () => {
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);
+  const [currentRegion, setCurrentRegion] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 100.0922,
+    longitudeDelta: 100.0421,
+  });
+
+  const {
+    data: postsByTagIdAndRegionData,
+    status: postsByTagIdAndRegionStatus,
+    refetch: refetchPostsByTagIdAndRegion,
+  } = useQuery({
+    queryKey: [queryKeys.postsByTagIdAndRegion, currentTagsTableBySpaceIds[currentSpace._id]._id],
+    queryFn: () =>
+      getPostsByTagIdAndRegion({
+        tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
+        region: currentRegion,
+      }),
+  });
+
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const mapRef = useRef<Mapbox.MapView>(null);
   const scrollViewRef = useRef(null);
 
-  // region viewの場合は、gridみたいなspaceごとにcomponent分けているわけでないからな。。。
+  const onMapIdle = (feature: Mapbox.MapState) => {
+    const { bounds } = feature.properties;
+    const [neLng, neLat] = bounds.ne;
+    const [swLng, swLat] = bounds.sw;
+
+    const latitudeDelta = neLat - swLat;
+    const longitudeDelta = neLng - swLng;
+
+    getPostsByTagIdAndRegion({
+      tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
+      region: {
+        latitude: feature.properties.center[1],
+        longitude: feature.properties.center[0],
+        latitudeDelta: latitudeDelta,
+        longitudeDelta: longitudeDelta,
+      },
+    });
+    setCurrentRegion({
+      latitude: feature.properties.center[1],
+      longitude: feature.properties.center[0],
+      latitudeDelta: latitudeDelta,
+      longitudeDelta: longitudeDelta,
+    });
+  };
 
   useEffect(() => {
-    // setCurrentTagBySpaceId(curr)
-    console.log('currentSpace', currentSpace);
-  }, [currentSpace]);
+    getPostsByTagIdAndRegion({
+      tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
+      region: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 100.0922,
+        longitudeDelta: 100.0421,
+      },
+    });
+  }, [currentTagsTableBySpaceIds, currentSpace, currentRegion]);
 
   useEffect(() => {
     scrollToCenter();
@@ -205,6 +259,38 @@ export const RegionView = () => {
     );
   };
 
+  const onMapPostThumbnailPress = (post: PostType, index: number) => {
+    homeStackNavigation.navigate({
+      name: 'ViewPostStackNavigator',
+      params: {
+        screen: 'ViewPost',
+        params: { posts: postsByTagIdAndRegionData?.posts, index: index },
+      },
+    });
+  };
+
+  const renderMarkers = () => {
+    if (!postsByTagIdAndRegionData?.posts.length) {
+      return null;
+    }
+    const list = postsByTagIdAndRegionData?.posts.map((post: PostType, index: number) => {
+      if (post.location?.coordinates.length) {
+        return (
+          <MapPostThumbnail
+            key={index}
+            post={post}
+            index={index}
+            onMapPostThumbnailPress={onMapPostThumbnailPress}
+            isPressDisabled={false}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+    return <>{list}</>;
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={styles.spacesContainer}>
@@ -282,7 +368,7 @@ export const RegionView = () => {
         styleURL='mapbox://styles/yabbee/cl93j1d3a000714ntdoue4ucq'
         // onRegionDidChange={(feature) => onRegionChangeComplete(feature)}
         regionDidChangeDebounceTime={100}
-        // onMapIdle={onMapIdle}
+        onMapIdle={onMapIdle}
       >
         <View
           style={{
@@ -324,12 +410,12 @@ export const RegionView = () => {
             animationDuration: 1100,
           }}
         />
-        {/* {renderMarkers()}
-      {getPostsByTagIdAndRegionResult.status === 'loading' && (
-        <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
-          <ActivityIndicator size={'small'} color={'white'} />
-        </View>
-      )} */}
+        {renderMarkers()}
+        {postsByTagIdAndRegionStatus === 'pending' && (
+          <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
+            <ActivityIndicator size={'small'} color={'white'} />
+          </View>
+        )}
       </Mapbox.MapView>
     </View>
   );
