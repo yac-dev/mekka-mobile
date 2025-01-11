@@ -146,16 +146,16 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : undefined,
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(70,70,70)',
               borderRadius: 130,
             }}
           >
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+              tintColor={'white'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
+            <Text numberOfLines={1} style={{ color: 'white', fontSize: 13 }}>
               {item.name}
             </Text>
           </View>
@@ -172,7 +172,16 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         colors={['transparent', 'rgba(0,0,0,0.7)']}
         style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 50 }}
       /> */}
-      <View style={{}}>
+      <View
+        style={{
+          zIndex: 1000,
+          backgroundColor: 'transparent',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+        }}
+      >
         <View
           style={{
             flexDirection: 'column',

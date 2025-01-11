@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, Platform } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { GridView } from '../../Space/components/GridView';
 import { RegionView } from './RegionView';
@@ -8,6 +8,7 @@ import { Features } from './Features';
 import { Image as ExpoImage } from 'expo-image';
 import { currentSpaceAtom } from '../../../recoil';
 import { useRecoilValue } from 'recoil';
+import { VectorIcon } from '../../../Icons';
 const renderScene = SceneMap({
   GridView: CurrentSpace,
   RegionView: RegionView,
@@ -36,7 +37,7 @@ export const Views = () => {
         initialLayout={{ width: Dimensions.get('window').width }}
         animationEnabled={false}
       />
-      <View style={{ position: 'absolute', bottom: 0, right: 0 }}>
+      <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
         <TouchableOpacity onPress={() => setIndex(0)}>
           <Text style={{ color: 'white' }}>Grid</Text>
         </TouchableOpacity>
@@ -46,17 +47,63 @@ export const Views = () => {
       </View>
       <Features />
       <TouchableOpacity
-        style={{ position: 'absolute', bottom: 30, right: 20 }}
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 20,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
+        }}
         activeOpacity={0.7}
         onPress={() => {
           console.log('pressed');
         }}
       >
         <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 48, height: 48, borderRadius: 30 }} />
-        {/* <AddIcon /> */}
+        <AddIcon />
       </TouchableOpacity>
     </View>
     // やっぱ、floatingボタン類はここにおくしかないかもな。。。
     // ここにView toggle用のボタンを置いておくのがいいかもね。。。
+  );
+};
+
+const AddIcon = () => {
+  return (
+    <View
+      style={{
+        backgroundColor: 'black',
+        width: 24,
+        height: 24,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: -4,
+        right: -5,
+      }}
+    >
+      <View
+        style={{
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 16,
+          height: 16,
+          borderRadius: 20,
+        }}
+      >
+        <VectorIcon.II name='add' size={14} color={'black'} />
+      </View>
+    </View>
   );
 };
