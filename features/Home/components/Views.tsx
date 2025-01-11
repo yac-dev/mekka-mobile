@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, Text, Dimensions, TouchableOpacity, Platform, Alert } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { GridView } from '../../Space/components/GridView';
@@ -13,6 +13,10 @@ import { ViewMenuFAB } from './ViewMenuFAB';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import * as Haptics from 'expo-haptics';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Icons } from '../../../Icons/images';
+import { Colors } from '../../../themes';
 
 const renderScene = SceneMap({
   GridView: CurrentSpace,
@@ -24,15 +28,27 @@ const routes = [
   { key: 'RegionView', title: 'Region View' },
 ];
 
+const windowWidth = Dimensions.get('window').width;
+const viewItemContainerWidth = windowWidth / 3;
+const viewItemButtonWidth = viewItemContainerWidth * 0.7;
+
 export const Views: React.FC<{
   openAddNewPostMenuBottomSheet: (index: number) => void;
   openAuthMenuBottomSheet: (index: number) => void;
-  openChooseViewBottomSheet: (index: number) => void;
-}> = ({ openAddNewPostMenuBottomSheet, openAuthMenuBottomSheet, openChooseViewBottomSheet }) => {
+}> = ({ openAddNewPostMenuBottomSheet, openAuthMenuBottomSheet }) => {
   const [index, setIndex] = React.useState(0);
   const currentSpace = useRecoilValue(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const chooseViewBottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const openChooseViewBottomSheet = (index: number) => {
+    chooseViewBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeChooseViewBottomSheet = () => {
+    chooseViewBottomSheetRef.current?.close();
+  };
 
   const onRollsPress = () => {
     Alert.alert('🛠️ Under Construction', 'Rolls feature will be available in the next update.', [
@@ -166,9 +182,77 @@ export const Views: React.FC<{
           <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Rolls</Text>
         </TouchableOpacity>
       </View>
+      <AppBottomSheet.Gorhom
+        ref={chooseViewBottomSheetRef}
+        snapPoints={['35%']}
+        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Choose View</Text>}
+        onCloseButtonClose={closeChooseViewBottomSheet}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              width: viewItemContainerWidth,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 20,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                width: viewItemButtonWidth,
+                height: viewItemButtonWidth,
+                backgroundColor: 'rgb(70,70,70)',
+                borderRadius: 24,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 8,
+              }}
+              onPress={() => {
+                setIndex(0);
+                closeChooseViewBottomSheet();
+              }}
+            >
+              <VectorIcon.FI name='nav-icon-grid' size={30} color={'white'} />
+              {index === 0 ? <CheckIcon /> : null}
+            </TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 15 }}>Grid</Text>
+          </View>
+          <View
+            style={{
+              width: viewItemContainerWidth,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 20,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                width: viewItemButtonWidth,
+                height: viewItemButtonWidth,
+                backgroundColor: 'rgb(70,70,70)',
+                borderRadius: 24,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 8,
+              }}
+              onPress={() => {
+                setIndex(1);
+                closeChooseViewBottomSheet();
+              }}
+            >
+              <ExpoImage
+                style={{ width: 30, height: 30 }}
+                source={Icons.globe}
+                contentFit='contain'
+                tintColor={Colors.white}
+              />
+              {index === 1 ? <CheckIcon /> : null}
+            </TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 15 }}>Map</Text>
+          </View>
+        </View>
+      </AppBottomSheet.Gorhom>
     </View>
-    // やっぱ、floatingボタン類はここにおくしかないかもな。。。
-    // ここにView toggle用のボタンを置いておくのがいいかもね。。。
   );
 };
 
@@ -198,6 +282,37 @@ const AddIcon = () => {
         }}
       >
         <VectorIcon.II name='add' size={10} color={'black'} />
+      </View>
+    </View>
+  );
+};
+
+const CheckIcon = () => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: -8,
+        right: -8,
+        width: 30,
+        height: 30,
+        backgroundColor: 'rgb(30,30,30)',
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <View
+        style={{
+          width: 20,
+          height: 20,
+          backgroundColor: 'white',
+          borderRadius: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <VectorIcon.MCI name='check' color='black' size={15} />
       </View>
     </View>
   );

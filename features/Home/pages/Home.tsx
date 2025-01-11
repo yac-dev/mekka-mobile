@@ -187,7 +187,6 @@ export const Home = () => {
         <Views
           openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
           openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-          openChooseViewBottomSheet={openChooseViewBottomSheet}
         />
       )}
 
@@ -230,15 +229,6 @@ export const Home = () => {
           onEnterPrivateKeyPress={onEnterPrivateKeyPress}
           onDiscoverPress={onDiscoverPress}
         />
-      </AppBottomSheet.Gorhom>
-      {/* これもさ、refをglobalに持っておくことはできるんだろかね。recoilで。 */}
-      <AppBottomSheet.Gorhom
-        ref={chooseViewBottomSheetRef}
-        snapPoints={['40%']}
-        header={<Text style={styles.text}>Choose View</Text>}
-        onCloseButtonClose={closeChooseViewBottomSheet}
-      >
-        <View></View>
       </AppBottomSheet.Gorhom>
     </View>
   );
