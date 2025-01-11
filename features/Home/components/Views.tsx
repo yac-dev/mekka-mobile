@@ -98,21 +98,52 @@ export const Views: React.FC<{
           borderRadius: 100,
           justifyContent: 'center',
           alignItems: 'center',
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
         }}
         onPress={() => openChooseViewBottomSheet(0)}
       >
-        <Text style={{ color: 'white', fontSize: 10 }}>P</Text>
+        {index === 0 ? (
+          <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
+        ) : (
+          <ExpoImage
+            style={{ width: 20, height: 20 }}
+            source={Icons.globe}
+            contentFit='contain'
+            tintColor={Colors.white}
+          />
+        )}
       </TouchableOpacity>
       <View
         style={{
-          width: 170,
-          height: 55,
+          width: 160,
+          height: 46,
           backgroundColor: 'rgb(50,50,50)',
           position: 'absolute',
           bottom: 10,
           alignSelf: 'center',
-          borderRadius: 100,
+          borderRadius: 16,
           flexDirection: 'row',
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
         }}
       >
         <TouchableOpacity
@@ -132,7 +163,7 @@ export const Views: React.FC<{
                 tintColor={'white'}
               />
             </View>
-            <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Moments</Text>
+            {/* <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Moments</Text> */}
             {momentLogs[currentSpace._id] ? (
               <View
                 style={{
@@ -153,15 +184,21 @@ export const Views: React.FC<{
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{}}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           activeOpacity={0.7}
           onPress={() => {
             openAddNewPostMenuBottomSheet(0);
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           }}
         >
-          <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 38, height: 38, borderRadius: 30 }} />
-          <AddIcon />
+          <View style={{ width: 30, aspectRatio: 1, marginBottom: 3 }}>
+            <ExpoImage
+              source={{ uri: currentSpace.icon }}
+              style={{ width: '100%', height: '100%', borderRadius: 30 }}
+            />
+            <AddIcon />
+          </View>
+          {/* <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Post</Text> */}
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -179,7 +216,7 @@ export const Views: React.FC<{
               tintColor={'white'}
             />
           </View>
-          <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Rolls</Text>
+          {/* <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Rolls</Text> */}
         </TouchableOpacity>
       </View>
       <AppBottomSheet.Gorhom
@@ -267,7 +304,7 @@ const AddIcon = () => {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        bottom: 10,
+        bottom: -5,
         right: -5,
       }}
     >
