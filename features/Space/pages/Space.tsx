@@ -34,6 +34,7 @@ import PagerView from 'react-native-pager-view';
 import { viewPostsTypeAtomFamily } from '../atoms';
 import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 import LinearGradient from 'react-native-linear-gradient';
+import { BlurView, VibrancyView } from '@react-native-community/blur';
 
 // id毎でqueryをcacheしたいのよね。
 // type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
@@ -172,15 +173,24 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         colors={['transparent', 'rgba(0,0,0,0.7)']}
         style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 50 }}
       /> */}
-      <View
+
+      {/* <BlurView
+        style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 80 }}
+        blurType='light'
+        blurAmount={20}
+        reducedTransparencyFallbackColor='white'
+      /> */}
+
+      <BlurView
         style={{
           zIndex: 1000,
-          backgroundColor: 'transparent',
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
         }}
+        blurAmount={0}
+        reducedTransparencyFallbackColor='white'
       >
         <View
           style={{
@@ -210,10 +220,10 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             data={space?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingBottom: 6, paddingTop: 6 }}
+            contentContainerStyle={{ paddingLeft: 20, paddingTop: 6 }}
           />
         </View>
-      </View>
+      </BlurView>
 
       <GridView space={space} />
       {/* <AppButton.Icon
