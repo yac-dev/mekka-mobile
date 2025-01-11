@@ -231,7 +231,7 @@ export const RegionView = () => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(70,70,70)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {
@@ -371,7 +371,7 @@ export const RegionView = () => {
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        <View
+        {/* <View
           style={{
             flexDirection: 'column',
             paddingTop: 10,
@@ -390,7 +390,7 @@ export const RegionView = () => {
               <VectorIcon.MI name='chevron-right' size={23} color={Colors.white} />
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
         <View>
           <FlatList
             horizontal
@@ -399,7 +399,7 @@ export const RegionView = () => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingBottom: 6, paddingTop: 6 }}
+            contentContainerStyle={{ paddingLeft: 20, paddingVertical: 10 }}
           />
         </View>
         {/* defaultの位置はnew yorkでいい。fetchが */}

@@ -148,8 +148,17 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
 
   if (!data?.pages.flatMap((page) => page.posts).length) {
     return (
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts tagged by {currentTag.name}</Text>
+      <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
+        <VectorIcon.MCI
+          name='image-multiple-outline'
+          size={60}
+          color={'white'}
+          style={{ marginBottom: 30, marginTop: -100 }}
+        />
+        <Text style={{ color: 'white', textAlign: 'center', fontSize: 17 }}>
+          No posts tagged by{'\n'}
+          {currentTag.name}
+        </Text>
       </View>
     );
   }
@@ -166,7 +175,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
         onMomentumScrollEnd={() => {
           fetchNextPage();
         }}
-        ListHeaderComponent={<View style={{ height: 85 }} />}
+        // ListHeaderComponent={<View style={{ height: 85 }} />}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{ paddingBottom: 100 }}

@@ -8,6 +8,7 @@ import {
   LayoutChangeEvent,
   Dimensions,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
@@ -147,7 +148,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(70,70,70)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
               borderRadius: 130,
             }}
           >
@@ -169,19 +170,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.7)']}
-        style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 50 }}
-      /> */}
-
       {/* <BlurView
-        style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 80 }}
-        blurType='light'
-        blurAmount={20}
-        reducedTransparencyFallbackColor='white'
-      /> */}
-
-      <BlurView
         style={{
           zIndex: 1000,
           position: 'absolute',
@@ -223,22 +212,20 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             contentContainerStyle={{ paddingLeft: 20, paddingTop: 6 }}
           />
         </View>
-      </BlurView>
+      </BlurView> */}
+      <View>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ref={scrollViewRef}
+          data={space?.tags}
+          renderItem={renderTab}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
+          contentContainerStyle={{ paddingLeft: 20, paddingVertical: 10 }}
+        />
+      </View>
 
       <GridView space={space} />
-      {/* <AppButton.Icon
-        customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
-        onButtonPress={() => onCreatePostPress()}
-        isPressDisabled={createPostStatus === 'pending' ? true : false} // createのstatusをここに足す感じだな。
-        hasShadow
-      >
-        {createPostStatus === 'pending' ? (
-          <ActivityIndicator size={'small'} color={'white'} />
-        ) : (
-          <VectorIcon.II name='add' size={32} color={'white'} />
-        )}
-      </AppButton.Icon>
-      <ViewPostsTypeToggleButton space={space} /> */}
     </View>
   );
 };
