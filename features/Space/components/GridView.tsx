@@ -151,12 +151,12 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
         <VectorIcon.MCI
           name='image-multiple-outline'
           size={60}
-          color={'white'}
+          color={'rgb(150,150,150)'}
           style={{ marginBottom: 30, marginTop: -100 }}
         />
-        <Text style={{ color: 'white', textAlign: 'center', fontSize: 17 }}>
+        <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>
           No posts tagged by{'\n'}
-          {currentTagsTableBySpaceIds[space._id].name}
+          {currentTagsTableBySpaceIds[space._id].name}...
         </Text>
       </View>
     );

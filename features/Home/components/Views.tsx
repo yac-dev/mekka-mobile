@@ -91,10 +91,10 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 30,
+          bottom: 20,
           left: 10,
-          width: 40,
-          height: 40,
+          width: 46,
+          height: 46,
           backgroundColor: 'rgb(50,50,50)',
           borderRadius: 100,
           justifyContent: 'center',
@@ -130,9 +130,9 @@ export const Views: React.FC<{
           height: 46,
           backgroundColor: 'rgb(50,50,50)',
           position: 'absolute',
-          bottom: 10,
+          bottom: 20,
           alignSelf: 'center',
-          borderRadius: 16,
+          borderRadius: 100,
           flexDirection: 'row',
           ...Platform.select({
             ios: {
@@ -153,7 +153,7 @@ export const Views: React.FC<{
           onPress={() => onMomentsPress()}
         >
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ width: 24, aspectRatio: 1, marginBottom: 3 }}>
+            <View style={{ width: 24, aspectRatio: 1 }}>
               <ExpoImage
                 style={{
                   width: '100%',
@@ -192,7 +192,7 @@ export const Views: React.FC<{
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           }}
         >
-          <View style={{ width: 30, aspectRatio: 1, marginBottom: 3 }}>
+          <View style={{ width: 30, aspectRatio: 1 }}>
             <ExpoImage
               source={{ uri: currentSpace.icon }}
               style={{ width: '100%', height: '100%', borderRadius: 30 }}
@@ -206,7 +206,7 @@ export const Views: React.FC<{
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           onPress={() => onRollsPress()}
         >
-          <View style={{ width: 24, aspectRatio: 1, marginBottom: 3 }}>
+          <View style={{ width: 24, aspectRatio: 1 }}>
             <ExpoImage
               style={{
                 width: '100%',
@@ -232,7 +232,8 @@ export const Views: React.FC<{
               width: viewItemContainerWidth,
               justifyContent: 'center',
               alignItems: 'center',
-              paddingVertical: 20,
+              paddingTop: 10,
+              paddingBottom: 20,
             }}
           >
             <TouchableOpacity
@@ -260,7 +261,8 @@ export const Views: React.FC<{
               width: viewItemContainerWidth,
               justifyContent: 'center',
               alignItems: 'center',
-              paddingVertical: 20,
+              paddingTop: 10,
+              paddingBottom: 20,
             }}
           >
             <TouchableOpacity
@@ -332,8 +334,8 @@ const CheckIcon = () => {
         position: 'absolute',
         top: -8,
         right: -8,
-        width: 30,
-        height: 30,
+        width: 36,
+        height: 36,
         backgroundColor: 'rgb(30,30,30)',
         borderRadius: 100,
         justifyContent: 'center',
@@ -342,8 +344,8 @@ const CheckIcon = () => {
     >
       <View
         style={{
-          width: 20,
-          height: 20,
+          width: 24,
+          height: 24,
           backgroundColor: 'white',
           borderRadius: 100,
           justifyContent: 'center',
