@@ -9,6 +9,7 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
+  Platform,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
@@ -137,6 +138,17 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               paddingHorizontal: 10,
               backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
               borderRadius: 130,
+              ...Platform.select({
+                ios: {
+                  shadowColor: 'black',
+                  shadowOffset: { width: 1, height: 0 },
+                  shadowOpacity: 0.5,
+                  shadowRadius: 1,
+                },
+                android: {
+                  elevation: 5,
+                },
+              }),
             }}
           >
             <ExpoImage
@@ -157,16 +169,16 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View
-        style={
-          {
-            // zIndex: 1000,
-            // position: 'absolute',
-            // top: 0,
-            // left: 0,
-            // right: 0,
-          }
-        }
+      <LinearGradient
+        style={{
+          zIndex: 1000,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+        }}
+        colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
+        // colors={['#4c669f', '#3b5998', '#192f6a']}
       >
         <View
           style={{
@@ -196,10 +208,10 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3, paddingBottom: 6 }}
+            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3 }}
           />
         </View>
-      </View>
+      </LinearGradient>
       <GridView space={currentSpace} />
     </View>
   );

@@ -174,10 +174,13 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
         onMomentumScrollEnd={() => {
           fetchNextPage();
         }}
-        // ListHeaderComponent={<View style={{ height: 85 }} />}
+        // ListHeaderComponent={<View style={{ height: 70 }} />}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{
+          paddingBottom: data?.pages.flatMap((page) => page.posts).length >= 12 ? 95 : 165,
+          paddingTop: 70,
+        }}
       />
     </View>
   );
