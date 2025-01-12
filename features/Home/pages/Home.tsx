@@ -187,6 +187,7 @@ export const Home = () => {
         <Views
           openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
           openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+          openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
         />
       )}
 

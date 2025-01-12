@@ -35,13 +35,17 @@ import { currentTagAtomFamily } from '../../../recoil';
 const windowWidth = Dimensions.get('window').width;
 
 type CurrentSpaceProps = {
-  openAddNewPostMenuBottomSheet: (index: number) => void;
+  openAuthMenuBottomSheet: (index: number) => void;
+  openAddNewSpaceMenuBottomSheet: (index: number) => void;
 };
 
 export type RouteType = SpaceType & { key: number };
 
 // tan stack使うかね？
-export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBottomSheet }) => {
+export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
+  openAuthMenuBottomSheet,
+  openAddNewSpaceMenuBottomSheet,
+}) => {
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [routes, setRoutes] = useState<RouteType[]>(mySpaces.map((space, index) => ({ ...space, key: index })));
   const [index, setIndex] = useState<number>(0);
@@ -288,8 +292,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({ openAddNewPostMenuBo
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  // openAddNewSpaceMenuBottomSheet(0);
-                  console.log('home');
+                  openAddNewSpaceMenuBottomSheet(0);
                 }}
               >
                 <VectorIcon.II name='home' color={Colors.white} size={18} />

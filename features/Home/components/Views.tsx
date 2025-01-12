@@ -18,10 +18,12 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Icons } from '../../../Icons/images';
 import { Colors } from '../../../themes';
 
-const renderScene = SceneMap({
-  GridView: CurrentSpace,
-  RegionView: RegionView,
-});
+// ここでやると、propsにパスできんのよね。。。それがだるいな。。。
+// const renderScene = SceneMap({
+//   GridView: CurrentSpace,
+//   RegionView: RegionView,
+// });
+//　まあでもここでもusecallbackすればいけるかね。。。
 
 const routes = [
   { key: 'GridView', title: 'Grid View' },
@@ -36,12 +38,14 @@ const viewItemButtonWidth = viewItemContainerWidth * 0.7;
 export const Views: React.FC<{
   openAddNewPostMenuBottomSheet: (index: number) => void;
   openAuthMenuBottomSheet: (index: number) => void;
-}> = ({ openAddNewPostMenuBottomSheet, openAuthMenuBottomSheet }) => {
+  openAddNewSpaceMenuBottomSheet: (index: number) => void;
+}> = ({ openAddNewPostMenuBottomSheet, openAuthMenuBottomSheet, openAddNewSpaceMenuBottomSheet }) => {
   const [index, setIndex] = React.useState(0);
   const currentSpace = useRecoilValue(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
   const chooseViewBottomSheetRef = useRef<BottomSheetModal>(null);
+  const addNewSpaceMenuBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const openChooseViewBottomSheet = (index: number) => {
     chooseViewBottomSheetRef.current?.snapToIndex(index);
@@ -70,12 +74,22 @@ export const Views: React.FC<{
   const onTabPress = (item) => {
     setIndex(item.key);
   };
-  // <TouchableOpacity onPress={() => setIndex(0)}>
-  //         <Text style={{ color: 'white' }}>Grid</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity onPress={() => setIndex(1)}>
-  //         <Text style={{ color: 'white' }}>Map</Text>
-  //       </TouchableOpacity>
+
+  const renderScene = ({ route }: { route: { key: string } }) => {
+    switch (route.key) {
+      case 'GridView':
+        return (
+          <CurrentSpace
+            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+          />
+        );
+      case 'RegionView':
+        return <RegionView />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
