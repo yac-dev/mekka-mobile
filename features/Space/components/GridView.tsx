@@ -34,7 +34,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
   } = useInfiniteQuery({
     queryKey: [queryKeys.postsByTagId, currentSpace, currentTagsTableBySpaceIds[currentSpace._id]._id],
     queryFn: ({ pageParam = 0 }) =>
-      getPostsByTagId({ tagId: currentTagsTableBySpaceIds[space._id]._id, currentPage: pageParam }),
+      getPostsByTagId({ tagId: currentTagsTableBySpaceIds[currentSpace._id]._id, currentPage: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       // console.log('lastPage', lastPage);

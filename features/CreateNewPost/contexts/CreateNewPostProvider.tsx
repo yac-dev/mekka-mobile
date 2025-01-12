@@ -254,13 +254,11 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const addTag = (tag: TagOptionType) => {
-    console.log(tag._id);
     setFormData((previous) => {
       const updatedAddedTag = {
         ...previous.addedTagsTable.value,
         [tag._id]: tag,
       };
-      console.log('updated', updatedAddedTag);
       return {
         ...previous,
         addedTagsTable: {
