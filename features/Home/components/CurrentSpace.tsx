@@ -326,6 +326,13 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
             </View>
           }
         />
+        <AppButton.Icon
+          onButtonPress={() => openAuthMenuBottomSheet(0)}
+          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='account' size={20} color={Colors.white} />
+        </AppButton.Icon>
       </View>
       {/* <View
         style={{
