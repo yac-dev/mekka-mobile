@@ -115,6 +115,8 @@ export const MomentsStackNavigator = () => {
               },
             })}
           />
+        </MomentsStack.Group>
+        <MomentsStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <MomentsStack.Screen
             name='CreateNewPostStackNavigator'
             component={CreateNewPostStackNavigator}

@@ -100,8 +100,8 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
               tintColor={'white'}
             />
             <Text style={{ color: 'white' }}>
-              {hours && `${hours}h`}&nbsp;
-              {minutes && `${minutes}min`}
+              {hours > 0 && `${hours} hs`}&nbsp;
+              {minutes > 0 && `${minutes} ms`}
             </Text>
           </View>
         </View>

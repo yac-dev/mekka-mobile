@@ -44,7 +44,9 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
           }
           return reactionObject;
         });
-        return updatedReactions;
+        return {
+          reactions: updatedReactions,
+        };
       });
     },
   });

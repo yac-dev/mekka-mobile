@@ -6,7 +6,6 @@ import { ContentThumbnail } from '../components/ContentThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { CreateNewPostStackParams, CreateNewPostStackProps } from '..';
 import { CreateMomentInputType } from '../types';
-import { useCreateMomentResult } from '../../../api';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
@@ -24,8 +23,6 @@ const MomentPost: React.FC<IMomentPost> = ({ route }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [auth] = useRecoilState(authAtom);
   const queryClient = useQueryClient();
-
-  const { requestCreateMoment } = useCreateMomentResult(currentSpace);
 
   const { mutate: createMomentMutation } = useMutation({
     mutationKey: [mutationKeys.createMoment],

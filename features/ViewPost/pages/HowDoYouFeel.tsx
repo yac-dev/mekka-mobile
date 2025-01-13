@@ -27,12 +27,11 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
     queryKey: [queryKeys.reactionsByPostId, postId],
     queryFn: () => getReactionsByPostId({ postId, spaceId: currentSpace._id }),
   });
-
-  const { mutate: incrementReactionMutate } = useMutation({
-    mutationFn: (input: IncrementReactionInputType) => incrementReaction(input),
-  });
   // debounce使ったやり方で行きたいね。
   //　多分、これも個々のreactionごとにcomponent作ってそれぞれでstateを持たせておいたほうがいいのかもしれん。。。
+
+  console.log('reactions is this', JSON.stringify(data?.reactions, null, 2));
+  console.log('data is this', JSON.stringify(data, null, 2));
 
   const renderReactionOption = ({ item, index }: { item: ReactionType; index: number }) => {
     const count = data?.reactions.find((reactionObject) => reactionObject._id === item._id)?.count;
