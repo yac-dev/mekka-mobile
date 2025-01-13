@@ -14,5 +14,6 @@ export const queryKeys = {
   postsByUserIdAndRegion: 'postsByUserIdAndRegion',
   commentsByPostId: 'commentsByPostId',
   reactionsByPostId: 'reactionsByPostId',
+  postsByTagIdAndRegion: 'postsByTagIdAndRegion',
   // ここら辺のkey名、apiのエンドポイントに則った方がいいよね多分。
 };

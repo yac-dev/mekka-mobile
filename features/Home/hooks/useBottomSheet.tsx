@@ -18,6 +18,9 @@ type UseBottomSheetOutputType = {
   currentUserBottomSheetRef: MutableRefObject<BottomSheetModal>;
   openCurrentUserBottomSheet: (index: number) => void;
   closeCurrentUserBottomSheet: () => void;
+  chooseViewBottomSheetRef: MutableRefObject<BottomSheetModal>;
+  openChooseViewBottomSheet: (index: number) => void;
+  closeChooseViewBottomSheet: () => void;
 };
 
 export const useBottomSheet = (): UseBottomSheetOutputType => {
@@ -26,6 +29,7 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const addNewSpaceMenuBottomSheetRef = useRef<BottomSheetModal>(null);
   const aboutSpaceBottomSheetRef = useRef<BottomSheetModal>(null);
   const currentUserBottomSheetRef = useRef<BottomSheetModal>(null);
+  const chooseViewBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const openAddNewPostMenuBottomSheet = (index: number) => {
     addNewPostMenuBottomSheetRef.current?.snapToIndex(index);
@@ -68,6 +72,14 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     currentUserBottomSheetRef.current?.close();
   };
 
+  const openChooseViewBottomSheet = (index: number) => {
+    chooseViewBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeChooseViewBottomSheet = () => {
+    chooseViewBottomSheetRef.current?.close();
+  };
+
   return {
     addNewPostMenuBottomSheetRef,
     openAddNewPostMenuBottomSheet,
@@ -84,5 +96,8 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     currentUserBottomSheetRef,
     openCurrentUserBottomSheet,
     closeCurrentUserBottomSheet,
+    chooseViewBottomSheetRef,
+    openChooseViewBottomSheet,
+    closeChooseViewBottomSheet,
   };
 };

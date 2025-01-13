@@ -64,7 +64,6 @@ function timeSince(date: Date) {
 
 export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { posts, index } = route.params;
-  console.log('posts', posts[0]);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const spaceStackNavigator = useNavigation<SpaceStackNavigatorProps>();
   const viewStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
@@ -210,7 +209,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* <StatusBar hidden /> */}
+      <StatusBar hidden />
       <FlashList
         data={posts}
         renderItem={renderItem}

@@ -1,11 +1,22 @@
 import { useEffect, useContext, useRef, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, FlatList, LayoutChangeEvent, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  FlatList,
+  LayoutChangeEvent,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
-import { Posts, ViewPostsTypeToggleButton } from '../components';
+import { GridView, Posts, RegionView, ViewPostsTypeToggleButton } from '../components';
 import { SpaceStackNavigatorProps } from '../../../navigations';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SpaceStackNavigatorParams } from '../../../navigations';
@@ -18,19 +29,33 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
 import { mutationKeys } from '../../../query';
 import { Colors } from '../../../themes';
+import { RouteType } from '../../Home/components/CurrentSpace';
+import { SpaceType } from '../../../types';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
+import PagerView from 'react-native-pager-view';
+import { viewPostsTypeAtomFamily } from '../atoms';
+import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
+import LinearGradient from 'react-native-linear-gradient';
+import { BlurView, VibrancyView } from '@react-native-community/blur';
 
 // id毎でqueryをcacheしたいのよね。
-type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
+// type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
 const windowWidth = Dimensions.get('window').width;
 
-export const Space: React.FC<ISpace> = ({ route }) => {
+type ISpace = {
+  space: SpaceType;
+};
+
+export const Space: React.FC<ISpace> = ({ space }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
-  const createPostResult = useRecoilValue(createPostResultAtomFamily(route.params.space._id));
+  const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const scrollViewRef = useRef(null);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
+  const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
 
   const { isPending: isCreatePostPending, status: createPostStatus } = useMutation({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
@@ -38,7 +63,12 @@ export const Space: React.FC<ISpace> = ({ route }) => {
 
   const onTabPress = (tab) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setCurrentTag(tab);
+    setCurrentTagsTableBySpaceIds((prev) => {
+      return {
+        ...prev,
+        [currentSpace._id]: tab,
+      };
+    });
   };
 
   const onCreatePostPress = () => {
@@ -61,13 +91,15 @@ export const Space: React.FC<ISpace> = ({ route }) => {
   };
 
   const scrollToCenter = () => {
-    const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTag._id);
+    const currentIndex = currentSpace.tags.findIndex(
+      (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
+    );
     if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === currentSpace.tags.length) {
       const itemWidth = itemWidths[currentIndex];
       const offset =
         itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
-        offset: Math.max(0, offset) + 44,
+        offset: Math.max(0, offset) + 20,
         animated: true,
       });
     }
@@ -75,45 +107,56 @@ export const Space: React.FC<ISpace> = ({ route }) => {
 
   useEffect(() => {
     scrollToCenter();
-  }, [currentTag, itemWidths, currentSpace.tags.length]);
+  }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
+
+  // useEffect(() => {
+  //   setCurrentTagsTableBySpaceIds((prev) => {
+  //     return {
+  //       ...prev,
+  //       [currentSpace._id]: space.tags[0],
+  //     };
+  //   });
+  // }, [space]);
 
   const renderTab = ({ item, index }) => {
-    const isFocused = currentTag._id === item._id;
+    const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity
-          key={route.key}
+          // key={route.key}
           activeOpacity={0.7}
           onPress={() => onTabPress(item)}
           onLongPress={() => console.log('hello')}
         >
           <View
             style={{
-              flexDirection: 'column',
+              flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
               marginRight: 10,
               padding: 5,
+              paddingHorizontal: 10,
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
+              borderRadius: 130,
+              ...Platform.select({
+                ios: {
+                  shadowColor: 'black',
+                  shadowOffset: { width: 1, height: 0 },
+                  shadowOpacity: 0.5,
+                  shadowRadius: 1,
+                },
+                android: {
+                  elevation: 5,
+                },
+              }),
             }}
           >
-            <View
-              style={{
-                backgroundColor: isFocused ? Colors.iconColors[item.color] : undefined,
-                width: 30,
-                height: 30,
-                borderRadius: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: 5,
-              }}
-            >
-              <ExpoImage
-                style={{ width: 20, height: 20 }}
-                source={{ uri: item.icon?.url }}
-                tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
-              />
-            </View>
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
+            <ExpoImage
+              style={{ width: 20, height: 20, marginRight: 5 }}
+              source={{ uri: item.icon?.url }}
+              tintColor={'white'}
+            />
+            <Text numberOfLines={1} style={{ color: 'white', fontSize: 13 }}>
               {item.name}
             </Text>
           </View>
@@ -122,18 +165,42 @@ export const Space: React.FC<ISpace> = ({ route }) => {
     );
   };
 
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <View style={{ flexDirection: 'row' }}>
-          <AppButton.Icon
-            onButtonPress={() => spaceStackNavigation.goBack()}
-            customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginHorizontal: 10 }}
-            hasShadow={false}
-          >
-            <VectorIcon.MCI name='arrow-left' size={18} color={'rgb(190,190,190)'} />
-          </AppButton.Icon>
+  // if (!currentTagsTableBySpaceIds) return null;
 
+  return (
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <LinearGradient
+        style={{
+          zIndex: 1000,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+        }}
+        colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
+        // colors={['#4c669f', '#3b5998', '#192f6a']}
+      >
+        <View
+          style={{
+            flexDirection: 'column',
+            paddingTop: 10,
+            paddingHorizontal: 20,
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}
+              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+              activeOpacity={0.7}
+            >
+              <View style={{ marginRight: 5 }}>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 18 }}>{currentSpace.name}</Text>
+              </View>
+              <VectorIcon.MCI name='chevron-right' size={20} color={Colors.white} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View>
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -141,24 +208,19 @@ export const Space: React.FC<ISpace> = ({ route }) => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            style={{ marginBottom: 10 }}
+            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3 }}
           />
         </View>
-        <Posts space={route.params.space} />
-        <AppButton.Icon
-          customStyle={{ position: 'absolute', bottom: 50, right: 20, backgroundColor: 'rgb(50,50,50)' }}
-          onButtonPress={() => onCreatePostPress()}
-          isPressDisabled={createPostStatus === 'pending' ? true : false} // createのstatusをここに足す感じだな。
-          hasShadow
-        >
-          {createPostStatus === 'pending' ? (
-            <ActivityIndicator size={'small'} color={'white'} />
-          ) : (
-            <VectorIcon.II name='add' size={32} color={'white'} />
-          )}
-        </AppButton.Icon>
-        <ViewPostsTypeToggleButton space={route.params.space} />
-      </View>
-    </SafeAreaView>
+      </LinearGradient>
+      <GridView space={currentSpace} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  pagerView: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+});

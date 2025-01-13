@@ -9,3 +9,6 @@ export * from './SideBar';
 export * from './BottomTab';
 export * from './SpacesHeader';
 export * from './AddNewPostMenu';
+export * from './Views';
+export * from './RegionView';
+export * from './ViewMenuFAB';

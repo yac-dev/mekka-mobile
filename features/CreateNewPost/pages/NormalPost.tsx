@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { CreateNewPostStackParams, CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { VectorIcon } from '../../../Icons';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentSpaceAtom, currentTagAtom, mySpacesAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -30,6 +30,7 @@ import { createPost, mutationKeys, queryKeys } from '../../../query';
 import { PostType, SpaceType } from '../../../types';
 import { showMessage } from 'react-native-flash-message';
 import { GetPostsByTagIdOutputType } from '../../../query/types';
+import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 const oneAssetWidth = Dimensions.get('window').width / 3;
 
 // create用のやつが反映されてないな。。。
@@ -41,6 +42,7 @@ type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'
 // myspacesの方もあれよ絵。tan stackにかえたい、recoilから。
 // でもな。。。
 export const NormalPost: React.FC<INormalPost> = ({ route }) => {
+  const [currentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const queryClient = useQueryClient();
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [auth] = useRecoilState(authAtom);
@@ -60,14 +62,19 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
     onSuccess: (data) => {
       showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
       // そっか、addedTagにこのcurrentTagが含まれていたら、dynamicにpostを追加しなきゃだったんだね。
-      if (data.addedTags.includes(currentTag._id)) {
-        queryClient.setQueryData([queryKeys.postsByTagId, currentTag._id], (previous: GetPostsByTagIdOutputType) => {
-          console.log('previous posts', previous.posts);
-          return {
-            ...previous,
-            posts: [data.post, ...previous.posts],
-          };
-        });
+      console.log('data is this', data);
+      console.log('currentTagsTableBySpaceIds is this', currentTagsTableBySpaceIds[currentSpace._id]._id);
+      if (data.addedTags.includes(currentTagsTableBySpaceIds[currentSpace._id]._id)) {
+        console.log('yes including');
+        queryClient.setQueryData(
+          [queryKeys.postsByTagId, currentSpace, currentTagsTableBySpaceIds[currentSpace._id]._id],
+          (previous: GetPostsByTagIdOutputType) => {
+            return {
+              ...previous,
+              posts: [data.post, ...previous.posts],
+            };
+          }
+        );
         // queryClient.setQueryData([queryKeys.postsByTagId, currentTag._id], data.post);
       }
       setMySpaces((previous: SpaceType[]) => {
@@ -138,8 +145,9 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
         isValidated: true, // Adjust this value as needed
       },
     };
+    console.log('tags table is this', input.addedTagsTable);
     // requestCreatePost(input);
-    createPostMutate(input);
+    // createPostMutate(input);
   };
 
   useEffect(() => {
@@ -164,7 +172,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
         </TouchableOpacity>
       ),
     });
-  }, [formData.contents, formData.caption, formData.addedTagsTable.isValidated]);
+  }, [formData.contents, formData.caption, formData.addedTagsTable]);
 
   const renderContents = () => {
     if (formData.bufferContents.value.length) {

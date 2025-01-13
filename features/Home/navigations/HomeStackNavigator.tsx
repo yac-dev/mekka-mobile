@@ -8,6 +8,7 @@ import {
   CreateNewPostStackParams,
   CreateNewSpaceStackNavigator,
   SpacesHeader,
+  ViewPostStackNavigator,
 } from '../..';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
@@ -116,7 +117,7 @@ export const HomeStackNavigator: React.FC = (props) => {
           name='Home'
           component={Home}
           options={({ navigation }) => ({
-            headerShown: true,
+            headerShown: false,
             // headerStyle: {
             //   backgroundColor: 'black',
             //   borderWidth: 1,
@@ -312,6 +313,23 @@ export const HomeStackNavigator: React.FC = (props) => {
             headerTitleStyle: {
               fontWeight: 'bold',
               color: 'white',
+            },
+          })}
+        />
+      </HomeStack.Group>
+      <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal', animation: 'fade', animationDuration: 200 }}>
+        <HomeStack.Screen
+          name='ViewPostStackNavigator'
+          component={ViewPostStackNavigator}
+          options={({ navigation }) => ({
+            headerShown: false,
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: Colors.white,
             },
           })}
         />

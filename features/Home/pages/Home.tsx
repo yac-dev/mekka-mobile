@@ -14,6 +14,7 @@ import {
   BottomTab,
   SpacesHeader,
   AddNewPostMenu,
+  Views,
 } from '../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NoSpaces } from '.';
@@ -55,26 +56,29 @@ export const Home = () => {
     addNewPostMenuBottomSheetRef,
     openAddNewPostMenuBottomSheet,
     closeAddNewPostMenuBottomSheet,
+    chooseViewBottomSheetRef,
+    openChooseViewBottomSheet,
+    closeChooseViewBottomSheet,
   } = useBottomSheet();
 
   // authがある場合にのみrenderしたいね。
 
-  useEffect(() => {
-    homeStackNavigation.setOptions({
-      header: () => {
-        if (mySpaces?.length) {
-          return (
-            <SpacesHeader
-              openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
-              openAuthMenuBottomSheet={openAuthMenuBottomSheet}
-            />
-          );
-        } else {
-          return null;
-        }
-      },
-    });
-  }, [mySpaces]);
+  // useEffect(() => {
+  //   homeStackNavigation.setOptions({
+  //     header: () => {
+  //       if (mySpaces?.length) {
+  //         return (
+  //           <SpacesHeader
+  //             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+  //             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+  //           />
+  //         );
+  //       } else {
+  //         return null;
+  //       }
+  //     },
+  //   });
+  // }, [mySpaces]);
 
   // homeに関してはここで制御せんとかん。
   useEffect(() => {
@@ -179,7 +183,12 @@ export const Home = () => {
         //     openAuthMenuBottomSheet={openAuthMenuBottomSheet}
         //   />
         // </View>
-        <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
+        // <CurrentSpace openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet} />
+        <Views
+          openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
+          openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+          openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+        />
       )}
 
       <AppBottomSheet.Gorhom
@@ -221,19 +230,6 @@ export const Home = () => {
           onEnterPrivateKeyPress={onEnterPrivateKeyPress}
           onDiscoverPress={onDiscoverPress}
         />
-      </AppBottomSheet.Gorhom>
-      {/* これもさ、refをglobalに持っておくことはできるんだろかね。recoilで。 */}
-      <AppBottomSheet.Gorhom
-        ref={currentUserBottomSheetRef}
-        snapPoints={['50%']}
-        header={<Text style={styles.text}>Add Space</Text>}
-        onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
-      >
-        <View>
-          <Text style={styles.text}>
-            ここでuser infoを出すようにする。だから、globalにuserの情報を持ってないとあかんな。recoilの登場だ。
-          </Text>
-        </View>
       </AppBottomSheet.Gorhom>
     </View>
   );

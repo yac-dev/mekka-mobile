@@ -39,7 +39,7 @@ export const Features = () => {
         height: 45,
         backgroundColor: 'rgb(50,50,50)',
         position: 'absolute',
-        bottom: 30,
+        bottom: 10,
         alignSelf: 'center',
         borderRadius: 100,
         flexDirection: 'row',

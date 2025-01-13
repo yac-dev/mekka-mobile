@@ -33,7 +33,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
       onCloseButtonClose,
       handleComponent,
       enablePanDownToClose = true,
-      backgroundColor = Colors.black,
+      backgroundColor = 'rgb(30,30,30)',
     },
     ref
   ) => {
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 20,
-    backgroundColor: Colors.black,
+    backgroundColor: 'rgb(30,30,30)',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     justifyContent: 'space-between',

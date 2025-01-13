@@ -7,3 +7,4 @@ export * from './currentTagAtom';
 export * from './momentLogsAtom';
 export * from './isPushNotificationEnabledAtom';
 export * from './currentUserAtom';
+export * from './currentTagsTableBySpaceIdsAtom';
