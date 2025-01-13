@@ -61,11 +61,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
     onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }), // mutation実行前に起こすcallack func
     onSuccess: (data) => {
       showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
-      // そっか、addedTagにこのcurrentTagが含まれていたら、dynamicにpostを追加しなきゃだったんだね。
-      console.log('data is this', data);
-      console.log('currentTagsTableBySpaceIds is this', currentTagsTableBySpaceIds[currentSpace._id]._id);
       if (data.addedTags.includes(currentTagsTableBySpaceIds[currentSpace._id]._id)) {
-        console.log('yes including');
         queryClient.setQueryData(
           [queryKeys.postsByTagId, currentSpace, currentTagsTableBySpaceIds[currentSpace._id]._id],
           (previous: GetPostsByTagIdOutputType) => {
@@ -142,12 +138,10 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       disappearAfter: currentSpace.disappearAfter.toString(),
       bufferContents: {
         value: bufferContentsAfterCompressor,
-        isValidated: true, // Adjust this value as needed
+        isValidated: true,
       },
     };
-    console.log('tags table is this', input.addedTagsTable);
-    // requestCreatePost(input);
-    // createPostMutate(input);
+    createPostMutate(input);
   };
 
   useEffect(() => {
