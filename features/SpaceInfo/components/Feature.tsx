@@ -57,11 +57,7 @@ export const Feature: React.FC<FeatureProps> = () => {
         }
       });
 
-      return (
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>{list}</View>
-        </View>
-      );
+      return <View style={{ flexDirection: 'row', alignItems: 'center' }}>{list}</View>;
     } else {
       return <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Turned off</Text>;
     }
@@ -161,6 +157,15 @@ export const Feature: React.FC<FeatureProps> = () => {
             customStyle={{ marginBottom: 10 }}
           >
             <VectorIcon.MCI name='advertisements' size={20} color='white' style={{ marginRight: 20 }} />
+          </AppButton.Cell>
+          <AppButton.Cell
+            title='Reactions'
+            subTitle={currentSpace.isReactionAvailable ? 'Available' : 'Turned off'}
+            onButtonPress={() => console.log('hey')}
+            customStyle={{ marginBottom: 10 }}
+            info={renderReactions(currentSpace)}
+          >
+            <VectorIcon.FT name='thumbs-up' size={20} color='white' style={{ marginRight: 20 }} />
           </AppButton.Cell>
         </View>
       </ScrollView>

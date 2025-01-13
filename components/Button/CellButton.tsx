@@ -10,9 +10,17 @@ type CellButtonProps = {
   title: string;
   subTitle?: string;
   customStyle?: ViewStyle;
+  info?: ReactNode;
 };
 
-export const CellButton: React.FC<CellButtonProps> = ({ onButtonPress, children, title, subTitle, customStyle }) => {
+export const CellButton: React.FC<CellButtonProps> = ({
+  onButtonPress,
+  children,
+  title,
+  subTitle,
+  customStyle,
+  info,
+}) => {
   return (
     <TouchableOpacity style={[styles.container, { ...customStyle }]} onPress={onButtonPress} activeOpacity={0.5}>
       <View style={styles.iconAndTextContainer}>
@@ -22,6 +30,7 @@ export const CellButton: React.FC<CellButtonProps> = ({ onButtonPress, children,
           <Text style={styles.subTitle}>{subTitle}</Text>
         </View>
       </View>
+      {info}
       <VectorIcon.MCI name='chevron-right' color='white' size={20} />
     </TouchableOpacity>
   );
