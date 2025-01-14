@@ -83,7 +83,16 @@ export const CommentInput = forwardRef((props: ICommentinput, ref) => {
   };
 
   return (
-    <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: 'rgb(100,100,100)', backgroundColor: 'black' }}>
+    <View
+      style={{
+        paddingHorizontal: 10,
+        paddingBottom: 20,
+        paddingTop: 10,
+        borderTopWidth: 1,
+        borderTopColor: 'rgb(100,100,100)',
+        backgroundColor: 'black',
+      }}
+    >
       {createCommentStatus === 'pending' ? (
         <View
           style={{
