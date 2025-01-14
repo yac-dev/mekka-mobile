@@ -179,7 +179,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
         onEndReachedThreshold={0.7}
         contentContainerStyle={{
           paddingBottom: data?.pages.flatMap((page) => page.posts).length >= 12 ? 95 : 165,
-          paddingTop: 70,
+          paddingTop: 75,
         }}
       />
     </View>
