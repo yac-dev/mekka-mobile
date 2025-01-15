@@ -20,22 +20,13 @@ export const SpaceInfoStackNavigator = () => {
         name='SpaceInfo'
         component={SpaceInfo}
         options={({ navigation }) => ({
-          headerLeft: () => (
-            <AppButton.Icon
-              onButtonPress={() => navigation.goBack()}
-              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-              hasShadow={false}
-            >
-              <VectorIcon.II name='close' size={18} color={Colors.white} />
-            </AppButton.Icon>
-          ),
           headerRight: () => (
             <AppButton.Icon
               onButtonPress={() => navigation.goBack()}
               customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
               hasShadow={false}
             >
-              <VectorIcon.II name='ellipsis-horizontal' size={18} color={Colors.white} />
+              <VectorIcon.II name='close' size={18} color={Colors.white} />
             </AppButton.Icon>
           ),
           headerShown: true,
