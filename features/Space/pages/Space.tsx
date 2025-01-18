@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef, useState } from 'react';
+import { useEffect, useContext, useRef, useState, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -29,14 +29,15 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
 import { mutationKeys } from '../../../query';
 import { Colors } from '../../../themes';
-import { RouteType } from '../../Home/components/CurrentSpace';
-import { SpaceType } from '../../../types';
+import { SpaceType, TagType } from '../../../types';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import PagerView from 'react-native-pager-view';
 import { viewPostsTypeAtomFamily } from '../atoms';
 import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 import LinearGradient from 'react-native-linear-gradient';
 import { BlurView, VibrancyView } from '@react-native-community/blur';
+import { TabView, SceneMap } from 'react-native-tab-view';
+import { Grid } from '../components/Grid';
 
 // id毎でqueryをcacheしたいのよね。
 // type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
@@ -47,6 +48,8 @@ type ISpace = {
   space: SpaceType;
 };
 
+export type RouteType = TagType & { key: number };
+
 export const Space: React.FC<ISpace> = ({ space }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
@@ -56,12 +59,15 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   const scrollViewRef = useRef(null);
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const viewPostsType = useRecoilValue(viewPostsTypeAtomFamily(space._id));
+  const [routes, setRoutes] = useState<RouteType[]>(currentSpace.tags.map((tag, index) => ({ ...tag, key: index })));
+  const [index, setIndex] = useState(0);
+  // setRoutesもspace作ったあととかせんといかんのよ。
 
   const { isPending: isCreatePostPending, status: createPostStatus } = useMutation({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
 
-  const onTabPress = (tab) => {
+  const onTabPress = (tab, index) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
       return {
@@ -69,6 +75,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         [currentSpace._id]: tab,
       };
     });
+    setIndex(index);
   };
 
   const onCreatePostPress = () => {
@@ -91,13 +98,13 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   };
 
   const scrollToCenter = () => {
-    const currentIndex = currentSpace.tags.findIndex(
-      (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
-    );
-    if (currentIndex !== 0 && currentIndex !== 1 && itemWidths.length === currentSpace.tags.length) {
-      const itemWidth = itemWidths[currentIndex];
+    // const currentIndex = currentSpace.tags.findIndex(
+    //   (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
+    // );
+    if (index !== 0 && index !== 1 && itemWidths.length === currentSpace.tags.length) {
+      const itemWidth = itemWidths[index];
       const offset =
-        itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
+        itemWidths.slice(0, index).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
         offset: Math.max(0, offset) + 20,
         animated: true,
@@ -107,7 +114,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   useEffect(() => {
     scrollToCenter();
-  }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
+  }, [index, itemWidths, currentSpace.tags.length]);
 
   // useEffect(() => {
   //   setCurrentTagsTableBySpaceIds((prev) => {
@@ -125,7 +132,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         <TouchableOpacity
           // key={route.key}
           activeOpacity={0.7}
-          onPress={() => onTabPress(item)}
+          onPress={() => onTabPress(item, index)}
           onLongPress={() => console.log('hello')}
         >
           <View
@@ -165,7 +172,18 @@ export const Space: React.FC<ISpace> = ({ space }) => {
     );
   };
 
-  // if (!currentTagsTableBySpaceIds) return null;
+  const createTabViewScene = useCallback((routes: TagType[]) => {
+    return SceneMap(
+      routes.reduce((acc: Record<string, React.FC<any>>, option: RouteType) => {
+        acc[option.key] = () => <Grid tag={option} />;
+        return acc;
+      }, {})
+    );
+  }, []);
+
+  const renderScene = useMemo(() => createTabViewScene(routes), [routes]);
+
+  if (!currentTagsTableBySpaceIds) return null;
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -184,19 +202,19 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           style={{
             flexDirection: 'column',
             paddingTop: 10,
-            paddingHorizontal: 20,
+            paddingHorizontal: 12,
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >
-              <View style={{ marginRight: 5 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 18 }}>{currentSpace.name}</Text>
+              <View style={{ marginRight: 8 }}>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 22 }}>{currentSpace.name}</Text>
               </View>
-              <VectorIcon.MCI name='chevron-right' size={20} color={Colors.white} />
+              <VectorIcon.MCI name='chevron-down' size={22} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -208,19 +226,38 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3 }}
+            contentContainerStyle={{ paddingLeft: 12, paddingTop: 5 }}
           />
         </View>
       </LinearGradient>
-      <GridView space={currentSpace} />
+      {/* routesはtagsか。 */}
+      <TabView
+        lazy
+        swipeEnabled={false}
+        animationEnabled
+        style={styles.tabView}
+        renderTabBar={() => null}
+        renderScene={renderScene}
+        navigationState={{ index, routes }}
+        onIndexChange={(index) => {
+          console.log(index);
+          setIndex(index);
+        }}
+      />
+      {/* <GridView space={currentSpace} /> */}
     </View>
   );
 };
+
+// tagごとにsceneを作る感じだな。
 
 const styles = StyleSheet.create({
   pagerView: {
     flex: 1,
     width: '100%',
     height: '100%',
+  },
+  tabView: {
+    width: '100%',
   },
 });
