@@ -57,7 +57,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
       </AppButton.Cell>
       <AppButton.Cell
         title='New Moment'
-        subTitle={`Disappear within ${Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}`}
+        subTitle={`Every post will disappear within ${Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}`}
         onButtonPress={onAddNewMomentPress}
         customStyle={{ marginBottom: 10 }}
       >
