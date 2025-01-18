@@ -255,7 +255,7 @@ export const HomeStackNavigator: React.FC = (props) => {
           })}
         />
       </HomeStack.Group>
-      <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: false }}>
+      <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
         <HomeStack.Screen
           name='EditProfileStackNavigator'
           component={EditProfileStackNavigator}

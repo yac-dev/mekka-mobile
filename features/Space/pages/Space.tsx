@@ -207,7 +207,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >
@@ -226,7 +226,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 12, paddingTop: 5 }}
+            contentContainerStyle={{ paddingLeft: 12 }}
           />
         </View>
       </LinearGradient>
