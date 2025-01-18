@@ -78,7 +78,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   //   scrollToCenter();
   // }, [currentTagBySpaceId, itemWidths, currentSpace.tags.length]);
 
-  console.log(JSON.stringify(currentTagsTableBySpaceIds, null, 2));
+  // console.log(JSON.stringify(currentTagsTableBySpaceIds, null, 2));
 
   const scrollToCenter = () => {
     if (!currentTagsTableBySpaceIds) return;
