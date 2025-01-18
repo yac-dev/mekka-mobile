@@ -207,7 +207,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 15 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >

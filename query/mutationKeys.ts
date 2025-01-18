@@ -4,4 +4,5 @@ export const mutationKeys = {
   createSpace: 'createSpace',
   previewSticker: 'previewSticker',
   createComment: 'createComment',
+  registerPushToken: 'registerPushToken',
 };

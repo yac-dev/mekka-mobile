@@ -69,11 +69,11 @@ export const CommentInput = forwardRef((props: ICommentinput, ref) => {
   // const [currentSpace] = useRecoilState(currentSpaceAtom);
 
   const onSendPress = () => {
-    console.log('send');
     createCommentMutation({
       content: commentInput,
       postId: currentPost,
       userId: auth._id,
+      userName: auth.name,
     });
   };
 
