@@ -134,13 +134,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
 
     const compressContent = async (content: BufferContentType) => {
       const { type, uri } = content;
-      if (type === 'image/jpg') {
-        const result = await ImageCompressor.compress(uri, {
-          compressionMethod: 'manual',
-          quality: 0.7,
-        });
-        return { ...content, uri: result };
-      } else if (type === 'video/mp4') {
+      if (type === 'video/mp4') {
         const result = await VideoCompressor.compress(uri, {
           progressDivider: 20,
           maxSize: 1920,
@@ -240,12 +234,14 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
 
   const renderTagTexts = (): string => {
     let tagString: string = '';
-    Object.values(formData.addedTagsTable.value).forEach((tag, index) => {
-      tagString += tag.name;
-      if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
-        tagString += ',';
-      }
-    });
+    Object.values(formData.addedTagsTable.value)
+      .slice(1)
+      .forEach((tag, index) => {
+        tagString += tag.name;
+        if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
+          tagString += ',';
+        }
+      });
     return tagString;
   };
 

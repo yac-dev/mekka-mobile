@@ -16,22 +16,26 @@ const CreateNewTag = (props) => {
 
   useEffect(() => {
     createNewPostStackNavigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => onDonePress()}
-          disabled={creatingTag.name.length && creatingTag.name.length <= 40 ? false : true}
-        >
-          <Text
-            style={{
-              color: creatingTag.name.length && creatingTag.name.length <= 40 ? 'white' : 'rgb(117,117, 117)',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Done
-          </Text>
-        </TouchableOpacity>
-      ),
+      headerRight: () => {
+        const normalizedName = creatingTag.name.trim().toLowerCase();
+        const isValidLength = creatingTag.name.length > 0 && creatingTag.name.length <= 40;
+        const isNotReservedWord = normalizedName !== 'all';
+        const isEnabled = isValidLength && isNotReservedWord;
+
+        return (
+          <TouchableOpacity onPress={() => onDonePress()} disabled={!isEnabled}>
+            <Text
+              style={{
+                color: isEnabled ? 'white' : 'rgb(117,117, 117)',
+                fontSize: 20,
+                fontWeight: 'bold',
+              }}
+            >
+              Done
+            </Text>
+          </TouchableOpacity>
+        );
+      },
     });
   }, [creatingTag]);
 

@@ -31,6 +31,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../navigations';
 import { currentTagAtomFamily } from '../../../recoil';
+import { useMutation } from '@tanstack/react-query';
+import { mutationKeys } from '../../../query';
+import { UpdateSpaceCheckedInDateInputType } from '../../../query/types';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -46,6 +49,10 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   openAuthMenuBottomSheet,
   openAddNewSpaceMenuBottomSheet,
 }) => {
+  const { mutate: updateSpaceCheckedInMutation } = useMutation({
+    mutationKey: [mutationKeys.updateSpaceCheckedInDate],
+    mutationFn: (input: UpdateSpaceCheckedInDateInputType) => updateSpaceCheckedInDate(input),
+  });
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [routes, setRoutes] = useState<RouteType[]>(mySpaces.map((space, index) => ({ ...space, key: index })));
   const [index, setIndex] = useState<number>(0);
@@ -129,7 +136,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const onSpacePress = (space: SpaceType, index: number) => {
     setCurrentSpace(space);
     setIndex(index);
-    // updateSpaceCheckedInMutation.mutate({ spaceId: space._id, userId: auth._id });
+    updateSpaceCheckedInMutation({ spaceId: space._id, userId: auth._id });
   };
 
   // const onAddNewSpacePress = () => {

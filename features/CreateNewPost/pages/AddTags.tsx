@@ -28,7 +28,7 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
     addTag,
     removeAddedTag,
     addCreatedTag,
-    // やっぱ、addとremoveを分けた方がいいのか、あと、tag options用のstate を持っておく方が良さそうだわ。。。
+    // やっぱ、addとremoveを分けた方がいいのか、あと、tag options用のstate を持っておく方が良さそうだわ。。。
   } = useContext(CreateNewPostContext);
 
   useEffect(() => {
@@ -38,8 +38,8 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
   }, [route?.params?.createdTag]);
 
   const renderTagOptions = () => {
-    // if (Object.values(tagOptions).length) {
-    const list = tagOptions.map((tag: TagOptionType, index: number) => {
+    // Use slice(1) to create a new array without the first element
+    const list = tagOptions.slice(1).map((tag: TagOptionType, index: number) => {
       return (
         <TouchableOpacity
           activeOpacity={0.7}
@@ -50,7 +50,6 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
             } else {
               addTag(tag);
             }
-            // addTag(tag);
           }}
         >
           <View
