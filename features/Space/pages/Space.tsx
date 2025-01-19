@@ -27,7 +27,7 @@ import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
-import { mutationKeys } from '../../../query';
+import { mutationKeys, queryKeys } from '../../../query';
 import { Colors } from '../../../themes';
 import { SpaceType, TagType } from '../../../types';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
@@ -38,6 +38,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { BlurView, VibrancyView } from '@react-native-community/blur';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Grid } from '../components/Grid';
+import { useQueryClient } from '@tanstack/react-query';
 
 // id毎でqueryをcacheしたいのよね。
 // type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
@@ -51,6 +52,7 @@ type ISpace = {
 export type RouteType = TagType & { key: number };
 
 export const Space: React.FC<ISpace> = ({ space }) => {
+  const queryClient = useQueryClient();
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
@@ -115,6 +117,12 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   useEffect(() => {
     scrollToCenter();
   }, [index, itemWidths, currentSpace.tags.length]);
+
+  // useEffect(() => {
+  //   currentSpace.tags.forEach((tag) => {
+  //     console.log('postsByTagId states', queryClient.getQueryData([queryKeys.postsByTagId, tag._id]));
+  //   });
+  // }, [currentTagsTableBySpaceIds]);
 
   // useEffect(() => {
   //   setCurrentTagsTableBySpaceIds((prev) => {

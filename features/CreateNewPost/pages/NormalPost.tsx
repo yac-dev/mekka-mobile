@@ -27,7 +27,7 @@ import { authAtom } from '../../../recoil';
 import { useCreatePostResult } from '../../../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createPost, mutationKeys, queryKeys } from '../../../query';
-import { PostType, SpaceType } from '../../../types';
+import { PostType, SpaceType, TagType } from '../../../types';
 import { showMessage } from 'react-native-flash-message';
 import { GetPostsByTagIdOutputType } from '../../../query/types';
 import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
@@ -59,20 +59,45 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
     mutationKey: [mutationKeys.createPost, currentSpace._id],
     mutationFn: (input: CreatePostInputType) => createPost(input),
     onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }), // mutation実行前に起こすcallack func
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
-      if (data.addedTags.includes(currentTagsTableBySpaceIds[currentSpace._id]._id)) {
-        queryClient.setQueryData(
-          [queryKeys.postsByTagId, currentSpace, currentTagsTableBySpaceIds[currentSpace._id]._id],
-          (previous: GetPostsByTagIdOutputType) => {
-            return {
-              ...previous,
-              posts: [data.post, ...previous.posts],
-            };
-          }
-        );
-        // queryClient.setQueryData([queryKeys.postsByTagId, currentTag._id], data.post);
-      }
+
+      // NOTE: tag付されたものの中でも、appないですでに読み込まれたtag画面のpostsにだけdynamicに新しいpostを追加する。
+      // 本当はこっちで、dynamicにpostを追加したいが、わからんので、下のinvalidateQueriesで対応する。
+      // console.log('data.addedTags', data.addedTags);
+      // data.addedTags.forEach((tag: string) => {
+      //   queryClient.setQueriesData(
+      //     { queryKey: [queryKeys.postsByTagId, tag] },
+      //     (previous: GetPostsByTagIdOutputType) => {
+      //       return {
+      //         ...previous,
+      //         posts: [data.post, ...previous.posts],
+      //       };
+      //     }
+      //   );
+      //   // const queryData = queryClient.getQueryData([queryKeys.postsByTagId, tag]);
+      //   // console.log('queryData', queryData);
+      //   // if (queryData) {
+      //   //   queryClient.setQueryData([queryKeys.postsByTagId, tag], (previous: GetPostsByTagIdOutputType) => {
+      //   //     return {
+      //   //       ...previous,
+      //   //       posts: [data.post, ...previous.posts],
+      //   //     };
+      //   //   });
+      //   // }
+      // });
+      await Promise.all(
+        data.addedTags.map(async (tag: string) => {
+          await queryClient.invalidateQueries(
+            {
+              queryKey: [queryKeys.postsByTagId, tag],
+              exact: true,
+              // refetchType: 'active',
+            }
+            // { throwOnError: false, cancelRefetch: false },
+          );
+        })
+      );
       setMySpaces((previous: SpaceType[]) => {
         const updatingSpace = previous.find((space) => space._id === currentSpace._id);
         const updatedSpace = {
