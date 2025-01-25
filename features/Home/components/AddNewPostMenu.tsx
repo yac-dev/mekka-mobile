@@ -20,12 +20,12 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
 
   const renderContentType = () => {
     let text: string = '';
-    if (currentSpace.contentType === 'photo') {
+    if (currentSpace?.contentType === 'photo') {
       text = 'Photo';
-    } else if (currentSpace.contentType === 'video') {
-      text = `Video. Video length is limited to ${currentSpace.videoLength}s`;
+    } else if (currentSpace?.contentType === 'video') {
+      text = `Video. Video length is limited to ${currentSpace?.videoLength}s`;
     } else {
-      text = `Photo and Video. ${currentSpace.videoLength} seconds video post`;
+      text = `Photo and Video. ${currentSpace?.videoLength} seconds video post`;
     }
     return text;
   };
@@ -45,9 +45,9 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
             marginRight: 20,
           }}
           source={
-            currentSpace.contentType === 'photo'
+            currentSpace?.contentType === 'photo'
               ? require('../../../assets/forApp/photo.png')
-              : currentSpace.contentType === 'video'
+              : currentSpace?.contentType === 'video'
               ? require('../../../assets/forApp/video.png')
               : require('../../../assets/forApp/photo-video.png')
           }
@@ -57,7 +57,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
       </AppButton.Cell>
       <AppButton.Cell
         title='New Moment'
-        subTitle={`Every post will disappear within ${Times.minutesToHoursAndMinutes(currentSpace.disappearAfter)}`}
+        subTitle={`Every post will disappear within ${Times.minutesToHoursAndMinutes(currentSpace?.disappearAfter)}`}
         onButtonPress={onAddNewMomentPress}
         customStyle={{ marginBottom: 10 }}
       >

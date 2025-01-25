@@ -28,15 +28,20 @@ import { Image as ExpoImage } from 'expo-image';
 import { currentUserBottomSheetRef } from '../../../Refs';
 // 結局、my spacesとかもさ、tan stackで制御できちゃうよな。。。なんで俺recoilでstate管理してるんだろ。。。
 // currentSpaceとかはいいんだけど、apiの結果はapp戦隊で持てるからな。。。
-export const Home = () => {
+
+type HomeProps = {
+  openAppBlogWebviewBottomSheet: (index: number) => void;
+};
+
+export const Home: React.FC<HomeProps> = ({ openAppBlogWebviewBottomSheet }) => {
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [_, setAuth] = useRecoilState(authAtom);
 
   const { status: createPostStatus } = useMutation({
-    mutationKey: [mutationKeys.createPost, currentSpace._id],
+    mutationKey: [mutationKeys.createPost, currentSpace?._id],
   });
   const { status: createMomentStatus } = useMutation({
-    mutationKey: [mutationKeys.createMoment, currentSpace._id],
+    mutationKey: [mutationKeys.createMoment, currentSpace?._id],
   });
 
   const { mutate: createSpaceMutate, status: createSpaceStatus } = useMutation({
@@ -59,6 +64,7 @@ export const Home = () => {
     chooseViewBottomSheetRef,
     openChooseViewBottomSheet,
     closeChooseViewBottomSheet,
+    appBlogWebviewBottomSheetRef,
   } = useBottomSheet();
 
   // authがある場合にのみrenderしたいね。
@@ -169,7 +175,10 @@ export const Home = () => {
   return (
     <View style={styles.container}>
       {!mySpaces?.length ? (
-        <NoSpaces openAuthMenuBottomSheet={openAuthMenuBottomSheet} />
+        <NoSpaces
+          openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+          openAppBlogWebviewBottomSheet={openAppBlogWebviewBottomSheet}
+        />
       ) : (
         // <View style={{ flexDirection: 'row', height: '100%' }}>
         //   <SideBar
@@ -188,6 +197,7 @@ export const Home = () => {
           openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
           openAuthMenuBottomSheet={openAuthMenuBottomSheet}
           openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+          openAppBlogWebviewBottomSheet={openAppBlogWebviewBottomSheet}
         />
       )}
 
@@ -197,7 +207,7 @@ export const Home = () => {
         header={
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[styles.text, { marginRight: 5 }]}>Something to share on</Text>
-            <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: 30, height: 30, borderRadius: 20 }} />
+            <ExpoImage source={{ uri: currentSpace?.icon }} style={{ width: 30, height: 30, borderRadius: 20 }} />
             <Text style={[styles.text, { marginLeft: 5 }]}>?</Text>
           </View>
         }

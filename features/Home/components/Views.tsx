@@ -39,7 +39,13 @@ export const Views: React.FC<{
   openAddNewPostMenuBottomSheet: (index: number) => void;
   openAuthMenuBottomSheet: (index: number) => void;
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
-}> = ({ openAddNewPostMenuBottomSheet, openAuthMenuBottomSheet, openAddNewSpaceMenuBottomSheet }) => {
+  openAppBlogWebviewBottomSheet: (index: number) => void;
+}> = ({
+  openAddNewPostMenuBottomSheet,
+  openAuthMenuBottomSheet,
+  openAddNewSpaceMenuBottomSheet,
+  openAppBlogWebviewBottomSheet,
+}) => {
   const [index, setIndex] = React.useState(0);
   const currentSpace = useRecoilValue(currentSpaceAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
