@@ -125,7 +125,7 @@ const ContentType = () => {
           paddingLeft: screenHorizontalPadding,
           paddingRight: screenHorizontalPadding,
           paddingTop: 20,
-          paddingBottom: 30,
+          paddingBottom: 20,
         }}
       >
         <Text
@@ -216,12 +216,13 @@ const ContentType = () => {
           style={{
             flexDirection: 'row',
             paddingBottom: 30,
+            paddingVertical: 10,
           }}
           contentContainerStyle={{
             paddingHorizontal: screenHorizontalPadding,
           }}
         >
-          <View style={{ width: itemWidth, paddingRight: 10 }}>
+          <View style={{ width: itemWidth, paddingRight: 15 }}>
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(50,50,50)',
@@ -229,7 +230,7 @@ const ContentType = () => {
                 width: '100%',
                 height: 160,
               }}
-              activeOpacity={1}
+              activeOpacity={0.8}
               onPress={() => onContentTypeChange('photoAndVideo')}
             >
               <View
@@ -253,8 +254,36 @@ const ContentType = () => {
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Both photo and video are available.</Text>
               </View>
             </TouchableOpacity>
+            {formData.contentType.value === 'photoAndVideo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
           </View>
-          <View style={{ width: itemWidth, paddingRight: 10 }}>
+          <View style={{ width: itemWidth, paddingRight: 15 }}>
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(50,50,50)',
@@ -262,7 +291,7 @@ const ContentType = () => {
                 width: '100%',
                 height: 160,
               }}
-              activeOpacity={1}
+              activeOpacity={0.8}
               onPress={() => onContentTypeChange('video')}
             >
               <View
@@ -286,8 +315,36 @@ const ContentType = () => {
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only video is available.</Text>
               </View>
             </TouchableOpacity>
+            {formData.contentType.value === 'video' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
           </View>
-          <View style={{ width: itemWidth, paddingRight: 10 }}>
+          <View style={{ width: itemWidth, paddingRight: 15 }}>
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(50,50,50)',
@@ -295,7 +352,7 @@ const ContentType = () => {
                 width: '100%',
                 height: 160,
               }}
-              activeOpacity={1}
+              activeOpacity={0.8}
               onPress={() => onContentTypeChange('photo')}
             >
               <View
@@ -319,6 +376,34 @@ const ContentType = () => {
                 <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only photo is available.</Text>
               </View>
             </TouchableOpacity>
+            {formData.contentType.value === 'photo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
           </View>
         </ScrollView>
       </View>
