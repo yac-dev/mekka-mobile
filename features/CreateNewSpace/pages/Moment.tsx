@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { VectorIcon } from '../../../Icons';
 import BottomSheetModal from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { convertMinutesToHoursAndMinutes } from '.';
+import { AppButton } from '../../../components/Button';
 
 const formatTime = (inputMinutes: number): { hours: number; minutes: number } => {
   const hours = Math.floor(inputMinutes / 60);
@@ -56,6 +57,7 @@ const Moment = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const [selectedHour, setSelectedHour] = useState<string>('');
   const [selectedMin, setSelectedMin] = useState<string>('');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const customTimeBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const openCustomTimeBottomSheet = (index: number) => {
@@ -179,8 +181,7 @@ const Moment = () => {
           Moment Time
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Like IG stories, you can share not only regular posts, but also posts that disappear after a certain amount of
-          time.
+          Set how long your post will be visible before it disappears.
         </Text>
       </View>
 
@@ -204,7 +205,7 @@ const Moment = () => {
         <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
       </View>
 
-      <View style={{ paddingHorizontal: 30 }}>
+      <View style={{ paddingHorizontal: 20 }}>
         <TouchableOpacity
           style={{
             paddingVertical: 10,
@@ -235,8 +236,83 @@ const Moment = () => {
           {selectedHour === '0' ? renderMinPickerItemsFromFiveToFiftyNine() : renderMinPickerItems()}
         </View>
       </AppBottomSheet.Gorhom>
+      <Text
+        style={{
+          color: 'rgb(170,170,170)',
+          fontSize: 16,
+          position: 'absolute',
+          bottom: 20,
+          alignSelf: 'center',
+          marginBottom: 10,
+          textDecorationLine: 'underline',
+        }}
+        onPress={() => setIsModalVisible(!isModalVisible)}
+      >
+        🤔 What is Moment by the way?
+      </Text>
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => {
+          setIsModalVisible(!isModalVisible);
+        }}
+      >
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View
+            style={{
+              width: 300,
+              height: 200,
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 10,
+              padding: 10,
+            }}
+          >
+            <AppButton.Icon
+              customStyle={{
+                width: 28,
+                height: 28,
+                backgroundColor: 'rgb(50,50,50)',
+                alignSelf: 'flex-end',
+                marginBottom: 10,
+              }}
+              onButtonPress={() => setIsModalVisible(!isModalVisible)}
+              hasShadow
+            >
+              <VectorIcon.II name='close' size={20} color={'white'} />
+            </AppButton.Icon>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 18,
+                textAlign: 'center',
+                marginBottom: 30,
+              }}
+            >
+              What is Moments?
+            </Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={styles.modalText}>
+                Similar to Instagram Stories, you can create temporary posts that automatically vanish after your
+                specified time.
+                <Text style={{ color: 'white', fontWeight: 'bold' }}></Text>
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    color: 'white',
+    lineHeight: 25,
+  },
+});
 
 export default Moment;
