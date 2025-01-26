@@ -196,34 +196,26 @@ const Moment = () => {
           showsHorizontalScrollIndicator={false}
           renderItem={renderItem}
           contentContainerStyle={{ paddingHorizontal: 20 }}
+          ListHeaderComponent={
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                backgroundColor: 'rgb(50, 50, 50)',
+                paddingVertical: 10,
+                paddingHorizontal: 15,
+                borderRadius: 20,
+                marginRight: 10,
+                flexDirection: 'row',
+              }}
+              onPress={() => {
+                openCustomTimeBottomSheet(0);
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Custom</Text>
+              <VectorIcon.MCI name='chevron-down' size={20} color='white' />
+            </TouchableOpacity>
+          }
         />
-      </View>
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
-        <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
-        <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>Or</Text>
-        <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
-      </View>
-
-      <View style={{ paddingHorizontal: 20 }}>
-        <TouchableOpacity
-          style={{
-            paddingVertical: 10,
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: 'rgb(50, 50, 50)',
-            borderRadius: 20,
-            paddingHorizontal: 15,
-            justifyContent: 'center',
-          }}
-          activeOpacity={0.7}
-          onPress={() => openCustomTimeBottomSheet(0)}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginRight: 10 }}>Customize Time</Text>
-            <VectorIcon.MCI name='chevron-down' size={20} color='white' />
-          </View>
-        </TouchableOpacity>
       </View>
       <AppBottomSheet.Gorhom
         ref={customTimeBottomSheetRef}
