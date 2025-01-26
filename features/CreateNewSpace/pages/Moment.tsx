@@ -198,10 +198,10 @@ const Moment = () => {
         />
       </View>
 
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
-        <View style={{ height: 0.5, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+        <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
         <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>Or</Text>
-        <View style={{ height: 0.5, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
+        <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
       </View>
 
       <View style={{ paddingHorizontal: 30 }}>
@@ -223,20 +223,12 @@ const Moment = () => {
             <VectorIcon.MCI name='chevron-down' size={20} color='white' />
           </View>
         </TouchableOpacity>
-      </View> */}
+      </View>
       <AppBottomSheet.Gorhom
         ref={customTimeBottomSheetRef}
         snapPoints={['65%']}
         header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
         onCloseButtonClose={closeCustomTimeBottomSheet}
-        topRightCorner={
-          <TouchableOpacity
-            onPress={closeCustomTimeBottomSheet}
-            style={{ padding: 10, borderRadius: 20, backgroundColor: 'rgb(50, 50, 50)' }}
-          >
-            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Done</Text>
-          </TouchableOpacity>
-        }
       >
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
           {renderHourPickerItems()}
