@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Dimensions, ScrollView, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,6 +13,8 @@ import { AppButton } from '../../../components';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
+import BottomSheetModal from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
 
 const formatTime = (inputSeconds: number): { minutes: number; seconds: number } => {
   const minutes = Math.floor(inputSeconds / 60);
@@ -29,9 +31,47 @@ const calculateSeconds = (minutes: string, seconds: string): number => {
   return minNumber * 60 + secNumber;
 };
 
+const formatTimeString = (totalSeconds: number): string => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  if (minutes > 0) {
+    return `${minutes} min ${seconds > 0 ? `${seconds} sec` : ''}`;
+  }
+  return `${seconds} sec`;
+};
+
 const screenHorizontalPadding = 20;
 
 const itemWidth = (Dimensions.get('window').width - screenHorizontalPadding * 2) / 2;
+
+type PresetTime = {
+  label: string;
+  value: number;
+};
+
+const presetTimes: PresetTime[] = [
+  {
+    label: '5 sec',
+    value: 5,
+  },
+  {
+    label: '10 sec',
+    value: 10,
+  },
+  {
+    label: '30 sec',
+    value: 30,
+  },
+  {
+    label: '1 min',
+    value: 60,
+  },
+  {
+    label: '3 min',
+    value: 3 * 60,
+  },
+];
 
 const ContentType = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
@@ -40,6 +80,15 @@ const ContentType = () => {
   const [selectedSec, setSelectedSec] = useState<string>('');
   const pickerMinRef = useRef();
   const pickerSecRef = useRef();
+  const customTimeBottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const openCustomTimeBottomSheet = (index: number) => {
+    customTimeBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeCustomTimeBottomSheet = () => {
+    customTimeBottomSheetRef.current?.close();
+  };
 
   // 最初の初期設定60秒をここでまず設定する。
   useEffect(() => {
@@ -54,6 +103,26 @@ const ContentType = () => {
     console.log('seconds -> ', seconds);
     onVideoLengthChange(seconds);
   }, [selectedMin, selectedSec]);
+
+  const renderItem = ({ item }: { item: PresetTime }) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={{
+          backgroundColor: 'rgb(50, 50, 50)',
+          paddingVertical: 10,
+          paddingHorizontal: 15,
+          borderRadius: 20,
+          marginRight: 10,
+        }}
+        onPress={() => {
+          onVideoLengthChange(item.value);
+        }}
+      >
+        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{item.label}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const renderMinPickerItems = () => {
     const minArr = Array.from({ length: 3 }, (x, i) => i);
@@ -407,20 +476,65 @@ const ContentType = () => {
           </View>
         </ScrollView>
       </View>
-
       {formData.contentType.value === 'video' || formData.contentType.value === 'photoAndVideo' ? (
         <View>
-          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            {/* Just as there are limits on video length on other platforms, you can put limits on the length of videos you
-            can post here. */}
-            You can limit the length of videos that can be posted.
+          <View>
+            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', paddingBottom: 20 }}>
+              You can limit the length of videos that can be posted.
+            </Text>
+          </View>
+          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center', paddingBottom: 30 }}>
+            {formData.videoLength.value ? formatTimeString(formData.videoLength.value) : ''}
           </Text>
-          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-            {renderMinPickerItems()}
-            {selectedMin === '0' ? renderSecPickerItemsFromFiveToFiftyNine() : renderSecPickerItems()}
+          <View>
+            <FlatList
+              data={presetTimes}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={renderItem}
+              contentContainerStyle={{ paddingHorizontal: 20 }}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+            <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>Or</Text>
+            <View style={{ height: 0, width: 150, backgroundColor: 'rgb(170,170,170)' }}></View>
+          </View>
+          <View style={{ paddingHorizontal: 20 }}>
+            <TouchableOpacity
+              style={{
+                paddingVertical: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50, 50, 50)',
+                borderRadius: 20,
+                paddingHorizontal: 15,
+                justifyContent: 'center',
+              }}
+              activeOpacity={0.7}
+              onPress={() => openCustomTimeBottomSheet(0)}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginRight: 10 }}>
+                  Customize Time
+                </Text>
+                <VectorIcon.MCI name='chevron-down' size={20} color='white' />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       ) : null}
+      <AppBottomSheet.Gorhom
+        ref={customTimeBottomSheetRef}
+        snapPoints={['65%']}
+        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
+        onCloseButtonClose={closeCustomTimeBottomSheet}
+      >
+        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+          {renderMinPickerItems()}
+          {selectedMin === '0' ? renderSecPickerItemsFromFiveToFiftyNine() : renderSecPickerItems()}
+        </View>
+      </AppBottomSheet.Gorhom>
     </View>
   );
 };
