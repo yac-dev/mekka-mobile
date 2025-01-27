@@ -27,7 +27,7 @@ import { mutationKeys } from '../../../query/mutationKeys';
 import { CreateSpaceInputType } from '../../../query/types';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
-const convertMinutesToHoursAndMinutes = (minutes: number) => {
+export const convertMinutesToHoursAndMinutes = (minutes: number) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
 

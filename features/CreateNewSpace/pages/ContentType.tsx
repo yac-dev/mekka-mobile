@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Dimensions, ScrollView, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,6 +13,8 @@ import { AppButton } from '../../../components';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
+import BottomSheetModal from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
 
 const formatTime = (inputSeconds: number): { minutes: number; seconds: number } => {
   const minutes = Math.floor(inputSeconds / 60);
@@ -29,6 +31,48 @@ const calculateSeconds = (minutes: string, seconds: string): number => {
   return minNumber * 60 + secNumber;
 };
 
+const formatTimeString = (totalSeconds: number): string => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  if (minutes > 0) {
+    return `${minutes} min ${seconds > 0 ? `${seconds} sec` : ''}`;
+  }
+  return `${seconds} sec`;
+};
+
+const screenHorizontalPadding = 20;
+
+const itemWidth = (Dimensions.get('window').width - screenHorizontalPadding * 2) / 2;
+
+type PresetTime = {
+  label: string;
+  value: number;
+};
+
+const presetTimes: PresetTime[] = [
+  {
+    label: '5 sec',
+    value: 5,
+  },
+  {
+    label: '10 sec',
+    value: 10,
+  },
+  {
+    label: '30 sec',
+    value: 30,
+  },
+  {
+    label: '1 min',
+    value: 60,
+  },
+  {
+    label: '3 min',
+    value: 3 * 60,
+  },
+];
+
 const ContentType = () => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, onContentTypeChange, onVideoLengthChange } = useContext(CreateNewSpaceContext);
@@ -36,6 +80,15 @@ const ContentType = () => {
   const [selectedSec, setSelectedSec] = useState<string>('');
   const pickerMinRef = useRef();
   const pickerSecRef = useRef();
+  const customTimeBottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const openCustomTimeBottomSheet = (index: number) => {
+    customTimeBottomSheetRef.current?.snapToIndex(index);
+  };
+
+  const closeCustomTimeBottomSheet = () => {
+    customTimeBottomSheetRef.current?.close();
+  };
 
   // 最初の初期設定60秒をここでまず設定する。
   useEffect(() => {
@@ -50,6 +103,26 @@ const ContentType = () => {
     console.log('seconds -> ', seconds);
     onVideoLengthChange(seconds);
   }, [selectedMin, selectedSec]);
+
+  const renderItem = ({ item }: { item: PresetTime }) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={{
+          backgroundColor: 'rgb(50, 50, 50)',
+          paddingVertical: 10,
+          paddingHorizontal: 15,
+          borderRadius: 20,
+          marginRight: 10,
+        }}
+        onPress={() => {
+          onVideoLengthChange(item.value);
+        }}
+      >
+        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{item.label}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const renderMinPickerItems = () => {
     const minArr = Array.from({ length: 3 }, (x, i) => i);
@@ -116,7 +189,14 @@ const ContentType = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 50 }}>
+      <View
+        style={{
+          paddingLeft: screenHorizontalPadding,
+          paddingRight: screenHorizontalPadding,
+          paddingTop: 20,
+          paddingBottom: 20,
+        }}
+      >
         <Text
           style={{
             color: 'white',
@@ -132,23 +212,7 @@ const ContentType = () => {
           What kind of content can be shared in this space?
         </Text>
       </View>
-      <View style={{ marginBottom: 30 }}>
-        {/* <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onContentTypeChange('photo')}
-          activeOpacity={1}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name='image' color='white' size={20} style={{ marginRight: 20 }} />
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Photo</Text>
-            </View>
-          </View>
-          {formData.contentType.value === 'photo' ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity> */}
-
+      {/* <View style={{ marginBottom: 30 }}>
         <TouchableOpacity
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           onPress={() => onContentTypeChange('photoAndVideo')}
@@ -214,62 +278,255 @@ const ContentType = () => {
             <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
           ) : null}
         </TouchableOpacity>
-
-        {/* <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onContentTypeChange('video')}
-          activeOpacity={1}
+      </View> */}
+      <View>
+        <ScrollView
+          horizontal
+          style={{
+            flexDirection: 'row',
+            paddingBottom: 30,
+            paddingVertical: 10,
+          }}
+          contentContainerStyle={{
+            paddingHorizontal: screenHorizontalPadding,
+          }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <VectorIcon.MCI name='movie-open' color='white' size={20} style={{ marginRight: 20 }} />
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Only Video</Text>
-            </View>
+          <View style={{ width: itemWidth, paddingRight: 15 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 20,
+                width: '100%',
+                height: 160,
+              }}
+              activeOpacity={0.8}
+              onPress={() => onContentTypeChange('photoAndVideo')}
+            >
+              <View
+                style={{
+                  height: 85,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: 'rgb(100,100,100)',
+                }}
+              >
+                <ExpoImage
+                  style={{ width: 40, aspectRatio: 1 }}
+                  source={require('../../../assets/forApp/photo-video.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Photo & Video</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Both photo and video are available.</Text>
+              </View>
+            </TouchableOpacity>
+            {formData.contentType.value === 'photoAndVideo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
           </View>
-          {formData.contentType.value === 'video' ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity> */}
-
-        {/* <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onContentTypeChange('photoAndVideo')}
-          activeOpacity={1}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ marginRight: 20 }}>
-              <Ionicons name='image' color='white' size={20} />
-
-              <VectorIcon.MCI
-                name='movie-open'
-                color='white'
-                size={20}
-                style={{ position: 'absolute', top: -8, right: -8 }}
-              />
-            </View>
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo & Video</Text>
-            </View>
+          <View style={{ width: itemWidth, paddingRight: 15 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 20,
+                width: '100%',
+                height: 160,
+              }}
+              activeOpacity={0.8}
+              onPress={() => onContentTypeChange('video')}
+            >
+              <View
+                style={{
+                  height: 85,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: 'rgb(100,100,100)',
+                }}
+              >
+                <ExpoImage
+                  style={{ width: 40, aspectRatio: 1 }}
+                  source={require('../../../assets/forApp/video.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Video</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only video is available.</Text>
+              </View>
+            </TouchableOpacity>
+            {formData.contentType.value === 'video' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
           </View>
-          {formData.contentType.value === 'photoAndVideo' ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity> */}
+          <View style={{ width: itemWidth, paddingRight: 15 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 20,
+                width: '100%',
+                height: 160,
+              }}
+              activeOpacity={0.8}
+              onPress={() => onContentTypeChange('photo')}
+            >
+              <View
+                style={{
+                  height: 85,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: 'rgb(100,100,100)',
+                }}
+              >
+                <ExpoImage
+                  style={{ width: 40, aspectRatio: 1 }}
+                  source={require('../../../assets/forApp/photo.png')}
+                  contentFit='cover'
+                  tintColor={'white'}
+                />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Photo</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only photo is available.</Text>
+              </View>
+            </TouchableOpacity>
+            {formData.contentType.value === 'photo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
+          </View>
+        </ScrollView>
       </View>
-
       {formData.contentType.value === 'video' || formData.contentType.value === 'photoAndVideo' ? (
         <View>
-          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            {/* Just as there are limits on video length on other platforms, you can put limits on the length of videos you
-            can post here. */}
-            You can limit the length of videos that can be posted.
+          <View>
+            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', paddingBottom: 20 }}>
+              You can limit the length of videos that can be posted.
+            </Text>
+          </View>
+          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center', paddingBottom: 20 }}>
+            {formData.videoLength.value ? formatTimeString(formData.videoLength.value) : ''}
           </Text>
-          <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-            {renderMinPickerItems()}
-            {selectedMin === '0' ? renderSecPickerItemsFromFiveToFiftyNine() : renderSecPickerItems()}
+          <View>
+            <FlatList
+              data={presetTimes}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={renderItem}
+              contentContainerStyle={{ paddingHorizontal: 20 }}
+              ListHeaderComponent={
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={{
+                    backgroundColor: 'rgb(50, 50, 50)',
+                    paddingVertical: 10,
+                    paddingHorizontal: 15,
+                    borderRadius: 20,
+                    marginRight: 10,
+                    flexDirection: 'row',
+                  }}
+                  onPress={() => {
+                    openCustomTimeBottomSheet(0);
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginRight: 5 }}>Custom</Text>
+                  <VectorIcon.MCI name='chevron-down' size={20} color='white' />
+                </TouchableOpacity>
+              }
+            />
           </View>
         </View>
       ) : null}
+      <AppBottomSheet.Gorhom
+        ref={customTimeBottomSheetRef}
+        snapPoints={['65%']}
+        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
+        onCloseButtonClose={closeCustomTimeBottomSheet}
+      >
+        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+          {renderMinPickerItems()}
+          {selectedMin === '0' ? renderSecPickerItemsFromFiveToFiftyNine() : renderSecPickerItems()}
+        </View>
+      </AppBottomSheet.Gorhom>
     </View>
   );
 };

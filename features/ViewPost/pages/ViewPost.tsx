@@ -125,11 +125,13 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 {timeSince(new Date(currentPost.createdAt))}
               </Text>
             </View>
-            <View>
-              <Text numberOfLines={1} style={{ color: 'white', fontSize: 14 }}>
-                {currentPost.caption}
-              </Text>
-            </View>
+            {currentPost.caption.length ? (
+              <View>
+                <Text numberOfLines={1} style={{ color: 'white', fontSize: 14 }}>
+                  {currentPost.caption}
+                </Text>
+              </View>
+            ) : null}
           </View>
         </TouchableOpacity>
       ),

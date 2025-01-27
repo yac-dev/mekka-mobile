@@ -69,6 +69,10 @@ export const Space: React.FC<ISpace> = ({ space }) => {
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
 
+  useEffect(() => {
+    setRoutes(currentSpace.tags.map((tag, index) => ({ ...tag, key: index })));
+  }, [currentSpace.tags.length]);
+
   const onTabPress = (tab, index) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
@@ -204,7 +208,6 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           right: 0,
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
-        // colors={['#4c669f', '#3b5998', '#192f6a']}
       >
         <View
           style={{
@@ -215,12 +218,12 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >
               <View style={{ marginRight: 8 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 22 }}>{currentSpace.name}</Text>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
               </View>
               <VectorIcon.MCI name='chevron-down' size={22} color={Colors.white} />
             </TouchableOpacity>

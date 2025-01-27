@@ -12,9 +12,10 @@ const actionButtonWidth = actionButtonContainerWidth * 0.8;
 
 type NoSpacesProps = {
   openAuthMenuBottomSheet: (index: number) => void;
+  openAppBlogWebviewBottomSheet: (index: number) => void;
 };
 
-export const NoSpaces: React.FC<NoSpacesProps> = ({ openAuthMenuBottomSheet }) => {
+export const NoSpaces: React.FC<NoSpacesProps> = ({ openAuthMenuBottomSheet, openAppBlogWebviewBottomSheet }) => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   // webviewにしたいんだわな。。。linkingはやめよう、appから離れてしまう。。。
@@ -71,10 +72,7 @@ export const NoSpaces: React.FC<NoSpacesProps> = ({ openAuthMenuBottomSheet }) =
             >
               <VectorIcon.MCI name='rocket-launch' color={Colors.white} size={30} />
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => homeStackNavigation.navigate('AboutApp', { url: urls.howToCreateNewSpace })}
-            >
+            <TouchableOpacity activeOpacity={0.5} onPress={() => openAppBlogWebviewBottomSheet(1)}>
               <View style={{ borderBottomColor: 'white', borderBottomWidth: 0.3, alignSelf: 'center' }}>
                 <Text
                   style={{

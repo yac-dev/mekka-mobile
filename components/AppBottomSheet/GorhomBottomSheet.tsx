@@ -19,6 +19,7 @@ type GorhomBottomSheetRef = {
   handleComponent?: () => ReactNode;
   enablePanDownToClose?: boolean;
   backgroundColor?: string;
+  topRightCorner?: ReactNode;
 };
 
 export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
@@ -34,6 +35,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
       handleComponent,
       enablePanDownToClose = true,
       backgroundColor = 'rgb(30,30,30)',
+      topRightCorner,
     },
     ref
   ) => {
@@ -66,13 +68,17 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
                 return (
                   <View style={styles.container}>
                     {header}
-                    <AppButton.Icon
-                      onButtonPress={onCloseButtonClose}
-                      customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                      hasShadow={false}
-                    >
-                      <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
-                    </AppButton.Icon>
+                    {topRightCorner ? (
+                      topRightCorner
+                    ) : (
+                      <AppButton.Icon
+                        onButtonPress={onCloseButtonClose}
+                        customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                        hasShadow={false}
+                      >
+                        <VectorIcon.II name='close' size={18} color={'rgb(190,190,190)'} />
+                      </AppButton.Icon>
+                    )}
                   </View>
                 );
               }
