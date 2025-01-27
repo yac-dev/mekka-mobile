@@ -295,7 +295,7 @@ const ContentType = () => {
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 10,
+                borderRadius: 20,
                 width: '100%',
                 height: 160,
               }}
@@ -356,7 +356,7 @@ const ContentType = () => {
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 10,
+                borderRadius: 20,
                 width: '100%',
                 height: 160,
               }}
@@ -417,7 +417,7 @@ const ContentType = () => {
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 10,
+                borderRadius: 20,
                 width: '100%',
                 height: 160,
               }}
