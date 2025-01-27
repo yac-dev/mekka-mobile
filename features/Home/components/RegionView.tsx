@@ -376,19 +376,19 @@ export const RegionView = () => {
           style={{
             flexDirection: 'column',
             paddingTop: 10,
-            paddingHorizontal: 20,
+            paddingHorizontal: 12,
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
               onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
               activeOpacity={0.7}
             >
-              <View style={{ marginRight: 5 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 18 }}>{currentSpace.name}</Text>
+              <View style={{ marginRight: 8 }}>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
               </View>
-              <VectorIcon.MI name='chevron-right' size={20} color={Colors.white} />
+              <VectorIcon.MCI name='chevron-down' size={22} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -400,7 +400,7 @@ export const RegionView = () => {
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 20, paddingTop: 3, paddingBottom: 6 }}
+            contentContainerStyle={{ paddingLeft: 12 }}
           />
         </View>
         {/* defaultの位置はnew yorkでいい。fetchが */}
