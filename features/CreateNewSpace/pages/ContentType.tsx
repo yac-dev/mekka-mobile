@@ -43,7 +43,7 @@ const formatTimeString = (totalSeconds: number): string => {
 
 const screenHorizontalPadding = 20;
 
-const itemWidth = (Dimensions.get('window').width - screenHorizontalPadding * 2) / 2;
+const itemWidth = (Dimensions.get('window').width - screenHorizontalPadding * 2) / 2 - 10;
 
 type PresetTime = {
   label: string;

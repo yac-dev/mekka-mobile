@@ -129,7 +129,7 @@ const SelectSpaceVisibility = () => {
               style={{
                 position: 'absolute',
                 top: -10,
-                right: 0,
+                right: -10,
                 backgroundColor: 'black',
                 width: 35,
                 height: 35,
@@ -198,56 +198,186 @@ const SelectSpaceVisibility = () => {
           <View style={{ paddingLeft: 30, paddingRight: 30, paddingBottom: 20 }}>
             <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Allow "follow" feature?</Text>
           </View>
-
-          <TouchableOpacity
-            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => onFollowAvailabilityChange(true)}
-            activeOpacity={0.7}
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingBottom: 30,
+              paddingVertical: 10,
+              paddingHorizontal: screenHorizontalPadding,
+            }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <VectorIcon.II name='person-add' size={20} color={'white'} style={{ marginRight: 20 }} />
-              <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Allowed</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  Like the traditional social media, people can follow each other and get notified when there are new
-                  posts from followed people.
-                </Text>
-              </View>
+            <View style={{ width: selectionItemWidth, paddingRight: 8 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 20,
+                  width: '100%',
+                  height: 160,
+                }}
+                activeOpacity={0.8}
+                onPress={() => onFollowAvailabilityChange(false)}
+              >
+                <View
+                  style={{
+                    height: 85,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomWidth: 0.3,
+                    borderBottomColor: 'rgb(100,100,100)',
+                  }}
+                >
+                  <View>
+                    <VectorIcon.II name='person-add' color={Colors.white} size={50} />
+                    <VectorIcon.FD
+                      name='prohibited'
+                      color='white'
+                      size={30}
+                      style={{ position: 'absolute', top: -10, right: -10 }}
+                    />
+                  </View>
+                </View>
+                <View style={{ padding: 10 }}>
+                  <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Disallowed</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+                    No following system, no social pressure
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              {formData.isFollowAvailable.value === undefined ? null : !formData.isFollowAvailable.value ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -10,
+                    right: -10,
+                    backgroundColor: 'black',
+                    width: 35,
+                    height: 35,
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      width: 25,
+                      height: 25,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Ionicons name='checkmark' color='black' size={20} />
+                  </View>
+                </View>
+              ) : null}
             </View>
-            {formData.isFollowAvailable.value === undefined ? null : formData.isFollowAvailable.value ? (
-              <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-            ) : null}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-            onPress={() => onFollowAvailabilityChange(false)}
-            activeOpacity={0.7}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ marginRight: 20 }}>
-                <VectorIcon.II name='person-add' color='white' size={20} />
-                <VectorIcon.FD
-                  name='prohibited'
-                  color='white'
-                  size={20}
-                  style={{ position: 'absolute', top: -10, right: -10 }}
-                />
-              </View>
-              <View style={{ width: 250 }}>
-                <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Disallowed</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                  By turning off, people will free from the stress of following/unfollowing others, as well as the
-                  followers number contest.
-                </Text>
-              </View>
+            <View style={{ width: selectionItemWidth, paddingLeft: 8 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 20,
+                  width: '100%',
+                  height: 160,
+                }}
+                activeOpacity={0.8}
+                onPress={() => onFollowAvailabilityChange(true)}
+              >
+                <View
+                  style={{
+                    height: 85,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomWidth: 0.3,
+                    borderBottomColor: 'rgb(100,100,100)',
+                  }}
+                >
+                  <VectorIcon.II name='person-add' color={Colors.white} size={50} />
+                </View>
+                <View style={{ padding: 10 }}>
+                  <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Allowed</Text>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Follow others and see their new posts</Text>
+                </View>
+              </TouchableOpacity>
+              {formData.isFollowAvailable.value === undefined ? null : formData.isFollowAvailable.value ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -10,
+                    right: -10,
+                    backgroundColor: 'black',
+                    width: 35,
+                    height: 35,
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      width: 25,
+                      height: 25,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Ionicons name='checkmark' color='black' size={20} />
+                  </View>
+                </View>
+              ) : null}
             </View>
-            {formData.isFollowAvailable.value === undefined ? null : !formData.isFollowAvailable.value ? (
-              <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-            ) : null}
-          </TouchableOpacity>
+          </View>
         </>
-      ) : null}
+      ) : // <TouchableOpacity
+      //   style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+      //   onPress={() => onFollowAvailabilityChange(true)}
+      //   activeOpacity={0.7}
+      // >
+      //   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      //     <VectorIcon.II name='person-add' size={20} color={'white'} style={{ marginRight: 20 }} />
+      //     <View style={{ width: 250 }}>
+      //       <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Allowed</Text>
+      //       <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+      //         Like the traditional social media, people can follow each other and get notified when there are new
+      //         posts from followed people.
+      //       </Text>
+      //     </View>
+      //   </View>
+      //   {formData.isFollowAvailable.value === undefined ? null : formData.isFollowAvailable.value ? (
+      //     <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+      //   ) : null}
+      // </TouchableOpacity>
+
+      // <TouchableOpacity
+      //   style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+      //   onPress={() => onFollowAvailabilityChange(false)}
+      //   activeOpacity={0.7}
+      // >
+      //   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      // <View style={{ marginRight: 20 }}>
+      //   <VectorIcon.II name='person-add' color='white' size={20} />
+      //   <VectorIcon.FD
+      //     name='prohibited'
+      //     color='white'
+      //     size={20}
+      //     style={{ position: 'absolute', top: -10, right: -10 }}
+      //   />
+      // </View>
+      //     <View style={{ width: 250 }}>
+      //       <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Disallowed</Text>
+      //       <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
+      //         By turning off, people will free from the stress of following/unfollowing others, as well as the
+      //         followers number contest.
+      //       </Text>
+      //     </View>
+      //   </View>
+      //   {formData.isFollowAvailable.value === undefined ? null : !formData.isFollowAvailable.value ? (
+      //     <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+      //   ) : null}
+      // </TouchableOpacity>
+      null}
     </View>
   );
 };
