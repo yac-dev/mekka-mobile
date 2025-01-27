@@ -339,14 +339,14 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       <MenuCell
         onCellPress={() => createNewPostStackNavigation.navigate('AddTags')}
         icon={<VectorIcon.OI name='hash' size={20} color='white' style={{ marginRight: 10 }} />}
-        title='Tags'
+        title='Add Tags'
         value={renderTagTexts()}
         requirementText={!formData.addedTagsTable.isValidated ? 'Required' : undefined}
       />
       <MenuCell
         onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
         icon={<VectorIcon.II name='location-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
-        title='Location (optional)'
+        title='Add Location'
         value={''}
       />
     </ScrollView>

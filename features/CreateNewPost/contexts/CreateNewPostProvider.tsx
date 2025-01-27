@@ -22,7 +22,7 @@ const initialFormData: FormDataType = {
   },
   caption: {
     value: '',
-    isValidated: false,
+    isValidated: true,
   },
   addedTagsTable: {
     value: {},
@@ -260,7 +260,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
         ...previous,
         caption: {
           value: text,
-          isValidated: text.length ? true : false,
+          isValidated: true,
         },
       };
     });

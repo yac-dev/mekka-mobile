@@ -37,7 +37,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
 
   return (
     <View style={{ flexDirection: 'row', paddingHorizontal: screenHorizontalPadding }}>
-      <View style={{ width: itemWidth, paddingHorizontal: 5 }}>
+      <View style={{ width: itemWidth, paddingRight: 8 }}>
         <TouchableOpacity
           style={{
             backgroundColor: 'rgb(50,50,50)',
@@ -79,7 +79,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{ width: itemWidth, paddingHorizontal: 5 }}>
+      <View style={{ width: itemWidth, paddingLeft: 8 }}>
         <TouchableOpacity
           style={{
             backgroundColor: 'rgb(50,50,50)',
