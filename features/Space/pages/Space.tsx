@@ -69,6 +69,10 @@ export const Space: React.FC<ISpace> = ({ space }) => {
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
 
+  useEffect(() => {
+    setRoutes(currentSpace.tags.map((tag, index) => ({ ...tag, key: index })));
+  }, [currentSpace.tags.length]);
+
   const onTabPress = (tab, index) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
