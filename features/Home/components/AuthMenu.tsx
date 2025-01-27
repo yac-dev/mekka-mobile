@@ -89,8 +89,8 @@ export const AuthMenu: React.FC<AuthMenu> = ({
               <VectorIcon.MCI name='account' color={Colors.white} size={45} />
             </View>
             <View style={{ padding: 10 }}>
-              <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Create New</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Open your own space from here</Text>
+              <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Edit My Info</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Change your personal information</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -118,7 +118,7 @@ export const AuthMenu: React.FC<AuthMenu> = ({
             </View>
             <View style={{ padding: 10 }}>
               <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Notification</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Allowed</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Change your notification settings</Text>
             </View>
           </TouchableOpacity>
         </View>
