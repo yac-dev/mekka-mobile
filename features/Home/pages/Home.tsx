@@ -218,7 +218,7 @@ export const Home: React.FC<HomeProps> = ({ openAppBlogWebviewBottomSheet }) => 
 
       <AppBottomSheet.Gorhom
         ref={authMenuBottomSheetRef}
-        snapPoints={['60%']}
+        snapPoints={['40%']}
         header={<Text style={styles.text}>Settings</Text>}
         onCloseButtonClose={closeAuthMenuBottomSheet}
       >
@@ -231,7 +231,7 @@ export const Home: React.FC<HomeProps> = ({ openAppBlogWebviewBottomSheet }) => 
       </AppBottomSheet.Gorhom>
       <AppBottomSheet.Gorhom
         ref={addNewSpaceMenuBottomSheetRef}
-        snapPoints={['50%']}
+        snapPoints={['40%']}
         header={<Text style={styles.text}>Add Space</Text>}
         onCloseButtonClose={closeAddNewSpaceMenuBottomSheet}
       >

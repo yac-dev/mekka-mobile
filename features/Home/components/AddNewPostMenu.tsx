@@ -59,7 +59,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
           >
             <ExpoImage
               style={{
-                width: 40,
+                width: 55,
                 aspectRatio: 1,
               }}
               source={
@@ -101,7 +101,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
           >
             <ExpoImage
               style={{
-                width: 40,
+                width: 45,
                 aspectRatio: 1,
               }}
               source={require('../../../assets/forApp/ghost.png')}
@@ -117,46 +117,6 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
           </View>
         </TouchableOpacity>
       </View>
-      {/* <AppButton.Cell
-        title={'New Post'}
-        subTitle={renderContentType()}
-        onButtonPress={onAddNewPostPress}
-        customStyle={{ marginBottom: 10 }}
-      >
-        <ExpoImage
-          style={{
-            width: 20,
-            aspectRatio: 1,
-            marginRight: 20,
-          }}
-          source={
-            currentSpace?.contentType === 'photo'
-              ? require('../../../assets/forApp/photo.png')
-              : currentSpace?.contentType === 'video'
-              ? require('../../../assets/forApp/video.png')
-              : require('../../../assets/forApp/photo-video.png')
-          }
-          contentFit='cover'
-          tintColor={'white'}
-        />
-      </AppButton.Cell>
-      <AppButton.Cell
-        title='New Moment'
-        subTitle={`Every post will disappear within ${Times.minutesToHoursAndMinutes(currentSpace?.disappearAfter)}`}
-        onButtonPress={onAddNewMomentPress}
-        customStyle={{ marginBottom: 10 }}
-      >
-        <ExpoImage
-          style={{
-            width: 20,
-            aspectRatio: 1,
-            marginRight: 20,
-          }}
-          source={require('../../../assets/forApp/ghost.png')}
-          contentFit='cover'
-          tintColor={'white'}
-        />
-      </AppButton.Cell> */}
     </View>
   );
 };
