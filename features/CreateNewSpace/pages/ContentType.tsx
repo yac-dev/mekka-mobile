@@ -43,7 +43,7 @@ const formatTimeString = (totalSeconds: number): string => {
 
 const screenHorizontalPadding = 20;
 
-const itemWidth = (Dimensions.get('window').width - screenHorizontalPadding * 2) / 2;
+const itemWidth = (Dimensions.get('window').width - screenHorizontalPadding * 2) / 2 - 10;
 
 type PresetTime = {
   label: string;
@@ -312,7 +312,7 @@ const ContentType = () => {
                 }}
               >
                 <ExpoImage
-                  style={{ width: 40, aspectRatio: 1 }}
+                  style={{ width: 50, aspectRatio: 1 }}
                   source={require('../../../assets/forApp/photo-video.png')}
                   contentFit='cover'
                   tintColor={'white'}
@@ -373,7 +373,7 @@ const ContentType = () => {
                 }}
               >
                 <ExpoImage
-                  style={{ width: 40, aspectRatio: 1 }}
+                  style={{ width: 50, aspectRatio: 1 }}
                   source={require('../../../assets/forApp/video.png')}
                   contentFit='cover'
                   tintColor={'white'}
@@ -434,7 +434,7 @@ const ContentType = () => {
                 }}
               >
                 <ExpoImage
-                  style={{ width: 40, aspectRatio: 1 }}
+                  style={{ width: 50, aspectRatio: 1 }}
                   source={require('../../../assets/forApp/photo.png')}
                   contentFit='cover'
                   tintColor={'white'}

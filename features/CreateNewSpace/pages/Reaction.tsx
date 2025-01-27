@@ -9,12 +9,16 @@ import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps, CreateNewSpaceStackParams } from '../navigations/CreateNewSpaceStackNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
 
 type ReactionProps = NativeStackScreenProps<CreateNewSpaceStackParams, 'Reaction'>;
 
 const itemWidth = Dimensions.get('window').width / 3.5;
 const reactionContainerWidth = itemWidth * 0.7;
 
+const screenHorizontalPadding = 20;
+
+const selectionItemWidth = Dimensions.get('window').width / 2 - screenHorizontalPadding;
 const Reaction: React.FC<ReactionProps> = ({ route }) => {
   const navigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, onReactionAvailabilityChange, onReactionsChange, setFormData } = useContext(CreateNewSpaceContext);
@@ -253,7 +257,6 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
                     }}
                   >
                     <VectorIcon.II name='thumbs-up-sharp' size={25} color={'white'} />
-                    <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>Add</Text>
                     <View
                       style={{
                         backgroundColor: 'black',
@@ -313,52 +316,145 @@ const Reaction: React.FC<ReactionProps> = ({ route }) => {
           You can set reaction options that can be used for each post.
         </Text>
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onReactionAvailabilityChange(true)}
-          activeOpacity={0.7}
+      <View>
+        <ScrollView
+          horizontal
+          style={{
+            flexDirection: 'row',
+            paddingBottom: 30,
+            paddingVertical: 10,
+          }}
+          contentContainerStyle={{
+            paddingHorizontal: screenHorizontalPadding,
+          }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name='thumbs-up-sharp' color='white' size={20} style={{ marginRight: 20 }} />
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Allowed</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Enjoy giving reactions with each other.</Text>
-            </View>
+          <View style={{ width: selectionItemWidth, paddingRight: 8 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 20,
+                width: '100%',
+                height: 160,
+              }}
+              activeOpacity={0.8}
+              onPress={() => onReactionAvailabilityChange(true)}
+            >
+              <View
+                style={{
+                  height: 85,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: 'rgb(100,100,100)',
+                }}
+              >
+                <VectorIcon.II name='thumbs-up-sharp' color={Colors.white} size={50} />
+              </View>
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Allowed</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Share reactions together</Text>
+              </View>
+            </TouchableOpacity>
+            {formData.isReactionAvailable.value ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            ) : null}
           </View>
-          {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
-          {formData.isReactionAvailable.value ? (
-            <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onReactionAvailabilityChange(false)}
-          activeOpacity={0.7}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ marginRight: 20 }}>
-              <Ionicons name='thumbs-up-sharp' color='white' size={20} />
-              <Foundation
-                name='prohibited'
-                color='white'
-                size={20}
-                style={{ position: 'absolute', top: -10, right: -10 }}
-              />
-            </View>
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Disallowed</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-                Enjoy sharing without worrying about upvotes from others.
-              </Text>
-            </View>
+          <View style={{ width: selectionItemWidth, paddingLeft: 8 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 20,
+                width: '100%',
+                height: 160,
+              }}
+              activeOpacity={0.8}
+              onPress={() => onReactionAvailabilityChange(false)}
+            >
+              <View
+                style={{
+                  height: 85,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: 'rgb(100,100,100)',
+                }}
+              >
+                <View>
+                  <VectorIcon.II name='thumbs-up-sharp' color='white' size={50} />
+                  <VectorIcon.FD
+                    name='prohibited'
+                    color='white'
+                    size={30}
+                    style={{ position: 'absolute', top: -8, right: -8 }}
+                  />
+                </View>
+              </View>
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Disallowed</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Post freely, no likes needed</Text>
+              </View>
+            </TouchableOpacity>
+            {formData.isReactionAvailable.value ? null : (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  right: 0,
+                  backgroundColor: 'black',
+                  width: 35,
+                  height: 35,
+                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    width: 25,
+                    height: 25,
+                    borderRadius: 15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={20} />
+                </View>
+              </View>
+            )}
           </View>
-          {/* <MaterialCommunityIcons name='chevron-right' color='white' size={20} style={{ marginRight: 10 }} /> */}
-          {formData.isReactionAvailable.value ? null : (
-            <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          )}
-        </TouchableOpacity>
+        </ScrollView>
       </View>
+      {formData.isReactionAvailable.value ? (
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 20 }}>
+          Please add space reactions.
+        </Text>
+      ) : null}
       {renderSelectedReactions()}
     </View>
   );
