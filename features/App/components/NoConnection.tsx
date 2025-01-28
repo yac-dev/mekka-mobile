@@ -7,7 +7,7 @@ export const NoConnection = () => {
   return (
     <EmptyView
       icon={<VectorIcon.FT name='wifi-off' size={48} color='white' style={{ marginBottom: 30 }} />}
-      title='Something went wrongwrong🤨'
+      title='Something went wrong🤨'
       subtitle={`Please check your internet connection and reboot the app.${'\n'}If the issue persists, please DM us.`}
       action={
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
