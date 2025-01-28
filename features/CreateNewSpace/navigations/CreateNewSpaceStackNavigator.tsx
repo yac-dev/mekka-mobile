@@ -15,7 +15,7 @@ import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { TemplateSelection, Base, Comment } from '../pages';
 import { ReactionPickerStackNavigator } from './ReactionPickerStackNavigator';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { SpaceVisibilitySelection } from '../pages';
+import { SpaceVisibilitySelection, Following } from '../pages';
 
 export type ReactionPickerStackParams = {
   ReactionPicker: {
@@ -37,6 +37,7 @@ export type CreateNewSpaceStackParams = {
   Reaction: {
     selectedReaction?: ReactionType;
   };
+  Following: undefined;
   Comment: undefined;
   Description: undefined;
   ReactionPickerStackNavigator: NavigatorScreenParams<ReactionPickerStackParams>;
@@ -205,6 +206,30 @@ export const CreateNewSpaceStackNavigator = () => {
           <CreateNewSpaceStack.Screen
             name='Reaction'
             component={Reaction}
+            options={({ navigation }) => ({
+              headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <CreateNewSpaceStack.Screen
+            name='Following'
+            component={Following}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
               headerLeft: () => (

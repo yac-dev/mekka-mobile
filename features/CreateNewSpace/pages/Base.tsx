@@ -265,6 +265,19 @@ export const Base = () => {
               : undefined
           }
         />
+        {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
+          <MenuCell
+            onCellPress={() => createNewSpaceNavigation.navigate('Following')}
+            icon={<VectorIcon.II name='person-add' size={20} color='white' style={{ marginRight: 10 }} />}
+            title='Following'
+            value={formData.isFollowAvailable.value ? 'Allowed' : 'Disallowed'}
+            requirementText={
+              formData.isFollowAvailable.value && !formData.reactions.value.length
+                ? 'Please set at least one option.'
+                : undefined
+            }
+          />
+        ) : null}
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Comment')}
           icon={<VectorIcon.FD name='comments' size={20} color='white' style={{ marginRight: 10 }} />}
