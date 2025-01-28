@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, View, Text } from 'react-native';
 import { CreateNewSpaceStackProps } from '../navigations/CreateNewSpaceStackNavigator';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
@@ -10,8 +10,29 @@ const screenHorizontalPadding = 20;
 const selectionItemWidth = Dimensions.get('window').width / 2 - screenHorizontalPadding;
 
 export const SpaceVisibilitySelection = () => {
-  const navigation = useNavigation<CreateNewSpaceStackProps>();
+  const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const { formData, onIsPubcliChange, onFollowAvailabilityChange } = useContext(CreateNewSpaceContext);
+
+  useEffect(() => {
+    createNewSpaceNavigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => createNewSpaceNavigation.navigate('Base')}
+          disabled={!formData.isPublic.isValidated}
+        >
+          <Text
+            style={{
+              color: !formData.isPublic.isValidated ? 'rgb(100,100,100)' : 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -88,7 +109,7 @@ export const SpaceVisibilitySelection = () => {
                   alignItems: 'center',
                 }}
               >
-                <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+                <VectorIcon.II name='checkmark' size={20} color={'black'} />
               </View>
             </View>
           )}
@@ -144,7 +165,7 @@ export const SpaceVisibilitySelection = () => {
                   alignItems: 'center',
                 }}
               >
-                <VectorIcon.II name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
+                <VectorIcon.II name='checkmark' size={20} color={'black'} />
               </View>
             </View>
           ) : null}
