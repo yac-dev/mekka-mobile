@@ -130,8 +130,7 @@ export const TemplateSelection = () => {
             />
           ) : (
             <View>
-              <VectorIcon.II name='image' size={35} color='white' style={{ marginBottom: 5 }} />
-              <Text style={{ color: 'white', fontSize: 17, textAlign: 'center' }}>Icon</Text>
+              <VectorIcon.II name='image' size={35} color='white' />
             </View>
           )}
           <View

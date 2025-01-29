@@ -11,7 +11,7 @@ const selectionItemWidth = Dimensions.get('window').width / 2 - screenHorizontal
 export const Following = () => {
   const { formData, onFollowAvailabilityChange } = useContext(CreateNewSpaceContext);
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 30 }}>
       <View style={{ paddingLeft: 30, paddingRight: 30, paddingBottom: 20 }}>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Allow "follow" feature?</Text>
       </View>
