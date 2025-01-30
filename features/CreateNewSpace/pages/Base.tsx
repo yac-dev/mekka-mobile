@@ -20,7 +20,15 @@ import { useCreateSpace } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+import {
+  mySpacesAtom,
+  currentSpaceAtom,
+  authAtom,
+  logsTableAtom,
+  currentTagAtom,
+  momentLogsAtom,
+  currentTagsTableBySpaceIdsAtom,
+} from '../../../recoil';
 import { createSpace } from '../../../query';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query/mutationKeys';
@@ -43,9 +51,11 @@ export const convertMinutesToHoursAndMinutes = (minutes: number) => {
 export const Base = () => {
   const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
-  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
+  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
@@ -54,13 +64,28 @@ export const Base = () => {
     mutationFn: (input: CreateSpaceInputType) => createSpace(input),
     onSuccess: (data) => {
       setMySpaces((previous) => [...previous, data.space]);
-      setCurrentSpace(data.space);
+      // no spaces状態で作った後にcurrentSpaceを割り当ててあげる。
+      if (!currentSpace) {
+        setCurrentSpace(data.space);
+      }
       setLogsTable((previous) => {
         return {
           ...previous,
           [data.space._id]: {
             [data.space.tags[0]._id]: 0,
           },
+        };
+      });
+      setMomentLogs((previous) => {
+        return {
+          ...previous,
+          [data.space._id]: 0,
+        };
+      });
+      //　これは作った時点でいいかな。
+      setCurrentTagsTableBySpaceIds(() => {
+        return {
+          [data.space._id]: data.space.tags[0],
         };
       });
       homeStackNavigation.navigate('Home');

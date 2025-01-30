@@ -388,7 +388,7 @@ export const RegionView = () => {
               <View style={{ marginRight: 8 }}>
                 <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
               </View>
-              <VectorIcon.MCI name='chevron-down' size={22} color={Colors.white} />
+              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
