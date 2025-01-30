@@ -62,6 +62,10 @@ export const Base = () => {
   const { mutate: createSpaceMutate, status } = useMutation({
     mutationKey: [mutationKeys.createSpace],
     mutationFn: (input: CreateSpaceInputType) => createSpace(input),
+    onMutate: () => {
+      homeStackNavigation.navigate('Home');
+      showMessage({ type: 'info', message: 'It takes a few seconds to finish processing...', duration: 8000 });
+    },
     onSuccess: (data) => {
       setMySpaces((previous) => [...previous, data.space]);
       // no spaces状態で作った後にcurrentSpaceを割り当ててあげる。
@@ -83,12 +87,12 @@ export const Base = () => {
         };
       });
       //　これは作った時点でいいかな。
-      setCurrentTagsTableBySpaceIds(() => {
+      setCurrentTagsTableBySpaceIds((previous) => {
         return {
+          ...previous,
           [data.space._id]: data.space.tags[0],
         };
       });
-      homeStackNavigation.navigate('Home');
       showMessage({ type: 'success', message: 'Created new space successfully' });
       setTimeout(() => {
         Alert.alert(
@@ -317,6 +321,7 @@ export const Base = () => {
           requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
         />
       </ScrollView>
+      {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
       <LoadingSpinner isVisible={status === 'pending'} message='Creating a space...' />
       {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', fontSize: 11 }}>
         Note: You can update these settings after creating a space.
