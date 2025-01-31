@@ -107,6 +107,7 @@ export const Views: React.FC<{
         onIndexChange={setIndex}
         initialLayout={{ width: Dimensions.get('window').width }}
         animationEnabled={false}
+        swipeEnabled={false}
       />
       <TouchableOpacity
         style={{
