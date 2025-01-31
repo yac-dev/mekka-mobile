@@ -20,7 +20,15 @@ import { useCreateSpace } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import { LoadingSpinner } from '../../../components';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+import {
+  mySpacesAtom,
+  currentSpaceAtom,
+  authAtom,
+  logsTableAtom,
+  currentTagAtom,
+  momentLogsAtom,
+  currentTagsTableBySpaceIdsAtom,
+} from '../../../recoil';
 import { createSpace } from '../../../query';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query/mutationKeys';
@@ -43,18 +51,27 @@ export const convertMinutesToHoursAndMinutes = (minutes: number) => {
 export const Base = () => {
   const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
-  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
+  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const { formData, onNameChange, onIconChange, flashMessageRef } = useContext(CreateNewSpaceContext);
   const { mutate: createSpaceMutate, status } = useMutation({
     mutationKey: [mutationKeys.createSpace],
     mutationFn: (input: CreateSpaceInputType) => createSpace(input),
+    onMutate: () => {
+      homeStackNavigation.navigate('Home');
+      showMessage({ type: 'info', message: 'It takes a few seconds to finish processing...', duration: 8000 });
+    },
     onSuccess: (data) => {
       setMySpaces((previous) => [...previous, data.space]);
-      setCurrentSpace(data.space);
+      // no spaces状態で作った後にcurrentSpaceを割り当ててあげる。
+      if (!currentSpace) {
+        setCurrentSpace(data.space);
+      }
       setLogsTable((previous) => {
         return {
           ...previous,
@@ -63,7 +80,19 @@ export const Base = () => {
           },
         };
       });
-      homeStackNavigation.navigate('Home');
+      setMomentLogs((previous) => {
+        return {
+          ...previous,
+          [data.space._id]: 0,
+        };
+      });
+      //　これは作った時点でいいかな。
+      setCurrentTagsTableBySpaceIds((previous) => {
+        return {
+          ...previous,
+          [data.space._id]: data.space.tags[0],
+        };
+      });
       showMessage({ type: 'success', message: 'Created new space successfully' });
       setTimeout(() => {
         Alert.alert(
@@ -128,43 +157,12 @@ export const Base = () => {
               fontWeight: 'bold',
             }}
           >
-            Create
+            Done
           </Text>
         </TouchableOpacity>
       ),
     });
   }, [formData]);
-
-  console.log('name validation', formData.name.isValidated);
-  console.log('icon validation', formData.icon.isValidated);
-  console.log('disappearAfter validation', formData.disappearAfter.isValidated);
-  console.log('isPublic validation', formData.isPublic.isValidated);
-  console.log('isReactionAvailable validation', formData.isReactionAvailable.isValidated);
-  console.log('isCommentAvailable validation', formData.isCommentAvailable.isValidated);
-  console.log('description validation', formData.description.isValidated);
-  console.log('contentType validation', formData.contentType.isValidated);
-  console.log('reactions validation', formData.reactions.isValidated);
-
-  // reaction のやつがダメみたいね。。。
-  // useEffect(() => {
-  //   if (status === 'success') {
-  //     setMySpaces((previous) => [...previous, apiResult.data.space]);
-  //     if (!mySpaces?.length) {
-  //       setCurrentSpace(apiResult.data?.space);
-  //       setCurrentTag(apiResult.data?.space.tags[0]);
-  //       setLogsTable((previous) => {
-  //         return {
-  //           ...previous,
-  //           [apiResult.data?.space._id]: {
-  //             [apiResult.data?.space.tags[0]._id]: 0,
-  //           },
-  //         };
-  //       });
-  //     }
-  //     homeStackNavigation.navigate('Home');
-  //     showMessage({ message: 'Created new space successfully.', type: 'success' });
-  //   }
-  // }, [status]);
 
   const onCreateSpace = () => {
     const input = { ...formData, user: { _id: auth._id, name: auth.name, avatar: auth.avatar } };
@@ -182,6 +180,20 @@ export const Base = () => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: 20,
+            marginBottom: 10,
+          }}
+        >
+          It's ready to start
+        </Text>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 20 }}>
+          If you want to customize your space rules, tap any section to change according to your preference.
+        </Text>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
         <TouchableOpacity
           activeOpacity={0.7}
@@ -198,44 +210,11 @@ export const Base = () => {
           }}
           onPress={() => onIconChange()}
         >
-          {formData.icon.value ? (
-            <ExpoImage
-              style={{ width: 110, height: 110, borderRadius: 110 / 2, alignSelf: 'center' }}
-              source={{ uri: formData.icon.value }}
-              contentFit='cover'
-            />
-          ) : (
-            <View>
-              <VectorIcon.II name='image' size={35} color='white' style={{ marginBottom: 5 }} />
-              <Text style={{ color: 'white', fontSize: 17, textAlign: 'center' }}>Icon</Text>
-            </View>
-          )}
-          <View
-            style={{
-              backgroundColor: 'black',
-              width: 38,
-              height: 38,
-              borderRadius: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 28,
-                height: 28,
-                borderRadius: 20,
-              }}
-            >
-              <VectorIcon.II name='add' size={20} color={'black'} />
-            </View>
-          </View>
+          <ExpoImage
+            style={{ width: 110, height: 110, borderRadius: 110 / 2, alignSelf: 'center' }}
+            source={{ uri: formData.icon.value }}
+            contentFit='cover'
+          />
         </TouchableOpacity>
         <View
           style={{
@@ -315,6 +294,19 @@ export const Base = () => {
               : undefined
           }
         />
+        {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
+          <MenuCell
+            onCellPress={() => createNewSpaceNavigation.navigate('Following')}
+            icon={<VectorIcon.II name='person-add' size={20} color='white' style={{ marginRight: 10 }} />}
+            title='Following'
+            value={formData.isFollowAvailable.value ? 'Allowed' : 'Disallowed'}
+            requirementText={
+              formData.isFollowAvailable.value && !formData.reactions.value.length
+                ? 'Please set at least one option.'
+                : undefined
+            }
+          />
+        ) : null}
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Comment')}
           icon={<VectorIcon.FD name='comments' size={20} color='white' style={{ marginRight: 10 }} />}
@@ -329,6 +321,7 @@ export const Base = () => {
           requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
         />
       </ScrollView>
+      {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
       <LoadingSpinner isVisible={status === 'pending'} message='Creating a space...' />
       {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', fontSize: 11 }}>
         Note: You can update these settings after creating a space.

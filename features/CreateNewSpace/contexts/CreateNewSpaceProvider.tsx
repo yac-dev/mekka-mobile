@@ -13,8 +13,8 @@ export const initialFormData: FormDataType = {
     isValidated: false,
   },
   contentType: {
-    value: '',
-    isValidated: false,
+    value: 'photoAndVideo',
+    isValidated: true,
   },
   isPublic: {
     value: void 0,
@@ -37,16 +37,21 @@ export const initialFormData: FormDataType = {
     isValidated: true,
   },
   disappearAfter: {
-    value: 1439, // 5 分から 1399 分(23 hours 59 min), 720 minutes(12 hours) defautlで23時間59分
+    value: 1440, // 5 分から 1399 分(23 hours 59 min), 720 minutes(12 hours) defautlで23時間59分
     isValidated: true,
   },
   reactions: {
-    value: [],
+    value: [
+      { caption: 'Nice', emoji: '😃', sticker: undefined, type: 'emoji' },
+      { caption: 'Beautiful', emoji: '😎', sticker: undefined, type: 'emoji' },
+      { caption: 'OMG', emoji: '😱', sticker: undefined, type: 'emoji' },
+      { caption: 'LMAO', emoji: '😂', sticker: undefined, type: 'emoji' },
+    ],
     isValidated: true,
   },
   description: {
-    value: '',
-    isValidated: false,
+    value: 'No description...',
+    isValidated: true,
   },
 };
 

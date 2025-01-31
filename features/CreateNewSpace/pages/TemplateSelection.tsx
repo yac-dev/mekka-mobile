@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
@@ -17,9 +17,39 @@ import {
 
 export const TemplateSelection = () => {
   const createNewSpaceStackNavigation = useNavigation<CreateNewSpaceStackProps>();
-  const { setFormData, formData } = useContext(CreateNewSpaceContext);
+  const { setFormData, formData, onIconChange, onNameChange } = useContext(CreateNewSpaceContext);
+  const createNewSpaceNavigation = useNavigation<CreateNewSpaceStackProps>();
 
   // console.log('reaction', formData.reactions.value);
+
+  useEffect(() => {
+    createNewSpaceNavigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => createNewSpaceStackNavigation.navigate('SpaceVisibilitySelection')}
+          disabled={!formData.name.isValidated || !formData.icon.isValidated}
+        >
+          <Text
+            style={{
+              color: !formData.name.isValidated || !formData.icon.isValidated ? 'rgb(100,100,100)' : 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [formData]);
+
+  const renderText = () => {
+    return (
+      <Text style={{ color: formData.name.value.length <= 40 ? 'rgb(170,170,170)' : 'red' }}>
+        {formData.name.value.length}
+      </Text>
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -32,7 +62,7 @@ export const TemplateSelection = () => {
             paddingBottom: 30,
           }}
         >
-          <View style={{ marginBottom: 40 }}>
+          <View>
             <Text
               style={{
                 color: 'white',
@@ -50,7 +80,13 @@ export const TemplateSelection = () => {
             </Text>
           </View>
         </View>
+
         <View>
+          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 30 }}>
+            First of all, please set the space icon and name.
+          </Text>
+        </View>
+        {/* <View>
           <TouchableOpacity
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
             onPress={() => {
@@ -70,8 +106,91 @@ export const TemplateSelection = () => {
             </View>
             <VectorIcon.MCI name='chevron-right' size={20} color='white' />
           </TouchableOpacity>
+        </View> */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            alignSelf: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 110,
+            height: 110,
+            padding: 2,
+            borderRadius: 110 / 2,
+            marginBottom: 20,
+          }}
+          onPress={() => onIconChange()}
+        >
+          {formData.icon.value ? (
+            <ExpoImage
+              style={{ width: 110, height: 110, borderRadius: 110 / 2, alignSelf: 'center' }}
+              source={{ uri: formData.icon.value }}
+              contentFit='cover'
+            />
+          ) : (
+            <View>
+              <VectorIcon.II name='image' size={35} color='white' />
+            </View>
+          )}
+          <View
+            style={{
+              backgroundColor: 'black',
+              width: 38,
+              height: 38,
+              borderRadius: 30,
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 28,
+                height: 28,
+                borderRadius: 20,
+              }}
+            >
+              <VectorIcon.II name='add' size={20} color={'black'} />
+            </View>
+          </View>
+        </TouchableOpacity>
+        <View style={{ paddingHorizontal: 15 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 30,
+              borderBottomWidth: 0.3,
+              borderBottomColor: 'rgb(88, 88, 88)',
+            }}
+          >
+            <TextInput
+              style={{
+                fontSize: 18,
+                color: 'white',
+                flex: 1,
+                padding: 10,
+              }}
+              placeholder='Name'
+              placeholderTextColor={'rgb(170,170,170)'}
+              autoCapitalize='none'
+              value={formData.name.value}
+              onChangeText={(text) => onNameChange(text)}
+            />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {renderText()}
+              <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
+            </View>
+          </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+
+        {/* <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingVertical: 20 }}>
           <View style={{ height: 0.5, width: 80, backgroundColor: 'rgb(170,170,170)' }}></View>
           <Text style={{ color: 'rgb(170,170,170)', fontSize: 17, paddingHorizontal: 12 }}>
             Or start from a template
@@ -157,7 +276,7 @@ export const TemplateSelection = () => {
             </View>
             <VectorIcon.MCI name='chevron-right' size={20} color='white' />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );

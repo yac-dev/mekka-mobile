@@ -87,6 +87,10 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
 
   // console.log(JSON.stringify(currentTagsTableBySpaceIds, null, 2));
 
+  useEffect(() => {
+    setRoutes(mySpaces.map((space, index) => ({ ...space, key: index })));
+  }, [mySpaces]);
+
   const scrollToCenter = () => {
     if (!currentTagsTableBySpaceIds) return;
     const currentIndex = currentSpace.tags.findIndex(

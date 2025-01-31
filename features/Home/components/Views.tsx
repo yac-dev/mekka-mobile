@@ -62,7 +62,7 @@ export const Views: React.FC<{
   };
 
   const onRollsPress = () => {
-    Alert.alert('🛠️ Under Construction', 'Rolls feature will be available in the next update.', [
+    Alert.alert('🛠️ Under Construction', 'Rolls feature will be available in the next major update.', [
       { text: 'Got it', onPress: () => null },
     ]);
   };
@@ -107,6 +107,7 @@ export const Views: React.FC<{
         onIndexChange={setIndex}
         initialLayout={{ width: Dimensions.get('window').width }}
         animationEnabled={false}
+        swipeEnabled={false}
       />
       <TouchableOpacity
         style={{

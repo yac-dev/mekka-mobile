@@ -217,17 +217,6 @@ const Moment = () => {
           }
         />
       </View>
-      <AppBottomSheet.Gorhom
-        ref={customTimeBottomSheetRef}
-        snapPoints={['65%']}
-        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
-        onCloseButtonClose={closeCustomTimeBottomSheet}
-      >
-        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-          {renderHourPickerItems()}
-          {selectedHour === '0' ? renderMinPickerItemsFromFiveToFiftyNine() : renderMinPickerItems()}
-        </View>
-      </AppBottomSheet.Gorhom>
       <Text
         style={{
           color: 'rgb(170,170,170)',
@@ -242,6 +231,17 @@ const Moment = () => {
       >
         🤔 What is Moment by the way?
       </Text>
+      <AppBottomSheet.Gorhom
+        ref={customTimeBottomSheetRef}
+        snapPoints={['65%']}
+        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
+        onCloseButtonClose={closeCustomTimeBottomSheet}
+      >
+        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+          {renderHourPickerItems()}
+          {selectedHour === '0' ? renderMinPickerItemsFromFiveToFiftyNine() : renderMinPickerItems()}
+        </View>
+      </AppBottomSheet.Gorhom>
       <Modal
         animationType='slide'
         transparent={true}
