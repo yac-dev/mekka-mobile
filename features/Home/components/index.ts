@@ -12,3 +12,4 @@ export * from './AddNewPostMenu';
 export * from './Views';
 export * from './RegionView';
 export * from './ViewMenuFAB';
+export * from './Moments';

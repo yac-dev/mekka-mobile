@@ -39,7 +39,8 @@ import { BlurView, VibrancyView } from '@react-native-community/blur';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Grid } from '../components/Grid';
 import { useQueryClient } from '@tanstack/react-query';
-
+import { Moments } from '../../Home/components/Moments';
+import { MomentSkelton } from '../../../components/Skelton';
 // id毎でqueryをcacheしたいのよね。
 // type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
@@ -216,7 +217,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           paddingHorizontal: 12,
         }}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center' }}
             onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
@@ -230,38 +231,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           {/* <VectorIcon.II name='search' size={22} color={Colors.white} /> */}
         </View>
       </View>
-      <View>
-        <ScrollView
-          horizontal
-          style={{ flexDirection: 'row', marginBottom: 10 }}
-          contentContainerStyle={{ paddingLeft: 12, paddingRight: 12 }}
-          showsHorizontalScrollIndicator={false}
-        >
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-          <View
-            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
-          />
-        </ScrollView>
-      </View>
-      {/* </LinearGradient> */}
-      {/* routesはtagsか。 */}
+      <Moments />
       <TabView
         lazy
         swipeEnabled={false}

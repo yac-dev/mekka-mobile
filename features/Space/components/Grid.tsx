@@ -121,7 +121,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
-        numColumns={3}
+        numColumns={4}
         data={data?.pages.flatMap((page) => page.posts)}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
@@ -135,7 +135,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         onEndReachedThreshold={0.7}
         contentContainerStyle={{
           paddingBottom: data?.pages.flatMap((page) => page.posts).length >= 12 ? 95 : 165,
-          // paddingTop: 45,
+          // paddingTop: 10,
         }}
       />
     </View>

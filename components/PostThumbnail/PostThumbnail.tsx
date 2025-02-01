@@ -10,7 +10,7 @@ import { VideoPlayer } from '../VideoPlayer';
 import { VectorIcon } from '../../Icons';
 import { Times } from '../../utils';
 
-const sideLength = Dimensions.get('screen').width / 3;
+const sideLength = Dimensions.get('screen').width / 4;
 
 const calculateLeftTime = (disappearAt: string) => {
   const now: Date = new Date();
