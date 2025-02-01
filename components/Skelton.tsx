@@ -48,6 +48,7 @@ export const MomentSkelton = () => {
         style={{
           opacity: opacity.current,
           backgroundColor: 'gray',
+          borderRadius: 14,
           width: '100%',
           height: '100%',
         }}

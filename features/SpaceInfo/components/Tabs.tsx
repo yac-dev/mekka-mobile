@@ -36,11 +36,14 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
                 style={{
                   alignItems: 'center',
                   paddingHorizontal: 15,
-                  paddingBottom: 10,
+                  paddingVertical: 10,
+                  backgroundColor: isFocused ? 'rgb(50,50,50)' : 'transparent',
+                  borderRadius: 20,
+                  marginHorizontal: 5,
                 }}
                 onPress={onPress}
               >
-                <Text style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 17, fontWeight: 'bold' }}>
+                <Text style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 17, fontWeight: 'bold' }}>
                   {label}
                 </Text>
               </TouchableOpacity>
@@ -55,6 +58,7 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
     <View style={{ flex: 1, marginTop: 15 }}>
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
+        // tabBar={() => null}
         screenOptions={({ route }) => ({
           lazy: true,
           swipeEnabled: false,
