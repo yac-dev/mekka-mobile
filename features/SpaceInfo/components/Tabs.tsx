@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Feature, Members } from '.';
+import { Activities } from '../pages';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -58,14 +59,13 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
     <View style={{ flex: 1, marginTop: 15 }}>
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
-        // tabBar={() => null}
         screenOptions={({ route }) => ({
           lazy: true,
           swipeEnabled: false,
         })}
       >
-        <Tab.Screen name={'About'} component={Feature} />
-        <Tab.Screen name={'Members'} component={Members} />
+        <Tab.Screen name={'Features'} component={Feature} />
+        <Tab.Screen name={'Activities'} component={Activities} />
       </Tab.Navigator>
     </View>
   );

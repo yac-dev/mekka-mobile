@@ -46,7 +46,7 @@ export const SpaceInfo = () => {
                 <Text style={{ color: 'rgb(150,150,150)', fontSize: 16 }}>1k</Text>
               </View>
             </TouchableOpacity>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={{
                 padding: 10,
                 borderRadius: 10,
@@ -57,8 +57,8 @@ export const SpaceInfo = () => {
               activeOpacity={0.7}
             >
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>Members</Text>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 15 }}>-</Text>
-            </TouchableOpacity> */}
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 15 }}>2k</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={{
                 padding: 10,
@@ -76,7 +76,7 @@ export const SpaceInfo = () => {
           style={{
             color: 'white',
             fontWeight: 'bold',
-            fontSize: 25,
+            fontSize: 27,
             marginBottom: 5,
           }}
         >
@@ -99,31 +99,18 @@ export const SpaceInfo = () => {
           {currentSpace.description}
         </Text>
       </View>
-      <Text
-        style={{
-          color: 'rgb(150, 150, 150)',
-          fontSize: 12,
-          marginRight: 10,
-          textAlign: 'right',
-          paddingRight: 20,
-        }}
-      >
-        {currentSpace.createdBy.name} created at {formatDate(currentSpace.createdAt)}
-      </Text>
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
-          <Text
-            style={{
-              color: 'rgb(150, 150, 150)',
-              fontSize: 12,
-              marginRight: 10,
-            }}
-          >
-            {currentSpace.createdBy.name} created at {formatDate(currentSpace.createdAt)}
-          </Text>
-        </View>
-      </View> */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+        <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
+        <Text
+          style={{
+            color: 'rgb(150, 150, 150)',
+            fontSize: 12,
+            marginRight: 10,
+          }}
+        >
+          {currentSpace.createdBy.name} created at {formatDate(currentSpace.createdAt)}
+        </Text>
+      </View>
 
       <Tabs />
     </View>

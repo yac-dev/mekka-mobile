@@ -281,6 +281,26 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
+          <HomeStack.Screen
+            name='SpaceInfoStackNavigator'
+            component={SpaceInfoStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
+                </TouchableOpacity>
+              ),
+              headerTitle: 'SPInfo',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
         </HomeStack.Group>
         <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
           <HomeStack.Screen
@@ -294,26 +314,6 @@ export const HomeStackNavigator: React.FC = (props) => {
                 </TouchableOpacity>
               ),
               headerTitle: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-            })}
-          />
-          <HomeStack.Screen
-            name='SpaceInfoStackNavigator'
-            component={SpaceInfoStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                  <Ionicons name='close-circle-sharp' size={30} color={'white'} />
-                </TouchableOpacity>
-              ),
-              headerTitle: 'SPInfo',
               headerStyle: {
                 backgroundColor: 'black',
               },
