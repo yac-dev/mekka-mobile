@@ -210,28 +210,31 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
       > */}
-      <View
-        style={{
-          flexDirection: 'column',
-          paddingTop: 10,
-          paddingHorizontal: 12,
-        }}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-          <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center' }}
-            onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-            activeOpacity={0.7}
+      <View style={{ paddingTop: 10, paddingBottom: 10 }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            paddingHorizontal: 12,
+          }}
+        >
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}
           >
-            <View style={{ marginRight: 8 }}>
-              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
-            </View>
-            <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
-          </TouchableOpacity>
-          {/* <VectorIcon.II name='search' size={22} color={Colors.white} /> */}
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+              activeOpacity={0.7}
+            >
+              <View style={{ marginRight: 8 }}>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+              </View>
+              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+            </TouchableOpacity>
+            {/* <VectorIcon.II name='search' size={22} color={Colors.white} /> */}
+          </View>
         </View>
+        <Moments />
       </View>
-      <Moments />
       <TabView
         lazy
         swipeEnabled={false}

@@ -361,11 +361,10 @@ export const RegionView = () => {
         />
       </View>
 
-      <View style={{ backgroundColor: 'black' }}>
+      <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
         <View
           style={{
             flexDirection: 'column',
-            paddingTop: 10,
             paddingHorizontal: 12,
           }}
         >
