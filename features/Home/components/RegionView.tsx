@@ -32,7 +32,7 @@ import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
 import { MapPostThumbnail } from '../../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Moments } from './Moments';
-
+import * as Haptics from 'expo-haptics';
 const windowWidth = Dimensions.get('window').width;
 
 // mapからgridに切り替えると、currentTagが切り替わってない感じ。。。多分何かおかしい。
@@ -199,7 +199,7 @@ export const RegionView = () => {
       const offset =
         itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
-        offset: Math.max(0, offset) + 20,
+        offset: Math.max(0, offset),
         animated: true,
       });
     }
@@ -207,6 +207,7 @@ export const RegionView = () => {
 
   const onTabPress = (tab) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
       return {
         ...prev,
@@ -233,7 +234,7 @@ export const RegionView = () => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
+              backgroundColor: isFocused ? 'rgb(50,50,50)' : 'black',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {
@@ -251,9 +252,9 @@ export const RegionView = () => {
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={'white'}
+              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
             />
-            <Text numberOfLines={1} style={{ color: 'white', fontSize: 13 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -432,7 +433,6 @@ export const RegionView = () => {
           data={currentSpace?.tags}
           renderItem={renderTab}
           keyExtractor={(item, index) => `${item._id}-${index}`}
-          contentContainerStyle={{ paddingLeft: 12 }}
         />
       </View>
     </SafeAreaView>

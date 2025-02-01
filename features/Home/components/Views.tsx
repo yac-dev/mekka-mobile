@@ -171,7 +171,7 @@ export const Views: React.FC<{
         activeOpacity={0.7}
         onPress={() => {
           openAddNewPostMenuBottomSheet(0);
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
         {/* <View style={{ width: 30, aspectRatio: 1 }}>

@@ -75,7 +75,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
   }, [currentSpace.tags.length]);
 
   const onTabPress = (tab, index) => {
-    // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
       return {
         ...prev,
