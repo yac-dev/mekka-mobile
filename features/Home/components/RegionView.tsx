@@ -31,6 +31,7 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
 import { MapPostThumbnail } from '../../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Moments } from './Moments';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -360,6 +361,30 @@ export const RegionView = () => {
         />
       </View>
 
+      <View style={{ backgroundColor: 'black' }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            paddingTop: 10,
+            paddingHorizontal: 12,
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}
+              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+              activeOpacity={0.7}
+            >
+              <View style={{ marginRight: 8 }}>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+              </View>
+              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Moments />
+      </View>
+      {/* defaultの位置はnew yorkでいい。fetchが */}
       <Mapbox.MapView
         ref={mapRef}
         style={{ flex: 1 }}
@@ -372,27 +397,6 @@ export const RegionView = () => {
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        <View
-          style={{
-            flexDirection: 'column',
-            paddingTop: 10,
-            paddingHorizontal: 12,
-          }}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
-              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-              activeOpacity={0.7}
-            >
-              <View style={{ marginRight: 8 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
-              </View>
-              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        {/* defaultの位置はnew yorkでいい。fetchが */}
         <Camera
           defaultSettings={{
             centerCoordinate: [-122.4324, 37.78825],

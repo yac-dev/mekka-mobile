@@ -156,7 +156,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
+              backgroundColor: isFocused ? 'rgb(50,50,50)' : 'black',
               borderRadius: 130,
               ...Platform.select({
                 ios: {
@@ -174,7 +174,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={'white'}
+              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
             />
             <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
               {item.name}

@@ -87,7 +87,7 @@ export const Moments = () => {
   }
 
   return (
-    <View>
+    <View style={{ paddingHorizontal: 12 }}>
       {data?.posts.length ? (
         <FlashList
           horizontal
@@ -97,7 +97,7 @@ export const Moments = () => {
           removeClippedSubviews
           estimatedItemSize={ItemWidth}
           onEndReachedThreshold={0}
-          contentContainerStyle={{ paddingLeft: 12, paddingRight: 12, paddingVertical: 5 }}
+          contentContainerStyle={{}}
           ListHeaderComponent={
             <View
               style={{
