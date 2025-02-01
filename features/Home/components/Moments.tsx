@@ -120,30 +120,7 @@ export const Moments = () => {
           }
           // contentContainerStyle={{ paddingBottom: 30 }}
         />
-      ) : (
-        <View style={{ alignItems: 'center', alignSelf: 'center' }}>
-          <Text
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              marginTop: 50,
-              marginBottom: 20,
-              fontWeight: 'bold',
-              fontSize: 23,
-            }}
-          >
-            No moments now...
-          </Text>
-          <Text style={{ color: 'white', textAlign: 'center' }}>
-            Every moment posts in {currentSpace.name}
-            {'\n'}will disappear in{' '}
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              {convertMinutesToHoursAndMinutes(currentSpace.disappearAfter)}
-            </Text>
-            .
-          </Text>
-        </View>
-      )}
+      ) : null}
     </View>
   );
 };

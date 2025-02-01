@@ -156,7 +156,7 @@ export const GridView: React.FC<IGridView> = ({ space }) => {
         />
         <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>
           No posts tagged by{'\n'}
-          {currentTagsTableBySpaceIds[space._id].name}...
+          {currentTagsTableBySpaceIds[space._id].name}
         </Text>
       </View>
     );

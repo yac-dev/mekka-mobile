@@ -112,7 +112,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         />
         <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>
           No posts tagged by{'\n'}
-          {tag.name}...
+          {tag.name}
         </Text>
       </View>
     );

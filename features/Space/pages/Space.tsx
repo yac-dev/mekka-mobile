@@ -104,6 +104,16 @@ export const Space: React.FC<ISpace> = ({ space }) => {
     });
   };
 
+  const onChangeTab = (index: number) => {
+    setIndex(index);
+    setCurrentTagsTableBySpaceIds((prev) => {
+      return {
+        ...prev,
+        [currentSpace._id]: currentSpace.tags[index],
+      };
+    });
+  };
+
   const scrollToCenter = () => {
     // const currentIndex = currentSpace.tags.findIndex(
     //   (tag) => tag._id === currentTagsTableBySpaceIds[currentSpace._id]._id
@@ -244,8 +254,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         renderScene={renderScene}
         navigationState={{ index, routes }}
         onIndexChange={(index) => {
-          console.log(index);
-          setIndex(index);
+          onChangeTab(index);
         }}
       />
       <View

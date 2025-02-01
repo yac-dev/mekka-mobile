@@ -91,7 +91,12 @@ export const Views: React.FC<{
           />
         );
       case 'RegionView':
-        return <RegionView />;
+        return (
+          <RegionView
+            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+          />
+        );
       default:
         return null;
     }

@@ -29,14 +29,20 @@ import { HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
 import LinearGradient from 'react-native-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
-import { MapPostThumbnail } from '../../../components';
+import { AppButton, MapPostThumbnail } from '../../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Moments } from './Moments';
 import * as Haptics from 'expo-haptics';
+
 const windowWidth = Dimensions.get('window').width;
 
+type RegionViewProps = {
+  openAuthMenuBottomSheet: (index: number) => void;
+  openAddNewSpaceMenuBottomSheet: (index: number) => void;
+};
+
 // mapからgridに切り替えると、currentTagが切り替わってない感じ。。。多分何かおかしい。
-export const RegionView = () => {
+export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet, openAddNewSpaceMenuBottomSheet }) => {
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -325,8 +331,7 @@ export const RegionView = () => {
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  // openAddNewSpaceMenuBottomSheet(0);
-                  console.log('home');
+                  openAddNewSpaceMenuBottomSheet(0);
                 }}
               >
                 <VectorIcon.II name='home' color={Colors.white} size={18} />
@@ -360,6 +365,13 @@ export const RegionView = () => {
             </View>
           }
         />
+        <AppButton.Icon
+          onButtonPress={() => openAuthMenuBottomSheet(0)}
+          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='account' size={20} color={Colors.white} />
+        </AppButton.Icon>
       </View>
 
       <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
