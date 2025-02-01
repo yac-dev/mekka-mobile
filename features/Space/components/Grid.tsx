@@ -8,6 +8,7 @@ import {
   LayoutChangeEvent,
   Dimensions,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
@@ -134,7 +135,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         onEndReachedThreshold={0.7}
         contentContainerStyle={{
           paddingBottom: data?.pages.flatMap((page) => page.posts).length >= 12 ? 95 : 165,
-          paddingTop: 83,
+          // paddingTop: 45,
         }}
       />
     </View>

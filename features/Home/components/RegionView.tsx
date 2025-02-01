@@ -392,17 +392,6 @@ export const RegionView = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ref={scrollViewRef}
-            data={currentSpace?.tags}
-            renderItem={renderTab}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 12 }}
-          />
-        </View>
         {/* defaultの位置はnew yorkでいい。fetchが */}
         <Camera
           defaultSettings={{
@@ -419,6 +408,30 @@ export const RegionView = () => {
           </View>
         )}
       </Mapbox.MapView>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          backgroundColor: 'black',
+          paddingHorizontal: 10,
+          paddingVertical: 8,
+          borderTopWidth: 0.3,
+          borderTopColor: 'rgb(100,100,100)',
+        }}
+      >
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ref={scrollViewRef}
+          data={currentSpace?.tags}
+          renderItem={renderTab}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
+          contentContainerStyle={{ paddingLeft: 12 }}
+        />
+      </View>
     </SafeAreaView>
   );
 };

@@ -112,7 +112,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
       const offset =
         itemWidths.slice(0, index).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
-        offset: Math.max(0, offset) + 20,
+        offset: Math.max(0, offset),
         animated: true,
       });
     }
@@ -155,7 +155,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
               borderRadius: 130,
               ...Platform.select({
                 ios: {
@@ -175,7 +175,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               source={{ uri: item.icon?.url }}
               tintColor={'white'}
             />
-            <Text numberOfLines={1} style={{ color: 'white', fontSize: 13 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -199,7 +199,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <LinearGradient
+      {/* <LinearGradient
         style={{
           zIndex: 1000,
           position: 'absolute',
@@ -208,39 +208,59 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           right: 0,
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
+      > */}
+      <View
+        style={{
+          flexDirection: 'column',
+          paddingTop: 10,
+          paddingHorizontal: 12,
+        }}
       >
-        <View
-          style={{
-            flexDirection: 'column',
-            paddingTop: 10,
-            paddingHorizontal: 12,
-          }}
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+            activeOpacity={0.7}
+          >
+            <View style={{ marginRight: 8 }}>
+              <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+            </View>
+            <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+          </TouchableOpacity>
+          {/* <VectorIcon.II name='search' size={22} color={Colors.white} /> */}
+        </View>
+      </View>
+      <View>
+        <ScrollView
+          horizontal
+          style={{ flexDirection: 'row', marginBottom: 10 }}
+          contentContainerStyle={{ paddingLeft: 12, paddingRight: 12 }}
+          showsHorizontalScrollIndicator={false}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
-              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-              activeOpacity={0.7}
-            >
-              <View style={{ marginRight: 8 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
-              </View>
-              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ref={scrollViewRef}
-            data={currentSpace?.tags}
-            renderItem={renderTab}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 12 }}
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
           />
-        </View>
-      </LinearGradient>
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
+          />
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
+          />
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
+          />
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
+          />
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
+          />
+          <View
+            style={{ width: 52, height: 52, backgroundColor: 'rgb(70,70,70)', borderRadius: 15, marginRight: 10 }}
+          />
+        </ScrollView>
+      </View>
+      {/* </LinearGradient> */}
       {/* routesはtagsか。 */}
       <TabView
         lazy
@@ -255,6 +275,30 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           setIndex(index);
         }}
       />
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          backgroundColor: 'black',
+          paddingHorizontal: 10,
+          paddingVertical: 8,
+          borderTopWidth: 0.3,
+          borderTopColor: 'rgb(100,100,100)',
+        }}
+      >
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ref={scrollViewRef}
+          data={currentSpace?.tags}
+          renderItem={renderTab}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
+          // contentContainerStyle={{ paddingLeft: 12 }}
+        />
+      </View>
       {/* <GridView space={currentSpace} /> */}
     </View>
   );
