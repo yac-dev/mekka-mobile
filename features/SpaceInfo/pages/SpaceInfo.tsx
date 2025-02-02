@@ -6,9 +6,12 @@ import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 import { VectorIcon } from '../../../Icons';
 import { urls } from '../../../settings/urls';
+import { useNavigation } from '@react-navigation/native';
+import { SpaceInfoStackNavigatorProps } from '../navigations/SpaceInfoStackNavigator';
 
 export const SpaceInfo = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const spaceInfoStackNavigation = useNavigation<SpaceInfoStackNavigatorProps>();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -55,6 +58,7 @@ export const SpaceInfo = () => {
                 // backgroundColor: 'rgb(50, 50, 50)',
               }}
               activeOpacity={0.7}
+              onPress={() => spaceInfoStackNavigation.navigate('Members')}
             >
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>Members</Text>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 15 }}>2k</Text>
@@ -72,16 +76,18 @@ export const SpaceInfo = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <Text
-          style={{
-            color: 'white',
-            fontWeight: 'bold',
-            fontSize: 27,
-            marginBottom: 5,
-          }}
-        >
-          {currentSpace.name}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5 }}>
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 27,
+              marginRight: 10,
+            }}
+          >
+            {currentSpace.name}
+          </Text>
+        </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text
             style={{
@@ -99,7 +105,7 @@ export const SpaceInfo = () => {
           {currentSpace.description}
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+      {/* <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
         <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
         <Text
           style={{
@@ -110,7 +116,7 @@ export const SpaceInfo = () => {
         >
           {currentSpace.createdBy.name} created at {formatDate(currentSpace.createdAt)}
         </Text>
-      </View>
+      </View> */}
 
       <Tabs />
     </View>

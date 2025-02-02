@@ -98,18 +98,6 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
     });
   };
 
-  // useEffect(() => {
-  //   getPostsByTagIdAndRegion({
-  //     tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
-  //     region: {
-  //       latitude: 37.78825,
-  //       longitude: -122.4324,
-  //       latitudeDelta: 100.0922,
-  //       longitudeDelta: 100.0421,
-  //     },
-  //   });
-  // }, [currentTagsTableBySpaceIds, currentSpace, currentRegion]);
-
   useEffect(() => {
     scrollToCenter();
   }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
@@ -240,7 +228,7 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? 'rgb(50,50,50)' : 'black',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {

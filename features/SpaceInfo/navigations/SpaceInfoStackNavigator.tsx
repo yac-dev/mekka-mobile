@@ -8,9 +8,11 @@ import { TouchableOpacity, Text, View, Share } from 'react-native';
 import { urls } from '../../../settings/urls';
 import { currentSpaceAtom } from '../../../recoil/atoms/currentSpaceAtom';
 import { useRecoilState } from 'recoil';
+import { Members } from '../components/Members';
 
 type SpaceInfoStackParams = {
   SpaceInfo: undefined;
+  Members: undefined;
 };
 export type SpaceInfoStackNavigatorProps = NativeStackNavigationProp<SpaceInfoStackParams>;
 const SpaceInfoStack = createNativeStackNavigator();
@@ -61,6 +63,30 @@ export const SpaceInfoStackNavigator = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             </View>
+          ),
+          headerShown: true,
+          headerTitle: '',
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            color: Colors.white,
+          },
+        })}
+      />
+      <SpaceInfoStack.Screen
+        name='Members'
+        component={Members}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+            </AppButton.Icon>
           ),
           headerShown: true,
           headerTitle: '',

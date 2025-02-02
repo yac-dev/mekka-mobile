@@ -166,7 +166,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? 'rgb(50,50,50)' : 'black',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
               borderRadius: 130,
               ...Platform.select({
                 ios: {
