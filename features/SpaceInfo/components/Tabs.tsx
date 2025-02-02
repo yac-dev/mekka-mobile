@@ -65,6 +65,7 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
         })}
       >
         <Tab.Screen name={'Features'} component={Feature} />
+        <Tab.Screen name={'Members'} component={Members} />
         <Tab.Screen name={'Activities'} component={Activities} />
       </Tab.Navigator>
     </View>
