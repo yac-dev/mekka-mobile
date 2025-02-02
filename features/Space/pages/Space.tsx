@@ -261,9 +261,10 @@ export const Space: React.FC<ISpace> = ({ space }) => {
         style={{
           position: 'absolute',
           bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
+          // left: 0,
+          // right: 0,
+          // zIndex: 1000,
+          height: 65,
           backgroundColor: 'black',
           paddingHorizontal: 10,
           paddingVertical: 8,

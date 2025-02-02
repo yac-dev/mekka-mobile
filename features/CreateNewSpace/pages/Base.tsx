@@ -192,7 +192,7 @@ export const Base = () => {
           It's ready to start
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 20 }}>
-          If you want to customize your space rules, tap any section to change according to your preference.
+          If you want to customize your space rules, tap any section to change based on your preference.
         </Text>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
         <TouchableOpacity

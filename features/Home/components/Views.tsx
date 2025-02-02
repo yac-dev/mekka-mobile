@@ -117,7 +117,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 65,
+          bottom: 85,
           left: 10,
           width: 46,
           height: 46,
@@ -153,7 +153,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 65,
+          bottom: 85,
           right: 10,
           width: 46,
           height: 46,

@@ -134,7 +134,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
         backgroundColor: 'rgba(0,0,0,0.8)',
       }}
       behavior='padding'
-      keyboardVerticalOffset={65}
+      keyboardVerticalOffset={85}
     >
       <FlashList
         data={data?.comments}
