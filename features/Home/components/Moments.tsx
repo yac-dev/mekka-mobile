@@ -91,6 +91,7 @@ export const Moments = () => {
       {data?.posts.length ? (
         <FlashList
           horizontal
+          showsHorizontalScrollIndicator={false}
           data={data?.posts}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
@@ -101,7 +102,7 @@ export const Moments = () => {
           ListHeaderComponent={
             <View
               style={{
-                width: 30,
+                width: 50,
                 height: 55,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -113,9 +114,10 @@ export const Moments = () => {
               <ExpoImage
                 source={Icons.ghost}
                 contentFit='contain'
-                style={{ width: 30, height: 30 }}
+                style={{ width: 30, height: 30, marginBottom: 4 }}
                 tintColor={'white'}
               />
+              <Text style={{ color: 'white', fontSize: 11 }}>Moments</Text>
             </View>
           }
           // contentContainerStyle={{ paddingBottom: 30 }}
@@ -221,8 +223,8 @@ const MomentThumbnail: React.FC<MomentThumbnailProps> = ({ post, index, onPressP
         }}
       >
         <Text style={{ color: 'black', fontSize: 11, fontWeight: 'bold' }}>
-          {hours > 0 && `${hours} h`}&nbsp;
-          {minutes > 0 && `${minutes} m`}
+          {hours > 0 && `${hours}h`}&nbsp;
+          {minutes > 0 && `${minutes}m`}
         </Text>
       </View>
       {/* {post.contents.length > 1 ? (
