@@ -8,6 +8,7 @@ import {
   LayoutChangeEvent,
   Dimensions,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
@@ -111,7 +112,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         />
         <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>
           No posts tagged by{'\n'}
-          {tag.name}...
+          {tag.name}
         </Text>
       </View>
     );
@@ -120,7 +121,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <FlashList
-        numColumns={3}
+        numColumns={4}
         data={data?.pages.flatMap((page) => page.posts)}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
@@ -134,7 +135,6 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         onEndReachedThreshold={0.7}
         contentContainerStyle={{
           paddingBottom: data?.pages.flatMap((page) => page.posts).length >= 12 ? 95 : 165,
-          paddingTop: 83,
         }}
       />
     </View>

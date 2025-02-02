@@ -29,13 +29,20 @@ import { HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
 import LinearGradient from 'react-native-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
-import { MapPostThumbnail } from '../../../components';
+import { AppButton, MapPostThumbnail } from '../../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Moments } from './Moments';
+import * as Haptics from 'expo-haptics';
 
 const windowWidth = Dimensions.get('window').width;
 
+type RegionViewProps = {
+  openAuthMenuBottomSheet: (index: number) => void;
+  openAddNewSpaceMenuBottomSheet: (index: number) => void;
+};
+
 // mapからgridに切り替えると、currentTagが切り替わってない感じ。。。多分何かおかしい。
-export const RegionView = () => {
+export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet, openAddNewSpaceMenuBottomSheet }) => {
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -90,18 +97,6 @@ export const RegionView = () => {
       longitudeDelta: longitudeDelta,
     });
   };
-
-  // useEffect(() => {
-  //   getPostsByTagIdAndRegion({
-  //     tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
-  //     region: {
-  //       latitude: 37.78825,
-  //       longitude: -122.4324,
-  //       latitudeDelta: 100.0922,
-  //       longitudeDelta: 100.0421,
-  //     },
-  //   });
-  // }, [currentTagsTableBySpaceIds, currentSpace, currentRegion]);
 
   useEffect(() => {
     scrollToCenter();
@@ -198,7 +193,7 @@ export const RegionView = () => {
       const offset =
         itemWidths.slice(0, currentIndex).reduce((sum, width) => sum + width, 0) - (windowWidth / 2 - itemWidth / 2);
       scrollViewRef.current?.scrollToOffset({
-        offset: Math.max(0, offset) + 20,
+        offset: Math.max(0, offset),
         animated: true,
       });
     }
@@ -206,6 +201,7 @@ export const RegionView = () => {
 
   const onTabPress = (tab) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
       return {
         ...prev,
@@ -232,7 +228,7 @@ export const RegionView = () => {
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(40,40,40)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {
@@ -250,9 +246,9 @@ export const RegionView = () => {
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={'white'}
+              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
             />
-            <Text numberOfLines={1} style={{ color: 'white', fontSize: 13 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -323,8 +319,7 @@ export const RegionView = () => {
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  // openAddNewSpaceMenuBottomSheet(0);
-                  console.log('home');
+                  openAddNewSpaceMenuBottomSheet(0);
                 }}
               >
                 <VectorIcon.II name='home' color={Colors.white} size={18} />
@@ -358,8 +353,38 @@ export const RegionView = () => {
             </View>
           }
         />
+        <AppButton.Icon
+          onButtonPress={() => openAuthMenuBottomSheet(0)}
+          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
+          hasShadow={false}
+        >
+          <VectorIcon.MCI name='account' size={20} color={Colors.white} />
+        </AppButton.Icon>
       </View>
 
+      <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
+        <View
+          style={{
+            flexDirection: 'column',
+            paddingHorizontal: 12,
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}
+              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+              activeOpacity={0.7}
+            >
+              <View style={{ marginRight: 8 }}>
+                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+              </View>
+              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Moments />
+      </View>
+      {/* defaultの位置はnew yorkでいい。fetchが */}
       <Mapbox.MapView
         ref={mapRef}
         style={{ flex: 1 }}
@@ -372,38 +397,6 @@ export const RegionView = () => {
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        <View
-          style={{
-            flexDirection: 'column',
-            paddingTop: 10,
-            paddingHorizontal: 12,
-          }}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
-              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-              activeOpacity={0.7}
-            >
-              <View style={{ marginRight: 8 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
-              </View>
-              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ref={scrollViewRef}
-            data={currentSpace?.tags}
-            renderItem={renderTab}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingLeft: 12 }}
-          />
-        </View>
-        {/* defaultの位置はnew yorkでいい。fetchが */}
         <Camera
           defaultSettings={{
             centerCoordinate: [-122.4324, 37.78825],
@@ -419,6 +412,29 @@ export const RegionView = () => {
           </View>
         )}
       </Mapbox.MapView>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          backgroundColor: 'black',
+          paddingHorizontal: 10,
+          paddingVertical: 8,
+          borderTopWidth: 0.3,
+          borderTopColor: 'rgb(100,100,100)',
+        }}
+      >
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ref={scrollViewRef}
+          data={currentSpace?.tags}
+          renderItem={renderTab}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
+        />
+      </View>
     </SafeAreaView>
   );
 };

@@ -91,7 +91,12 @@ export const Views: React.FC<{
           />
         );
       case 'RegionView':
-        return <RegionView />;
+        return (
+          <RegionView
+            openAuthMenuBottomSheet={openAuthMenuBottomSheet}
+            openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+          />
+        );
       default:
         return null;
     }
@@ -112,7 +117,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 20,
+          bottom: 65,
           left: 10,
           width: 46,
           height: 46,
@@ -145,7 +150,42 @@ export const Views: React.FC<{
           />
         )}
       </TouchableOpacity>
-      <View
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          bottom: 65,
+          right: 10,
+          width: 46,
+          height: 46,
+          backgroundColor: 'rgb(50,50,50)',
+          borderRadius: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
+        }}
+        activeOpacity={0.7}
+        onPress={() => {
+          openAddNewPostMenuBottomSheet(0);
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        }}
+      >
+        {/* <View style={{ width: 30, aspectRatio: 1 }}>
+          <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: '100%', height: '100%', borderRadius: 30 }} />
+          <AddIcon />
+        </View> */}
+        <VectorIcon.MCI name='plus' size={25} color={'white'} />
+      </TouchableOpacity>
+      {/* <View
         style={{
           width: 160,
           height: 46,
@@ -185,7 +225,6 @@ export const Views: React.FC<{
                 tintColor={'white'}
               />
             </View>
-            {/* <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Moments</Text> */}
             {momentLogs[currentSpace._id] ? (
               <View
                 style={{
@@ -220,7 +259,6 @@ export const Views: React.FC<{
             />
             <AddIcon />
           </View>
-          {/* <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Post</Text> */}
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -238,9 +276,8 @@ export const Views: React.FC<{
               tintColor={'white'}
             />
           </View>
-          {/* <Text style={{ color: 'white', fontSize: 10, textAlign: 'center' }}>Rolls</Text> */}
         </TouchableOpacity>
-      </View>
+      </View> */}
       <AppBottomSheet.Gorhom
         ref={chooseViewBottomSheetRef}
         snapPoints={['35%']}

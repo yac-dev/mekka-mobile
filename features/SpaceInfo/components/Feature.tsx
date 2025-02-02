@@ -77,17 +77,10 @@ export const Feature: React.FC<FeatureProps> = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
       <ScrollView>
         <View>
           <View style={{ paddingBottom: 10, paddingHorizontal: 10 }}>
-            <Text
-              onTextLayout={onTextLayout}
-              numberOfLines={textShown ? undefined : 2}
-              style={{ lineHeight: 21, color: 'white' }}
-            >
-              {currentSpace.description}
-            </Text>
             {lengthMore ? (
               <Text
                 onPress={toggleNumberOfLines}

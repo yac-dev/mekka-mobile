@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Feature, Members } from '.';
+import { Activities } from '../pages';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -36,11 +37,14 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
                 style={{
                   alignItems: 'center',
                   paddingHorizontal: 15,
-                  paddingBottom: 10,
+                  paddingVertical: 10,
+                  backgroundColor: isFocused ? 'rgb(50,50,50)' : 'transparent',
+                  borderRadius: 20,
+                  marginHorizontal: 5,
                 }}
                 onPress={onPress}
               >
-                <Text style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 17, fontWeight: 'bold' }}>
+                <Text style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 17, fontWeight: 'bold' }}>
                   {label}
                 </Text>
               </TouchableOpacity>
@@ -60,8 +64,8 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
           swipeEnabled: false,
         })}
       >
-        <Tab.Screen name={'About'} component={Feature} />
-        <Tab.Screen name={'Members'} component={Members} />
+        <Tab.Screen name={'Features'} component={Feature} />
+        <Tab.Screen name={'Activities'} component={Activities} />
       </Tab.Navigator>
     </View>
   );
