@@ -103,7 +103,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   return (
     <View style={{ flex: 1 }}>
       <FlashList
-        numColumns={3}
+        numColumns={4}
         data={data?.pages.flatMap((page) => page.posts)}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}

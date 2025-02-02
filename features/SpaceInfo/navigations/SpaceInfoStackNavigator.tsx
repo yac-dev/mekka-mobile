@@ -9,10 +9,13 @@ import { urls } from '../../../settings/urls';
 import { currentSpaceAtom } from '../../../recoil/atoms/currentSpaceAtom';
 import { useRecoilState } from 'recoil';
 import { Members } from '../components/Members';
+import { UserStackNavigator } from '../../User';
 
 type SpaceInfoStackParams = {
   SpaceInfo: undefined;
-  Members: undefined;
+  UserStackNavigator: {
+    userId: string;
+  };
 };
 export type SpaceInfoStackNavigatorProps = NativeStackNavigationProp<SpaceInfoStackParams>;
 const SpaceInfoStack = createNativeStackNavigator();
@@ -76,19 +79,10 @@ export const SpaceInfoStackNavigator = () => {
         })}
       />
       <SpaceInfoStack.Screen
-        name='Members'
-        component={Members}
+        name='UserStackNavigator'
+        component={UserStackNavigator}
         options={({ navigation }) => ({
-          headerLeft: () => (
-            <AppButton.Icon
-              onButtonPress={() => navigation.goBack()}
-              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-              hasShadow={false}
-            >
-              <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
-            </AppButton.Icon>
-          ),
-          headerShown: true,
+          headerShown: false,
           headerTitle: '',
           headerStyle: {
             backgroundColor: 'black',

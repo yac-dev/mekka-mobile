@@ -11,6 +11,8 @@ import { currentSpaceAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
 import { getMembersBySpaceId } from '../../../api';
 import { queryKeys } from '../../../query';
+import { useNavigation } from '@react-navigation/native';
+import { SpaceInfoStackNavigatorProps } from '../navigations';
 
 type MembersProps = {
   spaceId: string;
@@ -20,6 +22,7 @@ const avatarWidth = itemWidth * 0.7;
 // 久々にtan stackやってみよっか。
 export const Members: React.FC<MembersProps> = () => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const spaceInfoStackNavigation = useNavigation<SpaceInfoStackNavigatorProps>();
   const { data, isLoading } = useQuery({
     queryKey: [queryKeys.members, currentSpace._id],
     queryFn: () => getMembersBySpaceId({ spaceId: currentSpace._id }),
@@ -38,6 +41,9 @@ export const Members: React.FC<MembersProps> = () => {
           // backgroundColor: 'red',
         }}
         activeOpacity={0.5}
+        onPress={() => {
+          spaceInfoStackNavigation.navigate('UserStackNavigator', { userId: item._id });
+        }}
       >
         <ExpoImage
           style={{ width: avatarWidth, height: avatarWidth }}
