@@ -246,7 +246,7 @@ export const Space: React.FC<ISpace> = ({
                 activeOpacity={0.7}
               >
                 <View style={{ marginRight: 8 }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 30 }}>{currentSpace.name}</Text>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
                 </View>
                 <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
@@ -316,8 +316,8 @@ export const Space: React.FC<ISpace> = ({
                     <View
                       style={{
                         position: 'absolute',
-                        top: -5,
-                        right: -8,
+                        top: -3,
+                        right: -5,
                         width: 16,
                         height: 16,
                         borderRadius: 10,
