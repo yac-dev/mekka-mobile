@@ -132,7 +132,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
             ) : (
               <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
-                {currentPost.createdBy.name.charAt(0).toUpperCase()}
+                {currentPost.createdBy.name.slice(0, 2).toUpperCase()}
               </Text>
             )}
           </View>

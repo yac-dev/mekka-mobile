@@ -53,7 +53,7 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
                 <ExpoImage source={data.user.avatar} style={styles.avatar} />
               ) : (
                 <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
-                  {data.user.name.charAt(0)}
+                  {data.user.name.slice(0, 2).toUpperCase()}
                 </Text>
               )}
             </View>
