@@ -304,6 +304,7 @@ export const Space: React.FC<ISpace> = ({
                   onPress={() => {
                     homeStackNavigation.navigate('MomentsStackNavigator');
                   }}
+                  activeOpacity={0.7}
                 >
                   <ExpoImage
                     style={{ width: 20, height: 20 }}
@@ -352,6 +353,7 @@ export const Space: React.FC<ISpace> = ({
                   onPress={() => {
                     openChooseViewBottomSheet(0);
                   }}
+                  activeOpacity={0.7}
                 >
                   {currentViewIndex === 0 ? (
                     <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
