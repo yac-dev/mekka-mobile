@@ -42,6 +42,7 @@ type CurrentSpaceProps = {
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
   openChooseViewBottomSheet: (index: number) => void;
   openAddNewPostMenuBottomSheet: (index: number) => void;
+  currentViewIndex: number;
 };
 
 export type RouteType = SpaceType & { key: number };
@@ -52,6 +53,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   openAddNewSpaceMenuBottomSheet,
   openChooseViewBottomSheet,
   openAddNewPostMenuBottomSheet,
+  currentViewIndex,
 }) => {
   const { mutate: updateSpaceCheckedInMutation } = useMutation({
     mutationKey: [mutationKeys.updateSpaceCheckedInDate],
@@ -272,6 +274,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
             space={option}
             openChooseViewBottomSheet={openChooseViewBottomSheet}
             openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
+            currentViewIndex={currentViewIndex}
           />
         );
         return acc;

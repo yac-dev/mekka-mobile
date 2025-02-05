@@ -51,11 +51,17 @@ type ISpace = {
   space: SpaceType;
   openChooseViewBottomSheet: (index: number) => void;
   openAddNewPostMenuBottomSheet: (index: number) => void;
+  currentViewIndex: number;
 };
 
 export type RouteType = TagType & { key: number };
 
-export const Space: React.FC<ISpace> = ({ space, openChooseViewBottomSheet, openAddNewPostMenuBottomSheet }) => {
+export const Space: React.FC<ISpace> = ({
+  space,
+  openChooseViewBottomSheet,
+  openAddNewPostMenuBottomSheet,
+  currentViewIndex,
+}) => {
   const queryClient = useQueryClient();
   const [momentLogs] = useRecoilState(momentLogsAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -297,7 +303,6 @@ export const Space: React.FC<ISpace> = ({ space, openChooseViewBottomSheet, open
                   }}
                   onPress={() => {
                     homeStackNavigation.navigate('MomentsStackNavigator');
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
                   }}
                 >
                   <ExpoImage
@@ -348,7 +353,7 @@ export const Space: React.FC<ISpace> = ({ space, openChooseViewBottomSheet, open
                     openChooseViewBottomSheet(0);
                   }}
                 >
-                  {index === 0 ? (
+                  {currentViewIndex === 0 ? (
                     <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
                   ) : (
                     <ExpoImage

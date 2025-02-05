@@ -25,6 +25,7 @@ import { Colors } from '../../../themes';
 // });
 //　まあでもここでもusecallbackすればいけるかね。。。
 
+//current Viewっていうglobal state欲しいな。
 const routes = [
   { key: 'GridView', title: 'Grid View' },
   { key: 'RegionView', title: 'Region View' },
@@ -90,6 +91,7 @@ export const Views: React.FC<{
             openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+            currentViewIndex={index}
           />
         );
       case 'RegionView':
@@ -99,6 +101,7 @@ export const Views: React.FC<{
             openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+            currentViewIndex={index}
           />
         );
       default:
