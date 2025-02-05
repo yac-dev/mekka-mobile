@@ -37,6 +37,7 @@ export const SpaceInfo = () => {
                 color: 'white',
                 fontWeight: 'bold',
                 fontSize: 27,
+                marginBottom: 5,
               }}
             >
               {currentSpace.name}

@@ -12,3 +12,4 @@ export * from './getPostsByUserIdAndRegion';
 export * from './getCommentsByPostId';
 export * from './getReactionsByPostId';
 export * from './getPostsByTagIdAndRegion';
+export * from './getSpaceById';

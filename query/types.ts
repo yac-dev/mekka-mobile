@@ -222,3 +222,11 @@ export type GetPostsByTagIdAndRegionInput = {
 export type GetPostsByTagIdAndRegionOutput = {
   posts: PostType[];
 };
+
+export type GetSpaceByIdInputType = {
+  _id: string;
+};
+
+export type GetSpaceByIdOutputType = {
+  space: SpaceType;
+};

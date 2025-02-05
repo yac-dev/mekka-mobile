@@ -6,6 +6,9 @@ import { Colors } from '../../../themes';
 import { VectorIcon } from '../../../Icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
+import { queryKeys } from '../../../query/queryKeys';
+import { useQuery } from '@tanstack/react-query';
+import { getSpaceById } from '../../../query/queries';
 
 export type SpaceDetailStackNavigatorScreens = {
   SpaceDetail: { _id: string };
@@ -18,17 +21,10 @@ const SpaceDetailStack = createNativeStackNavigator<SpaceDetailStackNavigatorScr
 type SpaceDetailStackNavigatorProps = NativeStackScreenProps<SpaceDetailStackNavigatorScreens, 'SpaceDetail'>;
 
 export const SpaceDetailStackNavigator: React.FC<SpaceDetailStackNavigatorProps> = ({ route }) => {
-  const { requestApi: requestGetSpaceById } = useGetSpaceByIdState();
-
-  useEffect(() => {
-    requestGetSpaceById({ _id: route.params?._id });
-  }, []);
-
   return (
     <SpaceDetailStack.Navigator>
       <SpaceDetailStack.Screen
         name='SpaceDetail'
-        component={SpaceDetail}
         options={({ navigation }) => ({
           headerLeft: () => (
             <AppButton.Icon
@@ -48,7 +44,9 @@ export const SpaceDetailStackNavigator: React.FC<SpaceDetailStackNavigatorProps>
             color: 'white',
           },
         })}
-      />
+      >
+        {(props) => <SpaceDetail {...props} spaceId={route.params?._id} />}
+      </SpaceDetailStack.Screen>
       {/* <SpaceDetailStack.Screen
         name='Members'
         component={Members}
