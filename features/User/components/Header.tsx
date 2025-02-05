@@ -15,6 +15,8 @@ type IHeader = {
   customStyle?: StyleProp<ViewStyle>;
 };
 
+const avatarWidth = 42;
+
 export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }) => {
   const { data, status } = useQuery({
     queryKey: [queryKeys.userById, userId],
@@ -36,11 +38,29 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
       <View style={[styles.header, customStyle]}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.leftContainer}>
-            <ExpoImage source={data.user.avatar} style={styles.avatar} />
+            <View
+              style={{
+                backgroundColor: 'rgb(70,70,70)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: avatarWidth,
+                height: avatarWidth,
+                borderRadius: avatarWidth / 2,
+                marginBottom: 10,
+              }}
+            >
+              {data.user.avatar ? (
+                <ExpoImage source={data.user.avatar} style={styles.avatar} />
+              ) : (
+                <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+                  {data.user.name.charAt(0)}
+                </Text>
+              )}
+            </View>
           </View>
           <View style={styles.rightContainer}>
             <Text style={styles.name}>{data.user.name}</Text>
-            <Text style={styles.uniqueName}>@johndoe</Text>
+            {/* <Text style={styles.uniqueName}>@johndoe</Text> */}
           </View>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

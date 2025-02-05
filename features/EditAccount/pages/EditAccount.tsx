@@ -9,6 +9,8 @@ import { UpdateUserInputType } from '../types';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 
+const avatarWidth = 42;
+
 export const EditAccount = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const {
@@ -59,8 +61,26 @@ export const EditAccount = () => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView>
-        <TouchableOpacity onPress={() => onAvatarPress()} style={styles.avatarContainer}>
-          <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
+        <TouchableOpacity activeOpacity={0.7} onPress={() => onAvatarPress()} style={styles.avatarContainer}>
+          <View
+            style={{
+              backgroundColor: 'rgb(70,70,70)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 80,
+              height: 80,
+              borderRadius: 80 / 2,
+              marginBottom: 10,
+            }}
+          >
+            {formData.avatar.value ? (
+              <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
+            ) : (
+              <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+                {formData.name.value.charAt(0)}
+              </Text>
+            )}
+          </View>
         </TouchableOpacity>
         <View>
           <AppTextInput.Underline

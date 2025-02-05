@@ -144,7 +144,7 @@ export const MomentsStackNavigator = () => {
         </MomentsStack.Group>
       </MomentsStack.Navigator>
       <Modal
-        animationType='slide'
+        animationType='fade'
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {

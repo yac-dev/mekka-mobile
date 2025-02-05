@@ -153,13 +153,13 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
                   marginRight: 10,
                 }}
               >
-                {/* {formatDate(getSpaceByIdData?.space.createdAt)} */}
+                {formatDate(getSpaceByIdData?.space.createdAt)}
               </Text>
             </View>
           </View>
         </View>
       </View>
-      {/* <Tabs tagId={getSpaceByIdData?.space.tags[0]._id} /> */}
+      <Tabs tagId={getSpaceByIdData?.space.tags[1]._id} spaceId={spaceId} />
       {/* <LoadingSpinner isVisible={joinPublicSpaceByIdResult.status === 'loading'} message={'Processing now...'} /> */}
     </View>
   );

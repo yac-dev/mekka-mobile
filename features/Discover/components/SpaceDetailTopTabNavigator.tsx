@@ -6,9 +6,10 @@ const Tab = createMaterialTopTabNavigator();
 
 type TabsProps = {
   tagId: string;
+  spaceId: string;
 };
 
-export const Tabs: React.FC<TabsProps> = ({ tagId }) => {
+export const Tabs: React.FC<TabsProps> = ({ tagId, spaceId }) => {
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
       <View style={{ alignItems: 'center' }}>
@@ -65,7 +66,7 @@ export const Tabs: React.FC<TabsProps> = ({ tagId }) => {
     >
       <Tab.Screen name={'Posts'}>{(props) => <PostsByGrid {...props} tagId={tagId} />}</Tab.Screen>
       <Tab.Screen name={'Features'} component={Feature} />
-      <Tab.Screen name={'Members'} component={Members} />
+      <Tab.Screen name={'Members'}>{(props) => <Members {...props} spaceId={spaceId} />}</Tab.Screen>
     </Tab.Navigator>
   );
 };

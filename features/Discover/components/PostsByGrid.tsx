@@ -32,7 +32,7 @@ export const PostsByGrid: React.FC<PostsByGridProps> = ({ tagId }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       <FlashList
         numColumns={4}
         data={data?.posts}

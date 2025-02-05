@@ -38,18 +38,35 @@ export const Members: React.FC<MembersProps> = () => {
           alignItems: 'center',
           width: itemWidth,
           height: itemWidth,
-          // backgroundColor: 'red',
         }}
         activeOpacity={0.5}
         onPress={() => {
           spaceInfoStackNavigation.navigate('UserStackNavigator', { userId: item._id });
         }}
       >
-        <ExpoImage
-          style={{ width: avatarWidth, height: avatarWidth }}
-          source={{ uri: item.avatar }}
-          contentFit='contain'
-        />
+        <View
+          style={{
+            backgroundColor: 'rgb(70,70,70)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: avatarWidth,
+            height: avatarWidth,
+            borderRadius: avatarWidth / 2,
+            marginBottom: 10,
+          }}
+        >
+          {item.avatar ? (
+            <ExpoImage
+              style={{ width: avatarWidth, height: avatarWidth }}
+              source={{ uri: item.avatar }}
+              contentFit='contain'
+            />
+          ) : (
+            <Text style={{ color: 'white', fontSize: 35, textAlign: 'center', fontWeight: 'bold' }}>
+              {item.name.charAt(0)}
+            </Text>
+          )}
+        </View>
         <Text numberOfLines={2} style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>
           {item.name}
         </Text>
@@ -66,7 +83,7 @@ export const Members: React.FC<MembersProps> = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.black }}>
+    <View style={{ flex: 1, backgroundColor: Colors.black, paddingTop: 10 }}>
       <FlatList data={data.users} numColumns={3} renderItem={renderUser} keyExtractor={(item, index) => `${index}`} />
     </View>
   );
