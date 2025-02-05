@@ -77,7 +77,7 @@ export const EditAccount = () => {
               <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
             ) : (
               <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
-                {formData.name.value.charAt(0)}
+                {formData.name.value.charAt(0).toUpperCase()}
               </Text>
             )}
           </View>

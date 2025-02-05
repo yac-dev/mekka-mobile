@@ -63,7 +63,7 @@ export const Members: React.FC<MembersProps> = () => {
             />
           ) : (
             <Text style={{ color: 'white', fontSize: 35, textAlign: 'center', fontWeight: 'bold' }}>
-              {item.name.charAt(0)}
+              {item.name.charAt(0).toUpperCase()}
             </Text>
           )}
         </View>

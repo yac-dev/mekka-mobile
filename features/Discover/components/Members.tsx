@@ -54,7 +54,7 @@ export const Members: React.FC<MembersProps> = ({ spaceId }) => {
             />
           ) : (
             <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
-              {item.name.charAt(0)}
+              {item.name.charAt(0).toUpperCase()}
             </Text>
           )}
         </View>
