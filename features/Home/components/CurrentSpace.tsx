@@ -40,6 +40,8 @@ const windowWidth = Dimensions.get('window').width;
 type CurrentSpaceProps = {
   openAuthMenuBottomSheet: (index: number) => void;
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
+  openChooseViewBottomSheet: (index: number) => void;
+  openAddNewPostMenuBottomSheet: (index: number) => void;
 };
 
 export type RouteType = SpaceType & { key: number };
@@ -48,6 +50,8 @@ export type RouteType = SpaceType & { key: number };
 export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   openAuthMenuBottomSheet,
   openAddNewSpaceMenuBottomSheet,
+  openChooseViewBottomSheet,
+  openAddNewPostMenuBottomSheet,
 }) => {
   const { mutate: updateSpaceCheckedInMutation } = useMutation({
     mutationKey: [mutationKeys.updateSpaceCheckedInDate],
@@ -263,7 +267,13 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const createTabViewScene = useCallback((routes: SpaceType[]) => {
     return SceneMap(
       routes.reduce((acc: Record<string, React.FC<any>>, option: RouteType) => {
-        acc[option.key as number] = () => <Space space={option} />;
+        acc[option.key as number] = () => (
+          <Space
+            space={option}
+            openChooseViewBottomSheet={openChooseViewBottomSheet}
+            openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
+          />
+        );
         return acc;
       }, {})
     );
