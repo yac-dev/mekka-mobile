@@ -230,3 +230,12 @@ export type GetSpaceByIdInputType = {
 export type GetSpaceByIdOutputType = {
   space: SpaceType;
 };
+
+export type JoinPublicSpaceBySpaceIdInputType = {
+  spaceId: string;
+  userId: string;
+};
+
+export type JoinPublicSpaceBySpaceIdOutputType = {
+  space: SpaceType;
+};

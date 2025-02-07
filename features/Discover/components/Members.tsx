@@ -24,15 +24,11 @@ export const Members: React.FC<MembersProps> = ({ spaceId }) => {
 
   const renderUser = useCallback(({ item }: { item: UserType }) => {
     return (
-      <TouchableOpacity
+      <View
         style={{
           alignItems: 'center',
           width: itemWidth,
           height: itemWidth,
-        }}
-        activeOpacity={0.5}
-        onPress={() => {
-          // spaceInfoStackNavigation.navigate('UserStackNavigator', { userId: item._id });
         }}
       >
         <View
@@ -61,7 +57,7 @@ export const Members: React.FC<MembersProps> = ({ spaceId }) => {
         <Text numberOfLines={2} style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>
           {item.name}
         </Text>
-      </TouchableOpacity>
+      </View>
     );
   }, []);
 

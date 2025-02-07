@@ -11,10 +11,12 @@ import { showMessage } from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
 import { VectorIcon } from '../../../Icons';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getSpaceById } from '../../../query/queries';
 import { queryKeys } from '../../../query/queryKeys';
 import { useQueryClient } from '@tanstack/react-query';
+import { joinPublicSpaceBySpaceId } from '../../../query/mutations';
+import { JoinPublicSpaceBySpaceIdInputType } from '../../../query/types';
 // ここに、spaceのthumbnailから始まり、
 
 type SpaceDetailProps = {
@@ -30,8 +32,29 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const { apiResult } = useGetSpaceByIdState();
-  const { apiResult: joinPublicSpaceByIdResult, requestApi: requestJoinPublicSpaceById } =
-    useJoinPublicSpaceByIdState();
+
+  const { mutate: joinPublicSpaceBySpaceIdMutation, status } = useMutation({
+    mutationFn: (input: JoinPublicSpaceBySpaceIdInputType) => joinPublicSpaceBySpaceId(input),
+    // onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }),
+    onSuccess: (data) => {
+      console.log('post data', data);
+      showMessage({ message: 'Joined new space successfully.', type: 'success' });
+      setMySpaces((previous) => [...previous, data.space]);
+      if (!mySpaces?.length) {
+        setCurrentSpace(data.space);
+        setCurrentTag(data.space.tags[0]);
+        setLogsTable((previous) => {
+          return {
+            ...previous,
+            [data.space._id]: {
+              [data.space.tags[0]._id]: 0,
+            },
+          };
+        });
+      }
+      spaceDetailStackNavigation.goBack();
+    },
+  });
 
   const { data: getSpaceByIdData, status: getSpaceByIdStatus } = useQuery({
     queryKey: [queryKeys.spaceById, spaceId],
@@ -48,7 +71,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
   };
 
   const isJoinSpaceValidated = () => {
-    if (mySpaces.some((space) => space._id === apiResult.data?.space._id)) {
+    if (mySpaces.some((space) => space._id === spaceId)) {
       return true;
     }
 
@@ -56,47 +79,26 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
   };
 
   const onJoinPress = async () => {
-    requestJoinPublicSpaceById({ userId: auth._id, spaceId: apiResult.data?.space._id });
+    joinPublicSpaceBySpaceIdMutation({ userId: auth._id, spaceId: spaceId });
   };
 
   useEffect(() => {
     spaceDetailStackNavigation.setOptions({
-      headerRight: () =>
-        apiResult.status === 'loading' ? null : (
-          <TouchableOpacity disabled={isJoinSpaceValidated()} onPress={() => onJoinPress()}>
-            <Text
-              style={{
-                color: isJoinSpaceValidated() ? 'rgb(150,150,150)' : 'white',
-                fontSize: 20,
-                fontWeight: 'bold',
-              }}
-            >
-              Join
-            </Text>
-          </TouchableOpacity>
-        ),
+      headerRight: () => (
+        <TouchableOpacity activeOpacity={0.7} disabled={isJoinSpaceValidated()} onPress={() => onJoinPress()}>
+          <Text
+            style={{
+              color: isJoinSpaceValidated() ? 'rgb(100,100,100)' : 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Join
+          </Text>
+        </TouchableOpacity>
+      ),
     });
-  }, [apiResult]);
-
-  useEffect(() => {
-    if (joinPublicSpaceByIdResult.status === 'success') {
-      showMessage({ message: 'Joined new space successfully.', type: 'success' });
-      setMySpaces((previous) => [...previous, joinPublicSpaceByIdResult.data.space]);
-      if (!mySpaces?.length) {
-        setCurrentSpace(joinPublicSpaceByIdResult.data?.space);
-        setCurrentTag(joinPublicSpaceByIdResult.data?.space.tags[0]);
-        setLogsTable((previous) => {
-          return {
-            ...previous,
-            [joinPublicSpaceByIdResult.data?.space._id]: {
-              [joinPublicSpaceByIdResult.data?.space.tags[0]._id]: 0,
-            },
-          };
-        });
-      }
-      spaceDetailStackNavigation.goBack();
-    }
-  }, [joinPublicSpaceByIdResult.status]);
+  }, [status]);
 
   if (getSpaceByIdStatus === 'pending') {
     return (
@@ -153,14 +155,14 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
                   marginRight: 10,
                 }}
               >
-                {formatDate(getSpaceByIdData?.space.createdAt)}
+                since {formatDate(getSpaceByIdData?.space.createdAt)}
               </Text>
             </View>
           </View>
         </View>
       </View>
       <Tabs tagId={getSpaceByIdData?.space.tags[1]._id} spaceId={spaceId} />
-      {/* <LoadingSpinner isVisible={joinPublicSpaceByIdResult.status === 'loading'} message={'Processing now...'} /> */}
+      <LoadingSpinner isVisible={status === 'pending'} message={'Processing now 🤔'} />
     </View>
   );
 };

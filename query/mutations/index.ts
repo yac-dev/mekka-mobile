@@ -6,3 +6,4 @@ export * from './createSpace';
 export * from './previewSticker';
 export * from './createComment';
 export * from './incrementReaction';
+export * from './joinPublicSpaceBySpaceId';
