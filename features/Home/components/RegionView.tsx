@@ -25,7 +25,7 @@ import { PostType, SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
+import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
 import LinearGradient from 'react-native-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
@@ -65,6 +65,8 @@ export const RegionView: React.FC<RegionViewProps> = ({
     latitudeDelta: 100.0922,
     longitudeDelta: 100.0421,
   });
+
+  const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
 
   const {
     data: postsByTagIdAndRegionData,
@@ -329,47 +331,22 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  openAddNewSpaceMenuBottomSheet(0);
+                  // openAddNewSpaceMenuBottomSheet(0);
+                  homeDrawerNavigation.toggleDrawer();
                 }}
               >
-                <VectorIcon.II name='home' color={Colors.white} size={18} />
-                <View
-                  style={{
-                    backgroundColor: 'black',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: -4,
-                    right: -5,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      width: 10,
-                      height: 10,
-                      borderRadius: 20,
-                    }}
-                  >
-                    <VectorIcon.II name='add' size={11} color={'black'} />
-                  </View>
-                </View>
+                <VectorIcon.II name='menu' color={Colors.white} size={18} />
               </TouchableOpacity>
             </View>
           }
         />
-        <AppButton.Icon
+        {/* <AppButton.Icon
           onButtonPress={() => openAuthMenuBottomSheet(0)}
           customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
           hasShadow={false}
         >
           <VectorIcon.MCI name='account' size={20} color={Colors.white} />
-        </AppButton.Icon>
+        </AppButton.Icon> */}
       </View>
 
       {/* <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
