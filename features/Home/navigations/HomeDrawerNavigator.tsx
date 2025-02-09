@@ -121,7 +121,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
               navigation.closeDrawer();
-              homeStackNavigation.navigate('EditProfileStackNavigator');
+              homeStackNavigation.navigate('EditMyAccount');
             }}
           >
             <VectorIcon.MCI name='account' size={20} color={Colors.white} style={{ marginRight: 20 }} />

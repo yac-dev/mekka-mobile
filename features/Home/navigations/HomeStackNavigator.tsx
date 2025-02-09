@@ -33,6 +33,8 @@ import { WebView, WebViewNavigation } from 'react-native-webview';
 import { HomeDrawerNavigator } from './HomeDrawerNavigator';
 import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer';
 import { ChangeMyPassword } from '../../ChangeMyPassword';
+import { EditAccount } from '../../EditAccount/pages/EditAccount';
+
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
   MapView: undefined;
@@ -101,6 +103,7 @@ export type HomeStackParams = {
   EditProfileStackNavigator: {
     screen: 'EditProfile';
   };
+  EditMyAccount: undefined;
   WriteDescription: undefined;
   LocationPicker: undefined;
   EmojiPicker: undefined;
@@ -262,6 +265,54 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
+          <HomeStack.Screen
+            name='EditMyAccount'
+            component={EditAccount}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
+            name='DeleteMyAccount'
+            component={DeleteMyAccount}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
           {/* <HomeStack.Screen name='HomeDrawerNavigator' component={HomeDrawerNavigator} /> */}
         </HomeStack.Group>
 
@@ -341,7 +392,7 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
         </HomeStack.Group>
-        <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
+        {/* <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
           <HomeStack.Screen
             name='EditProfileStackNavigator'
             component={EditProfileStackNavigator}
@@ -382,7 +433,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-        </HomeStack.Group>
+        </HomeStack.Group> */}
         <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal', animation: 'fade', animationDuration: 200 }}>
           <HomeStack.Screen
             name='ViewPostStackNavigator'
