@@ -50,6 +50,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     showMessage({ message: 'Logged out successfully.', type: 'success' });
   };
 
+  const onReportBugPress = () => {
+    navigation.closeDrawer();
+    Linking.openURL('https://x.com/yac_prod');
+  };
+
   return (
     // <DrawerContentScrollView>
     <View
@@ -120,7 +125,10 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <VectorIcon.MCI name='account' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Edit My Account</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>Edit My Account</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Edit your account information</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -128,7 +136,10 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             onPress={onNotificationSettingPress}
           >
             <VectorIcon.MI name='notifications-on' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Notification</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>Notification</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Stay up to date?</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -136,7 +147,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             onPress={onChangeMyPasswordPress}
           >
             <VectorIcon.MCI name='key-change' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Change My Password</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>
+                Change My Password
+              </Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Secure your credential</Text>
+            </View>
           </TouchableOpacity>
         </View>
         {/* <View style={{ height: 0.3, backgroundColor: 'rgb(100,100,100)', marginHorizontal: 15 }}></View> */}
@@ -153,7 +169,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <VectorIcon.MCI name='rocket-launch' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Create New Space</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>
+                Create New Space
+              </Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Open your own space from here</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -164,7 +185,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <VectorIcon.MI name='lock-open' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Enter Private Space</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>
+                Enter Private Space
+              </Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Got a invitation code?</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -175,7 +201,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <VectorIcon.MCI name='compass' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Discover New Space</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>
+                Discover New Space
+              </Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Dive into public spaces</Text>
+            </View>
           </TouchableOpacity>
         </View>
         <View style={{ marginTop: 15 }}>
@@ -191,7 +222,21 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <VectorIcon.II name='information-circle-outline' size={20} color={'white'} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Blog</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>Blog</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Read our articles</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
+            onPress={onReportBugPress}
+          >
+            <VectorIcon.II name='bug' size={20} color={'white'} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>Report Bug</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>DM here if you find any bugs</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -199,7 +244,10 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             onPress={onLogoutPress}
           >
             <VectorIcon.MCI name='sleep' size={20} color={Colors.white} style={{ marginRight: 20 }} />
-            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Logout</Text>
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>Logout</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Take a break?</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </ScrollView>
