@@ -316,11 +316,12 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  openAddNewSpaceMenuBottomSheet(0);
+                  // openAddNewSpaceMenuBottomSheet(0);
+                  homeDrawerNavigation.toggleDrawer();
                 }}
               >
-                <VectorIcon.II name='home' color={Colors.white} size={18} />
-                <View
+                <VectorIcon.II name='menu' color={Colors.white} size={18} />
+                {/* <View
                   style={{
                     backgroundColor: 'black',
                     width: 18,
@@ -345,12 +346,12 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
                   >
                     <VectorIcon.II name='add' size={11} color={'black'} />
                   </View>
-                </View>
+                </View> */}
               </TouchableOpacity>
             </View>
           }
         />
-        <AppButton.Icon
+        {/* <AppButton.Icon
           onButtonPress={() => {
             homeDrawerNavigation.toggleDrawer();
             // homeStackNavigation.navigate('HomeDrawerNavigator');
@@ -360,7 +361,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
           hasShadow={false}
         >
           <VectorIcon.MCI name='account' size={20} color={Colors.white} />
-        </AppButton.Icon>
+        </AppButton.Icon> */}
       </View>
       {/* <View
         style={{
