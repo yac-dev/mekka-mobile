@@ -239,3 +239,14 @@ export type JoinPublicSpaceBySpaceIdInputType = {
 export type JoinPublicSpaceBySpaceIdOutputType = {
   space: SpaceType;
 };
+
+export type UpdateUserInputType = {
+  name?: string;
+  email?: string;
+  password?: string;
+  avatar?: string;
+};
+
+export type UpdateUserOutputType = {
+  user: UserType;
+};

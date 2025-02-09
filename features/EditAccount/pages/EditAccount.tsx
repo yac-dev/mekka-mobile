@@ -74,7 +74,9 @@ export const EditAccount = () => {
             }}
           >
             {formData.avatar.value ? (
-              <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
+              <View style={{ width: '100%', height: '100%', borderRadius: 80 / 2 }}>
+                <ExpoImage style={styles.avatar} source={{ uri: formData.avatar.value }} contentFit='cover' />
+              </View>
             ) : (
               <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
                 {formData.name.value.slice(0, 2).toUpperCase()}
@@ -85,26 +87,17 @@ export const EditAccount = () => {
         <View>
           <AppTextInput.Underline
             value={formData.name.value}
-            placeholder='Name here...'
+            placeholder='Name'
             labelIcon={<VectorIcon.MCI name='account' color='white' size={20} />}
             onTextChange={onNameChange}
             keyboardType={'default'}
           />
           <AppTextInput.Underline
             value={formData.email.value}
-            placeholder='Email here...'
+            placeholder='Email'
             labelIcon={<VectorIcon.MCI name='email' color='white' size={20} />}
             onTextChange={onEmailChange}
             keyboardType={'default'}
-          />
-          <AppTextInput.Underline
-            value={formData.password.value}
-            placeholder='Password here...'
-            labelIcon={<VectorIcon.II name='eye' color='white' size={20} />}
-            onTextChange={onPasswordChange}
-            keyboardType={'default'}
-            secureTextEntry
-            onTextEntryVisibilityChange={onPasswordVisibilityChange}
           />
         </View>
       </ScrollView>
@@ -122,5 +115,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: '100%',
     height: '100%',
+    borderRadius: 80 / 2,
   },
 });
