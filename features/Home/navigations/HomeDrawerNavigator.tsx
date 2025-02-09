@@ -10,20 +10,25 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { HomeDrawerNavigatorParams, HomeStackNavigatorProps } from './HomeStackNavigator';
 import { HomeDrawerNavigatorProps } from './HomeStackNavigator';
 import { Home } from '../../Home/pages';
-import { authAtom } from '../../../recoil';
+import { authAtom, logsTableAtom, mySpacesAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { Colors } from '../../../themes';
 import { AppButton } from '../../../components';
 import { MaterialIcons } from '@expo/vector-icons';
+import { showMessage } from 'react-native-flash-message';
+import * as SecureStore from 'expo-secure-store';
+
 const Drawer = createDrawerNavigator<HomeDrawerNavigatorParams>();
 
 // これpropsないとあかんな。
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const { state, descriptors, navigation } = props;
-  const [auth] = useRecoilState(authAtom);
+  const [auth, setAuth] = useRecoilState(authAtom);
+  const [, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
 
   const onNotificationSettingPress = () => {
@@ -34,6 +39,15 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   const onChangeMyPasswordPress = () => {
     navigation.closeDrawer();
     homeStackNavigation.navigate('ChangeMyPassword');
+  };
+
+  const onLogoutPress = async () => {
+    navigation.closeDrawer();
+    await SecureStore.deleteItemAsync('secure_token');
+    setAuth(void 0);
+    setMySpaces(void 0);
+    setLogsTable(void 0);
+    showMessage({ message: 'Logged out successfully.', type: 'success' });
   };
 
   return (
@@ -164,8 +178,32 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Discover New Space</Text>
           </TouchableOpacity>
         </View>
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold', paddingHorizontal: 15 }}>
+            More
+          </Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => {
+              navigation.closeDrawer();
+              homeStackNavigation.navigate('AboutApp');
+            }}
+          >
+            <VectorIcon.II name='information-circle-outline' size={20} color={'white'} style={{ marginRight: 20 }} />
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Blog</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
+            onPress={onLogoutPress}
+          >
+            <VectorIcon.MCI name='sleep' size={20} color={Colors.white} style={{ marginRight: 20 }} />
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-      <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+      {/* <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
@@ -182,7 +220,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
           />
           <Text style={{ color: 'rgb(150,150,150)', fontSize: 15, fontWeight: 'bold' }}>Blog</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
     // </DrawerContentScrollView>
   );

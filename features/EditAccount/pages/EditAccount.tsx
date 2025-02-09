@@ -101,6 +101,20 @@ export const EditAccount = () => {
           />
         </View>
       </ScrollView>
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: 10,
+          alignSelf: 'center',
+        }}
+        onPress={() => homeStackNavigation.navigate('DeleteMyAccount')}
+      >
+        <VectorIcon.MCI name='delete' color='red' size={20} style={{ marginRight: 5 }} />
+        <Text style={{ color: 'red', fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>Delete My Account</Text>
+      </TouchableOpacity>
     </View>
   );
 };
