@@ -28,8 +28,8 @@ import { SpaceType, TagType } from '../../../types';
 import { logsTableAtom } from '../../../recoil';
 import { Colors } from '../../../themes';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../navigations';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigations';
 import { currentTagAtomFamily } from '../../../recoil';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query';
@@ -63,7 +63,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const [routes, setRoutes] = useState<RouteType[]>(mySpaces.map((space, index) => ({ ...space, key: index })));
   const [index, setIndex] = useState<number>(0);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-
+  const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
   // const [routes, setRoutes] = useState<SpaceType[]>(mySpaces);
   const [auth] = useRecoilState(authAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -351,7 +351,11 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
           }
         />
         <AppButton.Icon
-          onButtonPress={() => openAuthMenuBottomSheet(0)}
+          onButtonPress={() => {
+            homeDrawerNavigation.toggleDrawer();
+            // homeStackNavigation.navigate('HomeDrawerNavigator');
+            // openAuthMenuBottsomSheet(0);
+          }}
           customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
           hasShadow={false}
         >

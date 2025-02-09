@@ -30,6 +30,8 @@ import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { urls } from '../../../settings';
 import { WebView, WebViewNavigation } from 'react-native-webview';
+import { HomeDrawerNavigator } from './HomeDrawerNavigator';
+import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -67,6 +69,15 @@ export type ViewPostStackNavigatorParams = {
   ReportComment: undefined;
 };
 
+export type HomeDrawerNavigatorParams = {
+  Home: undefined;
+  EditAccount: undefined;
+  Settings: undefined;
+};
+
+// export type HomeDrawerNavigatorProps = NavigatorScreenParams<HomeDrawerNavigatorParams>;
+export type HomeDrawerNavigatorProps = DrawerNavigationProp<HomeDrawerNavigatorParams>;
+
 export type MomentsStackNavigatorProps = NativeStackNavigationProp<MomentsStackParams>;
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
@@ -79,6 +90,7 @@ export type HomeStackParams = {
   MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
   ViewPost: undefined;
+  HomeDrawerNavigator: NavigatorScreenParams<HomeDrawerNavigatorParams>;
   DiscoverStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
   CreateNewPostStackNavigator: NavigatorScreenParams<CreateNewPostStackParams>;
@@ -135,7 +147,7 @@ export const HomeStackNavigator: React.FC = (props) => {
     <View style={{ flex: 1 }}>
       <HomeStack.Navigator
         screenOptions={({ navigation }) => ({
-          // headerShown: false,
+          headerShown: false,
           title: '',
           headerStyle: {
             backgroundColor: 'black',
@@ -144,6 +156,7 @@ export const HomeStackNavigator: React.FC = (props) => {
       >
         {/* customのdrawerを入れないといけないな。。。 */}
         <HomeStack.Group>
+          <HomeStack.Screen name='HomeDrawerNavigator' component={HomeDrawerNavigator} />
           <HomeStack.Screen
             name='Home'
             options={({ navigation }) => ({
@@ -224,6 +237,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
+          {/* <HomeStack.Screen name='HomeDrawerNavigator' component={HomeDrawerNavigator} /> */}
         </HomeStack.Group>
 
         <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
