@@ -31,7 +31,7 @@ export const EditProfileStackNavigator: React.FC = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
-            headerTitle: 'Edit my info',
+            headerTitle: 'Edit My Account',
             headerStyle: {
               backgroundColor: 'black',
             },

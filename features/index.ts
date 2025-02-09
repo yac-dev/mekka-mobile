@@ -12,3 +12,4 @@ export * from './SpaceInfo';
 export * from './Report';
 export * from './ViewPost';
 export * from './User';
+export * from './ChangeMyPassword';

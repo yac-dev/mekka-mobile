@@ -32,7 +32,7 @@ import { urls } from '../../../settings';
 import { WebView, WebViewNavigation } from 'react-native-webview';
 import { HomeDrawerNavigator } from './HomeDrawerNavigator';
 import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer';
-
+import { ChangeMyPassword } from '../../ChangeMyPassword';
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
   MapView: undefined;
@@ -90,6 +90,7 @@ export type HomeStackParams = {
   MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
   ViewPost: undefined;
+  ChangeMyPassword: undefined;
   HomeDrawerNavigator: NavigatorScreenParams<HomeDrawerNavigatorParams>;
   DiscoverStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
@@ -228,6 +229,30 @@ export const HomeStackNavigator: React.FC = (props) => {
                 </AppButton.Icon>
               ),
               headerTitle: 'Moments',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
+            name='ChangeMyPassword'
+            component={ChangeMyPassword}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: 'Change My Password',
               headerStyle: {
                 backgroundColor: 'black',
               },

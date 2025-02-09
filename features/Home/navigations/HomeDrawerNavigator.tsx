@@ -33,7 +33,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
   const onChangeMyPasswordPress = () => {
     navigation.closeDrawer();
-    // homeStackNavigation.navigate('ChangeMyPassword');
+    homeStackNavigation.navigate('ChangeMyPassword');
   };
 
   return (
@@ -92,24 +92,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         </View>
         <Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>{auth.name}</Text>
       </View>
-
-      {/* {state.routes.map((route, index) => {
-        return (
-          <TouchableOpacity
-            key={route.key}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 20,
-              backgroundColor: 'rgb(70,70,70)',
-              // backgroundColor: isFocused ? '#e0e0e0' : 'transparent', // Apply background color for the selected tab
-            }}
-            onPress={() => navigation.navigate(route.name)}
-          >
-            <Text style={{ color: 'white' }}>{route.name}</Text>
-          </TouchableOpacity>
-        );
-      })} */}
       <ScrollView>
         <View>
           <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold', paddingHorizontal: 15 }}>
