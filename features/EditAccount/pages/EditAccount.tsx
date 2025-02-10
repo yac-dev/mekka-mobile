@@ -9,6 +9,14 @@ import { UpdateUserInputType } from '../types';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { Colors } from '../../../themes';
+import { useMutation } from '@tanstack/react-query';
+import { updateMe } from '../../../query/mutations';
+import { mutationKeys } from '../../../query/mutationKeys';
+import { UpdateMeInputType } from '../../../query/types';
+import { showMessage } from 'react-native-flash-message';
+import { useRecoilState } from 'recoil';
+import { authAtom } from '../../../recoil/atoms';
+import { LoadingSpinner } from '../../../components';
 
 const avatarWidth = 42;
 
@@ -25,16 +33,24 @@ export const EditAccount = () => {
     onPasswordVisibilityChange,
     validateForm,
   } = useEditAccount();
-  const { apiResult, requestApi } = useUpdateUser();
+  const [auth] = useRecoilState(authAtom);
+
+  const { mutate: updateMeMutation, status: updateMeStatus } = useMutation({
+    mutationFn: (input: UpdateMeInputType) => updateMe(input),
+    onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }),
+    onSuccess: () => {
+      showMessage({ type: 'success', message: 'Your account has been updated successfully.' });
+    },
+  });
 
   const onDonePress = () => {
-    const input: UpdateUserInputType = {
+    const input: UpdateMeInputType = {
+      userId: auth._id,
       name: formData.name.value,
       email: formData.email.value,
-      password: formData.password.value,
       avatar: formData.avatar.value,
     };
-    requestApi(input);
+    updateMeMutation(input);
   };
 
   useEffect(() => {
@@ -158,6 +174,7 @@ export const EditAccount = () => {
         <VectorIcon.MCI name='delete' color='red' size={20} style={{ marginRight: 5 }} />
         <Text style={{ color: 'red', fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>Delete My Account</Text>
       </TouchableOpacity>
+      <LoadingSpinner isVisible={updateMeStatus === 'pending'} message='Updating your account...' />
     </View>
   );
 };

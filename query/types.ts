@@ -250,3 +250,14 @@ export type UpdateUserInputType = {
 export type UpdateUserOutputType = {
   user: UserType;
 };
+
+export type UpdateMeInputType = {
+  userId: string;
+  name?: string;
+  email?: string;
+  avatar?: string;
+};
+
+export type UpdateMeOutputType = {
+  user: UserType;
+};
