@@ -549,6 +549,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
           paddingVertical: 8,
           borderTopWidth: 0.3,
           borderTopColor: 'rgb(100,100,100)',
+          width: '100%',
         }}
       >
         <FlatList

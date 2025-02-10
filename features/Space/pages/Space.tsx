@@ -250,6 +250,7 @@ export const Space: React.FC<ISpace> = ({
                 </View>
                 <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
+
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity
                   style={{
@@ -397,6 +398,7 @@ export const Space: React.FC<ISpace> = ({
           paddingVertical: 8,
           borderTopWidth: 0.3,
           borderTopColor: 'rgb(100,100,100)',
+          width: '100%',
         }}
       >
         <FlatList

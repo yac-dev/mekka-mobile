@@ -141,7 +141,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Stay up to date?</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={onChangeMyPasswordPress}
@@ -153,7 +153,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
               </Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Secure your credential</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {/* <View style={{ height: 0.3, backgroundColor: 'rgb(100,100,100)', marginHorizontal: 15 }}></View> */}
         <View style={{ marginTop: 15 }}>
@@ -165,7 +165,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
               navigation.closeDrawer();
-              homeStackNavigation.navigate('CreateNewPostStackNavigator');
+              homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
             }}
           >
             <VectorIcon.MCI name='rocket-launch' size={20} color={Colors.white} style={{ marginRight: 20 }} />
