@@ -97,7 +97,7 @@ export const Base = () => {
       setTimeout(() => {
         Alert.alert(
           `Invite your friends to ${data.space.name}`,
-          `Var is the group photo/video sharing app.${'\n'}Your friends can join your space using ${
+          `Lampole is the group photo/video sharing app.${'\n'}Your friends can join your space using ${
             data.space.name
           }'s invitation code. Would you like to share it?`,
           [
@@ -106,7 +106,7 @@ export const Base = () => {
               onPress: () =>
                 Share.share({
                   title: `Invite your friends to ${data.space.name}`,
-                  message: `Hey my friends!${'\n'}Access and download the Var app down below${'\n'}https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148.${'\n'}Then enter invitation key code to join my space👉 ${
+                  message: `Hey my friends!${'\n'}Access and download the Lampole app down below${'\n'}https://apps.apple.com/us/app/lampole/id6556818188.${'\n'}Then enter invitation key code to join my space👉 ${
                     data.space.secretKey
                   }`,
                   // url: 'https://apps.apple.com/us/app/var-group-photo-video-sharing/id6472717148',

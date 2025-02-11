@@ -25,7 +25,7 @@ import { PostType, SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
+import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
 import LinearGradient from 'react-native-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
@@ -33,16 +33,26 @@ import { AppButton, MapPostThumbnail } from '../../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Moments } from './Moments';
 import * as Haptics from 'expo-haptics';
+import { Icons } from '../../../Icons/images';
 
 const windowWidth = Dimensions.get('window').width;
 
 type RegionViewProps = {
   openAuthMenuBottomSheet: (index: number) => void;
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
+  openChooseViewBottomSheet: (index: number) => void;
+  openAddNewPostMenuBottomSheet: (index: number) => void;
+  currentViewIndex: number;
 };
 
 // mapからgridに切り替えると、currentTagが切り替わってない感じ。。。多分何かおかしい。
-export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet, openAddNewSpaceMenuBottomSheet }) => {
+export const RegionView: React.FC<RegionViewProps> = ({
+  openAuthMenuBottomSheet,
+  openAddNewSpaceMenuBottomSheet,
+  openChooseViewBottomSheet,
+  openAddNewPostMenuBottomSheet,
+  currentViewIndex,
+}) => {
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -55,6 +65,8 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
     latitudeDelta: 100.0922,
     longitudeDelta: 100.0421,
   });
+
+  const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
 
   const {
     data: postsByTagIdAndRegionData,
@@ -319,50 +331,25 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  openAddNewSpaceMenuBottomSheet(0);
+                  // openAddNewSpaceMenuBottomSheet(0);
+                  homeDrawerNavigation.toggleDrawer();
                 }}
               >
-                <VectorIcon.II name='home' color={Colors.white} size={18} />
-                <View
-                  style={{
-                    backgroundColor: 'black',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: -4,
-                    right: -5,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      width: 10,
-                      height: 10,
-                      borderRadius: 20,
-                    }}
-                  >
-                    <VectorIcon.II name='add' size={11} color={'black'} />
-                  </View>
-                </View>
+                <VectorIcon.II name='menu' color={Colors.white} size={18} />
               </TouchableOpacity>
             </View>
           }
         />
-        <AppButton.Icon
+        {/* <AppButton.Icon
           onButtonPress={() => openAuthMenuBottomSheet(0)}
           customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
           hasShadow={false}
         >
           <VectorIcon.MCI name='account' size={20} color={Colors.white} />
-        </AppButton.Icon>
+        </AppButton.Icon> */}
       </View>
 
-      <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
+      {/* <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
         <View
           style={{
             flexDirection: 'column',
@@ -382,8 +369,7 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
             </TouchableOpacity>
           </View>
         </View>
-        <Moments />
-      </View>
+      </View> */}
       {/* defaultの位置はnew yorkでいい。fetchが */}
       <Mapbox.MapView
         ref={mapRef}
@@ -397,6 +383,144 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
+        <View style={{ height: 60, justifyContent: 'center' }}>
+          <View
+            style={{
+              flexDirection: 'column',
+              paddingHorizontal: 12,
+            }}
+          >
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, justifyContent: 'space-between' }}
+            >
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+                activeOpacity={0.7}
+              >
+                <View style={{ marginRight: 8 }}>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                </View>
+                <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity
+                  style={{
+                    marginRight: 10,
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: 'black',
+                        shadowOffset: { width: 5, height: 5 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 8,
+                      },
+                      android: {
+                        elevation: 5,
+                      },
+                    }),
+                  }}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    openAddNewPostMenuBottomSheet(0);
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                  }}
+                >
+                  <VectorIcon.MCI name='plus' size={25} color={'white'} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    marginRight: 10,
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: 'black',
+                        shadowOffset: { width: 5, height: 5 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 8,
+                      },
+                      android: {
+                        elevation: 5,
+                      },
+                    }),
+                  }}
+                  onPress={() => {
+                    homeStackNavigation.navigate('MomentsStackNavigator');
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 20, height: 20 }}
+                    source={require('../../../assets/forApp/ghost.png')}
+                    contentFit='contain'
+                    tintColor={Colors.white}
+                  />
+                  {momentLogs[currentSpace._id] ? (
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: -3,
+                        right: -5,
+                        width: 16,
+                        height: 16,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'red',
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
+                    </View>
+                  ) : null}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: 'black',
+                        shadowOffset: { width: 5, height: 5 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 8,
+                      },
+                      android: {
+                        elevation: 5,
+                      },
+                    }),
+                  }}
+                  onPress={() => {
+                    openChooseViewBottomSheet(0);
+                  }}
+                >
+                  {currentViewIndex === 0 ? (
+                    <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
+                  ) : (
+                    <ExpoImage
+                      style={{ width: 20, height: 20 }}
+                      source={Icons.globe}
+                      contentFit='contain'
+                      tintColor={Colors.white}
+                    />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
         <Camera
           defaultSettings={{
             centerCoordinate: [-122.4324, 37.78825],
@@ -425,6 +549,7 @@ export const RegionView: React.FC<RegionViewProps> = ({ openAuthMenuBottomSheet,
           paddingVertical: 8,
           borderTopWidth: 0.3,
           borderTopColor: 'rgb(100,100,100)',
+          width: '100%',
         }}
       >
         <FlatList

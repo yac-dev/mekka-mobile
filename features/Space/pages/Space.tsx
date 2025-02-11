@@ -24,7 +24,7 @@ import { useRecoilValue } from 'recoil';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom, currentTagAtom } from '../../../recoil';
+import { currentSpaceAtom, currentTagAtom, momentLogsAtom } from '../../../recoil';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
 import { mutationKeys, queryKeys } from '../../../query';
@@ -41,6 +41,7 @@ import { Grid } from '../components/Grid';
 import { useQueryClient } from '@tanstack/react-query';
 import { Moments } from '../../Home/components/Moments';
 import { MomentSkelton } from '../../../components/Skelton';
+import { Icons } from '../../../Icons/images';
 // id毎でqueryをcacheしたいのよね。
 // type ISpace = NativeStackScreenProps<SpaceStackNavigatorParams, 'Space'>;
 
@@ -48,12 +49,21 @@ const windowWidth = Dimensions.get('window').width;
 
 type ISpace = {
   space: SpaceType;
+  openChooseViewBottomSheet: (index: number) => void;
+  openAddNewPostMenuBottomSheet: (index: number) => void;
+  currentViewIndex: number;
 };
 
 export type RouteType = TagType & { key: number };
 
-export const Space: React.FC<ISpace> = ({ space }) => {
+export const Space: React.FC<ISpace> = ({
+  space,
+  openChooseViewBottomSheet,
+  openAddNewPostMenuBottomSheet,
+  currentViewIndex,
+}) => {
   const queryClient = useQueryClient();
+  const [momentLogs] = useRecoilState(momentLogsAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
@@ -210,7 +220,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      {/* <LinearGradient
+      <LinearGradient
         style={{
           zIndex: 1000,
           position: 'absolute',
@@ -219,32 +229,150 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           right: 0,
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
-      > */}
-      <View style={{ paddingTop: 10, paddingBottom: 10 }}>
-        <View
-          style={{
-            flexDirection: 'column',
-            paddingHorizontal: 12,
-          }}
-        >
+      >
+        <View style={{ height: 60, justifyContent: 'center' }}>
           <View
-            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}
+            style={{
+              flexDirection: 'column',
+              paddingHorizontal: 12,
+            }}
           >
-            <TouchableOpacity
-              style={{ flexDirection: 'row', alignItems: 'center' }}
-              onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
-              activeOpacity={0.7}
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, justifyContent: 'space-between' }}
             >
-              <View style={{ marginRight: 8 }}>
-                <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+                activeOpacity={0.7}
+              >
+                <View style={{ marginRight: 8 }}>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                </View>
+                <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+              </TouchableOpacity>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity
+                  style={{
+                    marginRight: 10,
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: 'black',
+                        shadowOffset: { width: 5, height: 5 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 8,
+                      },
+                      android: {
+                        elevation: 5,
+                      },
+                    }),
+                  }}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    openAddNewPostMenuBottomSheet(0);
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                  }}
+                >
+                  <VectorIcon.MCI name='plus' size={25} color={'white'} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    marginRight: 10,
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: 'black',
+                        shadowOffset: { width: 5, height: 5 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 8,
+                      },
+                      android: {
+                        elevation: 5,
+                      },
+                    }),
+                  }}
+                  onPress={() => {
+                    homeStackNavigation.navigate('MomentsStackNavigator');
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <ExpoImage
+                    style={{ width: 20, height: 20 }}
+                    source={require('../../../assets/forApp/ghost.png')}
+                    contentFit='contain'
+                    tintColor={Colors.white}
+                  />
+                  {momentLogs[currentSpace._id] ? (
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: -3,
+                        right: -5,
+                        width: 16,
+                        height: 16,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'red',
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
+                    </View>
+                  ) : null}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: 38,
+                    height: 38,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: 'black',
+                        shadowOffset: { width: 5, height: 5 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 8,
+                      },
+                      android: {
+                        elevation: 5,
+                      },
+                    }),
+                  }}
+                  onPress={() => {
+                    openChooseViewBottomSheet(0);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  {currentViewIndex === 0 ? (
+                    <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
+                  ) : (
+                    <ExpoImage
+                      style={{ width: 20, height: 20 }}
+                      source={Icons.globe}
+                      contentFit='contain'
+                      tintColor={Colors.white}
+                    />
+                  )}
+                </TouchableOpacity>
               </View>
-              <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
-            </TouchableOpacity>
-            {/* <VectorIcon.II name='search' size={22} color={Colors.white} /> */}
+            </View>
           </View>
+          {/* <Moments /> */}
         </View>
-        <Moments />
-      </View>
+      </LinearGradient>
       <TabView
         lazy
         swipeEnabled={false}
@@ -270,6 +398,7 @@ export const Space: React.FC<ISpace> = ({ space }) => {
           paddingVertical: 8,
           borderTopWidth: 0.3,
           borderTopColor: 'rgb(100,100,100)',
+          width: '100%',
         }}
       >
         <FlatList

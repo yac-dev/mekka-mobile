@@ -10,9 +10,21 @@ import { useJoinPublicSpaceByIdState } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
 import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
-
+import { VectorIcon } from '../../../Icons';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getSpaceById } from '../../../query/queries';
+import { queryKeys } from '../../../query/queryKeys';
+import { useQueryClient } from '@tanstack/react-query';
+import { joinPublicSpaceBySpaceId } from '../../../query/mutations';
+import { JoinPublicSpaceBySpaceIdInputType } from '../../../query/types';
 // ここに、spaceのthumbnailから始まり、
-const SpaceDetail: React.FC = () => {
+
+type SpaceDetailProps = {
+  spaceId: string;
+};
+
+const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
+  const queryClient = useQueryClient();
   const spaceDetailStackNavigation = useNavigation<SpaceDetailStackNavigatorProp>();
   const [auth] = useRecoilState(authAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
@@ -20,11 +32,46 @@ const SpaceDetail: React.FC = () => {
   const [, setLogsTable] = useRecoilState(logsTableAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const { apiResult } = useGetSpaceByIdState();
-  const { apiResult: joinPublicSpaceByIdResult, requestApi: requestJoinPublicSpaceById } =
-    useJoinPublicSpaceByIdState();
+
+  const { mutate: joinPublicSpaceBySpaceIdMutation, status } = useMutation({
+    mutationFn: (input: JoinPublicSpaceBySpaceIdInputType) => joinPublicSpaceBySpaceId(input),
+    // onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }),
+    onSuccess: (data) => {
+      console.log('post data', data);
+      showMessage({ message: 'Joined new space successfully.', type: 'success' });
+      setMySpaces((previous) => [...previous, data.space]);
+      if (!mySpaces?.length) {
+        setCurrentSpace(data.space);
+        setCurrentTag(data.space.tags[0]);
+        setLogsTable((previous) => {
+          return {
+            ...previous,
+            [data.space._id]: {
+              [data.space.tags[0]._id]: 0,
+            },
+          };
+        });
+      }
+      spaceDetailStackNavigation.goBack();
+    },
+  });
+
+  const { data: getSpaceByIdData, status: getSpaceByIdStatus } = useQuery({
+    queryKey: [queryKeys.spaceById, spaceId],
+    queryFn: () => getSpaceById({ _id: spaceId }),
+  });
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
 
   const isJoinSpaceValidated = () => {
-    if (mySpaces.some((space) => space._id === apiResult.data?.space._id)) {
+    if (mySpaces.some((space) => space._id === spaceId)) {
       return true;
     }
 
@@ -32,49 +79,28 @@ const SpaceDetail: React.FC = () => {
   };
 
   const onJoinPress = async () => {
-    requestJoinPublicSpaceById({ userId: auth._id, spaceId: apiResult.data?.space._id });
+    joinPublicSpaceBySpaceIdMutation({ userId: auth._id, spaceId: spaceId });
   };
 
   useEffect(() => {
     spaceDetailStackNavigation.setOptions({
-      headerRight: () =>
-        apiResult.status === 'loading' ? null : (
-          <TouchableOpacity disabled={isJoinSpaceValidated()} onPress={() => onJoinPress()}>
-            <Text
-              style={{
-                color: isJoinSpaceValidated() ? 'rgb(150,150,150)' : 'white',
-                fontSize: 20,
-                fontWeight: 'bold',
-              }}
-            >
-              Join
-            </Text>
-          </TouchableOpacity>
-        ),
+      headerRight: () => (
+        <TouchableOpacity activeOpacity={0.7} disabled={isJoinSpaceValidated()} onPress={() => onJoinPress()}>
+          <Text
+            style={{
+              color: isJoinSpaceValidated() ? 'rgb(100,100,100)' : 'white',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
+          >
+            Join
+          </Text>
+        </TouchableOpacity>
+      ),
     });
-  }, [apiResult]);
+  }, [status]);
 
-  useEffect(() => {
-    if (joinPublicSpaceByIdResult.status === 'success') {
-      showMessage({ message: 'Joined new space successfully.', type: 'success' });
-      setMySpaces((previous) => [...previous, joinPublicSpaceByIdResult.data.space]);
-      if (!mySpaces?.length) {
-        setCurrentSpace(joinPublicSpaceByIdResult.data?.space);
-        setCurrentTag(joinPublicSpaceByIdResult.data?.space.tags[0]);
-        setLogsTable((previous) => {
-          return {
-            ...previous,
-            [joinPublicSpaceByIdResult.data?.space._id]: {
-              [joinPublicSpaceByIdResult.data?.space.tags[0]._id]: 0,
-            },
-          };
-        });
-      }
-      spaceDetailStackNavigation.goBack();
-    }
-  }, [joinPublicSpaceByIdResult.status]);
-
-  if (apiResult.status === 'loading') {
+  if (getSpaceByIdStatus === 'pending') {
     return (
       <View style={styles.loading}>
         <ActivityIndicator />
@@ -84,26 +110,59 @@ const SpaceDetail: React.FC = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <ExpoImage
-            style={{ width: 80, height: 80, borderRadius: 40, marginRight: 20 }}
-            source={{ uri: apiResult.data?.space.icon }}
-            contentFit='cover'
-          />
-          <Text
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: 25,
-            }}
-          >
-            {apiResult.data?.space.name}
+      <View style={{ marginBottom: 20 }}>
+        <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <ExpoImage
+              style={{ width: 60, height: 60, borderRadius: 40, marginBottom: 15 }}
+              source={{ uri: getSpaceByIdData?.space.icon }}
+              contentFit='cover'
+            />
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 27,
+              }}
+            >
+              {getSpaceByIdData?.space.name}
+            </Text>
+          </View>
+        </View>
+        <View style={{ paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ lineHeight: 21, color: 'white', fontSize: 15, marginBottom: 5 }}>
+            {getSpaceByIdData?.space.description}
           </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+              <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
+              <Text
+                style={{
+                  color: 'rgb(150, 150, 150)',
+                  fontSize: 12,
+                  marginRight: 10,
+                }}
+              >
+                {getSpaceByIdData?.space.createdBy.name}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+              <VectorIcon.MCI name='cake-variant' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
+              <Text
+                style={{
+                  color: 'rgb(150, 150, 150)',
+                  fontSize: 12,
+                  marginRight: 10,
+                }}
+              >
+                since {formatDate(getSpaceByIdData?.space.createdAt)}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
-      <Tabs />
-      <LoadingSpinner isVisible={joinPublicSpaceByIdResult.status === 'loading'} message={'Processing now...'} />
+      <Tabs tagId={getSpaceByIdData?.space.tags[1]._id} spaceId={spaceId} />
+      <LoadingSpinner isVisible={status === 'pending'} message={'Processing now 🤔'} />
     </View>
   );
 };

@@ -8,22 +8,22 @@ export const useEditAccount = () => {
   const [auth] = useRecoilState(authAtom);
   const [formData, setFormData] = useState<EditAccountFormType>({
     name: {
-      hasChanged: false,
+      // hasChanged: false,
       isValidated: true,
       value: auth.name,
     },
     email: {
-      hasChanged: false,
+      // hasChanged: false,
       isValidated: true,
       value: auth.email,
     },
     password: {
-      hasChanged: false,
+      // hasChanged: false,
       isValidated: true,
       value: auth.password,
     },
     avatar: {
-      hasChanged: false,
+      // hasChanged: false,
       isValidated: true,
       value: auth.avatar,
     },
@@ -43,7 +43,7 @@ export const useEditAccount = () => {
         return {
           ...previous,
           avatar: {
-            hasChanged: true,
+            // hasChanged: true,
             isValidated: true,
             value: pickedImage.assets[0].uri,
           },
@@ -57,7 +57,7 @@ export const useEditAccount = () => {
       return {
         ...previous,
         name: {
-          hasChanged: newText === auth.name ? false : true,
+          // hasChanged: newText === auth.name ? false : true,
           isValidated: newText.length ? true : false,
           value: newText,
         },
@@ -70,7 +70,7 @@ export const useEditAccount = () => {
       return {
         ...previous,
         email: {
-          hasChanged: newText === auth.email ? false : true,
+          // hasChanged: newText === auth.email ? false : true,
           isValidated: newText.length ? true : false,
           value: newText,
         },
@@ -83,7 +83,7 @@ export const useEditAccount = () => {
       return {
         ...previous,
         password: {
-          hasChanged: newText === auth.password ? false : true,
+          // hasChanged: newText === auth.password ? false : true,
           isValidated: newText.length ? true : false,
           value: newText,
         },
@@ -97,27 +97,20 @@ export const useEditAccount = () => {
 
   const validateForm = () => {
     if (
-      formData.name.hasChanged ||
-      formData.email.hasChanged ||
-      formData.password.hasChanged ||
-      formData.avatar.hasChanged
+      formData.name.value !== auth.name ||
+      formData.email.value !== auth.email ||
+      formData.avatar.value !== auth.avatar
     ) {
-      if (
-        formData.name.isValidated &&
-        formData.email.isValidated &&
-        formData.password.isValidated &&
-        formData.avatar.isValidated
-      ) {
-        setIsFormValidates(true);
+      if (formData.name.isValidated && formData.email.isValidated && formData.avatar.isValidated) {
+        return true;
       }
     } else {
-      setIsFormValidates(false);
+      return false;
     }
   };
 
   return {
     formData,
-    isFormValidated,
     isPasswordVisible,
     onAvatarPress,
     onNameChange,

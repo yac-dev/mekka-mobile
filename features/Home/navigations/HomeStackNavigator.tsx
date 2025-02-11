@@ -30,6 +30,10 @@ import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { urls } from '../../../settings';
 import { WebView, WebViewNavigation } from 'react-native-webview';
+import { HomeDrawerNavigator } from './HomeDrawerNavigator';
+import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer';
+import { ChangeMyPassword } from '../../ChangeMyPassword';
+import { EditAccount } from '../../EditAccount/pages/EditAccount';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -67,6 +71,15 @@ export type ViewPostStackNavigatorParams = {
   ReportComment: undefined;
 };
 
+export type HomeDrawerNavigatorParams = {
+  Home: undefined;
+  EditAccount: undefined;
+  Settings: undefined;
+};
+
+// export type HomeDrawerNavigatorProps = NavigatorScreenParams<HomeDrawerNavigatorParams>;
+export type HomeDrawerNavigatorProps = DrawerNavigationProp<HomeDrawerNavigatorParams>;
+
 export type MomentsStackNavigatorProps = NativeStackNavigationProp<MomentsStackParams>;
 export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootStackParams>;
 
@@ -79,6 +92,8 @@ export type HomeStackParams = {
   MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
   ViewPost: undefined;
+  ChangeMyPassword: undefined;
+  HomeDrawerNavigator: NavigatorScreenParams<HomeDrawerNavigatorParams>;
   DiscoverStackNavigator: undefined;
   CreateNewSpaceStackNavigator: undefined;
   CreateNewPostStackNavigator: NavigatorScreenParams<CreateNewPostStackParams>;
@@ -88,6 +103,7 @@ export type HomeStackParams = {
   EditProfileStackNavigator: {
     screen: 'EditProfile';
   };
+  EditMyAccount: undefined;
   WriteDescription: undefined;
   LocationPicker: undefined;
   EmojiPicker: undefined;
@@ -135,7 +151,7 @@ export const HomeStackNavigator: React.FC = (props) => {
     <View style={{ flex: 1 }}>
       <HomeStack.Navigator
         screenOptions={({ navigation }) => ({
-          // headerShown: false,
+          headerShown: false,
           title: '',
           headerStyle: {
             backgroundColor: 'black',
@@ -144,6 +160,7 @@ export const HomeStackNavigator: React.FC = (props) => {
       >
         {/* customのdrawerを入れないといけないな。。。 */}
         <HomeStack.Group>
+          <HomeStack.Screen name='HomeDrawerNavigator' component={HomeDrawerNavigator} />
           <HomeStack.Screen
             name='Home'
             options={({ navigation }) => ({
@@ -224,6 +241,79 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
+          <HomeStack.Screen
+            name='ChangeMyPassword'
+            component={ChangeMyPassword}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: 'Change My Password',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
+            name='EditMyAccount'
+            component={EditAccount}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
+            name='DeleteMyAccount'
+            component={DeleteMyAccount}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          {/* <HomeStack.Screen name='HomeDrawerNavigator' component={HomeDrawerNavigator} /> */}
         </HomeStack.Group>
 
         <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
@@ -302,7 +392,7 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
         </HomeStack.Group>
-        <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
+        {/* <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
           <HomeStack.Screen
             name='EditProfileStackNavigator'
             component={EditProfileStackNavigator}
@@ -343,7 +433,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               },
             })}
           />
-        </HomeStack.Group>
+        </HomeStack.Group> */}
         <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal', animation: 'fade', animationDuration: 200 }}>
           <HomeStack.Screen
             name='ViewPostStackNavigator'

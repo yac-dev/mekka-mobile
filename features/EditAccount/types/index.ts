@@ -22,7 +22,7 @@ export type UserType = {
 };
 
 export type FormType<T> = {
-  hasChanged: boolean;
+  // hasChanged: boolean;
   isValidated: boolean;
   value: T;
 };

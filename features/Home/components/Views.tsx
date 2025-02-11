@@ -25,6 +25,7 @@ import { Colors } from '../../../themes';
 // });
 //　まあでもここでもusecallbackすればいけるかね。。。
 
+//current Viewっていうglobal state欲しいな。
 const routes = [
   { key: 'GridView', title: 'Grid View' },
   { key: 'RegionView', title: 'Region View' },
@@ -86,15 +87,21 @@ export const Views: React.FC<{
       case 'GridView':
         return (
           <CurrentSpace
+            openChooseViewBottomSheet={openChooseViewBottomSheet}
+            openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+            currentViewIndex={index}
           />
         );
       case 'RegionView':
         return (
           <RegionView
+            openChooseViewBottomSheet={openChooseViewBottomSheet}
+            openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
             openAuthMenuBottomSheet={openAuthMenuBottomSheet}
             openAddNewSpaceMenuBottomSheet={openAddNewSpaceMenuBottomSheet}
+            currentViewIndex={index}
           />
         );
       default:
@@ -114,7 +121,7 @@ export const Views: React.FC<{
         animationEnabled={false}
         swipeEnabled={false}
       />
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           position: 'absolute',
           bottom: 85,
@@ -179,12 +186,8 @@ export const Views: React.FC<{
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
-        {/* <View style={{ width: 30, aspectRatio: 1 }}>
-          <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: '100%', height: '100%', borderRadius: 30 }} />
-          <AddIcon />
-        </View> */}
         <VectorIcon.MCI name='plus' size={25} color={'white'} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {/* <View
         style={{
           width: 160,

@@ -45,7 +45,7 @@ export const useSignupForm = (): UseSignupFormOutputType => {
         ...previous,
         name: {
           value: text,
-          isValidated: text.length ? true : false,
+          isValidated: text.length >= 2 ? true : false,
         },
       };
     });

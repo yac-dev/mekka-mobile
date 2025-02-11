@@ -6,4 +6,5 @@ export const mutationKeys = {
   createComment: 'createComment',
   registerPushToken: 'registerPushToken',
   updateSpaceCheckedInDate: 'updateSpaceCheckedInDate',
+  updateMe: 'updateMe',
 };

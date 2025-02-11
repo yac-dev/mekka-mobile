@@ -1,49 +1,67 @@
 import React, { useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import { useGetMembersBySpaceIdState } from '../hooks';
 import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
+import { useQuery } from '@tanstack/react-query';
+import { getMembersBySpaceId, queryKeys } from '../../../query';
 
 type MembersProps = {
   spaceId: string;
 };
 
-export const Members: React.FC<MembersProps> = () => {
-  const { apiResult } = useGetSpaceByIdState();
-  const { apiResult: getMembersBySpaceIdResult, requestApi } = useGetMembersBySpaceIdState();
+const itemWidth = Dimensions.get('window').width / 3;
+const avatarWidth = itemWidth * 0.7;
 
-  useEffect(() => {
-    requestApi({ spaceId: apiResult.data?.space._id });
-  }, []);
+export const Members: React.FC<MembersProps> = ({ spaceId }) => {
+  const { data, status } = useQuery({
+    queryKey: [queryKeys.members, spaceId],
+    queryFn: () => getMembersBySpaceId({ spaceId: spaceId }),
+  });
 
   const renderUser = useCallback(({ item }: { item: UserType }) => {
     return (
-      <TouchableOpacity
+      <View
         style={{
-          flexDirection: 'row',
           alignItems: 'center',
-          padding: 15,
-          justifyContent: 'space-between',
+          width: itemWidth,
+          height: itemWidth,
         }}
-        activeOpacity={0.5}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <ExpoImage
-            style={{ width: 30, height: 30, marginRight: 20 }}
-            source={{ uri: item.avatar }}
-            contentFit='contain'
-          />
-          <Text style={{ color: 'white', fontSize: 17 }}>{item.name}</Text>
+        <View
+          style={{
+            backgroundColor: 'rgb(70,70,70)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: avatarWidth,
+            height: avatarWidth,
+            borderRadius: avatarWidth / 2,
+            marginBottom: 10,
+          }}
+        >
+          {item.avatar ? (
+            <ExpoImage
+              style={{ width: avatarWidth, height: avatarWidth }}
+              source={{ uri: item.avatar }}
+              contentFit='contain'
+            />
+          ) : (
+            <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+              {item.name.slice(0, 2).toUpperCase()}
+            </Text>
+          )}
         </View>
-        <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
-      </TouchableOpacity>
+        <Text numberOfLines={2} style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>
+          {item.name}
+        </Text>
+      </View>
     );
   }, []);
 
-  if (getMembersBySpaceIdResult.status === 'loading') {
+  if (status === 'pending') {
     return (
       <View style={styles.loading}>
         <ActivityIndicator />
@@ -52,12 +70,8 @@ export const Members: React.FC<MembersProps> = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.black, padding: 10 }}>
-      <FlatList
-        data={getMembersBySpaceIdResult.data?.users}
-        renderItem={renderUser}
-        keyExtractor={(item, index) => `${index}`}
-      />
+    <View style={{ flex: 1, backgroundColor: Colors.black, paddingTop: 10 }}>
+      <FlatList data={data.users} numColumns={3} renderItem={renderUser} keyExtractor={(item, index) => `${index}`} />
     </View>
   );
 };

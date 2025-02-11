@@ -1,10 +1,15 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Feature, Members, Tags } from '../components';
+import { Feature, Members, Tags, PostsByGrid } from '../components';
 
 const Tab = createMaterialTopTabNavigator();
 
-export const Tabs = () => {
+type TabsProps = {
+  tagId: string;
+  spaceId: string;
+};
+
+export const Tabs: React.FC<TabsProps> = ({ tagId, spaceId }) => {
   const CustomTabBar = ({ state, descriptors, navigation }) => {
     return (
       <View style={{ alignItems: 'center' }}>
@@ -33,7 +38,10 @@ export const Tabs = () => {
                 style={{
                   alignItems: 'center',
                   paddingHorizontal: 15,
-                  paddingBottom: 10,
+                  paddingVertical: 10,
+                  backgroundColor: isFocused ? 'rgb(50,50,50)' : 'transparent',
+                  borderRadius: 20,
+                  marginHorizontal: 5,
                 }}
                 onPress={onPress}
               >
@@ -56,9 +64,9 @@ export const Tabs = () => {
         swipeEnabled: false,
       })}
     >
-      <Tab.Screen name={'Feature'} component={Feature} />
-      <Tab.Screen name={'Members'} component={Members} />
-      <Tab.Screen name={'Tags'} component={Tags} />
+      <Tab.Screen name={'Posts'}>{(props) => <PostsByGrid {...props} tagId={tagId} />}</Tab.Screen>
+      <Tab.Screen name={'Features'} component={Feature} />
+      <Tab.Screen name={'Members'}>{(props) => <Members {...props} spaceId={spaceId} />}</Tab.Screen>
     </Tab.Navigator>
   );
 };

@@ -8,10 +8,10 @@ export const NoConnection = () => {
     <EmptyView
       icon={<VectorIcon.FT name='wifi-off' size={48} color='white' style={{ marginBottom: 30 }} />}
       title='Something went wrong🤨'
-      subtitle={`Please check your internet connection and reboot the app.${'\n'}If the issue persists, please DM us.`}
+      subtitle={`Please check your internet connection and reboot the app.${'\n'}If the issue persists, please DM here.`}
       action={
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://x.com/LampostTech')}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => Linking.openURL('https://x.com/yac_prod')}>
             <ExpoImage
               source={require('../../../assets/forApp/icons8-twitter.png')}
               style={{ width: 50, height: 50, marginRight: 10 }}

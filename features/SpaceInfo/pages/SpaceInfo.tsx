@@ -24,14 +24,74 @@ export const SpaceInfo = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
-          <ExpoImage
-            style={{ width: 60, height: 60, borderRadius: 40, marginRight: 20 }}
-            source={{ uri: currentSpace.icon }}
-            contentFit='cover'
-          />
+      <View style={{ marginBottom: 10 }}>
+        <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <ExpoImage
+              style={{ width: 60, height: 60, borderRadius: 40, marginBottom: 15 }}
+              source={{ uri: currentSpace.icon }}
+              contentFit='cover'
+            />
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 27,
+                marginBottom: 5,
+              }}
+            >
+              {currentSpace.name}
+            </Text>
+            <Text
+              style={{
+                color: 'rgb(150, 150, 150)',
+                fontSize: 12,
+              }}
+            >
+              @{currentSpace.secretKey}
+            </Text>
+          </View>
+        </View>
+        <View style={{ paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ lineHeight: 21, color: 'white', fontSize: 15, marginBottom: 5 }}>
+            {currentSpace.description}
+          </Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+              <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
+              <Text
+                style={{
+                  color: 'rgb(150, 150, 150)',
+                  fontSize: 12,
+                  marginRight: 10,
+                }}
+              >
+                {currentSpace.createdBy.name}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+              <VectorIcon.MCI name='cake-variant' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
+              <Text
+                style={{
+                  color: 'rgb(150, 150, 150)',
+                  fontSize: 12,
+                  marginRight: 10,
+                }}
+              >
+                {formatDate(currentSpace.createdAt)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <Tabs />
+    </View>
+  );
+};
+
+{
+  /* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               style={{
                 padding: 10,
@@ -39,11 +99,9 @@ export const SpaceInfo = () => {
                 marginRight: 10,
                 alignItems: 'center',
                 flexDirection: 'row',
-                // backgroundColor: 'rgb(50, 50, 50)',
               }}
               activeOpacity={0.7}
             >
-              {/* <VectorIcon.II name='images' color='white' size={20} style={{ marginRight: 10 }} /> */}
               <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginBottom: 5 }}>Posts</Text>
                 <Text style={{ color: 'rgb(150,150,150)', fontSize: 16 }}>1k</Text>
@@ -55,7 +113,6 @@ export const SpaceInfo = () => {
                 borderRadius: 10,
                 marginRight: 10,
                 alignItems: 'center',
-                // backgroundColor: 'rgb(50, 50, 50)',
               }}
               activeOpacity={0.7}
               onPress={() => spaceInfoStackNavigation.navigate('Members')}
@@ -74,51 +131,5 @@ export const SpaceInfo = () => {
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>Tags</Text>
               <Text style={{ color: 'rgb(150,150,150)', fontSize: 15 }}>{currentSpace.tags.length}</Text>
             </TouchableOpacity>
-          </View>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5 }}>
-          <Text
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: 27,
-              marginRight: 10,
-            }}
-          >
-            {currentSpace.name}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text
-            style={{
-              color: 'rgb(150, 150, 150)',
-              fontSize: 12,
-              marginRight: 10,
-            }}
-          >
-            @{currentSpace.secretKey}
-          </Text>
-        </View>
-      </View>
-      <View style={{ paddingHorizontal: 20 }}>
-        <Text style={{ lineHeight: 21, color: 'white', fontSize: 15, marginBottom: 5 }}>
-          {currentSpace.description}
-        </Text>
-      </View>
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
-        <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
-        <Text
-          style={{
-            color: 'rgb(150, 150, 150)',
-            fontSize: 12,
-            marginRight: 10,
-          }}
-        >
-          {currentSpace.createdBy.name} created at {formatDate(currentSpace.createdAt)}
-        </Text>
-      </View> */}
-
-      <Tabs />
-    </View>
-  );
-};
+          </View> */
+}

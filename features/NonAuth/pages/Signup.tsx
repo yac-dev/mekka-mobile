@@ -72,7 +72,7 @@ export const Signup: React.FC<ISignup> = ({ route }) => {
 
   useEffect(() => {
     if (signupResult.status === 'success') {
-      showMessage({ message: 'Welcome to Var', type: 'success', duration: 5000 });
+      showMessage({ message: 'Welcome to Lampole', type: 'success', duration: 5000 });
     }
   }, [signupResult]);
 
@@ -98,7 +98,7 @@ export const Signup: React.FC<ISignup> = ({ route }) => {
             Signup
           </Text>
           <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            Welcome to Var. To get started, {'\n'}please provide your name, email and password.
+            Welcome to Lampole. To get started, {'\n'}please provide your name, email and password.
           </Text>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -208,7 +208,7 @@ export const Signup: React.FC<ISignup> = ({ route }) => {
       </ScrollView>
       <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
         <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-          <Text style={{ color: 'rgb(150,150,150)' }}>By signing up, you accept and read Var's&nbsp;</Text>
+          <Text style={{ color: 'rgb(150,150,150)' }}>By signing up, you accept and read Lampole's&nbsp;</Text>
           <TouchableOpacity
             style={{ borderBottomWidth: 0.5, borderBottomColor: 'rgb(150, 150,150)' }}
             onPress={() => navigation.navigate('EULA')}

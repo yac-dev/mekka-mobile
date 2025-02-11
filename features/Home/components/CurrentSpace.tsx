@@ -28,8 +28,8 @@ import { SpaceType, TagType } from '../../../types';
 import { logsTableAtom } from '../../../recoil';
 import { Colors } from '../../../themes';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigatorProps } from '../navigations';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigations';
 import { currentTagAtomFamily } from '../../../recoil';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query';
@@ -40,6 +40,9 @@ const windowWidth = Dimensions.get('window').width;
 type CurrentSpaceProps = {
   openAuthMenuBottomSheet: (index: number) => void;
   openAddNewSpaceMenuBottomSheet: (index: number) => void;
+  openChooseViewBottomSheet: (index: number) => void;
+  openAddNewPostMenuBottomSheet: (index: number) => void;
+  currentViewIndex: number;
 };
 
 export type RouteType = SpaceType & { key: number };
@@ -48,6 +51,9 @@ export type RouteType = SpaceType & { key: number };
 export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   openAuthMenuBottomSheet,
   openAddNewSpaceMenuBottomSheet,
+  openChooseViewBottomSheet,
+  openAddNewPostMenuBottomSheet,
+  currentViewIndex,
 }) => {
   const { mutate: updateSpaceCheckedInMutation } = useMutation({
     mutationKey: [mutationKeys.updateSpaceCheckedInDate],
@@ -57,7 +63,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const [routes, setRoutes] = useState<RouteType[]>(mySpaces.map((space, index) => ({ ...space, key: index })));
   const [index, setIndex] = useState<number>(0);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-
+  const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
   // const [routes, setRoutes] = useState<SpaceType[]>(mySpaces);
   const [auth] = useRecoilState(authAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -263,7 +269,14 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const createTabViewScene = useCallback((routes: SpaceType[]) => {
     return SceneMap(
       routes.reduce((acc: Record<string, React.FC<any>>, option: RouteType) => {
-        acc[option.key as number] = () => <Space space={option} />;
+        acc[option.key as number] = () => (
+          <Space
+            space={option}
+            openChooseViewBottomSheet={openChooseViewBottomSheet}
+            openAddNewPostMenuBottomSheet={openAddNewPostMenuBottomSheet}
+            currentViewIndex={currentViewIndex}
+          />
+        );
         return acc;
       }, {})
     );
@@ -303,11 +316,12 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
                   alignItems: 'center',
                 }}
                 onPress={() => {
-                  openAddNewSpaceMenuBottomSheet(0);
+                  // openAddNewSpaceMenuBottomSheet(0);
+                  homeDrawerNavigation.toggleDrawer();
                 }}
               >
-                <VectorIcon.II name='home' color={Colors.white} size={18} />
-                <View
+                <VectorIcon.II name='menu' color={Colors.white} size={18} />
+                {/* <View
                   style={{
                     backgroundColor: 'black',
                     width: 18,
@@ -332,18 +346,22 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
                   >
                     <VectorIcon.II name='add' size={11} color={'black'} />
                   </View>
-                </View>
+                </View> */}
               </TouchableOpacity>
             </View>
           }
         />
-        <AppButton.Icon
-          onButtonPress={() => openAuthMenuBottomSheet(0)}
+        {/* <AppButton.Icon
+          onButtonPress={() => {
+            homeDrawerNavigation.toggleDrawer();
+            // homeStackNavigation.navigate('HomeDrawerNavigator');
+            // openAuthMenuBottsomSheet(0);
+          }}
           customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
           hasShadow={false}
         >
           <VectorIcon.MCI name='account' size={20} color={Colors.white} />
-        </AppButton.Icon>
+        </AppButton.Icon> */}
       </View>
       {/* <View
         style={{

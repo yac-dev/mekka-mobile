@@ -156,7 +156,7 @@ const Discover: React.FC = () => {
     // ここをreusableにしたいよね。どうするか。
 
     return (
-      <TouchableOpacity style={styles.itemInnerContainer} activeOpacity={0.5} onPress={() => onSpacePress(item)}>
+      <TouchableOpacity style={styles.itemInnerContainer} activeOpacity={0.7} onPress={() => onSpacePress(item)}>
         <ExpoImage style={styles.spaceIcon} source={{ uri: item.icon }} contentFit='cover' />
         <View style={{ flexDirection: 'column' }}>
           <Text style={styles.spaceName}>{item.name}</Text>

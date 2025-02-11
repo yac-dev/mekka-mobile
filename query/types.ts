@@ -222,3 +222,42 @@ export type GetPostsByTagIdAndRegionInput = {
 export type GetPostsByTagIdAndRegionOutput = {
   posts: PostType[];
 };
+
+export type GetSpaceByIdInputType = {
+  _id: string;
+};
+
+export type GetSpaceByIdOutputType = {
+  space: SpaceType;
+};
+
+export type JoinPublicSpaceBySpaceIdInputType = {
+  spaceId: string;
+  userId: string;
+};
+
+export type JoinPublicSpaceBySpaceIdOutputType = {
+  space: SpaceType;
+};
+
+export type UpdateUserInputType = {
+  name?: string;
+  email?: string;
+  password?: string;
+  avatar?: string;
+};
+
+export type UpdateUserOutputType = {
+  user: UserType;
+};
+
+export type UpdateMeInputType = {
+  userId: string;
+  name?: string;
+  email?: string;
+  avatar?: string;
+};
+
+export type UpdateMeOutputType = {
+  user: UserType;
+};

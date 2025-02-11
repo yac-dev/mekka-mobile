@@ -62,6 +62,8 @@ function timeSince(date: Date) {
   return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
 }
 
+const avatarWidth = 42;
+
 export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const { posts, index } = route.params;
   const [currentSpace] = useRecoilState(currentSpaceAtom);
@@ -115,7 +117,25 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           }}
           activeOpacity={0.7}
         >
-          <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+          <View
+            style={{
+              backgroundColor: 'rgb(70,70,70)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: avatarWidth,
+              height: avatarWidth,
+              borderRadius: avatarWidth / 2,
+              marginRight: 15,
+            }}
+          >
+            {currentPost.createdBy.avatar ? (
+              <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+            ) : (
+              <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+                {currentPost.createdBy.name.slice(0, 2).toUpperCase()}
+              </Text>
+            )}
+          </View>
           <View style={{ flexDirection: 'column' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>

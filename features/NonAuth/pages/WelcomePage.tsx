@@ -108,7 +108,7 @@ export const WelcomePage = () => {
           Welcome back.{'\n'}Please fill in your email and password to login.
         </Text>
       </View>
-      <Text>Welcome to Var. Please signup or login to proceed.</Text>
+      <Text>Welcome to Lampole. Please signup or login to proceed.</Text>
       <View style={{ flexDirection: 'column' }}>
         <View style={{ paddingHorizontal: 10, marginBottom: 0 }}>
           <AppTextInput.Underline
@@ -149,7 +149,7 @@ export const WelcomePage = () => {
         }}
         onPress={() => nonAuthStackNavigation.navigate('AboutApp', { url: urls.briefIntroduction })}
       >
-        What is Var??
+        What is Lampole??
       </Text>
       <LoadingSpinner isVisible={apiResult.status === 'loading'} message='Processing now...' textColor='white' />
     </SafeAreaView>

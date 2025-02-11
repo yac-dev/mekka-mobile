@@ -37,23 +37,6 @@ export const Feature: React.FC = () => {
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10 }}>
       <ScrollView>
         <View>
-          <View style={{ paddingBottom: 10, paddingHorizontal: 10 }}>
-            <Text
-              onTextLayout={onTextLayout}
-              numberOfLines={textShown ? undefined : 2}
-              style={{ lineHeight: 21, color: 'white' }}
-            >
-              {apiResult.data?.space.description}
-            </Text>
-            {lengthMore ? (
-              <Text
-                onPress={toggleNumberOfLines}
-                style={{ lineHeight: 21, marginTop: 10, color: 'rgb(170,170,170)', alignSelf: 'flex-end' }}
-              >
-                {textShown ? 'Read less' : 'Read more...'}
-              </Text>
-            ) : null}
-          </View>
           <AppButton.Cell
             title='Space Visibility'
             subTitle={apiResult.data?.space.isPublic ? 'Public' : 'Private'}
