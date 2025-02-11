@@ -39,6 +39,7 @@ export const EditAccount = () => {
     mutationFn: (input: UpdateMeInputType) => updateMe(input),
     onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }),
     onSuccess: () => {
+      homeStackNavigation.goBack();
       showMessage({ type: 'success', message: 'Your account has been updated successfully.' });
     },
   });

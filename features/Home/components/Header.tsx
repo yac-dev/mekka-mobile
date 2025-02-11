@@ -25,8 +25,8 @@ export const Header = () => {
 
   const handleInvite = async () => {
     Share.share({
-      title: 'Share Var',
-      message: `Access here to download Var: ${urls.appStore}${'\n'} and then enter this private key: ${
+      title: 'Share Lampole',
+      message: `Access here to download Lampole: ${urls.appStore}${'\n'} and then enter this private key: ${
         currentSpace.secretKey
       }`,
     });
