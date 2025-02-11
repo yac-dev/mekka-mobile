@@ -218,11 +218,11 @@ const MomentThumbnail: React.FC<MomentThumbnailProps> = ({ post, index, onPressP
           position: 'absolute',
           bottom: 0,
           width: '100%',
-          height: 30,
+          height: 40,
         }}
         colors={['transparent', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.6)']}
       >
-        <View style={{ paddingLeft: 10 }}>
+        <View style={{ paddingLeft: 15, position: 'absolute', bottom: 5 }}>
           <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{hours > 0 && `${hours}h`}</Text>
           <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{minutes > 0 && `${minutes}m`}</Text>
         </View>
