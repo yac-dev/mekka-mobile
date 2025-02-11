@@ -22,45 +22,47 @@ const avatarWidth = 42;
 
 export const EditAccount = () => {
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  const {
-    formData,
-    isFormValidated,
-    isPasswordVisible,
-    onAvatarPress,
-    onNameChange,
-    onEmailChange,
-    onPasswordChange,
-    onPasswordVisibilityChange,
-    validateForm,
-  } = useEditAccount();
-  const [auth] = useRecoilState(authAtom);
+  const { formData, onAvatarPress, onNameChange, onEmailChange, validateForm } = useEditAccount();
 
+  const [auth, setAuth] = useRecoilState(authAtom);
+
+  // NOTE:正直、ここのupdateの返り血のことは分からんな。。。backend側ではdata.userで返して、updateMeでもdestructuringしているが。。。
   const { mutate: updateMeMutation, status: updateMeStatus } = useMutation({
     mutationFn: (input: UpdateMeInputType) => updateMe(input),
-    onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }),
-    onSuccess: () => {
+    onSuccess: (data) => {
       homeStackNavigation.goBack();
       showMessage({ type: 'success', message: 'Your account has been updated successfully.' });
+      console.log('data is this', data);
+      setAuth((previous) => {
+        return {
+          ...previous,
+          name: data.name,
+          email: data.email,
+          avatar: data.avatar,
+        };
+      });
     },
   });
 
   const onDonePress = () => {
+    // 値が変わっていたらvalueとして送る感じ。
     const input: UpdateMeInputType = {
       userId: auth._id,
-      name: formData.name.value,
-      email: formData.email.value,
-      avatar: formData.avatar.value,
+      name: formData.name.value !== auth.name ? formData.name.value : undefined,
+      email: formData.email.value !== auth.email ? formData.email.value : undefined,
+      avatar: formData.avatar.value !== auth.avatar ? formData.avatar.value : undefined,
     };
+    console.log(input);
     updateMeMutation(input);
   };
 
   useEffect(() => {
     homeStackNavigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => onDonePress()} disabled={isFormValidated ? false : true}>
+        <TouchableOpacity onPress={() => onDonePress()} disabled={validateForm() ? false : true}>
           <Text
             style={{
-              color: isFormValidated ? 'white' : 'rgb(117,117, 117)',
+              color: validateForm() ? 'white' : 'rgb(117,117, 117)',
               fontSize: 20,
               fontWeight: 'bold',
             }}
@@ -70,9 +72,10 @@ export const EditAccount = () => {
         </TouchableOpacity>
       ),
     });
-  }, [isFormValidated]);
+  }, [formData]);
 
   useEffect(() => {
+    console.log('formData is this...', JSON.stringify(formData, null, 2));
     validateForm();
   }, [formData]);
 

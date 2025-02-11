@@ -82,7 +82,7 @@ export const DeleteMyAccount = () => {
 
   return (
     <PageScreen.WithTitle
-      title={'Delete my account'}
+      title={'No regrets?'}
       subTitle={`Are you sure you want to delete your account? ${'\n'}To terminate your account, please enter your email and password.`}
     >
       <AppTextInput.Underline

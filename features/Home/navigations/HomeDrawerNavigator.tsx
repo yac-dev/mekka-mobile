@@ -55,6 +55,8 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     Linking.openURL('https://x.com/yac_prod');
   };
 
+  console.log('auth data is this', auth);
+
   return (
     // <DrawerContentScrollView>
     <View
