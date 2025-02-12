@@ -12,8 +12,19 @@ export const Following = () => {
   const { formData, onFollowAvailabilityChange } = useContext(CreateNewSpaceContext);
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 30 }}>
-      <View style={{ paddingLeft: 30, paddingRight: 30, paddingBottom: 20 }}>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Allow "follow" feature?</Text>
+      <View style={{ paddingLeft: 30, paddingRight: 30, paddingBottom: 30 }}>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: 20,
+            marginBottom: 10,
+          }}
+        >
+          Following
+        </Text>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Allow users to follow each other?</Text>
       </View>
       <View
         style={{
