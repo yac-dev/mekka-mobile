@@ -33,6 +33,7 @@ import { createSpace } from '../../../query';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query/mutationKeys';
 import { CreateSpaceInputType } from '../../../query/types';
+import { Colors } from '../../../themes/colors';
 
 const menus = ['Space Visibility', 'Content Type', 'Moment', 'Reaction', 'Comment', 'Description'];
 export const convertMinutesToHoursAndMinutes = (minutes: number) => {
@@ -189,7 +190,7 @@ export const Base = () => {
             marginBottom: 10,
           }}
         >
-          It's ready to start
+          Ready to start but...
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 20 }}>
           If you want to customize your space rules, tap any section to change based on your preference.
@@ -245,7 +246,21 @@ export const Base = () => {
         </View>
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
-          icon={<VectorIcon.MI name='public' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['red1'],
+                width: 32,
+                height: 32,
+                marginRight: 10,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.MI name='public' size={20} color='white' />
+            </View>
+          }
           title='Visibility'
           value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
           requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
@@ -253,11 +268,23 @@ export const Base = () => {
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
           icon={
-            <ExpoImage
-              source={require('../../../assets/forApp/photo-video.png')}
-              style={{ marginRight: 10, width: 20, height: 20 }}
-              tintColor='white'
-            />
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['blue1'],
+                width: 32,
+                height: 32,
+                marginRight: 10,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <ExpoImage
+                source={require('../../../assets/forApp/photo-video.png')}
+                style={{ width: 20, height: 20 }}
+                tintColor='white'
+              />
+            </View>
           }
           title='Content'
           value={
@@ -274,18 +301,44 @@ export const Base = () => {
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Moment')}
           icon={
-            <ExpoImage
-              source={require('../../../assets/forApp/ghost.png')}
-              style={{ marginRight: 10, width: 20, height: 20 }}
-              tintColor='white'
-            />
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['green1'],
+                width: 32,
+                height: 32,
+                marginRight: 10,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <ExpoImage
+                source={require('../../../assets/forApp/ghost.png')}
+                style={{ width: 20, height: 20 }}
+                tintColor='white'
+              />
+            </View>
           }
           title='Moment'
           value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Reaction')}
-          icon={<VectorIcon.II name='thumbs-up-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['yellow1'],
+                width: 32,
+                height: 32,
+                marginRight: 10,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.II name='thumbs-up-sharp' size={20} color='white' />
+            </View>
+          }
           title='Reaction'
           value={formData.isReactionAvailable.value ? 'Allowed' : 'Disallowed'}
           requirementText={
@@ -297,7 +350,21 @@ export const Base = () => {
         {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Following')}
-            icon={<VectorIcon.II name='person-add' size={20} color='white' style={{ marginRight: 10 }} />}
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['violet1'],
+                  width: 32,
+                  height: 32,
+                  marginRight: 10,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='person-add' size={20} color='white' />
+              </View>
+            }
             title='Following'
             value={formData.isFollowAvailable.value ? 'Allowed' : 'Disallowed'}
             requirementText={
@@ -309,13 +376,41 @@ export const Base = () => {
         ) : null}
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Comment')}
-          icon={<VectorIcon.FD name='comments' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['orange1'],
+                width: 32,
+                height: 32,
+                marginRight: 10,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.FD name='comments' size={20} color='white' />
+            </View>
+          }
           title='Comment'
           value={formData.isCommentAvailable.value ? 'Allowed' : 'Disallowed'}
         />
         <MenuCell
           onCellPress={() => createNewSpaceNavigation.navigate('Description')}
-          icon={<VectorIcon.MCI name='lead-pencil' size={20} color='white' style={{ marginRight: 10 }} />}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['pink1'],
+                width: 32,
+                height: 32,
+                marginRight: 10,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.MCI name='lead-pencil' size={20} color='white' />
+            </View>
+          }
           title='Description'
           value={formData.description.value.replace(/\n/g, '')}
           requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
