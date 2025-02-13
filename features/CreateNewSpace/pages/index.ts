@@ -4,3 +4,4 @@ export * from './Comment';
 export * from './CreateNewSticker';
 export * from './SpaceVisibilitySelection';
 export * from './Following';
+export * from './Slot';

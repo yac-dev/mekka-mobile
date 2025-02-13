@@ -348,7 +348,7 @@ export const Base = () => {
             value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
           />
           <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
+            onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
             icon={
               <View
                 style={{
