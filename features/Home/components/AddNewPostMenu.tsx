@@ -28,11 +28,57 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
     if (currentSpace?.contentType === 'photo') {
       text = 'Photo';
     } else if (currentSpace?.contentType === 'video') {
-      text = `Video. Video length is limited to ${currentSpace?.videoLength}s`;
+      text = `Video. Video length is limited to ${formatTimeString(currentSpace?.videoLength)}`;
     } else {
-      text = `Photo and Video${'\n'}${currentSpace?.videoLength} seconds video post`;
+      text = `Photo and Video${'\n'}${formatTimeString(currentSpace?.videoLength)} video post`;
     }
     return text;
+  };
+
+  const formatTimeString = (totalSeconds: number): string => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    if (minutes > 0) {
+      return `${minutes} minutes ${seconds > 0 ? `${seconds} seconds` : ''}`;
+    }
+    return `${seconds} seconds`;
+  };
+
+  const formatTimeStringForShort = (totalSeconds: number): string => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    if (minutes > 0) {
+      return `${minutes}m ${seconds > 0 ? `${seconds}s` : ''}`;
+    }
+    return `${seconds}s`;
+  };
+
+  const convertMinutesToHoursAndMinutes = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+      return `${minutes} minutes`;
+    } else if (remainingMinutes === 0) {
+      return `${hours} hours`;
+    } else {
+      return `${hours} hours ${remainingMinutes} minutes`;
+    }
+  };
+
+  const convertMinutesToHoursAndMinutesForShort = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours === 0) {
+      return `${minutes} m`;
+    } else if (remainingMinutes === 0) {
+      return `${hours}h`;
+    } else {
+      return `${hours}h ${remainingMinutes}m`;
+    }
   };
 
   return (
@@ -72,6 +118,13 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
               contentFit='cover'
               tintColor={'white'}
             />
+            {(currentSpace?.contentType === 'video' || currentSpace?.contentType === 'photoAndVideo') && (
+              <View style={{ position: 'absolute', bottom: 15, right: 30, backgroundColor: 'white', borderRadius: 20 }}>
+                <Text style={{ color: 'black', fontSize: 12, fontWeight: 'bold', padding: 3 }}>
+                  {formatTimeStringForShort(currentSpace?.videoLength)}
+                </Text>
+              </View>
+            )}
           </View>
           <View style={{ padding: 10 }}>
             <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>New Post</Text>
@@ -108,11 +161,16 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
               contentFit='cover'
               tintColor={'white'}
             />
+            <View style={{ position: 'absolute', bottom: 15, right: 5, backgroundColor: 'white', borderRadius: 20 }}>
+              <Text style={{ color: 'black', fontSize: 12, fontWeight: 'bold', padding: 3 }}>
+                {convertMinutesToHoursAndMinutesForShort(currentSpace?.disappearAfter)}
+              </Text>
+            </View>
           </View>
           <View style={{ padding: 10 }}>
             <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>New Moment</Text>
             <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-              Every post will disappear within {Times.minutesToHoursAndMinutes(currentSpace?.disappearAfter)}
+              Every post will disappear within {convertMinutesToHoursAndMinutes(currentSpace?.disappearAfter)}
             </Text>
           </View>
         </TouchableOpacity>
