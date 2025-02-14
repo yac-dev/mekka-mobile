@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CreateNewSpaceStackProps } from '../navigations';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Picker } from '@react-native-picker/picker';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
 
 const screenHorizontalPadding = 20;
 
@@ -22,7 +23,7 @@ const presetSlots: PresetSlot[] = [
     label: 'Anytime',
     value: {
       start: '00:00',
-      end: '23:59',
+      end: '24:00',
     },
   },
   {
@@ -50,10 +51,6 @@ const presetSlots: PresetSlot[] = [
 
 export const Slot = () => {
   const { formData, onDisapperAfterChange } = useContext(CreateNewSpaceContext);
-  const navigation = useNavigation<CreateNewSpaceStackProps>();
-  const [selectedHour, setSelectedHour] = useState<string>('');
-  const [selectedMin, setSelectedMin] = useState<string>('');
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const customTimeBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const [selectedStartHour, setSelectedStartHour] = useState<string>('00');
@@ -61,11 +58,11 @@ export const Slot = () => {
   const [selectedEndHour, setSelectedEndHour] = useState<string>('23');
   const [selectedEndMin, setSelectedEndMin] = useState<string>('59');
 
-  const openCustomTimeBottomSheet = (index: number) => {
+  const openCustomSlotBottomSheet = (index: number) => {
     customTimeBottomSheetRef.current?.snapToIndex(index);
   };
 
-  const closeCustomTimeBottomSheet = () => {
+  const closeCustomSlotBottomSheet = () => {
     customTimeBottomSheetRef.current?.close();
   };
 
@@ -102,6 +99,29 @@ export const Slot = () => {
     );
   };
 
+  const renderItem = ({ item }: { item: PresetSlot }) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={{
+          backgroundColor: 'rgb(50, 50, 50)',
+          paddingVertical: 10,
+          paddingHorizontal: 15,
+          borderRadius: 20,
+          marginRight: 10,
+        }}
+        onPress={() => {
+          setSelectedStartHour(item.value.start);
+          setSelectedStartMin(item.value.start);
+          setSelectedEndHour(item.value.end);
+          setSelectedEndMin(item.value.end);
+        }}
+      >
+        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{item.label}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <View
@@ -128,25 +148,12 @@ export const Slot = () => {
           for posting.
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20 }}>
-        <View>
-          <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10 }}>Start Time</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {renderHourPickerItems(selectedStartHour, setSelectedStartHour)}
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
-            {renderMinPickerItems(selectedStartMin, setSelectedStartMin)}
-          </View>
-        </View>
-        <View>
-          <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10 }}>End Time</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {renderHourPickerItems(selectedEndHour, setSelectedEndHour)}
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
-            {renderMinPickerItems(selectedEndMin, setSelectedEndMin)}
-          </View>
-        </View>
-      </View>
-      {/* <View>
+      <Text style={{ color: 'white', marginTop: 10, textAlign: 'center', marginBottom: 20, fontSize: 18 }}>
+        From <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{selectedStartHour}</Text> to{' '}
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{selectedEndHour}</Text>
+      </Text>
+
+      <View>
         <FlatList
           data={presetSlots}
           horizontal
@@ -165,7 +172,7 @@ export const Slot = () => {
                 flexDirection: 'row',
               }}
               onPress={() => {
-                console.log('Custom');
+                openCustomSlotBottomSheet(0);
               }}
             >
               <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Custom</Text>
@@ -173,7 +180,33 @@ export const Slot = () => {
             </TouchableOpacity>
           }
         />
-      </View> */}
+      </View>
+
+      <AppBottomSheet.Gorhom
+        ref={customTimeBottomSheetRef}
+        snapPoints={['65%']}
+        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
+        onCloseButtonClose={closeCustomSlotBottomSheet}
+      >
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20, gap: 10 }}>
+          <View>
+            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10 }}>Start Time</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {renderHourPickerItems(selectedStartHour, setSelectedStartHour)}
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
+              {renderMinPickerItems(selectedStartMin, setSelectedStartMin)}
+            </View>
+          </View>
+          <View>
+            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10 }}>End Time</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {renderHourPickerItems(selectedEndHour, setSelectedEndHour)}
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
+              {renderMinPickerItems(selectedEndMin, setSelectedEndMin)}
+            </View>
+          </View>
+        </View>
+      </AppBottomSheet.Gorhom>
     </View>
   );
 };

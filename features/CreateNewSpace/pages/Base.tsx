@@ -244,7 +244,7 @@ export const Base = () => {
             <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
           </View>
         </View>
-        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
             icon={
@@ -288,7 +288,7 @@ export const Base = () => {
             requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
           />
         </View>
-        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
             icon={
@@ -347,7 +347,7 @@ export const Base = () => {
             title='Moment'
             value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
           />
-          <MenuCell
+          {/* <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
             icon={
               <View
@@ -367,7 +367,7 @@ export const Base = () => {
             title='Slot'
             value={'Anytime'}
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
-          />
+          /> */}
         </View>
         <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
           <MenuCell
@@ -442,13 +442,13 @@ export const Base = () => {
               }
             />
           ) : null}
-          {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
+          {/* {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
             <MenuCell
               onCellPress={() => createNewSpaceNavigation.navigate('Following')}
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['lightGreen1'],
+                    backgroundColor: Colors.backgroundColors['brown1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -457,7 +457,7 @@ export const Base = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.MCI name='account-group' size={20} color={Colors.iconColors['lightGreen1']} />
+                  <VectorIcon.MCI name='account-group' size={20} color={Colors.iconColors['brown1']} />
                 </View>
               }
               title='Quota'
@@ -468,7 +468,7 @@ export const Base = () => {
                   : undefined
               }
             />
-          ) : null}
+          ) : null} */}
         </View>
       </ScrollView>
       {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
