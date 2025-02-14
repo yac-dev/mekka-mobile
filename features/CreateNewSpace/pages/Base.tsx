@@ -348,7 +348,8 @@ export const Base = () => {
             title='Moment'
             value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
           />
-          {/* <MenuCell
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
             icon={
               <View
@@ -368,7 +369,7 @@ export const Base = () => {
             title='Slot'
             value={'Anytime'}
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
-          /> */}
+          />
         </View>
         <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
@@ -445,7 +446,8 @@ export const Base = () => {
               }
             />
           ) : null}
-          {/* {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
             <MenuCell
               onCellPress={() => createNewSpaceNavigation.navigate('Following')}
               icon={
@@ -471,7 +473,7 @@ export const Base = () => {
                   : undefined
               }
             />
-          ) : null} */}
+          ) : null}
         </View>
       </ScrollView>
       {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
