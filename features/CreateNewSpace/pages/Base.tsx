@@ -244,7 +244,7 @@ export const Base = () => {
             <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
           </View>
         </View>
-        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
             icon={
@@ -266,6 +266,7 @@ export const Base = () => {
             value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
             requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
           />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Description')}
             icon={
@@ -288,7 +289,7 @@ export const Base = () => {
             requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
           />
         </View>
-        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
             icon={
@@ -322,7 +323,7 @@ export const Base = () => {
             }
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
           />
-
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Moment')}
             icon={
@@ -369,7 +370,7 @@ export const Base = () => {
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
           /> */}
         </View>
-        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 15, borderRadius: 10 }}>
+        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Reaction')}
             icon={
@@ -395,6 +396,7 @@ export const Base = () => {
                 : undefined
             }
           />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Comment')}
             icon={
@@ -415,6 +417,7 @@ export const Base = () => {
             title='Comment'
             value={formData.isCommentAvailable.value ? 'Allowed' : 'Disallowed'}
           />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
             <MenuCell
               onCellPress={() => createNewSpaceNavigation.navigate('Following')}
@@ -493,34 +496,39 @@ const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, req
     <TouchableOpacity
       style={{
         paddingVertical: 15,
-        paddingHorizontal: 0,
+        paddingHorizontal: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 5,
       }}
       onPress={onCellPress}
       activeOpacity={0.8}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {icon}
-        <View>
-          <Text style={{ color: 'white', fontSize: 17, marginBottom: requirementText !== undefined ? 0 : 4 }}>
-            {title}
-          </Text>
-          {requirementText !== undefined && (
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>{requirementText}</Text>
-          )}
+      {icon}
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+          <View>
+            <Text style={{ color: 'white', fontSize: 17 }}>{title}</Text>
+            {requirementText !== undefined ? (
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, marginTop: 4 }}>{requirementText}</Text>
+            ) : null}
+          </View>
         </View>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text
-          numberOfLines={1}
-          style={{ fontSize: 15, color: 'rgb(170,170,170)', marginRight: 5, width: 100, textAlign: 'right' }}
-        >
-          {value}
-        </Text>
-        <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            numberOfLines={1}
+            style={{ fontSize: 15, color: 'rgb(170,170,170)', marginRight: 5, width: 100, textAlign: 'right' }}
+          >
+            {value}
+          </Text>
+          <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+        </View>
       </View>
     </TouchableOpacity>
   );
