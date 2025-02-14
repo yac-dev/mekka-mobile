@@ -56,7 +56,7 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
   };
 
   return (
-    <View style={{ flex: 1, marginTop: 15 }}>
+    <View style={{ flex: 1, marginTop: 15, backgroundColor: 'black' }}>
       <Tab.Navigator
         tabBar={(props) => <CustomTabBar {...props} />}
         screenOptions={({ route }) => ({

@@ -135,6 +135,7 @@ export type SpaceType = {
   isPublic: boolean;
   isCommentAvailable: boolean;
   isReactionAvailable: boolean;
+  isFollowAvailable: boolean;
   reactions: ReactionType[];
   totalPosts: number;
   totalMembers: number;
