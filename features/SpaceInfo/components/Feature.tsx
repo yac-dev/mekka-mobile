@@ -96,7 +96,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['red1'],
+                    backgroundColor: Colors.iconColors['red1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -105,7 +105,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.MI name='public' size={20} color={Colors.iconColors['red1']} />
+                  <VectorIcon.MI name='public' size={20} color={'white'} />
                 </View>
               }
               title='Visibility'
@@ -116,7 +116,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['pink1'],
+                    backgroundColor: Colors.iconColors['pink1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -125,20 +125,20 @@ export const Feature: React.FC<FeatureProps> = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.MCI name='advertisements' size={20} color={Colors.iconColors['pink1']} />
+                  <VectorIcon.MCI name='advertisements' size={20} color={'white'} />
                 </View>
               }
-              title='Banner'
+              title='Ads'
               value={'Turned off'}
             />
-            {currentSpace.isPublic === undefined ? null : currentSpace.isPublic ? (
+            {/* {currentSpace.isPublic === undefined ? null : currentSpace.isPublic ? (
               <>
                 <Divider />
                 <MenuCell
                   icon={
                     <View
                       style={{
-                        backgroundColor: Colors.backgroundColors['brown1'],
+                        backgroundColor: Colors.iconColors['brown1'],
                         width: 32,
                         height: 32,
                         marginRight: 15,
@@ -147,21 +147,21 @@ export const Feature: React.FC<FeatureProps> = () => {
                         alignItems: 'center',
                       }}
                     >
-                      <VectorIcon.MCI name='account-group' size={20} color={Colors.iconColors['brown1']} />
+                      <VectorIcon.MCI name='account-group' size={20} color={'white'} />
                     </View>
                   }
                   title='Quota'
                   value={'Free'}
                 />
               </>
-            ) : null}
+            ) : null} */}
           </View>
           <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
             <MenuCell
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['blue1'],
+                    backgroundColor: Colors.iconColors['green1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -173,7 +173,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                   <ExpoImage
                     source={require('../../../assets/forApp/photo-video.png')}
                     style={{ width: 20, height: 20 }}
-                    tintColor={Colors.iconColors['blue1']}
+                    tintColor={'white'}
                   />
                 </View>
               }
@@ -194,7 +194,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['green1'],
+                    backgroundColor: Colors.iconColors['orange1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -206,7 +206,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                   <ExpoImage
                     source={require('../../../assets/forApp/ghost.png')}
                     style={{ width: 20, height: 20 }}
-                    tintColor={Colors.iconColors['green1']}
+                    tintColor={'white'}
                   />
                 </View>
               }
@@ -220,7 +220,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                   icon={
                     <View
                       style={{
-                        backgroundColor: Colors.backgroundColors['yellow1'],
+                        backgroundColor: Colors.iconColors['magenta1'],
                         width: 32,
                         height: 32,
                         marginRight: 15,
@@ -229,7 +229,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                         alignItems: 'center',
                       }}
                     >
-                      <VectorIcon.II name='play-circle-sharp' size={20} color={Colors.iconColors['yellow1']} />
+                      <VectorIcon.II name='play-circle-sharp' size={20} color={'white'} />
                     </View>
                   }
                   title='Video Length'
@@ -243,7 +243,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['orange1'],
+                    backgroundColor: Colors.iconColors['indigo1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -252,7 +252,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.MCI name='clock-time-two-outline' size={20} color={Colors.iconColors['orange1']} />
+                  <VectorIcon.MCI name='clock-time-two-outline' size={20} color={'white'} />
                 </View>
               }
               title='Time Slot'
@@ -264,7 +264,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['yellow1'],
+                    backgroundColor: Colors.iconColors['yellow1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -273,7 +273,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.II name='thumbs-up-sharp' size={20} color={Colors.iconColors['yellow1']} />
+                  <VectorIcon.II name='thumbs-up-sharp' size={20} color={'white'} />
                 </View>
               }
               title='Reaction'
@@ -284,7 +284,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.backgroundColors['lightBlue1'],
+                    backgroundColor: Colors.iconColors['teal1'],
                     width: 32,
                     height: 32,
                     marginRight: 15,
@@ -293,7 +293,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.FD name='comments' size={20} color={Colors.iconColors['lightBlue1']} />
+                  <VectorIcon.FD name='comments' size={20} color={'white'} />
                 </View>
               }
               title='Comment'
@@ -307,7 +307,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                   icon={
                     <View
                       style={{
-                        backgroundColor: Colors.backgroundColors['violet1'],
+                        backgroundColor: Colors.iconColors['violet1'],
                         width: 32,
                         height: 32,
                         marginRight: 15,
@@ -316,7 +316,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                         alignItems: 'center',
                       }}
                     >
-                      <VectorIcon.II name='person-add' size={20} color={Colors.iconColors['violet1']} />
+                      <VectorIcon.II name='person-add' size={20} color={'white'} />
                     </View>
                   }
                   title='Following'

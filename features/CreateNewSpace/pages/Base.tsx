@@ -329,7 +329,7 @@ export const Base = () => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['violet1'],
+                  backgroundColor: Colors.iconColors['orange1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
