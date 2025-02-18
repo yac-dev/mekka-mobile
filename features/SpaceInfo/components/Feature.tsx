@@ -97,8 +97,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                 <View
                   style={{
                     backgroundColor: Colors.iconColors['red1'],
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -117,8 +117,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                 <View
                   style={{
                     backgroundColor: Colors.iconColors['pink1'],
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -162,8 +162,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                 <View
                   style={{
                     backgroundColor: Colors.iconColors['green1'],
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -195,8 +195,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                 <View
                   style={{
                     backgroundColor: Colors.iconColors['orange1'],
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -221,8 +221,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                     <View
                       style={{
                         backgroundColor: Colors.iconColors['magenta1'],
-                        width: 32,
-                        height: 32,
+                        width: 30,
+                        height: 30,
                         marginRight: 15,
                         borderRadius: 8,
                         justifyContent: 'center',
@@ -238,14 +238,14 @@ export const Feature: React.FC<FeatureProps> = () => {
               </>
             ) : null}
 
-            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+            {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
             <MenuCell
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.iconColors['indigo1'],
-                    width: 32,
-                    height: 32,
+                    backgroundColor: Colors.iconColors['blue1'],
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -257,7 +257,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               }
               title='Time Slot'
               value={'Anytime'}
-            />
+            /> */}
           </View>
           <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
             <MenuCell
@@ -265,8 +265,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                 <View
                   style={{
                     backgroundColor: Colors.iconColors['yellow1'],
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -285,8 +285,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                 <View
                   style={{
                     backgroundColor: Colors.iconColors['teal1'],
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     marginRight: 15,
                     borderRadius: 8,
                     justifyContent: 'center',
@@ -308,8 +308,8 @@ export const Feature: React.FC<FeatureProps> = () => {
                     <View
                       style={{
                         backgroundColor: Colors.iconColors['violet1'],
-                        width: 32,
-                        height: 32,
+                        width: 30,
+                        height: 30,
                         marginRight: 15,
                         borderRadius: 8,
                         justifyContent: 'center',
@@ -345,8 +345,9 @@ const MenuCell: React.FC<MenuCellProp> = ({ icon, title, value }) => {
   return (
     <TouchableOpacity
       style={{
-        paddingVertical: 15,
-        paddingHorizontal: 15,
+        paddingVertical: 10,
+        paddingLeft: 15,
+        paddingRight: 10,
         flexDirection: 'row',
         alignItems: 'center',
       }}
