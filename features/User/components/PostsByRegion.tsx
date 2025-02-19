@@ -116,15 +116,14 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
         <Header
           userId={userId}
           viewPostsType='region'
-          customStyle={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-            // backgroundColor: 'rgba(50,50,50,0.8)',
-          }}
+          customStyle={
+            {
+              // position: 'absolute',
+              // top: 0,
+              // left: 0,
+              // right: 0,
+            }
+          }
         />
         {placeInfo && (
           <View style={{ position: 'absolute', top: 500, alignSelf: 'center' }}>

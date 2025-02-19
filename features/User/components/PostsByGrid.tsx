@@ -92,36 +92,33 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
     );
   }
 
-  if (!data?.pages.flatMap((page) => page.posts).length) {
-    return (
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts tagged by </Text>
-      </View>
-    );
-  }
-
   return (
     <View style={{ flex: 1 }}>
-      <FlashList
-        numColumns={4}
-        data={data?.pages.flatMap((page) => page.posts)}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `${item._id}-${index}`}
-        removeClippedSubviews
-        estimatedItemSize={1000}
-        onMomentumScrollEnd={() => {
-          fetchNextPage();
-        }}
-        // scrollEnabled={false}
-        ListHeaderComponent={<Header userId={userId} viewPostsType='grid' customStyle={{}} />}
-        ListFooterComponent={renderFooter}
-        onEndReachedThreshold={0.7}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-        //   useNativeDriver: true,
-        // })}
-        // scrollEventThrottle={16}
-      />
+      <Header userId={userId} viewPostsType='grid' customStyle={{}} />
+      {!data?.pages.flatMap((page) => page.posts).length ? (
+        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts found...</Text>
+      ) : (
+        <FlashList
+          numColumns={4}
+          data={data?.pages.flatMap((page) => page.posts)}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => `${item._id}-${index}`}
+          removeClippedSubviews
+          estimatedItemSize={1000}
+          onMomentumScrollEnd={() => {
+            fetchNextPage();
+          }}
+          // scrollEnabled={false}
+          // ListHeaderComponent={<Header userId={userId} viewPostsType='grid' customStyle={{}} />}
+          ListFooterComponent={renderFooter}
+          onEndReachedThreshold={0.7}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          //   useNativeDriver: true,
+          // })}
+          // scrollEventThrottle={16}
+        />
+      )}
     </View>
   );
 };

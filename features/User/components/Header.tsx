@@ -15,7 +15,7 @@ type IHeader = {
   customStyle?: StyleProp<ViewStyle>;
 };
 
-const avatarWidth = 42;
+const avatarWidth = 62;
 
 export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }) => {
   const { data, status } = useQuery({
@@ -59,7 +59,7 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
             </View>
           </View>
           <View style={styles.rightContainer}>
-            <Text style={styles.name}>{data.user.name}</Text>
+            {/* <Text style={styles.name}>{data.user.name}</Text> */}
             {/* <Text style={styles.uniqueName}>@johndoe</Text> */}
           </View>
         </View>
@@ -89,9 +89,11 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 10,
+    // paddingTop: 30,
+    paddingBottom: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
+    marginTop: 70,
   },
   header: {
     flexDirection: 'row',
@@ -115,7 +117,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 5,
   },
   uniqueName: {
     fontSize: 14,

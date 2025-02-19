@@ -50,6 +50,7 @@ export const User: React.FC<IUser> = ({ userId }) => {
       </ScrollView> */}
       <Posts userId={userId} viewPostsType={viewPostsType} />
       <ViewPostsTypeToggleButton viewPostsType={viewPostsType} onPostsTypeChangePress={onPostsTypeChangePress} />
+      {/* <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>User</Text> */}
     </View>
   );
 };
