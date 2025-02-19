@@ -35,7 +35,7 @@ export const Header: React.FC<IHeader> = ({ userId, viewPostsType, customStyle }
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, customStyle]}>
+      <View style={[styles.header]}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.leftContainer}>
             <View
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
-    marginTop: 70,
   },
   header: {
     flexDirection: 'row',

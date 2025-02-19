@@ -104,6 +104,11 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
         onMapIdle={onRegionDidChange}
       >
         {/* defaultの位置はnew yorkでいい。fetchが */}
+        {/* <Header userId={userId} viewPostsType='region' customStyle={{ position: 'absolute', top: 0 }} />
+         */}
+        <View>
+          <View style={{ height: 130, width: 130, backgroundColor: 'blue' }}></View>
+        </View>
         <Camera
           defaultSettings={{
             centerCoordinate: [-122.4324, 37.78825],
@@ -113,23 +118,12 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
           }}
         />
         {/* ここ, regionViewの時はfloatingで影つけたいな。。。観づらいから */}
-        <Header
-          userId={userId}
-          viewPostsType='region'
-          customStyle={
-            {
-              // position: 'absolute',
-              // top: 0,
-              // left: 0,
-              // right: 0,
-            }
-          }
-        />
-        {placeInfo && (
+
+        {/* {placeInfo && (
           <View style={{ position: 'absolute', top: 500, alignSelf: 'center' }}>
             <Text style={{ color: 'red' }}>{placeInfo}</Text>
           </View>
-        )}
+        )} */}
 
         {renderMarkers()}
         {getPostsByUserIdAndRegionStatus === 'pending' && (

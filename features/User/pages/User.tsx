@@ -48,6 +48,7 @@ export const User: React.FC<IUser> = ({ userId }) => {
         <PostsByGrid userId={userId} />
        
       </ScrollView> */}
+      <View style={{ height: 65, backgroundColor: 'red' }} />
       <Posts userId={userId} viewPostsType={viewPostsType} />
       <ViewPostsTypeToggleButton viewPostsType={viewPostsType} onPostsTypeChangePress={onPostsTypeChangePress} />
       {/* <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>User</Text> */}
