@@ -111,7 +111,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
         onMapIdle={onRegionDidChange}
       >
         {/* defaultの位置はnew yorkでいい。fetchが */}
-        <View style={{ height: 65, backgroundColor: 'transparent' }} />
+        <View style={{ height: 45, backgroundColor: 'transparent' }} />
         <View
           style={{
             paddingBottom: 10,

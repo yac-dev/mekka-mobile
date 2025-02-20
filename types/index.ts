@@ -228,3 +228,11 @@ export type LogsTableType = {
 export type MomentLogsType = {
   [key: string]: number;
 };
+
+export type FollowingRelationshipType = {
+  _id: string;
+  followerId: string;
+  followeeId: string;
+  space: string;
+  createdAt: string;
+};

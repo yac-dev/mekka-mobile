@@ -10,6 +10,7 @@ import {
   StickerType,
   CommentType,
   MapRegionType,
+  FollowingRelationshipType,
 } from '../types';
 
 export type LoadMeInput = {
@@ -260,4 +261,14 @@ export type UpdateMeInputType = {
 
 export type UpdateMeOutputType = {
   user: UserType;
+};
+
+export type CreateFollowingRelationshipInputType = {
+  followerId: string;
+  followeeId: string;
+  spaceId: string;
+};
+
+export type CreateFollowingRelationshipOutputType = {
+  followingRelationship: FollowingRelationshipType;
 };

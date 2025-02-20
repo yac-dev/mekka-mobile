@@ -38,6 +38,8 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
     },
   });
 
+  console.log('data', data?.pages[0].posts);
+
   const queryClient = useQueryClient();
   const userData = queryClient.getQueryData([queryKeys.userById, userId]);
 
@@ -103,12 +105,12 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ height: 65, backgroundColor: 'transparent' }} />
+      <View style={{ height: 45, backgroundColor: 'transparent' }} />
       <View
         style={{
           paddingBottom: 10,
           paddingHorizontal: 15,
-          marginBottom: 20,
+          marginBottom: 10,
         }}
       >
         <View
