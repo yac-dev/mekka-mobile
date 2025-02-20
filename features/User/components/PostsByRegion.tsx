@@ -1,21 +1,25 @@
 import { Camera } from '@rnmapbox/maps';
 import Mapbox from '@rnmapbox/maps';
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { Header } from './Header';
 import { useNavigation } from '@react-navigation/native';
 import { UserStackNavigatorProps } from '../navigations';
 import { getPostsByUserIdAndRegion } from '../../../query';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../../query/queryKeys';
 import { currentSpaceAtom } from '../../../recoil';
 import { useRecoilState } from 'recoil';
 import { PostType } from '../../../types';
-import { MapPostThumbnail } from '../../../components';
+import { AppButton, MapPostThumbnail } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Image as ExpoImage } from 'expo-image';
 
 type IPostsByRegion = {
   userId: string;
 };
+
+const avatarWidth = 62;
 
 export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
   const mapRef = useRef<Mapbox.MapView>(null);
@@ -28,6 +32,9 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
     queryKey: [queryKeys.postsByUserIdAndRegion, userId],
     queryFn: () => getPostsByUserIdAndRegion({ userId, spaceId: currentSpace._id }),
   });
+
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData([queryKeys.userById, userId]);
 
   const onRegionDidChange = async (feature: Mapbox.MapState) => {
     const { bounds } = feature.properties;
@@ -104,10 +111,67 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
         onMapIdle={onRegionDidChange}
       >
         {/* defaultの位置はnew yorkでいい。fetchが */}
-        {/* <Header userId={userId} viewPostsType='region' customStyle={{ position: 'absolute', top: 0 }} />
-         */}
-        <View>
-          <View style={{ height: 130, width: 130, backgroundColor: 'blue' }}></View>
+        <View style={{ height: 65, backgroundColor: 'transparent' }} />
+        <View
+          style={{
+            paddingBottom: 10,
+            paddingHorizontal: 15,
+            marginBottom: 20,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  backgroundColor: 'rgb(70,70,70)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: avatarWidth,
+                  height: avatarWidth,
+                  borderRadius: avatarWidth / 2,
+                  marginRight: 15,
+                }}
+              >
+                {userData?.user.avatar ? (
+                  <ExpoImage source={userData?.user.avatar} style={styles.avatar} />
+                ) : (
+                  <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+                    {userData?.user.name.slice(0, 2).toUpperCase()}
+                  </Text>
+                )}
+              </View>
+              <View style={{ flexDirection: 'column' }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    marginBottom: 5,
+                  }}
+                >
+                  {userData?.user.name}
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, marginRight: 15 }}>Following</Text>
+                    <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Followers</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity style={styles.followButton} activeOpacity={0.7}>
+                <VectorIcon.II name='person-add' size={15} color='white' style={{ marginRight: 5 }} />
+                <Text style={styles.followButtonText}>Follow</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
         <Camera
           defaultSettings={{
@@ -135,3 +199,60 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // paddingTop: 30,
+    paddingBottom: 10,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+
+    borderRadius: 10,
+  },
+  leftContainer: {
+    width: 42,
+    height: 42,
+    borderRadius: 50,
+    marginRight: 15,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+  },
+  rightContainer: {},
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  uniqueName: {
+    fontSize: 14,
+    color: 'rgb(150,150,150)',
+  },
+  followButton: {
+    backgroundColor: 'rgb(50,50,50)',
+    padding: 10,
+    borderRadius: 100,
+    height: 35,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 5,
+  },
+  followButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  pagerView: {
+    flex: 1,
+    height: 2000,
+    width: '100%',
+  },
+});

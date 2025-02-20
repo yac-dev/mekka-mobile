@@ -5,8 +5,8 @@ import { useRecoilState } from 'recoil';
 import { currentTagAtom } from '../../../recoil';
 import axios from 'axios';
 import Config from 'react-native-config';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getPostsByTagId, getPostsByUserId, queryKeys } from '../../../query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getPostsByTagId, getPostsByUserId, getUserById, queryKeys } from '../../../query';
 
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { VectorIcon } from '../../../Icons';
@@ -29,6 +29,10 @@ Mapbox.setAccessToken(Config.MAPBOX_ACCESS_TOKEN);
 
 export const User: React.FC<IUser> = ({ userId }) => {
   const [viewPostsType, setViewPostsType] = useState<'grid' | 'region'>('grid');
+  const { data, status } = useQuery({
+    queryKey: [queryKeys.userById, userId],
+    queryFn: () => getUserById({ userId }),
+  });
 
   const onPostsTypeChangePress = (postsType: 'grid' | 'region') => {
     setViewPostsType(postsType);
@@ -48,7 +52,7 @@ export const User: React.FC<IUser> = ({ userId }) => {
         <PostsByGrid userId={userId} />
        
       </ScrollView> */}
-      <View style={{ height: 65, backgroundColor: 'red' }} />
+      {/* <View style={{ height: 65, backgroundColor: 'transparent' }} /> */}
       <Posts userId={userId} viewPostsType={viewPostsType} />
       <ViewPostsTypeToggleButton viewPostsType={viewPostsType} onPostsTypeChangePress={onPostsTypeChangePress} />
       {/* <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>User</Text> */}
