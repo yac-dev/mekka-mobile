@@ -15,8 +15,12 @@ import { AppButton } from '../../../components';
 import { Image as ExpoImage } from 'expo-image';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
-import { createFollowingRelationship } from '../../../query/mutations';
-import { CreateFollowingRelationshipInputType, GetFollowingUsersByUserIdOutputType } from '../../../query/types';
+import { createFollowingRelationship, deleteFollowingRelationship } from '../../../query/mutations';
+import {
+  CreateFollowingRelationshipInputType,
+  DeleteFollowingRelationshipInputType,
+  GetFollowingUsersByUserIdOutputType,
+} from '../../../query/types';
 
 type IPostsByGrid = {
   userId: string;
@@ -31,6 +35,8 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   const queryClient = useQueryClient();
   const userData = queryClient.getQueryData([queryKeys.userById, userId]);
   const followingUsersData = queryClient.getQueryData([queryKeys.followingUsers, auth._id]);
+
+  console.log('followingUsersData', followingUsersData);
 
   const {
     data,
@@ -62,6 +68,26 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
               avatar: userData?.user.avatar,
             },
           ];
+          return {
+            ...previous,
+            followingUsers: {
+              ...previous.followingUsers,
+              [currentSpace._id]: newFollowingUsers,
+            },
+          };
+        }
+      );
+    },
+  });
+
+  const { mutate: deleteFollowingRelationshipMutate, status: deleteFollowingRelationshipStatus } = useMutation({
+    mutationKey: [mutationKeys.deleteFollowingRelationship],
+    mutationFn: (input: DeleteFollowingRelationshipInputType) => deleteFollowingRelationship(input),
+    onSuccess: () => {
+      queryClient.setQueryData(
+        [queryKeys.followingUsers, auth._id],
+        (previous: GetFollowingUsersByUserIdOutputType) => {
+          const newFollowingUsers = previous.followingUsers[currentSpace._id].filter((user) => user._id !== userId);
           return {
             ...previous,
             followingUsers: {
@@ -124,7 +150,11 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
 
   const handleFollowingRelationship = () => {
     if (followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)) {
-      console.log('already following');
+      deleteFollowingRelationshipMutate({
+        followerId: auth._id,
+        followeeId: userId,
+        spaceId: currentSpace._id,
+      });
     } else {
       createFollowingRelationshipMutate({
         followerId: auth._id,
@@ -205,7 +235,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
           </View>
           {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {createFollowingRelationshipStatus === 'pending' ? (
+              {createFollowingRelationshipStatus === 'pending' || deleteFollowingRelationshipStatus === 'pending' ? (
                 <ActivityIndicator />
               ) : (
                 <TouchableOpacity

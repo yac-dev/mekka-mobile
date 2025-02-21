@@ -5,7 +5,12 @@ import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'rea
 import { Header } from './Header';
 import { useNavigation } from '@react-navigation/native';
 import { UserStackNavigatorProps } from '../navigations';
-import { createFollowingRelationship, getPostsByUserIdAndRegion, mutationKeys } from '../../../query';
+import {
+  createFollowingRelationship,
+  deleteFollowingRelationship,
+  getPostsByUserIdAndRegion,
+  mutationKeys,
+} from '../../../query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../../query/queryKeys';
 import { authAtom, currentSpaceAtom } from '../../../recoil';
@@ -14,7 +19,11 @@ import { PostType } from '../../../types';
 import { AppButton, MapPostThumbnail } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
-import { CreateFollowingRelationshipInputType, GetFollowingUsersByUserIdOutputType } from '../../../query/types';
+import {
+  CreateFollowingRelationshipInputType,
+  DeleteFollowingRelationshipInputType,
+  GetFollowingUsersByUserIdOutputType,
+} from '../../../query/types';
 
 type IPostsByRegion = {
   userId: string;
@@ -67,9 +76,33 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
     },
   });
 
+  const { mutate: deleteFollowingRelationshipMutate, status: deleteFollowingRelationshipStatus } = useMutation({
+    mutationKey: [mutationKeys.deleteFollowingRelationship],
+    mutationFn: (input: DeleteFollowingRelationshipInputType) => deleteFollowingRelationship(input),
+    onSuccess: () => {
+      queryClient.setQueryData(
+        [queryKeys.followingUsers, auth._id],
+        (previous: GetFollowingUsersByUserIdOutputType) => {
+          const newFollowingUsers = previous.followingUsers[currentSpace._id].filter((user) => user._id !== userId);
+          return {
+            ...previous,
+            followingUsers: {
+              ...previous.followingUsers,
+              [currentSpace._id]: newFollowingUsers,
+            },
+          };
+        }
+      );
+    },
+  });
+
   const handleFollowingRelationship = () => {
     if (followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)) {
-      console.log('already following');
+      deleteFollowingRelationshipMutate({
+        followerId: auth._id,
+        followeeId: userId,
+        spaceId: currentSpace._id,
+      });
     } else {
       createFollowingRelationshipMutate({
         followerId: auth._id,
@@ -211,7 +244,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
             </View>
             {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {createFollowingRelationshipStatus === 'pending' ? (
+                {createFollowingRelationshipStatus === 'pending' || deleteFollowingRelationshipStatus === 'pending' ? (
                   <ActivityIndicator />
                 ) : (
                   <TouchableOpacity
@@ -222,7 +255,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
                     }}
                   >
                     <Text style={styles.followButtonText}>
-                      {followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)
+                      {followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
                         ? 'Following'
                         : 'Follow'}
                     </Text>
