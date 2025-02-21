@@ -8,3 +8,5 @@ export * from './createComment';
 export * from './incrementReaction';
 export * from './joinPublicSpaceBySpaceId';
 export * from './updateMe';
+export * from './createFollowingRelationship';
+export * from './deleteFollowingRelationship';

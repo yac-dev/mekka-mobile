@@ -17,6 +17,7 @@ import { queryKeys } from '../../../query/queryKeys';
 import { useQueryClient } from '@tanstack/react-query';
 import { joinPublicSpaceBySpaceId } from '../../../query/mutations';
 import { JoinPublicSpaceBySpaceIdInputType } from '../../../query/types';
+import { Feature } from '../components';
 // ここに、spaceのthumbnailから始まり、
 
 type SpaceDetailProps = {
@@ -162,6 +163,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
         </View>
       </View>
       <Tabs tagId={getSpaceByIdData?.space.tags[1]._id} spaceId={spaceId} />
+      {/* <Feature spaceId={spaceId} /> */}
       <LoadingSpinner isVisible={status === 'pending'} message={'Processing now 🤔'} />
     </View>
   );

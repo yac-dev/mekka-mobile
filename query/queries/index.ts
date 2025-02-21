@@ -13,3 +13,4 @@ export * from './getCommentsByPostId';
 export * from './getReactionsByPostId';
 export * from './getPostsByTagIdAndRegion';
 export * from './getSpaceById';
+export * from './getFollowingUsersByUserId';

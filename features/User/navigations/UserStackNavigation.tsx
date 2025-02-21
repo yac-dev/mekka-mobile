@@ -43,13 +43,7 @@ export const UserStackNavigator: React.FC<UserStackNavigatorPropss> = ({ route }
               </AppButton.Icon>
             ),
             headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
+            headerTransparent: true,
           })}
         >
           {(props) => <User {...props} userId={route.params.userId} />}

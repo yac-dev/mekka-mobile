@@ -7,4 +7,6 @@ export const mutationKeys = {
   registerPushToken: 'registerPushToken',
   updateSpaceCheckedInDate: 'updateSpaceCheckedInDate',
   updateMe: 'updateMe',
+  createFollowingRelationship: 'createFollowingRelationship',
+  deleteFollowingRelationship: 'deleteFollowingRelationship',
 };

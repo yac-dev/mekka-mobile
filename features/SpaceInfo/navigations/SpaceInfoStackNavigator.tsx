@@ -41,31 +41,18 @@ export const SpaceInfoStackNavigator = () => {
         component={SpaceInfo}
         options={({ navigation }) => ({
           headerRight: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingHorizontal: 15,
-                  backgroundColor: 'rgb(50, 50, 50)',
-                  borderRadius: 100,
-                  marginRight: 10,
-                  height: 28,
-                }}
-                activeOpacity={0.7}
-                onPress={handleInvite}
-              >
-                <VectorIcon.MCI name='human-greeting-variant' color='white' size={15} style={{ marginRight: 10 }} />
-                <Text style={{ color: 'white', fontSize: 15 }}>Invite</Text>
-              </TouchableOpacity>
-              <AppButton.Icon
-                onButtonPress={() => navigation.goBack()}
-                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
-                hasShadow={false}
-              >
-                <VectorIcon.II name='close' size={18} color={Colors.white} />
-              </AppButton.Icon>
-            </View>
+            <TouchableOpacity activeOpacity={0.7} onPress={handleInvite}>
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Invite</Text>
+            </TouchableOpacity>
+          ),
+          headerLeft: () => (
+            <AppButton.Icon
+              onButtonPress={() => navigation.goBack()}
+              customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='close' size={18} color={Colors.white} />
+            </AppButton.Icon>
           ),
           headerShown: true,
           headerTitle: '',

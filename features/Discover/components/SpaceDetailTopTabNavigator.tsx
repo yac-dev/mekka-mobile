@@ -42,10 +42,18 @@ export const Tabs: React.FC<TabsProps> = ({ tagId, spaceId }) => {
                   backgroundColor: isFocused ? 'rgb(50,50,50)' : 'transparent',
                   borderRadius: 20,
                   marginHorizontal: 5,
+                  // width: '33%',
                 }}
                 onPress={onPress}
               >
-                <Text style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 17, fontWeight: 'bold' }}>
+                <Text
+                  style={{
+                    color: isFocused ? 'white' : 'rgb(170,170,170)',
+                    fontSize: 17,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}
+                >
                   {label}
                 </Text>
               </TouchableOpacity>
@@ -65,7 +73,7 @@ export const Tabs: React.FC<TabsProps> = ({ tagId, spaceId }) => {
       })}
     >
       <Tab.Screen name={'Posts'}>{(props) => <PostsByGrid {...props} tagId={tagId} />}</Tab.Screen>
-      <Tab.Screen name={'Features'} component={Feature} />
+      <Tab.Screen name={'Features'}>{(props) => <Feature {...props} spaceId={spaceId} />}</Tab.Screen>
       <Tab.Screen name={'Members'}>{(props) => <Members {...props} spaceId={spaceId} />}</Tab.Screen>
     </Tab.Navigator>
   );

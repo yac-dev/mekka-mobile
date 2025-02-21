@@ -143,6 +143,18 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Stay up to date?</Text>
             </View>
           </TouchableOpacity>
+          {/* NOTE: todo */}
+          {/* <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
+            onPress={onNotificationSettingPress}
+          >
+            <VectorIcon.MCI name='bookmark-multiple' size={20} color={Colors.white} style={{ marginRight: 20 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>My Library</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Your saved, liked posts</Text>
+            </View>
+          </TouchableOpacity> */}
           {/* <TouchableOpacity
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
