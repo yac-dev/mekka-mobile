@@ -78,7 +78,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <ExpoImage
+                {/* <ExpoImage
                   style={{
                     width: 35,
                     height: 35,
@@ -87,7 +87,26 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
                   }}
                   source={{ uri: item.createdBy.avatar }}
                   contentFit='contain'
-                />
+                /> */}
+                <View
+                  style={{
+                    backgroundColor: 'rgb(70,70,70)',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: 35,
+                    height: 35,
+                    borderRadius: 35 / 2,
+                    marginRight: 15,
+                  }}
+                >
+                  {item.createdBy.avatar ? (
+                    <ExpoImage source={item.createdBy.avatar} style={styles.avatar} />
+                  ) : (
+                    <Text style={{ color: 'white', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
+                      {item.createdBy.name.slice(0, 2).toUpperCase()}
+                    </Text>
+                  )}
+                </View>
                 <View style={{ flexDirection: 'column' }}>
                   <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>
                     {item.createdBy.name}
@@ -134,7 +153,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
         backgroundColor: 'rgba(0,0,0,0.8)',
       }}
       behavior='padding'
-      keyboardVerticalOffset={85}
+      keyboardVerticalOffset={55}
     >
       <FlashList
         data={data?.comments}
@@ -183,5 +202,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.8)',
+  },
+  avatar: {
+    width: 35,
+    height: 35,
+    borderRadius: 35 / 2,
   },
 });
