@@ -19,7 +19,6 @@ import { VectorIcon } from '../../../Icons';
 import { GridView, Posts, RegionView, ViewPostsTypeToggleButton } from '../components';
 import { SpaceStackNavigatorProps } from '../../../navigations';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { SpaceStackNavigatorParams } from '../../../navigations';
 import { useRecoilValue } from 'recoil';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';

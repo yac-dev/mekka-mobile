@@ -27,6 +27,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import * as Notifications from 'expo-notifications';
 import Config from 'react-native-config';
 import { RegisterPushTokenInputType } from '../../../query/types';
+import { getFollowingUsersByUserId } from '../../../query/';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -115,6 +116,13 @@ export const RootStackNavigator = () => {
       return response;
     },
   });
+
+  const { data: followingUsers } = useQuery({
+    queryKey: [queryKeys.followingUsers, auth._id],
+    queryFn: () => getFollowingUsersByUserId({ userId: auth._id }),
+  });
+
+  console.log('followingUsers', JSON.stringify(followingUsers, null, 2));
 
   const { mutate: registerPushTokenMutation } = useMutation({
     mutationKey: [mutationKeys.registerPushToken],

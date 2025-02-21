@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, ActivityIndicator, FlatList, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getPostsByUserId, queryKeys } from '../../../query';
+import { getPostsByUserId, mutationKeys, queryKeys } from '../../../query';
 import { FlashList } from '@shopify/flash-list';
 import { PostType } from '../../../types';
 import { PostThumbnail } from '../../../components/PostThumbnail';
-import { currentSpaceAtom } from '../../../recoil';
-import { useRecoilState } from 'recoil';
+import { authAtom, currentSpaceAtom } from '../../../recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Header } from './Header';
 import { useNavigation } from '@react-navigation/native';
 import { UserStackNavigatorProps } from '../navigations';
@@ -14,6 +14,9 @@ import { VectorIcon } from '../../../Icons';
 import { AppButton } from '../../../components';
 import { Image as ExpoImage } from 'expo-image';
 import { useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { createFollowingRelationship } from '../../../query/mutations';
+import { CreateFollowingRelationshipInputType, GetFollowingUsersByUserIdOutputType } from '../../../query/types';
 
 type IPostsByGrid = {
   userId: string;
@@ -23,7 +26,12 @@ const avatarWidth = 62;
 
 export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [auth] = useRecoilState(authAtom);
   const userStackNavigation = useNavigation<UserStackNavigatorProps>();
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData([queryKeys.userById, userId]);
+  const followingUsersData = queryClient.getQueryData([queryKeys.followingUsers, auth._id]);
+
   const {
     data,
     status: getPostsByUserIdStatus,
@@ -38,10 +46,33 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
     },
   });
 
-  console.log('data', data?.pages[0].posts);
-
-  const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData([queryKeys.userById, userId]);
+  const { mutate: createFollowingRelationshipMutate, status: createFollowingRelationshipStatus } = useMutation({
+    mutationKey: [mutationKeys.createFollowingRelationship],
+    mutationFn: (input: CreateFollowingRelationshipInputType) => createFollowingRelationship(input),
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        [queryKeys.followingUsers, auth._id],
+        (previous: GetFollowingUsersByUserIdOutputType) => {
+          const newFollowingUsers = [
+            ...previous.followingUsers[currentSpace._id],
+            {
+              _id: userData?.user._id,
+              name: userData?.user.name,
+              email: userData?.user.email,
+              avatar: userData?.user.avatar,
+            },
+          ];
+          return {
+            ...previous,
+            followingUsers: {
+              ...previous.followingUsers,
+              [currentSpace._id]: newFollowingUsers,
+            },
+          };
+        }
+      );
+    },
+  });
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -88,6 +119,18 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
           <ActivityIndicator />
         </View>
       );
+    }
+  };
+
+  const handleFollowingRelationship = () => {
+    if (followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)) {
+      console.log('already following');
+    } else {
+      createFollowingRelationshipMutate({
+        followerId: auth._id,
+        followeeId: userId,
+        spaceId: currentSpace._id,
+      });
     }
   };
 
@@ -146,23 +189,41 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
                   fontSize: 18,
                   fontWeight: 'bold',
                   color: 'white',
-                  marginBottom: 5,
+                  // marginBottom: 5,
                 }}
               >
                 {userData?.user.name}
               </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, marginRight: 15 }}>Following</Text>
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Followers</Text>
-              </View>
+              {/* NOTE: followingRelのstats実装してからやる。 */}
+              {/* {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, marginRight: 15 }}>Following</Text>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Followers</Text>
+                </View>
+              ) : null} */}
             </View>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity style={styles.followButton} activeOpacity={0.7}>
-              <VectorIcon.II name='person-add' size={15} color='white' style={{ marginRight: 5 }} />
-              <Text style={styles.followButtonText}>Follow</Text>
-            </TouchableOpacity>
-          </View>
+          {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {createFollowingRelationshipStatus === 'pending' ? (
+                <ActivityIndicator />
+              ) : (
+                <TouchableOpacity
+                  style={styles.followButton}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    handleFollowingRelationship();
+                  }}
+                >
+                  <Text style={styles.followButtonText}>
+                    {followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)
+                      ? 'Following'
+                      : 'Follow'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : null}
         </View>
       </View>
       {!data?.pages.flatMap((page) => page.posts).length ? (

@@ -263,6 +263,16 @@ export type UpdateMeOutputType = {
   user: UserType;
 };
 
+export type GetFollowingUsersByUserIdInputType = {
+  userId: string;
+};
+
+export type GetFollowingUsersByUserIdOutputType = {
+  followingUsers: {
+    [key: string]: UserType[];
+  };
+};
+
 export type CreateFollowingRelationshipInputType = {
   followerId: string;
   followeeId: string;
@@ -271,4 +281,10 @@ export type CreateFollowingRelationshipInputType = {
 
 export type CreateFollowingRelationshipOutputType = {
   followingRelationship: FollowingRelationshipType;
+};
+
+export type DeleteFollowingRelationshipInputType = {
+  followerId: string;
+  followeeId: string;
+  spaceId: string;
 };
