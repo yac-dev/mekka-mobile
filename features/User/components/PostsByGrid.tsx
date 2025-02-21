@@ -60,6 +60,9 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
       queryClient.setQueryData(
         [queryKeys.followingUsers, auth._id],
         (previous: GetFollowingUsersByUserIdOutputType) => {
+          if (!previous.followingUsers[currentSpace._id]) {
+            previous.followingUsers[currentSpace._id] = [];
+          }
           const newFollowingUsers = [
             ...previous.followingUsers[currentSpace._id],
             {

@@ -83,6 +83,9 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
       queryClient.setQueryData(
         [queryKeys.followingUsers, auth._id],
         (previous: GetFollowingUsersByUserIdOutputType) => {
+          if (!previous.followingUsers[currentSpace._id]) {
+            previous.followingUsers[currentSpace._id] = [];
+          }
           const newFollowingUsers = previous.followingUsers[currentSpace._id].filter((user) => user._id !== userId);
           return {
             ...previous,
@@ -97,7 +100,10 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
   });
 
   const handleFollowingRelationship = () => {
-    if (followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)) {
+    if (
+      followingUsersData?.followingUsers[currentSpace._id] &&
+      followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
+    ) {
       deleteFollowingRelationshipMutate({
         followerId: auth._id,
         followeeId: userId,
