@@ -56,6 +56,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
     mutationKey: [mutationKeys.createFollowingRelationship],
     mutationFn: (input: CreateFollowingRelationshipInputType) => createFollowingRelationship(input),
     onSuccess: (data) => {
+      // これ、なかったらなかったで、作らないといけないよね。。。spaceのkeyを。。。
       queryClient.setQueryData(
         [queryKeys.followingUsers, auth._id],
         (previous: GetFollowingUsersByUserIdOutputType) => {
@@ -149,7 +150,10 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   };
 
   const handleFollowingRelationship = () => {
-    if (followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)) {
+    if (
+      followingUsersData?.followingUsers[currentSpace._id] &&
+      followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
+    ) {
       deleteFollowingRelationshipMutate({
         followerId: auth._id,
         followeeId: userId,
@@ -246,7 +250,8 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
                   }}
                 >
                   <Text style={styles.followButtonText}>
-                    {followingUsersData.followingUsers[currentSpace._id].find((user) => user._id === userId)
+                    {followingUsersData?.followingUsers[currentSpace._id] &&
+                    followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
                       ? 'Following'
                       : 'Follow'}
                   </Text>

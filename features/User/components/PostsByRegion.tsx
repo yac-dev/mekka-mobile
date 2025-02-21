@@ -254,8 +254,10 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
                       handleFollowingRelationship();
                     }}
                   >
+                    {/* ここのkeyに対するundefinedチェックをせねばいかんな。。。 */}
                     <Text style={styles.followButtonText}>
-                      {followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
+                      {followingUsersData?.followingUsers[currentSpace._id] &&
+                      followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
                         ? 'Following'
                         : 'Follow'}
                     </Text>
