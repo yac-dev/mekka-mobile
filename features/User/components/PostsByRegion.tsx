@@ -248,7 +248,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
                 ) : null} */}
               </View>
             </View>
-            {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
+            {userId !== auth._id && currentSpace.isPublic && currentSpace.isFollowAvailable ? (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {createFollowingRelationshipStatus === 'pending' || deleteFollowingRelationshipStatus === 'pending' ? (
                   <ActivityIndicator />

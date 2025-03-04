@@ -36,8 +36,6 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
   const userData = queryClient.getQueryData([queryKeys.userById, userId]);
   const followingUsersData = queryClient.getQueryData([queryKeys.followingUsers, auth._id]);
 
-  console.log('followingUsersData', followingUsersData);
-
   const {
     data,
     status: getPostsByUserIdStatus,
@@ -240,7 +238,7 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
               ) : null} */}
             </View>
           </View>
-          {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
+          {userId !== auth._id && currentSpace.isPublic && currentSpace.isFollowAvailable ? (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {createFollowingRelationshipStatus === 'pending' || deleteFollowingRelationshipStatus === 'pending' ? (
                 <ActivityIndicator />
