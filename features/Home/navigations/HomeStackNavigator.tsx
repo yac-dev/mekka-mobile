@@ -90,7 +90,7 @@ export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootSta
 export type HomeStackParams = {
   // Home: NavigatorScreenParams<SpacesDrawerParams>;
   Home: undefined;
-  MyPageStackNavigator: NavigatorScreenParams<MyPageStackNavigatorParams>;
+  MyPage: undefined;
   SpaceStackNavigator: NavigatorScreenParams<SpaceStackParams>;
   MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
@@ -259,6 +259,30 @@ export const HomeStackNavigator: React.FC = (props) => {
                 </AppButton.Icon>
               ),
               headerTitle: 'Change My Password',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
+            name='MyPage'
+            component={MyPage}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
               },

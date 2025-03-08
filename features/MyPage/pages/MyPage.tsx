@@ -17,6 +17,7 @@ import { MyPageStackNavigatorProps } from '../navigations/MyPageStackNavigation'
 import { authAtom } from '../../../recoil';
 import { useRecoilValue } from 'recoil';
 import { Image as ExpoImage } from 'expo-image';
+import { Posts } from './Posts';
 const DATA = [
   { name: 'Marissa Castillo' },
   { name: 'Denzel Curry' },
@@ -29,7 +30,7 @@ const DATA = [
   { name: 'Sophia Gibbs' },
   { name: 'Vincent Sandoval' },
 ];
-const HEADER_HEIGHT = 80;
+const HEADER_HEIGHT = 140;
 const TAB_BAR_HEIGHT = 50;
 
 const initialLayout = {
@@ -184,7 +185,7 @@ export const MyPage = () => {
     switch (route.key) {
       case 'posts':
         return (
-          <FirstRoute
+          <Posts
             position={position}
             syncOffset={syncOffset}
             firstRef={firstRef}
@@ -297,6 +298,13 @@ export const MyPage = () => {
               </View>
             </View>
           </View>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ padding: 10, backgroundColor: 'white', borderRadius: 100 }}
+            onPress={() => myPageStackNavigation.navigate('EditMyAccount')}
+          >
+            <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Edit</Text>
+          </TouchableOpacity>
         </View>
         <View
           style={{

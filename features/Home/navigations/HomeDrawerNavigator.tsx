@@ -88,7 +88,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         activeOpacity={0.7}
         onPress={() => {
           navigation.closeDrawer();
-          homeStackNavigation.navigate('MyPageStackNavigator');
+          homeStackNavigation.navigate('MyPage');
         }}
       >
         <View
