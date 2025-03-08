@@ -13,6 +13,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type MyPageStackNavigatorParams = {
   MyPage: undefined;
+  EditMyAccount: undefined;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
 };
 

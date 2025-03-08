@@ -1,9 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, StatusBar, SafeAreaView, Animated, Text, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  StatusBar,
+  SafeAreaView,
+  Animated,
+  Text,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { HomeStackNavigatorProps } from '../../Home/navigations';
-
+import { MyPageStackNavigatorProps } from '../navigations/MyPageStackNavigation';
+import { authAtom } from '../../../recoil';
+import { useRecoilValue } from 'recoil';
+import { Image as ExpoImage } from 'expo-image';
 const DATA = [
   { name: 'Marissa Castillo' },
   { name: 'Denzel Curry' },
@@ -16,7 +29,7 @@ const DATA = [
   { name: 'Sophia Gibbs' },
   { name: 'Vincent Sandoval' },
 ];
-const HEADER_HEIGHT = 240;
+const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
 const initialLayout = {
@@ -32,7 +45,7 @@ const FirstRoute = ({ position, syncOffset, firstRef, onMomentumScrollBegin }: a
       onMomentumScrollBegin={onMomentumScrollBegin}
       onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], { useNativeDriver: true })}
       onMomentumScrollEnd={(e) => {
-        syncOffset('first', e.nativeEvent.contentOffset.y);
+        syncOffset('posts', e.nativeEvent.contentOffset.y);
       }}
       data={DATA}
       keyExtractor={(item, i) => String(i)}
@@ -47,7 +60,7 @@ const FirstRoute = ({ position, syncOffset, firstRef, onMomentumScrollBegin }: a
 };
 
 const SecondRoute = ({ position, syncOffset, secondRef, onMomentumScrollBegin }: any) => (
-  <Animated.FlatList
+  <Animated.ScrollView
     ref={secondRef}
     scrollEventThrottle={1}
     onMomentumScrollBegin={onMomentumScrollBegin}
@@ -55,44 +68,88 @@ const SecondRoute = ({ position, syncOffset, secondRef, onMomentumScrollBegin }:
       useNativeDriver: true,
     })}
     onMomentumScrollEnd={(e) => {
-      syncOffset('second', e.nativeEvent.contentOffset.y);
+      syncOffset('moments', e.nativeEvent.contentOffset.y);
     }}
-    data={DATA}
-    keyExtractor={(item, i) => String(i)}
-    renderItem={({ item }) => (
-      <View style={[styles.scene, { backgroundColor: '#673ab7' }]}>
-        <Text>{item.name}</Text>
-      </View>
-    )}
     contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT }}
-  />
+  >
+    <View style={{ backgroundColor: 'black', height: 1500 }}>
+      <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Moments</Text>
+    </View>
+  </Animated.ScrollView>
 );
 
-export const MyPage = () => {
-  const [index, setIndex] = useState(0);
-  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+const ThirdRoute = ({ position, syncOffset, thirdRef, onMomentumScrollBegin }: any) => {
+  return (
+    <Animated.FlatList
+      ref={thirdRef}
+      scrollEventThrottle={1}
+      onMomentumScrollBegin={onMomentumScrollBegin}
+      onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], { useNativeDriver: true })}
+      onMomentumScrollEnd={(e) => {
+        syncOffset('activities', e.nativeEvent.contentOffset.y);
+      }}
+      data={DATA}
+      keyExtractor={(item, i) => String(i)}
+      renderItem={({ item }) => (
+        <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
+          <Text>{item.name}</Text>
+        </View>
+      )}
+      contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT }}
+    />
+  );
+};
 
-  useEffect(() => {
-    homeStackNavigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Follow
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, []);
+const FourthRoute = ({ position, syncOffset, fourthRef, onMomentumScrollBegin }: any) => {
+  return (
+    <Animated.FlatList
+      ref={fourthRef}
+      scrollEventThrottle={1}
+      onMomentumScrollBegin={onMomentumScrollBegin}
+      onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], { useNativeDriver: true })}
+      onMomentumScrollEnd={(e) => {
+        syncOffset('about', e.nativeEvent.contentOffset.y);
+      }}
+      data={DATA}
+      keyExtractor={(item, i) => String(i)}
+      renderItem={({ item }) => (
+        <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
+          <Text>{item.name}</Text>
+        </View>
+      )}
+      contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT }}
+    />
+  );
+};
+
+export const MyPage = () => {
+  const auth = useRecoilValue(authAtom);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const myPageStackNavigation = useNavigation<MyPageStackNavigatorProps>();
+  // useEffect(() => {
+  //   homeStackNavigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity>
+  //         <Text
+  //           style={{
+  //             color: 'white',
+  //             fontSize: 20,
+  //             fontWeight: 'bold',
+  //           }}
+  //         >
+  //           Follow
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, []);
 
   const [routes] = useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
+    { key: 'posts', title: 'Posts' },
+    { key: 'moments', title: 'Moments' },
+    { key: 'activities', title: 'Activities' },
+    // { key: 'about', title: 'About' },
   ]);
 
   const position: any = useRef(new Animated.Value(0)).current;
@@ -100,7 +157,8 @@ export const MyPage = () => {
 
   const firstRef: any = useRef();
   const secondRef: any = useRef();
-
+  const thirdRef: any = useRef();
+  const fourthRef: any = useRef();
   const onMomentumScrollBegin = () => {
     isValidTabPress.current = true;
   };
@@ -124,7 +182,7 @@ export const MyPage = () => {
 
   const renderScene = ({ route }: any) => {
     switch (route.key) {
-      case 'first':
+      case 'posts':
         return (
           <FirstRoute
             position={position}
@@ -133,7 +191,7 @@ export const MyPage = () => {
             onMomentumScrollBegin={onMomentumScrollBegin}
           />
         );
-      case 'second':
+      case 'moments':
         return (
           <SecondRoute
             position={position}
@@ -142,9 +200,45 @@ export const MyPage = () => {
             onMomentumScrollBegin={onMomentumScrollBegin}
           />
         );
+      case 'activities':
+        return (
+          <ThirdRoute
+            position={position}
+            syncOffset={syncOffset}
+            thirdRef={thirdRef}
+            onMomentumScrollBegin={onMomentumScrollBegin}
+          />
+        );
+      case 'about':
+        return (
+          <FourthRoute
+            position={position}
+            syncOffset={syncOffset}
+            fourthRef={fourthRef}
+            onMomentumScrollBegin={onMomentumScrollBegin}
+          />
+        );
       default:
         return null;
     }
+  };
+  const renderTab = ({ item, index }) => {
+    return (
+      <TouchableOpacity
+        style={{
+          backgroundColor: currentIndex === index ? 'rgb(50, 50,50)' : 'black',
+          paddingHorizontal: 10,
+          paddingVertical: 0,
+          borderRadius: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        activeOpacity={0.7}
+        onPress={() => setCurrentIndex(index)}
+      >
+        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{item.title}</Text>
+      </TouchableOpacity>
+    );
   };
 
   function renderTabBar(props: any) {
@@ -160,32 +254,83 @@ export const MyPage = () => {
         <View
           style={{
             height: HEADER_HEIGHT,
-            backgroundColor: 'green',
+            paddingHorizontal: 15,
+            paddingTop: 15,
           }}
         >
-          <Text>Header</Text>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              marginBottom: 10,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: 'rgb(70,70,70)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 50,
+                height: 50,
+                borderRadius: 50 / 2,
+                marginRight: 20,
+              }}
+            >
+              {auth.avatar ? (
+                <View style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}>
+                  <ExpoImage
+                    style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}
+                    source={{ uri: auth.avatar }}
+                    contentFit='cover'
+                  />
+                </View>
+              ) : (
+                <Text style={{ color: 'white', fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>
+                  {auth.name.slice(0, 2).toUpperCase()}
+                </Text>
+              )}
+            </View>
+            <View style={{ flexDirection: 'column', gap: 5 }}>
+              <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{auth.name}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Member since 2025/03/07</Text>
+              </View>
+            </View>
+          </View>
         </View>
-        <TabBar
-          {...props}
-          style={{ height: TAB_BAR_HEIGHT }}
-          onTabPress={({ route, preventDefault }) => {
-            if (isValidTabPress.current) {
-              preventDefault();
-            }
+        <View
+          style={{
+            height: TAB_BAR_HEIGHT,
+            backgroundColor: 'black',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-        />
+        >
+          <View style={{ height: 35 }}>
+            <FlatList
+              horizontal
+              scrollEnabled={false}
+              contentContainerStyle={{ gap: 10 }}
+              data={routes}
+              renderItem={renderTab}
+              keyExtractor={(item, index) => item.key}
+            />
+          </View>
+        </View>
       </Animated.View>
     );
   }
 
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      renderTabBar={renderTabBar}
-      onIndexChange={setIndex}
-      initialLayout={initialLayout}
-    />
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <TabView
+        navigationState={{ index: currentIndex, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setCurrentIndex}
+        initialLayout={initialLayout}
+      />
+    </View>
   );
 };
 
