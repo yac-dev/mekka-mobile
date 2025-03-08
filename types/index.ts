@@ -5,6 +5,7 @@ export type AuthType = {
   avatar: string;
   password: string;
   pushToken?: string;
+  createdAt: string;
 };
 
 export const INITIAL_AUTH = {

@@ -102,6 +102,15 @@ const FourthRoute = ({ position, syncOffset, fourthRef, onMomentumScrollBegin }:
   );
 };
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
 export const MyPage = () => {
   const auth = useRecoilValue(authAtom);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -273,7 +282,9 @@ export const MyPage = () => {
             <View style={{ flexDirection: 'column', gap: 5 }}>
               <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{auth.name}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Member since {auth.createdAt}</Text>
+                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>
+                  Member since {formatDate(auth.createdAt)}
+                </Text>
               </View>
             </View>
           </View>

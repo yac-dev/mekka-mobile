@@ -244,8 +244,13 @@ export const Space: React.FC<ISpace> = ({
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ marginRight: 8 }}>
+                <View style={{ marginRight: 8, flexDirection: 'column' }}>
                   <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                  {!currentSpace.isPublic ? (
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
+                    </View>
+                  ) : null}
                 </View>
                 <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
