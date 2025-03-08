@@ -87,7 +87,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         }}
         activeOpacity={0.7}
         onPress={() => {
-          navigation.closeDrawer();
           homeStackNavigation.navigate('MyPage');
         }}
       >
@@ -127,7 +126,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('EditMyAccount');
             }}
           >
@@ -183,7 +181,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
             }}
           >
@@ -199,7 +196,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('EnterPrivateSpace');
             }}
           >
@@ -215,7 +211,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('DiscoverStackNavigator');
             }}
           >
@@ -236,7 +231,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('AboutApp');
             }}
           >

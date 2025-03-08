@@ -14,6 +14,7 @@ const TAB_BAR_HEIGHT = 50;
 export const Grid = ({ position, syncOffset, firstRef, onMomentumScrollBegin, spaceId }: any) => {
   const [auth] = useRecoilState(authAtom);
 
+  // このpostsByIdがなんかおかしいよね。。。？多分、keyの影響かも。。。？
   const {
     data,
     status: getPostsByUserIdStatus,
@@ -53,14 +54,23 @@ export const Grid = ({ position, syncOffset, firstRef, onMomentumScrollBegin, sp
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       {!data?.pages.flatMap((page) => page.posts).length ? (
-        <View
+        <Animated.ScrollView
+          ref={firstRef}
+          scrollEventThrottle={1}
+          onMomentumScrollBegin={onMomentumScrollBegin}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], {
+            useNativeDriver: true,
+          })}
+          onMomentumScrollEnd={(e) => {
+            syncOffset('posts', e.nativeEvent.contentOffset.y);
+          }}
           style={{
             flex: 1,
             paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT,
           }}
         >
           <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts found...</Text>
-        </View>
+        </Animated.ScrollView>
       ) : (
         <Animated.FlatList
           ref={firstRef}
@@ -77,6 +87,9 @@ export const Grid = ({ position, syncOffset, firstRef, onMomentumScrollBegin, sp
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           removeClippedSubviews
+          onEndReached={() => {
+            fetchNextPage();
+          }}
           // onMomentumScrollEnd={() => {
           //   fetchNextPage();
           // }}

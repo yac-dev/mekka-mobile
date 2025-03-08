@@ -17,7 +17,8 @@ import { MyPageStackNavigatorProps } from '../navigations/MyPageStackNavigation'
 import { authAtom } from '../../../recoil';
 import { useRecoilValue } from 'recoil';
 import { Image as ExpoImage } from 'expo-image';
-import { Posts } from './Posts';
+import { Posts, MomentsPosts } from '.';
+
 const DATA = [
   { name: 'Marissa Castillo' },
   { name: 'Denzel Curry' },
@@ -36,28 +37,6 @@ const TAB_BAR_HEIGHT = 50;
 const initialLayout = {
   height: 0,
   width: Dimensions.get('window').width,
-};
-
-const FirstRoute = ({ position, syncOffset, firstRef, onMomentumScrollBegin }: any) => {
-  return (
-    <Animated.FlatList
-      ref={firstRef}
-      scrollEventThrottle={1}
-      onMomentumScrollBegin={onMomentumScrollBegin}
-      onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], { useNativeDriver: true })}
-      onMomentumScrollEnd={(e) => {
-        syncOffset('posts', e.nativeEvent.contentOffset.y);
-      }}
-      data={DATA}
-      keyExtractor={(item, i) => String(i)}
-      renderItem={({ item }) => (
-        <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
-          <Text>{item.name}</Text>
-        </View>
-      )}
-      contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT }}
-    />
-  );
 };
 
 const SecondRoute = ({ position, syncOffset, secondRef, onMomentumScrollBegin }: any) => (
@@ -194,7 +173,7 @@ export const MyPage = () => {
         );
       case 'moments':
         return (
-          <SecondRoute
+          <MomentsPosts
             position={position}
             syncOffset={syncOffset}
             secondRef={secondRef}
@@ -294,7 +273,7 @@ export const MyPage = () => {
             <View style={{ flexDirection: 'column', gap: 5 }}>
               <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{auth.name}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Member since 2025/03/07</Text>
+                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>Member since {auth.createdAt}</Text>
               </View>
             </View>
           </View>
