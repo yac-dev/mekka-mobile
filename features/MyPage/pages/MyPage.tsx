@@ -215,17 +215,21 @@ export const MyPage = () => {
     return (
       <TouchableOpacity
         style={{
-          backgroundColor: currentIndex === index ? 'rgb(50, 50,50)' : 'black',
           paddingHorizontal: 10,
           paddingVertical: 0,
-          borderRadius: 100,
           justifyContent: 'center',
           alignItems: 'center',
+          borderBottomWidth: 1,
+          borderBottomColor: currentIndex === index ? 'white' : null,
         }}
         activeOpacity={0.7}
         onPress={() => setCurrentIndex(index)}
       >
-        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{item.title}</Text>
+        <Text
+          style={{ color: currentIndex === index ? 'white' : 'rgb(100,100,100)', fontSize: 17, fontWeight: 'bold' }}
+        >
+          {item.title}
+        </Text>
       </TouchableOpacity>
     );
   };

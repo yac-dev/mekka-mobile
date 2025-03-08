@@ -39,16 +39,16 @@ export const Tabs: React.FC<TabsProps> = ({ tagId, spaceId }) => {
                   alignItems: 'center',
                   paddingHorizontal: 15,
                   paddingVertical: 10,
-                  backgroundColor: isFocused ? 'rgb(50,50,50)' : 'transparent',
-                  borderRadius: 20,
                   marginHorizontal: 5,
+                  borderBottomWidth: 1,
+                  borderBottomColor: isFocused ? 'white' : null,
                   // width: '33%',
                 }}
                 onPress={onPress}
               >
                 <Text
                   style={{
-                    color: isFocused ? 'white' : 'rgb(170,170,170)',
+                    color: isFocused ? 'white' : 'rgb(100,100,100)',
                     fontSize: 17,
                     fontWeight: 'bold',
                     textAlign: 'center',

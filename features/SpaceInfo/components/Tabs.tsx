@@ -38,13 +38,13 @@ export const Tabs: React.FC<SpaceInfoTopTabNavigatorProps> = () => {
                   alignItems: 'center',
                   paddingHorizontal: 15,
                   paddingVertical: 10,
-                  backgroundColor: isFocused ? 'rgb(50,50,50)' : 'transparent',
-                  borderRadius: 20,
                   marginHorizontal: 5,
+                  borderBottomWidth: 1,
+                  borderBottomColor: isFocused ? 'white' : null,
                 }}
                 onPress={onPress}
               >
-                <Text style={{ color: isFocused ? 'white' : 'rgb(150,150,150)', fontSize: 17, fontWeight: 'bold' }}>
+                <Text style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 17, fontWeight: 'bold' }}>
                   {label}
                 </Text>
               </TouchableOpacity>
