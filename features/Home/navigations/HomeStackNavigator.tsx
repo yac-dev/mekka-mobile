@@ -7,6 +7,7 @@ import {
   CreateNewPostStackNavigator,
   CreateNewPostStackParams,
   CreateNewSpaceStackNavigator,
+  MyPage,
   SpacesHeader,
   ViewPostStackNavigator,
 } from '../..';
@@ -34,6 +35,7 @@ import { HomeDrawerNavigator } from './HomeDrawerNavigator';
 import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer';
 import { ChangeMyPassword } from '../../ChangeMyPassword';
 import { EditAccount } from '../../EditAccount/pages/EditAccount';
+import { MyPageStackNavigator, MyPageStackNavigatorParams } from '../../MyPage/navigations/MyPageStackNavigation';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -88,6 +90,7 @@ export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootSta
 export type HomeStackParams = {
   // Home: NavigatorScreenParams<SpacesDrawerParams>;
   Home: undefined;
+  MyPageStackNavigator: NavigatorScreenParams<MyPageStackNavigatorParams>;
   SpaceStackNavigator: NavigatorScreenParams<SpaceStackParams>;
   MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
@@ -317,6 +320,21 @@ export const HomeStackNavigator: React.FC = (props) => {
         </HomeStack.Group>
 
         <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+          <HomeStack.Screen
+            name='MyPageStackNavigator'
+            component={MyPageStackNavigator}
+            options={({ navigation }) => ({
+              headerShown: false,
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: primaryBackgroundColor,
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: Colors.white,
+              },
+            })}
+          />
           <HomeStack.Screen
             name='CreateNewSpaceStackNavigator'
             component={CreateNewSpaceStackNavigator}
