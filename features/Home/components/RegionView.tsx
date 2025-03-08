@@ -240,7 +240,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {
@@ -543,12 +543,12 @@ export const RegionView: React.FC<RegionViewProps> = ({
           // left: 0,
           // right: 0,
           // zIndex: 1000,
-          height: 65,
-          backgroundColor: 'black',
+          height: 55,
+          // backgroundColor: 'black',
           paddingHorizontal: 10,
           paddingVertical: 8,
-          borderTopWidth: 0.3,
-          borderTopColor: 'rgb(100,100,100)',
+          // borderTopWidth: 0.3,
+          // borderTopColor: 'rgb(100,100,100)',
           width: '100%',
         }}
       >

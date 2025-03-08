@@ -175,7 +175,7 @@ export const Space: React.FC<ISpace> = ({
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
               borderRadius: 130,
               ...Platform.select({
                 ios: {
@@ -195,7 +195,7 @@ export const Space: React.FC<ISpace> = ({
               source={{ uri: item.icon?.url }}
               tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
               {item.name}
             </Text>
           </View>
@@ -396,12 +396,12 @@ export const Space: React.FC<ISpace> = ({
           // left: 0,
           // right: 0,
           // zIndex: 1000,
-          height: 65,
-          backgroundColor: 'black',
+          height: 55,
+          backgroundColor: 'transparent',
           paddingHorizontal: 10,
           paddingVertical: 8,
-          borderTopWidth: 0.3,
-          borderTopColor: 'rgb(100,100,100)',
+          // borderTopWidth: 0.3,
+          // borderTopColor: 'rgb(100,100,100)',
           width: '100%',
         }}
       >

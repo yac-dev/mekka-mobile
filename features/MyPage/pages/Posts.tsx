@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { View, Text, Animated, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Animated, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { mySpacesAtom } from '../../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import { SpaceType } from '../../../types';
@@ -37,13 +37,24 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
         key={item._id}
         style={{
           marginRight: 8,
-          paddingVertical: 5,
+          padding: 5,
           paddingHorizontal: 10,
+          paddingVertical: 0,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 8,
-          backgroundColor: currentIndex === index ? 'rgb(50,50,50)' : 'transparent',
-          borderRadius: 100,
+          backgroundColor: currentIndex === index ? 'white' : 'rgb(30,30,30)',
+          borderRadius: 130,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 1, height: 0 },
+              shadowOpacity: 0.5,
+              shadowRadius: 1,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
         }}
         onPress={() => {
           setCurrentIndex(index);
@@ -51,11 +62,12 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
       >
         <View
           style={{
-            width: 30,
+            width: 20,
             aspectRatio: 1,
             borderRadius: 22.5,
             alignItems: 'center',
             justifyContent: 'center',
+            marginRight: 5,
           }}
         >
           <ExpoImage
@@ -64,7 +76,7 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
             contentFit='contain'
           />
         </View>
-        <Text style={{ color: currentIndex === index ? 'white' : 'rgb(100,100,100)', fontSize: 16 }}>{item.name}</Text>
+        <Text style={{ color: currentIndex === index ? 'black' : 'rgb(100,100,100)', fontSize: 13 }}>{item.name}</Text>
       </TouchableOpacity>
     );
   };
@@ -109,12 +121,12 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
           // left: 0,
           // right: 0,
           // zIndex: 1000,
-          height: 65,
-          backgroundColor: 'black',
+          height: 55,
+          // backgroundColor: 'black',
           paddingHorizontal: 10,
           paddingVertical: 8,
-          borderTopWidth: 0.3,
-          borderTopColor: 'rgb(100,100,100)',
+          // borderTopWidth: 0.3,
+          // borderTopColor: 'rgb(100,100,100)',
           width: '100%',
         }}
       >

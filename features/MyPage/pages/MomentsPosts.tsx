@@ -7,7 +7,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { Grid } from '../components';
 
-const HEADER_HEIGHT = 140;
+const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
 const DATA = [
@@ -41,8 +41,7 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
           paddingHorizontal: 10,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 8,
-          backgroundColor: currentIndex === index ? 'rgb(50,50,50)' : 'transparent',
+          backgroundColor: currentIndex === index ? 'white' : 'rgb(30,30,30)',
           borderRadius: 100,
         }}
         onPress={() => {
@@ -51,11 +50,12 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
       >
         <View
           style={{
-            width: 30,
+            width: 20,
             aspectRatio: 1,
             borderRadius: 22.5,
             alignItems: 'center',
             justifyContent: 'center',
+            marginRight: 5,
           }}
         >
           <ExpoImage
@@ -64,7 +64,7 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
             contentFit='contain'
           />
         </View>
-        <Text style={{ color: currentIndex === index ? 'white' : 'rgb(100,100,100)', fontSize: 16 }}>{item.name}</Text>
+        <Text style={{ color: currentIndex === index ? 'black' : 'rgb(100,100,100)', fontSize: 13 }}>{item.name}</Text>
       </TouchableOpacity>
     );
   };
@@ -105,12 +105,12 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
           // left: 0,
           // right: 0,
           // zIndex: 1000,
-          height: 65,
+          height: 55,
           backgroundColor: 'black',
           paddingHorizontal: 10,
           paddingVertical: 8,
-          borderTopWidth: 0.3,
-          borderTopColor: 'rgb(100,100,100)',
+          // borderTopWidth: 0.3,
+          // borderTopColor: 'rgb(100,100,100)',
           width: '100%',
         }}
       >

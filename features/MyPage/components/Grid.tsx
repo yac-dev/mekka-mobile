@@ -8,7 +8,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { PostType } from '../../../types';
 import { PostThumbnail } from '../../../components';
 
-const HEADER_HEIGHT = 140;
+const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
 export const Grid = ({ position, syncOffset, firstRef, onMomentumScrollBegin, spaceId }: any) => {

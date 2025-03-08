@@ -31,7 +31,7 @@ const DATA = [
   { name: 'Sophia Gibbs' },
   { name: 'Vincent Sandoval' },
 ];
-const HEADER_HEIGHT = 140;
+const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
 const initialLayout = {
@@ -252,49 +252,52 @@ export const MyPage = () => {
               alignItems: 'center',
               flexDirection: 'row',
               marginBottom: 10,
+              justifyContent: 'space-between',
             }}
           >
-            <View
-              style={{
-                backgroundColor: 'rgb(70,70,70)',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 50,
-                height: 50,
-                borderRadius: 50 / 2,
-                marginRight: 20,
-              }}
-            >
-              {auth.avatar ? (
-                <View style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}>
-                  <ExpoImage
-                    style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}
-                    source={{ uri: auth.avatar }}
-                    contentFit='cover'
-                  />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  backgroundColor: 'rgb(70,70,70)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50 / 2,
+                  marginRight: 20,
+                }}
+              >
+                {auth.avatar ? (
+                  <View style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}>
+                    <ExpoImage
+                      style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}
+                      source={{ uri: auth.avatar }}
+                      contentFit='cover'
+                    />
+                  </View>
+                ) : (
+                  <Text style={{ color: 'white', fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>
+                    {auth.name.slice(0, 2).toUpperCase()}
+                  </Text>
+                )}
+              </View>
+              <View style={{ flexDirection: 'column', gap: 5 }}>
+                <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{auth.name}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>
+                    Member since {formatDate(auth.createdAt)}
+                  </Text>
                 </View>
-              ) : (
-                <Text style={{ color: 'white', fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>
-                  {auth.name.slice(0, 2).toUpperCase()}
-                </Text>
-              )}
-            </View>
-            <View style={{ flexDirection: 'column', gap: 5 }}>
-              <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{auth.name}</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>
-                  Member since {formatDate(auth.createdAt)}
-                </Text>
               </View>
             </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{ padding: 10, backgroundColor: 'rgb(50,50,50)', borderRadius: 100 }}
+              onPress={() => myPageStackNavigation.navigate('EditMyAccount')}
+            >
+              <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Edit</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{ padding: 10, backgroundColor: 'white', borderRadius: 100 }}
-            onPress={() => myPageStackNavigation.navigate('EditMyAccount')}
-          >
-            <Text style={{ color: 'black', fontSize: 17, fontWeight: 'bold', textAlign: 'center' }}>Edit</Text>
-          </TouchableOpacity>
         </View>
         <View
           style={{
