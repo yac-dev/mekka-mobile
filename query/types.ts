@@ -77,6 +77,7 @@ export type GetPostsByUserIdInputType = {
   userId: string;
   spaceId: string;
   currentPage: number;
+  postType: 'normal' | 'moment';
 };
 
 export type GetPostsByUserIdOutputType = {

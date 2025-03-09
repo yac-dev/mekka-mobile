@@ -21,8 +21,9 @@ export const Grid = ({ position, syncOffset, firstRef, onMomentumScrollBegin, sp
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [queryKeys.postsByUserId, auth._id],
-    queryFn: ({ pageParam = 0 }) => getPostsByUserId({ userId: auth._id, spaceId, currentPage: pageParam }),
+    queryKey: [queryKeys.postsByUserId, spaceId],
+    queryFn: ({ pageParam = 0 }) =>
+      getPostsByUserId({ userId: auth._id, spaceId, currentPage: pageParam, postType: 'normal' }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.hasNextPage ? lastPage.currentPage : undefined;

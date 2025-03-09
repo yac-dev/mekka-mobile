@@ -329,6 +329,8 @@ export const MyPage = () => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <TabView
+        lazy
+        swipeEnabled={false}
         navigationState={{ index: currentIndex, routes }}
         renderScene={renderScene}
         renderTabBar={renderTabBar}

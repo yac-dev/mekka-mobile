@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { SceneMap, TabView } from 'react-native-tab-view';
-import { Grid } from '../components';
+import { MomentGrid } from './MomentGrid';
 
 const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
@@ -25,7 +25,7 @@ const DATA = [
 
 type RouteType = SpaceType & { key: number };
 
-export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }: any) => {
+export const MomentsPosts = ({ position, syncOffset, secondRef, onMomentumScrollBegin }: any) => {
   const mySpaces = useRecoilValue(mySpacesAtom);
   const [routes, setRoutes] = useState<RouteType[]>(mySpaces.map((space, index) => ({ ...space, key: index })));
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -73,9 +73,13 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
     return SceneMap(
       routes.reduce((acc: Record<string, React.FC<any>>, option: RouteType) => {
         acc[option.key] = () => (
-          <View style={{ flex: 1, backgroundColor: 'black' }}>
-            <Text style={{ color: 'white' }}>Moments</Text>
-          </View>
+          <MomentGrid
+            position={position}
+            syncOffset={syncOffset}
+            secondRef={secondRef}
+            onMomentumScrollBegin={onMomentumScrollBegin}
+            spaceId={option._id}
+          />
         );
         return acc;
       }, {})
@@ -85,7 +89,7 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
   const renderScene = useMemo(() => createTabViewScene(routes), [routes]);
 
   return (
-    <View style={{ flex: 1, paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT }}>
+    <View style={{ flex: 1 }}>
       <TabView
         lazy
         swipeEnabled={false}
@@ -107,7 +111,6 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
           // zIndex: 1000,
           height: 55,
           backgroundColor: 'black',
-          paddingHorizontal: 10,
           paddingVertical: 8,
           // borderTopWidth: 0.3,
           // borderTopColor: 'rgb(100,100,100)',
@@ -120,6 +123,7 @@ export const MomentsPosts = ({ position, syncOffset, firstRef, onMomentumScrollB
           keyExtractor={(item) => item._id}
           horizontal
           showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
         />
       </View>
     </View>

@@ -123,7 +123,6 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
           // zIndex: 1000,
           height: 55,
           // backgroundColor: 'black',
-          paddingHorizontal: 10,
           paddingVertical: 8,
           // borderTopWidth: 0.3,
           // borderTopColor: 'rgb(100,100,100)',
@@ -136,6 +135,7 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
           keyExtractor={(item) => item._id}
           horizontal
           showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
         />
       </View>
     </View>
