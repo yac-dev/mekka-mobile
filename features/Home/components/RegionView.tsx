@@ -400,6 +400,11 @@ export const RegionView: React.FC<RegionViewProps> = ({
               >
                 <View style={{ marginRight: 8 }}>
                   <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                  {!currentSpace.isPublic ? (
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
+                    </View>
+                  ) : null}
                 </View>
                 <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
@@ -545,7 +550,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
           // zIndex: 1000,
           height: 55,
           // backgroundColor: 'black',
-          paddingHorizontal: 10,
           paddingVertical: 8,
           // borderTopWidth: 0.3,
           // borderTopColor: 'rgb(100,100,100)',
@@ -559,6 +563,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
           data={currentSpace?.tags}
           renderItem={renderTab}
           keyExtractor={(item, index) => `${item._id}-${index}`}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
         />
       </View>
     </SafeAreaView>
