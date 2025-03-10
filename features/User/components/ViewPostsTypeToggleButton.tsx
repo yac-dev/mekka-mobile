@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Platform, Animated } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { Icons } from '../../../Icons/images';
 import { Image as ExpoImage } from 'expo-image';
@@ -10,11 +10,19 @@ import { useRecoilState } from 'recoil';
 type ViewPostsTypeToggleButtonProps = {
   viewPostsType: 'grid' | 'region';
   onPostsTypeChangePress: (postsType: 'grid' | 'region') => void;
+  position: any;
+  firstRef: any;
+  onMomentumScrollBegin: () => void;
 };
+
+const HEADER_HEIGHT = 80;
 
 export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps> = ({
   viewPostsType,
   onPostsTypeChangePress,
+  position,
+  firstRef,
+  onMomentumScrollBegin,
 }) => {
   const onGridViewPress = () => {
     onPostsTypeChangePress('grid');
@@ -22,6 +30,11 @@ export const ViewPostsTypeToggleButton: React.FC<ViewPostsTypeToggleButtonProps>
 
   const onRegionViewPress = () => {
     onPostsTypeChangePress('region');
+    Animated.timing(position, {
+      toValue: HEADER_HEIGHT, // Adjust this value as needed
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   };
 
   console.log(viewPostsType);
