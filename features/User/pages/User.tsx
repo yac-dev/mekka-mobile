@@ -38,7 +38,7 @@ import { DeleteFollowingRelationshipInputType } from '../../../query/types';
 import { GetFollowingUsersByUserIdOutputType } from '../../../query/types';
 import { CreateFollowingRelationshipInputType } from '../../../query/types';
 import { Moments } from '../components/Moments';
-
+import { Activities } from '../components/Activities';
 const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
@@ -59,7 +59,7 @@ export const User: React.FC<IUser> = ({ userId }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [routes] = useState([
     { key: 'posts', title: 'Posts' },
-    { key: 'moments', title: 'Moments' },
+    // { key: 'moments', title: 'Moments' },
     { key: 'activities', title: 'Activities' },
     // { key: 'about', title: 'About' },
   ]);
@@ -195,21 +195,24 @@ export const User: React.FC<IUser> = ({ userId }) => {
             onMomentumScrollBegin={onMomentumScrollBegin}
           />
         );
-      case 'moments':
-        return (
-          <Moments
-            userId={userId}
-            position={position}
-            syncOffset={syncOffset}
-            secondRef={secondRef}
-            onMomentumScrollBegin={onMomentumScrollBegin}
-          />
-        );
+      // case 'moments':
+      //   return (
+      //     <Moments
+      //       userId={userId}
+      //       position={position}
+      //       syncOffset={syncOffset}
+      //       secondRef={secondRef}
+      //       onMomentumScrollBegin={onMomentumScrollBegin}
+      //     />
+      //   );
       case 'activities':
         return (
-          <View style={{ flex: 1, backgroundColor: 'black' }}>
-            <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>Posts will be shown here</Text>
-          </View>
+          <Activities
+            thirdRef={thirdRef}
+            onMomentumScrollBegin={onMomentumScrollBegin}
+            position={position}
+            syncOffset={syncOffset}
+          />
         );
       default:
         return null;

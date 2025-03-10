@@ -226,7 +226,23 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({
   return (
     <View style={{ flex: 1 }}>
       {!data?.pages.flatMap((page) => page.posts).length ? (
-        <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts found...</Text>
+        <Animated.ScrollView
+          ref={firstRef}
+          scrollEventThrottle={1}
+          onMomentumScrollBegin={onMomentumScrollBegin}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], {
+            useNativeDriver: true,
+          })}
+          onMomentumScrollEnd={(e) => {
+            syncOffset('posts', e.nativeEvent.contentOffset.y);
+          }}
+          style={{
+            flex: 1,
+            paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT,
+          }}
+        >
+          <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts found...</Text>
+        </Animated.ScrollView>
       ) : (
         <Animated.FlatList
           ref={firstRef}
