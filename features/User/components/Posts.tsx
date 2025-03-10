@@ -16,10 +16,6 @@ type IPosts = {
 
 export const Posts: React.FC<IPosts> = ({ userId, position, syncOffset, firstRef, onMomentumScrollBegin }) => {
   const [viewPostsType, setViewPostsType] = useState<'grid' | 'region'>('grid');
-  const { data, status } = useQuery({
-    queryKey: [queryKeys.userById, userId],
-    queryFn: () => getUserById({ userId }),
-  });
 
   const onPostsTypeChangePress = (postsType: 'grid' | 'region') => {
     setViewPostsType(postsType);

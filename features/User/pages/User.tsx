@@ -37,6 +37,7 @@ import { TabView } from 'react-native-tab-view';
 import { DeleteFollowingRelationshipInputType } from '../../../query/types';
 import { GetFollowingUsersByUserIdOutputType } from '../../../query/types';
 import { CreateFollowingRelationshipInputType } from '../../../query/types';
+import { Moments } from '../components/Moments';
 
 const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
@@ -196,9 +197,13 @@ export const User: React.FC<IUser> = ({ userId }) => {
         );
       case 'moments':
         return (
-          <View style={{ flex: 1, backgroundColor: 'black' }}>
-            <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>Posts will be shown here</Text>
-          </View>
+          <Moments
+            userId={userId}
+            position={position}
+            syncOffset={syncOffset}
+            secondRef={secondRef}
+            onMomentumScrollBegin={onMomentumScrollBegin}
+          />
         );
       case 'activities':
         return (
