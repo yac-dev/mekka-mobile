@@ -17,7 +17,7 @@ import { MyPageStackNavigatorProps } from '../navigations/MyPageStackNavigation'
 import { authAtom } from '../../../recoil';
 import { useRecoilValue } from 'recoil';
 import { Image as ExpoImage } from 'expo-image';
-import { Posts, MomentsPosts } from '.';
+import { Posts, MomentsPosts, UserActivities } from '.';
 
 const DATA = [
   { name: 'Marissa Castillo' },
@@ -191,7 +191,7 @@ export const MyPage = () => {
         );
       case 'activities':
         return (
-          <ThirdRoute
+          <UserActivities
             position={position}
             syncOffset={syncOffset}
             thirdRef={thirdRef}

@@ -22,13 +22,26 @@ import {
   GetFollowingUsersByUserIdOutputType,
 } from '../../../query/types';
 
+const HEADER_HEIGHT = 80;
+const TAB_BAR_HEIGHT = 50;
+
 type IPostsByGrid = {
   userId: string;
+  position: any;
+  syncOffset: any;
+  firstRef: any;
+  onMomentumScrollBegin: () => void;
 };
 
 const avatarWidth = 62;
 
-export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
+export const PostsByGrid: React.FC<IPostsByGrid> = ({
+  userId,
+  position,
+  syncOffset,
+  firstRef,
+  onMomentumScrollBegin,
+}) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [auth] = useRecoilState(authAtom);
   const userStackNavigation = useNavigation<UserStackNavigatorProps>();
@@ -42,8 +55,9 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [queryKeys.postsByUserId, userId],
-    queryFn: ({ pageParam = 0 }) => getPostsByUserId({ userId, spaceId: currentSpace._id, currentPage: pageParam }),
+    queryKey: [queryKeys.postsByUserId, currentSpace._id],
+    queryFn: ({ pageParam = 0 }) =>
+      getPostsByUserId({ userId, spaceId: currentSpace._id, currentPage: pageParam, postType: 'normal' }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.hasNextPage ? lastPage.currentPage : undefined;
@@ -181,109 +195,60 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({ userId }) => {
     );
   }
 
+  // <Animated.FlatList
+  // ref={firstRef}
+  // scrollEventThrottle={1}
+  // onMomentumScrollBegin={onMomentumScrollBegin}
+  // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], {
+  //   useNativeDriver: true,
+  // })}
+  // onMomentumScrollEnd={(e) => {
+  //   syncOffset('posts', e.nativeEvent.contentOffset.y);
+  // }}
+  // numColumns={4}
+  // data={data?.pages.flatMap((page) => page.posts)}
+  // renderItem={renderItem}
+  // keyExtractor={(item, index) => `${item._id}-${index}`}
+  // removeClippedSubviews
+  // onEndReached={() => {
+  //   fetchNextPage();
+  // }}
+  //         // onMomentumScrollEnd={() => {
+  //         //   fetchNextPage();
+  //         // }}
+  //         // scrollEnabled={false}
+  //         // ListHeaderComponent={<Header userId={userId} viewPostsType='grid' customStyle={{}} />}
+  //         ListFooterComponent={renderFooter}
+  //         onEndReachedThreshold={0.7}
+  //         contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT, paddingBottom: 100 }}
+  //       />
+
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ height: 45, backgroundColor: 'transparent' }} />
-      <View
-        style={{
-          paddingBottom: 10,
-          paddingHorizontal: 15,
-          marginBottom: 10,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View
-              style={{
-                backgroundColor: 'rgb(70,70,70)',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: avatarWidth,
-                height: avatarWidth,
-                borderRadius: avatarWidth / 2,
-                marginRight: 15,
-              }}
-            >
-              {userData?.user.avatar ? (
-                <ExpoImage source={userData?.user.avatar} style={styles.avatar} />
-              ) : (
-                <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
-                  {userData?.user.name.slice(0, 2).toUpperCase()}
-                </Text>
-              )}
-            </View>
-            <View style={{ flexDirection: 'column' }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: 'white',
-                  // marginBottom: 5,
-                }}
-              >
-                {userData?.user.name}
-              </Text>
-              {/* NOTE: followingRelのstats実装してからやる。 */}
-              {/* {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, marginRight: 15 }}>Following</Text>
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Followers</Text>
-                </View>
-              ) : null} */}
-            </View>
-          </View>
-          {userId !== auth._id && currentSpace.isPublic && currentSpace.isFollowAvailable ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {createFollowingRelationshipStatus === 'pending' || deleteFollowingRelationshipStatus === 'pending' ? (
-                <ActivityIndicator />
-              ) : (
-                <TouchableOpacity
-                  style={styles.followButton}
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    handleFollowingRelationship();
-                  }}
-                >
-                  <Text style={styles.followButtonText}>
-                    {followingUsersData?.followingUsers[currentSpace._id] &&
-                    followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
-                      ? 'Following'
-                      : 'Follow'}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          ) : null}
-        </View>
-      </View>
       {!data?.pages.flatMap((page) => page.posts).length ? (
         <Text style={{ color: 'white', textAlign: 'center', marginTop: 50 }}>No posts found...</Text>
       ) : (
-        <FlashList
+        <Animated.FlatList
+          ref={firstRef}
+          scrollEventThrottle={1}
+          onMomentumScrollBegin={onMomentumScrollBegin}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], {
+            useNativeDriver: true,
+          })}
+          onMomentumScrollEnd={(e) => {
+            syncOffset('posts', e.nativeEvent.contentOffset.y);
+          }}
           numColumns={4}
           data={data?.pages.flatMap((page) => page.posts)}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           removeClippedSubviews
-          estimatedItemSize={1000}
-          onMomentumScrollEnd={() => {
+          onEndReached={() => {
             fetchNextPage();
           }}
-          // scrollEnabled={false}
-          // ListHeaderComponent={<Header userId={userId} viewPostsType='grid' customStyle={{}} />}
           ListFooterComponent={renderFooter}
           onEndReachedThreshold={0.7}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-          //   useNativeDriver: true,
-          // })}
-          // scrollEventThrottle={16}
+          contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT, paddingBottom: 100 }}
         />
       )}
     </View>

@@ -345,21 +345,6 @@ export const HomeStackNavigator: React.FC = (props) => {
 
         <HomeStack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
           <HomeStack.Screen
-            name='MyPageStackNavigator'
-            component={MyPageStackNavigator}
-            options={({ navigation }) => ({
-              headerShown: false,
-              headerTitle: '',
-              headerStyle: {
-                backgroundColor: primaryBackgroundColor,
-              },
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: Colors.white,
-              },
-            })}
-          />
-          <HomeStack.Screen
             name='CreateNewSpaceStackNavigator'
             component={CreateNewSpaceStackNavigator}
             options={({ navigation }) => ({

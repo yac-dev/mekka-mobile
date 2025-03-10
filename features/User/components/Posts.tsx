@@ -1,14 +1,29 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { PostsByGrid, PostsByRegion } from '.';
+import { getUserById } from '../../../query';
+import { useQuery } from '@tanstack/react-query';
+import { queryKeys } from '../../../query';
 
 type IPosts = {
   userId: string;
-  viewPostsType: 'grid' | 'region';
+  position: any;
+  syncOffset: any;
+  firstRef: any;
+  onMomentumScrollBegin: () => void;
 };
 
-export const Posts: React.FC<IPosts> = ({ userId, viewPostsType }) => {
+export const Posts: React.FC<IPosts> = ({ userId, position, syncOffset, firstRef, onMomentumScrollBegin }) => {
+  const [viewPostsType, setViewPostsType] = useState<'grid' | 'region'>('grid');
+  const { data, status } = useQuery({
+    queryKey: [queryKeys.userById, userId],
+    queryFn: () => getUserById({ userId }),
+  });
+
+  const onPostsTypeChangePress = (postsType: 'grid' | 'region') => {
+    setViewPostsType(postsType);
+  };
   const pagerViewRef = useRef<PagerView>(null);
 
   useEffect(() => {
@@ -24,7 +39,13 @@ export const Posts: React.FC<IPosts> = ({ userId, viewPostsType }) => {
       ref={pagerViewRef}
       // animationEnabled={false}
     >
-      <PostsByGrid userId={userId} />
+      <PostsByGrid
+        userId={userId}
+        position={position}
+        syncOffset={syncOffset}
+        firstRef={firstRef}
+        onMomentumScrollBegin={onMomentumScrollBegin}
+      />
       <PostsByRegion userId={userId} />
     </PagerView>
   );
