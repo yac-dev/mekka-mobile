@@ -75,7 +75,7 @@ export const Slot = () => {
       <Picker
         selectedValue={selectedHour}
         onValueChange={(itemValue) => setSelectedHour(itemValue)}
-        style={{ width: 100 }}
+        style={{ width: 85 }}
       >
         {hours.map((hour) => (
           <Picker.Item key={hour} label={hour} value={hour} color='white' />
@@ -90,7 +90,7 @@ export const Slot = () => {
       <Picker
         selectedValue={selectedMin}
         onValueChange={(itemValue) => setSelectedMin(itemValue)}
-        style={{ width: 100 }}
+        style={{ width: 85 }}
       >
         {minutes.map((min) => (
           <Picker.Item key={min} label={min} value={min} color='white' />
@@ -185,24 +185,28 @@ export const Slot = () => {
       <AppBottomSheet.Gorhom
         ref={customTimeBottomSheetRef}
         snapPoints={['65%']}
-        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time</Text>}
+        header={<Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>Custom Time Range</Text>}
         onCloseButtonClose={closeCustomSlotBottomSheet}
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 20, gap: 10 }}>
           <View>
-            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10 }}>Start Time</Text>
+            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10, fontSize: 18, fontWeight: 'bold' }}>
+              From
+            </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {renderHourPickerItems(selectedStartHour, setSelectedStartHour)}
-              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
-              {renderMinPickerItems(selectedStartMin, setSelectedStartMin)}
+              {/* <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
+              {renderMinPickerItems(selectedStartMin, setSelectedStartMin)} */}
             </View>
           </View>
           <View>
-            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10 }}>End Time</Text>
+            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 10, fontSize: 18, fontWeight: 'bold' }}>
+              To
+            </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {renderHourPickerItems(selectedEndHour, setSelectedEndHour)}
-              <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
-              {renderMinPickerItems(selectedEndMin, setSelectedEndMin)}
+              {/* <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>:</Text>
+              {renderMinPickerItems(selectedEndMin, setSelectedEndMin)} */}
             </View>
           </View>
         </View>
