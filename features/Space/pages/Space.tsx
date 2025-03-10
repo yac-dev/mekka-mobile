@@ -398,7 +398,6 @@ export const Space: React.FC<ISpace> = ({
           // zIndex: 1000,
           height: 55,
           backgroundColor: 'transparent',
-          paddingHorizontal: 10,
           paddingVertical: 8,
           // borderTopWidth: 0.3,
           // borderTopColor: 'rgb(100,100,100)',
@@ -412,7 +411,7 @@ export const Space: React.FC<ISpace> = ({
           data={currentSpace?.tags}
           renderItem={renderTab}
           keyExtractor={(item, index) => `${item._id}-${index}`}
-          // contentContainerStyle={{ paddingLeft: 12 }}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
         />
       </View>
       {/* <GridView space={currentSpace} /> */}
