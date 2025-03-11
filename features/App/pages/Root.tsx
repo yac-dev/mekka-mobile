@@ -37,6 +37,7 @@ export const Root = () => {
     queryFn: async () => {
       const jwt = await SecureStore.getItemAsync('secure_token');
       const response = await loadMe({ jwt });
+      console.log('res is this', response);
       setAuth(response);
       return response;
     },

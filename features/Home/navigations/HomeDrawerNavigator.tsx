@@ -78,12 +78,16 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
           <VectorIcon.II name='close' size={18} color={Colors.white} />
         </AppButton.Icon>
       </View>
-      <View
+      <TouchableOpacity
         style={{
           marginBottom: 30,
           alignItems: 'center',
           flexDirection: 'row',
           paddingHorizontal: 15,
+        }}
+        activeOpacity={0.7}
+        onPress={() => {
+          homeStackNavigation.navigate('MyPage');
         }}
       >
         <View
@@ -112,7 +116,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
           )}
         </View>
         <Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>{auth.name}</Text>
-      </View>
+      </TouchableOpacity>
       <ScrollView>
         <View>
           <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold', paddingHorizontal: 15 }}>
@@ -122,7 +126,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('EditMyAccount');
             }}
           >
@@ -178,7 +181,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('CreateNewSpaceStackNavigator');
             }}
           >
@@ -194,7 +196,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('EnterPrivateSpace');
             }}
           >
@@ -210,7 +211,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('DiscoverStackNavigator');
             }}
           >
@@ -231,7 +231,6 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             activeOpacity={0.7}
             style={{ padding: 15, flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              navigation.closeDrawer();
               homeStackNavigation.navigate('AboutApp');
             }}
           >

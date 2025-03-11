@@ -175,7 +175,7 @@ export const Space: React.FC<ISpace> = ({
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'black',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
               borderRadius: 130,
               ...Platform.select({
                 ios: {
@@ -195,7 +195,7 @@ export const Space: React.FC<ISpace> = ({
               source={{ uri: item.icon?.url }}
               tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
               {item.name}
             </Text>
           </View>
@@ -244,8 +244,13 @@ export const Space: React.FC<ISpace> = ({
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ marginRight: 8 }}>
+                <View style={{ marginRight: 8, flexDirection: 'column' }}>
                   <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                  {!currentSpace.isPublic ? (
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
+                    </View>
+                  ) : null}
                 </View>
                 <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
@@ -391,12 +396,11 @@ export const Space: React.FC<ISpace> = ({
           // left: 0,
           // right: 0,
           // zIndex: 1000,
-          height: 65,
-          backgroundColor: 'black',
-          paddingHorizontal: 10,
+          height: 55,
+          backgroundColor: 'transparent',
           paddingVertical: 8,
-          borderTopWidth: 0.3,
-          borderTopColor: 'rgb(100,100,100)',
+          // borderTopWidth: 0.3,
+          // borderTopColor: 'rgb(100,100,100)',
           width: '100%',
         }}
       >
@@ -407,7 +411,7 @@ export const Space: React.FC<ISpace> = ({
           data={currentSpace?.tags}
           renderItem={renderTab}
           keyExtractor={(item, index) => `${item._id}-${index}`}
-          // contentContainerStyle={{ paddingLeft: 12 }}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
         />
       </View>
       {/* <GridView space={currentSpace} /> */}

@@ -28,6 +28,7 @@ import * as Notifications from 'expo-notifications';
 import Config from 'react-native-config';
 import { RegisterPushTokenInputType } from '../../../query/types';
 import { getFollowingUsersByUserId } from '../../../query/';
+import * as SecureStore from 'expo-secure-store';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
 
@@ -131,9 +132,9 @@ export const RootStackNavigator = () => {
 
   useEffect(() => {
     if (auth) {
-      const appStateListener = AppState.addEventListener('change', (nextAppState) => {
+      const appStateListener = AppState.addEventListener('change', async (nextAppState) => {
         if (appState.match(/inactive|background/) && nextAppState === 'active') {
-          refetchMySpaces();
+          // refetchMySpaces();
           refetchLogs();
           console.log('App has come to the foreground 👀');
         } else if (appState === 'active' && nextAppState === 'inactive') {
@@ -165,7 +166,7 @@ export const RootStackNavigator = () => {
 
   useEffect(() => {
     if (auth) {
-      refetchMySpaces();
+      // refetchMySpaces();
       refetchLogs();
     }
   }, [auth]);

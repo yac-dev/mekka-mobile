@@ -7,6 +7,7 @@ import {
   CreateNewPostStackNavigator,
   CreateNewPostStackParams,
   CreateNewSpaceStackNavigator,
+  MyPage,
   SpacesHeader,
   ViewPostStackNavigator,
 } from '../..';
@@ -34,6 +35,7 @@ import { HomeDrawerNavigator } from './HomeDrawerNavigator';
 import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawer';
 import { ChangeMyPassword } from '../../ChangeMyPassword';
 import { EditAccount } from '../../EditAccount/pages/EditAccount';
+import { MyPageStackNavigator, MyPageStackNavigatorParams } from '../../MyPage/navigations/MyPageStackNavigation';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -88,6 +90,7 @@ export type SpaceRootStackNavigatorProp = NativeStackNavigationProp<SpaceRootSta
 export type HomeStackParams = {
   // Home: NavigatorScreenParams<SpacesDrawerParams>;
   Home: undefined;
+  MyPage: undefined;
   SpaceStackNavigator: NavigatorScreenParams<SpaceStackParams>;
   MomentsStackNavigator: NavigatorScreenParams<MomentsStackParams>;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
@@ -256,6 +259,30 @@ export const HomeStackNavigator: React.FC = (props) => {
                 </AppButton.Icon>
               ),
               headerTitle: 'Change My Password',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
+            name='MyPage'
+            component={MyPage}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
               headerStyle: {
                 backgroundColor: 'black',
               },

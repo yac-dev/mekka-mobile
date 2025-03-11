@@ -1,7 +1,7 @@
 import { Camera } from '@rnmapbox/maps';
 import Mapbox from '@rnmapbox/maps';
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
 import { Header } from './Header';
 import { useNavigation } from '@react-navigation/native';
 import { UserStackNavigatorProps } from '../navigations';
@@ -24,14 +24,28 @@ import {
   DeleteFollowingRelationshipInputType,
   GetFollowingUsersByUserIdOutputType,
 } from '../../../query/types';
+import { AnimatedView } from 'react-native-reanimated/lib/typescript/reanimated2/component/View';
 
 type IPostsByRegion = {
   userId: string;
+  position: any;
+  syncOffset: any;
+  firstRef: any;
+  onMomentumScrollBegin: () => void;
 };
+
+const HEADER_HEIGHT = 80;
+const TAB_BAR_HEIGHT = 50;
 
 const avatarWidth = 62;
 
-export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
+export const PostsByRegion: React.FC<IPostsByRegion> = ({
+  userId,
+  position,
+  syncOffset,
+  firstRef,
+  onMomentumScrollBegin,
+}) => {
   const mapRef = useRef<Mapbox.MapView>(null);
   const userStackNavigation = useNavigation<UserStackNavigatorProps>();
   const [placeInfo, setPlaceInfo] = useState<string | null>(null);
@@ -178,11 +192,25 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
     const longitudeDelta = neLng - swLng;
   };
 
+  const translateY = position.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
+    extrapolate: 'clamp',
+  });
+
   return (
-    <View style={{ flex: 1 }}>
+    <Animated.View
+      style={[
+        {
+          flex: 1,
+          paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT,
+        },
+        { transform: [{ translateY }] },
+      ]}
+    >
       <Mapbox.MapView
         ref={mapRef}
-        style={{ flex: 1 }}
+        style={{ height: Dimensions.get('window').height - 80 }}
         compassEnabled={false}
         logoEnabled={false}
         scaleBarEnabled={false}
@@ -192,8 +220,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
         regionDidChangeDebounceTime={100}
         onMapIdle={onRegionDidChange}
       >
-        {/* defaultの位置はnew yorkでいい。fetchが */}
-        <View style={{ height: 45, backgroundColor: 'transparent' }} />
+        {/* <View style={{ height: 45, backgroundColor: 'transparent' }} />
         <View
           style={{
             paddingBottom: 10,
@@ -239,16 +266,9 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
                 >
                   {userData?.user.name}
                 </Text>
-                {/* NOTE: followingRelのstats実装してからやる。 */}
-                {/* {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, marginRight: 15 }}>Following</Text>
-                    <Text style={{ color: 'rgb(150,150,150)', fontSize: 12 }}>Followers</Text>
-                  </View>
-                ) : null} */}
               </View>
             </View>
-            {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
+            {userId !== auth._id && currentSpace.isPublic && currentSpace.isFollowAvailable ? (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {createFollowingRelationshipStatus === 'pending' || deleteFollowingRelationshipStatus === 'pending' ? (
                   <ActivityIndicator />
@@ -260,7 +280,6 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
                       handleFollowingRelationship();
                     }}
                   >
-                    {/* ここのkeyに対するundefinedチェックをせねばいかんな。。。 */}
                     <Text style={styles.followButtonText}>
                       {followingUsersData?.followingUsers[currentSpace._id] &&
                       followingUsersData?.followingUsers[currentSpace._id].find((user) => user._id === userId)
@@ -272,7 +291,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
               </View>
             ) : null}
           </View>
-        </View>
+        </View> */}
         <Camera
           defaultSettings={{
             centerCoordinate: [-122.4324, 37.78825],
@@ -288,7 +307,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
             <Text style={{ color: 'red' }}>{placeInfo}</Text>
           </View>
         )} */}
-
+        {/* <View style={{ height: HEADER_HEIGHT + TAB_BAR_HEIGHT, backgroundColor: 'black' }} /> */}
         {renderMarkers()}
         {getPostsByUserIdAndRegionStatus === 'pending' && (
           <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
@@ -296,7 +315,7 @@ export const PostsByRegion: React.FC<IPostsByRegion> = ({ userId }) => {
           </View>
         )}
       </Mapbox.MapView>
-    </View>
+    </Animated.View>
   );
 };
 

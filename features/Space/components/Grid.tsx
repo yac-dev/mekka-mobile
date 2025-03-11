@@ -9,6 +9,8 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
+  AppState,
+  RefreshControl,
 } from 'react-native';
 import { PostType, SpaceType, TagType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
@@ -16,7 +18,7 @@ import { PostThumbnail } from '../../../components/PostThumbnail/PostThumbnail';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceStackNavigatorProps } from '../navigations/SpaceStackNavigator';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom, currentTagAtom, currentTagAtomFamily } from '../../../recoil';
+import { appStateAtom, currentSpaceAtom, currentTagAtom, currentTagAtomFamily } from '../../../recoil';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPostsByTagId, queryKeys } from '../../../query';
 import { Colors } from '../../../themes';
@@ -38,11 +40,14 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
   const spaceNavigation = useNavigation<SpaceStackNavigatorProps>();
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const [appState, setAppState] = useRecoilState(appStateAtom);
   const {
     data,
     status: getPostsByTagIdStatus,
     fetchNextPage,
     isFetchingNextPage,
+    refetch,
+    isRefetching: isRefetchingPostsByTagId,
   } = useInfiniteQuery({
     queryKey: [queryKeys.postsByTagId, tag._id],
     queryFn: ({ pageParam = 0 }) => getPostsByTagId({ tagId: tag._id, currentPage: pageParam }),
@@ -91,6 +96,21 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
     });
   };
 
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', async (nextAppState) => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        refetch();
+      }
+      // else if (appState === 'active' && nextAppState === 'inactive') {
+      // }
+      setAppState(nextAppState);
+    });
+
+    return () => {
+      appStateListener.remove();
+    };
+  }, [appState]);
+
   // ここでloadingをrenderしたいわけでさ。。。そもそもrouteごとに表示したいわけよ。
 
   if (getPostsByTagIdStatus === 'pending') {
@@ -137,6 +157,11 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
           paddingBottom: data?.pages.flatMap((page) => page.posts).length >= 12 ? 95 : 165,
         }}
       />
+      {isRefetchingPostsByTagId && (
+        <View style={{ position: 'absolute', top: 65, right: 10 }}>
+          <ActivityIndicator size='small' color='white' />
+        </View>
+      )}
     </View>
   );
 };

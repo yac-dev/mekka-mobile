@@ -180,7 +180,7 @@ export const Base = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text
           style={{
             color: 'white',
@@ -295,7 +295,7 @@ export const Base = () => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['green1'],
+                  backgroundColor: Colors.iconColors['pink1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -348,7 +348,7 @@ export const Base = () => {
             title='Moment'
             value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
           />
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
             icon={
@@ -369,7 +369,7 @@ export const Base = () => {
             title='Slot'
             value={'Anytime'}
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
-          />
+          /> */}
         </View>
         <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
@@ -403,7 +403,7 @@ export const Base = () => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['cyan1'],
+                  backgroundColor: Colors.iconColors['green1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -418,36 +418,38 @@ export const Base = () => {
             title='Comment'
             value={formData.isCommentAvailable.value ? 'Allowed' : 'Disallowed'}
           />
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
-            <MenuCell
-              onCellPress={() => createNewSpaceNavigation.navigate('Following')}
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['pink1'],
-                    width: 32,
-                    height: 32,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.II name='person-add' size={20} color={'white'} />
-                </View>
-              }
-              title='Following'
-              value={formData.isFollowAvailable.value ? 'Allowed' : 'Disallowed'}
-              requirementText={
-                formData.isFollowAvailable.value && !formData.reactions.value.length
-                  ? 'Please set at least one option.'
-                  : undefined
-              }
-            />
+            <>
+              <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+              <MenuCell
+                onCellPress={() => createNewSpaceNavigation.navigate('Following')}
+                icon={
+                  <View
+                    style={{
+                      backgroundColor: Colors.iconColors['brown1'],
+                      width: 32,
+                      height: 32,
+                      marginRight: 15,
+                      borderRadius: 8,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <VectorIcon.II name='person-add' size={20} color={'white'} />
+                  </View>
+                }
+                title='Following'
+                value={formData.isFollowAvailable.value ? 'Allowed' : 'Disallowed'}
+                requirementText={
+                  formData.isFollowAvailable.value && !formData.reactions.value.length
+                    ? 'Please set at least one option.'
+                    : undefined
+                }
+              />
+            </>
           ) : null}
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-          {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
+          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} /> */}
+          {/* {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
             <MenuCell
               onCellPress={() => createNewSpaceNavigation.navigate('Following')}
               icon={
@@ -473,7 +475,7 @@ export const Base = () => {
                   : undefined
               }
             />
-          ) : null}
+          ) : null} */}
         </View>
       </ScrollView>
       {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
@@ -497,7 +499,7 @@ const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, req
   return (
     <TouchableOpacity
       style={{
-        paddingVertical: 15,
+        paddingVertical: 10,
         paddingHorizontal: 15,
         flexDirection: 'row',
         alignItems: 'center',
