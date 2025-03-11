@@ -1,5 +1,15 @@
 import React, { useEffect, useCallback, useContext } from 'react';
-import { View, Text, TouchableOpacity, Share, FlatList, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Share,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  Dimensions,
+  Animated,
+} from 'react-native';
 import { useGetMembersBySpaceIdState } from '../hooks';
 import { UserType } from '../../../types';
 import { Colors } from '../../../themes';
@@ -13,24 +23,25 @@ import { getMembersBySpaceId } from '../../../api';
 import { queryKeys } from '../../../query';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceInfoStackNavigatorProps } from '../navigations';
-
+import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../pages/SpaceInfo';
 type MembersProps = {
   spaceId: string;
+  position: any;
+  syncOffset: any;
+  secondRef: any;
+  onMomentumScrollBegin: any;
 };
 const itemWidth = Dimensions.get('window').width / 3;
 const avatarWidth = itemWidth * 0.7;
 // 久々にtan stackやってみよっか。
-export const Members: React.FC<MembersProps> = () => {
+export const Members: React.FC<MembersProps> = ({ position, syncOffset, secondRef, onMomentumScrollBegin }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const spaceInfoStackNavigation = useNavigation<SpaceInfoStackNavigatorProps>();
   const { data, isLoading } = useQuery({
     queryKey: [queryKeys.members, currentSpace._id],
     queryFn: () => getMembersBySpaceId({ spaceId: currentSpace._id }),
   });
-  // <VectorIcon.MI name='chevron-right' color={'white'} size={20} />
-  {
-    /*  */
-  }
+
   const renderUser = useCallback(({ item }: { item: UserType }) => {
     return (
       <TouchableOpacity
@@ -84,7 +95,22 @@ export const Members: React.FC<MembersProps> = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.black, paddingTop: 10 }}>
-      <FlatList data={data.users} numColumns={3} renderItem={renderUser} keyExtractor={(item, index) => `${index}`} />
+      <Animated.FlatList
+        ref={secondRef}
+        scrollEventThrottle={1}
+        onMomentumScrollBegin={onMomentumScrollBegin}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], {
+          useNativeDriver: true,
+        })}
+        onMomentumScrollEnd={(e) => {
+          syncOffset('members', e.nativeEvent.contentOffset.y);
+        }}
+        data={data.users}
+        numColumns={3}
+        renderItem={renderUser}
+        keyExtractor={(item, index) => `${index}`}
+        contentContainerStyle={{ paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT, paddingBottom: 100 }}
+      />
     </View>
   );
 };

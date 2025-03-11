@@ -9,7 +9,7 @@ import { urls } from '../../../settings/urls';
 import { useNavigation } from '@react-navigation/native';
 import { SpaceInfoStackNavigatorProps } from '../navigations/SpaceInfoStackNavigator';
 import { TabView } from 'react-native-tab-view';
-import { Feature } from '../components';
+import { Feature, Members } from '../components';
 
 export const HEADER_HEIGHT = 180;
 export const TAB_BAR_HEIGHT = 40;
@@ -144,16 +144,20 @@ export const SpaceInfo = () => {
         );
       case 'members':
         return (
-          <View>
-            <Text>Members</Text>
-          </View>
+          <Members
+            position={position}
+            syncOffset={syncOffset}
+            secondRef={secondRef}
+            onMomentumScrollBegin={onMomentumScrollBegin}
+            spaceId={currentSpace._id}
+          />
         );
-      case 'activities':
-        return (
-          <View>
-            <Text>Activities</Text>
-          </View>
-        );
+      // case 'activities':
+      //   return (
+      //     <View>
+      //       <Text>Activities</Text>
+      //     </View>
+      //   );
       default:
         return null;
     }
