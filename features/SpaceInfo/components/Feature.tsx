@@ -1,5 +1,5 @@
 import React, { useContext, useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { ReactionType, SpaceType } from '../../../types';
 import { AppButton } from '../../../components';
@@ -7,10 +7,16 @@ import { VectorIcon } from '../../../Icons';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom } from '../../../recoil';
 import { Colors } from '../../../themes/colors';
+import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../pages/SpaceInfo';
 
-type FeatureProps = {};
+type FeatureProps = {
+  position: any;
+  syncOffset: any;
+  firstRef: any;
+  onMomentumScrollBegin: any;
+};
 
-export const Feature: React.FC<FeatureProps> = () => {
+export const Feature: React.FC<FeatureProps> = ({ position, syncOffset, firstRef, onMomentumScrollBegin }) => {
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [textShown, setTextShown] = useState<boolean>(false);
   const [lengthMore, setLengthMore] = useState(false);
@@ -89,7 +95,22 @@ export const Feature: React.FC<FeatureProps> = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingHorizontal: 10, paddingTop: 10 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        ref={firstRef}
+        scrollEventThrottle={1}
+        onMomentumScrollBegin={onMomentumScrollBegin}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: position } } }], {
+          useNativeDriver: true,
+        })}
+        onMomentumScrollEnd={(e) => {
+          syncOffset('features', e.nativeEvent.contentOffset.y);
+        }}
+        style={{
+          flex: 1,
+          paddingTop: HEADER_HEIGHT + TAB_BAR_HEIGHT,
+        }}
+      >
         <View>
           <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
             <MenuCell
@@ -116,7 +137,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.iconColors['pink1'],
+                    backgroundColor: Colors.iconColors['blue1'],
                     width: 30,
                     height: 30,
                     marginRight: 15,
@@ -129,6 +150,30 @@ export const Feature: React.FC<FeatureProps> = () => {
                 </View>
               }
               title='Ads'
+              value={'Turned off'}
+            />
+            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+            <MenuCell
+              icon={
+                <View
+                  style={{
+                    backgroundColor: Colors.iconColors['gray1'],
+                    width: 30,
+                    height: 30,
+                    marginRight: 15,
+                    borderRadius: 8,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    source={require('../../../assets/forApp/learning.png')}
+                    style={{ width: 20, height: 20 }}
+                    tintColor={'white'}
+                  />
+                </View>
+              }
+              title='Algorithm'
               value={'Turned off'}
             />
             {/* {currentSpace.isPublic === undefined ? null : currentSpace.isPublic ? (
@@ -161,7 +206,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.iconColors['green1'],
+                    backgroundColor: Colors.iconColors['pink1'],
                     width: 30,
                     height: 30,
                     marginRight: 15,
@@ -220,7 +265,7 @@ export const Feature: React.FC<FeatureProps> = () => {
                   icon={
                     <View
                       style={{
-                        backgroundColor: Colors.iconColors['magenta1'],
+                        backgroundColor: Colors.iconColors['violet1'],
                         width: 30,
                         height: 30,
                         marginRight: 15,
@@ -284,7 +329,7 @@ export const Feature: React.FC<FeatureProps> = () => {
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.iconColors['teal1'],
+                    backgroundColor: Colors.iconColors['green1'],
                     width: 30,
                     height: 30,
                     marginRight: 15,
@@ -326,7 +371,8 @@ export const Feature: React.FC<FeatureProps> = () => {
             ) : null}
           </View>
         </View>
-      </ScrollView>
+        <View style={{ height: 320 }} />
+      </Animated.ScrollView>
     </View>
   );
 };
