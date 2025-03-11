@@ -157,7 +157,7 @@ export const Feature: React.FC<FeatureProps> = ({ position, syncOffset, firstRef
               icon={
                 <View
                   style={{
-                    backgroundColor: Colors.iconColors['gray1'],
+                    backgroundColor: Colors.iconColors['violet1'],
                     width: 30,
                     height: 30,
                     marginRight: 15,
@@ -173,7 +173,7 @@ export const Feature: React.FC<FeatureProps> = ({ position, syncOffset, firstRef
                   />
                 </View>
               }
-              title='Algorithm'
+              title='Recomendation'
               value={'Turned off'}
             />
             {/* {currentSpace.isPublic === undefined ? null : currentSpace.isPublic ? (
@@ -265,7 +265,7 @@ export const Feature: React.FC<FeatureProps> = ({ position, syncOffset, firstRef
                   icon={
                     <View
                       style={{
-                        backgroundColor: Colors.iconColors['violet1'],
+                        backgroundColor: Colors.iconColors['gray1'],
                         width: 30,
                         height: 30,
                         marginRight: 15,
