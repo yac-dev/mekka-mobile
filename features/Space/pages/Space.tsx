@@ -193,9 +193,9 @@ export const Space: React.FC<ISpace> = ({
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+              tintColor={isFocused ? 'white' : 'rgb(170,170,170)'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -248,7 +248,7 @@ export const Space: React.FC<ISpace> = ({
                   <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
                   {!currentSpace.isPublic ? (
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
+                      <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, marginTop: 4 }}>Private</Text>
                     </View>
                   ) : null}
                 </View>

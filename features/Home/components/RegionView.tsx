@@ -258,9 +258,9 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+              tintColor={isFocused ? 'white' : 'rgb(170,170,170)'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -402,7 +402,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
                   {!currentSpace.isPublic ? (
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
+                      <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, marginTop: 4 }}>Private</Text>
                     </View>
                   ) : null}
                 </View>
@@ -540,32 +540,33 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <ActivityIndicator size={'small'} color={'white'} />
           </View>
         )}
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            // left: 0,
+            // right: 0,
+            // zIndex: 1000,
+            height: 55,
+            // backgroundColor: 'black',
+            backgroundColor: 'transparent',
+            paddingVertical: 8,
+            // borderTopWidth: 0.3,
+            // borderTopColor: 'rgb(100,100,100)',
+            width: '100%',
+          }}
+        >
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={currentSpace?.tags}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+          />
+        </View>
       </Mapbox.MapView>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          // left: 0,
-          // right: 0,
-          // zIndex: 1000,
-          height: 55,
-          // backgroundColor: 'black',
-          paddingVertical: 8,
-          // borderTopWidth: 0.3,
-          // borderTopColor: 'rgb(100,100,100)',
-          width: '100%',
-        }}
-      >
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ref={scrollViewRef}
-          data={currentSpace?.tags}
-          renderItem={renderTab}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-        />
-      </View>
     </SafeAreaView>
   );
 };
