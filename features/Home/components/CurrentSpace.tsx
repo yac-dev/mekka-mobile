@@ -323,6 +323,23 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
           horizontal
           showsHorizontalScrollIndicator={false}
         />
+        {/* <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            width: 32,
+            aspectRatio: 1,
+            borderRadius: 25,
+            backgroundColor: 'rgb(50,50,50)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            // openAddNewSpaceMenuBottomSheet(0);
+            homeDrawerNavigation.toggleDrawer();
+          }}
+        >
+          <VectorIcon.MI name='notifications-none' color={Colors.white} size={18} />
+        </TouchableOpacity> */}
         {/* <AppButton.Icon
           onButtonPress={() => {
             homeDrawerNavigation.toggleDrawer();
@@ -454,6 +471,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 0.3,
     borderBottomColor: 'rgb(100,100,100)',
+    width: '100%',
 
     // borderBottomWidth: 0.3,
     // borderBottomColor: 'white',

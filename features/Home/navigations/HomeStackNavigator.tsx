@@ -36,6 +36,7 @@ import { DrawerNavigationProp, DrawerScreenProps } from '@react-navigation/drawe
 import { ChangeMyPassword } from '../../ChangeMyPassword';
 import { EditAccount } from '../../EditAccount/pages/EditAccount';
 import { MyPageStackNavigator, MyPageStackNavigatorParams } from '../../MyPage/navigations/MyPageStackNavigation';
+import { Notifications } from '../../Notifications';
 
 type TagScreenTopTabNavigatorParams = {
   GridView: undefined;
@@ -115,6 +116,7 @@ export type HomeStackParams = {
   SpaceInfoStackNavigator: { space: SpaceType };
   DeleteMyAccount: undefined;
   AboutApp: { url: string };
+  Notifications: undefined;
 };
 
 export type HomeStackNavigatorProps = NativeStackNavigationProp<HomeStackParams>;
@@ -416,6 +418,15 @@ export const HomeStackNavigator: React.FC = (props) => {
                 fontWeight: 'bold',
                 color: 'white',
               },
+            })}
+          />
+        </HomeStack.Group>
+        <HomeStack.Group screenOptions={{ presentation: 'modal' }}>
+          <HomeStack.Screen
+            name='Notifications'
+            component={Notifications}
+            options={({ navigation }) => ({
+              headerShown: false,
             })}
           />
         </HomeStack.Group>

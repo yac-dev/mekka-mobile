@@ -14,3 +14,4 @@ export * from './ViewPost';
 export * from './User';
 export * from './ChangeMyPassword';
 export * from './MyPage';
+export * from './Notifications';
