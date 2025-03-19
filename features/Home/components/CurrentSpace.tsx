@@ -289,67 +289,39 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
       {/* <SpacesHeader /> */}
 
       <View style={styles.spacesContainer}>
+        <View
+          style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 8,
+            paddingVertical: 10,
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              width: 32,
+              aspectRatio: 1,
+              borderRadius: 25,
+              backgroundColor: 'rgb(50,50,50)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              // openAddNewSpaceMenuBottomSheet(0);
+              homeDrawerNavigation.toggleDrawer();
+            }}
+          >
+            <VectorIcon.II name='menu' color={Colors.white} size={18} />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={mySpaces}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={
-            <View
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 14,
-                paddingVertical: 10,
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{
-                  width: 32,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  backgroundColor: 'rgb(50,50,50)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  // openAddNewSpaceMenuBottomSheet(0);
-                  homeDrawerNavigation.toggleDrawer();
-                }}
-              >
-                <VectorIcon.II name='menu' color={Colors.white} size={18} />
-                {/* <View
-                  style={{
-                    backgroundColor: 'black',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    bottom: -4,
-                    right: -5,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      width: 10,
-                      height: 10,
-                      borderRadius: 20,
-                    }}
-                  >
-                    <VectorIcon.II name='add' size={11} color={'black'} />
-                  </View>
-                </View> */}
-              </TouchableOpacity>
-            </View>
-          }
         />
         {/* <AppButton.Icon
           onButtonPress={() => {

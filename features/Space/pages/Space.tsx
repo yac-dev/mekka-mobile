@@ -229,29 +229,24 @@ export const Space: React.FC<ISpace> = ({
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
       >
-        <View style={{ height: 60, justifyContent: 'center' }}>
+        <View style={{ height: 150 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
+              paddingTop: 8,
             }}
           >
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, justifyContent: 'space-between' }}
-            >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
                 <View style={{ marginRight: 8, flexDirection: 'column' }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
-                  {!currentSpace.isPublic ? (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, marginTop: 4 }}>Private</Text>
-                    </View>
-                  ) : null}
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
                 </View>
+
                 <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
 
@@ -373,8 +368,12 @@ export const Space: React.FC<ISpace> = ({
                 </TouchableOpacity>
               </View>
             </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
+                {space.totalMembers} members {currentSpace.isPublic ? 'Public' : 'Private'}
+              </Text>
+            </View>
           </View>
-          {/* <Moments /> */}
         </View>
       </LinearGradient>
       <TabView
