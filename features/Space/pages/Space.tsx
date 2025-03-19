@@ -229,7 +229,7 @@ export const Space: React.FC<ISpace> = ({
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
       >
-        <View style={{ height: 150 }}>
+        <View style={{ height: 75 }}>
           <View
             style={{
               flexDirection: 'column',
@@ -251,11 +251,11 @@ export const Space: React.FC<ISpace> = ({
                   <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
                     {space.totalMembers} members
                   </Text>
                   {!currentSpace.isPublic ? (
-                    <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
+                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
                 </View>
               </TouchableOpacity>
