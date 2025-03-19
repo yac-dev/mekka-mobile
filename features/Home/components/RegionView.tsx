@@ -304,41 +304,39 @@ export const RegionView: React.FC<RegionViewProps> = ({
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={styles.spacesContainer}>
+        <View
+          style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 8,
+            paddingVertical: 10,
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              width: 32,
+              aspectRatio: 1,
+              borderRadius: 25,
+              backgroundColor: 'rgb(50,50,50)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              // openAddNewSpaceMenuBottomSheet(0);
+              homeDrawerNavigation.toggleDrawer();
+            }}
+          >
+            <VectorIcon.II name='menu' color={Colors.white} size={18} />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={mySpaces}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={
-            <View
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 14,
-                paddingVertical: 10,
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{
-                  width: 32,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  backgroundColor: 'rgb(50,50,50)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  // openAddNewSpaceMenuBottomSheet(0);
-                  homeDrawerNavigation.toggleDrawer();
-                }}
-              >
-                <VectorIcon.II name='menu' color={Colors.white} size={18} />
-              </TouchableOpacity>
-            </View>
-          }
         />
         {/* <AppButton.Icon
           onButtonPress={() => openAuthMenuBottomSheet(0)}
@@ -383,30 +381,35 @@ export const RegionView: React.FC<RegionViewProps> = ({
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        <View style={{ height: 60, justifyContent: 'center' }}>
+        <View style={{ height: 60 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
+              paddingTop: 8,
             }}
           >
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, justifyContent: 'space-between' }}
-            >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{ flexDirection: 'column' }}
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ marginRight: 8 }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginBottom: 4 }}>
+                    {currentSpace.name}
+                  </Text>
+
+                  <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
+                    {currentSpace.totalMembers} members
+                  </Text>
                   {!currentSpace.isPublic ? (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, marginTop: 4 }}>Private</Text>
-                    </View>
+                    <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
                 </View>
-                <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity

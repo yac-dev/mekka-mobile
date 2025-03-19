@@ -239,15 +239,25 @@ export const Space: React.FC<ISpace> = ({
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{ flexDirection: 'column' }}
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ marginRight: 8, flexDirection: 'column' }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27 }}>{currentSpace.name}</Text>
-                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginBottom: 4 }}>
+                    {currentSpace.name}
+                  </Text>
 
-                <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+                  <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
+                    {space.totalMembers} members
+                  </Text>
+                  {!currentSpace.isPublic ? (
+                    <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
+                  ) : null}
+                </View>
               </TouchableOpacity>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -368,11 +378,11 @@ export const Space: React.FC<ISpace> = ({
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
                 {space.totalMembers} members {currentSpace.isPublic ? 'Public' : 'Private'}
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </LinearGradient>
