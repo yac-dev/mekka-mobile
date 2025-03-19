@@ -19,12 +19,12 @@ export type LoadMeInput = {
 
 export type LoadMeOutputType = AuthType;
 
-export type GetMySpacesInput = {
+export type GetSpacesByUserIdInput = {
   userId: string;
 };
 
-export type GetMySpacesOutput = {
-  mySpaces: SpaceType[];
+export type GetSpacesByUserIdOutput = {
+  spaces: SpaceType[];
 };
 
 export type GetLogsByUserIdInputType = {

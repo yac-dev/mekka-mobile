@@ -3,7 +3,7 @@ import { GetPostsByTagIdInputType, GetPostsByTagIdOutputType } from '../types';
 
 export const getPostsByTagId = async (input: GetPostsByTagIdInputType): Promise<GetPostsByTagIdOutputType> => {
   try {
-    const result = await axiosClient.get(`/tags/tag/${input.tagId}/posts?page=${input.currentPage}`);
+    const result = await axiosClient.get(`/tags/${input.tagId}/posts?page=${input.currentPage}`);
     const { posts, currentPage, hasNextPage } = result.data.data;
     return {
       posts,

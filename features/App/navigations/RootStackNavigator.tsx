@@ -18,7 +18,7 @@ import {
 import {
   queryKeys,
   mutationKeys,
-  getMySpaces,
+  getSpacesByUserId,
   getLogsByUserId,
   updateSpaceCheckedInDate,
   registerPushToken,
@@ -84,18 +84,18 @@ export const RootStackNavigator = () => {
     queryKey: [queryKeys.mySpaces, auth],
     queryFn: async () => {
       if (!auth) return null;
-      const response = await getMySpaces({ userId: auth._id });
-      setMySpaces(response.mySpaces);
-      if (response.mySpaces?.length) {
-        setCurrentSpace(response.mySpaces[0]);
+      const response = await getSpacesByUserId({ userId: auth._id });
+      setMySpaces(response.spaces);
+      if (response.spaces?.length) {
+        setCurrentSpace(response.spaces[0]);
         setCurrentTagsTableBySpaceIds(() => {
-          return response.mySpaces.reduce((acc, space) => {
+          return response.spaces.reduce((acc, space) => {
             acc[space._id] = space.tags[0];
             return acc;
           }, {});
         });
-        setCurrentTag(response.mySpaces[0].tags[0]);
-        const firstSpace = response.mySpaces[0];
+        setCurrentTag(response.spaces[0].tags[0]);
+        const firstSpace = response.spaces[0];
         updateSpaceCheckedInMutation.mutate({ spaceId: firstSpace._id, userId: auth._id });
       }
       return response;
