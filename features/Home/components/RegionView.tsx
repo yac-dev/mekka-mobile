@@ -403,11 +403,11 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
                     {currentSpace.totalMembers} members
                   </Text>
                   {!currentSpace.isPublic ? (
-                    <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
+                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
                 </View>
               </TouchableOpacity>

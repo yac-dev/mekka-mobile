@@ -252,7 +252,7 @@ export const Space: React.FC<ISpace> = ({
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
-                    {space.totalMembers} members
+                    {currentSpace.totalMembers} members
                   </Text>
                   {!currentSpace.isPublic ? (
                     <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
