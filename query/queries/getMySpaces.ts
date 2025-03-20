@@ -1,12 +1,12 @@
 import { axiosClient } from '../axiosClient';
-import { GetMySpacesInput, GetMySpacesOutput } from '../types';
+import { GetSpacesByUserIdInput, GetSpacesByUserIdOutput } from '../types';
 
-export const getMySpaces = async (input: GetMySpacesInput): Promise<GetMySpacesOutput> => {
+export const getSpacesByUserId = async (input: GetSpacesByUserIdInput): Promise<GetSpacesByUserIdOutput> => {
   try {
-    const result = await axiosClient.get(`/spaceanduserrelationships/users/${input.userId}`);
-    const { mySpaces } = result.data.data;
+    const result = await axiosClient.get(`/users/${input.userId}/spaces`);
+    const { spaces } = result.data.data;
     return {
-      mySpaces,
+      spaces,
     };
   } catch (error) {
     if (error.response && error.response.data) {

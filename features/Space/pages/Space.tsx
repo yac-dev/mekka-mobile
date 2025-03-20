@@ -193,9 +193,9 @@ export const Space: React.FC<ISpace> = ({
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+              tintColor={isFocused ? 'white' : 'rgb(170,170,170)'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 13 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -229,30 +229,35 @@ export const Space: React.FC<ISpace> = ({
         }}
         colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
       >
-        <View style={{ height: 60, justifyContent: 'center' }}>
+        <View style={{ height: 75 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
+              paddingTop: 8,
             }}
           >
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, justifyContent: 'space-between' }}
-            >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{ flexDirection: 'column' }}
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ marginRight: 8, flexDirection: 'column' }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginBottom: 4 }}>
+                    {currentSpace.name}
+                  </Text>
+
+                  <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
+                    {currentSpace.totalMembers} members
+                  </Text>
                   {!currentSpace.isPublic ? (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
-                    </View>
+                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
                 </View>
-                <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -373,8 +378,12 @@ export const Space: React.FC<ISpace> = ({
                 </TouchableOpacity>
               </View>
             </View>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
+                {space.totalMembers} members {currentSpace.isPublic ? 'Public' : 'Private'}
+              </Text>
+            </View> */}
           </View>
-          {/* <Moments /> */}
         </View>
       </LinearGradient>
       <TabView

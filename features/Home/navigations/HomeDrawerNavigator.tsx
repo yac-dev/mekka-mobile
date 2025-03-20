@@ -217,7 +217,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             <VectorIcon.MCI name='compass' size={20} color={Colors.white} style={{ marginRight: 20 }} />
             <View>
               <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginBottom: 3 }}>
-                Discover New Space
+                Discover Community
               </Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>Dive into public spaces</Text>
             </View>

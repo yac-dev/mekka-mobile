@@ -76,7 +76,7 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
             contentFit='contain'
           />
         </View>
-        <Text style={{ color: currentIndex === index ? 'black' : 'rgb(100,100,100)', fontSize: 13 }}>{item.name}</Text>
+        <Text style={{ color: currentIndex === index ? 'black' : 'white', fontSize: 13 }}>{item.name}</Text>
       </TouchableOpacity>
     );
   };
@@ -117,7 +117,7 @@ export const Posts = ({ position, syncOffset, firstRef, onMomentumScrollBegin }:
       <View
         style={{
           position: 'absolute',
-          bottom: 0,
+          bottom: 10,
           // left: 0,
           // right: 0,
           // zIndex: 1000,

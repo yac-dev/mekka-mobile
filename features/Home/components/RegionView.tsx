@@ -258,9 +258,9 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <ExpoImage
               style={{ width: 20, height: 20, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
-              tintColor={isFocused ? 'white' : 'rgb(100,100,100)'}
+              tintColor={isFocused ? 'white' : 'rgb(170,170,170)'}
             />
-            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(100,100,100)', fontSize: 11 }}>
+            <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
           </View>
@@ -304,41 +304,39 @@ export const RegionView: React.FC<RegionViewProps> = ({
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={styles.spacesContainer}>
+        <View
+          style={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 8,
+            paddingVertical: 10,
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              width: 32,
+              aspectRatio: 1,
+              borderRadius: 25,
+              backgroundColor: 'rgb(50,50,50)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              // openAddNewSpaceMenuBottomSheet(0);
+              homeDrawerNavigation.toggleDrawer();
+            }}
+          >
+            <VectorIcon.II name='menu' color={Colors.white} size={18} />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={mySpaces}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={
-            <View
-              style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 14,
-                paddingVertical: 10,
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{
-                  width: 32,
-                  aspectRatio: 1,
-                  borderRadius: 25,
-                  backgroundColor: 'rgb(50,50,50)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  // openAddNewSpaceMenuBottomSheet(0);
-                  homeDrawerNavigation.toggleDrawer();
-                }}
-              >
-                <VectorIcon.II name='menu' color={Colors.white} size={18} />
-              </TouchableOpacity>
-            </View>
-          }
         />
         {/* <AppButton.Icon
           onButtonPress={() => openAuthMenuBottomSheet(0)}
@@ -383,30 +381,35 @@ export const RegionView: React.FC<RegionViewProps> = ({
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        <View style={{ height: 60, justifyContent: 'center' }}>
+        <View style={{ height: 60 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
+              paddingTop: 8,
             }}
           >
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, justifyContent: 'space-between' }}
-            >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center' }}
+                style={{ flexDirection: 'column' }}
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ marginRight: 8 }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25 }}>{currentSpace.name}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginBottom: 4 }}>
+                    {currentSpace.name}
+                  </Text>
+
+                  <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
+                    {currentSpace.totalMembers} members
+                  </Text>
                   {!currentSpace.isPublic ? (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, marginTop: 4 }}>Private</Text>
-                    </View>
+                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
                 </View>
-                <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
               </TouchableOpacity>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity
@@ -540,32 +543,33 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <ActivityIndicator size={'small'} color={'white'} />
           </View>
         )}
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            // left: 0,
+            // right: 0,
+            // zIndex: 1000,
+            height: 55,
+            // backgroundColor: 'black',
+            backgroundColor: 'transparent',
+            paddingVertical: 8,
+            // borderTopWidth: 0.3,
+            // borderTopColor: 'rgb(100,100,100)',
+            width: '100%',
+          }}
+        >
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={currentSpace?.tags}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+          />
+        </View>
       </Mapbox.MapView>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          // left: 0,
-          // right: 0,
-          // zIndex: 1000,
-          height: 55,
-          // backgroundColor: 'black',
-          paddingVertical: 8,
-          // borderTopWidth: 0.3,
-          // borderTopColor: 'rgb(100,100,100)',
-          width: '100%',
-        }}
-      >
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ref={scrollViewRef}
-          data={currentSpace?.tags}
-          renderItem={renderTab}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-        />
-      </View>
     </SafeAreaView>
   );
 };
