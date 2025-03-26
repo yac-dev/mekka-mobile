@@ -112,7 +112,7 @@ const AddLocation = () => {
         <Camera
           ref={cameraRef}
           defaultSettings={{
-            centerCoordinate: coordinates || [-122.4194, 37.7749],
+            centerCoordinate: formData.location.value.coordinates || [-122.4194, 37.7749],
             zoomLevel: 0.5,
             animationMode: 'flyTo',
             animationDuration: 1100,
@@ -132,9 +132,6 @@ const AddLocation = () => {
               tintColor={'white'}
             />
           </MarkerView>
-        )}
-        {isLoadingCoordinates && (
-          <ActivityIndicator size='small' color='white' style={{ position: 'absolute', top: 150, left: 0, right: 0 }} />
         )}
       </Mapbox.MapView>
       <View style={styles.searchBoxContainer}>
