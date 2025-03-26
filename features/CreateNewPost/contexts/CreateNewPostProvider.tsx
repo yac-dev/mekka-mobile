@@ -331,7 +331,10 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
       return {
         ...previous,
         location: {
-          value: void 0,
+          value: {
+            type: 'Point',
+            coordinates: [],
+          },
           isValidated: true,
         },
       };

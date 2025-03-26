@@ -86,7 +86,7 @@ const AddLocation = () => {
     }
   };
 
-  const handleMapPress = (event) => {
+  const onMapPress = (event) => {
     const { geometry } = event;
     const newCoordinates = geometry.coordinates;
     addLocation(newCoordinates);
@@ -99,6 +99,10 @@ const AddLocation = () => {
     });
   };
 
+  const onMapLongPress = (event) => {
+    removeLocation();
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Mapbox.MapView
@@ -108,7 +112,8 @@ const AddLocation = () => {
         scaleBarEnabled={false}
         attributionPosition={{ bottom: -50, right: -50 }}
         styleURL='mapbox://styles/yabbee/cl93j1d3a000714ntdoue4ucq'
-        onPress={handleMapPress}
+        onPress={onMapPress}
+        onLongPress={onMapLongPress}
       >
         <Camera
           ref={cameraRef}
@@ -139,6 +144,23 @@ const AddLocation = () => {
         )}
       </Mapbox.MapView>
       <View style={styles.searchBoxContainer}>
+        <View style={{ paddingLeft: 30, paddingRight: 30, paddingBottom: 10 }}>
+          <Text
+            style={{
+              color: 'white',
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
+              marginBottom: 10,
+            }}
+          >
+            Add Location (Optional)
+          </Text>
+          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+            Tap the place to add location information.{'\n'}
+            Long press to remove you've chosen.
+          </Text>
+        </View>
         <View
           style={{
             flexDirection: 'row',
