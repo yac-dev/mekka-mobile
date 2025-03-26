@@ -134,22 +134,34 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
           Please add at least one tag down below.
         </Text>
       </View>
+
+      {renderTagOptions()}
       <TouchableOpacity
-        style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+        style={{
+          padding: 15,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: 'rgb(50,50,50)',
+          width: '90%',
+          alignSelf: 'center',
+          marginTop: 10,
+          borderRadius: 100,
+        }}
         onPress={() => {
           createNewPostStackNavigation.navigate('CreateNewTag');
         }}
-        activeOpacity={1}
+        activeOpacity={0.8}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <AntDesign name='edit' color='white' size={20} style={{ marginRight: 20 }} />
-          <View>
-            <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Create new one?</Text>
+        <View style={{ width: '100%' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+            <AntDesign name='edit' color='white' size={20} style={{ marginRight: 10 }} />
+            <View>
+              <Text style={{ color: 'white', fontSize: 17 }}>Create new one</Text>
+            </View>
           </View>
         </View>
-        <MaterialCommunityIcons name='chevron-down' color='white' size={20} style={{ marginRight: 10 }} />
       </TouchableOpacity>
-      {renderTagOptions()}
     </View>
   );
 };
