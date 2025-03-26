@@ -35,6 +35,7 @@ const AddLocation = () => {
   const { requestCreatePost } = useCreatePostResult(currentSpace);
 
   const mapRef = useRef<Mapbox.MapView>(null);
+  const cameraRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [coordinates, setCoordinates] = useState(undefined);
   const [suggestions, setSuggestions] = useState([]);
@@ -89,6 +90,12 @@ const AddLocation = () => {
         setCoordinates(coordinates);
         setSuggestions([]);
         setSearchQuery('');
+
+        cameraRef.current?.setCamera({
+          centerCoordinate: coordinates,
+          zoomLevel: 5, // Adjust zoom level as needed
+          animationDuration: 1000, // Duration of the animation in milliseconds
+        });
       }
     } catch (error) {
       console.error('Error fetching search results:', error);
@@ -266,6 +273,7 @@ const AddLocation = () => {
         // onMapIdle={onMapIdle}
       >
         <Camera
+          ref={cameraRef}
           defaultSettings={{
             centerCoordinate: coordinates || [-122.4194, 37.7749],
             zoomLevel: 0.5,
@@ -289,9 +297,9 @@ const AddLocation = () => {
             />
           </MarkerView>
         )}
-        {/* {isLoadingCoordinates && (
+        {isLoadingCoordinates && (
           <ActivityIndicator size='small' color='white' style={{ position: 'absolute', top: 150, left: 0, right: 0 }} />
-        )} */}
+        )}
       </Mapbox.MapView>
       <View style={styles.searchBoxContainer}>
         <View
