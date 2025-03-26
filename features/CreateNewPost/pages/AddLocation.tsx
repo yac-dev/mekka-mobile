@@ -43,6 +43,7 @@ const AddLocation = () => {
           q: query,
           access_token: Config.MAPBOX_ACCESS_TOKEN,
           session_token: sessionToken,
+          limit: 10,
         },
       });
 
@@ -112,7 +113,10 @@ const AddLocation = () => {
         <Camera
           ref={cameraRef}
           defaultSettings={{
-            centerCoordinate: formData.location.value.coordinates || [-122.4194, 37.7749],
+            centerCoordinate:
+              formData.location.value.coordinates.length > 0
+                ? formData.location.value.coordinates
+                : [-122.4194, 37.7749],
             zoomLevel: 0.5,
             animationMode: 'flyTo',
             animationDuration: 1100,
@@ -164,11 +168,13 @@ const AddLocation = () => {
               borderBottomLeftRadius: 10,
               borderBottomRightRadius: 10,
               padding: 10,
+              maxHeight: 200,
             }}
           >
             <FlatList
               data={suggestions}
               keyExtractor={(item) => item.id}
+              showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={{
@@ -179,8 +185,8 @@ const AddLocation = () => {
                   onPress={() => handleSearch(item.name)}
                   activeOpacity={0.8}
                 >
-                  <VectorIcon.MCI
-                    name='map-marker-outline'
+                  <VectorIcon.II
+                    name='location-sharp'
                     size={18}
                     color={'rgb(180,180,180)'}
                     style={{ marginRight: 10 }}
