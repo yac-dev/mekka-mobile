@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { FlatList, View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { removeEmojis } from '../utils/removeEmoji';
-import MapView, { Marker, MapPressEvent } from 'react-native-maps';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { Image as ExpoImage } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
-import { CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
-import { CreatePostInputType } from '../types';
-import { SpaceStackNavigatorProps } from '../../Space/navigations/SpaceStackNavigator';
-import { useCreatePostResult } from '../../../api';
-import { HomeStackNavigatorProps } from '../../Home/navigations';
-import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom, authAtom } from '../../../recoil';
-import Mapbox, { Camera, PointAnnotation, MarkerView } from '@rnmapbox/maps';
+import { currentSpaceAtom } from '../../../recoil';
+import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import axios from 'axios';
 import Config from 'react-native-config';
 import 'react-native-get-random-values';
@@ -21,8 +12,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Colors } from '../../../themes';
 import { VectorIcon } from '../../../Icons';
 
-//ちょうど、post機能の再設計しようとも思っててね。。。治そうかこの際。
-// postした時のfunction を渡してくるようにしたほうがいいな。
 Mapbox.setAccessToken(Config.MAPBOX_ACCESS_TOKEN);
 
 const AddLocation = () => {
@@ -85,8 +74,8 @@ const AddLocation = () => {
         setSearchQuery('');
         cameraRef.current?.setCamera({
           centerCoordinate: coordinates,
-          zoomLevel: 5, // Adjust zoom level as needed
-          animationDuration: 400, // Duration of the animation in milliseconds
+          zoomLevel: 5,
+          animationDuration: 400,
         });
       }
     } catch (error) {
@@ -118,9 +107,6 @@ const AddLocation = () => {
         scaleBarEnabled={false}
         attributionPosition={{ bottom: -50, right: -50 }}
         styleURL='mapbox://styles/yabbee/cl93j1d3a000714ntdoue4ucq'
-        // onRegionDidChange={(feature) => onRegionChangeComplete(feature)}
-        regionDidChangeDebounceTime={100}
-        // onMapIdle={onMapIdle}
         onPress={handleMapPress}
       >
         <Camera
