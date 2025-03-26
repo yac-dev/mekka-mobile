@@ -259,9 +259,24 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
                 marginBottom: 10,
               }}
             >
-              {formData.postType.value === 'normal' ? 'New Post' : 'Moment Post'}
+              Had something fun?
             </Text>
           </View>
+          {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+            <TouchableOpacity
+              style={{ backgroundColor: 'rgb(50,50,50)', borderRadius: 100 / 2, padding: 10, width: 120 }}
+              // onPress={() => onPostTypeChange('photo')}
+            >
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>Photo</Text>
+            </TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>Or</Text>
+            <TouchableOpacity
+              style={{ backgroundColor: 'rgb(50,50,50)', borderRadius: 100 / 2, padding: 10, width: 120 }}
+              // onPress={() => onPostTypeChange('video')}
+            >
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>Video</Text>
+            </TouchableOpacity>
+          </View> */}
           {formData.contents.value.length === 0 && (
             <TouchableOpacity
               activeOpacity={0.7}

@@ -111,10 +111,11 @@ export const CreateNewPostStackNavigator = () => {
                   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
+              headerTransparent: true,
               title: '',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
+              // headerStyle: {
+              //   backgroundColor: 'black',
+              // },
             })}
           />
         </CreateNewPosyStack.Group>
