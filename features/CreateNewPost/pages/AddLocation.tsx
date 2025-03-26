@@ -28,13 +28,6 @@ Mapbox.setAccessToken(Config.MAPBOX_ACCESS_TOKEN);
 const AddLocation = () => {
   const { formData, addLocation, removeLocation, setFormData } = useContext(CreateNewPostContext);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
-  const [auth] = useRecoilState(authAtom);
-  const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
-  const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
-  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
-  const { requestCreatePost } = useCreatePostResult(currentSpace);
-
-  const mapRef = useRef<Mapbox.MapView>(null);
   const cameraRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [coordinates, setCoordinates] = useState(undefined);
@@ -87,14 +80,13 @@ const AddLocation = () => {
 
       if (response.data.features.length > 0) {
         const { coordinates } = response.data.features[0].geometry;
-        setCoordinates(coordinates);
+        addLocation(coordinates);
         setSuggestions([]);
         setSearchQuery('');
-
         cameraRef.current?.setCamera({
           centerCoordinate: coordinates,
           zoomLevel: 5, // Adjust zoom level as needed
-          animationDuration: 1000, // Duration of the animation in milliseconds
+          animationDuration: 400, // Duration of the animation in milliseconds
         });
       }
     } catch (error) {
@@ -104,164 +96,22 @@ const AddLocation = () => {
     }
   };
 
-  const onPostPress = async () => {
-    // spaceStackNavigation.navigate({ name: 'Space', params: {}, merge: true });
-    homeStackNavigation.navigate('Home');
+  const handleMapPress = (event) => {
+    const { geometry } = event;
+    const newCoordinates = geometry.coordinates;
+    addLocation(newCoordinates);
 
-    // ここの段階でbufferContentsたちを圧縮したい。
-    // const bufferContentsBeforeCompressor = formData.bufferContents.value;
-    // const bufferContentsAfterCompressor = [];
-    // for (const content of bufferContentsBeforeCompressor) {
-    //   if (content.type === 'image/jpg') {
-    //     const result = await ImageCompressor.compress(content.uri, {
-    //       compressionMethod: 'manual',
-    //       quality: 0.7,
-    //     });
-
-    //     const compressedObject = {
-    //       name: content.name,
-    //       uri: result,
-    //       type: content.type,
-    //     };
-    //     bufferContentsAfterCompressor.push(compressedObject);
-    //   } else if (content.type === 'video/mp4') {
-    //     const result = await VideoCompressor.compress(content.uri, {
-    //       compressionMethod: 'auto',
-    //       progressDivider: 10,
-    //     });
-    //     const compressedObject = {
-    //       name: content.name,
-    //       uri: result,
-    //       type: content.type,
-    //     };
-    //     bufferContentsAfterCompressor.push(compressedObject);
-    //   }
-    // }
-
-    const compressContent = async (content: BufferContentType) => {
-      const { type, uri } = content;
-      if (type === 'image/jpg') {
-        const result = await ImageCompressor.compress(uri, {
-          compressionMethod: 'manual',
-          quality: 0.7,
-        });
-        return { ...content, uri: result };
-      } else if (type === 'video/mp4') {
-        const result = await VideoCompressor.compress(uri, {
-          progressDivider: 20,
-          maxSize: 1920,
-          compressionMethod: 'manual',
-        });
-        return { ...content, uri: result };
-      }
-      return content;
-    };
-
-    const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
-      formData.bufferContents.value.map(compressContent)
-    );
-
-    const input: CreatePostInputType = {
-      ...formData,
-      userId: auth._id,
-      spaceId: currentSpace._id,
-      reactions: currentSpace.reactions,
-      disappearAfter: currentSpace.disappearAfter.toString(),
-      bufferContents: {
-        value: bufferContentsAfterCompressor,
-        isValidated: true, // Adjust this value as needed
-      },
-    };
-    requestCreatePost(input);
-  };
-
-  // useEffect(() => {
-  //   createNewPostStackNavigation.setOptions({
-  //     headerRight: () => (
-  //       <TouchableOpacity
-  //         activeOpacity={0.5}
-  //         // onPress={() => console.log('form data -> ', JSON.stringify(formData, null, 2))}
-  //         onPress={() => onPostPress()}
-  //         disabled={formData.location.isValidated ? false : true}
-  //       >
-  //         <Text
-  //           style={{
-  //             color: formData.location.isValidated ? 'white' : 'rgb(100,100,100)',
-  //             fontSize: 20,
-  //             fontWeight: 'bold',
-  //           }}
-  //         >
-  //           Post
-  //         </Text>
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, [formData.location]);
-
-  const onMapPress = (event: MapPressEvent) => {
-    event.persist();
-    const coordinates: number[] = [event.nativeEvent.coordinate.longitude, event.nativeEvent.coordinate.latitude];
-    addLocation(coordinates);
+    cameraRef.current?.setCamera({
+      centerCoordinate: newCoordinates,
+      zoomLevel: 5,
+      animationDuration: 400,
+      animationMode: 'flyTo',
+    });
   };
 
   return (
-    // <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
-    //   <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
-    //     <Text
-    //       style={{
-    //         color: 'white',
-    //         textAlign: 'center',
-    //         fontWeight: 'bold',
-    //         fontSize: 20,
-    //         marginBottom: 10,
-    //       }}
-    //     >
-    //       Add Location (Optional)
-    //     </Text>
-    //     <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-    //       Tap the place to add location information.{'\n'}
-    //       Long press to remove you've chosen.
-    //     </Text>
-    //   </View>
-    //   <MapView
-    //     // ref={mapRef}
-    //     userInterfaceStyle='dark'
-    //     onPress={(event) => onMapPress(event)}
-    //     style={{ width: '100%', height: 500 }}
-    //     initialRegion={{
-    //       latitude: 37.78825,
-    //       longitude: -122.4324,
-    //       latitudeDelta: 0.0922,
-    //       longitudeDelta: 0.0421,
-    //     }}
-    //     showsCompass={true}
-    //     scrollEnabled={true}
-    //     zoomEnabled={true}
-    //     pitchEnabled={false}
-    //     onLongPress={() => removeLocation()}
-    //   >
-    //     {formData.location.value ? (
-    //       <Marker
-    //         tracksViewChanges={false}
-    //         coordinate={{
-    //           latitude: formData.location.value.coordinates[1],
-    //           longitude: formData.location.value.coordinates[0],
-    //         }}
-    //       >
-    // <ExpoImage
-    //   style={{ width: 40, height: 40, borderRadius: 10 }}
-    //   source={require('../../../assets/forApp/map-pin.png')}
-    //   contentFit='cover'
-    //   transition={200}
-    //   tintColor={'white'}
-    // />
-    //       </Marker>
-    //     ) : null}
-    //   </MapView>
-    // </View>
     <View style={{ flex: 1 }}>
       <Mapbox.MapView
-        // ref={mapRef}
         style={{ flex: 1 }}
         compassEnabled={false}
         logoEnabled={false}
@@ -271,6 +121,7 @@ const AddLocation = () => {
         // onRegionDidChange={(feature) => onRegionChangeComplete(feature)}
         regionDidChangeDebounceTime={100}
         // onMapIdle={onMapIdle}
+        onPress={handleMapPress}
       >
         <Camera
           ref={cameraRef}
@@ -281,12 +132,11 @@ const AddLocation = () => {
             animationDuration: 1100,
           }}
         />
-        {coordinates && (
+        {formData.location.value.coordinates.length > 0 && (
           <MarkerView
-            id={coordinates[0]}
-            coordinate={[coordinates[0], coordinates[1]]}
+            id={formData.location.value.coordinates[0].toString()}
+            coordinate={[formData.location.value.coordinates[0], formData.location.value.coordinates[1]]}
             allowOverlap={true}
-            // allowOverlap={false}で、マーカーが重なった時にマーカーが全部表示されないようになる。結構便利。
           >
             <ExpoImage
               style={{ width: 40, height: 40, borderRadius: 10 }}
