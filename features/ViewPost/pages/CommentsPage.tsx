@@ -16,6 +16,7 @@ import { VectorIcon } from '../../../Icons/VectorIcons';
 import { useNavigation } from '@react-navigation/native';
 import { CommentInput } from '../components/CommentInput';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { CommentInputBottomSheet } from '../components/CommentInputBottomSheet';
 
 type ICommentsPage = NativeStackScreenProps<ViewPostStackNavigatorParams, 'Comments'>;
 
@@ -54,7 +55,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const textInputRef = useRef<TextInput>(null);
 
-  const snapPoints = useMemo(() => ['15%', '65%', '100%'], []);
+  const snapPoints = useMemo(() => ['15%', '75%', '100%'], []);
 
   const { data, status } = useQuery({
     queryKey: [queryKeys.commentsByPostId, postId],
@@ -69,6 +70,8 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
     if (index === 0) {
       // 15% index
       Keyboard.dismiss();
+    } else if (index === 1) {
+      textInputRef.current?.focus();
     }
   };
 
@@ -181,33 +184,14 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
         estimatedItemSize={100}
         contentContainerStyle={{ paddingBottom: 100 }}
       />
-      {/* <CommentInput currentPost={postId} /> */}
-      {/* <CommentInputBottomSheet header={<Text>Comment</Text>} ref={commentInputBottomSheetRef} snapPoints={snapPoints} /> */}
-      <BottomSheet
-        ref={commentInputBottomSheetRef}
-        index={0}
-        enableOverDrag={true}
-        enablePanDownToClose={false}
+      <CommentInputBottomSheet
+        commentInputBottomSheetRef={commentInputBottomSheetRef}
+        textInputRef={textInputRef}
+        currentPost={postId}
         snapPoints={snapPoints}
-        backgroundStyle={{ backgroundColor: 'rgb(30,30,30)' }}
-        handleIndicatorStyle={{ backgroundColor: 'rgb(100,100,100)' }}
-        onClose={() => {}}
-        onChange={handleSheetChanges}
-      >
-        <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 10, paddingVertical: 10 }}>
-          <TextInput
-            ref={textInputRef}
-            placeholder='What are your thoughts?'
-            placeholderTextColor={'rgb(170,170,170)'}
-            multiline
-            style={{
-              color: 'white',
-              fontSize: 17,
-            }}
-            onFocus={handleFocus}
-          />
-        </View>
-      </BottomSheet>
+        handleSheetChanges={handleSheetChanges}
+        handleFocus={handleFocus}
+      />
     </View>
   );
 };

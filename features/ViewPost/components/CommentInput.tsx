@@ -118,7 +118,7 @@ export const CommentInput = forwardRef((props: ICommentinput, ref) => {
               width: '100%',
               color: 'white',
               fontSize: 17,
-              backgroundColor: 'rgb(50,50,50)',
+              backgroundColor: 'rgb(30,30,30)',
               borderRadius: 5,
             }}
             ref={commentInputRef}
@@ -126,7 +126,7 @@ export const CommentInput = forwardRef((props: ICommentinput, ref) => {
             onChangeText={setCommentInput}
             autoCapitalize='none'
           />
-          <InputAccessoryView nativeID={inputAccessoryViewID} backgroundColor={'rgb(50,50,50)'}>
+          <InputAccessoryView nativeID={inputAccessoryViewID} backgroundColor={'rgb(30,30,30)'}>
             <View>
               <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                 <View></View>
