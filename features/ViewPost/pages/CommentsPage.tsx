@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, TextInput } from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { View, Text, ActivityIndicator, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getCommentsByPostId } from '../../../query/queries';
 import { currentPostAtom } from '../../Space/atoms/currentPostAtom';
@@ -15,6 +15,7 @@ import { AppButton } from '../../../components/Button';
 import { VectorIcon } from '../../../Icons/VectorIcons';
 import { useNavigation } from '@react-navigation/native';
 import { CommentInput } from '../components/CommentInput';
+import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 type ICommentsPage = NativeStackScreenProps<ViewPostStackNavigatorParams, 'Comments'>;
 
@@ -50,11 +51,26 @@ function timeSince(date: Date) {
 export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
   const { postId } = route.params;
   const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
+  const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
+  const textInputRef = useRef<TextInput>(null);
+
+  const snapPoints = useMemo(() => ['15%', '65%', '100%'], []);
 
   const { data, status } = useQuery({
     queryKey: [queryKeys.commentsByPostId, postId],
     queryFn: () => getCommentsByPostId({ postId }),
   });
+
+  const handleFocus = () => {
+    commentInputBottomSheetRef.current?.snapToIndex(1); // 50% index
+  };
+
+  const handleSheetChanges = (index: number) => {
+    if (index === 0) {
+      // 15% index
+      Keyboard.dismiss();
+    }
+  };
 
   const renderComment = ({ item }: { item: CommentType }) => {
     if (item.createdBy) {
@@ -147,13 +163,11 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
   }
 
   return (
-    <KeyboardAvoidingView
+    <View
       style={{
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.8)',
       }}
-      behavior='padding'
-      keyboardVerticalOffset={55}
     >
       <FlashList
         data={data?.comments}
@@ -165,30 +179,36 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
           </View>
         }
         estimatedItemSize={100}
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
-      <CommentInput currentPost={postId} />
-      {/* <View style={{ padding: 10, borderTopWidth: 1, borderTopColor: 'rgb(100,100,100)', backgroundColor: 'black' }}>
-        <TextInput
-          // multiline={true}
-          placeholder={'Type here...'}
-          placeholderTextColor={'rgb(170,170,170)'}
-          inputAccessoryViewID={inputAccessoryViewID}
-          style={{
-            padding: 15,
-            // height: 40,
-            width: '100%',
-            color: 'white',
-            fontSize: 17,
-            backgroundColor: 'rgb(50,50,50)',
-            borderRadius: 10,
-          }}
-          // ref={refs.commentInputRef}
-          value={'comment'}
-          // onChangeText={setCommentInput}
-          autoCapitalize='none'
-        />
-      </View> */}
-    </KeyboardAvoidingView>
+      {/* <CommentInput currentPost={postId} /> */}
+      {/* <CommentInputBottomSheet header={<Text>Comment</Text>} ref={commentInputBottomSheetRef} snapPoints={snapPoints} /> */}
+      <BottomSheet
+        ref={commentInputBottomSheetRef}
+        index={0}
+        enableOverDrag={true}
+        enablePanDownToClose={false}
+        snapPoints={snapPoints}
+        backgroundStyle={{ backgroundColor: 'rgb(30,30,30)' }}
+        handleIndicatorStyle={{ backgroundColor: 'rgb(100,100,100)' }}
+        onClose={() => {}}
+        onChange={handleSheetChanges}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgb(30,30,30)', paddingHorizontal: 10, paddingVertical: 10 }}>
+          <TextInput
+            ref={textInputRef}
+            placeholder='What are your thoughts?'
+            placeholderTextColor={'rgb(170,170,170)'}
+            multiline
+            style={{
+              color: 'white',
+              fontSize: 17,
+            }}
+            onFocus={handleFocus}
+          />
+        </View>
+      </BottomSheet>
+    </View>
   );
 };
 
