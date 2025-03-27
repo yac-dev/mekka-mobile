@@ -11,6 +11,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { Colors } from '../../../themes';
 import { VectorIcon } from '../../../Icons';
+import * as Haptics from 'expo-haptics';
 
 Mapbox.setAccessToken(Config.MAPBOX_ACCESS_TOKEN);
 
@@ -101,6 +102,7 @@ const AddLocation = () => {
 
   const onMapLongPress = (event) => {
     removeLocation();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
   return (
