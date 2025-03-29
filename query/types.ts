@@ -11,6 +11,7 @@ import {
   CommentType,
   MapRegionType,
   FollowingRelationshipType,
+  NotificationType,
 } from '../types';
 
 export type LoadMeInput = {
@@ -36,7 +37,7 @@ export type GetNotificationByUserIdInput = {
 };
 
 export type GetNotificationByUserIdOutput = {
-  // notifications: NotificationType[];
+  notifications: NotificationType[];
 };
 
 type TagTable = {

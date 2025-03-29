@@ -27,7 +27,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import * as Notifications from 'expo-notifications';
 import Config from 'react-native-config';
 import { RegisterPushTokenInputType } from '../../../query/types';
-import { getFollowingUsersByUserId } from '../../../query/';
+import { getFollowingUsersByUserId, getNotificationByUserId } from '../../../query/';
 import * as SecureStore from 'expo-secure-store';
 
 const RootStack = createNativeStackNavigator<RootStackParams>();
@@ -123,7 +123,11 @@ export const RootStackNavigator = () => {
     queryFn: () => getFollowingUsersByUserId({ userId: auth._id }),
   });
 
-  console.log('followingUsers', JSON.stringify(followingUsers, null, 2));
+  // ここは正直数だけ取れればいいだけなんだよね。そこで迷っていたのか。。。
+  const { data: notifications } = useQuery({
+    queryKey: [queryKeys.notifications, auth],
+    queryFn: () => getNotificationByUserId({ userId: auth._id }),
+  });
 
   const { mutate: registerPushTokenMutation } = useMutation({
     mutationKey: [mutationKeys.registerPushToken],

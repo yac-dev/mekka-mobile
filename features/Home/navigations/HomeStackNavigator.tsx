@@ -319,6 +319,30 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
           <HomeStack.Screen
+            name='Notifications'
+            component={Notifications}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <HomeStack.Screen
             name='DeleteMyAccount'
             component={DeleteMyAccount}
             options={({ navigation }) => ({
@@ -421,7 +445,7 @@ export const HomeStackNavigator: React.FC = (props) => {
             })}
           />
         </HomeStack.Group>
-        <HomeStack.Group screenOptions={{ presentation: 'modal' }}>
+        {/* <HomeStack.Group screenOptions={{ presentation: 'modal' }}>
           <HomeStack.Screen
             name='Notifications'
             component={Notifications}
@@ -429,7 +453,7 @@ export const HomeStackNavigator: React.FC = (props) => {
               headerShown: false,
             })}
           />
-        </HomeStack.Group>
+        </HomeStack.Group> */}
         {/* <HomeStack.Group screenOptions={{ presentation: 'modal', gestureEnabled: true }}>
           <HomeStack.Screen
             name='EditProfileStackNavigator'

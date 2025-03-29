@@ -33,8 +33,8 @@ import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigation
 import { currentTagAtomFamily } from '../../../recoil';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query';
-import { UpdateSpaceCheckedInDateInputType } from '../../../query/types';
-
+import { GetNotificationByUserIdOutput, UpdateSpaceCheckedInDateInputType } from '../../../query/types';
+import { useQueryClient } from '@tanstack/react-query';
 const windowWidth = Dimensions.get('window').width;
 
 type CurrentSpaceProps = {
@@ -55,6 +55,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   openAddNewPostMenuBottomSheet,
   currentViewIndex,
 }) => {
+  const queryClient = useQueryClient();
   const { mutate: updateSpaceCheckedInMutation } = useMutation({
     mutationKey: [mutationKeys.updateSpaceCheckedInDate],
     mutationFn: (input: UpdateSpaceCheckedInDateInputType) => updateSpaceCheckedInDate(input),
@@ -73,6 +74,9 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const scrollViewRef = useRef(null);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
+
+  const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
+  console.log('data', JSON.stringify(data, null, 2));
 
   // const scrollToCenter = () => {
   //   const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTagBySpaceId._id);
@@ -340,17 +344,34 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
         >
           <VectorIcon.MI name='notifications-none' color={Colors.white} size={18} />
         </TouchableOpacity> */}
-        {/* <AppButton.Icon
-          onButtonPress={() => {
-            homeDrawerNavigation.toggleDrawer();
-            // homeStackNavigation.navigate('HomeDrawerNavigator');
-            // openAuthMenuBottsomSheet(0);
-          }}
-          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.MCI name='account' size={20} color={Colors.white} />
-        </AppButton.Icon> */}
+        <View style={{ width: 30, height: 30, marginLeft: 8 }}>
+          <AppButton.Icon
+            onButtonPress={() => {
+              homeStackNavigation.navigate('Notifications');
+            }}
+            customStyle={{ width: '100%', height: '100%', backgroundColor: 'rgb(50,50,50)' }}
+            hasShadow={false}
+          >
+            <VectorIcon.MCI name='bell' size={16} color={Colors.white} />
+          </AppButton.Icon>
+          {data?.notifications.length >= 1 && (
+            <View
+              style={{
+                position: 'absolute',
+                top: -3,
+                right: -3,
+                width: 14,
+                height: 14,
+                borderRadius: 8,
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View style={{ width: 8, height: 8, borderRadius: 8, backgroundColor: 'red' }}></View>
+            </View>
+          )}
+        </View>
       </View>
       {/* <View
         style={{
