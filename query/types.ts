@@ -31,6 +31,14 @@ export type GetLogsByUserIdInputType = {
   userId: string;
 };
 
+export type GetNotificationByUserIdInput = {
+  userId: string;
+};
+
+export type GetNotificationByUserIdOutput = {
+  // notifications: NotificationType[];
+};
+
 type TagTable = {
   [key: string]: number;
 };

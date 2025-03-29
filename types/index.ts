@@ -237,3 +237,15 @@ export type FollowingRelationshipType = {
   space: string;
   createdAt: string;
 };
+
+export type NotificationType = {
+  _id: string;
+  type: string; // 'comment', 'reaction', 'follow'
+  createdAt: string;
+  post: PostType;
+  comment?: CommentType;
+  reaction?: ReactionType;
+  follower?: UserType;
+  createdBy: UserType;
+  isRead: boolean;
+};

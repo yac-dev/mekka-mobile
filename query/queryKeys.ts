@@ -20,4 +20,5 @@ export const queryKeys = {
   followingUsers: 'followingUsers',
   // ここら辺のkey名、apiのエンドポイントに則った方がいいよね多分。
   reactions: 'reactions',
+  notifications: 'notifications',
 };
