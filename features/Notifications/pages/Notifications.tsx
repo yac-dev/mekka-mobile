@@ -10,13 +10,19 @@ import { NotificationType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { iconColorTable } from '../../../themes/color';
+import { HomeStackNavigatorProps } from '../../Home/navigations';
+import { useNavigation } from '@react-navigation/native';
+import { currentSpaceAtom } from '../../../recoil';
+import { mySpacesAtom } from '../../../recoil';
 // どのspaceでcommentかreactionか、followかのtypeのnotificationをcellで表示しなきゃいけない。
 
 export const Notifications = () => {
   const queryClient = useQueryClient();
   const [auth] = useRecoilState(authAtom);
   const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
-
+  const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
+  const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
+  const [mySpaces] = useRecoilState(mySpacesAtom);
   const timeSince = (date: Date) => {
     const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
 
@@ -43,9 +49,29 @@ export const Notifications = () => {
     return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
   };
 
+  const onNotificationPress = (notification: NotificationType) => {
+    if (notification.type === 'comment') {
+      const space = mySpaces.find((space) => space._id === notification.space._id);
+      if (space) {
+        setCurrentSpace(space);
+        homeStackNavigation.navigate({
+          name: 'ViewPostStackNavigator',
+          params: {
+            screen: 'ViewPost',
+            params: { posts: [notification.post], index: 0 },
+          },
+        });
+      }
+    }
+  };
+
   const renderItem = ({ item }: { item: NotificationType }) => {
     return (
-      <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 16, paddingTop: 12 }} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={{ flexDirection: 'row', paddingHorizontal: 16, paddingTop: 12 }}
+        activeOpacity={0.7}
+        onPress={() => onNotificationPress(item)}
+      >
         <View
           style={{
             backgroundColor: 'rgb(70,70,70)',
