@@ -332,7 +332,7 @@ export const HomeStackNavigator: React.FC = (props) => {
                   <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
                 </AppButton.Icon>
               ),
-              headerTitle: '',
+              headerTitle: 'Notifications',
               headerStyle: {
                 backgroundColor: 'black',
               },
