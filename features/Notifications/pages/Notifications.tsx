@@ -45,7 +45,7 @@ export const Notifications = () => {
 
   const renderItem = ({ item }: { item: NotificationType }) => {
     return (
-      <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 16 }} activeOpacity={0.7}>
+      <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 16, paddingTop: 12 }} activeOpacity={0.7}>
         <View
           style={{
             backgroundColor: 'rgb(70,70,70)',
@@ -120,7 +120,7 @@ export const Notifications = () => {
               {item.type === 'follow' && ' started following you'}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, gap: 8 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 8 }}>
             <Text style={{ color: 'white' }}>@{item.space.name}</Text>
             <Text style={{ color: 'rgb(150,150,150)' }}>{timeSince(new Date(item.createdAt))}</Text>
           </View>
@@ -129,6 +129,20 @@ export const Notifications = () => {
               {item.comment?.content}
             </Text>
           )}
+          {item.type === 'reaction' && (
+            <View>
+              {item.reaction.type === 'emoji' && (
+                <Text style={{ color: 'white', fontSize: 32 }}>{item.reaction.emoji}</Text>
+              )}
+              {item.reaction.type === 'sticker' && (
+                <ExpoImage
+                  style={{ width: 32, height: 32 }}
+                  source={{ uri: item.reaction.sticker.url }}
+                  contentFit='contain'
+                />
+              )}
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -136,7 +150,16 @@ export const Notifications = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 12 }}>
-      <FlashList data={data?.notifications} renderItem={renderItem} estimatedItemSize={100} />
+      {data?.notifications.length === 0 ? (
+        <View style={{ flex: 1, paddingTop: 100, alignItems: 'center' }}>
+          <VectorIcon.MCI name='bell' size={50} color='rgb(150,150,150)' />
+          <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', marginTop: 12 }}>
+            Notifications will be shown here
+          </Text>
+        </View>
+      ) : (
+        <FlashList data={data?.notifications} renderItem={renderItem} estimatedItemSize={100} />
+      )}
     </View>
   );
 };

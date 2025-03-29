@@ -139,7 +139,6 @@ export type IncrementReactionInputType = {
   postId: string;
   reactionId: string;
   userId: string;
-  userName: string;
 };
 
 export type IncrementReactionOutputType = {

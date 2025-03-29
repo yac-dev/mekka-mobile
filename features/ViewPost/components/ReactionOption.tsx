@@ -37,7 +37,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
     mutationFn: (input: IncrementReactionInputType) => incrementReaction(input),
     onMutate: () => {
       // そもそも、ここってどういうデータ構造だっけ。。。？
-      queryClient.setQueryData([queryKeys.reactionsByPostId, postId], (previous: GetReactionsByPostIdOutputType) => {
+      queryClient.setQueryData([queryKeys.reactions, postId], (previous: GetReactionsByPostIdOutputType) => {
         const updatedReactions = previous.reactions.map((reactionObject) => {
           if (reactionObject._id === reaction._id) {
             return { ...reactionObject, count: reactionObject.count + 1 };
@@ -54,7 +54,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
   // currentUserによるincrement自体も引っ張ってきたいよな。。。
 
   const onReactionOptionPress = () => {
-    // console.log('obj', { postId: postId, reactionId: reaction._id });
+    console.log('動いているのかい？？');
     incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
     setCurrentCount((previousCurrentCount) => previousCurrentCount + 1);
     // setIncrementedCountByCurrentUser(
