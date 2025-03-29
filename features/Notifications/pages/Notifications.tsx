@@ -17,6 +17,32 @@ export const Notifications = () => {
   const [auth] = useRecoilState(authAtom);
   const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
 
+  const timeSince = (date: Date) => {
+    const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+
+    let interval = seconds / 31536000; // years
+    if (interval > 1) {
+      return `${Math.floor(interval)} year${Math.floor(interval) > 1 ? 's' : ''} ago`;
+    }
+    interval = seconds / 2592000; // months
+    if (interval > 1) {
+      return `${Math.floor(interval)} month${Math.floor(interval) > 1 ? 's' : ''} ago`;
+    }
+    interval = seconds / 86400; // days
+    if (interval > 1) {
+      return `${Math.floor(interval)} day${Math.floor(interval) > 1 ? 's' : ''} ago`;
+    }
+    interval = seconds / 3600; // hours
+    if (interval > 1) {
+      return `${Math.floor(interval)} hour${Math.floor(interval) > 1 ? 's' : ''} ago`;
+    }
+    interval = seconds / 60; // minutes
+    if (interval > 1) {
+      return `${Math.floor(interval)} minute${Math.floor(interval) > 1 ? 's' : ''} ago`;
+    }
+    return `${Math.floor(seconds)} second${Math.floor(seconds) > 1 ? 's' : ''} ago`;
+  };
+
   const renderItem = ({ item }: { item: NotificationType }) => {
     return (
       <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 16 }} activeOpacity={0.7}>
@@ -93,9 +119,11 @@ export const Notifications = () => {
               {item.type === 'reaction' && ' reacted to your post'}
               {item.type === 'follow' && ' started following you'}
             </Text>
-            <Text style={{ color: 'rgb(150,150,150)' }}>1h ago</Text>
           </View>
-          <Text style={{ color: 'white', marginBottom: 8 }}>@{item.space.name}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, gap: 8 }}>
+            <Text style={{ color: 'white' }}>@{item.space.name}</Text>
+            <Text style={{ color: 'rgb(150,150,150)' }}>{timeSince(new Date(item.createdAt))}</Text>
+          </View>
           {item.type === 'comment' && (
             <Text numberOfLines={2} style={{ color: 'white' }}>
               {item.comment?.content}
