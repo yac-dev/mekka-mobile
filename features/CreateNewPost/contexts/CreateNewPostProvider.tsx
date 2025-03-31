@@ -165,7 +165,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const pickUpContents = async () => {
     const pickerOption = {
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
-      allowsMultipleSelection: false,
+      allowsMultipleSelection: true,
       quality: 1,
       storageOptions: {
         skipBackup: true,

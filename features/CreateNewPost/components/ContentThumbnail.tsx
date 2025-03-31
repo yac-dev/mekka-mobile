@@ -6,32 +6,57 @@ import { Fontisto } from '@expo/vector-icons';
 import { Image as ExpoImage } from 'expo-image';
 import * as VideoThumbnail from 'expo-video-thumbnails';
 import { ContentType, BufferContentType } from '../contexts';
+import { VectorIcon } from '../../../Icons';
 
 type ContentThumbnailProps = {
   bufferContent: BufferContentType;
   index: number;
-  onBufferContentPress: () => void;
+  onRemoveContentPress: (index: number) => void;
 };
 
-const oneAssetWidth = 150;
-export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferContent, index, onBufferContentPress }) => {
+const oneAssetWidth = 210;
+export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferContent, index, onRemoveContentPress }) => {
   return (
-    <TouchableOpacity
-      style={{ width: oneAssetWidth, height: oneAssetWidth * (16 / 9), padding: 1 }}
-      activeOpacity={0.7}
-      onPress={() => onBufferContentPress()}
-    >
+    <View style={{ width: oneAssetWidth, height: oneAssetWidth * (16 / 9) }}>
       {bufferContent.type === 'image/jpg' ? (
-        <>
+        <View style={{ width: '100%', height: '100%' }}>
           <ExpoImage
-            style={{ width: '100%', height: '100%', marginRight: 10 }}
+            style={{ width: '100%', height: '100%', borderRadius: 10 }}
             source={{ uri: bufferContent.uri }}
             contentFit='cover'
             transition={100}
           />
-        </>
+          <View
+            style={{
+              position: 'absolute',
+              top: -15,
+              right: -10,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 40,
+              height: 40,
+              borderRadius: 100,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50, 50, 50)',
+                width: 30,
+                height: 30,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              activeOpacity={0.7}
+              onPress={() => onRemoveContentPress(index)}
+            >
+              <VectorIcon.MCI name='minus' size={20} color={'white'} />
+            </TouchableOpacity>
+          </View>
+        </View>
       ) : (
-        <>
+        <View style={{ width: '100%', height: '100%' }}>
           <Video
             source={{ uri: bufferContent.uri }}
             style={{ width: '100%', height: '100%', marginRight: 10 }}
@@ -39,7 +64,7 @@ export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferConten
             shouldPlay
             isLooping
           />
-        </>
+        </View>
       )}
       {/* <View
         style={{
@@ -68,6 +93,6 @@ export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferConten
           <Ionicons name='close' size={20} color={'black'} />
         </TouchableOpacity>
       </View> */}
-    </TouchableOpacity>
+    </View>
   );
 };
