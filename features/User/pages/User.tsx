@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Animated,
   TouchableOpacity,
   FlatList,
@@ -27,18 +26,15 @@ import {
 } from '../../../query';
 
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
-import { VectorIcon } from '../../../Icons';
-import { Posts, Header, ViewPostsTypeToggleButton } from '../components';
-import { useNavigation } from '@react-navigation/native';
-import { UserStackNavigatorParams, UserStackNavigatorProps } from '../navigations';
+import { Posts } from '../components';
 import { Image as ExpoImage } from 'expo-image';
-import { PostsByGrid, PostsByRegion } from '../components';
 import { TabView } from 'react-native-tab-view';
 import { DeleteFollowingRelationshipInputType } from '../../../query/types';
 import { GetFollowingUsersByUserIdOutputType } from '../../../query/types';
-import { CreateFollowingRelationshipInputType } from '../../../query/types';
+import { CreateFollowingRelationshipInputType, GetUserByIdOutputType } from '../../../query/types';
 import { Moments } from '../components/Moments';
 import { Activities } from '../components/Activities';
+import {} from '../../../query/types';
 const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
@@ -61,28 +57,20 @@ export const User: React.FC<IUser> = ({ userId }) => {
     { key: 'posts', title: 'Posts' },
     // { key: 'moments', title: 'Moments' },
     { key: 'activities', title: 'Activities' },
-    // { key: 'about', title: 'About' },
+    // { key: 'about', title: 'About' },　// NOTE: 後々に実装したい。。。
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData([queryKeys.userById, userId]);
-  const followingUsersData = queryClient.getQueryData([queryKeys.followingUsers, auth._id]);
-
-  const {
-    data,
-    status: getPostsByUserIdStatus,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: [queryKeys.postsByUserId, currentSpace._id],
-    queryFn: ({ pageParam = 0 }) =>
-      getPostsByUserId({ userId, spaceId: currentSpace._id, currentPage: pageParam, postType: 'normal' }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.hasNextPage ? lastPage.currentPage : undefined;
-    },
+  const { data: userData, isLoading: isLoadingUser } = useQuery({
+    queryKey: [queryKeys.userById, userId],
+    queryFn: () => getUserById({ userId }),
   });
+
+  const followingUsersData = queryClient.getQueryData<GetFollowingUsersByUserIdOutputType>([
+    queryKeys.followingUsers,
+    auth._id,
+  ]);
 
   const { mutate: createFollowingRelationshipMutate, status: createFollowingRelationshipStatus } = useMutation({
     mutationKey: [mutationKeys.createFollowingRelationship],
@@ -278,22 +266,22 @@ export const User: React.FC<IUser> = ({ userId }) => {
                   marginRight: 20,
                 }}
               >
-                {auth.avatar ? (
+                {userData?.user.avatar ? (
                   <View style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}>
                     <ExpoImage
                       style={{ width: '100%', height: '100%', borderRadius: 50 / 2 }}
-                      source={{ uri: auth.avatar }}
+                      source={{ uri: userData?.user.avatar }}
                       contentFit='cover'
                     />
                   </View>
                 ) : (
                   <Text style={{ color: 'white', fontSize: 17, textAlign: 'center', fontWeight: 'bold' }}>
-                    {auth.name.slice(0, 2).toUpperCase()}
+                    {userData?.user.name.slice(0, 2).toUpperCase()}
                   </Text>
                 )}
               </View>
               <View style={{ flexDirection: 'column', gap: 5 }}>
-                <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{auth.name}</Text>
+                <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{userData?.user.name}</Text>
               </View>
             </View>
             {currentSpace.isPublic && currentSpace.isFollowAvailable ? (
