@@ -59,11 +59,39 @@ export const ContentThumbnail: React.FC<ContentThumbnailProps> = ({ bufferConten
         <View style={{ width: '100%', height: '100%' }}>
           <Video
             source={{ uri: bufferContent.uri }}
-            style={{ width: '100%', height: '100%', marginRight: 10 }}
+            style={{ width: '100%', height: '100%', borderRadius: 10 }}
             resizeMode={ResizeMode.COVER}
             shouldPlay
             isLooping
           />
+          <View
+            style={{
+              position: 'absolute',
+              top: -15,
+              right: -10,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 40,
+              height: 40,
+              borderRadius: 100,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(50, 50, 50)',
+                width: 30,
+                height: 30,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              activeOpacity={0.7}
+              onPress={() => onRemoveContentPress(index)}
+            >
+              <VectorIcon.MCI name='minus' size={20} color={'white'} />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
       {/* <View

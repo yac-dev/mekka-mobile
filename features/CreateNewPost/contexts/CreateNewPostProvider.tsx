@@ -181,43 +181,68 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
     if (!result.canceled && result.assets) {
       const fileName = `${auth._id}_${new Date().getTime()}`;
-      const adding = [];
-      const bufferContents = [];
+      const adding = [...formData.contents.value];
+      const bufferContents = [...formData.bufferContents.value];
 
       for (const asset of result.assets) {
-        if (asset.type === 'video') {
-          if (asset.duration / 1000 <= currentSpace.videoLength) {
-            adding.push({
-              fileName: `${fileName}.mp4`,
-              type: 'video',
-              duration: asset.duration ? asset.duration : null,
-              userId: auth._id,
-            });
-            bufferContents.push({
-              name: `${fileName}.mp4`,
-              uri: asset.uri,
-              type: 'video/mp4',
-            });
-          } else {
-            createNewPostFlashMessageRef.current?.showMessage({
-              message: `Video length is limited to ${currentSpace.videoLength} in this space.`,
-              type: 'warning',
-              duration: 5000,
-            });
+        // 6つ以上の追加はできない
+        if (adding.length >= 6) {
+          createNewPostFlashMessageRef.current?.showMessage({
+            message: 'You can only upload up to 6 files.',
+            type: 'warning',
+            duration: 5000,
+          });
+        } else {
+          if (asset.type === 'video') {
+            // videoは２つまで
+            if (adding.filter((content) => content.type === 'video').length >= 2) {
+              createNewPostFlashMessageRef.current?.showMessage({
+                message: 'OOPS! Uploading more than 2 videos at once is not allowed.',
+                type: 'warning',
+                duration: 5000,
+              });
+            } else if (asset.duration / 1000 <= currentSpace.videoLength) {
+              adding.push({
+                fileName: `${fileName}.mp4`,
+                type: 'video',
+                duration: asset.duration ? asset.duration : null,
+                userId: auth._id,
+              });
+              bufferContents.push({
+                name: `${fileName}.mp4`,
+                uri: asset.uri,
+                type: 'video/mp4',
+              });
+            } else {
+              createNewPostFlashMessageRef.current?.showMessage({
+                message: `Video length is limited to ${currentSpace.videoLength} in this space.`,
+                type: 'warning',
+                duration: 5000,
+              });
+            }
+          } else if (asset.type === 'image') {
+            // mymetypeではwebpを指定できない。基本、jpgかpng。
+            // imageは4つまで
+            if (adding.filter((content) => content.type === 'photo').length >= 4) {
+              createNewPostFlashMessageRef.current?.showMessage({
+                message: 'OOPS! Uploading more than 4 photos at once is not allowed.',
+                type: 'warning',
+                duration: 5000,
+              });
+            } else {
+              adding.push({
+                fileName: `${fileName}.webp`,
+                type: 'photo',
+                duration: asset.duration ? asset.duration : null,
+                userId: auth._id,
+              });
+              bufferContents.push({
+                name: `${fileName}.webp`,
+                uri: asset.uri,
+                type: 'image/jpg',
+              });
+            }
           }
-        } else if (asset.type === 'image') {
-          // mymetypeではwebpを指定できない。基本、jpgかpng。
-          adding.push({
-            fileName: `${fileName}.webp`,
-            type: 'photo',
-            duration: asset.duration ? asset.duration : null,
-            userId: auth._id,
-          });
-          bufferContents.push({
-            name: `${fileName}.webp`,
-            uri: asset.uri,
-            type: 'image/jpg',
-          });
         }
       }
       setFormData((previous) => {

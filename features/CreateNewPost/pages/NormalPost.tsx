@@ -205,11 +205,33 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       if (formData.bufferContents.value.length === 1) {
         return (
           <View style={{ marginBottom: 10, alignItems: 'center' }}>
-            <ContentThumbnail
-              bufferContent={formData.bufferContents.value[0]}
-              index={0}
-              onRemoveContentPress={() => onRemoveContentPress(0)}
-            />
+            <View>
+              <ContentThumbnail
+                bufferContent={formData.bufferContents.value[0]}
+                index={0}
+                onRemoveContentPress={() => onRemoveContentPress(0)}
+              />
+              <View style={{ position: 'absolute', bottom: -10, right: -20 }}>
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    backgroundColor: 'black',
+                    borderRadius: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AppButton.Icon
+                    onButtonPress={() => pickUpContents()}
+                    customStyle={{ width: 35, height: 35, backgroundColor: 'rgb(50,50,50)' }}
+                    hasShadow={false}
+                  >
+                    <VectorIcon.II name='add' size={25} color={'white'} />
+                  </AppButton.Icon>
+                </View>
+              </View>
+            </View>
           </View>
         );
       } else {
@@ -336,6 +358,8 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       });
     return tagString;
   };
+
+  // validationを足さなあかんな。
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'black', padding: 10 }} automaticallyAdjustKeyboardInsets={true}>
