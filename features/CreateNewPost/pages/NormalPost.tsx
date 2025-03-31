@@ -32,16 +32,21 @@ import { showMessage } from 'react-native-flash-message';
 import { GetPostsByTagIdOutputType } from '../../../query/types';
 import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 const oneAssetWidth = Dimensions.get('window').width / 3;
+import { useSharedValue } from 'react-native-reanimated';
+import Carousel from 'react-native-reanimated-carousel';
 
 // create用のやつが反映されてないな。。。
 
 type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'>;
+
+const defaultDataWith6Colors = ['#B0604D', '#899F9C', '#B3C680', '#5C6265', '#F5D399', '#F1F1F1'];
 
 // createdTagsは結局、currentSpaceとmySpacesを更新せなあかんよな。
 // myspacesの更新とcurrentSpaceの更新だよね。。
 // myspacesの方もあれよ絵。tan stackにかえたい、recoilから。
 // でもな。。。
 export const NormalPost: React.FC<INormalPost> = ({ route }) => {
+  const progress = useSharedValue<number>(0);
   const [currentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const queryClient = useQueryClient();
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
@@ -187,11 +192,41 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
     });
   }, [formData.contents, formData.caption, formData.addedTagsTable]);
 
+  const renderItem =
+    ({ rounded }: { rounded: boolean }) =>
+    ({ item }) => {
+      return <View style={{ width: 100, height: 100, backgroundColor: item, borderRadius: rounded ? 100 / 2 : 0 }} />;
+    };
+
   const renderContents = () => {
     if (formData.bufferContents.value.length) {
       const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
         return (
           <ContentThumbnail key={index} bufferContent={content} index={index} onBufferContentPress={pickUpContents} />
+          // <View
+          //   id='carousel-component'
+          //   // dataSet={{ kind: 'basic-layouts', name: 'parallax' }}
+          // >
+          //   <Carousel
+          //     autoPlayInterval={2000}
+          //     data={defaultDataWith6Colors}
+          //     height={258}
+          //     loop={true}
+          //     pagingEnabled={true}
+          //     snapEnabled={true}
+          //     width={Dimensions.get('window').width}
+          //     style={{
+          //       width: Dimensions.get('window').width,
+          //     }}
+          //     mode='parallax'
+          //     modeConfig={{
+          //       parallaxScrollingScale: 0.9,
+          //       parallaxScrollingOffset: 50,
+          //     }}
+          //     // onProgressChange={progress}
+          //     renderItem={renderItem({ rounded: true })}
+          //   />
+          // </View>
         );
       });
 
