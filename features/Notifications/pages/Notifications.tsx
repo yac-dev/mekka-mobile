@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetNotificationByUserIdOutput } from '../../../query/types';
 import { queryKeys } from '../../../query/queryKeys';
 import { authAtom } from '../../../recoil';
@@ -22,9 +22,20 @@ export const Notifications = () => {
   // const queryClient = useQueryClient();
   // const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
   // ここは正直数だけ取れればいいだけなんだよね。そこで迷っていたのか。。。
-  const { data: notificationsData, isLoading: isLoadingNotifications } = useQuery({
+  const {
+    data: notificationsData,
+    isLoading: isLoadingNotifications,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+    isRefetching,
+  } = useInfiniteQuery({
     queryKey: [queryKeys.notifications, auth],
-    queryFn: () => getNotificationByUserId({ userId: auth._id }),
+    queryFn: ({ pageParam = 0 }) => getNotificationByUserId({ userId: auth._id, currentPage: pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.hasNextPage ? lastPage.currentPage : undefined;
+    },
   });
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
@@ -180,6 +191,16 @@ export const Notifications = () => {
     );
   };
 
+  const renderFooter = () => {
+    if (isFetchingNextPage) {
+      return (
+        <View style={{ paddingVertical: 40 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+  };
+
   if (isLoadingNotifications) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center' }}>
@@ -188,9 +209,25 @@ export const Notifications = () => {
     );
   }
 
+  if (!notificationsData?.pages.flatMap((page) => page.notifications).length) {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
+        <VectorIcon.MCI
+          name='image-multiple-outline'
+          size={60}
+          color={'rgb(150,150,150)'}
+          style={{ marginBottom: 30, marginTop: -100 }}
+        />
+        <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>
+          Notifications will be shown here
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 12 }}>
-      {notificationsData?.notifications.length === 0 ? (
+      {/* {notificationsData?.pages[0].notifications.length === 0 ? (
         <View style={{ flex: 1, paddingTop: 100, alignItems: 'center' }}>
           <VectorIcon.MCI name='bell' size={50} color='rgb(150,150,150)' />
           <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', marginTop: 12 }}>
@@ -198,8 +235,27 @@ export const Notifications = () => {
           </Text>
         </View>
       ) : (
-        <FlashList data={notificationsData?.notifications} renderItem={renderItem} estimatedItemSize={100} />
-      )}
+        <FlashList
+          data={notificationsData?.pages.flatMap((page) => page.notifications)}
+          renderItem={renderItem}
+          estimatedItemSize={100}
+          onEndReachedThreshold={0.7}
+          onMomentumScrollEnd={() => {
+            fetchNextPage();
+          }}
+          ListFooterComponent={renderFooter}
+        />
+      )} */}
+      <FlashList
+        data={notificationsData?.pages.flatMap((page) => page.notifications)}
+        renderItem={renderItem}
+        estimatedItemSize={100}
+        onEndReachedThreshold={0.7}
+        onMomentumScrollEnd={() => {
+          fetchNextPage();
+        }}
+        ListFooterComponent={renderFooter}
+      />
     </View>
   );
 };

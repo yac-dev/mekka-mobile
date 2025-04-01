@@ -34,10 +34,13 @@ export type GetLogsByUserIdInputType = {
 
 export type GetNotificationByUserIdInput = {
   userId: string;
+  currentPage: number;
 };
 
 export type GetNotificationByUserIdOutput = {
   notifications: NotificationType[];
+  currentPage: number;
+  hasNextPage: boolean;
 };
 
 type TagTable = {

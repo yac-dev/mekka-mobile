@@ -5,10 +5,12 @@ export const getNotificationByUserId = async (
   input: GetNotificationByUserIdInput
 ): Promise<GetNotificationByUserIdOutput> => {
   try {
-    const result = await axiosClient.get(`/users/${input.userId}/notifications`);
-    const { notifications } = result.data.data;
+    const result = await axiosClient.get(`/users/${input.userId}/notifications?page=${input.currentPage}`);
+    const { notifications, currentPage, hasNextPage } = result.data.data;
     return {
       notifications,
+      currentPage,
+      hasNextPage,
     };
   } catch (error) {
     if (error.response && error.response.data) {
