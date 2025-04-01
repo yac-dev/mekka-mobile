@@ -85,7 +85,7 @@ export const Notifications = () => {
   const renderItem = ({ item }: { item: NotificationType }) => {
     return (
       <TouchableOpacity
-        style={{ flexDirection: 'row', paddingHorizontal: 16, paddingTop: 12 }}
+        style={{ flexDirection: 'row', paddingHorizontal: 16, paddingTop: 12, marginBottom: 12 }}
         activeOpacity={0.7}
         onPress={() => onNotificationPress(item)}
       >
@@ -135,11 +135,21 @@ export const Notifications = () => {
                 alignItems: 'center',
               }}
             >
-              <ExpoImage
-                style={{ width: '100%', height: '100%', borderRadius: 100 }}
-                source={{ uri: item.space.icon }}
-                contentFit='contain'
-              />
+              {item.type === 'comment' && <VectorIcon.II name='chatbox-ellipses' size={16} color='white' />}
+              {item.type === 'reaction' && (
+                <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                  {item.reaction.type === 'emoji' && (
+                    <Text style={{ color: 'white', fontSize: 20 }}>{item.reaction.emoji}</Text>
+                  )}
+                  {item.reaction.type === 'sticker' && (
+                    <ExpoImage
+                      style={{ width: 20, height: 20, borderRadius: 100 }}
+                      source={{ uri: item.reaction.sticker.url }}
+                      contentFit='contain'
+                    />
+                  )}
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -156,7 +166,7 @@ export const Notifications = () => {
           <View
             style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}
           >
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 13 }}>
               {item.createdBy.name}
               {item.type === 'comment' && ' commented on your post'}
               {item.type === 'reaction' && ' reacted to your post'}
@@ -164,15 +174,15 @@ export const Notifications = () => {
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 8 }}>
-            <Text style={{ color: 'white' }}>@{item.space.name}</Text>
-            <Text style={{ color: 'rgb(150,150,150)' }}>{timeSince(new Date(item.createdAt))}</Text>
+            <Text style={{ color: 'white', fontSize: 13 }}>@{item.space.name}</Text>
+            <Text style={{ color: 'rgb(150,150,150)', fontSize: 13 }}>{timeSince(new Date(item.createdAt))}</Text>
           </View>
           {item.type === 'comment' && (
             <Text numberOfLines={2} style={{ color: 'white' }}>
               {item.comment?.content}
             </Text>
           )}
-          {item.type === 'reaction' && (
+          {/* {item.type === 'reaction' && (
             <View>
               {item.reaction.type === 'emoji' && (
                 <Text style={{ color: 'white', fontSize: 32 }}>{item.reaction.emoji}</Text>
@@ -185,7 +195,7 @@ export const Notifications = () => {
                 />
               )}
             </View>
-          )}
+          )} */}
         </View>
       </TouchableOpacity>
     );
