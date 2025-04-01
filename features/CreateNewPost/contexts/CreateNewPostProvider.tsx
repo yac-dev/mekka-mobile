@@ -126,6 +126,7 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [auth] = useRecoilState(authAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [isImagePickerOpen, setIsImagePickerOpen] = useState(false);
 
   // Create initial form data with the first tag
   const getInitialFormData = (): FormDataType => {
@@ -144,8 +145,6 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const { apiResult, requestApi } = useGetTagIcons();
   const createNewPostFlashMessageRef = useRef<FlashMessage>(null);
 
-  console.log('checking tag table', formData.addedTagsTable.value);
-
   useEffect(() => {
     requestApi({ name: 'hash' });
   }, []);
@@ -162,7 +161,11 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  // console.log('isImagePickerOpen', isImagePickerOpen);
+  //やりようによっては制御できそう。。。
+
   const pickUpContents = async () => {
+    // setIsImagePickerOpen(true);
     const pickerOption = {
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
       allowsMultipleSelection: true,
@@ -179,6 +182,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
+    // setIsImagePickerOpen(false);
     if (!result.canceled && result.assets) {
       const fileName = `${auth._id}_${new Date().getTime()}`;
       const adding = [...formData.contents.value];
@@ -195,9 +199,9 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
         } else {
           if (asset.type === 'video') {
             // videoは２つまで
-            if (adding.filter((content) => content.type === 'video').length >= 2) {
+            if (adding.filter((content) => content.type === 'video').length >= 1) {
               createNewPostFlashMessageRef.current?.showMessage({
-                message: 'OOPS! Uploading more than 2 videos at once is not allowed.',
+                message: 'OOPS! Video is allowed only one.',
                 type: 'warning',
                 duration: 5000,
               });
@@ -223,9 +227,9 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
           } else if (asset.type === 'image') {
             // mymetypeではwebpを指定できない。基本、jpgかpng。
             // imageは4つまで
-            if (adding.filter((content) => content.type === 'photo').length >= 4) {
+            if (adding.filter((content) => content.type === 'photo').length >= 5) {
               createNewPostFlashMessageRef.current?.showMessage({
-                message: 'OOPS! Uploading more than 4 photos at once is not allowed.',
+                message: 'OOPS! More than 5 photos at once is not allowed.',
                 type: 'warning',
                 duration: 5000,
               });
