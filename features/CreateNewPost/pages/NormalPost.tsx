@@ -378,7 +378,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
               Had something fun?
             </Text>
             <Text style={{ color: 'rgb(170,170,170)', textAlign: 'center', fontSize: 15, marginBottom: 20 }}>
-              Pick up to 6 files (photos up to 5 files, video up to 1 file)
+              Pick up to 6 files (photos up to 5, video up to 1)
             </Text>
           </View>
           {formData.contents.value.length === 0 && (

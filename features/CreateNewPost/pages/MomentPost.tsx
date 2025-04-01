@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Modal, Pressable, StyleSheet, TextInput } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
@@ -14,15 +14,27 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createMoment, mutationKeys, queryKeys } from '../../../query';
 import { showMessage } from 'react-native-flash-message';
 import { GetMomentsBySpaceIdOutputType } from '../../../query/types';
+import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
+import { AppButton } from '../../../components/Button';
+import { useSharedValue } from 'react-native-reanimated';
 
 type IMomentPost = NativeStackScreenProps<CreateNewPostStackParams, 'MomentPost'>;
 
 const MomentPost: React.FC<IMomentPost> = ({ route }) => {
+  const progress = useSharedValue<number>(0);
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
   const [modalVisible, setModalVisible] = useState(false);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [auth] = useRecoilState(authAtom);
   const queryClient = useQueryClient();
+  const ref = useRef<ICarouselInstance>(null);
+
+  const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      count: index - progress.value,
+      animated: true,
+    });
+  };
 
   const { mutate: createMomentMutation } = useMutation({
     mutationKey: [mutationKeys.createMoment],
@@ -98,15 +110,116 @@ const MomentPost: React.FC<IMomentPost> = ({ route }) => {
 
   const renderContents = () => {
     if (formData.bufferContents.value.length) {
-      const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
+      if (formData.bufferContents.value.length === 1) {
         return (
-          <ContentThumbnail key={index} bufferContent={content} index={index} onBufferContentPress={pickUpContents} />
+          <View style={{ marginBottom: 10, alignItems: 'center' }}>
+            <View>
+              <ContentThumbnail
+                bufferContent={formData.bufferContents.value[0]}
+                index={0}
+                onRemoveContentPress={() => onRemoveContentPress(0)}
+              />
+              <View style={{ position: 'absolute', bottom: -10, right: -20 }}>
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    backgroundColor: 'black',
+                    borderRadius: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AppButton.Icon
+                    onButtonPress={() => pickUpContents()}
+                    customStyle={{ width: 35, height: 35, backgroundColor: 'rgb(50,50,50)' }}
+                    hasShadow={false}
+                  >
+                    <VectorIcon.II name='add' size={25} color={'white'} />
+                  </AppButton.Icon>
+                </View>
+              </View>
+            </View>
+          </View>
         );
-      });
-
-      return (
-        <View style={{ marginBottom: 30, alignItems: 'center' }}>{formData.contents.value.length ? list : null}</View>
-      );
+      } else {
+        // もっと中心寄せにしたいが、一旦いいか。
+        return (
+          <View style={{ alignItems: 'center' }}>
+            <View>
+              <Carousel
+                autoPlayInterval={2000}
+                data={formData.bufferContents.value}
+                width={210}
+                height={210 * (16 / 9)}
+                loop={false}
+                pagingEnabled={true}
+                snapEnabled={true}
+                style={{
+                  width: 210,
+                  // backgroundColor: 'red',
+                  borderRadius: 10,
+                }}
+                mode='parallax'
+                modeConfig={{
+                  parallaxScrollingScale: 0.88,
+                  parallaxScrollingOffset: 30,
+                }}
+                onProgressChange={progress}
+                renderItem={({ item, index }: { item: BufferContentType; index: number }) => (
+                  <ContentThumbnail
+                    key={index}
+                    bufferContent={item}
+                    index={index}
+                    onRemoveContentPress={() => onRemoveContentPress(index)}
+                  />
+                )}
+              />
+              <View style={{ position: 'absolute', bottom: 0, right: -20 }}>
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    backgroundColor: 'black',
+                    borderRadius: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AppButton.Icon
+                    onButtonPress={() => pickUpContents()}
+                    customStyle={{ width: 35, height: 35, backgroundColor: 'rgb(50,50,50)' }}
+                    hasShadow={false}
+                  >
+                    <VectorIcon.II name='add' size={25} color={'white'} />
+                  </AppButton.Icon>
+                </View>
+              </View>
+            </View>
+            <Pagination.Basic
+              progress={progress}
+              data={formData.bufferContents.value}
+              size={10}
+              dotStyle={{
+                borderRadius: 100,
+                backgroundColor: '#262626',
+              }}
+              activeDotStyle={{
+                borderRadius: 100,
+                overflow: 'hidden',
+                backgroundColor: '#f1f1f1',
+              }}
+              containerStyle={[
+                {
+                  gap: 5,
+                },
+              ]}
+              horizontal
+              onPress={onPressPagination}
+            />
+          </View>
+        );
+      }
     } else {
       return null;
     }
@@ -115,17 +228,21 @@ const MomentPost: React.FC<IMomentPost> = ({ route }) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20, paddingBottom: 20 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 10 }}>
+        <View style={{ paddingLeft: 30, paddingRight: 30, paddingTop: 20 }}>
+          <View style={{ flexDirection: 'column', alignItems: 'center', alignSelf: 'center' }}>
             <Text
               style={{
                 color: 'white',
                 textAlign: 'center',
                 fontWeight: 'bold',
                 fontSize: 20,
+                marginBottom: 4,
               }}
             >
               New Moments
+            </Text>
+            <Text style={{ color: 'rgb(170,170,170)', textAlign: 'center', fontSize: 15 }}>
+              Pick up to 6 files (photos up to 5, video up to 1)
             </Text>
           </View>
         </View>
