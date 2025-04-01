@@ -18,7 +18,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { momentLogsAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys, getMySpaces, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
+import { queryKeys, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
 import * as Haptics from 'expo-haptics';
 import { currentUserBottomSheetRef } from '../../../Refs';
 import { Space } from '../../Space';
@@ -354,7 +354,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
           >
             <VectorIcon.MCI name='bell' size={16} color={Colors.white} />
           </AppButton.Icon>
-          {data?.notifications.length >= 1 && (
+          {auth.hasUnreadNotification && (
             <View
               style={{
                 position: 'absolute',

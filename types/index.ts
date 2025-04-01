@@ -6,6 +6,7 @@ export type AuthType = {
   password: string;
   pushToken?: string;
   createdAt: string;
+  hasUnreadNotification: boolean;
 };
 
 export const INITIAL_AUTH = {
@@ -15,6 +16,7 @@ export const INITIAL_AUTH = {
   avatar: '',
   password: '',
   pushToken: '',
+  hasUnreadNotification: false,
 };
 
 export type UserType = {

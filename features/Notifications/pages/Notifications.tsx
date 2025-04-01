@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { useQueryClient } from '@tanstack/react-query';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetNotificationByUserIdOutput } from '../../../query/types';
 import { queryKeys } from '../../../query/queryKeys';
 import { authAtom } from '../../../recoil';
@@ -14,12 +14,18 @@ import { HomeStackNavigatorProps } from '../../Home/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { currentSpaceAtom } from '../../../recoil';
 import { mySpacesAtom } from '../../../recoil';
+import { getNotificationByUserId } from '../../../query';
 // どのspaceでcommentかreactionか、followかのtypeのnotificationをcellで表示しなきゃいけない。
 
 export const Notifications = () => {
-  const queryClient = useQueryClient();
   const [auth] = useRecoilState(authAtom);
-  const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
+  // const queryClient = useQueryClient();
+  // const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
+  // ここは正直数だけ取れればいいだけなんだよね。そこで迷っていたのか。。。
+  const { data: notificationsData, isLoading: isLoadingNotifications } = useQuery({
+    queryKey: [queryKeys.notifications, auth],
+    queryFn: () => getNotificationByUserId({ userId: auth._id }),
+  });
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [mySpaces] = useRecoilState(mySpacesAtom);
@@ -174,9 +180,17 @@ export const Notifications = () => {
     );
   };
 
+  if (isLoadingNotifications) {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 12 }}>
-      {data?.notifications.length === 0 ? (
+      {notificationsData?.notifications.length === 0 ? (
         <View style={{ flex: 1, paddingTop: 100, alignItems: 'center' }}>
           <VectorIcon.MCI name='bell' size={50} color='rgb(150,150,150)' />
           <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', marginTop: 12 }}>
@@ -184,7 +198,7 @@ export const Notifications = () => {
           </Text>
         </View>
       ) : (
-        <FlashList data={data?.notifications} renderItem={renderItem} estimatedItemSize={100} />
+        <FlashList data={notificationsData?.notifications} renderItem={renderItem} estimatedItemSize={100} />
       )}
     </View>
   );
