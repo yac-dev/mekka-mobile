@@ -6,6 +6,8 @@ export type AuthType = {
   password: string;
   pushToken?: string;
   createdAt: string;
+  notificationOpenedAt: string;
+  hasNewNotification: boolean;
 };
 
 export const INITIAL_AUTH = {
@@ -15,6 +17,8 @@ export const INITIAL_AUTH = {
   avatar: '',
   password: '',
   pushToken: '',
+  notificationOpenedAt: '',
+  hasNewNotification: false,
 };
 
 export type UserType = {
@@ -236,4 +240,17 @@ export type FollowingRelationshipType = {
   followeeId: string;
   space: string;
   createdAt: string;
+};
+
+export type NotificationType = {
+  _id: string;
+  type: string; // 'comment', 'reaction', 'follow'
+  space: SpaceType;
+  createdAt: string;
+  post: PostType;
+  comment?: CommentType;
+  reaction?: ReactionType;
+  follower?: UserType;
+  createdBy: UserType;
+  isRead: boolean;
 };

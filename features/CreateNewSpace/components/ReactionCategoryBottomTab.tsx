@@ -16,12 +16,12 @@ export const ReactionCategoryBottomTab = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: 'rgb(40,40,40)',
+          backgroundColor: 'black',
           // marginHorizontal: 90,
           // paddingBottom: 0, // きたー。これよ。これ。
-          // borderRadius: 30,
           height: 60,
-          borderTopWidth: 0,
+          borderTopWidth: 0.3,
+          borderTopColor: 'rgb(100,100,100)',
           paddingTop: 5,
           paddingBottom: 5,
           // position: 'absolute',

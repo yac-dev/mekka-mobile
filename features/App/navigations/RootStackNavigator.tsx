@@ -123,8 +123,6 @@ export const RootStackNavigator = () => {
     queryFn: () => getFollowingUsersByUserId({ userId: auth._id }),
   });
 
-  console.log('followingUsers', JSON.stringify(followingUsers, null, 2));
-
   const { mutate: registerPushTokenMutation } = useMutation({
     mutationKey: [mutationKeys.registerPushToken],
     mutationFn: (input: RegisterPushTokenInputType) => registerPushToken(input),

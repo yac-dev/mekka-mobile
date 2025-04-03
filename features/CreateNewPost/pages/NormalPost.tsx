@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { ContentThumbnail } from '../components/ContentThumbnail';
-import { SnackBar } from '../../../components';
+import { AppButton, SnackBar } from '../../../components';
 import { useNavigation } from '@react-navigation/native';
 import { BufferContentType, ContentType, CreateNewPostContext } from '../contexts';
 import { CreateNewPostStackParams, CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
@@ -32,16 +32,21 @@ import { showMessage } from 'react-native-flash-message';
 import { GetPostsByTagIdOutputType } from '../../../query/types';
 import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 const oneAssetWidth = Dimensions.get('window').width / 3;
+import { useSharedValue } from 'react-native-reanimated';
+import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
 
 // create用のやつが反映されてないな。。。
 
 type INormalPost = NativeStackScreenProps<CreateNewPostStackParams, 'NormalPost'>;
+
+const defaultDataWith6Colors = ['#B0604D', '#899F9C', '#B3C680', '#5C6265', '#F5D399', '#F1F1F1'];
 
 // createdTagsは結局、currentSpaceとmySpacesを更新せなあかんよな。
 // myspacesの更新とcurrentSpaceの更新だよね。。
 // myspacesの方もあれよ絵。tan stackにかえたい、recoilから。
 // でもな。。。
 export const NormalPost: React.FC<INormalPost> = ({ route }) => {
+  const progress = useSharedValue<number>(0);
   const [currentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const queryClient = useQueryClient();
   const createNewPostStackNavigation = useNavigation<CreateNewPostStackProps>();
@@ -49,6 +54,14 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const ref = useRef<ICarouselInstance>(null);
+
+  const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+      count: index - progress.value,
+      animated: true,
+    });
+  };
 
   const { requestCreatePost } = useCreatePostResult(currentSpace);
 
@@ -189,15 +202,116 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
 
   const renderContents = () => {
     if (formData.bufferContents.value.length) {
-      const list = formData.bufferContents.value.map((content: BufferContentType, index) => {
+      if (formData.bufferContents.value.length === 1) {
         return (
-          <ContentThumbnail key={index} bufferContent={content} index={index} onBufferContentPress={pickUpContents} />
+          <View style={{ marginBottom: 10, alignItems: 'center' }}>
+            <View>
+              <ContentThumbnail
+                bufferContent={formData.bufferContents.value[0]}
+                index={0}
+                onRemoveContentPress={() => onRemoveContentPress(0)}
+              />
+              <View style={{ position: 'absolute', bottom: -10, right: -20 }}>
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    backgroundColor: 'black',
+                    borderRadius: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AppButton.Icon
+                    onButtonPress={() => pickUpContents()}
+                    customStyle={{ width: 35, height: 35, backgroundColor: 'rgb(50,50,50)' }}
+                    hasShadow={false}
+                  >
+                    <VectorIcon.II name='add' size={25} color={'white'} />
+                  </AppButton.Icon>
+                </View>
+              </View>
+            </View>
+          </View>
         );
-      });
-
-      return (
-        <View style={{ marginBottom: 30, alignItems: 'center' }}>{formData.contents.value.length ? list : null}</View>
-      );
+      } else {
+        // もっと中心寄せにしたいが、一旦いいか。
+        return (
+          <View style={{ alignItems: 'center' }}>
+            <View>
+              <Carousel
+                autoPlayInterval={2000}
+                data={formData.bufferContents.value}
+                width={210}
+                height={210 * (16 / 9)}
+                loop={false}
+                pagingEnabled={true}
+                snapEnabled={true}
+                style={{
+                  width: 210,
+                  // backgroundColor: 'red',
+                  borderRadius: 10,
+                }}
+                mode='parallax'
+                modeConfig={{
+                  parallaxScrollingScale: 0.88,
+                  parallaxScrollingOffset: 30,
+                }}
+                onProgressChange={progress}
+                renderItem={({ item, index }: { item: BufferContentType; index: number }) => (
+                  <ContentThumbnail
+                    key={index}
+                    bufferContent={item}
+                    index={index}
+                    onRemoveContentPress={() => onRemoveContentPress(index)}
+                  />
+                )}
+              />
+              <View style={{ position: 'absolute', bottom: 0, right: -20 }}>
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    backgroundColor: 'black',
+                    borderRadius: 30,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AppButton.Icon
+                    onButtonPress={() => pickUpContents()}
+                    customStyle={{ width: 35, height: 35, backgroundColor: 'rgb(50,50,50)' }}
+                    hasShadow={false}
+                  >
+                    <VectorIcon.II name='add' size={25} color={'white'} />
+                  </AppButton.Icon>
+                </View>
+              </View>
+            </View>
+            <Pagination.Basic
+              progress={progress}
+              data={formData.bufferContents.value}
+              size={10}
+              dotStyle={{
+                borderRadius: 100,
+                backgroundColor: '#262626',
+              }}
+              activeDotStyle={{
+                borderRadius: 100,
+                overflow: 'hidden',
+                backgroundColor: '#f1f1f1',
+              }}
+              containerStyle={[
+                {
+                  gap: 5,
+                },
+              ]}
+              horizontal
+              onPress={onPressPagination}
+            />
+          </View>
+        );
+      }
     } else {
       return null;
     }
@@ -245,21 +359,26 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
     return tagString;
   };
 
+  // validationを足さなあかんな。
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: 'black', padding: 10 }} automaticallyAdjustKeyboardInsets={true}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-          <View style={{ paddingHorizontal: 30, paddingTop: 20, paddingBottom: 10 }}>
+          <View style={{ paddingHorizontal: 30, paddingBottom: 10 }}>
             <Text
               style={{
                 color: 'white',
                 textAlign: 'center',
                 fontWeight: 'bold',
-                fontSize: 20,
-                marginBottom: 10,
+                fontSize: 23,
+                marginBottom: 4,
               }}
             >
-              {formData.postType.value === 'normal' ? 'New Post' : 'Moment Post'}
+              Had something fun?
+            </Text>
+            <Text style={{ color: 'rgb(170,170,170)', textAlign: 'center', fontSize: 15, marginBottom: 20 }}>
+              Pick up to 6 files (photos up to 5, video up to 1)
             </Text>
           </View>
           {formData.contents.value.length === 0 && (

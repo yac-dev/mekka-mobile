@@ -126,6 +126,7 @@ export const CreateNewPostContext = createContext<CreateNewPostContextType>({
 export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [auth] = useRecoilState(authAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
+  const [isImagePickerOpen, setIsImagePickerOpen] = useState(false);
 
   // Create initial form data with the first tag
   const getInitialFormData = (): FormDataType => {
@@ -144,8 +145,6 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const { apiResult, requestApi } = useGetTagIcons();
   const createNewPostFlashMessageRef = useRef<FlashMessage>(null);
 
-  console.log('checking tag table', formData.addedTagsTable.value);
-
   useEffect(() => {
     requestApi({ name: 'hash' });
   }, []);
@@ -162,10 +161,14 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  // console.log('isImagePickerOpen', isImagePickerOpen);
+  //やりようによっては制御できそう。。。
+
   const pickUpContents = async () => {
+    // setIsImagePickerOpen(true);
     const pickerOption = {
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
-      allowsMultipleSelection: false,
+      allowsMultipleSelection: true,
       quality: 1,
       storageOptions: {
         skipBackup: true,
@@ -179,45 +182,71 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     let result = await ImagePicker.launchImageLibraryAsync(pickerOption);
+    // setIsImagePickerOpen(false);
     if (!result.canceled && result.assets) {
       const fileName = `${auth._id}_${new Date().getTime()}`;
-      const adding = [];
-      const bufferContents = [];
+      const adding = [...formData.contents.value];
+      const bufferContents = [...formData.bufferContents.value];
 
       for (const asset of result.assets) {
-        if (asset.type === 'video') {
-          if (asset.duration / 1000 <= currentSpace.videoLength) {
-            adding.push({
-              fileName: `${fileName}.mp4`,
-              type: 'video',
-              duration: asset.duration ? asset.duration : null,
-              userId: auth._id,
-            });
-            bufferContents.push({
-              name: `${fileName}.mp4`,
-              uri: asset.uri,
-              type: 'video/mp4',
-            });
-          } else {
-            createNewPostFlashMessageRef.current?.showMessage({
-              message: `Video length is limited to ${currentSpace.videoLength} in this space.`,
-              type: 'warning',
-              duration: 5000,
-            });
+        // 6つ以上の追加はできない
+        if (adding.length >= 6) {
+          createNewPostFlashMessageRef.current?.showMessage({
+            message: 'You can only upload up to 6 files.',
+            type: 'warning',
+            duration: 5000,
+          });
+        } else {
+          if (asset.type === 'video') {
+            // videoは２つまで
+            if (adding.filter((content) => content.type === 'video').length >= 1) {
+              createNewPostFlashMessageRef.current?.showMessage({
+                message: 'OOPS! Video is allowed only one.',
+                type: 'warning',
+                duration: 5000,
+              });
+            } else if (asset.duration / 1000 <= currentSpace.videoLength) {
+              adding.push({
+                fileName: `${fileName}.mp4`,
+                type: 'video',
+                duration: asset.duration ? asset.duration : null,
+                userId: auth._id,
+              });
+              bufferContents.push({
+                name: `${fileName}.mp4`,
+                uri: asset.uri,
+                type: 'video/mp4',
+              });
+            } else {
+              createNewPostFlashMessageRef.current?.showMessage({
+                message: `Video length is limited to ${currentSpace.videoLength} in this space.`,
+                type: 'warning',
+                duration: 5000,
+              });
+            }
+          } else if (asset.type === 'image') {
+            // mymetypeではwebpを指定できない。基本、jpgかpng。
+            // imageは4つまで
+            if (adding.filter((content) => content.type === 'photo').length >= 5) {
+              createNewPostFlashMessageRef.current?.showMessage({
+                message: 'OOPS! More than 5 photos at once is not allowed.',
+                type: 'warning',
+                duration: 5000,
+              });
+            } else {
+              adding.push({
+                fileName: `${fileName}.webp`,
+                type: 'photo',
+                duration: asset.duration ? asset.duration : null,
+                userId: auth._id,
+              });
+              bufferContents.push({
+                name: `${fileName}.webp`,
+                uri: asset.uri,
+                type: 'image/jpg',
+              });
+            }
           }
-        } else if (asset.type === 'image') {
-          // mymetypeではwebpを指定できない。基本、jpgかpng。
-          adding.push({
-            fileName: `${fileName}.webp`,
-            type: 'photo',
-            duration: asset.duration ? asset.duration : null,
-            userId: auth._id,
-          });
-          bufferContents.push({
-            name: `${fileName}.webp`,
-            uri: asset.uri,
-            type: 'image/jpg',
-          });
         }
       }
       setFormData((previous) => {
@@ -331,7 +360,10 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
       return {
         ...previous,
         location: {
-          value: void 0,
+          value: {
+            type: 'Point',
+            coordinates: [],
+          },
           isValidated: true,
         },
       };

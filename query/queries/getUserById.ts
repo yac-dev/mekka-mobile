@@ -5,6 +5,7 @@ export const getUserById = async (input: GetUserByIdInputType): Promise<GetUserB
   try {
     const result = await axiosClient.get(`/users/${input.userId}`);
     const { user } = result.data.data;
+
     return {
       user,
     };

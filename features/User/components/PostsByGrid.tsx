@@ -20,6 +20,7 @@ import {
   CreateFollowingRelationshipInputType,
   DeleteFollowingRelationshipInputType,
   GetFollowingUsersByUserIdOutputType,
+  GetUserByIdOutputType,
 } from '../../../query/types';
 
 const HEADER_HEIGHT = 80;
@@ -46,8 +47,11 @@ export const PostsByGrid: React.FC<IPostsByGrid> = ({
   const [auth] = useRecoilState(authAtom);
   const userStackNavigation = useNavigation<UserStackNavigatorProps>();
   const queryClient = useQueryClient();
-  const userData = queryClient.getQueryData([queryKeys.userById, userId]);
-  const followingUsersData = queryClient.getQueryData([queryKeys.followingUsers, auth._id]);
+  const userData = queryClient.getQueryData<GetUserByIdOutputType>([queryKeys.userById, userId]);
+  const followingUsersData = queryClient.getQueryData<GetFollowingUsersByUserIdOutputType>([
+    queryKeys.followingUsers,
+    auth._id,
+  ]);
 
   const {
     data,

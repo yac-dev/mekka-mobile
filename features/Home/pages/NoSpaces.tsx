@@ -174,7 +174,7 @@ export const NoSpaces: React.FC<NoSpacesProps> = ({ openAuthMenuBottomSheet, ope
             </TouchableOpacity>
           </TouchableOpacity>
         </View>
-        <View style={{ width: itemWidth, paddingRight: 15 }}>
+        {/* <View style={{ width: itemWidth, paddingRight: 15 }}>
           <TouchableOpacity
             style={{
               backgroundColor: 'rgb(50,50,50)',
@@ -201,7 +201,7 @@ export const NoSpaces: React.FC<NoSpacesProps> = ({ openAuthMenuBottomSheet, ope
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Jump into public space</Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ScrollView>
 
       {/* <View style={{ paddingTop: 100, paddingHorizontal: 20 }}>

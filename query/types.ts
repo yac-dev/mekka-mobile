@@ -11,6 +11,7 @@ import {
   CommentType,
   MapRegionType,
   FollowingRelationshipType,
+  NotificationType,
 } from '../types';
 
 export type LoadMeInput = {
@@ -29,6 +30,17 @@ export type GetSpacesByUserIdOutput = {
 
 export type GetLogsByUserIdInputType = {
   userId: string;
+};
+
+export type GetNotificationByUserIdInput = {
+  userId: string;
+  currentPage: number;
+};
+
+export type GetNotificationByUserIdOutput = {
+  notifications: NotificationType[];
+  currentPage: number;
+  hasNextPage: boolean;
 };
 
 type TagTable = {
@@ -130,7 +142,6 @@ export type IncrementReactionInputType = {
   postId: string;
   reactionId: string;
   userId: string;
-  userName: string;
 };
 
 export type IncrementReactionOutputType = {
@@ -247,6 +258,7 @@ export type UpdateUserInputType = {
   email?: string;
   password?: string;
   avatar?: string;
+  notificationOpenedAt?: string;
 };
 
 export type UpdateUserOutputType = {
@@ -258,6 +270,7 @@ export type UpdateMeInputType = {
   name?: string;
   email?: string;
   avatar?: string;
+  notificationOpenedAt?: string;
 };
 
 export type UpdateMeOutputType = {
