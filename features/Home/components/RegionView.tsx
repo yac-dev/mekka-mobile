@@ -20,6 +20,7 @@ import {
   mySpacesAtom,
   currentTagAtomFamily,
   currentTagsTableBySpaceIdsAtom,
+  authAtom,
 } from '../../../recoil';
 import { PostType, SpaceType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
@@ -27,13 +28,14 @@ import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
 import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigations/HomeStackNavigator';
 import LinearGradient from 'react-native-linear-gradient';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys, getPostsByTagIdAndRegion } from '../../../query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { queryKeys, getPostsByTagIdAndRegion, mutationKeys, updateMe } from '../../../query';
 import { AppButton, MapPostThumbnail } from '../../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Moments } from './Moments';
 import * as Haptics from 'expo-haptics';
 import { Icons } from '../../../Icons/images';
+import { UpdateMeInputType } from '../../../query/types';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -55,6 +57,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
 }) => {
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [auth, setAuth] = useRecoilState(authAtom);
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
@@ -79,6 +82,11 @@ export const RegionView: React.FC<RegionViewProps> = ({
         tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
         region: currentRegion,
       }),
+  });
+
+  const { mutate: updateMeMutation } = useMutation({
+    mutationKey: [mutationKeys.updateMe],
+    mutationFn: (input: UpdateMeInputType) => updateMe(input),
   });
 
   const homeStackNavigation = useNavigation<HomeStackNavigatorProps>();
@@ -338,13 +346,35 @@ export const RegionView: React.FC<RegionViewProps> = ({
           horizontal
           showsHorizontalScrollIndicator={false}
         />
-        {/* <AppButton.Icon
-          onButtonPress={() => openAuthMenuBottomSheet(0)}
-          customStyle={{ width: 30, height: 30, backgroundColor: 'rgb(50,50,50)' }}
-          hasShadow={false}
-        >
-          <VectorIcon.MCI name='account' size={20} color={Colors.white} />
-        </AppButton.Icon> */}
+        <View style={{ width: 30, height: 30, marginLeft: 8 }}>
+          <AppButton.Icon
+            onButtonPress={() => {
+              updateMeMutation({ userId: auth._id, notificationOpenedAt: new Date().toISOString() });
+              homeStackNavigation.navigate('Notifications');
+            }}
+            customStyle={{ width: '100%', height: '100%', backgroundColor: 'rgb(50,50,50)' }}
+            hasShadow={false}
+          >
+            <VectorIcon.MCI name='bell' size={16} color={Colors.white} />
+          </AppButton.Icon>
+          {auth.hasNewNotification && (
+            <View
+              style={{
+                position: 'absolute',
+                top: -3,
+                right: -3,
+                width: 12,
+                height: 12,
+                borderRadius: 8,
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View style={{ width: 8, height: 8, borderRadius: 8, backgroundColor: 'red' }}></View>
+            </View>
+          )}
+        </View>
       </View>
 
       {/* <View style={{ backgroundColor: 'black', paddingTop: 10, paddingBottom: 10 }}>
