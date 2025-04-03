@@ -258,6 +258,7 @@ export type UpdateUserInputType = {
   email?: string;
   password?: string;
   avatar?: string;
+  notificationOpenedAt?: string;
 };
 
 export type UpdateUserOutputType = {
@@ -269,6 +270,7 @@ export type UpdateMeInputType = {
   name?: string;
   email?: string;
   avatar?: string;
+  notificationOpenedAt?: string;
 };
 
 export type UpdateMeOutputType = {

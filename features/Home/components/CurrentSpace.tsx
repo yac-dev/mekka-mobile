@@ -18,7 +18,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { VectorIcon } from '../../../Icons';
 import { momentLogsAtom } from '../../../recoil';
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys, getLogsByUserId, updateSpaceCheckedInDate } from '../../../query';
+import { queryKeys, getLogsByUserId, updateSpaceCheckedInDate, updateMe } from '../../../query';
 import * as Haptics from 'expo-haptics';
 import { currentUserBottomSheetRef } from '../../../Refs';
 import { Space } from '../../Space';
@@ -33,7 +33,11 @@ import { HomeDrawerNavigatorProps, HomeStackNavigatorProps } from '../navigation
 import { currentTagAtomFamily } from '../../../recoil';
 import { useMutation } from '@tanstack/react-query';
 import { mutationKeys } from '../../../query';
-import { GetNotificationByUserIdOutput, UpdateSpaceCheckedInDateInputType } from '../../../query/types';
+import {
+  GetNotificationByUserIdOutput,
+  UpdateMeInputType,
+  UpdateSpaceCheckedInDateInputType,
+} from '../../../query/types';
 import { useQueryClient } from '@tanstack/react-query';
 const windowWidth = Dimensions.get('window').width;
 
@@ -59,6 +63,10 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const { mutate: updateSpaceCheckedInMutation } = useMutation({
     mutationKey: [mutationKeys.updateSpaceCheckedInDate],
     mutationFn: (input: UpdateSpaceCheckedInDateInputType) => updateSpaceCheckedInDate(input),
+  });
+  const { mutate: updateMeMutation } = useMutation({
+    mutationKey: [mutationKeys.updateMe],
+    mutationFn: (input: UpdateMeInputType) => updateMe(input),
   });
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [routes, setRoutes] = useState<RouteType[]>(mySpaces.map((space, index) => ({ ...space, key: index })));
@@ -347,6 +355,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
         <View style={{ width: 30, height: 30, marginLeft: 8 }}>
           <AppButton.Icon
             onButtonPress={() => {
+              updateMeMutation({ userId: auth._id, notificationOpenedAt: new Date().toISOString() });
               homeStackNavigation.navigate('Notifications');
             }}
             customStyle={{ width: '100%', height: '100%', backgroundColor: 'rgb(50,50,50)' }}
@@ -354,7 +363,7 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
           >
             <VectorIcon.MCI name='bell' size={16} color={Colors.white} />
           </AppButton.Icon>
-          {auth.hasUnreadNotification && (
+          {auth.hasNewNotification && (
             <View
               style={{
                 position: 'absolute',

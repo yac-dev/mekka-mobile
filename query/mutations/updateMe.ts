@@ -10,6 +10,9 @@ export const updateMe = async (input: UpdateMeInputType): Promise<UpdateMeOutput
     if (input.email) {
       payload.append('email', input.email);
     }
+    if (input.notificationOpenedAt) {
+      payload.append('notificationOpenedAt', input.notificationOpenedAt);
+    }
     if (input.avatar) {
       const avatarData = {
         name: `${input.avatar.split('/').pop().split('.')[0]}.png`,
