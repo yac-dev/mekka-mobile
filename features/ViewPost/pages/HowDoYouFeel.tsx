@@ -1,5 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  Animated,
+} from 'react-native';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getReactionsByPostId } from '../../../query/queries';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';

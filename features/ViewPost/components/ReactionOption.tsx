@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import { ReactionType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import { incrementReaction } from '../../../query/mutations';
@@ -10,6 +10,7 @@ import { GetReactionsByPostIdOutputType, IncrementReactionInputType } from '../.
 import { getReactionsByPostId } from '../../../query/queries';
 import { queryKeys } from '../../../query/queryKeys';
 import { useQueryClient } from '@tanstack/react-query';
+import * as Haptics from 'expo-haptics';
 
 const itemWidth = Dimensions.get('window').width / 3;
 const reactionContainerWidth = itemWidth * 0.7;
@@ -29,6 +30,7 @@ type IReactionOptionProps = {
 // ok。今集中すべきはこのreactionのapiフェッチとデザインをまず修正することだねまずは。
 // reaction voteした時のanimationをやってみたいよね。midiumみたいなさ。ただ、これvote数に応じてdocumentを作るのでいいかな。。。？それとも誰が何回的な感じでやるほうがいいのか。。。？まあdocument作る方向性でいいかとりま。
 // あと、皆んなのreactionもみせる的なことは今は止めようと思う。
+
 export const ReactionOption: React.FC<IReactionOptionProps> = ({
   reaction,
   postId,
@@ -39,6 +41,8 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
   // ここdebounceでincrementするのをやりたいね。
   const queryClient = useQueryClient();
   const [currentCount, setCurrentCount] = useState<number>(count);
+  const [isReactedByCurrentUser, setIsReactedByCurrentUser] = useState<boolean>(reactedByCurrentUser);
+
   const [incrementedCountByCurrentUser, setIncrementedCountByCurrentUser] = useState<number>(0);
   const [auth] = useRecoilState(authAtom);
   const { mutate: incrementReactionMutate } = useMutation({
@@ -59,18 +63,34 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
     },
   });
   // currentUserによるincrement自体も引っ張ってきたいよな。。。
+  const scaleValue = useRef(new Animated.Value(1)).current;
+
+  const startAnimation = () => {
+    Animated.sequence([
+      Animated.timing(scaleValue, {
+        toValue: 1.5,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleValue, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
 
   const onReactionOptionPress = () => {
     console.log('動いているのかい？？');
     incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
+    setIsReactedByCurrentUser(true);
     setCurrentCount((previousCurrentCount) => previousCurrentCount + 1);
-    // setIncrementedCountByCurrentUser(
-    //   (previousIncrementedCountByCurrentUser) => previousIncrementedCountByCurrentUser + 1
-    // );
+    startAnimation();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
   return (
-    <View
+    <Animated.View
       style={{
         // backgroundColor: 'blue',
         // backgroundColor: 'rgb(70, 70, 70)',
@@ -81,6 +101,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
         width: itemWidth,
         aspectRatio: 1,
         padding: 5,
+        transform: [{ scale: scaleValue }],
         // marginBottom: 10,
       }}
     >
@@ -100,7 +121,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
           // incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
           onReactionOptionPress();
         }}
-        disabled={reactedByCurrentUser}
+        // disabled={reactedByCurrentUser}
       >
         {reaction.type === 'emoji' ? (
           <View>
@@ -198,6 +219,26 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
           <Text></Text>
         </View>
       )}
-    </View>
+      {/* <Animated.View
+        style={{
+          transform: [{ scale: scaleValue }],
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 45,
+            height: 45,
+            backgroundColor: 'green',
+            borderRadius: 50,
+            padding: 4,
+          }}
+        >
+          <Text style={{ fontSize: 20, color: 'white' }}>+🎉</Text>
+        </View>
+      </Animated.View> */}
+    </Animated.View>
   );
 };
