@@ -119,6 +119,7 @@ export type ReactionType = {
   caption: string;
   space: SpaceType;
   count?: number;
+  reactedByCurrentUser?: boolean;
 };
 
 export type ReactionStatus = {

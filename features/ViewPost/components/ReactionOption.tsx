@@ -18,6 +18,8 @@ type IReactionOptionProps = {
   reaction: ReactionType;
   postId: string;
   count: number;
+  userId: string;
+  reactedByCurrentUser: boolean;
 };
 
 // 次は何から始めるんだっけ？？reaction関連の機能の修正か。次に、写真のfetchを修正する感じかね。
@@ -27,7 +29,13 @@ type IReactionOptionProps = {
 // ok。今集中すべきはこのreactionのapiフェッチとデザインをまず修正することだねまずは。
 // reaction voteした時のanimationをやってみたいよね。midiumみたいなさ。ただ、これvote数に応じてdocumentを作るのでいいかな。。。？それとも誰が何回的な感じでやるほうがいいのか。。。？まあdocument作る方向性でいいかとりま。
 // あと、皆んなのreactionもみせる的なことは今は止めようと思う。
-export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postId, count }) => {
+export const ReactionOption: React.FC<IReactionOptionProps> = ({
+  reaction,
+  postId,
+  count,
+  userId,
+  reactedByCurrentUser,
+}) => {
   // ここdebounceでincrementするのをやりたいね。
   const queryClient = useQueryClient();
   const [currentCount, setCurrentCount] = useState<number>(count);
@@ -50,7 +58,6 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
       });
     },
   });
-
   // currentUserによるincrement自体も引っ張ってきたいよな。。。
 
   const onReactionOptionPress = () => {
@@ -86,13 +93,14 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
           borderRadius: reactionContainerWidth / 2,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'rgb(50,50,50)',
+          backgroundColor: reactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
           marginBottom: 4,
         }}
         onPress={() => {
           // incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
           onReactionOptionPress();
         }}
+        disabled={reactedByCurrentUser}
       >
         {reaction.type === 'emoji' ? (
           <View>
@@ -119,7 +127,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
                   position: 'absolute',
                   top: -20,
                   right: -20,
-                  backgroundColor: 'rgb(50,50,50)',
+                  backgroundColor: reactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
                   width: 30,
                   height: 30,
                   borderRadius: 15,
@@ -157,7 +165,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({ reaction, postI
                   position: 'absolute',
                   top: -20,
                   right: -20,
-                  backgroundColor: 'rgb(50,50,50)',
+                  backgroundColor: reactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
                   width: 30,
                   height: 30,
                   borderRadius: 15,
