@@ -36,9 +36,6 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
     queryKey: [queryKeys.reactions, postId],
     queryFn: () => getReactionsByPostId({ postId, spaceId: currentSpace._id, userId: auth._id }),
   });
-  // debounce使ったやり方で行きたいね。
-  //　多分、これも個々のreactionごとにcomponent作ってそれぞれでstateを持たせておいたほうがいいのかもしれん。。。
-  console.log('postId', postId, 'spaceId', currentSpace._id, 'userId', auth._id);
 
   const renderReactionOption = ({ item, index }: { item: ReactionType; index: number }) => {
     const count = data?.reactions.find((reactionObject) => reactionObject._id === item._id)?.count;

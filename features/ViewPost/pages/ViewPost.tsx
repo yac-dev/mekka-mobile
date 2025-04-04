@@ -251,15 +251,15 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               <AppButton.Icon
                 onButtonPress={handleCommentsPress}
                 customStyle={{
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                   backgroundColor: 'rgb(50,50,50)',
                   borderRadius: 100,
-                  marginRight: 8,
+                  marginRight: 14,
                 }}
                 hasShadow={false}
               >
-                <VectorIcon.MCI name='comment-multiple' size={20} style={{ color: 'white' }} />
+                <VectorIcon.II name='chatbubbles-sharp' size={20} style={{ color: 'white' }} />
               </AppButton.Icon>
               {currentPost.totalComments >= 1 && (
                 <View
@@ -269,8 +269,8 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                     height: 25,
                     borderRadius: 100,
                     position: 'absolute',
-                    top: -3,
-                    right: 2,
+                    top: -8,
+                    right: 4,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
@@ -286,11 +286,11 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               <AppButton.Icon
                 onButtonPress={handleReactionPress}
                 customStyle={{
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                   backgroundColor: 'rgb(50,50,50)',
                   borderRadius: 100,
-                  marginRight: 8,
+                  marginRight: 14,
                 }}
                 hasShadow={false}
               >
@@ -311,8 +311,8 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                     height: 25,
                     borderRadius: 100,
                     position: 'absolute',
-                    top: -3,
-                    right: 2,
+                    top: -8,
+                    right: 4,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
@@ -326,8 +326,8 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           <AppButton.Icon
             onButtonPress={handleHorizontalDotsPress}
             customStyle={{
-              width: 50,
-              height: 50,
+              width: 45,
+              height: 45,
               backgroundColor: 'rgb(50,50,50)',
               borderRadius: 100,
             }}
