@@ -59,7 +59,6 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   openAddNewPostMenuBottomSheet,
   currentViewIndex,
 }) => {
-  const queryClient = useQueryClient();
   const { mutate: updateSpaceCheckedInMutation } = useMutation({
     mutationKey: [mutationKeys.updateSpaceCheckedInDate],
     mutationFn: (input: UpdateSpaceCheckedInDateInputType) => updateSpaceCheckedInDate(input),
@@ -82,9 +81,6 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
   const [itemWidths, setItemWidths] = useState<number[]>([]);
   const scrollViewRef = useRef(null);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
-
-  const data = queryClient.getQueryData<GetNotificationByUserIdOutput>([queryKeys.notifications, auth]);
-  console.log('data', JSON.stringify(data, null, 2));
 
   // const scrollToCenter = () => {
   //   const currentIndex = currentSpace.tags.findIndex((tag) => tag._id === currentTagBySpaceId._id);
@@ -129,13 +125,6 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
     scrollToCenter();
   }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
 
-  const { isRefetching: isRefetchingMySpaces } = useQuery({
-    queryKey: [queryKeys.mySpaces, auth],
-  });
-  const { isRefetching: isRefetchingLogs } = useQuery({
-    queryKey: [queryKeys.logs, auth],
-  });
-
   const onTabPress = (tab: TagType) => {
     // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setCurrentTagsTableBySpaceIds((prev) => {
@@ -160,10 +149,6 @@ export const CurrentSpace: React.FC<CurrentSpaceProps> = ({
     setIndex(index);
     updateSpaceCheckedInMutation({ spaceId: space._id, userId: auth._id });
   };
-
-  // const onAddNewSpacePress = () => {
-  //   openAddNewSpaceMenuBottomSheet(0);
-  // };
 
   const renderItem = ({ item, index }: { item: SpaceType; index: number }) => {
     const isFocused = currentSpace._id === item._id;

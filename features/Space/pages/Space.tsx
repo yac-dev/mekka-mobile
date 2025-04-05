@@ -251,12 +251,19 @@ export const Space: React.FC<ISpace> = ({
                   <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>
-                    {currentSpace.totalMembers} members
-                  </Text>
                   {!currentSpace.isPublic ? (
                     <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 12,
+                      fontWeight: 'bold',
+                      marginLeft: !currentSpace.isPublic ? 8 : 0,
+                    }}
+                  >
+                    {currentSpace.totalMembers} members
+                  </Text>
                 </View>
               </TouchableOpacity>
 
