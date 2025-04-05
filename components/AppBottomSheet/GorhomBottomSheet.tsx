@@ -34,7 +34,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
       onCloseButtonClose,
       handleComponent,
       enablePanDownToClose = true,
-      backgroundColor = 'rgb(30,30,30)',
+      backgroundColor = 'rgb(20,20,20)',
       topRightCorner,
     },
     ref
@@ -50,7 +50,7 @@ export const GorhomBottomSheet = forwardRef<Ref, GorhomBottomSheetRef>(
           hasBackdrop ? (
             <BottomSheetBackdrop
               {...props}
-              opacity={0.5}
+              opacity={0.7}
               enableTouchThrough={false}
               appearsOnIndex={0}
               disappearsOnIndex={-1}
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 20,
-    backgroundColor: 'rgb(30,30,30)',
+    backgroundColor: 'rgb(20,20,20)',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     justifyContent: 'space-between',
