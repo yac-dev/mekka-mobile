@@ -81,7 +81,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
             onProgressChange={progress}
             renderItem={renderItem}
           />
-          <View style={{ position: 'absolute', bottom: 130 }}>
+          <View style={{ position: 'absolute', bottom: 100 }}>
             <Pagination.Basic
               progress={progress}
               data={post.contents}

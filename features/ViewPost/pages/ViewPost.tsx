@@ -244,99 +244,96 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         initialScrollIndex={index}
         estimatedItemSize={Dimensions.get('window').height}
       />
-      <View style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {currentSpace.isCommentAvailable && (
-            <View>
-              <AppButton.Icon
-                onButtonPress={handleCommentsPress}
-                customStyle={{
-                  width: 45,
-                  height: 45,
+      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 20, right: 10 }}>
+        {currentSpace.isCommentAvailable && (
+          <View>
+            <AppButton.Icon
+              onButtonPress={handleCommentsPress}
+              customStyle={{
+                width: 40,
+                height: 40,
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                marginRight: 14,
+              }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='chatbubbles-sharp' size={20} style={{ color: 'white' }} />
+            </AppButton.Icon>
+            {currentPost.totalComments >= 1 && (
+              <View
+                style={{
                   backgroundColor: 'rgb(50,50,50)',
+                  width: 25,
+                  height: 25,
                   borderRadius: 100,
-                  marginRight: 14,
+                  position: 'absolute',
+                  top: -8,
+                  right: 4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-                hasShadow={false}
               >
-                <VectorIcon.II name='chatbubbles-sharp' size={20} style={{ color: 'white' }} />
-              </AppButton.Icon>
-              {currentPost.totalComments >= 1 && (
-                <View
-                  style={{
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 100,
-                    position: 'absolute',
-                    top: -8,
-                    right: 4,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{currentPost.totalComments}</Text>
-                </View>
-              )}
-            </View>
-          )}
+                <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{currentPost.totalComments}</Text>
+              </View>
+            )}
+          </View>
+        )}
 
-          {currentSpace.isReactionAvailable && (
-            <View>
-              <AppButton.Icon
-                onButtonPress={handleReactionPress}
-                customStyle={{
-                  width: 45,
-                  height: 45,
+        {currentSpace.isReactionAvailable && (
+          <View>
+            <AppButton.Icon
+              onButtonPress={handleReactionPress}
+              customStyle={{
+                width: 40,
+                height: 40,
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                marginRight: 14,
+              }}
+              hasShadow={false}
+            >
+              {currentSpace.reactions[0].type === 'emoji' ? (
+                <Text style={{ fontSize: 26 }}>{currentSpace.reactions[0].emoji}</Text>
+              ) : (
+                <ExpoImage source={{ uri: currentSpace.reactions[0].sticker.url }} style={{ width: 26, height: 26 }} />
+              )}
+            </AppButton.Icon>
+            {currentPost.totalReactions >= 1 && (
+              <View
+                style={{
                   backgroundColor: 'rgb(50,50,50)',
+                  width: 25,
+                  height: 25,
                   borderRadius: 100,
-                  marginRight: 14,
+                  position: 'absolute',
+                  top: -8,
+                  right: 4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-                hasShadow={false}
               >
-                {currentSpace.reactions[0].type === 'emoji' ? (
-                  <Text style={{ fontSize: 30 }}>{currentSpace.reactions[0].emoji}</Text>
-                ) : (
-                  <ExpoImage
-                    source={{ uri: currentSpace.reactions[0].sticker.url }}
-                    style={{ width: 30, height: 30 }}
-                  />
-                )}
-              </AppButton.Icon>
-              {currentPost.totalReactions >= 1 && (
-                <View
-                  style={{
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 100,
-                    position: 'absolute',
-                    top: -8,
-                    right: 4,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>{currentPost.totalReactions}</Text>
-                </View>
-              )}
-            </View>
-          )}
-
-          <AppButton.Icon
-            onButtonPress={handleHorizontalDotsPress}
-            customStyle={{
-              width: 45,
-              height: 45,
-              backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 100,
-            }}
-            hasShadow={false}
-          >
-            <VectorIcon.MCI name='dots-horizontal' size={25} style={{ color: 'white' }} />
-          </AppButton.Icon>
-        </View>
+                <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>{currentPost.totalReactions}</Text>
+              </View>
+            )}
+          </View>
+        )}
       </View>
+      <AppButton.Icon
+        onButtonPress={handleHorizontalDotsPress}
+        customStyle={{
+          width: 40,
+          height: 40,
+          backgroundColor: 'rgb(50,50,50)',
+          borderRadius: 100,
+          position: 'absolute',
+          left: 10,
+          bottom: 20,
+        }}
+        hasShadow={false}
+      >
+        <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
+      </AppButton.Icon>
       {/* <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
