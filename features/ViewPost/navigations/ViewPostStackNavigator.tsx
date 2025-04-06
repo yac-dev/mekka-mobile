@@ -7,6 +7,7 @@ import { PostType } from '../../../types';
 import { UserStackNavigator } from '../../User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CommentsPage, HowDoYouFeel } from '../pages';
+import { Platform } from 'react-native';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {
@@ -48,7 +49,23 @@ export const ViewPostStackNavigator = () => {
             headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
-                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)', marginTop: 5 }}
+                customStyle={{
+                  width: 28,
+                  height: 28,
+                  backgroundColor: 'rgb(50,50,50)',
+                  marginTop: 5,
+                  ...Platform.select({
+                    ios: {
+                      shadowColor: 'black',
+                      shadowOffset: { width: 5, height: 5 },
+                      shadowOpacity: 0.6,
+                      shadowRadius: 6,
+                    },
+                    android: {
+                      elevation: 5,
+                    },
+                  }),
+                }}
                 hasShadow={false}
               >
                 <VectorIcon.II name='close' size={18} color={Colors.white} />

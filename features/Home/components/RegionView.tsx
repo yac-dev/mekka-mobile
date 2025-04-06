@@ -36,6 +36,7 @@ import { Moments } from './Moments';
 import * as Haptics from 'expo-haptics';
 import { Icons } from '../../../Icons/images';
 import { UpdateMeInputType } from '../../../query/types';
+import { FlashList } from '@shopify/flash-list';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -62,12 +63,10 @@ export const RegionView: React.FC<RegionViewProps> = ({
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);
-  const [currentRegion, setCurrentRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 100.0922,
-    longitudeDelta: 100.0421,
-  });
+  const [currentRegion, setCurrentRegion] = useState(undefined);
+  const cameraRef = useRef(null);
+  // 2回目以降のquery後に関しては、camera flyをさせたくないんだよね。
+  // userが手で動かしてきた場合には、camera近づけはさせない。。？
 
   const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
 
@@ -121,6 +120,19 @@ export const RegionView: React.FC<RegionViewProps> = ({
   useEffect(() => {
     scrollToCenter();
   }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
+
+  // TODO
+  // useEffect(() => {
+  //   if (currentRegion) {
+  //     // refetchPostsByTagIdAndRegion();
+  //     cameraRef.current?.setCamera({
+  //       centerCoordinate: [currentRegion.longitude, currentRegion.latitude],
+  //       zoomLevel: 5,
+  //       animationDuration: 400,
+  //       animationMode: 'flyTo',
+  //     });
+  //   }
+  // }, [currentRegion]);
 
   const onSpacePress = (item: SpaceType, index: number) => {
     setCurrentSpace(item);
@@ -288,9 +300,9 @@ export const RegionView: React.FC<RegionViewProps> = ({
   };
 
   const renderMarkers = () => {
-    if (!postsByTagIdAndRegionData?.posts.length) {
-      return null;
-    }
+    // if (!postsByTagIdAndRegionData?.posts.length) {
+    //   return null;
+    // }
     const list = postsByTagIdAndRegionData?.posts.map((post: PostType, index: number) => {
       if (post.location?.coordinates.length) {
         return (
@@ -450,35 +462,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
                 </View>
               </TouchableOpacity>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <TouchableOpacity
-                  style={{
-                    marginRight: 10,
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    openAddNewPostMenuBottomSheet(0);
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  }}
-                >
-                  <VectorIcon.MCI name='plus' size={25} color={'white'} />
-                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
                     width: 38,
@@ -527,41 +510,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
                     </View>
                   ) : null}
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                  style={{
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  onPress={() => {
-                    openChooseViewBottomSheet(0);
-                  }}
-                >
-                  {currentViewIndex === 0 ? (
-                    <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
-                  ) : (
-                    <ExpoImage
-                      style={{ width: 20, height: 20 }}
-                      source={Icons.globe}
-                      contentFit='contain'
-                      tintColor={Colors.white}
-                    />
-                  )}
-                </TouchableOpacity> */}
               </View>
             </View>
           </View>
@@ -576,9 +524,10 @@ export const RegionView: React.FC<RegionViewProps> = ({
           />
         </View>
         <Camera
+          ref={cameraRef}
           defaultSettings={{
-            centerCoordinate: [-122.4324, 37.78825],
-            zoomLevel: 0.5,
+            centerCoordinate: currentRegion ? [currentRegion.longitude, currentRegion.latitude] : [-122.4324, 37.78825],
+            zoomLevel: 0.2,
             animationMode: 'flyTo',
             animationDuration: 1100,
           }}
@@ -589,26 +538,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <ActivityIndicator size={'small'} color={'white'} />
           </View>
         )}
-        {/* <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            height: 55,
-            backgroundColor: 'transparent',
-            paddingVertical: 8,
-            width: '100%',
-          }}
-        >
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ref={scrollViewRef}
-            data={currentSpace?.tags}
-            renderItem={renderTab}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
-          />
-        </View> */}
       </Mapbox.MapView>
     </SafeAreaView>
   );
