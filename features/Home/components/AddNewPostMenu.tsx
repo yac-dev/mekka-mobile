@@ -30,7 +30,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
     } else if (currentSpace?.contentType === 'video') {
       text = `Video. Video length is limited to ${formatTimeString(currentSpace?.videoLength)}`;
     } else {
-      text = `Photo and ${formatTimeString(currentSpace?.videoLength)}video post`;
+      text = `Photo and ${formatTimeString(currentSpace?.videoLength)}video`;
     }
     return text;
   };

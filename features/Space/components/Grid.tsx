@@ -124,15 +124,19 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
   if (!data?.pages.flatMap((page) => page.posts).length) {
     return (
       <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-        <VectorIcon.MCI
-          name='image-multiple-outline'
-          size={60}
-          color={'rgb(150,150,150)'}
-          style={{ marginBottom: 30, marginTop: -100 }}
+        <ExpoImage
+          style={{
+            width: 60,
+            aspectRatio: 1,
+            marginBottom: 10,
+          }}
+          source={require('../../../assets/forApp/photo-video.png')}
+          contentFit='cover'
+          tintColor={'rgb(150,150,150)'}
         />
         <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>
           No posts tagged by{'\n'}
-          {tag.name}
+          {tag.name}...
         </Text>
       </View>
     );
