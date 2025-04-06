@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { FlatList, View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  FlatList,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
 import { BufferContentType, CreateNewPostContext } from '../contexts';
 import { Image as ExpoImage } from 'expo-image';
 import { useRecoilState } from 'recoil';
@@ -146,23 +155,6 @@ const AddLocation = () => {
         )}
       </Mapbox.MapView>
       <View style={styles.searchBoxContainer}>
-        <View style={{ paddingLeft: 30, paddingRight: 30, paddingBottom: 10 }}>
-          <Text
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: 20,
-              marginBottom: 10,
-            }}
-          >
-            Add Location (Optional)
-          </Text>
-          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-            Tap the place to add location information.{'\n'}
-            Long press to remove you've chosen.
-          </Text>
-        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -173,11 +165,28 @@ const AddLocation = () => {
             paddingHorizontal: 10,
             borderBottomLeftRadius: suggestions.length > 0 && searchQuery.length > 0 ? 0 : 10,
             borderBottomRightRadius: suggestions.length > 0 && searchQuery.length > 0 ? 0 : 10,
+            ...Platform.select({
+              ios: {
+                shadowColor: 'black',
+                shadowOffset: { width: 5, height: 5 },
+                shadowOpacity: 0.6,
+                shadowRadius: 6,
+              },
+              android: {
+                elevation: 5,
+              },
+            }),
           }}
         >
           <VectorIcon.II name='search' size={18} color={'rgb(180,180,180)'} />
           <TextInput
-            style={styles.input}
+            style={{
+              flex: 1,
+              padding: 10,
+              borderRadius: 10,
+              backgroundColor: 'rgb(50,50,50)',
+              color: 'white',
+            }}
             placeholder='Search for a place'
             placeholderTextColor='rgb(180,180,180)'
             value={searchQuery}
@@ -186,48 +195,57 @@ const AddLocation = () => {
           {isLoadingSuggestions && <ActivityIndicator size='small' color='white' />}
         </View>
         {suggestions.length > 0 && searchQuery.length > 0 && (
-          <View
-            style={{
-              backgroundColor: 'rgb(50,50,50)',
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
-              padding: 10,
-              maxHeight: 200,
-            }}
-          >
-            <FlatList
-              data={suggestions}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingVertical: 8,
-                  }}
-                  onPress={() => handleSearch(item.name)}
-                  activeOpacity={0.8}
-                >
-                  <VectorIcon.II
-                    name='location-sharp'
-                    size={18}
-                    color={'rgb(180,180,180)'}
-                    style={{ marginRight: 10 }}
-                  />
-                  <View style={{ flexDirection: 'column', flex: 1 }}>
-                    <Text style={styles.suggestionName}>{item.name}</Text>
-                    {item.full_address && (
-                      <Text numberOfLines={1} style={styles.suggestionAddress}>
-                        {item.full_address}
-                      </Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
+          <>
+            <View style={{ height: 0.3, backgroundColor: 'rgb(100,100,100)' }} />
+            <View
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                padding: 10,
+                maxHeight: 200,
+              }}
+            >
+              <FlatList
+                data={suggestions}
+                keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 8,
+                    }}
+                    onPress={() => handleSearch(item.name)}
+                    activeOpacity={0.8}
+                  >
+                    <VectorIcon.II
+                      name='location-sharp'
+                      size={18}
+                      color={'rgb(180,180,180)'}
+                      style={{ marginRight: 10 }}
+                    />
+                    <View style={{ flexDirection: 'column', flex: 1 }}>
+                      <Text style={styles.suggestionName}>{item.name}</Text>
+                      {item.full_address && (
+                        <Text numberOfLines={1} style={styles.suggestionAddress}>
+                          {item.full_address}
+                        </Text>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </>
         )}
+      </View>
+      <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0 }}>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+          💬 Tap the place to add location information.{'\n'}
+          Long press to remove you've chosen.
+        </Text>
       </View>
     </View>
   );
@@ -241,13 +259,24 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 20,
   },
-  input: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: 'rgb(50,50,50)',
-    color: 'white',
-  },
+  // input: {
+  //   flex: 1,
+  //   padding: 10,
+  //   borderRadius: 10,
+  //   backgroundColor: 'rgb(50,50,50)',
+  //   color: 'white',
+  //   ...Platform.select({
+  //     ios: {
+  //       shadowColor: 'black',
+  //       shadowOffset: { width: 5, height: 5 },
+  //       shadowOpacity: 0.6,
+  //       shadowRadius: 6,
+  //     },
+  //     android: {
+  //       elevation: 5,
+  //     },
+  //   }),
+  // },
   searchButton: {
     padding: 10,
     borderRadius: 10,

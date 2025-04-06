@@ -37,6 +37,11 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
     queryFn: () => getReactionsByPostId({ postId, spaceId: currentSpace._id, userId: auth._id }),
   });
 
+  console.log('id datas', {
+    postId,
+    spaceId: currentSpace._id,
+    userId: auth._id,
+  });
   const renderReactionOption = ({ item, index }: { item: ReactionType; index: number }) => {
     const count = data?.reactions.find((reactionObject) => reactionObject._id === item._id)?.count;
     const reactedByCurrentUser = data?.reactions.find(

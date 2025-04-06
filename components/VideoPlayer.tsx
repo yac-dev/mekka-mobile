@@ -52,6 +52,15 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
 
   const togglePlayPause = () => setPaused(!paused);
 
+  const playVideo = () => {
+    setPaused(false);
+  };
+
+  const pauseVideo = () => {
+    if (paused) return;
+    setPaused(true);
+  };
+
   const onProgress = (data) => setCurrentTime(data.currentTime);
 
   const onEnd = () => {
@@ -113,12 +122,33 @@ export const VideoPlayer = forwardRef(({ source, componentStyle, resizeMode, isS
           bufferForPlaybackAfterRebufferMs: 5000,
         }}
       />
+      {/* これは画面全体でvideoのtoggleをさせるためで作った。まあ悪くはない */}
       <TouchableOpacity
-        onPress={() => togglePlayPause()}
+        onPress={pauseVideo}
         style={{ flex: 1, position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
       >
         <View style={{ flex: 1 }} />
       </TouchableOpacity>
+      {paused && (
+        <TouchableOpacity
+          onPress={playVideo}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: [{ translateX: -25 }, { translateY: -25 }],
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 100,
+            padding: 10,
+            width: 50,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <VectorIcon.MCI name='play' size={30} color={'white'} />
+        </TouchableOpacity>
+      )}
       <View style={{ position: 'absolute', bottom: 100 }}>
         <View style={styles.controlRow}>
           <Slider

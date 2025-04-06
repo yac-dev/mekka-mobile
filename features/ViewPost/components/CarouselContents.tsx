@@ -66,7 +66,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
             style={{
               width: width,
             }}
-            mode='parallax'
+            // mode='parallax'
             modeConfig={{
               parallaxScrollingScale: 0.9,
               parallaxScrollingOffset: 45,
@@ -81,14 +81,14 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
             onProgressChange={progress}
             renderItem={renderItem}
           />
-          <View style={{ position: 'absolute', bottom: 130 }}>
+          <View style={{ position: 'absolute', bottom: 20 }}>
             <Pagination.Basic
               progress={progress}
               data={post.contents}
               size={8}
               dotStyle={{
                 borderRadius: 100,
-                backgroundColor: '#262626',
+                backgroundColor: 'rgb(50,50,50)',
               }}
               activeDotStyle={{
                 borderRadius: 100,

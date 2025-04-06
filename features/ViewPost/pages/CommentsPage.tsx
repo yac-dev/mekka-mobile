@@ -178,7 +178,8 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
         keyExtractor={(_, index) => `${index}`}
         ListEmptyComponent={
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 150 }}>
-            <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>No comments yet...</Text>
+            <VectorIcon.II name='chatbubbles-sharp' size={50} color={'white'} style={{ marginBottom: 16 }} />
+            <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Be the first to comment</Text>
           </View>
         }
         estimatedItemSize={100}

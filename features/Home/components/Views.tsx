@@ -126,7 +126,7 @@ export const Views: React.FC<{
           flexDirection: 'column',
           alignItems: 'center',
           position: 'absolute',
-          bottom: 20,
+          bottom: 10,
           left: 10,
           paddingVertical: 8,
           paddingHorizontal: 6,
@@ -187,7 +187,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 20,
+          bottom: 10,
           right: 10,
           width: 40,
           height: 40,

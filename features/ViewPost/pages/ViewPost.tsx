@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CommentInput } from '../components/CommentInput';
 import { Comments } from '../components';
@@ -141,7 +141,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
                 {currentPost.createdBy.name}
               </Text>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 11, fontWeight: 'bold' }}>
+              <Text style={{ color: 'rgb(200,200,200)', fontSize: 11, fontWeight: 'bold' }}>
                 {timeSince(new Date(currentPost.createdAt))}
               </Text>
             </View>
@@ -244,99 +244,128 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         initialScrollIndex={index}
         estimatedItemSize={Dimensions.get('window').height}
       />
-      <View style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          {currentSpace.isCommentAvailable && (
-            <View>
-              <AppButton.Icon
-                onButtonPress={handleCommentsPress}
-                customStyle={{
-                  width: 45,
-                  height: 45,
+      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 10, right: 10 }}>
+        {currentSpace.isCommentAvailable && (
+          <View>
+            <AppButton.Icon
+              onButtonPress={handleCommentsPress}
+              customStyle={{
+                width: 40,
+                height: 40,
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                marginRight: 14,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 5, height: 5 },
+                    shadowOpacity: 0.6,
+                    shadowRadius: 6,
+                  },
+                  android: {
+                    elevation: 5,
+                  },
+                }),
+              }}
+              hasShadow={false}
+            >
+              <VectorIcon.II name='chatbubbles-sharp' size={20} style={{ color: 'white' }} />
+            </AppButton.Icon>
+            {currentPost.totalComments >= 1 && (
+              <View
+                style={{
                   backgroundColor: 'rgb(50,50,50)',
+                  width: 25,
+                  height: 25,
                   borderRadius: 100,
-                  marginRight: 14,
+                  position: 'absolute',
+                  top: -8,
+                  right: 4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-                hasShadow={false}
               >
-                <VectorIcon.II name='chatbubbles-sharp' size={20} style={{ color: 'white' }} />
-              </AppButton.Icon>
-              {currentPost.totalComments >= 1 && (
-                <View
-                  style={{
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 100,
-                    position: 'absolute',
-                    top: -8,
-                    right: 4,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{currentPost.totalComments}</Text>
-                </View>
-              )}
-            </View>
-          )}
+                <Text style={{ color: 'white', fontSize: 13, fontWeight: 'bold' }}>{currentPost.totalComments}</Text>
+              </View>
+            )}
+          </View>
+        )}
 
-          {currentSpace.isReactionAvailable && (
-            <View>
-              <AppButton.Icon
-                onButtonPress={handleReactionPress}
-                customStyle={{
-                  width: 45,
-                  height: 45,
+        {currentSpace.isReactionAvailable && (
+          <View>
+            <AppButton.Icon
+              onButtonPress={handleReactionPress}
+              customStyle={{
+                width: 40,
+                height: 40,
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 100,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 5, height: 5 },
+                    shadowOpacity: 0.6,
+                    shadowRadius: 6,
+                  },
+                  android: {
+                    elevation: 5,
+                  },
+                }),
+              }}
+              hasShadow={false}
+            >
+              {currentSpace.reactions[0].type === 'emoji' ? (
+                <Text style={{ fontSize: 26 }}>{currentSpace.reactions[0].emoji}</Text>
+              ) : (
+                <ExpoImage source={{ uri: currentSpace.reactions[0].sticker.url }} style={{ width: 26, height: 26 }} />
+              )}
+            </AppButton.Icon>
+            {currentPost.totalReactions >= 1 && (
+              <View
+                style={{
                   backgroundColor: 'rgb(50,50,50)',
+                  width: 25,
+                  height: 25,
                   borderRadius: 100,
-                  marginRight: 14,
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-                hasShadow={false}
               >
-                {currentSpace.reactions[0].type === 'emoji' ? (
-                  <Text style={{ fontSize: 30 }}>{currentSpace.reactions[0].emoji}</Text>
-                ) : (
-                  <ExpoImage
-                    source={{ uri: currentSpace.reactions[0].sticker.url }}
-                    style={{ width: 30, height: 30 }}
-                  />
-                )}
-              </AppButton.Icon>
-              {currentPost.totalReactions >= 1 && (
-                <View
-                  style={{
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 100,
-                    position: 'absolute',
-                    top: -8,
-                    right: 4,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>{currentPost.totalReactions}</Text>
-                </View>
-              )}
-            </View>
-          )}
-
-          <AppButton.Icon
-            onButtonPress={handleHorizontalDotsPress}
-            customStyle={{
-              width: 45,
-              height: 45,
-              backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 100,
-            }}
-            hasShadow={false}
-          >
-            <VectorIcon.MCI name='dots-horizontal' size={25} style={{ color: 'white' }} />
-          </AppButton.Icon>
-        </View>
+                <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>{currentPost.totalReactions}</Text>
+              </View>
+            )}
+          </View>
+        )}
       </View>
+      <AppButton.Icon
+        onButtonPress={handleHorizontalDotsPress}
+        customStyle={{
+          width: 40,
+          height: 40,
+          backgroundColor: 'rgb(50,50,50)',
+          borderRadius: 100,
+          position: 'absolute',
+          left: 10,
+          bottom: 10,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.6,
+              shadowRadius: 6,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
+        }}
+        hasShadow={false}
+      >
+        <VectorIcon.MCI name='dots-horizontal' size={20} style={{ color: 'white' }} />
+      </AppButton.Icon>
       {/* <AppBottomSheet.Gorhom
         ref={reactionsBottomSheetRef}
         snapPoints={['60%']}
