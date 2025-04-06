@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CommentInput } from '../components/CommentInput';
 import { Comments } from '../components';
@@ -244,7 +244,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         initialScrollIndex={index}
         estimatedItemSize={Dimensions.get('window').height}
       />
-      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 20, right: 10 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 10, right: 10 }}>
         {currentSpace.isCommentAvailable && (
           <View>
             <AppButton.Icon
@@ -255,6 +255,17 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 backgroundColor: 'rgb(50,50,50)',
                 borderRadius: 100,
                 marginRight: 14,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 8, height: 8 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 8,
+                  },
+                  android: {
+                    elevation: 5,
+                  },
+                }),
               }}
               hasShadow={false}
             >
@@ -290,6 +301,17 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 backgroundColor: 'rgb(50,50,50)',
                 borderRadius: 100,
                 marginRight: 14,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: 'black',
+                    shadowOffset: { width: 8, height: 8 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 8,
+                  },
+                  android: {
+                    elevation: 5,
+                  },
+                }),
               }}
               hasShadow={false}
             >
@@ -328,7 +350,18 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           borderRadius: 100,
           position: 'absolute',
           left: 10,
-          bottom: 20,
+          bottom: 10,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 8, height: 8 },
+              shadowOpacity: 0.8,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 5,
+            },
+          }),
         }}
         hasShadow={false}
       >
