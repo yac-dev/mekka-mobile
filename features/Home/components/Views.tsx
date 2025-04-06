@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, Text, Dimensions, TouchableOpacity, Platform, Alert } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Dimensions, TouchableOpacity, Platform, Alert, Animated } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { GridView } from '../../Space/components/GridView';
 import { RegionView } from './RegionView';
@@ -128,11 +128,11 @@ export const Views: React.FC<{
           position: 'absolute',
           bottom: 65,
           left: 10,
-          width: 50,
-          paddingVertical: 12,
+          paddingVertical: 8,
+          paddingHorizontal: 6,
           gap: 8,
           backgroundColor: 'rgb(35,35,35)',
-          borderRadius: 100,
+          borderRadius: 18,
           justifyContent: 'center',
           ...Platform.select({
             ios: {
