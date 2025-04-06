@@ -411,12 +411,13 @@ export const RegionView: React.FC<RegionViewProps> = ({
         regionDidChangeDebounceTime={100}
         onMapIdle={onMapIdle}
       >
-        <View style={{ height: 60 }}>
+        <View style={{ height: 100 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
               paddingTop: 8,
+              paddingBottom: 12,
             }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -480,7 +481,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
                 </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
-                    marginRight: 10,
                     width: 38,
                     height: 38,
                     backgroundColor: 'rgb(50,50,50)',
@@ -565,6 +565,15 @@ export const RegionView: React.FC<RegionViewProps> = ({
               </View>
             </View>
           </View>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={currentSpace?.tags}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+          />
         </View>
         <Camera
           defaultSettings={{
@@ -576,23 +585,17 @@ export const RegionView: React.FC<RegionViewProps> = ({
         />
         {renderMarkers()}
         {postsByTagIdAndRegionStatus === 'pending' && (
-          <View style={{ position: 'absolute', top: 50, alignSelf: 'center' }}>
+          <View style={{ position: 'absolute', top: 110, alignSelf: 'center' }}>
             <ActivityIndicator size={'small'} color={'white'} />
           </View>
         )}
-        <View
+        {/* <View
           style={{
             position: 'absolute',
             bottom: 0,
-            // left: 0,
-            // right: 0,
-            // zIndex: 1000,
             height: 55,
-            // backgroundColor: 'black',
             backgroundColor: 'transparent',
             paddingVertical: 8,
-            // borderTopWidth: 0.3,
-            // borderTopColor: 'rgb(100,100,100)',
             width: '100%',
           }}
         >
@@ -605,7 +608,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
             keyExtractor={(item, index) => `${item._id}-${index}`}
             contentContainerStyle={{ paddingHorizontal: 10 }}
           />
-        </View>
+        </View> */}
       </Mapbox.MapView>
     </SafeAreaView>
   );

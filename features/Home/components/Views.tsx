@@ -126,7 +126,7 @@ export const Views: React.FC<{
           flexDirection: 'column',
           alignItems: 'center',
           position: 'absolute',
-          bottom: 65,
+          bottom: 20,
           left: 10,
           paddingVertical: 8,
           paddingHorizontal: 6,
@@ -137,8 +137,8 @@ export const Views: React.FC<{
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.5,
+              shadowOffset: { width: 8, height: 8 },
+              shadowOpacity: 0.8,
               shadowRadius: 8,
             },
             android: {
@@ -187,7 +187,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 85,
+          bottom: 20,
           right: 10,
           width: 40,
           height: 40,
@@ -198,8 +198,8 @@ export const Views: React.FC<{
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.5,
+              shadowOffset: { width: 8, height: 8 },
+              shadowOpacity: 0.8,
               shadowRadius: 8,
             },
             android: {

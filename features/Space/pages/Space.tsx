@@ -227,14 +227,26 @@ export const Space: React.FC<ISpace> = ({
           left: 0,
           right: 0,
         }}
-        colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.2)', 'transparent']}
+        colors={[
+          'rgba(0,0,0,0.9)',
+          'rgba(0,0,0,0.8)',
+          'rgba(0,0,0,0.7)',
+          'rgba(0,0,0,0.6)',
+          'rgba(0,0,0,0.5)',
+          'rgba(0,0,0,0.4)',
+          'rgba(0,0,0,0.3)',
+          'rgba(0,0,0,0.2)',
+          'rgba(0,0,0,0.1)',
+          'transparent',
+        ]}
       >
-        <View style={{ height: 75 }}>
+        <View style={{ height: 100 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
               paddingTop: 8,
+              paddingBottom: 12,
             }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -299,7 +311,6 @@ export const Space: React.FC<ISpace> = ({
                 </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
-                    marginRight: 10,
                     width: 38,
                     height: 38,
                     backgroundColor: 'rgb(50,50,50)',
@@ -385,13 +396,32 @@ export const Space: React.FC<ISpace> = ({
                 </TouchableOpacity> */}
               </View>
             </View>
-            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
-                {space.totalMembers} members {currentSpace.isPublic ? 'Public' : 'Private'}
-              </Text>
-            </View> */}
           </View>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={currentSpace?.tags}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+          />
         </View>
+        {/* <View
+          style={{
+            backgroundColor: 'transparent',
+          }}
+        >
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ref={scrollViewRef}
+            data={currentSpace?.tags}
+            renderItem={renderTab}
+            keyExtractor={(item, index) => `${item._id}-${index}`}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+          />
+        </View> */}
       </LinearGradient>
       <TabView
         lazy
@@ -405,32 +435,6 @@ export const Space: React.FC<ISpace> = ({
           onChangeTab(index);
         }}
       />
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          // left: 0,
-          // right: 0,
-          // zIndex: 1000,
-          height: 55,
-          backgroundColor: 'transparent',
-          paddingVertical: 8,
-          // borderTopWidth: 0.3,
-          // borderTopColor: 'rgb(100,100,100)',
-          width: '100%',
-        }}
-      >
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ref={scrollViewRef}
-          data={currentSpace?.tags}
-          renderItem={renderTab}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-        />
-      </View>
-      {/* <GridView space={currentSpace} /> */}
     </View>
   );
 };
