@@ -203,7 +203,7 @@ export const Home: React.FC<HomeProps> = ({ openAppBlogWebviewBottomSheet }) => 
 
       <AppBottomSheet.Gorhom
         ref={addNewPostMenuBottomSheetRef}
-        snapPoints={['40%']}
+        snapPoints={['38%']}
         header={
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[styles.text, { marginRight: 5 }]}>Something to share on</Text>

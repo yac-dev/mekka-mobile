@@ -1,5 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  Animated,
+} from 'react-native';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getReactionsByPostId } from '../../../query/queries';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -25,158 +34,26 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
   const [auth] = useRecoilState(authAtom);
   const { data, status: getReactionsByPostIdStatus } = useQuery({
     queryKey: [queryKeys.reactions, postId],
-    queryFn: () => getReactionsByPostId({ postId, spaceId: currentSpace._id }),
+    queryFn: () => getReactionsByPostId({ postId, spaceId: currentSpace._id, userId: auth._id }),
   });
-  // debounce使ったやり方で行きたいね。
-  //　多分、これも個々のreactionごとにcomponent作ってそれぞれでstateを持たせておいたほうがいいのかもしれん。。。
 
   const renderReactionOption = ({ item, index }: { item: ReactionType; index: number }) => {
     const count = data?.reactions.find((reactionObject) => reactionObject._id === item._id)?.count;
-    return <ReactionOption key={index} reaction={item} postId={postId} count={count} />;
+    const reactedByCurrentUser = data?.reactions.find(
+      (reactionObject) => reactionObject._id === item._id
+    )?.reactedByCurrentUser;
+
+    return (
+      <ReactionOption
+        key={index}
+        reaction={item}
+        postId={postId}
+        count={count}
+        userId={auth._id}
+        reactedByCurrentUser={reactedByCurrentUser}
+      />
+    );
   };
-
-  // currentSpace.reactionsでやっているからな。。。arrayで見つけて、countだけ持たせる感じなのかね。。。？
-  // const renderReactionOption = ({ item, index }: { item: ReactionType; index: number }) => {
-  //   return (
-  //     <View
-  //       key={index}
-  //       style={{
-  //         // backgroundColor: 'blue',
-  //         // backgroundColor: 'rgb(70, 70, 70)',
-  //         // borderRadius: 10,
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         // marginRight: 10,
-  //         width: itemWidth,
-  //         aspectRatio: 1,
-  //         padding: 5,
-  //         // marginBottom: 10,
-  //       }}
-  //     >
-  //       <TouchableOpacity
-  //         activeOpacity={0.7}
-  //         style={{
-  //           // backgroundColor: 'rgb(70, 70, 70)',
-  //           width: reactionContainerWidth,
-  //           aspectRatio: 1,
-  //           borderRadius: reactionContainerWidth / 2,
-  //           justifyContent: 'center',
-  //           alignItems: 'center',
-  //           backgroundColor: 'rgb(50,50,50)',
-  //           marginBottom: 4,
-  //         }}
-  //         onPress={() => {
-  //           incrementReactionMutate({ postId: route.params.postId, reactionId: item._id, userId: auth._id });
-  //           console.log('incrementReactionMutate', item);
-  //         }}
-  //       >
-  //         {item.type === 'emoji' ? (
-  //           <View>
-  //             <View
-  //               style={{
-  //                 width: reactionContainerWidth * 0.6,
-  //                 aspectRatio: 1,
-  //                 justifyContent: 'center',
-  //                 alignItems: 'center',
-  //                 marginBottom: 5,
-  //               }}
-  //             >
-  //               <Text
-  //                 style={{
-  //                   fontSize: (reactionContainerWidth / 2) * 1.15,
-  //                 }}
-  //               >
-  //                 {item.emoji}
-  //               </Text>
-  //             </View>
-  //             {data?.reactions.some(
-  //               (reactionObject) => reactionObject._id === item._id && reactionObject.count > 0
-  //             ) && (
-  //               <View
-  //                 style={{
-  //                   position: 'absolute',
-  //                   top: -20,
-  //                   right: -20,
-  //                   backgroundColor: 'rgb(50,50,50)',
-  //                   width: 30,
-  //                   height: 30,
-  //                   borderRadius: 15,
-  //                   justifyContent: 'center',
-  //                   alignItems: 'center',
-  //                 }}
-  //               >
-  //                 <Text style={{ color: 'white', fontWeight: 'bold' }}>
-  //                   {data?.reactions.find((reactionObject) => reactionObject._id === item._id).count}
-  //                 </Text>
-  //               </View>
-  //             )}
-  //           </View>
-  //         ) : (
-  //           <View>
-  //             <View
-  //               style={{
-  //                 width: reactionContainerWidth * 0.6,
-  //                 aspectRatio: 1,
-  //                 justifyContent: 'center',
-  //                 alignItems: 'center',
-  //                 marginBottom: 5,
-  //               }}
-  //             >
-  //               <ExpoImage
-  //                 style={{
-  //                   width: '100%',
-  //                   height: '100%',
-  //                 }}
-  //                 source={{ uri: item.sticker.url }}
-  //                 contentFit='contain'
-  //               />
-  //             </View>
-  //             {data?.reactions.some(
-  //               (reactionObject) => reactionObject._id === item._id && reactionObject.count > 0
-  //             ) && (
-  //               <View
-  //                 style={{
-  //                   position: 'absolute',
-  //                   top: -20,
-  //                   right: -20,
-  //                   backgroundColor: 'rgb(50,50,50)',
-  //                   width: 30,
-  //                   height: 30,
-  //                   borderRadius: 15,
-  //                   justifyContent: 'center',
-  //                   alignItems: 'center',
-  //                 }}
-  //               >
-  //                 <Text style={{ color: 'white', fontWeight: 'bold' }}>
-  //                   {data?.reactions.find((reactionObject) => reactionObject._id === item._id).count}
-  //                 </Text>
-  //               </View>
-  //             )}
-  //           </View>
-  //         )}
-  //       </TouchableOpacity>
-
-  //       {item.caption?.length ? (
-  //         <View
-  //           style={{
-  //             flexDirection: 'row',
-  //             alignItems: 'center',
-  //             // backgroundColor: 'rgb(70,70,70)',
-  //             maxWidth: itemWidth,
-  //           }}
-  //         >
-  //           <Text numberOfLines={1} style={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}>
-  //             {item.caption}
-  //           </Text>
-  //         </View>
-  //       ) : (
-  //         <View>
-  //           <Text></Text>
-  //         </View>
-  //       )}
-  //     </View>
-  //   );
-  // };
 
   if (getReactionsByPostIdStatus === 'pending') {
     return (

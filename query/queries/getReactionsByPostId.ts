@@ -3,7 +3,9 @@ import { GetReactionsByPostIdInputType } from '../types';
 
 export const getReactionsByPostId = async (input: GetReactionsByPostIdInputType) => {
   try {
-    const response = await axiosClient.get(`/posts/${input.postId}/reactions/${input.spaceId}`);
+    const response = await axiosClient.post(`/posts/${input.postId}/reactions/${input.spaceId}`, {
+      userId: input.userId,
+    });
     const { reactions } = response.data.data;
     return {
       reactions,

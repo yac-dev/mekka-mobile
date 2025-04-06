@@ -30,7 +30,7 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
     } else if (currentSpace?.contentType === 'video') {
       text = `Video. Video length is limited to ${formatTimeString(currentSpace?.videoLength)}`;
     } else {
-      text = `Photo and Video${'\n'}${formatTimeString(currentSpace?.videoLength)} video post`;
+      text = `Photo and ${formatTimeString(currentSpace?.videoLength)}video post`;
     }
     return text;
   };
@@ -40,9 +40,9 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
     const seconds = totalSeconds % 60;
 
     if (minutes > 0) {
-      return `${minutes} minutes ${seconds > 0 ? `${seconds} seconds` : ''}`;
+      return `${minutes} mins ${seconds > 0 ? `${seconds} sec` : ''}`;
     }
-    return `${seconds} seconds`;
+    return `${seconds} sec`;
   };
 
   const formatTimeStringForShort = (totalSeconds: number): string => {
@@ -82,99 +82,121 @@ export const AddNewPostMenu: React.FC<AddNewPostMenuProps> = ({ onAddNewPostPres
   };
 
   return (
-    <View style={{ flexDirection: 'row', paddingHorizontal: screenHorizontalPadding }}>
-      <View style={{ width: itemWidth, paddingRight: 8 }}>
-        <TouchableOpacity
+    <View style={{ flexDirection: 'column', paddingHorizontal: screenHorizontalPadding, gap: 12 }}>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'rgb(38,38,38)',
+          borderRadius: 16,
+          width: '100%',
+          flexDirection: 'row',
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          alignItems: 'center',
+        }}
+        activeOpacity={0.8}
+        onPress={onAddNewPostPress}
+      >
+        <View
           style={{
-            backgroundColor: 'rgb(50,50,50)',
-            borderRadius: 20,
-            width: '100%',
-            height: 160,
+            backgroundColor: Colors.iconColors['red1'],
+            width: 46,
+            height: 46,
+            marginRight: 15,
+            borderRadius: 14,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-          activeOpacity={0.8}
-          onPress={onAddNewPostPress}
         >
+          <ExpoImage
+            style={{
+              width: 30,
+              aspectRatio: 1,
+            }}
+            source={
+              currentSpace?.contentType === 'photo'
+                ? require('../../../assets/forApp/photo.png')
+                : currentSpace?.contentType === 'video'
+                ? require('../../../assets/forApp/video.png')
+                : require('../../../assets/forApp/photo-video.png')
+            }
+            contentFit='cover'
+            tintColor={'white'}
+          />
+        </View>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={{ color: 'white', fontSize: 18, marginBottom: 5, fontWeight: 'bold' }}>New Post</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 15 }}>{renderContentType()}</Text>
+          </View>
           <View
             style={{
-              height: 85,
               justifyContent: 'center',
               alignItems: 'center',
-              borderBottomWidth: 0.3,
-              borderBottomColor: 'rgb(100,100,100)',
+              width: 26,
+              height: 26,
+              backgroundColor: 'rgb(65,65,65)',
+              borderRadius: 100,
             }}
           >
-            <ExpoImage
-              style={{
-                width: 55,
-                aspectRatio: 1,
-              }}
-              source={
-                currentSpace?.contentType === 'photo'
-                  ? require('../../../assets/forApp/photo.png')
-                  : currentSpace?.contentType === 'video'
-                  ? require('../../../assets/forApp/video.png')
-                  : require('../../../assets/forApp/photo-video.png')
-              }
-              contentFit='cover'
-              tintColor={'white'}
-            />
-            {(currentSpace?.contentType === 'video' || currentSpace?.contentType === 'photoAndVideo') && (
-              <View style={{ position: 'absolute', bottom: 15, right: 30, backgroundColor: 'white', borderRadius: 20 }}>
-                <Text style={{ color: 'black', fontSize: 12, fontWeight: 'bold', padding: 3 }}>
-                  {formatTimeStringForShort(currentSpace?.videoLength)}
-                </Text>
-              </View>
-            )}
+            <VectorIcon.MCI name='chevron-right' size={20} color={'rgb(170,170,170)'} />
           </View>
-          <View style={{ padding: 10 }}>
-            <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>New Post</Text>
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>{renderContentType()}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{ width: itemWidth, paddingLeft: 8 }}>
-        <TouchableOpacity
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'rgb(38,38,38)',
+          borderRadius: 16,
+          width: '100%',
+          flexDirection: 'row',
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          alignItems: 'center',
+        }}
+        activeOpacity={0.8}
+        onPress={onAddNewMomentPress}
+      >
+        <View
           style={{
-            backgroundColor: 'rgb(50,50,50)',
-            borderRadius: 20,
-            width: '100%',
-            height: 160,
+            backgroundColor: Colors.iconColors['blue1'],
+            width: 46,
+            height: 46,
+            marginRight: 15,
+            borderRadius: 14,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-          activeOpacity={0.8}
-          onPress={onAddNewMomentPress}
         >
-          <View
+          <ExpoImage
             style={{
-              height: 85,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderBottomWidth: 0.3,
-              borderBottomColor: 'rgb(100,100,100)',
+              width: 30,
+              aspectRatio: 1,
             }}
-          >
-            <ExpoImage
-              style={{
-                width: 45,
-                aspectRatio: 1,
-              }}
-              source={require('../../../assets/forApp/ghost.png')}
-              contentFit='cover'
-              tintColor={'white'}
-            />
-            <View style={{ position: 'absolute', bottom: 15, right: 5, backgroundColor: 'white', borderRadius: 20 }}>
-              <Text style={{ color: 'black', fontSize: 12, fontWeight: 'bold', padding: 3 }}>
-                {convertMinutesToHoursAndMinutesForShort(currentSpace?.disappearAfter)}
-              </Text>
-            </View>
-          </View>
-          <View style={{ padding: 10 }}>
-            <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>New Moment</Text>
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>
-              Every post will disappear within {convertMinutesToHoursAndMinutes(currentSpace?.disappearAfter)}
+            source={require('../../../assets/forApp/ghost.png')}
+            contentFit='cover'
+            tintColor={'white'}
+          />
+        </View>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={{ color: 'white', fontSize: 18, marginBottom: 5, fontWeight: 'bold' }}>New Moment</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 15 }}>
+              Vanish after {convertMinutesToHoursAndMinutes(currentSpace?.disappearAfter)}
             </Text>
           </View>
-        </TouchableOpacity>
-      </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 26,
+              height: 26,
+              backgroundColor: 'rgb(65,65,65)',
+              borderRadius: 100,
+            }}
+          >
+            <VectorIcon.MCI name='chevron-right' size={20} color={'rgb(170,170,170)'} />
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

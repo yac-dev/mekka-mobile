@@ -6,6 +6,8 @@ import { useGetTagIcons } from '../hooks';
 import FlashMessage from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialFormData: FormDataType = {
   postType: {
@@ -206,14 +208,15 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
                 duration: 5000,
               });
             } else if (asset.duration / 1000 <= currentSpace.videoLength) {
+              const uuid = uuidv4();
               adding.push({
-                fileName: `${fileName}.mp4`,
+                fileName: `${fileName}_${uuid}.mp4`,
                 type: 'video',
                 duration: asset.duration ? asset.duration : null,
                 userId: auth._id,
               });
               bufferContents.push({
-                name: `${fileName}.mp4`,
+                name: `${fileName}_${uuid}.mp4`,
                 uri: asset.uri,
                 type: 'video/mp4',
               });
@@ -227,6 +230,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
           } else if (asset.type === 'image') {
             // mymetypeではwebpを指定できない。基本、jpgかpng。
             // imageは4つまで
+            const uuid = uuidv4();
             if (adding.filter((content) => content.type === 'photo').length >= 5) {
               createNewPostFlashMessageRef.current?.showMessage({
                 message: 'OOPS! More than 5 photos at once is not allowed.',
@@ -235,13 +239,13 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
               });
             } else {
               adding.push({
-                fileName: `${fileName}.webp`,
+                fileName: `${fileName}_${uuid}.webp`,
                 type: 'photo',
                 duration: asset.duration ? asset.duration : null,
                 userId: auth._id,
               });
               bufferContents.push({
-                name: `${fileName}.webp`,
+                name: `${fileName}_${uuid}.webp`,
                 uri: asset.uri,
                 type: 'image/jpg',
               });

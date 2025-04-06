@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, Text, Dimensions, TouchableOpacity, Platform, Alert } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Dimensions, TouchableOpacity, Platform, Alert, Animated } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { GridView } from '../../Space/components/GridView';
 import { RegionView } from './RegionView';
@@ -121,22 +121,24 @@ export const Views: React.FC<{
         animationEnabled={false}
         swipeEnabled={false}
       />
-      {/* <TouchableOpacity
+      <View
         style={{
-          position: 'absolute',
-          bottom: 85,
-          left: 10,
-          width: 46,
-          height: 46,
-          backgroundColor: 'rgb(50,50,50)',
-          borderRadius: 100,
-          justifyContent: 'center',
+          flexDirection: 'column',
           alignItems: 'center',
+          position: 'absolute',
+          bottom: 20,
+          left: 10,
+          paddingVertical: 8,
+          paddingHorizontal: 6,
+          gap: 8,
+          backgroundColor: 'rgb(35,35,35)',
+          borderRadius: 18,
+          justifyContent: 'center',
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.5,
+              shadowOffset: { width: 8, height: 8 },
+              shadowOpacity: 0.8,
               shadowRadius: 8,
             },
             android: {
@@ -144,26 +146,51 @@ export const Views: React.FC<{
             },
           }),
         }}
-        onPress={() => openChooseViewBottomSheet(0)}
       >
-        {index === 0 ? (
-          <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
-        ) : (
+        <TouchableOpacity
+          style={{
+            height: 35,
+            width: 35,
+            backgroundColor: index === 1 ? 'rgb(60,60,60)' : 'rgb(35,35,35)',
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setIndex(1);
+          }}
+        >
           <ExpoImage
             style={{ width: 20, height: 20 }}
             source={Icons.globe}
             contentFit='contain'
             tintColor={Colors.white}
           />
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: 35,
+            width: 35,
+            backgroundColor: index === 0 ? 'rgb(60,60,60)' : 'rgb(35,35,35)',
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setIndex(0);
+          }}
+        >
+          <VectorIcon.FI name='nav-icon-grid' size={12} color={'white'} />
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 85,
+          bottom: 20,
           right: 10,
-          width: 46,
-          height: 46,
+          width: 40,
+          height: 40,
           backgroundColor: 'rgb(50,50,50)',
           borderRadius: 100,
           justifyContent: 'center',
@@ -171,8 +198,8 @@ export const Views: React.FC<{
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.5,
+              shadowOffset: { width: 8, height: 8 },
+              shadowOpacity: 0.8,
               shadowRadius: 8,
             },
             android: {
@@ -187,7 +214,7 @@ export const Views: React.FC<{
         }}
       >
         <VectorIcon.MCI name='plus' size={25} color={'white'} />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       {/* <View
         style={{
           width: 160,
