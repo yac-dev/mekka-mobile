@@ -81,7 +81,6 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
   };
 
   const onReactionOptionPress = () => {
-    console.log('動いているのかい？？');
     incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
     setIsReactedByCurrentUser(true);
     setCurrentCount((previousCurrentCount) => previousCurrentCount + 1);
@@ -121,7 +120,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
           // incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
           onReactionOptionPress();
         }}
-        // disabled={reactedByCurrentUser}
+        disabled={reactedByCurrentUser}
       >
         {reaction.type === 'emoji' ? (
           <View>

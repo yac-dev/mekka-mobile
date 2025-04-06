@@ -329,7 +329,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                   borderRadius: 100,
                   position: 'absolute',
                   top: -8,
-                  right: 4,
+                  right: -8,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}

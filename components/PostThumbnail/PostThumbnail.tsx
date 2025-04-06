@@ -120,8 +120,8 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
             alignItems: 'center',
           }}
         >
-          <VectorIcon.FD
-            name='page-multiple'
+          <VectorIcon.MCI
+            name='image-multiple'
             size={12}
             color='white'
             // style={{
