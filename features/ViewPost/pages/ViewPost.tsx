@@ -258,9 +258,9 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 ...Platform.select({
                   ios: {
                     shadowColor: 'black',
-                    shadowOffset: { width: 8, height: 8 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 8,
+                    shadowOffset: { width: 5, height: 5 },
+                    shadowOpacity: 0.6,
+                    shadowRadius: 6,
                   },
                   android: {
                     elevation: 5,
@@ -303,9 +303,9 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 ...Platform.select({
                   ios: {
                     shadowColor: 'black',
-                    shadowOffset: { width: 8, height: 8 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 8,
+                    shadowOffset: { width: 5, height: 5 },
+                    shadowOpacity: 0.6,
+                    shadowRadius: 6,
                   },
                   android: {
                     elevation: 5,
@@ -353,9 +353,9 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 8, height: 8 },
-              shadowOpacity: 0.8,
-              shadowRadius: 8,
+              shadowOffset: { width: 5, height: 5 },
+              shadowOpacity: 0.6,
+              shadowRadius: 6,
             },
             android: {
               elevation: 5,
