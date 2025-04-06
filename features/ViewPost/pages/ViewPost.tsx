@@ -300,7 +300,6 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 height: 40,
                 backgroundColor: 'rgb(50,50,50)',
                 borderRadius: 100,
-                marginRight: 14,
                 ...Platform.select({
                   ios: {
                     shadowColor: 'black',
