@@ -66,7 +66,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
             style={{
               width: width,
             }}
-            mode='parallax'
+            // mode='parallax'
             modeConfig={{
               parallaxScrollingScale: 0.9,
               parallaxScrollingOffset: 45,
@@ -88,7 +88,7 @@ export const CarouselContents: React.FC<CarouselContentsProps> = ({ post }) => {
               size={8}
               dotStyle={{
                 borderRadius: 100,
-                backgroundColor: '#262626',
+                backgroundColor: 'rgb(50,50,50)',
               }}
               activeDotStyle={{
                 borderRadius: 100,

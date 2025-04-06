@@ -81,11 +81,11 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
   };
 
   const onReactionOptionPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
     setIsReactedByCurrentUser(true);
     setCurrentCount((previousCurrentCount) => previousCurrentCount + 1);
     startAnimation();
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
   return (
@@ -113,14 +113,14 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
           borderRadius: reactionContainerWidth / 2,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: reactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
+          backgroundColor: isReactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
           marginBottom: 4,
         }}
         onPress={() => {
           // incrementReactionMutate({ postId: postId, reactionId: reaction._id, userId: auth._id });
           onReactionOptionPress();
         }}
-        disabled={reactedByCurrentUser}
+        disabled={isReactedByCurrentUser}
       >
         {reaction.type === 'emoji' ? (
           <View>
@@ -147,7 +147,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
                   position: 'absolute',
                   top: -20,
                   right: -20,
-                  backgroundColor: reactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
+                  backgroundColor: isReactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
                   width: 30,
                   height: 30,
                   borderRadius: 15,
@@ -185,7 +185,7 @@ export const ReactionOption: React.FC<IReactionOptionProps> = ({
                   position: 'absolute',
                   top: -20,
                   right: -20,
-                  backgroundColor: reactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
+                  backgroundColor: isReactedByCurrentUser ? 'rgb(32, 178, 29)' : 'rgb(50,50,50)',
                   width: 30,
                   height: 30,
                   borderRadius: 15,
