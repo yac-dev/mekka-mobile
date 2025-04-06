@@ -107,19 +107,31 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
         </View>
       )}
       {post.contents.length > 1 ? (
-        // <View>
-        <VectorIcon.FD
-          name='page-multiple'
-          size={15}
-          color='white'
+        <View
           style={{
             position: 'absolute',
-            right: 10,
-            top: 10,
+            right: 3,
+            top: 3,
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 100,
+            width: 20,
+            height: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-        />
-      ) : // </View>
-      null}
+        >
+          <VectorIcon.FD
+            name='page-multiple'
+            size={12}
+            color='white'
+            // style={{
+            //   position: 'absolute',
+            //   right: 10,
+            //   top: 10,
+            // }}
+          />
+        </View>
+      ) : null}
     </TouchableOpacity>
   );
 };
