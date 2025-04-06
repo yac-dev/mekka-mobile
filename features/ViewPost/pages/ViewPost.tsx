@@ -141,7 +141,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
                 {currentPost.createdBy.name}
               </Text>
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 11, fontWeight: 'bold' }}>
+              <Text style={{ color: 'rgb(200,200,200)', fontSize: 11, fontWeight: 'bold' }}>
                 {timeSince(new Date(currentPost.createdAt))}
               </Text>
             </View>
