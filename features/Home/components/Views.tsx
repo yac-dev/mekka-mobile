@@ -121,17 +121,19 @@ export const Views: React.FC<{
         animationEnabled={false}
         swipeEnabled={false}
       />
-      {/* <TouchableOpacity
+      <View
         style={{
+          flexDirection: 'column',
+          alignItems: 'center',
           position: 'absolute',
-          bottom: 85,
+          bottom: 65,
           left: 10,
-          width: 46,
-          height: 46,
-          backgroundColor: 'rgb(50,50,50)',
+          width: 50,
+          paddingVertical: 12,
+          gap: 8,
+          backgroundColor: 'rgb(35,35,35)',
           borderRadius: 100,
           justifyContent: 'center',
-          alignItems: 'center',
           ...Platform.select({
             ios: {
               shadowColor: 'black',
@@ -144,26 +146,51 @@ export const Views: React.FC<{
             },
           }),
         }}
-        onPress={() => openChooseViewBottomSheet(0)}
       >
-        {index === 0 ? (
-          <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
-        ) : (
+        <TouchableOpacity
+          style={{
+            height: 35,
+            width: 35,
+            backgroundColor: index === 1 ? 'rgb(60,60,60)' : 'rgb(35,35,35)',
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setIndex(1);
+          }}
+        >
           <ExpoImage
             style={{ width: 20, height: 20 }}
             source={Icons.globe}
             contentFit='contain'
             tintColor={Colors.white}
           />
-        )}
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            height: 35,
+            width: 35,
+            backgroundColor: index === 0 ? 'rgb(60,60,60)' : 'rgb(35,35,35)',
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setIndex(0);
+          }}
+        >
+          <VectorIcon.FI name='nav-icon-grid' size={12} color={'white'} />
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity
         style={{
           position: 'absolute',
           bottom: 85,
           right: 10,
-          width: 46,
-          height: 46,
+          width: 40,
+          height: 40,
           backgroundColor: 'rgb(50,50,50)',
           borderRadius: 100,
           justifyContent: 'center',
@@ -187,7 +214,7 @@ export const Views: React.FC<{
         }}
       >
         <VectorIcon.MCI name='plus' size={25} color={'white'} />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       {/* <View
         style={{
           width: 160,

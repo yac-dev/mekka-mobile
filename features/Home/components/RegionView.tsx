@@ -449,7 +449,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
                 </View>
               </TouchableOpacity>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{
                     marginRight: 10,
                     width: 38,
@@ -477,7 +477,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   }}
                 >
                   <VectorIcon.MCI name='plus' size={25} color={'white'} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
                     marginRight: 10,
@@ -527,7 +527,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
                     </View>
                   ) : null}
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{
                     width: 38,
                     height: 38,
@@ -561,7 +561,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
                       tintColor={Colors.white}
                     />
                   )}
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>

@@ -268,7 +268,7 @@ export const Space: React.FC<ISpace> = ({
               </TouchableOpacity>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{
                     marginRight: 10,
                     width: 38,
@@ -296,7 +296,7 @@ export const Space: React.FC<ISpace> = ({
                   }}
                 >
                   <VectorIcon.MCI name='plus' size={25} color={'white'} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                   style={{
                     marginRight: 10,
@@ -347,7 +347,7 @@ export const Space: React.FC<ISpace> = ({
                     </View>
                   ) : null}
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={{
                     width: 38,
                     height: 38,
@@ -382,7 +382,7 @@ export const Space: React.FC<ISpace> = ({
                       tintColor={Colors.white}
                     />
                   )}
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
             {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
