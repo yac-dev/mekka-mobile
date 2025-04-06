@@ -126,13 +126,13 @@ export const Views: React.FC<{
           flexDirection: 'column',
           alignItems: 'center',
           position: 'absolute',
-          bottom: 10,
+          bottom: 25,
           left: 10,
           paddingVertical: 8,
           paddingHorizontal: 6,
           gap: 8,
           backgroundColor: 'rgb(35,35,35)',
-          borderRadius: 18,
+          borderRadius: 16,
           justifyContent: 'center',
           ...Platform.select({
             ios: {
@@ -187,7 +187,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 10,
+          bottom: 25,
           right: 10,
           width: 40,
           height: 40,

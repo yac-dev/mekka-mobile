@@ -244,7 +244,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
         initialScrollIndex={index}
         estimatedItemSize={Dimensions.get('window').height}
       />
-      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 10, right: 10 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', bottom: 25, right: 10 }}>
         {currentSpace.isCommentAvailable && (
           <View>
             <AppButton.Icon
@@ -349,7 +349,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
           borderRadius: 100,
           position: 'absolute',
           left: 10,
-          bottom: 10,
+          bottom: 25,
           ...Platform.select({
             ios: {
               shadowColor: 'black',

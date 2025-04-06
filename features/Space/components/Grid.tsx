@@ -154,7 +154,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         onMomentumScrollEnd={() => {
           fetchNextPage();
         }}
-        ListHeaderComponent={<View style={{ height: 100 }} />}
+        ListHeaderComponent={<View style={{ height: 105 }} />}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{
@@ -162,7 +162,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         }}
       />
       {isRefetchingPostsByTagId && (
-        <View style={{ position: 'absolute', top: 110, right: 10 }}>
+        <View style={{ position: 'absolute', top: 120, right: 10 }}>
           <ActivityIndicator size='small' color='white' />
         </View>
       )}

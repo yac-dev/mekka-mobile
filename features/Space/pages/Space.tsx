@@ -240,7 +240,7 @@ export const Space: React.FC<ISpace> = ({
           'transparent',
         ]}
       >
-        <View style={{ height: 100 }}>
+        <View style={{ height: 105 }}>
           <View
             style={{
               flexDirection: 'column',
