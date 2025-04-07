@@ -67,6 +67,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
   const cameraRef = useRef(null);
   // 2回目以降のquery後に関しては、camera flyをさせたくないんだよね。
   // userが手で動かしてきた場合には、camera近づけはさせない。。？
+  console.log('currentRegion', currentRegion);
 
   const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
 
@@ -92,47 +93,40 @@ export const RegionView: React.FC<RegionViewProps> = ({
   const mapRef = useRef<Mapbox.MapView>(null);
   const scrollViewRef = useRef(null);
 
-  const onMapIdle = (feature: Mapbox.MapState) => {
-    const { bounds } = feature.properties;
-    const [neLng, neLat] = bounds.ne;
-    const [swLng, swLat] = bounds.sw;
+  // const onMapIdle = (feature: Mapbox.MapState) => {
+  //   const { bounds } = feature.properties;
+  //   const [neLng, neLat] = bounds.ne;
+  //   const [swLng, swLat] = bounds.sw;
 
-    const latitudeDelta = neLat - swLat;
-    const longitudeDelta = neLng - swLng;
+  //   const latitudeDelta = neLat - swLat;
+  //   const longitudeDelta = neLng - swLng;
 
-    // getPostsByTagIdAndRegion({
-    //   tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
-    //   region: {
-    //     latitude: feature.properties.center[1],
-    //     longitude: feature.properties.center[0],
-    //     latitudeDelta: latitudeDelta,
-    //     longitudeDelta: longitudeDelta,
-    //   },
-    // });
-    setCurrentRegion({
-      latitude: feature.properties.center[1],
-      longitude: feature.properties.center[0],
-      latitudeDelta: latitudeDelta,
-      longitudeDelta: longitudeDelta,
-    });
-  };
+  //   setCurrentRegion({
+  //     latitude: feature.properties.center[1],
+  //     longitude: feature.properties.center[0],
+  //     latitudeDelta: latitudeDelta,
+  //     longitudeDelta: longitudeDelta,
+  //   });
+  // };
 
   useEffect(() => {
     scrollToCenter();
   }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
 
-  // TODO
-  // useEffect(() => {
-  //   if (currentRegion) {
-  //     // refetchPostsByTagIdAndRegion();
-  //     cameraRef.current?.setCamera({
-  //       centerCoordinate: [currentRegion.longitude, currentRegion.latitude],
-  //       zoomLevel: 5,
-  //       animationDuration: 400,
-  //       animationMode: 'flyTo',
-  //     });
-  //   }
-  // }, [currentRegion]);
+  // TODO いまはこれでいいやもう。。。
+  useEffect(() => {
+    if (postsByTagIdAndRegionStatus === 'success') {
+      cameraRef.current?.setCamera({
+        centerCoordinate: [
+          postsByTagIdAndRegionData.posts[0].location.coordinates[0],
+          postsByTagIdAndRegionData.posts[0].location.coordinates[1],
+        ],
+        zoomLevel: 1.5,
+        animationDuration: 600,
+        animationMode: 'flyTo',
+      });
+    }
+  }, [postsByTagIdAndRegionStatus]);
 
   const onSpacePress = (item: SpaceType, index: number) => {
     setCurrentSpace(item);
@@ -421,7 +415,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
         styleURL='mapbox://styles/yabbee/cl93j1d3a000714ntdoue4ucq'
         // onRegionDidChange={(feature) => onRegionChangeComplete(feature)}
         regionDidChangeDebounceTime={100}
-        onMapIdle={onMapIdle}
+        // onMapIdle={onMapIdle}
       >
         <View style={{ height: 100 }}>
           <View
@@ -526,7 +520,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
         <Camera
           ref={cameraRef}
           defaultSettings={{
-            centerCoordinate: currentRegion ? [currentRegion.longitude, currentRegion.latitude] : [-122.4324, 37.78825],
+            // centerCoordinate: currentRegion ? [currentRegion.longitude, currentRegion.latitude] : [-122.4324, 37.78825],
             zoomLevel: 0.2,
             animationMode: 'flyTo',
             animationDuration: 1100,
