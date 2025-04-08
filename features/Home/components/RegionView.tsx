@@ -115,7 +115,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
 
   // TODO いまはこれでいいやもう。。。
   useEffect(() => {
-    if (postsByTagIdAndRegionStatus === 'success') {
+    if (postsByTagIdAndRegionStatus === 'success' && postsByTagIdAndRegionData?.posts.length) {
       cameraRef.current?.setCamera({
         centerCoordinate: [
           postsByTagIdAndRegionData.posts[0].location.coordinates[0],
@@ -238,6 +238,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
 
   const renderTab = ({ item, index }) => {
     const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
+    const logCount = logsTable[currentSpace._id][item._id];
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity
@@ -277,6 +278,23 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
+            {logCount ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -5,
+                  right: -6,
+                  backgroundColor: 'red',
+                  borderRadius: 10,
+                  width: 16,
+                  height: 16,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 12 }}>{logCount}</Text>
+              </View>
+            ) : null}
           </View>
         </TouchableOpacity>
       </View>
@@ -417,13 +435,13 @@ export const RegionView: React.FC<RegionViewProps> = ({
         regionDidChangeDebounceTime={100}
         // onMapIdle={onMapIdle}
       >
-        <View style={{ height: 100 }}>
+        <View style={{ height: 105 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
               paddingTop: 8,
-              paddingBottom: 12,
+              paddingBottom: 8,
             }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -514,7 +532,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
+            contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}
           />
         </View>
         <Camera

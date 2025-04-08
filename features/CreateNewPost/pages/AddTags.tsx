@@ -39,7 +39,7 @@ const AddTags: React.FC<IAddTags> = ({ route }) => {
 
   const renderTagOptions = () => {
     // Use slice(1) to create a new array without the first element
-    const list = tagOptions.slice(1).map((tag: TagOptionType, index: number) => {
+    const list = tagOptions.map((tag: TagOptionType, index: number) => {
       return (
         <TouchableOpacity
           activeOpacity={0.7}
