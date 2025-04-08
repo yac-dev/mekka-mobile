@@ -130,19 +130,7 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [isImagePickerOpen, setIsImagePickerOpen] = useState(false);
 
-  // Create initial form data with the first tag
-  const getInitialFormData = (): FormDataType => {
-    const firstTag = currentSpace.tags[0];
-    return {
-      ...initialFormData,
-      addedTagsTable: {
-        value: { [firstTag._id]: firstTag },
-        isValidated: true,
-      },
-    };
-  };
-
-  const [formData, setFormData] = useState<FormDataType>(getInitialFormData());
+  const [formData, setFormData] = useState<FormDataType>(initialFormData);
   const [tagOptions, setTagOptions] = useState<TagOptionType[]>(currentSpace.tags);
   const { apiResult, requestApi } = useGetTagIcons();
   const createNewPostFlashMessageRef = useRef<FlashMessage>(null);

@@ -145,22 +145,22 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const onSubmitPress = async () => {
     route.params.handleNavigation();
 
-    const compressContent = async (content: BufferContentType) => {
-      const { type, uri } = content;
-      if (type === 'video/mp4') {
-        const result = await VideoCompressor.compress(uri, {
-          progressDivider: 20,
-          maxSize: 1920,
-          compressionMethod: 'manual',
-        });
-        return { ...content, uri: result };
-      }
-      return content;
-    };
+    // const compressContent = async (content: BufferContentType) => {
+    //   const { type, uri } = content;
+    //   if (type === 'video/mp4') {
+    //     const result = await VideoCompressor.compress(uri, {
+    //       progressDivider: 20,
+    //       maxSize: 1920,
+    //       compressionMethod: 'manual',
+    //     });
+    //     return { ...content, uri: result };
+    //   }
+    //   return content;
+    // };
 
-    const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
-      formData.bufferContents.value.map(compressContent)
-    );
+    // const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
+    //   formData.bufferContents.value.map(compressContent)
+    // );
 
     const input: CreatePostInputType = {
       ...formData,
@@ -168,12 +168,13 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       spaceId: currentSpace._id,
       reactions: currentSpace.reactions,
       disappearAfter: currentSpace.disappearAfter.toString(),
-      bufferContents: {
-        value: bufferContentsAfterCompressor,
-        isValidated: true,
-      },
+      // bufferContents: {
+      //   value: bufferContentsAfterCompressor,
+      //   isValidated: true,
+      // },
     };
-    createPostMutate(input);
+    // createPostMutate(input);
+    console.log('formData', input);
   };
 
   useEffect(() => {
@@ -348,14 +349,12 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
 
   const renderTagTexts = (): string => {
     let tagString: string = '';
-    Object.values(formData.addedTagsTable.value)
-      .slice(1)
-      .forEach((tag, index) => {
-        tagString += tag.name;
-        if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
-          tagString += ',';
-        }
-      });
+    Object.values(formData.addedTagsTable.value).forEach((tag, index) => {
+      tagString += tag.name;
+      if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
+        tagString += ',';
+      }
+    });
     return tagString;
   };
 
