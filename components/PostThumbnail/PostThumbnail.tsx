@@ -43,9 +43,15 @@ type PostThumbnailProps = {
   post: PostType;
   index: number;
   onPressPostThumbnail: (post: PostType, index: number) => void;
+  hasViewedByCurrentUser?: boolean;
 };
 
-export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPressPostThumbnail }) => {
+export const PostThumbnail: React.FC<PostThumbnailProps> = ({
+  post,
+  index,
+  onPressPostThumbnail,
+  hasViewedByCurrentUser,
+}) => {
   const [isLoading, setIsLoading] = useState(true); // statelessであるべきだが、これは特別。
   const { hours, minutes } = calculateLeftTime(post.disappearAt);
   const videoRef = useRef(null);
@@ -53,6 +59,9 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
   const handleImageLoad = () => {
     setIsLoading(false);
   };
+
+  console.log('post.createdAt', post.createdAt);
+  console.log('currentSpace.lastCheckedIn');
 
   return (
     <TouchableOpacity
@@ -120,18 +129,22 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({ post, index, onPre
             alignItems: 'center',
           }}
         >
-          <VectorIcon.MCI
-            name='image-multiple'
-            size={12}
-            color='white'
-            // style={{
-            //   position: 'absolute',
-            //   right: 10,
-            //   top: 10,
-            // }}
-          />
+          <VectorIcon.MCI name='image-multiple' size={12} color='white' />
         </View>
       ) : null}
+      {/* {!hasViewedByCurrentUser && (
+        <View
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            backgroundColor: 'red',
+            borderRadius: 100,
+            width: 20,
+            height: 20,
+          }}
+        />
+      )} */}
     </TouchableOpacity>
   );
 };

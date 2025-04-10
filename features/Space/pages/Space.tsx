@@ -217,6 +217,62 @@ export const Space: React.FC<ISpace> = ({
                 <Text style={{ color: 'white', fontSize: 12 }}>{logCount}</Text>
               </View>
             ) : null}
+            {item.type.length === 1 && item.type[0] === 'photo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -5,
+                  right: -6,
+                  backgroundColor: 'black',
+                  borderRadius: 10,
+                  width: 16,
+                  height: 16,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(50,50,50)',
+                    width: 16,
+                    height: 16,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <VectorIcon.MI name='photo-library' size={11} color='white' />
+                </View>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'video' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -6,
+                  backgroundColor: 'black',
+                  borderRadius: 10,
+                  width: 20,
+                  height: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(50,50,50)',
+                    width: 16,
+                    height: 16,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <VectorIcon.MCI name='video' size={12} color='white' />
+                </View>
+              </View>
+            ) : null}
           </View>
         </TouchableOpacity>
       </View>

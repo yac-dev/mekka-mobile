@@ -44,6 +44,7 @@ export type TagType = {
   space: SpaceType;
   updatedAt: string;
   createdBy: UserType;
+  type: string[]; // ['photo', 'video']
 };
 
 export type MapRegionType = {
@@ -150,6 +151,7 @@ export type SpaceType = {
   createdAt: string;
   updatedAt: string;
   tags: TagType[];
+  lastCheckedIn: string;
 };
 
 export type SpaceAndUserRelationshipType = {
