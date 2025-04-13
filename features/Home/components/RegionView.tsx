@@ -22,7 +22,7 @@ import {
   currentTagsTableBySpaceIdsAtom,
   authAtom,
 } from '../../../recoil';
-import { PostType, SpaceType } from '../../../types';
+import { PostType, SpaceType, TagType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
@@ -236,7 +236,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
     });
   };
 
-  const renderTab = ({ item, index }) => {
+  const renderTab = ({ item, index }: { item: TagType; index: number }) => {
     const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
     const logCount = logsTable[currentSpace._id][item._id];
     return (
@@ -293,6 +293,72 @@ export const RegionView: React.FC<RegionViewProps> = ({
                 }}
               >
                 <Text style={{ color: 'white', fontSize: 12 }}>{logCount}</Text>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'photo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -8,
+                  backgroundColor: 'rgb(30,30,30)',
+                  borderRadius: 10,
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(30,30,30)',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/photo.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
+                </View>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'video' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -8,
+                  backgroundColor: 'rgb(30,30,30)',
+                  borderRadius: 10,
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(30,30,30)',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/video.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
+                </View>
               </View>
             ) : null}
           </View>

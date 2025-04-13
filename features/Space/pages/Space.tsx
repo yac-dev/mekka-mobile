@@ -176,7 +176,7 @@ export const Space: React.FC<ISpace> = ({
               alignItems: 'center',
               marginRight: 10,
               padding: 5,
-              paddingHorizontal: 10,
+              paddingHorizontal: 12,
               backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
               borderRadius: 130,
               ...Platform.select({
@@ -221,12 +221,12 @@ export const Space: React.FC<ISpace> = ({
               <View
                 style={{
                   position: 'absolute',
-                  bottom: -5,
-                  right: -6,
+                  bottom: -7,
+                  right: -8,
                   backgroundColor: 'black',
                   borderRadius: 10,
-                  width: 16,
-                  height: 16,
+                  width: 22,
+                  height: 22,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
@@ -234,14 +234,19 @@ export const Space: React.FC<ISpace> = ({
                 <View
                   style={{
                     backgroundColor: 'rgb(50,50,50)',
-                    width: 16,
-                    height: 16,
+                    width: 18,
+                    height: 18,
                     borderRadius: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.MI name='photo-library' size={11} color='white' />
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/photo.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
                 </View>
               </View>
             ) : null}
@@ -250,11 +255,11 @@ export const Space: React.FC<ISpace> = ({
                 style={{
                   position: 'absolute',
                   bottom: -7,
-                  right: -6,
+                  right: -8,
                   backgroundColor: 'black',
                   borderRadius: 10,
-                  width: 20,
-                  height: 20,
+                  width: 22,
+                  height: 22,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
@@ -262,14 +267,19 @@ export const Space: React.FC<ISpace> = ({
                 <View
                   style={{
                     backgroundColor: 'rgb(50,50,50)',
-                    width: 16,
-                    height: 16,
+                    width: 18,
+                    height: 18,
                     borderRadius: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
                 >
-                  <VectorIcon.MCI name='video' size={12} color='white' />
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/video.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
                 </View>
               </View>
             ) : null}
