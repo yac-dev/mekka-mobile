@@ -539,56 +539,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   </Text>
                 </View>
               </TouchableOpacity>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity
-                  style={{
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  onPress={() => {
-                    homeStackNavigation.navigate('MomentsStackNavigator');
-                  }}
-                >
-                  <ExpoImage
-                    style={{ width: 20, height: 20 }}
-                    source={require('../../../assets/forApp/ghost.png')}
-                    contentFit='contain'
-                    tintColor={Colors.white}
-                  />
-                  {momentLogs[currentSpace._id] ? (
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: -3,
-                        right: -5,
-                        width: 16,
-                        height: 16,
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'red',
-                      }}
-                    >
-                      <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
-                    </View>
-                  ) : null}
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
           <FlatList
@@ -599,6 +549,57 @@ export const RegionView: React.FC<RegionViewProps> = ({
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
             contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}
+            ListHeaderComponent={
+              <TouchableOpacity
+                style={{
+                  padding: 5,
+                  marginRight: 10,
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  ...Platform.select({
+                    ios: {
+                      shadowColor: 'black',
+                      shadowOffset: { width: 5, height: 5 },
+                      shadowOpacity: 0.5,
+                      shadowRadius: 8,
+                    },
+                    android: {
+                      elevation: 5,
+                    },
+                  }),
+                }}
+                onPress={() => {
+                  homeStackNavigation.navigate('MomentsStackNavigator');
+                }}
+                activeOpacity={0.7}
+              >
+                <ExpoImage
+                  style={{ width: 20, height: 20 }}
+                  source={require('../../../assets/forApp/ghost.png')}
+                  contentFit='contain'
+                  tintColor={Colors.white}
+                />
+                {momentLogs[currentSpace._id] ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -5,
+                      right: -8,
+                      width: 16,
+                      height: 16,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'red',
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
+                  </View>
+                ) : null}
+              </TouchableOpacity>
+            }
           />
         </View>
         <Camera
