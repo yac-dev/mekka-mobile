@@ -43,7 +43,7 @@ export const MomentSkelton = () => {
   }, [opacity]);
 
   return (
-    <View style={{ width: momentWidth, aspectRatio: 1, marginRight: 10, borderRadius: 14 }}>
+    <View style={{ width: width, aspectRatio: 1, marginRight: 10, borderRadius: 14 }}>
       <Animated.View
         style={{
           opacity: opacity.current,

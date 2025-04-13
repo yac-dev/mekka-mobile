@@ -22,7 +22,7 @@ import {
   currentTagsTableBySpaceIdsAtom,
   authAtom,
 } from '../../../recoil';
-import { PostType, SpaceType } from '../../../types';
+import { PostType, SpaceType, TagType } from '../../../types';
 import { Image as ExpoImage } from 'expo-image';
 import Mapbox, { Camera, MarkerView } from '@rnmapbox/maps';
 import { useNavigation } from '@react-navigation/native';
@@ -67,6 +67,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
   const cameraRef = useRef(null);
   // 2回目以降のquery後に関しては、camera flyをさせたくないんだよね。
   // userが手で動かしてきた場合には、camera近づけはさせない。。？
+  console.log('currentRegion', currentRegion);
 
   const homeDrawerNavigation = useNavigation<HomeDrawerNavigatorProps>();
 
@@ -92,47 +93,40 @@ export const RegionView: React.FC<RegionViewProps> = ({
   const mapRef = useRef<Mapbox.MapView>(null);
   const scrollViewRef = useRef(null);
 
-  const onMapIdle = (feature: Mapbox.MapState) => {
-    const { bounds } = feature.properties;
-    const [neLng, neLat] = bounds.ne;
-    const [swLng, swLat] = bounds.sw;
+  // const onMapIdle = (feature: Mapbox.MapState) => {
+  //   const { bounds } = feature.properties;
+  //   const [neLng, neLat] = bounds.ne;
+  //   const [swLng, swLat] = bounds.sw;
 
-    const latitudeDelta = neLat - swLat;
-    const longitudeDelta = neLng - swLng;
+  //   const latitudeDelta = neLat - swLat;
+  //   const longitudeDelta = neLng - swLng;
 
-    // getPostsByTagIdAndRegion({
-    //   tagId: currentTagsTableBySpaceIds[currentSpace._id]._id,
-    //   region: {
-    //     latitude: feature.properties.center[1],
-    //     longitude: feature.properties.center[0],
-    //     latitudeDelta: latitudeDelta,
-    //     longitudeDelta: longitudeDelta,
-    //   },
-    // });
-    setCurrentRegion({
-      latitude: feature.properties.center[1],
-      longitude: feature.properties.center[0],
-      latitudeDelta: latitudeDelta,
-      longitudeDelta: longitudeDelta,
-    });
-  };
+  //   setCurrentRegion({
+  //     latitude: feature.properties.center[1],
+  //     longitude: feature.properties.center[0],
+  //     latitudeDelta: latitudeDelta,
+  //     longitudeDelta: longitudeDelta,
+  //   });
+  // };
 
   useEffect(() => {
     scrollToCenter();
   }, [currentTagsTableBySpaceIds, itemWidths, currentSpace.tags.length]);
 
-  // TODO
-  // useEffect(() => {
-  //   if (currentRegion) {
-  //     // refetchPostsByTagIdAndRegion();
-  //     cameraRef.current?.setCamera({
-  //       centerCoordinate: [currentRegion.longitude, currentRegion.latitude],
-  //       zoomLevel: 5,
-  //       animationDuration: 400,
-  //       animationMode: 'flyTo',
-  //     });
-  //   }
-  // }, [currentRegion]);
+  // TODO いまはこれでいいやもう。。。
+  useEffect(() => {
+    if (postsByTagIdAndRegionStatus === 'success' && postsByTagIdAndRegionData?.posts.length) {
+      cameraRef.current?.setCamera({
+        centerCoordinate: [
+          postsByTagIdAndRegionData.posts[0].location.coordinates[0],
+          postsByTagIdAndRegionData.posts[0].location.coordinates[1],
+        ],
+        zoomLevel: 1.5,
+        animationDuration: 600,
+        animationMode: 'flyTo',
+      });
+    }
+  }, [postsByTagIdAndRegionStatus]);
 
   const onSpacePress = (item: SpaceType, index: number) => {
     setCurrentSpace(item);
@@ -242,8 +236,9 @@ export const RegionView: React.FC<RegionViewProps> = ({
     });
   };
 
-  const renderTab = ({ item, index }) => {
+  const renderTab = ({ item, index }: { item: TagType; index: number }) => {
     const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
+    const logCount = logsTable[currentSpace._id][item._id];
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity
@@ -283,6 +278,89 @@ export const RegionView: React.FC<RegionViewProps> = ({
             <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
+            {logCount ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -5,
+                  right: -6,
+                  backgroundColor: 'red',
+                  borderRadius: 10,
+                  width: 16,
+                  height: 16,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 12 }}>{logCount}</Text>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'photo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -8,
+                  backgroundColor: 'black',
+                  borderRadius: 10,
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(30,30,30)',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/photo.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
+                </View>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'video' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -8,
+                  backgroundColor: 'black',
+                  borderRadius: 10,
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(30,30,30)',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/video.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
+                </View>
+              </View>
+            ) : null}
           </View>
         </TouchableOpacity>
       </View>
@@ -421,15 +499,15 @@ export const RegionView: React.FC<RegionViewProps> = ({
         styleURL='mapbox://styles/yabbee/cl93j1d3a000714ntdoue4ucq'
         // onRegionDidChange={(feature) => onRegionChangeComplete(feature)}
         regionDidChangeDebounceTime={100}
-        onMapIdle={onMapIdle}
+        // onMapIdle={onMapIdle}
       >
-        <View style={{ height: 100 }}>
+        <View style={{ height: 105 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
               paddingTop: 8,
-              paddingBottom: 12,
+              paddingBottom: 8,
             }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -461,56 +539,6 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   </Text>
                 </View>
               </TouchableOpacity>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity
-                  style={{
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  onPress={() => {
-                    homeStackNavigation.navigate('MomentsStackNavigator');
-                  }}
-                >
-                  <ExpoImage
-                    style={{ width: 20, height: 20 }}
-                    source={require('../../../assets/forApp/ghost.png')}
-                    contentFit='contain'
-                    tintColor={Colors.white}
-                  />
-                  {momentLogs[currentSpace._id] ? (
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: -3,
-                        right: -5,
-                        width: 16,
-                        height: 16,
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'red',
-                      }}
-                    >
-                      <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
-                    </View>
-                  ) : null}
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
           <FlatList
@@ -520,13 +548,64 @@ export const RegionView: React.FC<RegionViewProps> = ({
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
+            contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}
+            ListHeaderComponent={
+              <TouchableOpacity
+                style={{
+                  padding: 5,
+                  marginRight: 10,
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  ...Platform.select({
+                    ios: {
+                      shadowColor: 'black',
+                      shadowOffset: { width: 5, height: 5 },
+                      shadowOpacity: 0.5,
+                      shadowRadius: 8,
+                    },
+                    android: {
+                      elevation: 5,
+                    },
+                  }),
+                }}
+                onPress={() => {
+                  homeStackNavigation.navigate('MomentsStackNavigator');
+                }}
+                activeOpacity={0.7}
+              >
+                <ExpoImage
+                  style={{ width: 20, height: 20 }}
+                  source={require('../../../assets/forApp/ghost.png')}
+                  contentFit='contain'
+                  tintColor={Colors.white}
+                />
+                {momentLogs[currentSpace._id] ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -5,
+                      right: -8,
+                      width: 16,
+                      height: 16,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'red',
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
+                  </View>
+                ) : null}
+              </TouchableOpacity>
+            }
           />
         </View>
         <Camera
           ref={cameraRef}
           defaultSettings={{
-            centerCoordinate: currentRegion ? [currentRegion.longitude, currentRegion.latitude] : [-122.4324, 37.78825],
+            // centerCoordinate: currentRegion ? [currentRegion.longitude, currentRegion.latitude] : [-122.4324, 37.78825],
             zoomLevel: 0.2,
             animationMode: 'flyTo',
             animationDuration: 1100,

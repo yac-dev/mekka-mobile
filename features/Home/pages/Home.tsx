@@ -87,6 +87,7 @@ export const Home: React.FC<HomeProps> = ({ openAppBlogWebviewBottomSheet }) => 
   // }, [mySpaces]);
 
   // homeに関してはここで制御せんとかん。
+  console.log('myspaces', mySpaces);
   useEffect(() => {
     if (createPostStatus === 'pending') {
       showMessage({ type: 'info', message: 'Processing now...' });

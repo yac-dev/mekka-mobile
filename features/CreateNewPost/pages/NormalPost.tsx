@@ -34,6 +34,7 @@ import { currentTagsTableBySpaceIdsAtom } from '../../../recoil';
 const oneAssetWidth = Dimensions.get('window').width / 3;
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance, Pagination } from 'react-native-reanimated-carousel';
+import { Colors } from '../../../themes';
 
 // create用のやつが反映されてないな。。。
 
@@ -145,22 +146,22 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const onSubmitPress = async () => {
     route.params.handleNavigation();
 
-    const compressContent = async (content: BufferContentType) => {
-      const { type, uri } = content;
-      if (type === 'video/mp4') {
-        const result = await VideoCompressor.compress(uri, {
-          progressDivider: 20,
-          maxSize: 1920,
-          compressionMethod: 'manual',
-        });
-        return { ...content, uri: result };
-      }
-      return content;
-    };
+    // const compressContent = async (content: BufferContentType) => {
+    //   const { type, uri } = content;
+    //   if (type === 'video/mp4') {
+    //     const result = await VideoCompressor.compress(uri, {
+    //       progressDivider: 20,
+    //       maxSize: 1920,
+    //       compressionMethod: 'manual',
+    //     });
+    //     return { ...content, uri: result };
+    //   }
+    //   return content;
+    // };
 
-    const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
-      formData.bufferContents.value.map(compressContent)
-    );
+    // const bufferContentsAfterCompressor: BufferContentType[] = await Promise.all(
+    //   formData.bufferContents.value.map(compressContent)
+    // );
 
     const input: CreatePostInputType = {
       ...formData,
@@ -168,12 +169,13 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       spaceId: currentSpace._id,
       reactions: currentSpace.reactions,
       disappearAfter: currentSpace.disappearAfter.toString(),
-      bufferContents: {
-        value: bufferContentsAfterCompressor,
-        isValidated: true,
-      },
+      // bufferContents: {
+      //   value: bufferContentsAfterCompressor,
+      //   isValidated: true,
+      // },
     };
-    createPostMutate(input);
+    // createPostMutate(input);
+    console.log('formData', input);
   };
 
   useEffect(() => {
@@ -348,14 +350,12 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
 
   const renderTagTexts = (): string => {
     let tagString: string = '';
-    Object.values(formData.addedTagsTable.value)
-      .slice(1)
-      .forEach((tag, index) => {
-        tagString += tag.name;
-        if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
-          tagString += ',';
-        }
-      });
+    Object.values(formData.addedTagsTable.value).forEach((tag, index) => {
+      tagString += tag.name;
+      if (index !== Object.values(formData.addedTagsTable.value).length - 1) {
+        tagString += ',';
+      }
+    });
     return tagString;
   };
 
@@ -455,19 +455,71 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <MenuCell
-        onCellPress={() => createNewPostStackNavigation.navigate('AddTags')}
-        icon={<VectorIcon.OI name='hash' size={20} color='white' style={{ marginRight: 10 }} />}
-        title='Add Tags'
-        value={renderTagTexts()}
-        requirementText={!formData.addedTagsTable.isValidated ? 'Required' : undefined}
-      />
-      <MenuCell
-        onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
-        icon={<VectorIcon.II name='location-sharp' size={20} color='white' style={{ marginRight: 10 }} />}
-        title='Add Location'
-        value={''}
-      />
+      <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+        <MenuCell
+          onCellPress={() => createNewPostStackNavigation.navigate('AddTags')}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['red1'],
+                width: 32,
+                height: 32,
+                marginRight: 15,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.II name='pricetags' size={20} color={'white'} />
+            </View>
+          }
+          title='Add Tags'
+          value={renderTagTexts()}
+          requirementText={!formData.addedTagsTable.isValidated ? 'Please add at least one tag.' : undefined}
+        />
+        <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+        <MenuCell
+          onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['blue1'],
+                width: 32,
+                height: 32,
+                marginRight: 15,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.II name='location-sharp' size={20} color={'white'} />
+            </View>
+          }
+          title='Add Location'
+          value={''}
+        />
+        {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+        <MenuCell
+          onCellPress={() => createNewPostStackNavigation.navigate('AddLocation')}
+          icon={
+            <View
+              style={{
+                backgroundColor: Colors.iconColors['yellow1'],
+                width: 32,
+                height: 32,
+                marginRight: 15,
+                borderRadius: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <VectorIcon.II name='person-circle-outline' size={20} color={'white'} />
+            </View>
+          }
+          title='Add People'
+          value={''}
+        /> */}
+      </View>
     </ScrollView>
     // </KeyboardAvoidingView>
   );
@@ -481,39 +533,82 @@ type MenuCellProp = {
   requirementText?: string;
 };
 
-export const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, requirementText }) => {
+// export const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, requirementText }) => {
+//   return (
+//     <TouchableOpacity
+//       style={{
+//         paddingVertical: 15,
+//         paddingHorizontal: 10,
+//         flexDirection: 'row',
+//         alignItems: 'center',
+//         justifyContent: 'space-between',
+//         marginBottom: 5,
+//       }}
+//       onPress={onCellPress}
+//       activeOpacity={0.8}
+//     >
+//       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         {icon}
+//         <View>
+//           <Text style={{ color: 'white', fontSize: 17, marginBottom: requirementText !== undefined ? 0 : 4 }}>
+//             {title}
+//           </Text>
+//           {requirementText !== undefined && (
+//             <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>{requirementText}</Text>
+//           )}
+//         </View>
+//       </View>
+//       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         <Text
+//           numberOfLines={1}
+//           style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right', marginRight: 5, width: 150 }}
+//         >
+//           {value}
+//         </Text>
+//         <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+//       </View>
+//     </TouchableOpacity>
+//   );
+// };
+
+const MenuCell: React.FC<MenuCellProp> = ({ onCellPress, icon, title, value, requirementText }) => {
   return (
     <TouchableOpacity
       style={{
-        paddingVertical: 15,
-        paddingHorizontal: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 5,
       }}
       onPress={onCellPress}
       activeOpacity={0.8}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {icon}
-        <View>
-          <Text style={{ color: 'white', fontSize: 17, marginBottom: requirementText !== undefined ? 0 : 4 }}>
-            {title}
-          </Text>
-          {requirementText !== undefined && (
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 12 }}>{requirementText}</Text>
-          )}
+      {icon}
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+          <View>
+            <Text style={{ color: 'white', fontSize: 17 }}>{title}</Text>
+            {requirementText !== undefined ? (
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, marginTop: 4 }}>{requirementText}</Text>
+            ) : null}
+          </View>
         </View>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text
-          numberOfLines={1}
-          style={{ fontSize: 15, color: 'rgb(170,170,170)', textAlign: 'right', marginRight: 5, width: 150 }}
-        >
-          {value}
-        </Text>
-        <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            numberOfLines={1}
+            style={{ fontSize: 15, color: 'rgb(170,170,170)', marginRight: 5, width: 100, textAlign: 'right' }}
+          >
+            {value}
+          </Text>
+          <VectorIcon.MCI name='chevron-right' size={20} color='rgb(170,170,170)' />
+        </View>
       </View>
     </TouchableOpacity>
   );

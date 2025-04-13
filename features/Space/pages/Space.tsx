@@ -23,7 +23,7 @@ import { useRecoilValue } from 'recoil';
 import { createPostResultAtomFamily } from '../../../api/atoms';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilState } from 'recoil';
-import { currentSpaceAtom, currentTagAtom, momentLogsAtom } from '../../../recoil';
+import { currentSpaceAtom, currentTagAtom, momentLogsAtom, logsTableAtom } from '../../../recoil';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
 import { mutationKeys, queryKeys } from '../../../query';
@@ -63,6 +63,7 @@ export const Space: React.FC<ISpace> = ({
 }) => {
   const queryClient = useQueryClient();
   const [momentLogs] = useRecoilState(momentLogsAtom);
+  const [logsTable] = useRecoilState(logsTableAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTagsTableBySpaceIds, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
   const spaceStackNavigation = useNavigation<SpaceStackNavigatorProps>();
@@ -159,6 +160,7 @@ export const Space: React.FC<ISpace> = ({
 
   const renderTab = ({ item, index }) => {
     const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
+    const logCount = logsTable[currentSpace._id][item._id];
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity
@@ -174,7 +176,7 @@ export const Space: React.FC<ISpace> = ({
               alignItems: 'center',
               marginRight: 10,
               padding: 5,
-              paddingHorizontal: 10,
+              paddingHorizontal: 12,
               backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
               borderRadius: 130,
               ...Platform.select({
@@ -198,6 +200,89 @@ export const Space: React.FC<ISpace> = ({
             <Text numberOfLines={1} style={{ color: isFocused ? 'white' : 'rgb(170,170,170)', fontSize: 11 }}>
               {item.name}
             </Text>
+            {logCount ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -5,
+                  right: -6,
+                  backgroundColor: 'red',
+                  borderRadius: 10,
+                  width: 16,
+                  height: 16,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 12 }}>{logCount}</Text>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'photo' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -8,
+                  backgroundColor: 'black',
+                  borderRadius: 10,
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(50,50,50)',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/photo.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
+                </View>
+              </View>
+            ) : null}
+            {item.type.length === 1 && item.type[0] === 'video' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  right: -8,
+                  backgroundColor: 'black',
+                  borderRadius: 10,
+                  width: 22,
+                  height: 22,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: 'rgb(50,50,50)',
+                    width: 18,
+                    height: 18,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ExpoImage
+                    style={{ width: 14, height: 14 }}
+                    source={require('../../../assets/forApp/video.png')}
+                    contentFit='contain'
+                    tintColor='white'
+                  />
+                </View>
+              </View>
+            ) : null}
           </View>
         </TouchableOpacity>
       </View>
@@ -240,13 +325,13 @@ export const Space: React.FC<ISpace> = ({
           'transparent',
         ]}
       >
-        <View style={{ height: 100 }}>
+        <View style={{ height: 105 }}>
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
               paddingTop: 8,
-              paddingBottom: 12,
+              paddingBottom: 8,
             }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -279,40 +364,11 @@ export const Space: React.FC<ISpace> = ({
                 </View>
               </TouchableOpacity>
 
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <TouchableOpacity
-                  style={{
-                    marginRight: 10,
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    openAddNewPostMenuBottomSheet(0);
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  }}
-                >
-                  <VectorIcon.MCI name='plus' size={25} color={'white'} />
-                </TouchableOpacity> */}
+              {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity
                   style={{
-                    width: 38,
-                    height: 38,
+                    width: 30,
+                    height: 30,
                     backgroundColor: 'rgb(50,50,50)',
                     borderRadius: 100,
                     justifyContent: 'center',
@@ -334,67 +390,9 @@ export const Space: React.FC<ISpace> = ({
                   }}
                   activeOpacity={0.7}
                 >
-                  <ExpoImage
-                    style={{ width: 20, height: 20 }}
-                    source={require('../../../assets/forApp/ghost.png')}
-                    contentFit='contain'
-                    tintColor={Colors.white}
-                  />
-                  {momentLogs[currentSpace._id] ? (
-                    <View
-                      style={{
-                        position: 'absolute',
-                        top: -3,
-                        right: -5,
-                        width: 16,
-                        height: 16,
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'red',
-                      }}
-                    >
-                      <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
-                    </View>
-                  ) : null}
+                  <VectorIcon.MCI name='magnify' size={20} color={'white'} />
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                  style={{
-                    width: 38,
-                    height: 38,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  onPress={() => {
-                    openChooseViewBottomSheet(0);
-                  }}
-                  activeOpacity={0.7}
-                >
-                  {currentViewIndex === 0 ? (
-                    <VectorIcon.FI name='nav-icon-grid' size={15} color={'white'} />
-                  ) : (
-                    <ExpoImage
-                      style={{ width: 20, height: 20 }}
-                      source={Icons.globe}
-                      contentFit='contain'
-                      tintColor={Colors.white}
-                    />
-                  )}
-                </TouchableOpacity> */}
-              </View>
+              </View> */}
             </View>
           </View>
           <FlatList
@@ -404,7 +402,58 @@ export const Space: React.FC<ISpace> = ({
             data={currentSpace?.tags}
             renderItem={renderTab}
             keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
+            contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}
+            ListHeaderComponent={
+              <TouchableOpacity
+                style={{
+                  padding: 5,
+                  marginRight: 10,
+                  backgroundColor: 'rgb(50,50,50)',
+                  borderRadius: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  ...Platform.select({
+                    ios: {
+                      shadowColor: 'black',
+                      shadowOffset: { width: 5, height: 5 },
+                      shadowOpacity: 0.5,
+                      shadowRadius: 8,
+                    },
+                    android: {
+                      elevation: 5,
+                    },
+                  }),
+                }}
+                onPress={() => {
+                  homeStackNavigation.navigate('MomentsStackNavigator');
+                }}
+                activeOpacity={0.7}
+              >
+                <ExpoImage
+                  style={{ width: 20, height: 20 }}
+                  source={require('../../../assets/forApp/ghost.png')}
+                  contentFit='contain'
+                  tintColor={Colors.white}
+                />
+                {momentLogs[currentSpace._id] ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -5,
+                      right: -8,
+                      width: 16,
+                      height: 16,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: 'red',
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
+                  </View>
+                ) : null}
+              </TouchableOpacity>
+            }
           />
         </View>
         {/* <View
