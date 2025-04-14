@@ -160,7 +160,8 @@ export const Space: React.FC<ISpace> = ({
 
   const renderTab = ({ item, index }) => {
     const isFocused = currentTagsTableBySpaceIds[currentSpace._id]._id === item._id;
-    const logCount = logsTable[currentSpace._id][item._id];
+    const logCount = logsTable?.[currentSpace._id]?.[item._id];
+
     return (
       <View onLayout={(event) => onItemLayout(event, index)}>
         <TouchableOpacity
