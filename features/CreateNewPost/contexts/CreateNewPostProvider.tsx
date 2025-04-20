@@ -77,6 +77,7 @@ export type CreatedTagType = {
   name: string;
   color: string;
   created: boolean;
+  type: string[];
 };
 
 type AddedTagType = (TagType & { created?: boolean }) | CreatedTagType;
