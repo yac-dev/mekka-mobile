@@ -67,8 +67,8 @@ export const RootStackNavigator = () => {
   const [appState, setAppState] = useRecoilState(appStateAtom);
   const [, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
-  const [, setLogsTable] = useRecoilState(logsTableAtom);
-  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
+  const [logsTable, setLogsTable] = useRecoilState(logsTableAtom);
+  const [momentLogs, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const [, setCurrentTagsTableBySpaceIds] = useRecoilState(currentTagsTableBySpaceIdsAtom);
 
@@ -127,6 +127,10 @@ export const RootStackNavigator = () => {
     mutationKey: [mutationKeys.registerPushToken],
     mutationFn: (input: RegisterPushTokenInputType) => registerPushToken(input),
   });
+
+  console.log('logsTable', JSON.stringify(logsTable, null, 2));
+  console.log('momentLogs', momentLogs);
+  // spaeceのtagを0追加する感じかな。。。
 
   useEffect(() => {
     if (auth) {
