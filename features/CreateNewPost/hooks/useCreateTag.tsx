@@ -23,6 +23,7 @@ export const useCreateTag = () => {
     name: '',
     color: colors[Math.floor(Math.random() * colors.length)],
     created: true,
+    type: ['photo', 'video'],
   });
 
   const onCreatingTagNameChange = (text: string) => {

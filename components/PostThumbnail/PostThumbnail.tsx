@@ -88,7 +88,7 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({
       />
       {post.contents[0].type === 'video' && (
         <>
-          <View style={{ position: 'absolute', right: 5, top: 5 }}>
+          <View style={{ position: 'absolute', right: 5, bottom: 5 }}>
             <Text style={{ color: 'white', fontWeight: 'bold' }}>{millisecondsToTime(post.contents[0].duration)}</Text>
           </View>
         </>
