@@ -9,7 +9,14 @@ import { Image as ExpoImage } from 'expo-image';
 import { useJoinPublicSpaceByIdState } from '../hooks';
 import { showMessage } from 'react-native-flash-message';
 import { useRecoilState } from 'recoil';
-import { mySpacesAtom, currentSpaceAtom, authAtom, logsTableAtom, currentTagAtom } from '../../../recoil';
+import {
+  mySpacesAtom,
+  currentSpaceAtom,
+  authAtom,
+  logsTableAtom,
+  currentTagAtom,
+  momentLogsAtom,
+} from '../../../recoil';
 import { VectorIcon } from '../../../Icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getSpaceById } from '../../../query/queries';
@@ -31,6 +38,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
   const [, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [, setLogsTable] = useRecoilState(logsTableAtom);
+  const [, setMomentLogs] = useRecoilState(momentLogsAtom);
   const [, setCurrentTag] = useRecoilState(currentTagAtom);
   const { apiResult } = useGetSpaceByIdState();
 
@@ -50,6 +58,12 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
             [data.space._id]: {
               [data.space.tags[0]._id]: 0,
             },
+          };
+        });
+        setMomentLogs((previous) => {
+          return {
+            ...previous,
+            [data.space._id]: 0,
           };
         });
       }
