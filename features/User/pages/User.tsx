@@ -139,7 +139,7 @@ export const User: React.FC<IUser> = ({ userId }) => {
   useEffect(() => {
     userStackNavigation.setOptions({
       headerRight: () =>
-        userData?.user._id !== auth._id ? (
+        userId !== auth._id ? (
           <AppButton.Icon
             onButtonPress={() => moreOptionsBottomSheetRef.current?.snapToIndex(0)}
             customStyle={{
