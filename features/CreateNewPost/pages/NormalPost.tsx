@@ -18,7 +18,7 @@ import { BufferContentType, ContentType, CreateNewPostContext } from '../context
 import { CreateNewPostStackParams, CreateNewPostStackProps } from '../navigations/CreateNewPostStackNavigator';
 import { VectorIcon } from '../../../Icons';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentSpaceAtom, currentTagAtom, mySpacesAtom } from '../../../recoil';
+import { currentSpaceAtom, currentTagAtom, logsTableAtom, mySpacesAtom } from '../../../recoil';
 import { Image as ExpoImage } from 'expo-image';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Image as ImageCompressor, Video as VideoCompressor } from 'react-native-compressor';
@@ -55,6 +55,8 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const [currentSpace, setCurrentSpace] = useRecoilState(currentSpaceAtom);
   const [currentTag, setCurrentTag] = useRecoilState(currentTagAtom);
   const [mySpaces, setMySpaces] = useRecoilState(mySpacesAtom);
+  const [, setLogsTable] = useRecoilState(logsTableAtom);
+
   const ref = useRef<ICarouselInstance>(null);
 
   const onPressPagination = (index: number) => {
@@ -127,6 +129,19 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
           tags: [...previous.tags, ...data.createdTags],
         };
       });
+      if (data.createdTags.length > 0) {
+        setLogsTable((previous) => {
+          const updating = { ...previous };
+          updating[currentSpace._id] = {
+            ...updating[currentSpace._id],
+            ...data.createdTags.reduce((acc, tag) => {
+              acc[tag._id] = 0;
+              return acc;
+            }, {}),
+          };
+          return updating;
+        });
+      }
     },
   });
 

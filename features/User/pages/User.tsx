@@ -8,7 +8,11 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { UserStackNavigatorProps } from '../navigations/UserStackNavigation';
+import { MoreOptions } from '../components/MoreOptions';
 
 import { useRecoilState } from 'recoil';
 import { authAtom, currentSpaceAtom, currentTagAtom } from '../../../recoil';
@@ -35,6 +39,12 @@ import { CreateFollowingRelationshipInputType, GetUserByIdOutputType } from '../
 import { Moments } from '../components/Moments';
 import { Activities } from '../components/Activities';
 import {} from '../../../query/types';
+import { AppButton } from '../../../components';
+import { VectorIcon } from '../../../Icons';
+import { Colors } from '../../../themes';
+import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+
 const HEADER_HEIGHT = 80;
 const TAB_BAR_HEIGHT = 50;
 
@@ -51,6 +61,8 @@ Mapbox.setAccessToken(Config.MAPBOX_ACCESS_TOKEN);
 // ここでuserのpostを引っ張ってくるところまでをまずやりたいね。
 
 export const User: React.FC<IUser> = ({ userId }) => {
+  const userStackNavigation = useNavigation<UserStackNavigatorProps>();
+  const moreOptionsBottomSheetRef = useRef<BottomSheetModal>(null);
   const [auth] = useRecoilState(authAtom);
   const [currentSpace] = useRecoilState(currentSpaceAtom);
   const [routes] = useState([
@@ -123,6 +135,37 @@ export const User: React.FC<IUser> = ({ userId }) => {
       );
     },
   });
+
+  useEffect(() => {
+    userStackNavigation.setOptions({
+      headerRight: () =>
+        userId !== auth._id ? (
+          <AppButton.Icon
+            onButtonPress={() => moreOptionsBottomSheetRef.current?.snapToIndex(0)}
+            customStyle={{
+              width: 28,
+              height: 28,
+              backgroundColor: 'rgb(50,50,50)',
+              marginTop: 5,
+              ...Platform.select({
+                ios: {
+                  shadowColor: 'black',
+                  shadowOffset: { width: 5, height: 5 },
+                  shadowOpacity: 0.6,
+                  shadowRadius: 6,
+                },
+                android: {
+                  elevation: 5,
+                },
+              }),
+            }}
+            hasShadow={false}
+          >
+            <VectorIcon.II name='ellipsis-horizontal' size={18} color={Colors.white} />
+          </AppButton.Icon>
+        ) : null,
+    });
+  }, []);
 
   const handleFollowingRelationship = () => {
     if (
@@ -331,6 +374,10 @@ export const User: React.FC<IUser> = ({ userId }) => {
     );
   }
 
+  const closeMoreOptionsBottomSheet = () => {
+    moreOptionsBottomSheetRef.current?.close();
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
       <TabView
@@ -342,6 +389,18 @@ export const User: React.FC<IUser> = ({ userId }) => {
         onIndexChange={setCurrentIndex}
         initialLayout={initialLayout}
       />
+      <AppBottomSheet.Gorhom
+        ref={moreOptionsBottomSheetRef}
+        snapPoints={['45%']}
+        header={
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 23, fontWeight: 'bold' }}>More Actions</Text>
+          </View>
+        }
+        onCloseButtonClose={closeMoreOptionsBottomSheet}
+      >
+        <MoreOptions closeMoreOptionsBottomSheet={closeMoreOptionsBottomSheet} />
+      </AppBottomSheet.Gorhom>
     </View>
   );
 };
