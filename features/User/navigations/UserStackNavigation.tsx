@@ -10,11 +10,13 @@ import {
 } from '../../ViewPost/navigations/ViewPostStackNavigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { ReportUser } from '../../Report/pages/ReportUser';
 
 export type UserStackNavigatorParams = {
   User: {
     userId: string;
   };
+  ReportUser: undefined;
   ViewPostStackNavigator: NavigatorScreenParams<ViewPostStackNavigatorParams>;
 };
 
@@ -57,6 +59,27 @@ export const UserStackNavigator: React.FC<UserStackNavigatorPropss> = ({ route }
           name='ViewPostStackNavigator'
           component={ViewPostStackNavigator}
           options={{ headerShown: false }}
+        />
+        <UserStack.Screen
+          name='ReportUser'
+          component={ReportUser}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: '',
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='close' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            // headerTransparent: true,
+          })}
         />
       </UserStack.Group>
     </UserStack.Navigator>

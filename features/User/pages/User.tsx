@@ -138,31 +138,32 @@ export const User: React.FC<IUser> = ({ userId }) => {
 
   useEffect(() => {
     userStackNavigation.setOptions({
-      headerRight: () => (
-        <AppButton.Icon
-          onButtonPress={() => moreOptionsBottomSheetRef.current?.snapToIndex(0)}
-          customStyle={{
-            width: 28,
-            height: 28,
-            backgroundColor: 'rgb(50,50,50)',
-            marginTop: 5,
-            ...Platform.select({
-              ios: {
-                shadowColor: 'black',
-                shadowOffset: { width: 5, height: 5 },
-                shadowOpacity: 0.6,
-                shadowRadius: 6,
-              },
-              android: {
-                elevation: 5,
-              },
-            }),
-          }}
-          hasShadow={false}
-        >
-          <VectorIcon.II name='ellipsis-horizontal' size={18} color={Colors.white} />
-        </AppButton.Icon>
-      ),
+      headerRight: () =>
+        userData?.user._id !== auth._id ? (
+          <AppButton.Icon
+            onButtonPress={() => moreOptionsBottomSheetRef.current?.snapToIndex(0)}
+            customStyle={{
+              width: 28,
+              height: 28,
+              backgroundColor: 'rgb(50,50,50)',
+              marginTop: 5,
+              ...Platform.select({
+                ios: {
+                  shadowColor: 'black',
+                  shadowOffset: { width: 5, height: 5 },
+                  shadowOpacity: 0.6,
+                  shadowRadius: 6,
+                },
+                android: {
+                  elevation: 5,
+                },
+              }),
+            }}
+            hasShadow={false}
+          >
+            <VectorIcon.II name='ellipsis-horizontal' size={18} color={Colors.white} />
+          </AppButton.Icon>
+        ) : null,
     });
   }, []);
 

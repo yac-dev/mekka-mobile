@@ -3,12 +3,21 @@ import { TouchableOpacity, View, Text, Alert } from 'react-native';
 import { Colors } from '../../../themes';
 import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
+import { useNavigation } from '@react-navigation/native';
+import { UserStackNavigatorProps } from '../navigations/UserStackNavigation';
 
 type MoreOptionsProps = {
   closeMoreOptionsBottomSheet: () => void;
 };
 
 export const MoreOptions: React.FC<MoreOptionsProps> = ({ closeMoreOptionsBottomSheet }) => {
+  const userStackNavigation = useNavigation<UserStackNavigatorProps>();
+
+  const handleReportUser = () => {
+    closeMoreOptionsBottomSheet();
+    userStackNavigation.navigate('ReportUser');
+  };
+
   const handleBlockRequest = () => {
     closeMoreOptionsBottomSheet();
     Alert.alert(
@@ -45,7 +54,7 @@ export const MoreOptions: React.FC<MoreOptionsProps> = ({ closeMoreOptionsBottom
           alignItems: 'center',
         }}
         activeOpacity={0.8}
-        onPress={() => console.log('add new post')}
+        onPress={handleReportUser}
       >
         <View
           style={{
