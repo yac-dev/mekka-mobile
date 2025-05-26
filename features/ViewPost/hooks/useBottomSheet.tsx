@@ -11,6 +11,7 @@ type UseBottomSheetOutputType = {
   commentsBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentInputBottomSheetRef: MutableRefObject<BottomSheetModal>;
   commentInputRef: MutableRefObject<TextInput>;
+  postDetailBottomSheetRef: MutableRefObject<BottomSheetModal>;
   openCommentInputBottomSheet: (index: number) => void;
   closeCommentInputBottomSheet: () => void;
   userInfoBottomSheetRef: MutableRefObject<BottomSheetModal>;
@@ -25,6 +26,8 @@ type UseBottomSheetOutputType = {
   closeCommentsBottomSheet: () => void;
   closeUserInfoBottomSheetRefBottomSheet: () => void;
   closeOthersBottomSheet: () => void;
+  openPostDetailBottomSheet: () => void;
+  closePostDetailBottomSheet: () => void;
 };
 
 export const useBottomSheet = (): UseBottomSheetOutputType => {
@@ -40,6 +43,7 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const othersBottomSheetRef = useRef<BottomSheetModal>(null);
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const commentInputRef = useRef<TextInput>(null);
+  const postDetailBottomSheetRef = useRef<BottomSheetModal>(null);
 
   const handleReactionBottomSheetVisibility = () => {
     reactionsBottomSheetRef.current?.snapToIndex(0);
@@ -71,6 +75,9 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   const openOthersBottomSheetToIndex = (index: number) => {
     othersBottomSheetRef.current?.snapToIndex(index);
   };
+  const openPostDetailBottomSheet = () => {
+    postDetailBottomSheetRef.current?.snapToIndex(0);
+  };
 
   const closeReactionsBottomSheet = () => {
     reactionsBottomSheetRef.current?.close();
@@ -88,6 +95,10 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
   };
   const closeOthersBottomSheet = () => {
     othersBottomSheetRef.current?.close();
+  };
+
+  const closePostDetailBottomSheet = () => {
+    postDetailBottomSheetRef.current?.close();
   };
 
   return {
@@ -113,5 +124,8 @@ export const useBottomSheet = (): UseBottomSheetOutputType => {
     closeUserInfoBottomSheetRefBottomSheet,
     closeOthersBottomSheet,
     commentInputRef,
+    postDetailBottomSheetRef,
+    openPostDetailBottomSheet,
+    closePostDetailBottomSheet,
   };
 };

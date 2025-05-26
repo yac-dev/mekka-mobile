@@ -100,6 +100,9 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
     closeCommentInputBottomSheet,
     commentInputRef,
     openInfoBottomBottomSheet,
+    postDetailBottomSheetRef,
+    openPostDetailBottomSheet,
+    closePostDetailBottomSheet,
   } = useBottomSheet();
 
   const flashMessageRef = useRef<FlashMessage>();
@@ -136,7 +139,13 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               </Text>
             )}
           </View>
-          <View style={{ flexDirection: 'column' }}>
+          <TouchableOpacity
+            style={{ flexDirection: 'column' }}
+            activeOpacity={0.7}
+            onPress={() => {
+              openPostDetailBottomSheet();
+            }}
+          >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
                 {currentPost.createdBy.name}
@@ -152,7 +161,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 </Text>
               </View>
             ) : null}
-          </View>
+          </TouchableOpacity>
         </TouchableOpacity>
       ),
     });
@@ -228,6 +237,8 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       },
     });
   };
+
+  console.log('currentPost', JSON.stringify(currentPost, null, 2));
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
@@ -384,18 +395,53 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       >
         <Comments getCommentsResult={getCommentsResult} handleCommentInputPress={handleCommentInputPress} />
       </AppBottomSheet.Gorhom> */}
-      {/* <AppBottomSheet.Gorhom
-        ref={commentInputBottomSheetRef}
-        snapPoints={['40%']}
-        header={<Text style={styles.text}>What are your thoughts?</Text>}
-        onCloseButtonClose={closeCommentInputBottomSheet}
+      <AppBottomSheet.Gorhom
+        ref={postDetailBottomSheetRef}
+        snapPoints={['70%']}
+        header={<View style={{ height: 5 }} />}
+        onCloseButtonClose={closePostDetailBottomSheet}
       >
-        <CommentInput
-          refs={{ commentInputRef: commentInputRef, flashMessageRef: flashMessageRef }}
-          closeCommentInputBottomSheet={closeCommentInputBottomSheet}
-          currentPost={currentPost}
-        />
-      </AppBottomSheet.Gorhom> */}
+        <View style={{ paddingHorizontal: 20 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(70,70,70)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: avatarWidth,
+                height: avatarWidth,
+                borderRadius: avatarWidth / 2,
+                marginRight: 15,
+              }}
+              onPress={() => {
+                // setCurrentUser(currentPost.createdBy);
+                viewStackNavigation.navigate('UserStackNavigator', { userId: currentPost.createdBy._id });
+              }}
+              activeOpacity={0.7}
+            >
+              {currentPost.createdBy.avatar ? (
+                <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+              ) : (
+                <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+                  {currentPost.createdBy.name.slice(0, 2).toUpperCase()}
+                </Text>
+              )}
+            </TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
+              {currentPost.createdBy.name}
+            </Text>
+          </View>
+          {currentPost.caption.length ? (
+            <View>
+              <Text style={{ color: 'white', fontSize: 17 }}>{currentPost.caption}</Text>
+            </View>
+          ) : null}
+          {/* いつのアップロードかを載せる。 */}
+          {/* adjustedatを載せる。 */}
+          {/* ここに地図を埋め込む。 */}
+          {/* tagsを表示する。 */}
+        </View>
+      </AppBottomSheet.Gorhom>
       <FlashMessage ref={flashMessageRef} position={'top'} />
     </GestureHandlerRootView>
   );
