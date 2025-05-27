@@ -26,6 +26,7 @@ import { FlashList } from '@shopify/flash-list';
 import { currentSpaceAtom } from '../../../recoil';
 import { ViewPostStackNavigator } from '../navigations/ViewPostStackNavigator';
 import { currentUserAtom } from '../../../recoil';
+import { PostDetailBottomSheet } from '../components';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -398,11 +399,8 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       <AppBottomSheet.Gorhom
         ref={postDetailBottomSheetRef}
         snapPoints={['70%']}
-        header={<View style={{ height: 5 }} />}
-        onCloseButtonClose={closePostDetailBottomSheet}
-      >
-        <View style={{ paddingHorizontal: 20 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+        header={
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               style={{
                 backgroundColor: 'rgb(70,70,70)',
@@ -414,7 +412,6 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 marginRight: 15,
               }}
               onPress={() => {
-                // setCurrentUser(currentPost.createdBy);
                 viewStackNavigation.navigate('UserStackNavigator', { userId: currentPost.createdBy._id });
               }}
               activeOpacity={0.7}
@@ -431,16 +428,10 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               {currentPost.createdBy.name}
             </Text>
           </View>
-          {currentPost.caption.length ? (
-            <View>
-              <Text style={{ color: 'white', fontSize: 17 }}>{currentPost.caption}</Text>
-            </View>
-          ) : null}
-          {/* いつのアップロードかを載せる。 */}
-          {/* adjustedatを載せる。 */}
-          {/* ここに地図を埋め込む。 */}
-          {/* tagsを表示する。 */}
-        </View>
+        }
+        onCloseButtonClose={closePostDetailBottomSheet}
+      >
+        <PostDetailBottomSheet currentPost={currentPost} />
       </AppBottomSheet.Gorhom>
       <FlashMessage ref={flashMessageRef} position={'top'} />
     </GestureHandlerRootView>
