@@ -214,6 +214,7 @@ export type PostType = {
   totalComments?: number;
   totalReactions?: number;
   location: LocationType;
+  tags: TagType[];
 };
 
 export type CommentType = {
