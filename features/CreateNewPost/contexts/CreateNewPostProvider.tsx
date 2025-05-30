@@ -161,6 +161,8 @@ export const CreateNewPostProvider: React.FC<{ children: React.ReactNode }> = ({
       mediaTypes: ImagePicker.MediaTypeOptions.All, // Default value
       allowsMultipleSelection: true,
       quality: 1,
+      // assetRepresentationMode: 'current',
+      preferredAssetRepresentationMode: 'current',
       storageOptions: {
         skipBackup: true,
       },
