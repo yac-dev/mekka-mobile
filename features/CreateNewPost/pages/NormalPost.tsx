@@ -390,7 +390,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
                 marginBottom: 4,
               }}
             >
-              Had something fun?
+              What's new?
             </Text>
             <Text style={{ color: 'rgb(170,170,170)', textAlign: 'center', fontSize: 15, marginBottom: 20 }}>
               Pick up to 6 files (photos up to 5, video up to 1)

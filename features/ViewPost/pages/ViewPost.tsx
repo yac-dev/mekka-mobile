@@ -26,6 +26,7 @@ import { FlashList } from '@shopify/flash-list';
 import { currentSpaceAtom } from '../../../recoil';
 import { ViewPostStackNavigator } from '../navigations/ViewPostStackNavigator';
 import { currentUserAtom } from '../../../recoil';
+import { PostDetailBottomSheet } from '../components';
 
 // type IViewPost = {
 //   posts: PostType[];
@@ -100,6 +101,9 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
     closeCommentInputBottomSheet,
     commentInputRef,
     openInfoBottomBottomSheet,
+    postDetailBottomSheetRef,
+    openPostDetailBottomSheet,
+    closePostDetailBottomSheet,
   } = useBottomSheet();
 
   const flashMessageRef = useRef<FlashMessage>();
@@ -136,7 +140,13 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
               </Text>
             )}
           </View>
-          <View style={{ flexDirection: 'column' }}>
+          <TouchableOpacity
+            style={{ flexDirection: 'column' }}
+            activeOpacity={0.7}
+            onPress={() => {
+              openPostDetailBottomSheet();
+            }}
+          >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
                 {currentPost.createdBy.name}
@@ -152,7 +162,7 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
                 </Text>
               </View>
             ) : null}
-          </View>
+          </TouchableOpacity>
         </TouchableOpacity>
       ),
     });
@@ -228,6 +238,8 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       },
     });
   };
+
+  console.log('currentPost', JSON.stringify(currentPost, null, 2));
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
@@ -384,18 +396,43 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
       >
         <Comments getCommentsResult={getCommentsResult} handleCommentInputPress={handleCommentInputPress} />
       </AppBottomSheet.Gorhom> */}
-      {/* <AppBottomSheet.Gorhom
-        ref={commentInputBottomSheetRef}
-        snapPoints={['40%']}
-        header={<Text style={styles.text}>What are your thoughts?</Text>}
-        onCloseButtonClose={closeCommentInputBottomSheet}
+      <AppBottomSheet.Gorhom
+        ref={postDetailBottomSheetRef}
+        snapPoints={['70%']}
+        header={
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'rgb(70,70,70)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: avatarWidth,
+                height: avatarWidth,
+                borderRadius: avatarWidth / 2,
+                marginRight: 15,
+              }}
+              onPress={() => {
+                viewStackNavigation.navigate('UserStackNavigator', { userId: currentPost.createdBy._id });
+              }}
+              activeOpacity={0.7}
+            >
+              {currentPost.createdBy.avatar ? (
+                <ExpoImage source={currentPost.createdBy.avatar} style={{ width: 30, height: 30, marginRight: 15 }} />
+              ) : (
+                <Text style={{ color: 'white', fontSize: 23, textAlign: 'center', fontWeight: 'bold' }}>
+                  {currentPost.createdBy.name.slice(0, 2).toUpperCase()}
+                </Text>
+              )}
+            </TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold', marginRight: 5 }}>
+              {currentPost.createdBy.name}
+            </Text>
+          </View>
+        }
+        onCloseButtonClose={closePostDetailBottomSheet}
       >
-        <CommentInput
-          refs={{ commentInputRef: commentInputRef, flashMessageRef: flashMessageRef }}
-          closeCommentInputBottomSheet={closeCommentInputBottomSheet}
-          currentPost={currentPost}
-        />
-      </AppBottomSheet.Gorhom> */}
+        <PostDetailBottomSheet currentPost={currentPost} />
+      </AppBottomSheet.Gorhom>
       <FlashMessage ref={flashMessageRef} position={'top'} />
     </GestureHandlerRootView>
   );
