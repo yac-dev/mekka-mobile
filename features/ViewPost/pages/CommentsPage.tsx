@@ -60,6 +60,8 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
   const { data, status } = useQuery({
     queryKey: [queryKeys.commentsByPostId, postId],
     queryFn: () => getCommentsByPostId({ postId }),
+    staleTime: 0,
+    gcTime: 0,
   });
 
   const handleFocus = () => {

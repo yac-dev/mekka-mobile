@@ -80,6 +80,8 @@ export const Space: React.FC<ISpace> = ({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
 
+  console.log('isCreatePostPendingはどう？', isCreatePostPending);
+
   useEffect(() => {
     setRoutes(currentSpace.tags.map((tag, index) => ({ ...tag, key: index })));
   }, [currentSpace.tags.length]);
@@ -394,6 +396,7 @@ export const Space: React.FC<ISpace> = ({
                   <VectorIcon.MCI name='magnify' size={20} color={'white'} />
                 </TouchableOpacity>
               </View> */}
+              {isCreatePostPending && <ActivityIndicator size='small' color={Colors.white} />}
             </View>
           </View>
           <FlatList

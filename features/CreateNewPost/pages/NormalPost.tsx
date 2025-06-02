@@ -74,9 +74,8 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
   const { mutate: createPostMutate } = useMutation({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
     mutationFn: (input: CreatePostInputType) => createPost(input),
-    onMutate: () => showMessage({ type: 'info', message: 'Processing now...' }), // mutation実行前に起こすcallack func
     onSuccess: async (data) => {
-      showMessage({ type: 'success', message: 'Your post has been processed successfully.' });
+      showMessage({ type: 'success', message: 'Your post has been uploaded successfully.' });
 
       // NOTE: tag付されたものの中でも、appないですでに読み込まれたtag画面のpostsにだけdynamicに新しいpostを追加する。
       // 本当はこっちで、dynamicにpostを追加したいが、わからんので、下のinvalidateQueriesで対応する。
@@ -160,6 +159,7 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
 
   const onSubmitPress = async () => {
     route.params.handleNavigation();
+    showMessage({ type: 'info', message: 'Start uploading. Takes couple seconds to finish.' });
 
     const compressContent = async (content: BufferContentType) => {
       const { type, uri } = content;
@@ -190,7 +190,6 @@ export const NormalPost: React.FC<INormalPost> = ({ route }) => {
       },
     };
     createPostMutate(input);
-    // console.log('formData', input);
   };
 
   useEffect(() => {

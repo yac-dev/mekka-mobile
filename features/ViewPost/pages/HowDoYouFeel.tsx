@@ -35,6 +35,8 @@ export const HowDoYouFeel: React.FC<IHowDoYouFeel> = ({ route }) => {
   const { data, status: getReactionsByPostIdStatus } = useQuery({
     queryKey: [queryKeys.reactions, postId],
     queryFn: () => getReactionsByPostId({ postId, spaceId: currentSpace._id, userId: auth._id }),
+    staleTime: 0,
+    gcTime: 0,
   });
 
   console.log('id datas', {
