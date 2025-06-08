@@ -8,6 +8,7 @@ import { UserStackNavigator } from '../../User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CommentsPage, HowDoYouFeel } from '../pages';
 import { Platform } from 'react-native';
+import { CommentsStackNavigator } from '../../../navigations';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {
@@ -17,7 +18,7 @@ export type ViewPostStackNavigatorParams = {
   };
   ViewGridPost: undefined;
   ViewRegionPost: undefined;
-  Comments: {
+  CommentsStackNavigator: {
     postId: string;
   };
   HowDoYouFeel: {
@@ -148,8 +149,8 @@ export const ViewPostStackNavigator = () => {
         screenOptions={{ presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
       >
         <ViewPostStack.Screen
-          name='Comments'
-          component={CommentsPage}
+          name='CommentsStackNavigator'
+          component={CommentsStackNavigator}
           options={({ navigation }) => ({
             headerShown: true,
             title: 'Comments',
@@ -165,10 +166,6 @@ export const ViewPostStackNavigator = () => {
             headerTitleStyle: {
               color: 'white',
             },
-            headerStyle: {
-              backgroundColor: 'black',
-            },
-            // headerTransparent: true,
           })}
         />
         <ViewPostStack.Screen

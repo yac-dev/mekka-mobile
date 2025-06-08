@@ -1,4 +1,8 @@
-import { NativeStackNavigationProp, createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import { Platform } from 'react-native';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
@@ -21,15 +25,18 @@ const CommentsStack = createNativeStackNavigator<CommentsStackNavigatorParams>()
 
 export type CommentsStackNavigatorProps = NativeStackNavigationProp<CommentsStackNavigatorParams>;
 
-// type ViewPostStackNavigatorScreenProps = NativeStackScreenProps<ViewPostStackNavigatorParams, 'ViewPost'>;
+type CommentsStackNavigatorScreenProps = NativeStackScreenProps<CommentsStackNavigatorParams, 'Comments'>;
 
-export const CommentsStackNavigator = () => {
+export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenProps) => {
+  const { postId } = route.params;
+
   return (
-    <CommentsStack.Navigator screenOptions={{ title: '' }}>
+    <CommentsStack.Navigator
+      screenOptions={{ title: '', presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
+    >
       <CommentsStack.Group>
         <CommentsStack.Screen
           name='Comments'
-          component={CommentsPage}
           options={({ navigation }) => ({
             headerShown: true,
             headerRight: () => (
@@ -57,13 +64,15 @@ export const CommentsStackNavigator = () => {
                 <VectorIcon.II name='close' size={18} color={Colors.white} />
               </AppButton.Icon>
             ),
-            headerTransparent: true,
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
+            // headerTransparent: true,
+            // headerTitleStyle: {
+            //   fontWeight: 'bold',
+            //   color: 'white',
+            // },
           })}
-        />
+        >
+          {({ route }) => <CommentsPage postId={route.params.postId} />}
+        </CommentsStack.Screen>
         {/* というか、そもそもここってstacknavigatorにする必要なくない。。？ */}
         <CommentsStack.Screen
           name='Replies'

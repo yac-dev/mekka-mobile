@@ -17,8 +17,9 @@ import { useNavigation } from '@react-navigation/native';
 import { CommentInput } from '../components/CommentInput';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { CommentInputBottomSheet } from '../components/CommentInputBottomSheet';
+import { CommentsStackNavigatorParams } from '../../../navigations';
 
-type ICommentsPage = NativeStackScreenProps<ViewPostStackNavigatorParams, 'Comments'>;
+type ICommentsPage = NativeStackScreenProps<CommentsStackNavigatorParams, 'Comments'>;
 
 const inputAccessoryViewID = 'COMMENT_INPUT';
 
@@ -49,8 +50,7 @@ function timeSince(date: Date) {
   return 'Just Now';
 }
 
-export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
-  const { postId } = route.params;
+export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const textInputRef = useRef<TextInput>(null);
@@ -171,7 +171,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.8)',
+        // backgroundColor: 'rgba(0,0,0,0.8)',
       }}
     >
       <FlashList
