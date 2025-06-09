@@ -7,7 +7,7 @@ import { PostType } from '../../../types';
 import { UserStackNavigator } from '../../User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CommentsPage, HowDoYouFeel } from '../pages';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { CommentsStackNavigator } from '../../../navigations';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
@@ -146,13 +146,19 @@ export const ViewPostStackNavigator = () => {
         />
       </ViewPostStack.Group>
       <ViewPostStack.Group
-        screenOptions={{ presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
+        // screenOptions={{ presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
+        screenOptions={{
+          presentation: 'transparentModal',
+          contentStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
+          animation: 'fade',
+          animationDuration: 200,
+        }}
       >
         <ViewPostStack.Screen
           name='CommentsStackNavigator'
           component={CommentsStackNavigator}
           options={({ navigation }) => ({
-            headerShown: true,
+            headerShown: false,
             title: 'Comments',
             headerRight: () => (
               <AppButton.Icon

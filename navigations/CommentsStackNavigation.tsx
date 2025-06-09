@@ -3,7 +3,7 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
-import { Platform } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
 import { Colors } from '../themes';
@@ -32,13 +32,25 @@ export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenPr
 
   return (
     <CommentsStack.Navigator
-      screenOptions={{ title: '', presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
+      // screenOptions={{
+      //   headerStyle: {
+      //     backgroundColor: 'black',
+      //   },
+      // }}
+      screenOptions={{
+        headerShown: false,
+        presentation: 'transparentModal',
+        contentStyle: { backgroundColor: 'rgba(0,0,0,0.1)' },
+      }}
     >
       <CommentsStack.Group>
         <CommentsStack.Screen
           name='Comments'
           options={({ navigation }) => ({
             headerShown: true,
+            headerStyle: {
+              backgroundColor: 'rgba(0,0,0,0.1)',
+            },
             headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}
@@ -65,13 +77,17 @@ export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenPr
               </AppButton.Icon>
             ),
             // headerTransparent: true,
-            // headerTitleStyle: {
-            //   fontWeight: 'bold',
-            //   color: 'white',
-            // },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
           })}
         >
-          {({ route }) => <CommentsPage postId={route.params.postId} />}
+          {({ route }) => (
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)' }}>
+              <Text style={{ color: 'white' }}>Hello</Text>
+            </View>
+          )}
         </CommentsStack.Screen>
         {/* というか、そもそもここってstacknavigatorにする必要なくない。。？ */}
         <CommentsStack.Screen

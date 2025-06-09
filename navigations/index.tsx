@@ -1,1 +1,1 @@
-export * from './commentsStackNavigation';
+export * from './CommentsStackNavigation';
