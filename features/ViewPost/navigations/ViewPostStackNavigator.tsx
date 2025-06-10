@@ -8,7 +8,8 @@ import { UserStackNavigator } from '../../User';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CommentsPage, HowDoYouFeel } from '../pages';
 import { Platform, View } from 'react-native';
-import { CommentsStackNavigator } from '../../../navigations';
+import { CommentsStackNavigator, CommentsStackNavigatorParams } from '../../../navigations';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 // postsなりcurrentPOstなりなんなりをparamasで渡す感じになだろう。。。。
 export type ViewPostStackNavigatorParams = {
@@ -18,9 +19,7 @@ export type ViewPostStackNavigatorParams = {
   };
   ViewGridPost: undefined;
   ViewRegionPost: undefined;
-  CommentsStackNavigator: {
-    postId: string;
-  };
+  CommentsStackNavigator: NavigatorScreenParams<CommentsStackNavigatorParams>;
   HowDoYouFeel: {
     postId: string;
   };
@@ -149,7 +148,7 @@ export const ViewPostStackNavigator = () => {
         // screenOptions={{ presentation: 'transparentModal', animation: 'fade', animationDuration: 200 }}
         screenOptions={{
           presentation: 'transparentModal',
-          contentStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
+          contentStyle: { backgroundColor: 'rgba(0,0,0,0.6)' },
           animation: 'fade',
           animationDuration: 200,
         }}
@@ -160,6 +159,8 @@ export const ViewPostStackNavigator = () => {
           options={({ navigation }) => ({
             headerShown: false,
             title: 'Comments',
+            presentation: 'transparentModal',
+            contentStyle: { backgroundColor: 'transparent' },
             headerRight: () => (
               <AppButton.Icon
                 onButtonPress={() => navigation.goBack()}

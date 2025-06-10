@@ -3,6 +3,7 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import { UserStackNavigator } from '../features/User';
 import { Platform, View, Text } from 'react-native';
 import { AppButton } from '../components';
 import { VectorIcon } from '../Icons';
@@ -18,6 +19,9 @@ export type CommentsStackNavigatorParams = {
   Replies: {
     commentId: string;
   };
+  UserStackNavigator: {
+    userId: string;
+  };
 };
 // ここら辺やっぱrecoil使ったほうがいいかね。。。
 
@@ -32,15 +36,13 @@ export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenPr
 
   return (
     <CommentsStack.Navigator
-      // screenOptions={{
-      //   headerStyle: {
-      //     backgroundColor: 'black',
-      //   },
-      // }}
       screenOptions={{
-        headerShown: false,
-        presentation: 'transparentModal',
-        contentStyle: { backgroundColor: 'rgba(0,0,0,0.1)' },
+        headerStyle: {
+          backgroundColor: 'transparent',
+        },
+        contentStyle: {
+          backgroundColor: 'transparent',
+        },
       }}
     >
       <CommentsStack.Group>
@@ -49,7 +51,7 @@ export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenPr
           options={({ navigation }) => ({
             headerShown: true,
             headerStyle: {
-              backgroundColor: 'rgba(0,0,0,0.1)',
+              backgroundColor: 'black',
             },
             headerRight: () => (
               <AppButton.Icon
@@ -83,19 +85,38 @@ export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenPr
             },
           })}
         >
-          {({ route }) => (
-            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.1)' }}>
-              <Text style={{ color: 'white' }}>Hello</Text>
-            </View>
-          )}
+          {({ route }) => <CommentsPage postId={route.params.postId} />}
         </CommentsStack.Screen>
         {/* というか、そもそもここってstacknavigatorにする必要なくない。。？ */}
         <CommentsStack.Screen
           name='Replies'
           component={Replies}
           options={({ navigation }) => ({
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              color: 'white',
+            },
+            title: 'Replies',
+            headerLeft: () => (
+              <AppButton.Icon
+                onButtonPress={() => navigation.goBack()}
+                customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                hasShadow={false}
+              >
+                <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+              </AppButton.Icon>
+            ),
+          })}
+        />
+        <CommentsStack.Screen
+          name='UserStackNavigator'
+          component={UserStackNavigator}
+          options={({ navigation }) => ({
             headerShown: false,
-            title: '',
+            title: 'User',
             // headerLeft: () => (
             //   <AppButton.Icon
             //     onButtonPress={() => navigation.goBack()}
@@ -107,6 +128,9 @@ export const CommentsStackNavigator = ({ route }: CommentsStackNavigatorScreenPr
             // ),
             headerStyle: {
               backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              color: 'white',
             },
           })}
         />

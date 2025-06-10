@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, TextInput, Keyboard } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getCommentsByPostId } from '../../../query/queries';
 import { currentPostAtom } from '../../Space/atoms/currentPostAtom';
@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CommentInput } from '../components/CommentInput';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { CommentInputBottomSheet } from '../components/CommentInputBottomSheet';
-import { CommentsStackNavigatorParams } from '../../../navigations';
+import { CommentsStackNavigatorParams, CommentsStackNavigatorProps } from '../../../navigations';
 
 type ICommentsPage = NativeStackScreenProps<CommentsStackNavigatorParams, 'Comments'>;
 
@@ -52,6 +52,7 @@ function timeSince(date: Date) {
 
 export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
+  const commentsStackNavigation = useNavigation<CommentsStackNavigatorProps>();
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const textInputRef = useRef<TextInput>(null);
 
@@ -99,17 +100,8 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <ExpoImage
-                  style={{
-                    width: 35,
-                    height: 35,
-                    marginRight: 10,
-                    borderRadius: 5,
-                  }}
-                  source={{ uri: item.createdBy.avatar }}
-                  contentFit='contain'
-                /> */}
-                <View
+                <TouchableOpacity
+                  onPress={() => viewPostStackNavigation.navigate('UserStackNavigator', { userId: item.createdBy._id })}
                   style={{
                     backgroundColor: 'rgb(70,70,70)',
                     justifyContent: 'center',
@@ -127,7 +119,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
                       {item.createdBy.name.slice(0, 2).toUpperCase()}
                     </Text>
                   )}
-                </View>
+                </TouchableOpacity>
                 <View style={{ flexDirection: 'column' }}>
                   <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>
                     {item.createdBy.name}
@@ -137,20 +129,43 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
                   </Text>
                 </View>
               </View>
-              <AppButton.Icon
-                onButtonPress={() => viewPostStackNavigation.navigate('ReportComment')}
-                customStyle={{
-                  width: 25,
-                  height: 25,
-                  backgroundColor: 'rgb(50,50,50)',
-                  borderRadius: 15,
-                }}
-                hasShadow={false}
-              >
-                <VectorIcon.FT name='more-horizontal' size={13} color={'white'} />
-              </AppButton.Icon>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <AppButton.Icon
+                  onButtonPress={() => commentsStackNavigation.navigate('Replies', { commentId: item._id })}
+                  customStyle={{
+                    width: 25,
+                    height: 25,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 15,
+                    marginRight: 8,
+                  }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.MCI name='reply' size={13} color={'white'} />
+                </AppButton.Icon>
+                <AppButton.Icon
+                  onButtonPress={() => viewPostStackNavigation.navigate('ReportComment')}
+                  customStyle={{
+                    width: 25,
+                    height: 25,
+                    backgroundColor: 'rgb(50,50,50)',
+                    borderRadius: 15,
+                  }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.FT name='more-horizontal' size={13} color={'white'} />
+                </AppButton.Icon>
+              </View>
             </View>
-            <Text style={{ color: 'white', fontSize: 17 }}>{item.content}</Text>
+            <Text style={{ color: 'white', fontSize: 17, marginBottom: 8 }}>{item.content}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                commentsStackNavigation.navigate('Replies', { commentId: item._id });
+              }}
+              activeOpacity={0.7}
+            >
+              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold' }}>View all replies</Text>
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -171,7 +186,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
     <View
       style={{
         flex: 1,
-        // backgroundColor: 'rgba(0,0,0,0.8)',
+        backgroundColor: 'rgba(0,0,0,0.8)',
       }}
     >
       <FlashList
