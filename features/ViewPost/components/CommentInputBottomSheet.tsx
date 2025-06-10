@@ -14,8 +14,8 @@ import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
-import { createComment } from '../../../query/mutations';
-import { CreateCommentInputType, GetCommentsByPostIdOutputType } from '../../../query/types';
+import { createComment, createReply } from '../../../query/mutations';
+import { CreateCommentInputType, CreateReplyInputType, GetCommentsByPostIdOutputType } from '../../../query/types';
 import { mutationKeys, queryKeys } from '../../../query';
 import { VectorIcon } from '../../../Icons/VectorIcons';
 
@@ -81,19 +81,40 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
       },
     });
 
+    const { mutate: createReplyMutation, status: createReplyStatus } = useMutation({
+      mutationKey: [mutationKeys.createReply],
+      mutationFn: (input: CreateReplyInputType) => createReply(input),
+      onSuccess: (data) => {
+        setCommentInput('');
+        commentInputBottomSheetRef.current?.snapToIndex(0);
+        clearReply();
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+
     const onSendPress = () => {
-      createCommentMutation({
-        content: commentInput,
-        postId: currentPost,
-        userId: auth._id,
-        userName: auth.name,
-        ...(replyTo && {
-          replyTo: {
-            commentId: replyTo.id,
-            userName: replyTo.name,
-          },
-        }),
-      });
+      if (replyTo) {
+        createReplyMutation({
+          commentId: replyTo.id,
+          content: commentInput,
+          userId: auth._id,
+        });
+      } else {
+        createCommentMutation({
+          content: commentInput,
+          postId: currentPost,
+          userId: auth._id,
+          userName: auth.name,
+          ...(replyTo && {
+            replyTo: {
+              commentId: replyTo.id,
+              userName: replyTo.name,
+            },
+          }),
+        });
+      }
     };
 
     const onCancelPress = () => {
