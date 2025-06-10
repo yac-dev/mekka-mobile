@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { forwardRef, useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -28,10 +28,24 @@ interface CommentBottomSheetProps {
   snapPoints: string[];
   handleSheetChanges: (index: number) => void;
   handleFocus: () => void;
+  replyTo: { name: string; id: string } | null;
+  clearReply: () => void;
 }
 
 export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwardRef(
-  ({ commentInputBottomSheetRef, textInputRef, currentPost, snapPoints, handleSheetChanges, handleFocus }, ref) => {
+  (
+    {
+      commentInputBottomSheetRef,
+      textInputRef,
+      currentPost,
+      snapPoints,
+      handleSheetChanges,
+      handleFocus,
+      replyTo,
+      clearReply,
+    },
+    ref
+  ) => {
     const [auth] = useRecoilState(authAtom);
     const [commentInput, setCommentInput] = useState('');
     const commentInputRef = useRef<TextInput>(null);
@@ -40,14 +54,10 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
     const { mutate: createCommentMutation, status: createCommentStatus } = useMutation({
       mutationKey: [mutationKeys.createComment],
       mutationFn: (input: CreateCommentInputType) => createComment(input),
-      // onMutate: () => refs.flashMessageRef.current?.showMessage({ message: 'Processing now...', type: 'success' }),
       onSuccess: (data) => {
-        // refs.flashMessageRef.current?.showMessage({
-        //   type: 'success',
-        //   message: 'Your comment has been sent.',
-        // });
         setCommentInput('');
         commentInputBottomSheetRef.current?.snapToIndex(0);
+        clearReply();
         queryClient.setQueryData(
           [queryKeys.commentsByPostId, currentPost],
           (previous: GetCommentsByPostIdOutputType) => {
@@ -77,6 +87,12 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         postId: currentPost,
         userId: auth._id,
         userName: auth.name,
+        ...(replyTo && {
+          replyTo: {
+            commentId: replyTo.id,
+            userName: replyTo.name,
+          },
+        }),
       });
     };
 
@@ -84,6 +100,14 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
       Keyboard.dismiss();
       setCommentInput('');
       commentInputBottomSheetRef.current?.snapToIndex(0);
+      clearReply();
+    };
+
+    const handleSheetChangesWithClear = (index: number) => {
+      handleSheetChanges(index);
+      if (index === 0) {
+        clearReply();
+      }
     };
 
     return (
@@ -96,7 +120,7 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         backgroundStyle={{ backgroundColor: 'rgb(30,30,30)' }}
         handleIndicatorStyle={{ backgroundColor: 'rgb(100,100,100)' }}
         onClose={() => {}}
-        onChange={handleSheetChanges}
+        onChange={handleSheetChangesWithClear}
       >
         <View style={styles.container}>
           {createCommentStatus === 'pending' ? (
@@ -112,6 +136,12 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
             </View>
           ) : (
             <>
+              {replyTo && (
+                <View style={styles.replyToContainer}>
+                  <Text style={styles.replyToText}>Replying to </Text>
+                  <Text style={styles.replyToName}>{replyTo.name}</Text>
+                </View>
+              )}
               <TextInput
                 ref={textInputRef}
                 placeholder='What are your thoughts?'
@@ -166,5 +196,21 @@ const styles = StyleSheet.create({
   textInput: {
     color: 'white',
     fontSize: 17,
+  },
+  replyToContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    marginBottom: 4,
+  },
+  replyToText: {
+    color: 'rgb(170,170,170)',
+    fontSize: 14,
+  },
+  replyToName: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

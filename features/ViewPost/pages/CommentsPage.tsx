@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getCommentsByPostId } from '../../../query/queries';
@@ -55,6 +55,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   const commentsStackNavigation = useNavigation<CommentsStackNavigatorProps>();
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const textInputRef = useRef<TextInput>(null);
+  const [replyTo, setReplyTo] = useState<{ name: string; id: string } | null>(null);
 
   const snapPoints = useMemo(() => ['15%', '75%', '100%'], []);
 
@@ -66,15 +67,25 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   });
 
   const handleFocus = () => {
-    commentInputBottomSheetRef.current?.snapToIndex(1); // 50% index
+    commentInputBottomSheetRef.current?.snapToIndex(1);
   };
 
   const handleSheetChanges = (index: number) => {
     if (index === 0) {
-      // 15% index
       Keyboard.dismiss();
     } else if (index === 1) {
       textInputRef.current?.focus();
+    }
+  };
+
+  const clearReply = () => {
+    setReplyTo(null);
+  };
+
+  const handleReply = (comment: CommentType) => {
+    if (comment.createdBy) {
+      setReplyTo({ name: comment.createdBy.name, id: comment._id });
+      commentInputBottomSheetRef.current?.snapToIndex(1);
     }
   };
 
@@ -131,7 +142,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <AppButton.Icon
-                  onButtonPress={() => commentsStackNavigation.navigate('Replies', { commentId: item._id })}
+                  onButtonPress={() => handleReply(item)}
                   customStyle={{
                     width: 25,
                     height: 25,
@@ -209,6 +220,8 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
         snapPoints={snapPoints}
         handleSheetChanges={handleSheetChanges}
         handleFocus={handleFocus}
+        replyTo={replyTo}
+        clearReply={clearReply}
       />
     </View>
   );

@@ -136,6 +136,10 @@ export type CreateCommentInputType = {
   postId: string;
   userId: string;
   userName: string;
+  replyTo?: {
+    commentId: string;
+    userName: string;
+  };
 };
 
 export type IncrementReactionInputType = {
