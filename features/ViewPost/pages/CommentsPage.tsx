@@ -57,7 +57,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   const textInputRef = useRef<TextInput>(null);
   const [replyTo, setReplyTo] = useState<{ name: string; id: string } | null>(null);
 
-  const snapPoints = useMemo(() => ['15%', '75%', '100%'], []);
+  const snapPoints = useMemo(() => ['15%', '80%', '100%'], []);
 
   const { data, status } = useQuery({
     queryKey: [queryKeys.commentsByPostId, postId],
@@ -141,7 +141,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
                 </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <AppButton.Icon
+                {/* <AppButton.Icon
                   onButtonPress={() => handleReply(item)}
                   customStyle={{
                     width: 25,
@@ -153,7 +153,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
                   hasShadow={false}
                 >
                   <VectorIcon.MCI name='reply' size={13} color={'white'} />
-                </AppButton.Icon>
+                </AppButton.Icon> */}
                 <AppButton.Icon
                   onButtonPress={() => viewPostStackNavigation.navigate('ReportComment')}
                   customStyle={{
@@ -168,15 +168,41 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
                 </AppButton.Icon>
               </View>
             </View>
-            <Text style={{ color: 'white', fontSize: 17, marginBottom: 8 }}>{item.content}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                commentsStackNavigation.navigate('Replies', { commentId: item._id });
-              }}
-              activeOpacity={0.7}
-            >
-              <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold' }}>View all replies</Text>
-            </TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 17, marginBottom: 8, marginLeft: 35 + 15 }}>{item.content}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 35 + 15 }}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginRight: 16,
+                }}
+                onPress={() => {
+                  handleReply(item);
+                }}
+                activeOpacity={0.7}
+              >
+                <VectorIcon.MCI name='reply' size={13} color={'rgb(150,150,150)'} style={{ marginRight: 4 }} />
+                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold' }}>Reply</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  commentsStackNavigation.navigate('Replies', { commentId: item._id });
+                }}
+                activeOpacity={0.7}
+              >
+                <VectorIcon.II
+                  name='chatbubble-outline'
+                  size={13}
+                  color={'rgb(150,150,150)'}
+                  style={{ marginRight: 4 }}
+                />
+                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold' }}>View all </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       );

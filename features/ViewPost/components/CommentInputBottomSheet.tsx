@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
 import { useQueryClient } from '@tanstack/react-query';
@@ -121,6 +121,16 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         handleIndicatorStyle={{ backgroundColor: 'rgb(100,100,100)' }}
         onClose={() => {}}
         onChange={handleSheetChangesWithClear}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop
+            {...props}
+            opacity={0.7}
+            enableTouchThrough={false}
+            appearsOnIndex={1}
+            disappearsOnIndex={0}
+            style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]}
+          />
+        )}
       >
         <View style={styles.container}>
           {createCommentStatus === 'pending' ? (
@@ -138,8 +148,8 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
             <>
               {replyTo && (
                 <View style={styles.replyToContainer}>
-                  <Text style={styles.replyToText}>Replying to </Text>
-                  <Text style={styles.replyToName}>{replyTo.name}</Text>
+                  <Text style={styles.replyToText}>in reply to </Text>
+                  <Text style={styles.replyToName}>@{replyTo.name}</Text>
                 </View>
               )}
               <TextInput
