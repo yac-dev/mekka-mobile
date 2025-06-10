@@ -226,6 +226,14 @@ export type CommentType = {
   createdAt: string;
 };
 
+export type ReplyType = {
+  _id: string;
+  content: string;
+  comment: CommentType;
+  createdBy: UserType;
+  createdAt: string;
+};
+
 export type LogsTagTableType = {
   [key: string]: number;
 };
