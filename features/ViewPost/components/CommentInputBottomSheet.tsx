@@ -88,6 +88,32 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         setCommentInput('');
         commentInputBottomSheetRef.current?.snapToIndex(0);
         clearReply();
+
+        // Update the replies list in the cache
+        queryClient.setQueryData([queryKeys.repliesByCommentId, replyTo?.id], (oldData: any) => {
+          if (!oldData) return { replies: [data.reply] };
+          return {
+            ...oldData,
+            replies: [data.reply, ...oldData.replies],
+          };
+        });
+
+        // Increment the comment's reply count in the comments list
+        queryClient.setQueryData([queryKeys.commentsByPostId, currentPost], (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            comments: oldData.comments.map((comment: any) => {
+              if (comment._id === replyTo?.id) {
+                return {
+                  ...comment,
+                  replyCount: (comment.replyCount || 0) + 1,
+                };
+              }
+              return comment;
+            }),
+          };
+        });
       },
       onError: (error) => {
         console.log(error);
@@ -155,7 +181,7 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         )}
       >
         <View style={styles.container}>
-          {createCommentStatus === 'pending' ? (
+          {createCommentStatus === 'pending' || createReplyStatus === 'pending' ? (
             <View
               style={{
                 padding: 15,

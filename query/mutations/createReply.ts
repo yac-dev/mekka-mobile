@@ -3,7 +3,7 @@ import { CreateReplyInputType, CreateReplyOutputType } from '../types';
 
 export const createReply = async (input: CreateReplyInputType): Promise<CreateReplyOutputType> => {
   try {
-    const result = await axiosClient.post(`/comments/${input.commentId}/replies`, input);
+    const result = await axiosClient.post(`/replies`, input);
     const { reply } = result.data.data;
     return { reply };
   } catch (error) {

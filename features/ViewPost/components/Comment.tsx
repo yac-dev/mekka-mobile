@@ -55,7 +55,6 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
     enabled: isRepliesOpen,
   });
 
-  // Animate replies container when data is loaded
   React.useEffect(() => {
     if (repliesStatus === 'success' && isRepliesOpen) {
       Animated.timing(fadeAnim, {
@@ -67,31 +66,6 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
       fadeAnim.setValue(0);
     }
   }, [repliesStatus, isRepliesOpen]);
-
-  // Subscribe to new replies
-  React.useEffect(() => {
-    const subscription = queryClient.getQueryCache().subscribe((event) => {
-      if (event?.type === 'updated' && event.query.queryKey[0] === mutationKeys.createReply) {
-        const newReply = event.query.state.data;
-        if (newReply && isRepliesOpen) {
-          // Update the replies list in the cache
-          queryClient.setQueryData([queryKeys.repliesByCommentId, comment._id], (oldData: any) => {
-            if (!oldData) return { replies: [newReply] };
-            return {
-              ...oldData,
-              replies: [...oldData.replies, newReply],
-            };
-          });
-        }
-      }
-    });
-
-    return () => {
-      if (typeof subscription === 'function') {
-        subscription();
-      }
-    };
-  }, [queryClient, comment._id, isRepliesOpen]);
 
   if (!comment.createdBy) {
     return null;
@@ -161,22 +135,29 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
             <VectorIcon.MCI name='reply' size={13} color={'rgb(150,150,150)'} style={styles.replyIcon} />
             <Text style={styles.replyText}>Reply</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.viewAllButton}
-            onPress={() => setIsRepliesOpen(!isRepliesOpen)}
-            activeOpacity={0.7}
-          >
-            <VectorIcon.II name={'chatbubble-outline'} size={13} color={'rgb(150,150,150)'} style={styles.replyIcon} />
-            <Text style={styles.replyText}>
-              {isRepliesOpen ? 'Hide replies' : `View all (${repliesData?.replies.length || comment.replyCount})`}
-            </Text>
-            <VectorIcon.II
-              name={isRepliesOpen ? 'chevron-up' : 'chevron-down'}
-              size={13}
-              color={'rgb(150,150,150)'}
-              style={styles.replyIcon}
-            />
-          </TouchableOpacity>
+          {(repliesData?.replies.length || comment.replyCount) > 0 && (
+            <TouchableOpacity
+              style={styles.viewAllButton}
+              onPress={() => setIsRepliesOpen(!isRepliesOpen)}
+              activeOpacity={0.7}
+            >
+              <VectorIcon.II
+                name={'chatbubble-outline'}
+                size={13}
+                color={'rgb(150,150,150)'}
+                style={styles.replyIcon}
+              />
+              <Text style={styles.replyText}>
+                {isRepliesOpen ? 'Hide replies' : `View all (${repliesData?.replies.length || comment.replyCount})`}
+              </Text>
+              <VectorIcon.II
+                name={isRepliesOpen ? 'chevron-up' : 'chevron-down'}
+                size={13}
+                color={'rgb(150,150,150)'}
+                style={styles.replyIcon}
+              />
+            </TouchableOpacity>
+          )}
         </View>
         {isRepliesOpen && (
           <Animated.View style={[styles.repliesContainer, { opacity: fadeAnim }]}>
