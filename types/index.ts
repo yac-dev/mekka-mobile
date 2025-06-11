@@ -221,7 +221,7 @@ export type CommentType = {
   _id: string;
   content: string;
   post: PostType;
-  reply: CommentType;
+  replyCount: number;
   createdBy: UserType;
   createdAt: string;
 };

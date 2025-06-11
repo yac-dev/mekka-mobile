@@ -243,6 +243,14 @@ export type GetCommentsByPostIdOutputType = {
   comments: CommentType[];
 };
 
+export type GetRepliesByCommentIdInputType = {
+  commentId: string;
+};
+
+export type GetRepliesByCommentIdOutputType = {
+  replies: ReplyType[];
+};
+
 export type GetPostsByTagIdAndRegionInput = {
   tagId: string;
   region: MapRegionType;

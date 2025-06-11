@@ -18,6 +18,7 @@ import { CommentInput } from '../components/CommentInput';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { CommentInputBottomSheet } from '../components/CommentInputBottomSheet';
 import { CommentsStackNavigatorParams, CommentsStackNavigatorProps } from '../../../navigations';
+import { Comment } from '../components/Comment';
 
 type ICommentsPage = NativeStackScreenProps<CommentsStackNavigatorParams, 'Comments'>;
 
@@ -89,128 +90,6 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
     }
   };
 
-  const renderComment = ({ item }: { item: CommentType }) => {
-    if (item.createdBy) {
-      return (
-        <View style={{ paddingHorizontal: 20 }}>
-          <View
-            style={{
-              flexDirection: 'column',
-              paddingTop: 15,
-              paddingBottom: 15,
-              borderBottomWidth: 0.5,
-              borderBottomColor: 'rgb(100,100,100)',
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 10,
-                justifyContent: 'space-between',
-              }}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity
-                  onPress={() => viewPostStackNavigation.navigate('UserStackNavigator', { userId: item.createdBy._id })}
-                  style={{
-                    backgroundColor: 'rgb(70,70,70)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: 35,
-                    height: 35,
-                    borderRadius: 35 / 2,
-                    marginRight: 15,
-                  }}
-                >
-                  {item.createdBy.avatar ? (
-                    <ExpoImage source={item.createdBy.avatar} style={styles.avatar} />
-                  ) : (
-                    <Text style={{ color: 'white', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                      {item.createdBy.name.slice(0, 2).toUpperCase()}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>
-                    {item.createdBy.name}
-                  </Text>
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, fontWeight: 'bold' }}>
-                    {timeSince(new Date(item.createdAt))}
-                  </Text>
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <AppButton.Icon
-                  onButtonPress={() => handleReply(item)}
-                  customStyle={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 15,
-                    marginRight: 8,
-                  }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.MCI name='reply' size={13} color={'white'} />
-                </AppButton.Icon> */}
-                <AppButton.Icon
-                  onButtonPress={() => viewPostStackNavigation.navigate('ReportComment')}
-                  customStyle={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 15,
-                  }}
-                  hasShadow={false}
-                >
-                  <VectorIcon.FT name='more-horizontal' size={13} color={'white'} />
-                </AppButton.Icon>
-              </View>
-            </View>
-            <Text style={{ color: 'white', fontSize: 17, marginBottom: 8, marginLeft: 35 + 15 }}>{item.content}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 35 + 15 }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginRight: 16,
-                }}
-                onPress={() => {
-                  handleReply(item);
-                }}
-                activeOpacity={0.7}
-              >
-                <VectorIcon.MCI name='reply' size={13} color={'rgb(150,150,150)'} style={{ marginRight: 4 }} />
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold' }}>Reply</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  commentsStackNavigation.navigate('Replies', { commentId: item._id });
-                }}
-                activeOpacity={0.7}
-              >
-                <VectorIcon.II
-                  name='chatbubble-outline'
-                  size={13}
-                  color={'rgb(150,150,150)'}
-                  style={{ marginRight: 4 }}
-                />
-                <Text style={{ color: 'rgb(150,150,150)', fontSize: 13, fontWeight: 'bold' }}>View all </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      );
-    } else {
-      return null;
-    }
-  };
-
   if (status === 'pending') {
     return (
       <View style={styles.loading}>
@@ -228,7 +107,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
     >
       <FlashList
         data={data?.comments}
-        renderItem={renderComment}
+        renderItem={({ item }) => <Comment comment={item} onReply={handleReply} />}
         keyExtractor={(_, index) => `${index}`}
         ListEmptyComponent={
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 150 }}>

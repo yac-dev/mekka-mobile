@@ -5,9 +5,7 @@ export const getCommentsByPostId = async (
   input: GetCommentsByPostIdInputType
 ): Promise<GetCommentsByPostIdOutputType> => {
   try {
-    // そもそもなんでここ実行されない。。。？
-    console.log('getCommentsByPostId', input.postId);
-    const result = await axiosClient.get(`/comments/post/${input.postId}`);
+    const result = await axiosClient.get(`/posts/${input.postId}/comments`);
     const { comments } = result.data.data;
 
     return {

@@ -94,6 +94,7 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
       },
     });
 
+    // apiのtesをしようか。まずpostmanで。
     const onSendPress = () => {
       if (replyTo) {
         createReplyMutation({

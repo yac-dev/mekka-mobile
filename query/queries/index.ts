@@ -15,3 +15,4 @@ export * from './getPostsByTagIdAndRegion';
 export * from './getSpaceById';
 export * from './getFollowingUsersByUserId';
 export * from './getNotificationsByUserId';
+export * from './getRepliesByCommentId';
