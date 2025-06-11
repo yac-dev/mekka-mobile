@@ -10,3 +10,4 @@ export * from './joinPublicSpaceBySpaceId';
 export * from './updateMe';
 export * from './createFollowingRelationship';
 export * from './deleteFollowingRelationship';
+export * from './createReply';

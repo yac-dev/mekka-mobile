@@ -222,7 +222,15 @@ export const ViewPost: React.FC<IViewPost> = ({ route }) => {
   const handleCommentsPress = () => {
     // requestGetCommentsByPostId({ postId: currentPost._id });
     // openCommentsBottomSheetToIndex();
-    viewStackNavigation.navigate('Comments', { postId: currentPost._id });
+    viewStackNavigation.navigate({
+      name: 'CommentsStackNavigator',
+      params: {
+        screen: 'Comments',
+        params: {
+          postId: currentPost._id,
+        },
+      },
+    });
   };
 
   const handleCommentInputPress = () => {

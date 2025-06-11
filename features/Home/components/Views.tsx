@@ -188,19 +188,18 @@ export const Views: React.FC<{
         style={{
           position: 'absolute',
           bottom: 25,
-          right: 10,
-          width: 40,
-          height: 40,
-          backgroundColor: 'rgb(50,50,50)',
+          right: 15,
+          width: 45,
+          height: 45,
           borderRadius: 100,
           justifyContent: 'center',
           alignItems: 'center',
           ...Platform.select({
             ios: {
               shadowColor: 'black',
-              shadowOffset: { width: 8, height: 8 },
-              shadowOpacity: 0.8,
-              shadowRadius: 8,
+              shadowOffset: { width: 3, height: 3 },
+              shadowOpacity: 1,
+              shadowRadius: 15,
             },
             android: {
               elevation: 5,
@@ -213,7 +212,22 @@ export const Views: React.FC<{
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         }}
       >
-        <VectorIcon.MCI name='plus' size={25} color={'white'} />
+        <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: '100%', height: '100%', borderRadius: 30 }} />
+        <View
+          style={{
+            width: 18,
+            height: 18,
+            borderRadius: 30,
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            bottom: -5,
+            right: -5,
+            backgroundColor: 'white',
+          }}
+        >
+          <VectorIcon.II name='add' size={15} color={'black'} />
+        </View>
       </TouchableOpacity>
       {/* <View
         style={{

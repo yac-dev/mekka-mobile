@@ -223,7 +223,7 @@ export const Notifications = () => {
     return (
       <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
         <VectorIcon.MCI
-          name='image-multiple-outline'
+          name='bell'
           size={60}
           color={'rgb(150,150,150)'}
           style={{ marginBottom: 30, marginTop: -100 }}

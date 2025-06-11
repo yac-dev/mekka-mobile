@@ -9,4 +9,5 @@ export const mutationKeys = {
   updateMe: 'updateMe',
   createFollowingRelationship: 'createFollowingRelationship',
   deleteFollowingRelationship: 'deleteFollowingRelationship',
+  createReply: 'createReply',
 };

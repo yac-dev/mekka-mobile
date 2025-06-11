@@ -12,6 +12,7 @@ import {
   MapRegionType,
   FollowingRelationshipType,
   NotificationType,
+  ReplyType,
 } from '../types';
 
 export type LoadMeInput = {
@@ -136,6 +137,10 @@ export type CreateCommentInputType = {
   postId: string;
   userId: string;
   userName: string;
+  replyTo?: {
+    commentId: string;
+    userName: string;
+  };
 };
 
 export type IncrementReactionInputType = {
@@ -150,6 +155,16 @@ export type IncrementReactionOutputType = {
 
 export type CreateCommentOutputType = {
   comment: CommentType;
+};
+
+export type CreateReplyInputType = {
+  commentId: string;
+  content: string;
+  userId: string;
+};
+
+export type CreateReplyOutputType = {
+  reply: ReplyType;
 };
 
 export type GetMomentsBySpaceIdInputType = {
@@ -226,6 +241,14 @@ export type GetCommentsByPostIdInputType = {
 
 export type GetCommentsByPostIdOutputType = {
   comments: CommentType[];
+};
+
+export type GetRepliesByCommentIdInputType = {
+  commentId: string;
+};
+
+export type GetRepliesByCommentIdOutputType = {
+  replies: ReplyType[];
 };
 
 export type GetPostsByTagIdAndRegionInput = {

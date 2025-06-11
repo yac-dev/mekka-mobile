@@ -1,5 +1,5 @@
-import React, { useMemo, useRef } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, TextInput, Keyboard } from 'react-native';
+import React, { useMemo, useRef, useState } from 'react';
+import { View, Text, ActivityIndicator, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getCommentsByPostId } from '../../../query/queries';
 import { currentPostAtom } from '../../Space/atoms/currentPostAtom';
@@ -17,8 +17,10 @@ import { useNavigation } from '@react-navigation/native';
 import { CommentInput } from '../components/CommentInput';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { CommentInputBottomSheet } from '../components/CommentInputBottomSheet';
+import { CommentsStackNavigatorParams, CommentsStackNavigatorProps } from '../../../navigations';
+import { Comment } from '../components/Comment';
 
-type ICommentsPage = NativeStackScreenProps<ViewPostStackNavigatorParams, 'Comments'>;
+type ICommentsPage = NativeStackScreenProps<CommentsStackNavigatorParams, 'Comments'>;
 
 const inputAccessoryViewID = 'COMMENT_INPUT';
 
@@ -49,111 +51,42 @@ function timeSince(date: Date) {
   return 'Just Now';
 }
 
-export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
-  const { postId } = route.params;
+export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
+  const commentsStackNavigation = useNavigation<CommentsStackNavigatorProps>();
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const textInputRef = useRef<TextInput>(null);
+  const [replyTo, setReplyTo] = useState<{ name: string; id: string } | null>(null);
 
-  const snapPoints = useMemo(() => ['15%', '75%', '100%'], []);
+  const snapPoints = useMemo(() => ['15%', '80%', '100%'], []);
 
   const { data, status } = useQuery({
     queryKey: [queryKeys.commentsByPostId, postId],
     queryFn: () => getCommentsByPostId({ postId }),
+    staleTime: 0,
+    gcTime: 0,
   });
 
   const handleFocus = () => {
-    commentInputBottomSheetRef.current?.snapToIndex(1); // 50% index
+    commentInputBottomSheetRef.current?.snapToIndex(1);
   };
 
   const handleSheetChanges = (index: number) => {
     if (index === 0) {
-      // 15% index
       Keyboard.dismiss();
     } else if (index === 1) {
       textInputRef.current?.focus();
     }
   };
 
-  const renderComment = ({ item }: { item: CommentType }) => {
-    if (item.createdBy) {
-      return (
-        <View style={{ paddingHorizontal: 20 }}>
-          <View
-            style={{
-              flexDirection: 'column',
-              paddingTop: 15,
-              paddingBottom: 15,
-              borderBottomWidth: 0.5,
-              borderBottomColor: 'rgb(100,100,100)',
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 10,
-                justifyContent: 'space-between',
-              }}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <ExpoImage
-                  style={{
-                    width: 35,
-                    height: 35,
-                    marginRight: 10,
-                    borderRadius: 5,
-                  }}
-                  source={{ uri: item.createdBy.avatar }}
-                  contentFit='contain'
-                /> */}
-                <View
-                  style={{
-                    backgroundColor: 'rgb(70,70,70)',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: 35,
-                    height: 35,
-                    borderRadius: 35 / 2,
-                    marginRight: 15,
-                  }}
-                >
-                  {item.createdBy.avatar ? (
-                    <ExpoImage source={item.createdBy.avatar} style={styles.avatar} />
-                  ) : (
-                    <Text style={{ color: 'white', fontSize: 20, textAlign: 'center', fontWeight: 'bold' }}>
-                      {item.createdBy.name.slice(0, 2).toUpperCase()}
-                    </Text>
-                  )}
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 5 }}>
-                    {item.createdBy.name}
-                  </Text>
-                  <Text style={{ color: 'rgb(150,150,150)', fontSize: 12, fontWeight: 'bold' }}>
-                    {timeSince(new Date(item.createdAt))}
-                  </Text>
-                </View>
-              </View>
-              <AppButton.Icon
-                onButtonPress={() => viewPostStackNavigation.navigate('ReportComment')}
-                customStyle={{
-                  width: 25,
-                  height: 25,
-                  backgroundColor: 'rgb(50,50,50)',
-                  borderRadius: 15,
-                }}
-                hasShadow={false}
-              >
-                <VectorIcon.FT name='more-horizontal' size={13} color={'white'} />
-              </AppButton.Icon>
-            </View>
-            <Text style={{ color: 'white', fontSize: 17 }}>{item.content}</Text>
-          </View>
-        </View>
-      );
-    } else {
-      return null;
+  const clearReply = () => {
+    setReplyTo(null);
+  };
+
+  const handleReply = (comment: CommentType) => {
+    if (comment.createdBy) {
+      setReplyTo({ name: comment.createdBy.name, id: comment._id });
+      commentInputBottomSheetRef.current?.snapToIndex(1);
     }
   };
 
@@ -174,7 +107,7 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
     >
       <FlashList
         data={data?.comments}
-        renderItem={renderComment}
+        renderItem={({ item }) => <Comment comment={item} onReply={handleReply} />}
         keyExtractor={(_, index) => `${index}`}
         ListEmptyComponent={
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 150 }}>
@@ -192,6 +125,8 @@ export const CommentsPage: React.FC<ICommentsPage> = ({ route }) => {
         snapPoints={snapPoints}
         handleSheetChanges={handleSheetChanges}
         handleFocus={handleFocus}
+        replyTo={replyTo}
+        clearReply={clearReply}
       />
     </View>
   );

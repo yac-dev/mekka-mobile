@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { forwardRef, useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,13 +9,13 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useRecoilState } from 'recoil';
 import { currentSpaceAtom, authAtom } from '../../../recoil';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
-import { createComment } from '../../../query/mutations';
-import { CreateCommentInputType, GetCommentsByPostIdOutputType } from '../../../query/types';
+import { createComment, createReply } from '../../../query/mutations';
+import { CreateCommentInputType, CreateReplyInputType, GetCommentsByPostIdOutputType } from '../../../query/types';
 import { mutationKeys, queryKeys } from '../../../query';
 import { VectorIcon } from '../../../Icons/VectorIcons';
 
@@ -28,10 +28,24 @@ interface CommentBottomSheetProps {
   snapPoints: string[];
   handleSheetChanges: (index: number) => void;
   handleFocus: () => void;
+  replyTo: { name: string; id: string } | null;
+  clearReply: () => void;
 }
 
 export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwardRef(
-  ({ commentInputBottomSheetRef, textInputRef, currentPost, snapPoints, handleSheetChanges, handleFocus }, ref) => {
+  (
+    {
+      commentInputBottomSheetRef,
+      textInputRef,
+      currentPost,
+      snapPoints,
+      handleSheetChanges,
+      handleFocus,
+      replyTo,
+      clearReply,
+    },
+    ref
+  ) => {
     const [auth] = useRecoilState(authAtom);
     const [commentInput, setCommentInput] = useState('');
     const commentInputRef = useRef<TextInput>(null);
@@ -40,14 +54,10 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
     const { mutate: createCommentMutation, status: createCommentStatus } = useMutation({
       mutationKey: [mutationKeys.createComment],
       mutationFn: (input: CreateCommentInputType) => createComment(input),
-      // onMutate: () => refs.flashMessageRef.current?.showMessage({ message: 'Processing now...', type: 'success' }),
       onSuccess: (data) => {
-        // refs.flashMessageRef.current?.showMessage({
-        //   type: 'success',
-        //   message: 'Your comment has been sent.',
-        // });
         setCommentInput('');
         commentInputBottomSheetRef.current?.snapToIndex(0);
+        clearReply();
         queryClient.setQueryData(
           [queryKeys.commentsByPostId, currentPost],
           (previous: GetCommentsByPostIdOutputType) => {
@@ -71,19 +81,81 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
       },
     });
 
+    const { mutate: createReplyMutation, status: createReplyStatus } = useMutation({
+      mutationKey: [mutationKeys.createReply],
+      mutationFn: (input: CreateReplyInputType) => createReply(input),
+      onSuccess: (data) => {
+        setCommentInput('');
+        commentInputBottomSheetRef.current?.snapToIndex(0);
+        clearReply();
+
+        // Update the replies list in the cache
+        queryClient.setQueryData([queryKeys.repliesByCommentId, replyTo?.id], (oldData: any) => {
+          if (!oldData) return { replies: [data.reply] };
+          return {
+            ...oldData,
+            replies: [data.reply, ...oldData.replies],
+          };
+        });
+
+        // Increment the comment's reply count in the comments list
+        queryClient.setQueryData([queryKeys.commentsByPostId, currentPost], (oldData: any) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            comments: oldData.comments.map((comment: any) => {
+              if (comment._id === replyTo?.id) {
+                return {
+                  ...comment,
+                  replyCount: (comment.replyCount || 0) + 1,
+                };
+              }
+              return comment;
+            }),
+          };
+        });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+
+    // apiのtesをしようか。まずpostmanで。
     const onSendPress = () => {
-      createCommentMutation({
-        content: commentInput,
-        postId: currentPost,
-        userId: auth._id,
-        userName: auth.name,
-      });
+      if (replyTo) {
+        createReplyMutation({
+          commentId: replyTo.id,
+          content: commentInput,
+          userId: auth._id,
+        });
+      } else {
+        createCommentMutation({
+          content: commentInput,
+          postId: currentPost,
+          userId: auth._id,
+          userName: auth.name,
+          ...(replyTo && {
+            replyTo: {
+              commentId: replyTo.id,
+              userName: replyTo.name,
+            },
+          }),
+        });
+      }
     };
 
     const onCancelPress = () => {
       Keyboard.dismiss();
       setCommentInput('');
       commentInputBottomSheetRef.current?.snapToIndex(0);
+      clearReply();
+    };
+
+    const handleSheetChangesWithClear = (index: number) => {
+      handleSheetChanges(index);
+      if (index === 0) {
+        clearReply();
+      }
     };
 
     return (
@@ -96,10 +168,20 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         backgroundStyle={{ backgroundColor: 'rgb(30,30,30)' }}
         handleIndicatorStyle={{ backgroundColor: 'rgb(100,100,100)' }}
         onClose={() => {}}
-        onChange={handleSheetChanges}
+        onChange={handleSheetChangesWithClear}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop
+            {...props}
+            opacity={0.7}
+            enableTouchThrough={false}
+            appearsOnIndex={1}
+            disappearsOnIndex={0}
+            style={[{ backgroundColor: 'rgba(0, 0, 0, 1)' }, StyleSheet.absoluteFillObject]}
+          />
+        )}
       >
         <View style={styles.container}>
-          {createCommentStatus === 'pending' ? (
+          {createCommentStatus === 'pending' || createReplyStatus === 'pending' ? (
             <View
               style={{
                 padding: 15,
@@ -112,6 +194,12 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
             </View>
           ) : (
             <>
+              {replyTo && (
+                <View style={styles.replyToContainer}>
+                  <Text style={styles.replyToText}>in reply to </Text>
+                  <Text style={styles.replyToName}>@{replyTo.name}</Text>
+                </View>
+              )}
               <TextInput
                 ref={textInputRef}
                 placeholder='What are your thoughts?'
@@ -166,5 +254,21 @@ const styles = StyleSheet.create({
   textInput: {
     color: 'white',
     fontSize: 17,
+  },
+  replyToContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    marginBottom: 4,
+  },
+  replyToText: {
+    color: 'rgb(170,170,170)',
+    fontSize: 14,
+  },
+  replyToName: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
