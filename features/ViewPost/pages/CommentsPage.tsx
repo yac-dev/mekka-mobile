@@ -86,7 +86,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   // ここ、commentのreplyとreplyに対するreplyでfunction分けないといけないね。
   const handleReplyToComment = (comment: CommentType) => {
     if (comment.createdBy) {
-      setReplyTo({ recieverId: comment._id, recieverName: comment.createdBy.name, commentId: comment._id });
+      setReplyTo({ recieverId: comment.createdBy._id, recieverName: comment.createdBy.name, commentId: comment._id });
       commentInputBottomSheetRef.current?.snapToIndex(1);
     }
   };

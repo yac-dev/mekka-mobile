@@ -99,7 +99,7 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReplyToComment, onR
         </View>
         {reply.to && (
           <Text style={styles.replyToText}>
-            @<Text style={styles.replyToName}>{reply.to.name}</Text>
+            <Text style={styles.replyToName}>@{reply.to.name}</Text>
           </Text>
         )}
         <Text style={styles.replyContent}>{reply.content}</Text>
@@ -159,14 +159,11 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReplyToComment, onR
               onPress={() => setIsRepliesOpen(!isRepliesOpen)}
               activeOpacity={0.7}
             >
-              <VectorIcon.II
-                name={'chatbubble-outline'}
-                size={13}
-                color={'rgb(150,150,150)'}
-                style={styles.replyIcon}
-              />
+              <VectorIcon.II name={'chatbubble'} size={13} color={'rgb(150,150,150)'} style={styles.replyIcon} />
               <Text style={styles.replyText}>
-                {isRepliesOpen ? 'Hide replies' : `View all (${repliesData?.replies.length || comment.replyCount})`}
+                {isRepliesOpen
+                  ? 'Hide replies'
+                  : `View ${comment.replyCount} ${comment.replyCount > 1 ? 'replies' : 'reply'}`}
               </Text>
               <VectorIcon.II
                 name={isRepliesOpen ? 'chevron-up' : 'chevron-down'}
