@@ -228,6 +228,7 @@ export type CommentType = {
 
 export type ReplyType = {
   _id: string;
+  to: UserType;
   content: string;
   comment: CommentType;
   createdBy: UserType;

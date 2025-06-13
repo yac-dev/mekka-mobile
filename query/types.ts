@@ -160,7 +160,8 @@ export type CreateCommentOutputType = {
 export type CreateReplyInputType = {
   commentId: string;
   content: string;
-  userId: string;
+  senderId: string;
+  receiverId: string;
 };
 
 export type CreateReplyOutputType = {

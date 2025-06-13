@@ -28,7 +28,7 @@ interface CommentBottomSheetProps {
   snapPoints: string[];
   handleSheetChanges: (index: number) => void;
   handleFocus: () => void;
-  replyTo: { name: string; id: string } | null;
+  replyTo: { recieverId: string; recieverName: string; commentId: string } | null;
   clearReply: () => void;
 }
 
@@ -90,11 +90,11 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
         clearReply();
 
         // Update the replies list in the cache
-        queryClient.setQueryData([queryKeys.repliesByCommentId, replyTo?.id], (oldData: any) => {
+        queryClient.setQueryData([queryKeys.repliesByCommentId, replyTo?.commentId], (oldData: any) => {
           if (!oldData) return { replies: [data.reply] };
           return {
             ...oldData,
-            replies: [data.reply, ...oldData.replies],
+            replies: [...oldData.replies, data.reply],
           };
         });
 
@@ -104,7 +104,7 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
           return {
             ...oldData,
             comments: oldData.comments.map((comment: any) => {
-              if (comment._id === replyTo?.id) {
+              if (comment._id === replyTo?.commentId) {
                 return {
                   ...comment,
                   replyCount: (comment.replyCount || 0) + 1,
@@ -124,22 +124,30 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
     const onSendPress = () => {
       if (replyTo) {
         createReplyMutation({
-          commentId: replyTo.id,
+          commentId: replyTo.commentId,
           content: commentInput,
-          userId: auth._id,
+          senderId: auth._id,
+          receiverId: replyTo.recieverId,
         });
+
+        // console.log('repling object', {
+        //   commentId: replyTo.commentId,
+        //   content: commentInput,
+        //   senderId: auth._id,
+        //   receiverId: replyTo.recieverId,
+        // });
       } else {
         createCommentMutation({
           content: commentInput,
           postId: currentPost,
           userId: auth._id,
           userName: auth.name,
-          ...(replyTo && {
-            replyTo: {
-              commentId: replyTo.id,
-              userName: replyTo.name,
-            },
-          }),
+          // ...(replyTo && {
+          //   replyTo: {
+          //     commentId: replyTo.commentId,
+          //     userName: replyTo.name,
+          //   },
+          // }),
         });
       }
     };
@@ -197,7 +205,7 @@ export const CommentInputBottomSheet: React.FC<CommentBottomSheetProps> = forwar
               {replyTo && (
                 <View style={styles.replyToContainer}>
                   <Text style={styles.replyToText}>in reply to </Text>
-                  <Text style={styles.replyToName}>@{replyTo.name}</Text>
+                  <Text style={styles.replyToName}>@{replyTo.recieverName}</Text>
                 </View>
               )}
               <TextInput
