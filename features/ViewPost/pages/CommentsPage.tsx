@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCommentsByPostId } from '../../../query/queries';
 import { currentPostAtom } from '../../Space/atoms/currentPostAtom';
 import { useRecoilState } from 'recoil';
-import { CommentType } from '../../../types';
+import { CommentType, ReplyType } from '../../../types';
 import { FlashList } from '@shopify/flash-list';
 import { Image as ExpoImage } from 'expo-image';
 import { queryKeys } from '../../../query/queryKeys';
@@ -56,7 +56,7 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
   const commentsStackNavigation = useNavigation<CommentsStackNavigatorProps>();
   const commentInputBottomSheetRef = useRef<BottomSheetModal>(null);
   const textInputRef = useRef<TextInput>(null);
-  const [replyTo, setReplyTo] = useState<{ name: string; id: string } | null>(null);
+  const [replyTo, setReplyTo] = useState<{ recieverId: string; recieverName: string; commentId: string } | null>(null);
 
   const snapPoints = useMemo(() => ['15%', '80%', '100%'], []);
 
@@ -83,9 +83,17 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
     setReplyTo(null);
   };
 
-  const handleReply = (comment: CommentType) => {
+  // ここ、commentのreplyとreplyに対するreplyでfunction分けないといけないね。
+  const handleReplyToComment = (comment: CommentType) => {
     if (comment.createdBy) {
-      setReplyTo({ name: comment.createdBy.name, id: comment._id });
+      setReplyTo({ recieverId: comment.createdBy._id, recieverName: comment.createdBy.name, commentId: comment._id });
+      commentInputBottomSheetRef.current?.snapToIndex(1);
+    }
+  };
+
+  const handleReplyToReply = (reply: ReplyType, commentId: string) => {
+    if (reply.createdBy) {
+      setReplyTo({ recieverId: reply.createdBy._id, recieverName: reply.createdBy.name, commentId: commentId });
       commentInputBottomSheetRef.current?.snapToIndex(1);
     }
   };
@@ -107,7 +115,9 @@ export const CommentsPage: React.FC<{ postId: string }> = ({ postId }) => {
     >
       <FlashList
         data={data?.comments}
-        renderItem={({ item }) => <Comment comment={item} onReply={handleReply} />}
+        renderItem={({ item }) => (
+          <Comment comment={item} onReplyToComment={handleReplyToComment} onReplyToReply={handleReplyToReply} />
+        )}
         keyExtractor={(_, index) => `${index}`}
         ListEmptyComponent={
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 150 }}>

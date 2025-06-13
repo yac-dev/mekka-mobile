@@ -13,7 +13,8 @@ import { queryKeys, mutationKeys } from '../../../query';
 
 type CommentProps = {
   comment: CommentType;
-  onReply: (comment: CommentType) => void;
+  onReplyToComment: (comment: CommentType) => void;
+  onReplyToReply: (reply: ReplyType, commentId: string) => void;
 };
 
 function timeSince(date: Date) {
@@ -42,7 +43,7 @@ function timeSince(date: Date) {
   return 'Just Now';
 }
 
-export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
+export const Comment: React.FC<CommentProps> = ({ comment, onReplyToComment, onReplyToReply }) => {
   const [isRepliesOpen, setIsRepliesOpen] = useState(false);
   const viewPostStackNavigation = useNavigation<ViewPostStackNavigatorProps>();
   const commentsStackNavigation = useNavigation<CommentsStackNavigatorProps>();
@@ -71,11 +72,13 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
     return null;
   }
 
-  const renderReply = (reply: ReplyType) => {
+  const renderReply = (reply: ReplyType, index: number, array: ReplyType[]) => {
     if (!reply.createdBy) return null;
 
+    const isLastItem = index === array.length - 1;
+
     return (
-      <View style={styles.replyContainer} key={reply._id}>
+      <View style={[styles.replyContainer, isLastItem && { borderBottomWidth: 0, paddingBottom: 0 }]} key={reply._id}>
         <View style={styles.replyHeader}>
           <View style={styles.replyUserInfo}>
             <TouchableOpacity
@@ -85,7 +88,7 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
               {reply.createdBy.avatar ? (
                 <ExpoImage source={reply.createdBy.avatar} style={styles.avatar} />
               ) : (
-                <Text style={styles.avatarText}>{reply.createdBy.name.slice(0, 2).toUpperCase()}</Text>
+                <Text style={styles.replyAvatarText}>{reply.createdBy.name.slice(0, 2).toUpperCase()}</Text>
               )}
             </TouchableOpacity>
             <View style={styles.replyUserDetails}>
@@ -94,7 +97,22 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
             </View>
           </View>
         </View>
+        {reply.to && (
+          <Text style={styles.replyToText}>
+            <Text style={styles.replyToName}>@{reply.to.name}</Text>
+          </Text>
+        )}
         <Text style={styles.replyContent}>{reply.content}</Text>
+        <View style={styles.replyFooter}>
+          <TouchableOpacity
+            style={styles.replyButton}
+            onPress={() => onReplyToReply(reply, comment._id)}
+            activeOpacity={0.7}
+          >
+            <VectorIcon.MCI name='reply' size={13} color={'rgb(150,150,150)'} style={styles.replyIcon} />
+            <Text style={styles.replyText}>Reply</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -131,7 +149,7 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
         </View>
         <Text style={styles.commentContent}>{comment.content}</Text>
         <View style={styles.commentFooter}>
-          <TouchableOpacity style={styles.replyButton} onPress={() => onReply(comment)} activeOpacity={0.7}>
+          <TouchableOpacity style={styles.replyButton} onPress={() => onReplyToComment(comment)} activeOpacity={0.7}>
             <VectorIcon.MCI name='reply' size={13} color={'rgb(150,150,150)'} style={styles.replyIcon} />
             <Text style={styles.replyText}>Reply</Text>
           </TouchableOpacity>
@@ -141,14 +159,11 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
               onPress={() => setIsRepliesOpen(!isRepliesOpen)}
               activeOpacity={0.7}
             >
-              <VectorIcon.II
-                name={'chatbubble-outline'}
-                size={13}
-                color={'rgb(150,150,150)'}
-                style={styles.replyIcon}
-              />
+              <VectorIcon.II name={'chatbubble'} size={13} color={'rgb(150,150,150)'} style={styles.replyIcon} />
               <Text style={styles.replyText}>
-                {isRepliesOpen ? 'Hide replies' : `View all (${repliesData?.replies.length || comment.replyCount})`}
+                {isRepliesOpen
+                  ? 'Hide replies'
+                  : `View ${comment.replyCount} ${comment.replyCount > 1 ? 'replies' : 'reply'}`}
               </Text>
               <VectorIcon.II
                 name={isRepliesOpen ? 'chevron-up' : 'chevron-down'}
@@ -164,7 +179,7 @@ export const Comment: React.FC<CommentProps> = ({ comment, onReply }) => {
             {repliesStatus === 'pending' ? (
               <ActivityIndicator style={styles.loadingIndicator} />
             ) : (
-              repliesData?.replies.map(renderReply)
+              repliesData?.replies.map((reply, index, array) => renderReply(reply, index, array))
             )}
           </Animated.View>
         )}
@@ -208,6 +223,12 @@ const styles = StyleSheet.create({
   avatarText: {
     color: 'white',
     fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  replyAvatarText: {
+    color: 'white',
+    fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold',
   },
@@ -273,6 +294,9 @@ const styles = StyleSheet.create({
   },
   replyContainer: {
     marginBottom: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'rgb(100,100,100)',
+    paddingBottom: 10,
   },
   replyHeader: {
     flexDirection: 'row',
@@ -310,5 +334,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 15,
     marginLeft: 35,
+  },
+  replyToText: {
+    color: 'rgb(150,150,150)',
+    fontSize: 12,
+    marginBottom: 6,
+    marginLeft: 35,
+  },
+  replyToName: {
+    color: 'rgb(0,122,255)',
+    fontWeight: 'bold',
+  },
+  replyFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 35,
+    marginTop: 4,
   },
 });
