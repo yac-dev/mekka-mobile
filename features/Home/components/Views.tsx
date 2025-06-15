@@ -123,16 +123,16 @@ export const Views: React.FC<{
       />
       <View
         style={{
-          flexDirection: 'column',
-          alignItems: 'center',
+          // flexDirection: 'column',
+          // alignItems: 'center',
           position: 'absolute',
-          bottom: 55,
+          bottom: 60,
           left: 10,
-          paddingVertical: 8,
-          paddingHorizontal: 6,
-          gap: 8,
-          backgroundColor: 'rgb(35,35,35)',
-          borderRadius: 16,
+          // paddingVertical: 8,
+          // paddingHorizontal: 6,
+          // gap: 8,
+          // backgroundColor: 'rgb(35,35,35)',
+          // borderRadius: 16,
           justifyContent: 'center',
           ...Platform.select({
             ios: {
@@ -147,7 +147,7 @@ export const Views: React.FC<{
           }),
         }}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             height: 35,
             width: 35,
@@ -166,34 +166,36 @@ export const Views: React.FC<{
             contentFit='contain'
             tintColor={Colors.white}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={{
-            height: 35,
-            width: 35,
+            height: 50,
+            width: 50,
             backgroundColor: index === 0 ? 'rgb(60,60,60)' : 'rgb(35,35,35)',
             borderRadius: 100,
             justifyContent: 'center',
             alignItems: 'center',
           }}
           onPress={() => {
-            setIndex(0);
+            openChooseViewBottomSheet(0);
           }}
         >
-          <VectorIcon.FI name='nav-icon-grid' size={12} color={'white'} />
+          <VectorIcon.FI name='nav-icon-grid' size={14} color={'white'} />
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 55,
+          bottom: 60,
           right: 15,
-          width: 45,
-          height: 45,
+          width: 50,
+          height: 50,
           borderRadius: 100,
           justifyContent: 'center',
           alignItems: 'center',
+          borderWidth: 1.5,
+          borderColor: 'black',
           ...Platform.select({
             ios: {
               shadowColor: 'black',
@@ -215,18 +217,18 @@ export const Views: React.FC<{
         <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: '100%', height: '100%', borderRadius: 30 }} />
         <View
           style={{
-            width: 18,
-            height: 18,
+            width: 20,
+            height: 20,
             borderRadius: 30,
             alignItems: 'center',
             justifyContent: 'center',
             position: 'absolute',
-            bottom: -5,
-            right: -5,
-            backgroundColor: 'white',
+            bottom: -4,
+            right: -4,
+            backgroundColor: 'rgb(50,50,50)',
           }}
         >
-          <VectorIcon.II name='add' size={15} color={'black'} />
+          <VectorIcon.II name='add' size={16} color={'white'} />
         </View>
       </TouchableOpacity>
 
@@ -357,7 +359,7 @@ export const Views: React.FC<{
               <VectorIcon.FI name='nav-icon-grid' size={30} color={'white'} />
               {index === 0 ? <CheckIcon /> : null}
             </TouchableOpacity>
-            <Text style={{ color: 'white', fontSize: 15 }}>Grid</Text>
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Grid</Text>
           </View>
           <View
             style={{
@@ -391,7 +393,7 @@ export const Views: React.FC<{
               />
               {index === 1 ? <CheckIcon /> : null}
             </TouchableOpacity>
-            <Text style={{ color: 'white', fontSize: 15 }}>Map</Text>
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Map</Text>
           </View>
         </View>
       </AppBottomSheet.Gorhom>

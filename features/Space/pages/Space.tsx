@@ -226,7 +226,7 @@ export const Space: React.FC<ISpace> = ({
                   position: 'absolute',
                   bottom: -7,
                   right: -8,
-                  backgroundColor: 'rgb(50,50,50)',
+                  backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(50,50,50)',
                   width: 22,
                   height: 22,
                   borderRadius: 100,
@@ -248,7 +248,7 @@ export const Space: React.FC<ISpace> = ({
                   position: 'absolute',
                   bottom: -7,
                   right: -8,
-                  backgroundColor: 'rgb(50,50,50)',
+                  backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(50,50,50)',
                   width: 22,
                   height: 22,
                   borderRadius: 100,
@@ -308,7 +308,7 @@ export const Space: React.FC<ISpace> = ({
       >
         <View
           style={{
-            height: 75,
+            height: 80,
             // backgroundColor: 'red'
           }}
         >
@@ -349,21 +349,6 @@ export const Space: React.FC<ISpace> = ({
 
                   <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
                 </View>
-                {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {!currentSpace.isPublic ? (
-                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
-                  ) : null}
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 12,
-                      fontWeight: 'bold',
-                      marginLeft: !currentSpace.isPublic ? 8 : 0,
-                    }}
-                  >
-                    {currentSpace.totalMembers} members
-                  </Text>
-                </View> */}
               </TouchableOpacity>
 
               {isCreatePostPending && <ActivityIndicator size='small' color={Colors.white} />}
@@ -384,7 +369,16 @@ export const Space: React.FC<ISpace> = ({
           onChangeTab(index);
         }}
       />
-      <View style={{ position: 'absolute', bottom: 5, alignSelf: 'center' }}>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          alignSelf: 'center',
+          backgroundColor: 'black',
+          borderTopWidth: 1,
+          borderTopColor: 'rgb(50,50,50)',
+        }}
+      >
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -392,7 +386,7 @@ export const Space: React.FC<ISpace> = ({
           data={currentSpace?.tags}
           renderItem={renderTab}
           keyExtractor={(item, index) => `${item._id}-${index}`}
-          contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}
+          contentContainerStyle={{ paddingHorizontal: 10, paddingTop: 8, paddingBottom: 4 }}
           ListHeaderComponent={
             <TouchableOpacity
               style={{
@@ -465,7 +459,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
+export const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
   return (
     <View>
       <ScrollView
