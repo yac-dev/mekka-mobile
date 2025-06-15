@@ -154,7 +154,7 @@ export const Grid: React.FC<GridProps> = ({ tag }) => {
         onMomentumScrollEnd={() => {
           fetchNextPage();
         }}
-        ListHeaderComponent={<View style={{ height: 105 }} />}
+        ListHeaderComponent={<View style={{ height: 75 }} />}
         ListFooterComponent={renderFooter}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{

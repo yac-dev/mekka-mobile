@@ -180,7 +180,7 @@ export const Space: React.FC<ISpace> = ({
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 12,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(50,50,50)',
               borderRadius: 130,
               ...Platform.select({
                 ios: {
@@ -196,7 +196,7 @@ export const Space: React.FC<ISpace> = ({
             }}
           >
             <ExpoImage
-              style={{ width: 20, height: 20, marginRight: 5 }}
+              style={{ width: 18, height: 18, marginRight: 5 }}
               source={{ uri: item.icon?.url }}
               tintColor={isFocused ? 'white' : 'rgb(170,170,170)'}
             />
@@ -226,31 +226,20 @@ export const Space: React.FC<ISpace> = ({
                   position: 'absolute',
                   bottom: -7,
                   right: -8,
-                  backgroundColor: 'black',
-                  borderRadius: 10,
+                  backgroundColor: 'rgb(50,50,50)',
                   width: 22,
                   height: 22,
+                  borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ExpoImage
-                    style={{ width: 14, height: 14 }}
-                    source={require('../../../assets/forApp/photo.png')}
-                    contentFit='contain'
-                    tintColor='white'
-                  />
-                </View>
+                <ExpoImage
+                  style={{ width: 14, height: 14 }}
+                  source={require('../../../assets/forApp/photo.png')}
+                  contentFit='contain'
+                  tintColor='white'
+                />
               </View>
             ) : null}
             {item.type.length === 1 && item.type[0] === 'video' ? (
@@ -259,31 +248,20 @@ export const Space: React.FC<ISpace> = ({
                   position: 'absolute',
                   bottom: -7,
                   right: -8,
-                  backgroundColor: 'black',
-                  borderRadius: 10,
+                  backgroundColor: 'rgb(50,50,50)',
                   width: 22,
                   height: 22,
+                  borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: 'rgb(50,50,50)',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ExpoImage
-                    style={{ width: 14, height: 14 }}
-                    source={require('../../../assets/forApp/video.png')}
-                    contentFit='contain'
-                    tintColor='white'
-                  />
-                </View>
+                <ExpoImage
+                  style={{ width: 14, height: 14 }}
+                  source={require('../../../assets/forApp/video.png')}
+                  contentFit='contain'
+                  tintColor='white'
+                />
               </View>
             ) : null}
           </View>
@@ -328,13 +306,18 @@ export const Space: React.FC<ISpace> = ({
           'transparent',
         ]}
       >
-        <View style={{ height: 105 }}>
+        <View
+          style={{
+            height: 75,
+            // backgroundColor: 'red'
+          }}
+        >
           <View
             style={{
               flexDirection: 'column',
               paddingHorizontal: 12,
               paddingTop: 8,
-              paddingBottom: 8,
+              // paddingBottom: 8,
             }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -344,13 +327,20 @@ export const Space: React.FC<ISpace> = ({
                 activeOpacity={0.7}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginBottom: 4 }}>
-                    {currentSpace.name}
-                  </Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 4 }}>
+                    <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginRight: 6 }}>
+                      {currentSpace.name}
+                    </Text>
+                    {!currentSpace.isPublic ? (
+                      <Text style={{ color: 'rgb(180,180,180)', fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>
+                        Private
+                      </Text>
+                    ) : null}
+                  </View>
 
                   <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {!currentSpace.isPublic ? (
                     <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>Private</Text>
                   ) : null}
@@ -364,117 +354,14 @@ export const Space: React.FC<ISpace> = ({
                   >
                     {currentSpace.totalMembers} members
                   </Text>
-                </View>
+                </View> */}
               </TouchableOpacity>
 
-              {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity
-                  style={{
-                    width: 30,
-                    height: 30,
-                    backgroundColor: 'rgb(50,50,50)',
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    ...Platform.select({
-                      ios: {
-                        shadowColor: 'black',
-                        shadowOffset: { width: 5, height: 5 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 8,
-                      },
-                      android: {
-                        elevation: 5,
-                      },
-                    }),
-                  }}
-                  onPress={() => {
-                    homeStackNavigation.navigate('MomentsStackNavigator');
-                  }}
-                  activeOpacity={0.7}
-                >
-                  <VectorIcon.MCI name='magnify' size={20} color={'white'} />
-                </TouchableOpacity>
-              </View> */}
               {isCreatePostPending && <ActivityIndicator size='small' color={Colors.white} />}
             </View>
           </View>
-          {/* <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ref={scrollViewRef}
-            data={currentSpace?.tags}
-            renderItem={renderTab}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 5 }}
-            ListHeaderComponent={
-              <TouchableOpacity
-                style={{
-                  padding: 5,
-                  marginRight: 10,
-                  backgroundColor: 'rgb(50,50,50)',
-                  borderRadius: 100,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  ...Platform.select({
-                    ios: {
-                      shadowColor: 'black',
-                      shadowOffset: { width: 5, height: 5 },
-                      shadowOpacity: 0.5,
-                      shadowRadius: 8,
-                    },
-                    android: {
-                      elevation: 5,
-                    },
-                  }),
-                }}
-                onPress={() => {
-                  homeStackNavigation.navigate('MomentsStackNavigator');
-                }}
-                activeOpacity={0.7}
-              >
-                <ExpoImage
-                  style={{ width: 20, height: 20 }}
-                  source={require('../../../assets/forApp/ghost.png')}
-                  contentFit='contain'
-                  tintColor={Colors.white}
-                />
-                {momentLogs[currentSpace._id] ? (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: -5,
-                      right: -8,
-                      width: 16,
-                      height: 16,
-                      borderRadius: 10,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: 'red',
-                    }}
-                  >
-                    <Text style={{ color: 'white', fontSize: 10 }}>{momentLogs[currentSpace._id]}</Text>
-                  </View>
-                ) : null}
-              </TouchableOpacity>
-            }
-          /> */}
+          <SpaceRules space={currentSpace} />
         </View>
-        {/* <View
-          style={{
-            backgroundColor: 'transparent',
-          }}
-        >
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ref={scrollViewRef}
-            data={currentSpace?.tags}
-            renderItem={renderTab}
-            keyExtractor={(item, index) => `${item._id}-${index}`}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
-          />
-        </View> */}
       </LinearGradient>
       <TabView
         lazy
@@ -506,6 +393,8 @@ export const Space: React.FC<ISpace> = ({
                 borderRadius: 100,
                 justifyContent: 'center',
                 alignItems: 'center',
+                width: 32,
+                height: 32,
                 ...Platform.select({
                   ios: {
                     shadowColor: 'black',
@@ -524,7 +413,7 @@ export const Space: React.FC<ISpace> = ({
               activeOpacity={0.7}
             >
               <ExpoImage
-                style={{ width: 20, height: 20 }}
+                style={{ width: 18, height: 18 }}
                 source={require('../../../assets/forApp/ghost.png')}
                 contentFit='contain'
                 tintColor={Colors.white}
@@ -566,3 +455,178 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+
+const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
+  return (
+    <View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 12, paddingVertical: 5 }}
+      >
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <ExpoImage
+                style={{ width: 14, height: 14, marginRight: 6 }}
+                source={require('../../../assets/forApp/photo-video.png')}
+                contentFit='contain'
+                tintColor='white'
+              />
+              <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
+                {space.contentType === 'photo' ? 'Photo' : space.contentType === 'video' ? 'Video' : 'Photo & Video'}
+              </Text>
+            </View>
+          </View>
+
+          {space.videoLength ? (
+            <View
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 4,
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+                marginRight: 5,
+              }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <VectorIcon.II name='play-circle-sharp' size={14} color='white' style={{ marginRight: 6 }} />
+                <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>{space.videoLength}s</Text>
+              </View>
+            </View>
+          ) : null}
+
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <ExpoImage
+                style={{ width: 14, height: 14, marginRight: 6 }}
+                source={require('../../../assets/forApp/ghost.png')}
+                contentFit='contain'
+                tintColor='white'
+              />
+              <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
+                {Math.floor(space.disappearAfter / 60)}h {space.disappearAfter % 60}m
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.II
+                name='thumbs-up-sharp'
+                size={14}
+                color={space.isReactionAvailable ? 'white' : 'rgb(100,100,100)'}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={{
+                  color: space.isReactionAvailable ? 'white' : 'rgb(100,100,100)',
+                  fontSize: 11,
+                  fontWeight: 'bold',
+                }}
+              >
+                Reactions
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.FD
+                name='comments'
+                size={14}
+                color={space.isCommentAvailable ? 'white' : 'rgb(100,100,100)'}
+                style={{ marginRight: 6 }}
+              />
+              <Text
+                style={{
+                  color: space.isCommentAvailable ? 'white' : 'rgb(100,100,100)',
+                  fontSize: 11,
+                  fontWeight: 'bold',
+                }}
+              >
+                Comments
+              </Text>
+            </View>
+          </View>
+
+          {space.isPublic && (
+            <View
+              style={{ backgroundColor: 'rgb(50,50,50)', borderRadius: 4, paddingHorizontal: 8, paddingVertical: 4 }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <VectorIcon.II
+                  name='person-add'
+                  size={14}
+                  color={space.isFollowAvailable ? 'white' : 'rgb(100,100,100)'}
+                  style={{ marginRight: 6 }}
+                />
+                <Text
+                  style={{
+                    color: space.isFollowAvailable ? 'white' : 'rgb(100,100,100)',
+                    fontSize: 11,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Following
+                </Text>
+              </View>
+            </View>
+          )}
+
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <ExpoImage
+                style={{ width: 14, height: 14, marginRight: 6 }}
+                source={require('../../../assets/forApp/learning.png')}
+                contentFit='contain'
+                tintColor='rgb(100,100,100)'
+              />
+              <Text style={{ color: 'rgb(100,100,100)', fontSize: 11, fontWeight: 'bold' }}>Algorithm</Text>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
