@@ -326,16 +326,25 @@ export const Space: React.FC<ISpace> = ({
                 onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
                 activeOpacity={0.7}
               >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 4 }}>
-                    <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 25, marginRight: 6 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27, marginRight: 8 }}>
                       {currentSpace.name}
                     </Text>
-                    {!currentSpace.isPublic ? (
-                      <Text style={{ color: 'rgb(180,180,180)', fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>
-                        Private
+                    <View style={{ flexDirection: 'column' }}>
+                      {!currentSpace.isPublic ? (
+                        <Text style={{ color: 'rgb(180,180,180)', fontSize: 11, fontWeight: 'bold' }}>Private</Text>
+                      ) : null}
+                      <Text
+                        style={{
+                          color: 'rgb(180,180,180)',
+                          fontSize: 11,
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {currentSpace.totalMembers} {currentSpace.totalMembers === 1 ? 'member' : 'members'}
                       </Text>
-                    ) : null}
+                    </View>
                   </View>
 
                   <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
