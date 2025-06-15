@@ -126,7 +126,7 @@ export const Views: React.FC<{
           flexDirection: 'column',
           alignItems: 'center',
           position: 'absolute',
-          bottom: 25,
+          bottom: 55,
           left: 10,
           paddingVertical: 8,
           paddingHorizontal: 6,
@@ -187,7 +187,7 @@ export const Views: React.FC<{
       <TouchableOpacity
         style={{
           position: 'absolute',
-          bottom: 25,
+          bottom: 55,
           right: 15,
           width: 45,
           height: 45,
@@ -229,6 +229,7 @@ export const Views: React.FC<{
           <VectorIcon.II name='add' size={15} color={'black'} />
         </View>
       </TouchableOpacity>
+
       {/* <View
         style={{
           width: 160,
