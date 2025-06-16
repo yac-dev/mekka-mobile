@@ -46,130 +46,122 @@ export const SpaceVisibilitySelection = () => {
             marginBottom: 10,
           }}
         >
-          Space Visibility
+          Choose Your Space Type
         </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>Make your space private or public?</Text>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', lineHeight: 20 }}>
+          Select how others can discover and join your space
+        </Text>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingBottom: 30,
-          paddingVertical: 10,
-          paddingHorizontal: screenHorizontalPadding,
-        }}
-      >
-        <View style={{ width: selectionItemWidth, paddingRight: 8 }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 20,
-              width: '100%',
-              height: 160,
-            }}
-            activeOpacity={0.8}
-            onPress={() => onIsPubcliChange(false)}
-          >
-            <View
-              style={{
-                height: 85,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomWidth: 0.3,
-                borderBottomColor: 'rgb(100,100,100)',
-              }}
-            >
-              <VectorIcon.MI name='public-off' color={Colors.white} size={50} />
-            </View>
-            <View style={{ padding: 10 }}>
-              <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Private</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Accessible by invitation code only</Text>
-            </View>
-          </TouchableOpacity>
-          {formData.isPublic.value === undefined ? null : formData.isPublic.value ? null : (
+      <View style={{ paddingHorizontal: 20 }}>
+        {/* Private Space Card */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(40,40,40)',
+            borderRadius: 18,
+            padding: 18,
+            marginBottom: 18,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            position: 'relative',
+            overflow: 'visible',
+          }}
+          activeOpacity={0.85}
+          onPress={() => onIsPubcliChange(false)}
+        >
+          {/* Space Icon */}
+          <View style={{ marginRight: 14 }}>
+            <VectorIcon.MI name='public-off' color={Colors.white} size={36} />
+          </View>
+          {/* Title & Description */}
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Private Space</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Only invited members can join. Perfect for close-knit communities and exclusive content.
+            </Text>
+          </View>
+          {/* Checkmark */}
+          {formData.isPublic.value === false ? (
             <View
               style={{
                 position: 'absolute',
-                top: -10,
-                right: 0,
-                backgroundColor: 'black',
-                width: 35,
-                height: 35,
-                borderRadius: 20,
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
                 justifyContent: 'center',
                 alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
               }}
             >
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  width: 25,
-                  height: 25,
-                  borderRadius: 15,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <VectorIcon.II name='checkmark' size={20} color={'black'} />
-              </View>
-            </View>
-          )}
-        </View>
-        <View style={{ width: selectionItemWidth, paddingLeft: 8 }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'rgb(50,50,50)',
-              borderRadius: 20,
-              width: '100%',
-              height: 160,
-            }}
-            activeOpacity={0.8}
-            onPress={() => onIsPubcliChange(true)}
-          >
-            <View
-              style={{
-                height: 85,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomWidth: 0.3,
-                borderBottomColor: 'rgb(100,100,100)',
-              }}
-            >
-              <VectorIcon.MI name='public' color={Colors.white} size={50} />
-            </View>
-            <View style={{ padding: 10 }}>
-              <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Public</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Anyone can join</Text>
-            </View>
-          </TouchableOpacity>
-          {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
-            <View
-              style={{
-                position: 'absolute',
-                top: -10,
-                right: -10,
-                backgroundColor: 'black',
-                width: 35,
-                height: 35,
-                borderRadius: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  width: 25,
-                  height: 25,
-                  borderRadius: 15,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <VectorIcon.II name='checkmark' size={20} color={'black'} />
-              </View>
+              <VectorIcon.II name='checkmark' size={18} color={'black'} />
             </View>
           ) : null}
-        </View>
+        </TouchableOpacity>
+        {/* Public Space Card */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(40,40,40)',
+            borderRadius: 18,
+            padding: 18,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            position: 'relative',
+            overflow: 'visible',
+          }}
+          activeOpacity={0.85}
+          onPress={() => onIsPubcliChange(true)}
+        >
+          {/* Space Icon */}
+          <View style={{ marginRight: 14 }}>
+            <VectorIcon.MI name='public' color={Colors.white} size={36} />
+          </View>
+          {/* Title & Description */}
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Public Space</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Anyone can discover and join. Great for growing communities and open discussions.
+            </Text>
+          </View>
+          {/* Checkmark */}
+          {formData.isPublic.value === true ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <VectorIcon.II name='checkmark' size={18} color={'black'} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
       </View>
     </View>
   );

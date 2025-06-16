@@ -43,7 +43,7 @@ const Description = () => {
           Description
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Please write the description about this space.
+          Share what your space is about. Let others know the purpose, vibe, or any rules.
         </Text>
       </View>
       {renderDescriptionLength()}
