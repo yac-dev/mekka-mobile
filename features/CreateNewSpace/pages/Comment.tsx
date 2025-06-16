@@ -60,7 +60,7 @@ export const Comment = () => {
           <View style={{ flex: 1 }}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Allowed</Text>
             <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
-              Members can write comments on each post. Great for feedback and conversations.
+              A space for conversation. Leave feedback, spark discussions, and build community together.
             </Text>
           </View>
           {/* Checkmark */}
@@ -114,7 +114,7 @@ export const Comment = () => {
           <View style={{ flex: 1 }}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Disallowed</Text>
             <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
-              Commenting is turned off. Posts are for viewing only, so there's no pressure or negative comments.
+              Just enjoy the posts, free from comments or outside noise.
             </Text>
           </View>
           {/* Checkmark */}
