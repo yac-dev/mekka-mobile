@@ -294,11 +294,11 @@ export const Base = () => {
                 <VectorIcon.MI name='public' size={20} color={'white'} />
               </View>
             }
-            title='Visibility'
+            title='Quota'
             value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
             requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
           />
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Description')}
             icon={
@@ -319,7 +319,7 @@ export const Base = () => {
             title='Description'
             value={formData.description.value.replace(/\n/g, '')}
             requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
-          />
+          /> */}
         </View>
         <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
@@ -380,7 +380,7 @@ export const Base = () => {
             title='Moment'
             value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
           />
-          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
             icon={
@@ -401,7 +401,7 @@ export const Base = () => {
             title='Slot'
             value={'Anytime'}
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
-          /> */}
+          />
         </View>
         <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
@@ -447,7 +447,7 @@ export const Base = () => {
                 <VectorIcon.FD name='comments' size={20} color={'white'} />
               </View>
             }
-            title='Comment'
+            title='Comments'
             value={formData.isCommentAvailable.value ? 'Allowed' : 'Disallowed'}
           />
           {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
