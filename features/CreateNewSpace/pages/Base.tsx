@@ -181,21 +181,6 @@ export const Base = () => {
   return (
     <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text
-          style={{
-            color: 'white',
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 20,
-            marginBottom: 10,
-          }}
-        >
-          Ready to start but...
-        </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 20 }}>
-          If you want to customize your space rules,{'\n'}tap any section to change based on your preference.
-        </Text>
-        {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
         <View
           style={{
             flexDirection: 'row',
@@ -212,8 +197,8 @@ export const Base = () => {
               backgroundColor: 'rgb(50,50,50)',
               justifyContent: 'center',
               alignItems: 'center',
-              width: 60,
-              height: 60,
+              width: 50,
+              height: 50,
               padding: 2,
               borderRadius: 60 / 2,
               marginRight: 14,
@@ -221,20 +206,20 @@ export const Base = () => {
             onPress={() => onIconChange()}
           >
             <ExpoImage
-              style={{ width: 60, height: 60, borderRadius: 60 / 2, alignSelf: 'center' }}
+              style={{ width: 50, height: 50, borderRadius: 100, alignSelf: 'center' }}
               source={{ uri: formData.icon.value }}
               contentFit='cover'
             />
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
               activeOpacity={0.7}
             >
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 17 }}>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 15, fontWeight: 'bold' }}>
                 {formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -263,25 +248,36 @@ export const Base = () => {
             </View>
           </View>
         </View>
-
-        <View style={{ marginBottom: 10, paddingHorizontal: 32 }}>
-          <TouchableOpacity
-            style={{
-              alignSelf: 'center',
-              marginBottom: 10,
-              borderRadius: 100,
-              paddingVertical: 14,
-              paddingHorizontal: 20,
-              backgroundColor: 'rgb(50,50,50)',
-              width: '100%',
-            }}
-          >
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 17 }}>Start from Tamplate</Text>
-          </TouchableOpacity>
-        </View>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: 20,
+            marginBottom: 10,
+          }}
+        >
+          Ready to start but...
+        </Text>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 14 }}>
+          If you want to customize your space rules,{'\n'}tap any section to change based on your preference.
+        </Text>
+        {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
+        <Text
+          style={{
+            color: 'rgb(170,170,170)',
+            fontSize: 16,
+            alignSelf: 'center',
+            marginBottom: 16,
+            textDecorationLine: 'underline',
+          }}
+          onPress={() => console.log('start from tamplate')}
+        >
+          ⚡️ Start from Template
+        </Text>
         <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
-          {/* <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
+          <MenuCell
+            onCellPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
             icon={
               <View
                 style={{
@@ -301,7 +297,7 @@ export const Base = () => {
             value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
             requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
           />
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} /> */}
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Description')}
             icon={
