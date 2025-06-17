@@ -212,14 +212,14 @@ export const Base = () => {
             />
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
               activeOpacity={0.7}
             >
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 15, fontWeight: 'bold' }}>
                 {formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: 'row',
@@ -276,7 +276,7 @@ export const Base = () => {
         >
           ⚡️ Start from Template
         </Text>
-        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+        {/* <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
             icon={
@@ -298,7 +298,7 @@ export const Base = () => {
             value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
             requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
           />
-          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Description')}
             icon={
@@ -319,8 +319,8 @@ export const Base = () => {
             title='Description'
             value={formData.description.value.replace(/\n/g, '')}
             requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
-          /> */}
-        </View>
+          />
+        </View> */}
         <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
@@ -398,7 +398,7 @@ export const Base = () => {
                 <VectorIcon.MCI name='clock-time-two-outline' size={20} color={'white'} />
               </View>
             }
-            title='Slot'
+            title='Hours'
             value={'Anytime'}
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
           />

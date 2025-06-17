@@ -141,45 +141,278 @@ export const Slot = () => {
             marginBottom: 10,
           }}
         >
-          Slot
+          Hours
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Specify the time periods during which posts can be made. This allows you to control when content is available
-          for posting.
+          Set when members can post in your space.{'\n'}Choose preset times like Morning or Evening,{'\n'}or create your
+          own custom time slot.
         </Text>
       </View>
-      <Text style={{ color: 'white', marginTop: 10, textAlign: 'center', marginBottom: 20, fontSize: 18 }}>
-        From <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{selectedStartHour}</Text> to{' '}
-        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{selectedEndHour}</Text>
-      </Text>
 
-      <View>
-        <FlatList
-          data={presetSlots}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
-          ListHeaderComponent={
-            <TouchableOpacity
-              activeOpacity={0.7}
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        {/* First row */}
+        <View style={{ flexDirection: 'row', gap: 12, marginBottom: 12 }}>
+          {/* Anytime */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 18,
+              padding: 18,
+              position: 'relative',
+              overflow: 'visible',
+              minHeight: 60,
+            }}
+            activeOpacity={0.85}
+            onPress={() => {
+              setSelectedStartHour('00');
+              setSelectedEndHour('24');
+            }}
+          >
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Anytime</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+                Members can post at any time
+              </Text>
+            </View>
+            {selectedStartHour === '00' && selectedEndHour === '24' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.II name='checkmark' size={18} color='black' />
+              </View>
+            ) : null}
+          </TouchableOpacity>
+          {/* Morning */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 18,
+              padding: 18,
+              position: 'relative',
+              overflow: 'visible',
+              minHeight: 60,
+            }}
+            activeOpacity={0.85}
+            onPress={() => {
+              setSelectedStartHour('07');
+              setSelectedEndHour('12');
+            }}
+          >
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Morning</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>7:00 AM - 12:00 PM</Text>
+            </View>
+            {selectedStartHour === '07' && selectedEndHour === '12' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.II name='checkmark' size={18} color='black' />
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        </View>
+
+        {/* Second row */}
+        <View style={{ flexDirection: 'row', gap: 12, marginBottom: 12 }}>
+          {/* Afternoon */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 18,
+              padding: 18,
+              position: 'relative',
+              overflow: 'visible',
+              minHeight: 60,
+            }}
+            activeOpacity={0.85}
+            onPress={() => {
+              setSelectedStartHour('12');
+              setSelectedEndHour('18');
+            }}
+          >
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Afternoon</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>12:00 PM - 6:00 PM</Text>
+            </View>
+            {selectedStartHour === '12' && selectedEndHour === '18' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.II name='checkmark' size={18} color='black' />
+              </View>
+            ) : null}
+          </TouchableOpacity>
+          {/* Evening */}
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 18,
+              padding: 18,
+              position: 'relative',
+              overflow: 'visible',
+              minHeight: 60,
+            }}
+            activeOpacity={0.85}
+            onPress={() => {
+              setSelectedStartHour('18');
+              setSelectedEndHour('24');
+            }}
+          >
+            <View style={{ flex: 1, alignItems: 'flex-start' }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Evening</Text>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>6:00 PM - 12:00 AM</Text>
+            </View>
+            {selectedStartHour === '18' && selectedEndHour === '24' ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.II name='checkmark' size={18} color='black' />
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        </View>
+
+        {/* Custom option */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 18,
+            position: 'relative',
+            overflow: 'visible',
+            minHeight: 60,
+          }}
+          activeOpacity={0.85}
+          onPress={() => openCustomSlotBottomSheet(0)}
+        >
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom</Text>
+              {selectedStartHour !== '00' &&
+              selectedEndHour !== '24' &&
+              selectedStartHour !== '07' &&
+              selectedEndHour !== '12' &&
+              selectedStartHour !== '12' &&
+              selectedEndHour !== '18' &&
+              selectedStartHour !== '18' &&
+              selectedEndHour !== '24' ? (
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15, marginLeft: 8 }}>
+                  {selectedStartHour}:00 - {selectedEndHour}:00
+                </Text>
+              ) : null}
+            </View>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Set your own time window</Text>
+          </View>
+          <VectorIcon.MCI name='chevron-down' size={22} color='white' style={{ marginLeft: 8, marginRight: 4 }} />
+          {selectedStartHour !== '00' &&
+          selectedEndHour !== '24' &&
+          selectedStartHour !== '07' &&
+          selectedEndHour !== '12' &&
+          selectedStartHour !== '12' &&
+          selectedEndHour !== '18' &&
+          selectedStartHour !== '18' &&
+          selectedEndHour !== '24' ? (
+            <View
               style={{
-                backgroundColor: 'rgb(50, 50, 50)',
-                paddingVertical: 10,
-                paddingHorizontal: 15,
-                borderRadius: 20,
-                marginRight: 10,
-                flexDirection: 'row',
-              }}
-              onPress={() => {
-                openCustomSlotBottomSheet(0);
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
               }}
             >
-              <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Custom</Text>
-              <VectorIcon.MCI name='chevron-down' size={20} color='white' />
-            </TouchableOpacity>
-          }
-        />
+              <VectorIcon.II name='checkmark' size={18} color='black' />
+            </View>
+          ) : null}
+        </TouchableOpacity>
       </View>
 
       <AppBottomSheet.Gorhom
