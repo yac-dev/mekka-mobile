@@ -260,7 +260,8 @@ export const Base = () => {
           Ready to start but...
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 14 }}>
-          If you want to customize your space rules,{'\n'}tap any section to change based on your preference.
+          Make your space your own.{'\n'}Tap any section below to customize the rules{'\n'}and settings—change them
+          anytime to fit your style.
         </Text>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
         <Text
