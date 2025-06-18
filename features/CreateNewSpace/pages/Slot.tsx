@@ -49,34 +49,19 @@ const presetSlots: PresetSlot[] = [
   },
 ];
 
+// Only hour and AM/PM pickers
 const hours12 = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
-const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
-const seconds = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
-const ampm = ['AM', 'PM'];
 
-function to24Hour(hour: string, ampmValue: string) {
+// Helper to get hour in 24h format
+function hour12To24(hour, ampm) {
   let h = parseInt(hour, 10);
-  if (ampmValue === 'AM') {
+  if (ampm === 'AM') {
     if (h === 12) return 0;
     return h;
   } else {
     if (h === 12) return 12;
     return h + 12;
   }
-}
-
-function timeToSeconds(hour: string, min: string, sec: string, ampmValue: string) {
-  const h24 = to24Hour(hour, ampmValue);
-  return h24 * 3600 + parseInt(min, 10) * 60 + parseInt(sec, 10);
-}
-
-// Helper to convert 24-hour time string (e.g. '18:00') to 12-hour format and AM/PM
-function convert24To12(hour24: string) {
-  let h = parseInt(hour24, 10);
-  let ampm = h >= 12 ? 'PM' : 'AM';
-  let hour12 = h % 12;
-  if (hour12 === 0) hour12 = 12;
-  return { hour: hour12.toString().padStart(2, '0'), ampm };
 }
 
 // Add a simple toggle button component for AM/PM
@@ -114,92 +99,60 @@ const AMPMToggle = ({ value, setValue }) => (
   </View>
 );
 
-// In renderTimePickers, remove the AM/PM Picker and return only hour/min/sec pickers
-const renderTimePickers = (hour, setHour, min, setMin, sec, setSec) => (
-  <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
-    <Picker selectedValue={hour} onValueChange={setHour} style={{ width: 100 }}>
-      {hours12.map((h) => (
-        <Picker.Item key={h} label={h} value={h} color='white' />
-      ))}
-    </Picker>
-    <Text style={{ color: 'white', fontSize: 18 }}>:</Text>
-    <Picker selectedValue={min} onValueChange={setMin} style={{ width: 100 }}>
-      {minutes.map((m) => (
-        <Picker.Item key={m} label={m} value={m} color='white' />
-      ))}
-    </Picker>
-    <Text style={{ color: 'white', fontSize: 18 }}>:</Text>
-    <Picker selectedValue={sec} onValueChange={setSec} style={{ width: 100 }}>
-      {seconds.map((s) => (
-        <Picker.Item key={s} label={s} value={s} color='white' />
-      ))}
-    </Picker>
-  </View>
-);
+// Build hour-am/pm options for from and to
+const hourLabels = [];
+for (let h = 0; h < 24; h++) {
+  const ampm = h < 12 ? 'am' : 'pm';
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  hourLabels.push(`${hour12}${ampm}`);
+}
+
+// Always show full options
+const fromOptions = hourLabels.slice(0, 23); // 12am-11pm
+const toOptions = hourLabels.slice(1).concat(hourLabels[0]); // 1am-12am
+
+// Helper to convert '7pm' etc. to 24-hour number
+function to24(label) {
+  const match = label.match(/^(\d+)(am|pm)$/);
+  if (!match) return 0;
+  let h = parseInt(match[1], 10);
+  if (match[2] === 'am') {
+    if (h === 12) return 0;
+    return h;
+  } else {
+    if (h === 12) return 12;
+    return h + 12;
+  }
+}
 
 export const Slot = () => {
   const { formData, onDisapperAfterChange } = useContext(CreateNewSpaceContext);
-  const customTimeBottomSheetRef = useRef<BottomSheetModal>(null);
-  const [isFromSheetVisible, setIsFromSheetVisible] = useState(false);
-  const [isToSheetVisible, setIsToSheetVisible] = useState(false);
+  const timeSheetRef = useRef<BottomSheetModal>(null);
 
-  // from state
-  const [fromHour, setFromHour] = useState('12');
-  const [fromMin, setFromMin] = useState('00');
-  const [fromSec, setFromSec] = useState('00');
-  const [fromAMPM, setFromAMPM] = useState('AM');
+  // State for from/to
+  const [fromValue, setFromValue] = useState('12am');
+  const [toValue, setToValue] = useState('12am');
 
-  // to state
-  const [toHour, setToHour] = useState('12');
-  const [toMin, setToMin] = useState('00');
-  const [toSec, setToSec] = useState('00');
-  const [toAMPM, setToAMPM] = useState('PM');
+  // Helper to convert '7pm' etc. to 24-hour number
+  const from24 = to24(fromValue);
+  const to24h = to24(toValue);
+  const isInvalid = to24h <= from24 && toValue !== '12am';
 
-  // 比較
-  const fromTotal = timeToSeconds(fromHour, fromMin, fromSec, fromAMPM);
-  const toTotal = timeToSeconds(toHour, toMin, toSec, toAMPM);
-  const isToBeforeFrom = toTotal <= fromTotal;
+  // Picker UI
+  const renderHourPicker = (selected, setSelected, options) => (
+    <Picker selectedValue={selected} onValueChange={setSelected} style={{ width: 120 }}>
+      {options.map((opt) => (
+        <Picker.Item key={opt} label={opt} value={opt} color='white' />
+      ))}
+    </Picker>
+  );
 
-  const openCustomSlotBottomSheet = (index: number) => {
-    customTimeBottomSheetRef.current?.snapToIndex(index);
-  };
+  // All-day判定
+  const isAllDay = fromValue === '12am' && toValue === '11pm';
 
-  const closeCustomSlotBottomSheet = () => {
-    customTimeBottomSheetRef.current?.close();
-  };
-
-  const formatHourToAMPM = (hour: number): string => {
-    if (hour === 0) return '12 AM';
-    if (hour === 12) return '12 PM';
-    return hour > 12 ? `${hour - 12} PM` : `${hour} AM`;
-  };
-
-  const renderItem = ({ item }: { item: PresetSlot }) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.7}
-        style={{
-          backgroundColor: 'rgb(50, 50, 50)',
-          paddingVertical: 10,
-          paddingHorizontal: 15,
-          borderRadius: 20,
-          marginRight: 10,
-        }}
-        onPress={() => {
-          setFromHour(item.value.start.split(':')[0]);
-          setFromMin(item.value.start.split(':')[1]);
-          setFromSec(item.value.start.split(':')[2]);
-          setFromAMPM(item.value.start.split(' ')[1]);
-          setToHour(item.value.end.split(':')[0]);
-          setToMin(item.value.end.split(':')[1]);
-          setToSec(item.value.end.split(':')[2]);
-          setToAMPM(item.value.end.split(' ')[1]);
-        }}
-      >
-        <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{item.label}</Text>
-      </TouchableOpacity>
-    );
-  };
+  // Open/close BottomSheet
+  const openTimeSheet = () => timeSheetRef.current?.snapToIndex(0);
+  const closeTimeSheet = () => timeSheetRef.current?.close();
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -222,9 +175,21 @@ export const Slot = () => {
         >
           Hours
         </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 10 }}>
           Set when members can post in your space.{'\n'}Choose preset times like Morning or Evening,{'\n'}or create your
           own custom time slot.
+        </Text>
+        <Text
+          style={{
+            color: 'white',
+            textAlign: 'center',
+            fontSize: 20,
+            fontWeight: 'bold',
+            marginTop: 8,
+            marginBottom: 8,
+          }}
+        >
+          {isAllDay ? 'All-day' : `${fromValue} - ${toValue}`}
         </Text>
       </View>
 
@@ -246,54 +211,17 @@ export const Slot = () => {
             }}
             activeOpacity={0.85}
             onPress={() => {
-              const from = convert24To12('00');
-              const to = convert24To12('00');
-              setFromHour(from.hour);
-              setFromMin('00');
-              setFromSec('00');
-              setFromAMPM(from.ampm);
-              setToHour(to.hour);
-              setToMin('00');
-              setToSec('00');
-              setToAMPM(to.ampm);
+              setFromValue('12am');
+              setToValue('12am');
             }}
           >
+            <VectorIcon.MCI name='clock-time-four-outline' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>All-day</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
                 Members can post at any time
               </Text>
             </View>
-            {fromHour === '12' &&
-            fromMin === '00' &&
-            fromSec === '00' &&
-            fromAMPM === 'AM' &&
-            toHour === '12' &&
-            toMin === '00' &&
-            toSec === '00' &&
-            toAMPM === 'AM' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -8,
-                  right: -8,
-                  backgroundColor: 'white',
-                  width: 28,
-                  height: 28,
-                  borderRadius: 14,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.12,
-                  shadowRadius: 2,
-                  borderWidth: 2,
-                  borderColor: 'black',
-                }}
-              >
-                <VectorIcon.II name='checkmark' size={18} color='black' />
-              </View>
-            ) : null}
           </TouchableOpacity>
           {/* Morning */}
           <TouchableOpacity
@@ -310,52 +238,15 @@ export const Slot = () => {
             }}
             activeOpacity={0.85}
             onPress={() => {
-              const from = convert24To12('07');
-              const to = convert24To12('12');
-              setFromHour(from.hour);
-              setFromMin('00');
-              setFromSec('00');
-              setFromAMPM(from.ampm);
-              setToHour(to.hour);
-              setToMin('00');
-              setToSec('00');
-              setToAMPM(to.ampm);
+              setFromValue('7am');
+              setToValue('12pm');
             }}
           >
+            <VectorIcon.MCI name='weather-sunset-up' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Morning</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>7:00 AM - 12:00 PM</Text>
             </View>
-            {fromHour === '07' &&
-            fromMin === '00' &&
-            fromSec === '00' &&
-            fromAMPM === 'AM' &&
-            toHour === '12' &&
-            toMin === '00' &&
-            toSec === '00' &&
-            toAMPM === 'AM' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -8,
-                  right: -8,
-                  backgroundColor: 'white',
-                  width: 28,
-                  height: 28,
-                  borderRadius: 14,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.12,
-                  shadowRadius: 2,
-                  borderWidth: 2,
-                  borderColor: 'black',
-                }}
-              >
-                <VectorIcon.II name='checkmark' size={18} color='black' />
-              </View>
-            ) : null}
           </TouchableOpacity>
         </View>
 
@@ -376,52 +267,15 @@ export const Slot = () => {
             }}
             activeOpacity={0.85}
             onPress={() => {
-              const from = convert24To12('12');
-              const to = convert24To12('18');
-              setFromHour(from.hour);
-              setFromMin('00');
-              setFromSec('00');
-              setFromAMPM(from.ampm);
-              setToHour(to.hour);
-              setToMin('00');
-              setToSec('00');
-              setToAMPM(to.ampm);
+              setFromValue('12pm');
+              setToValue('6pm');
             }}
           >
+            <VectorIcon.MCI name='white-balance-sunny' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Afternoon</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>12:00 PM - 6:00 PM</Text>
             </View>
-            {fromHour === '12' &&
-            fromMin === '00' &&
-            fromSec === '00' &&
-            fromAMPM === 'PM' &&
-            toHour === '18' &&
-            toMin === '00' &&
-            toSec === '00' &&
-            toAMPM === 'PM' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -8,
-                  right: -8,
-                  backgroundColor: 'white',
-                  width: 28,
-                  height: 28,
-                  borderRadius: 14,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.12,
-                  shadowRadius: 2,
-                  borderWidth: 2,
-                  borderColor: 'black',
-                }}
-              >
-                <VectorIcon.II name='checkmark' size={18} color='black' />
-              </View>
-            ) : null}
           </TouchableOpacity>
           {/* Evening */}
           <TouchableOpacity
@@ -438,52 +292,15 @@ export const Slot = () => {
             }}
             activeOpacity={0.85}
             onPress={() => {
-              const from = convert24To12('18');
-              const to = convert24To12('00');
-              setFromHour(from.hour);
-              setFromMin('00');
-              setFromSec('00');
-              setFromAMPM(from.ampm);
-              setToHour(to.hour);
-              setToMin('00');
-              setToSec('00');
-              setToAMPM(to.ampm);
+              setFromValue('6pm');
+              setToValue('12am');
             }}
           >
+            <VectorIcon.MCI name='weather-night' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Evening</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>6:00 PM - 12:00 AM</Text>
             </View>
-            {fromHour === '18' &&
-            fromMin === '00' &&
-            fromSec === '00' &&
-            fromAMPM === 'PM' &&
-            toHour === '24' &&
-            toMin === '00' &&
-            toSec === '00' &&
-            toAMPM === 'AM' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -8,
-                  right: -8,
-                  backgroundColor: 'white',
-                  width: 28,
-                  height: 28,
-                  borderRadius: 14,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.12,
-                  shadowRadius: 2,
-                  borderWidth: 2,
-                  borderColor: 'black',
-                }}
-              >
-                <VectorIcon.II name='checkmark' size={18} color='black' />
-              </View>
-            ) : null}
           </TouchableOpacity>
         </View>
 
@@ -501,121 +318,49 @@ export const Slot = () => {
             marginBottom: 12,
           }}
           activeOpacity={0.85}
-          onPress={() => openCustomSlotBottomSheet(0)}
+          onPress={openTimeSheet}
         >
           <View style={{ flex: 1 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom</Text>
             </View>
             <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Set your own time window</Text>
-            <View style={{ flexDirection: 'row', gap: 12, marginTop: 10, alignSelf: 'center' }}>
-              <TouchableOpacity
-                onPress={() => setIsFromSheetVisible(true)}
-                style={{
-                  backgroundColor: 'rgb(80,80,80)',
-                  borderRadius: 8,
-                  paddingVertical: 8,
-                  paddingHorizontal: 18,
-                  marginRight: 8,
-                }}
-              >
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>From</Text>
-                <Text style={{ color: 'white', fontSize: 15 }}>
-                  {fromHour}:{fromMin}:{fromSec} {fromAMPM}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setIsToSheetVisible(true)}
-                style={{ backgroundColor: 'rgb(80,80,80)', borderRadius: 8, paddingVertical: 8, paddingHorizontal: 18 }}
-              >
-                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>To</Text>
-                <Text style={{ color: 'white', fontSize: 15 }}>
-                  {toHour}:{toMin}:{toSec} {toAMPM}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {/* <VectorIcon.MCI name='chevron-down' size={18} color='white' /> */}
           </View>
-          {fromHour !== '12' && toHour !== '24' && (
-            <View
-              style={{
-                position: 'absolute',
-                top: -8,
-                right: -8,
-                backgroundColor: 'white',
-                width: 28,
-                height: 28,
-                borderRadius: 14,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.12,
-                shadowRadius: 2,
-                borderWidth: 2,
-                borderColor: 'black',
-              }}
-            >
-              <VectorIcon.II name='checkmark' size={18} color='black' />
-            </View>
-          )}
         </TouchableOpacity>
       </View>
 
-      {/* From BottomSheet */}
-      <Modal
-        visible={isFromSheetVisible}
-        transparent
-        animationType='slide'
-        onRequestClose={() => setIsFromSheetVisible(false)}
+      <AppBottomSheet.Gorhom
+        ref={timeSheetRef}
+        snapPoints={['70%']}
+        header={
+          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Set Time Range</Text>
+        }
+        onCloseButtonClose={closeTimeSheet}
       >
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ backgroundColor: 'rgb(30,30,30)', borderRadius: 16, padding: 24, width: 340 }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 16 }}>Set From Time</Text>
-            {renderTimePickers(fromHour, setFromHour, fromMin, setFromMin, fromSec, setFromSec)}
-            <AMPMToggle value={fromAMPM} setValue={setFromAMPM} />
-            <TouchableOpacity
-              onPress={() => setIsFromSheetVisible(false)}
-              style={{ marginTop: 8, backgroundColor: 'white', borderRadius: 8, padding: 12 }}
-            >
-              <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Done</Text>
-            </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>From</Text>
+            {renderHourPicker(fromValue, setFromValue, fromOptions)}
+          </View>
+          <View style={{ width: 20 }} />
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>To</Text>
+            {renderHourPicker(toValue, setToValue, toOptions)}
           </View>
         </View>
-      </Modal>
-      {/* To BottomSheet */}
-      <Modal
-        visible={isToSheetVisible}
-        transparent
-        animationType='slide'
-        onRequestClose={() => setIsToSheetVisible(false)}
-      >
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', alignItems: 'center' }}>
-          <View style={{ backgroundColor: 'rgb(30,30,30)', borderRadius: 16, padding: 24, width: 340 }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, marginBottom: 16 }}>Set To Time</Text>
-            {renderTimePickers(toHour, setToHour, toMin, setToMin, toSec, setToSec)}
-            <AMPMToggle value={toAMPM} setValue={setToAMPM} />
-            {isToBeforeFrom && (
-              <Text style={{ color: 'red', marginTop: 12, textAlign: 'center' }}>To time must be after From time</Text>
-            )}
-            <TouchableOpacity
-              onPress={() => {
-                if (!isToBeforeFrom) setIsToSheetVisible(false);
-              }}
-              style={{
-                marginTop: 8,
-                backgroundColor: isToBeforeFrom ? 'gray' : 'white',
-                borderRadius: 8,
-                padding: 12,
-              }}
-              disabled={isToBeforeFrom}
-            >
-              <Text style={{ color: isToBeforeFrom ? 'white' : 'black', fontWeight: 'bold', textAlign: 'center' }}>
-                Done
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+        {isInvalid && (
+          <Text style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>
+            The end time must be after the start time (except 12am is always allowed).
+          </Text>
+        )}
+        <TouchableOpacity
+          onPress={closeTimeSheet}
+          style={{ marginTop: 8, backgroundColor: 'white', borderRadius: 8, padding: 12 }}
+        >
+          <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Done</Text>
+        </TouchableOpacity>
+      </AppBottomSheet.Gorhom>
     </View>
   );
 };
