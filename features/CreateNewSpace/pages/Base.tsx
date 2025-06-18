@@ -158,7 +158,7 @@ export const Base = () => {
               fontWeight: 'bold',
             }}
           >
-            Done
+            Submit
           </Text>
         </TouchableOpacity>
       ),

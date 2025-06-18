@@ -15,6 +15,7 @@ import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
 import BottomSheetModal from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { iconColorTable } from '../../../themes/color';
 
 const formatTime = (inputSeconds: number): { minutes: number; seconds: number } => {
   const minutes = Math.floor(inputSeconds / 60);
@@ -247,7 +248,7 @@ const ContentType = () => {
             style={{ width: 36, aspectRatio: 1, marginRight: 14 }}
             source={require('../../../assets/forApp/photo-video.png')}
             contentFit='cover'
-            tintColor={'white'}
+            tintColor={iconColorTable.blue1}
           />
           {/* Title & Description */}
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
@@ -303,7 +304,7 @@ const ContentType = () => {
             style={{ width: 36, aspectRatio: 1, marginRight: 14 }}
             source={require('../../../assets/forApp/video.png')}
             contentFit='cover'
-            tintColor={'white'}
+            tintColor={iconColorTable.red1}
           />
           {/* Title & Description */}
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
@@ -358,7 +359,7 @@ const ContentType = () => {
             style={{ width: 36, aspectRatio: 1, marginRight: 14 }}
             source={require('../../../assets/forApp/photo.png')}
             contentFit='cover'
-            tintColor={'white'}
+            tintColor={iconColorTable.yellow1}
           />
           {/* Title & Description */}
           <View style={{ flex: 1, alignItems: 'flex-start' }}>

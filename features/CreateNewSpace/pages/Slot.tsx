@@ -7,6 +7,7 @@ import { CreateNewSpaceStackProps } from '../navigations';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Picker } from '@react-native-picker/picker';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { iconColorTable } from '../../../themes/color';
 
 const screenHorizontalPadding = 20;
 
@@ -102,7 +103,7 @@ const AMPMToggle = ({ value, setValue }) => (
 // Build hour-am/pm options for from and to
 const hourLabels = [];
 for (let h = 0; h < 24; h++) {
-  const ampm = h < 12 ? 'am' : 'pm';
+  const ampm = h < 12 ? 'AM' : 'PM';
   const hour12 = h % 12 === 0 ? 12 : h % 12;
   hourLabels.push(`${hour12}${ampm}`);
 }
@@ -176,8 +177,8 @@ export const Slot = () => {
           Hours
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 10 }}>
-          Set when members can post in your space.{'\n'}Choose preset times like Morning or Evening,{'\n'}or create your
-          own custom time slot.
+          Time slots can shape your community's culture.{'\n'}Morning for productive sharing,{'\n'}Evening for relaxed
+          stories,{'\n'}or any time that fits your community's rhythm.
         </Text>
         <Text
           style={{
@@ -200,24 +201,30 @@ export const Slot = () => {
           <TouchableOpacity
             style={{
               flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: 'column',
               backgroundColor: 'rgb(50,50,50)',
               borderRadius: 18,
-              padding: 18,
+              padding: 14,
               position: 'relative',
               overflow: 'visible',
               minHeight: 60,
             }}
-            activeOpacity={0.85}
+            activeOpacity={0.7}
             onPress={() => {
               setFromValue('12am');
               setToValue('12am');
             }}
           >
-            <VectorIcon.MCI name='clock-time-four-outline' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>All-day</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                <VectorIcon.MCI
+                  name='clock-time-four-outline'
+                  size={24}
+                  color={iconColorTable.green1}
+                  style={{ marginRight: 8 }}
+                />
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>All-day</Text>
+              </View>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
                 Members can post at any time
               </Text>
@@ -231,21 +238,30 @@ export const Slot = () => {
               alignItems: 'center',
               backgroundColor: 'rgb(50,50,50)',
               borderRadius: 18,
-              padding: 18,
+              padding: 14,
               position: 'relative',
               overflow: 'visible',
               minHeight: 60,
             }}
-            activeOpacity={0.85}
+            activeOpacity={0.7}
             onPress={() => {
               setFromValue('7am');
               setToValue('12pm');
             }}
           >
-            <VectorIcon.MCI name='weather-sunset-up' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Morning</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>7:00 AM - 12:00 PM</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                <VectorIcon.MCI
+                  name='weather-sunset-up'
+                  size={24}
+                  color={iconColorTable.lightBlue1}
+                  style={{ marginRight: 8 }}
+                />
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Morning</Text>
+              </View>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+                7 AM - 12 PM{'\n'}Perfect for morning routines, goals,{'\n'}and starting the day energetically
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -260,21 +276,30 @@ export const Slot = () => {
               alignItems: 'center',
               backgroundColor: 'rgb(50,50,50)',
               borderRadius: 18,
-              padding: 18,
+              padding: 14,
               position: 'relative',
               overflow: 'visible',
               minHeight: 60,
             }}
-            activeOpacity={0.85}
+            activeOpacity={0.7}
             onPress={() => {
               setFromValue('12pm');
               setToValue('6pm');
             }}
           >
-            <VectorIcon.MCI name='white-balance-sunny' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Afternoon</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>12:00 PM - 6:00 PM</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                <VectorIcon.MCI
+                  name='white-balance-sunny'
+                  size={24}
+                  color={iconColorTable.orange1}
+                  style={{ marginRight: 8 }}
+                />
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Afternoon</Text>
+              </View>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+                12 PM - 6 PM{'\n'}Share lunch breaks, daily progress,{'\n'}and active discussions
+              </Text>
             </View>
           </TouchableOpacity>
           {/* Evening */}
@@ -285,21 +310,30 @@ export const Slot = () => {
               alignItems: 'center',
               backgroundColor: 'rgb(50,50,50)',
               borderRadius: 18,
-              padding: 18,
+              padding: 14,
               position: 'relative',
               overflow: 'visible',
               minHeight: 60,
             }}
-            activeOpacity={0.85}
+            activeOpacity={0.7}
             onPress={() => {
               setFromValue('6pm');
               setToValue('12am');
             }}
           >
-            <VectorIcon.MCI name='weather-night' size={24} color='white' style={{ marginRight: 14 }} />
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Evening</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>6:00 PM - 12:00 AM</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                <VectorIcon.MCI
+                  name='weather-night'
+                  size={24}
+                  color={iconColorTable.yellow1}
+                  style={{ marginRight: 8 }}
+                />
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Evening</Text>
+              </View>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+                6 PM - 12 AM{'\n'}Wind down, share achievements,{'\n'}and enjoy relaxed conversations
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -311,21 +345,23 @@ export const Slot = () => {
             alignItems: 'center',
             backgroundColor: 'rgb(50,50,50)',
             borderRadius: 18,
-            padding: 18,
+            padding: 14,
             position: 'relative',
             overflow: 'visible',
             minHeight: 60,
             marginBottom: 12,
           }}
-          activeOpacity={0.85}
+          activeOpacity={0.7}
           onPress={openTimeSheet}
         >
-          <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom</Text>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ flex: 1 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom</Text>
+              </View>
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Set your own time window</Text>
             </View>
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Set your own time window</Text>
-            {/* <VectorIcon.MCI name='chevron-down' size={18} color='white' /> */}
+            <VectorIcon.MCI name='chevron-down' size={24} color='white' />
           </View>
         </TouchableOpacity>
       </View>
@@ -356,9 +392,17 @@ export const Slot = () => {
         )}
         <TouchableOpacity
           onPress={closeTimeSheet}
-          style={{ marginTop: 8, backgroundColor: 'white', borderRadius: 8, padding: 12 }}
+          style={{
+            marginTop: 8,
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 8,
+            padding: 12,
+            width: '80%',
+            alignSelf: 'center',
+          }}
+          activeOpacity={0.7}
         >
-          <Text style={{ color: 'black', fontWeight: 'bold', textAlign: 'center' }}>Done</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>Done</Text>
         </TouchableOpacity>
       </AppBottomSheet.Gorhom>
     </View>
