@@ -399,7 +399,7 @@ export const Base = () => {
               </View>
             }
             title='Hours'
-            value={'Anytime'}
+            value={`${formData.hours.value.from} - ${formData.hours.value.to}`}
             requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
           />
         </View>

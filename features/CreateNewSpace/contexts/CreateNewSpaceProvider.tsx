@@ -423,10 +423,49 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
   };
 
   const onHoursChange = (hours: { from: string; to: string }) => {
+    // Helper function to convert 12-hour format to 24-hour minutes
+    const to24Minutes = (timeStr: string): number => {
+      const match = timeStr.match(/^(\d+)(am|pm)$/);
+      if (!match) return 0;
+      let h = parseInt(match[1], 10);
+      if (match[2] === 'am') {
+        if (h === 12) return 0; // 12am = 0:00
+        return h;
+      } else {
+        if (h === 12) return 12; // 12pm = 12:00
+        return h + 12;
+      }
+    };
+
+    // Convert to minutes for easier comparison
+    const fromMinutes = to24Minutes(hours.from) * 60;
+    const toMinutes = to24Minutes(hours.to) * 60;
+
+    // Validation logic
+    let isValidated = true;
+
+    // Special case: 12am-12am is valid for "All-day"
+    if (hours.from === '12am' && hours.to === '12am') {
+      isValidated = true;
+    } else if (hours.to === '12am') {
+      // Special case: 12am (midnight) is always valid as end time
+      isValidated = true;
+    } else if (fromMinutes < toMinutes) {
+      // Normal case: to time is after from time
+      isValidated = true;
+    } else {
+      // Invalid case: to time is before or equal to from time (except when crossing midnight)
+      isValidated = false;
+    }
+
+    console.log('fromMinutes', fromMinutes);
+    console.log('toMinutes', toMinutes);
+    // console.log('isValidated', isValidated);
+
     setFormData((previous) => {
       return {
         ...previous,
-        hours: { value: hours, isValidated: true },
+        hours: { value: hours, isValidated },
       };
     });
   };

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Modal, Alert, ScrollView } from 'react-native';
 import { VectorIcon } from '../../../Icons';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
@@ -103,13 +103,13 @@ const AMPMToggle = ({ value, setValue }) => (
 // Build hour-am/pm options for from and to
 const hourLabels = [];
 for (let h = 0; h < 24; h++) {
-  const ampm = h < 12 ? 'AM' : 'PM';
+  const ampm = h < 12 ? 'am' : 'pm';
   const hour12 = h % 12 === 0 ? 12 : h % 12;
   hourLabels.push(`${hour12}${ampm}`);
 }
 
 // Always show full options
-const fromOptions = hourLabels.slice(0, 23); // 12am-11pm
+const fromOptions = hourLabels.slice(0, 24); // 12am-11pm
 const toOptions = hourLabels.slice(1).concat(hourLabels[0]); // 1am-12am
 
 // Helper to convert '7pm' etc. to 24-hour number
@@ -127,12 +127,11 @@ function to24(label) {
 }
 
 export const Slot = () => {
-  const { formData, onDisapperAfterChange } = useContext(CreateNewSpaceContext);
+  const { formData, onHoursChange } = useContext(CreateNewSpaceContext);
   const timeSheetRef = useRef<BottomSheetModal>(null);
 
-  // State for from/to
-  const [fromValue, setFromValue] = useState('12am');
-  const [toValue, setToValue] = useState('12am');
+  // Get current hours from context
+  const { from: fromValue, to: toValue } = formData.hours.value;
 
   // State for selected time slot
   const [selectedSlot, setSelectedSlot] = useState<'all-day' | 'morning' | 'afternoon' | 'evening' | 'custom'>(
@@ -142,7 +141,6 @@ export const Slot = () => {
   // Helper to convert '7pm' etc. to 24-hour number
   const from24 = to24(fromValue);
   const to24h = to24(toValue);
-  const isInvalid = to24h <= from24 && toValue !== '12am';
 
   // Helper to check if a slot is currently selected
   const isSlotSelected = (slotType: typeof selectedSlot) => {
@@ -167,6 +165,27 @@ export const Slot = () => {
     }
   };
 
+  // Helper to update hours in context
+  const updateHours = (from: string, to: string) => {
+    onHoursChange({ from, to });
+  };
+
+  // Initialize selected slot based on current hours
+  useEffect(() => {
+    const currentRange = `${fromValue}-${toValue}`;
+    if (currentRange === '12am-12am') {
+      setSelectedSlot('all-day');
+    } else if (currentRange === '7am-12pm') {
+      setSelectedSlot('morning');
+    } else if (currentRange === '12pm-6pm') {
+      setSelectedSlot('afternoon');
+    } else if (currentRange === '6pm-12am') {
+      setSelectedSlot('evening');
+    } else {
+      setSelectedSlot('custom');
+    }
+  }, [fromValue, toValue]);
+
   // Picker UI
   const renderHourPicker = (selected, setSelected, options) => (
     <Picker selectedValue={selected} onValueChange={setSelected} style={{ width: 120 }}>
@@ -185,8 +204,7 @@ export const Slot = () => {
 
   // Handle custom time changes
   const handleCustomTimeChange = (newFromValue: string, newToValue: string) => {
-    setFromValue(newFromValue);
-    setToValue(newToValue);
+    updateHours(newFromValue, newToValue);
     setSelectedSlot('custom');
   };
 
@@ -285,8 +303,7 @@ export const Slot = () => {
             onPress={() => {
               setSelectedSlot('all-day');
               const range = getSlotTimeRange('all-day');
-              setFromValue(range.from);
-              setToValue(range.to);
+              updateHours(range.from, range.to);
             }}
           >
             <VectorIcon.MCI
@@ -342,8 +359,7 @@ export const Slot = () => {
             onPress={() => {
               setSelectedSlot('morning');
               const range = getSlotTimeRange('morning');
-              setFromValue(range.from);
-              setToValue(range.to);
+              updateHours(range.from, range.to);
             }}
           >
             <VectorIcon.MCI
@@ -399,8 +415,7 @@ export const Slot = () => {
             onPress={() => {
               setSelectedSlot('afternoon');
               const range = getSlotTimeRange('afternoon');
-              setFromValue(range.from);
-              setToValue(range.to);
+              updateHours(range.from, range.to);
             }}
           >
             <VectorIcon.MCI
@@ -456,8 +471,7 @@ export const Slot = () => {
             onPress={() => {
               setSelectedSlot('evening');
               const range = getSlotTimeRange('evening');
-              setFromValue(range.from);
-              setToValue(range.to);
+              updateHours(range.from, range.to);
             }}
           >
             <VectorIcon.MCI name='weather-night' size={24} color={iconColorTable.yellow1} style={{ marginRight: 14 }} />
@@ -552,7 +566,9 @@ export const Slot = () => {
         ref={timeSheetRef}
         snapPoints={['70%']}
         header={
-          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Set Time Range</Text>
+          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
+            Set Custom Hours
+          </Text>
         }
         onCloseButtonClose={closeTimeSheet}
       >
@@ -565,9 +581,12 @@ export const Slot = () => {
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>To</Text>
             {renderHourPicker(toValue, (value) => handleCustomTimeChange(fromValue, value), toOptions)}
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 12, marginTop: 8, textAlign: 'center' }}>
+              *To's 12am = next day midnight
+            </Text>
           </View>
         </View>
-        {isInvalid && (
+        {!formData.hours.isValidated && (
           <Text style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>
             The end time must be after the start time (except 12am is always allowed).
           </Text>
