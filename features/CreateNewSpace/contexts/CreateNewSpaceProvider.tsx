@@ -49,6 +49,13 @@ export const initialFormData: FormDataType = {
     ],
     isValidated: true,
   },
+  hours: {
+    value: {
+      from: '12am',
+      to: '12am',
+    },
+    isValidated: true,
+  },
   description: {
     value: 'No description...',
     isValidated: true,
@@ -227,6 +234,7 @@ export type FormDataType = {
   disappearAfter: FormType<number>;
   reactions: FormType<ReactionType[]>; //　ここのrteacttionの部分が大変だね。。。
   description: FormType<string>;
+  hours: FormType<{ from: string; to: string }>;
 };
 
 type CreateNewSpaceContextType = {
@@ -243,6 +251,7 @@ type CreateNewSpaceContextType = {
   onDisapperAfterChange: (minutes: number) => void;
   onDescriptionChange: (text: string) => void;
   onReactionsChange: (reactions: ReactionType[]) => void;
+  onHoursChange: (hours: { from: string; to: string }) => void;
   flashMessageRef: React.RefObject<FlashMessage>;
 };
 
@@ -260,6 +269,7 @@ export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
   onDisapperAfterChange: () => {},
   onDescriptionChange: () => {},
   onReactionsChange: () => {},
+  onHoursChange: () => {},
   flashMessageRef: null,
 });
 
@@ -412,6 +422,15 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
     });
   };
 
+  const onHoursChange = (hours: { from: string; to: string }) => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        hours: { value: hours, isValidated: true },
+      };
+    });
+  };
+
   return (
     <CreateNewSpaceContext.Provider
       value={{
@@ -428,6 +447,7 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
         onDisapperAfterChange,
         onDescriptionChange,
         onReactionsChange,
+        onHoursChange,
         flashMessageRef,
       }}
     >

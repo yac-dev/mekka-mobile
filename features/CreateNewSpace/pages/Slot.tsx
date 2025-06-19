@@ -134,10 +134,38 @@ export const Slot = () => {
   const [fromValue, setFromValue] = useState('12am');
   const [toValue, setToValue] = useState('12am');
 
+  // State for selected time slot
+  const [selectedSlot, setSelectedSlot] = useState<'all-day' | 'morning' | 'afternoon' | 'evening' | 'custom'>(
+    'all-day'
+  );
+
   // Helper to convert '7pm' etc. to 24-hour number
   const from24 = to24(fromValue);
   const to24h = to24(toValue);
   const isInvalid = to24h <= from24 && toValue !== '12am';
+
+  // Helper to check if a slot is currently selected
+  const isSlotSelected = (slotType: typeof selectedSlot) => {
+    return selectedSlot === slotType;
+  };
+
+  // Helper to get time range for a slot
+  const getSlotTimeRange = (slotType: typeof selectedSlot) => {
+    switch (slotType) {
+      case 'all-day':
+        return { from: '12am', to: '12am' };
+      case 'morning':
+        return { from: '7am', to: '12pm' };
+      case 'afternoon':
+        return { from: '12pm', to: '6pm' };
+      case 'evening':
+        return { from: '6pm', to: '12am' };
+      case 'custom':
+        return { from: fromValue, to: toValue };
+      default:
+        return { from: '12am', to: '12am' };
+    }
+  };
 
   // Picker UI
   const renderHourPicker = (selected, setSelected, options) => (
@@ -154,6 +182,13 @@ export const Slot = () => {
   // Open/close BottomSheet
   const openTimeSheet = () => timeSheetRef.current?.snapToIndex(0);
   const closeTimeSheet = () => timeSheetRef.current?.close();
+
+  // Handle custom time changes
+  const handleCustomTimeChange = (newFromValue: string, newToValue: string) => {
+    setFromValue(newFromValue);
+    setToValue(newToValue);
+    setSelectedSlot('custom');
+  };
 
   // Dummy button for testing time range validation
   const isCurrentTimeInRange = () => {
@@ -230,18 +265,6 @@ export const Slot = () => {
             Time slots can shape your community's culture.{'\n'}Morning for productive sharing,{'\n'}Evening for relaxed
             stories,{'\n'}or any time that fits your community's rhythm.
           </Text>
-          {/* <Text
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              fontSize: 20,
-              fontWeight: 'bold',
-              marginTop: 8,
-              marginBottom: 8,
-            }}
-          >
-            {isAllDay ? 'All-day' : `${fromValue} - ${toValue}`}
-          </Text> */}
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: 20 }}>
@@ -260,8 +283,10 @@ export const Slot = () => {
             }}
             activeOpacity={0.7}
             onPress={() => {
-              setFromValue('12am');
-              setToValue('12am');
+              setSelectedSlot('all-day');
+              const range = getSlotTimeRange('all-day');
+              setFromValue(range.from);
+              setToValue(range.to);
             }}
           >
             <VectorIcon.MCI
@@ -273,9 +298,32 @@ export const Slot = () => {
             <View style={{ flex: 1, alignItems: 'flex-start' }}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>All-day</Text>
               <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
-                Members can post at any time
+                12 AM - 12 AM{'\n'}Members can post at any time
               </Text>
             </View>
+            {isSlotSelected('all-day') && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.MCI name='check' size={18} color='black' />
+              </View>
+            )}
           </TouchableOpacity>
           {/* Morning */}
           <TouchableOpacity
@@ -292,8 +340,10 @@ export const Slot = () => {
             }}
             activeOpacity={0.7}
             onPress={() => {
-              setFromValue('7am');
-              setToValue('12pm');
+              setSelectedSlot('morning');
+              const range = getSlotTimeRange('morning');
+              setFromValue(range.from);
+              setToValue(range.to);
             }}
           >
             <VectorIcon.MCI
@@ -308,6 +358,29 @@ export const Slot = () => {
                 7 AM - 12 PM{'\n'}Perfect for morning routines, goals and starting the day energetically
               </Text>
             </View>
+            {isSlotSelected('morning') && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.MCI name='check' size={18} color='black' />
+              </View>
+            )}
           </TouchableOpacity>
           {/* Afternoon */}
           <TouchableOpacity
@@ -324,8 +397,10 @@ export const Slot = () => {
             }}
             activeOpacity={0.7}
             onPress={() => {
-              setFromValue('12pm');
-              setToValue('6pm');
+              setSelectedSlot('afternoon');
+              const range = getSlotTimeRange('afternoon');
+              setFromValue(range.from);
+              setToValue(range.to);
             }}
           >
             <VectorIcon.MCI
@@ -340,6 +415,29 @@ export const Slot = () => {
                 12 PM - 6 PM{'\n'}Share lunch breaks, daily progress and active discussions
               </Text>
             </View>
+            {isSlotSelected('afternoon') && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.MCI name='check' size={18} color='black' />
+              </View>
+            )}
           </TouchableOpacity>
           {/* Evening */}
           <TouchableOpacity
@@ -356,8 +454,10 @@ export const Slot = () => {
             }}
             activeOpacity={0.7}
             onPress={() => {
-              setFromValue('6pm');
-              setToValue('12am');
+              setSelectedSlot('evening');
+              const range = getSlotTimeRange('evening');
+              setFromValue(range.from);
+              setToValue(range.to);
             }}
           >
             <VectorIcon.MCI name='weather-night' size={24} color={iconColorTable.yellow1} style={{ marginRight: 14 }} />
@@ -367,6 +467,29 @@ export const Slot = () => {
                 6 PM - 12 AM{'\n'}Wind down, share achievements and enjoy relaxed conversations
               </Text>
             </View>
+            {isSlotSelected('evening') && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.MCI name='check' size={18} color='black' />
+              </View>
+            )}
           </TouchableOpacity>
           {/* Custom option */}
           <TouchableOpacity
@@ -382,7 +505,10 @@ export const Slot = () => {
               marginBottom: 12,
             }}
             activeOpacity={0.7}
-            onPress={openTimeSheet}
+            onPress={() => {
+              setSelectedSlot('custom');
+              openTimeSheet();
+            }}
           >
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
               <View style={{ flex: 1 }}>
@@ -395,6 +521,29 @@ export const Slot = () => {
               </View>
               <VectorIcon.MCI name='chevron-down' size={24} color='white' />
             </View>
+            {isSlotSelected('custom') && (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  backgroundColor: 'white',
+                  width: 28,
+                  height: 28,
+                  borderRadius: 14,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.12,
+                  shadowRadius: 2,
+                  borderWidth: 2,
+                  borderColor: 'black',
+                }}
+              >
+                <VectorIcon.MCI name='check' size={18} color='black' />
+              </View>
+            )}
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -410,12 +559,12 @@ export const Slot = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>From</Text>
-            {renderHourPicker(fromValue, setFromValue, fromOptions)}
+            {renderHourPicker(fromValue, (value) => handleCustomTimeChange(value, toValue), fromOptions)}
           </View>
           <View style={{ width: 20 }} />
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>To</Text>
-            {renderHourPicker(toValue, setToValue, toOptions)}
+            {renderHourPicker(toValue, (value) => handleCustomTimeChange(fromValue, value), toOptions)}
           </View>
         </View>
         {isInvalid && (
