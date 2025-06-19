@@ -56,6 +56,10 @@ export const initialFormData: FormDataType = {
     },
     isValidated: true,
   },
+  capacity: {
+    value: -1, // -1 means unlimited
+    isValidated: true,
+  },
   description: {
     value: 'No description...',
     isValidated: true,
@@ -235,6 +239,7 @@ export type FormDataType = {
   reactions: FormType<ReactionType[]>; //　ここのrteacttionの部分が大変だね。。。
   description: FormType<string>;
   hours: FormType<{ from: string; to: string }>;
+  capacity: FormType<number>;
 };
 
 type CreateNewSpaceContextType = {
@@ -252,6 +257,7 @@ type CreateNewSpaceContextType = {
   onDescriptionChange: (text: string) => void;
   onReactionsChange: (reactions: ReactionType[]) => void;
   onHoursChange: (hours: { from: string; to: string }) => void;
+  onCapacityChange: (capacity: number) => void;
   flashMessageRef: React.RefObject<FlashMessage>;
 };
 
@@ -270,6 +276,7 @@ export const CreateNewSpaceContext = createContext<CreateNewSpaceContextType>({
   onDescriptionChange: () => {},
   onReactionsChange: () => {},
   onHoursChange: () => {},
+  onCapacityChange: () => {},
   flashMessageRef: null,
 });
 
@@ -470,6 +477,18 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
     });
   };
 
+  const onCapacityChange = (capacity: number) => {
+    setFormData((previous) => {
+      return {
+        ...previous,
+        capacity: {
+          value: capacity,
+          isValidated: true,
+        },
+      };
+    });
+  };
+
   return (
     <CreateNewSpaceContext.Provider
       value={{
@@ -487,6 +506,7 @@ export const CreateNewSpaceProvider: React.FC<CreateNewSpaceProviderProps> = ({ 
         onDescriptionChange,
         onReactionsChange,
         onHoursChange,
+        onCapacityChange,
         flashMessageRef,
       }}
     >

@@ -126,7 +126,7 @@ function to24(label) {
   }
 }
 
-export const Slot = () => {
+export const Hours = () => {
   const { formData, onHoursChange } = useContext(CreateNewSpaceContext);
   const timeSheetRef = useRef<BottomSheetModal>(null);
 

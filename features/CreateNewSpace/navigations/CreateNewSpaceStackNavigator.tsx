@@ -15,7 +15,7 @@ import { ReactionType } from '../contexts/ReactionPickerProvider';
 import { TemplateSelection, Base, Comment } from '../pages';
 import { ReactionPickerStackNavigator } from './ReactionPickerStackNavigator';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { SpaceVisibilitySelection, Following, Slot } from '../pages';
+import { SpaceVisibilitySelection, Following, Hours, Capacity } from '../pages';
 
 export type ReactionPickerStackParams = {
   ReactionPicker: {
@@ -37,10 +37,11 @@ export type CreateNewSpaceStackParams = {
   Reaction: {
     selectedReaction?: ReactionType;
   };
-  Slot: undefined;
+  Hours: undefined;
   Following: undefined;
   Comment: undefined;
   Description: undefined;
+  Capacity: undefined;
   ReactionPickerStackNavigator: NavigatorScreenParams<ReactionPickerStackParams>;
   CreateNewSticker: undefined;
 };
@@ -301,10 +302,34 @@ export const CreateNewSpaceStackNavigator = () => {
             })}
           />
           <CreateNewSpaceStack.Screen
-            name='Slot'
-            component={Slot}
+            name='Hours'
+            component={Hours}
             options={({ navigation }) => ({
               headerShown: true, // ここtrueにすると、,,,
+              headerLeft: () => (
+                <AppButton.Icon
+                  onButtonPress={() => navigation.goBack()}
+                  customStyle={{ width: 28, height: 28, backgroundColor: 'rgb(50,50,50)' }}
+                  hasShadow={false}
+                >
+                  <VectorIcon.II name='arrow-back' size={18} color={Colors.white} />
+                </AppButton.Icon>
+              ),
+              headerTitle: '',
+              headerStyle: {
+                backgroundColor: 'black',
+              },
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+            })}
+          />
+          <CreateNewSpaceStack.Screen
+            name='Capacity'
+            component={Capacity}
+            options={({ navigation }) => ({
+              headerShown: true,
               headerLeft: () => (
                 <AppButton.Icon
                   onButtonPress={() => navigation.goBack()}

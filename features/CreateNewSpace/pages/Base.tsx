@@ -137,7 +137,8 @@ export const Base = () => {
             !formData.isCommentAvailable.isValidated ||
             !formData.description.isValidated ||
             !formData.contentType.isValidated ||
-            !formData.reactions.isValidated
+            !formData.reactions.isValidated ||
+            !formData.capacity.isValidated
           }
         >
           <Text
@@ -151,7 +152,8 @@ export const Base = () => {
                 !formData.isCommentAvailable.isValidated ||
                 !formData.description.isValidated ||
                 !formData.contentType.isValidated ||
-                !formData.reactions.isValidated
+                !formData.reactions.isValidated ||
+                !formData.capacity.isValidated
                   ? 'rgb(100,100,100)'
                   : 'white',
               fontSize: 20,
@@ -215,7 +217,7 @@ export const Base = () => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['pink1'],
+                  backgroundColor: Colors.iconColors['red1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -270,7 +272,7 @@ export const Base = () => {
           />
           <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
+            onCellPress={() => createNewSpaceNavigation.navigate('Hours')}
             icon={
               <View
                 style={{
@@ -288,10 +290,10 @@ export const Base = () => {
             }
             title='Hours'
             value={`${formData.hours.value.from} - ${formData.hours.value.to}`}
-            requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
+            requirementText={!formData.hours.isValidated ? 'Required to choose.' : undefined}
           />
         </View>
-        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Reaction')}
             icon={
@@ -400,11 +402,11 @@ export const Base = () => {
         </View>
         <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
+            onCellPress={() => createNewSpaceNavigation.navigate('Capacity')}
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['red1'],
+                  backgroundColor: Colors.iconColors['pink1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -413,14 +415,13 @@ export const Base = () => {
                   alignItems: 'center',
                 }}
               >
-                <VectorIcon.MI name='public' size={20} color={'white'} />
+                <VectorIcon.MCI name='account-group' size={20} color={'white'} />
               </View>
             }
-            title='Quota'
-            value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
-            requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
+            title='Capacity'
+            value={formData.capacity.value === -1 ? 'Unlimited' : `${formData.capacity.value} members`}
           />
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }}
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Description')}
             icon={
@@ -441,7 +442,7 @@ export const Base = () => {
             title='Roles'
             value={formData.description.value.replace(/\n/g, '')}
             requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
-          />
+          /> */}
         </View>
       </ScrollView>
       <View
