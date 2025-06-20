@@ -181,7 +181,7 @@ export const Base = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10, paddingHorizontal: 10 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
           style={{
@@ -199,18 +199,74 @@ export const Base = () => {
           anytime to fit your style.
         </Text>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
-        <Text
+        <View
           style={{
-            color: 'rgb(170,170,170)',
-            fontSize: 16,
-            alignSelf: 'center',
-            marginBottom: 16,
-            textDecorationLine: 'underline',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: 16,
+            marginBottom: 10,
+            marginTop: 5,
           }}
-          onPress={() => console.log('start from tamplate')}
         >
-          ⚡️ Start from Template
-        </Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              alignSelf: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 50,
+              height: 50,
+              padding: 2,
+              borderRadius: 60 / 2,
+              marginRight: 14,
+            }}
+            onPress={() => onIconChange()}
+          >
+            <ExpoImage
+              style={{ width: 50, height: 50, borderRadius: 100, alignSelf: 'center' }}
+              source={{ uri: formData.icon.value }}
+              contentFit='cover'
+            />
+          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              onPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
+              activeOpacity={0.7}
+            >
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 15, fontWeight: 'bold' }}>
+                {formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderBottomWidth: 0.3,
+                borderBottomColor: 'rgb(88, 88, 88)',
+              }}
+            >
+              <TextInput
+                style={{
+                  fontSize: 18,
+                  color: 'white',
+                  flex: 1,
+                  paddingVertical: 10,
+                }}
+                placeholder='Name'
+                placeholderTextColor={'rgb(170,170,170)'}
+                autoCapitalize='none'
+                value={formData.name.value}
+                onChangeText={(text) => onNameChange(text)}
+              />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {renderText()}
+                <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
+              </View>
+            </View>
+          </View>
+        </View>
         <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('ContentType')}
@@ -421,7 +477,7 @@ export const Base = () => {
             title='Capacity'
             value={formData.capacity.value === -1 ? 'Unlimited' : `${formData.capacity.value} members`}
           />
-          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }}
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Description')}
             icon={
@@ -439,78 +495,24 @@ export const Base = () => {
                 <VectorIcon.MCI name='lead-pencil' size={20} color={'white'} />
               </View>
             }
-            title='Roles'
+            title='Description'
             value={formData.description.value.replace(/\n/g, '')}
             requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
-          /> */}
+          />
         </View>
       </ScrollView>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingHorizontal: 16,
-        }}
-      >
-        <TouchableOpacity
-          activeOpacity={0.7}
+      <TouchableOpacity onPress={() => console.log('start from tamplate')} activeOpacity={0.7}>
+        <Text
           style={{
+            color: 'rgb(170,170,170)',
+            fontSize: 16,
             alignSelf: 'center',
-            backgroundColor: 'rgb(50,50,50)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 50,
-            height: 50,
-            padding: 2,
-            borderRadius: 60 / 2,
-            marginRight: 14,
+            textDecorationLine: 'underline',
           }}
-          onPress={() => onIconChange()}
         >
-          <ExpoImage
-            style={{ width: 50, height: 50, borderRadius: 100, alignSelf: 'center' }}
-            source={{ uri: formData.icon.value }}
-            contentFit='cover'
-          />
-        </TouchableOpacity>
-        <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            onPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
-            activeOpacity={0.7}
-          >
-            <Text style={{ color: 'rgb(170,170,170)', fontSize: 15, fontWeight: 'bold' }}>
-              {formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
-            </Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderBottomWidth: 0.3,
-              borderBottomColor: 'rgb(88, 88, 88)',
-            }}
-          >
-            <TextInput
-              style={{
-                fontSize: 18,
-                color: 'white',
-                flex: 1,
-                paddingVertical: 10,
-              }}
-              placeholder='Name'
-              placeholderTextColor={'rgb(170,170,170)'}
-              autoCapitalize='none'
-              value={formData.name.value}
-              onChangeText={(text) => onNameChange(text)}
-            />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {renderText()}
-              <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+          ⚡️ Start from Template
+        </Text>
+      </TouchableOpacity>
       {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
       <LoadingSpinner isVisible={status === 'pending'} message='Creating a space...' />
       {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', fontSize: 11 }}>
