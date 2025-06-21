@@ -208,6 +208,27 @@ export type GetSpaceBySecretKeyOutputType = {
   space?: SpaceType;
 };
 
+export type GetSpacesOutputType = {
+  spaces: SpaceType[];
+};
+
+export type GetTagsBySpaceIdInputType = {
+  spaceId: string;
+};
+
+export type GetTagsBySpaceIdOutputType = {
+  tags: TagType[];
+};
+
+export type JoinPublicSpaceByIdInputType = {
+  spaceId: string;
+  userId: string;
+};
+
+export type JoinPublicSpaceByIdOutputType = {
+  space: SpaceType;
+};
+
 export type StickerContentType = {
   name: string;
   uri: string;
