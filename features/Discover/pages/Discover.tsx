@@ -7,14 +7,33 @@ import { SpaceType } from '../../../types';
 import { VectorIcon } from '../../../Icons';
 import { useNavigation } from '@react-navigation/native';
 import { DiscoverStackNavigatorProp } from '../navigations/DiscoverStackNavigator';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getSpaces } from '../../../query';
+import { queryKeys } from '../../../query';
+import { FlashList } from '@shopify/flash-list';
 
 const Discover: React.FC = () => {
   const discoverStackNavigation = useNavigation<DiscoverStackNavigatorProp>();
-  const { apiResult, requestApi } = useGetSpacesState();
+  // const { apiResult, requestApi } = useGetSpacesState();
 
-  useEffect(() => {
-    requestApi();
-  }, []);
+  const {
+    data,
+    status: getSpacesStatus,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+    isRefetching: isRefetchingPostsByTagId,
+  } = useInfiniteQuery({
+    queryKey: [queryKeys.getSpaces],
+    queryFn: ({ pageParam = 0 }) => getSpaces({ currentPage: pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      // console.log('lastPage', lastPage);
+      // console.log('pages', pages);
+      // これでいい感じにdebuggingできるね。
+      return lastPage.hasNextPage ? lastPage.currentPage : undefined;
+    },
+  });
 
   const onSpacePress = (space: SpaceType) => {
     discoverStackNavigation.navigate('SpaceDetailStackNavigator', { _id: space._id });
@@ -172,7 +191,17 @@ const Discover: React.FC = () => {
     );
   };
 
-  if (apiResult.status === 'loading') {
+  const renderFooter = () => {
+    if (isFetchingNextPage) {
+      return (
+        <View style={{ paddingVertical: 40 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+  };
+
+  if (getSpacesStatus === 'pending') {
     return (
       <View style={styles.loading}>
         <ActivityIndicator />
@@ -180,13 +209,38 @@ const Discover: React.FC = () => {
     );
   }
 
+  if (!data?.pages.flatMap((page) => page.spaces).length) {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
+        <ExpoImage
+          style={{
+            width: 60,
+            aspectRatio: 1,
+            marginBottom: 10,
+          }}
+          source={require('../../../assets/forApp/photo-video.png')}
+          contentFit='cover'
+          tintColor={'rgb(150,150,150)'}
+        />
+        <Text style={{ color: 'rgb(150,150,150)', textAlign: 'center', fontSize: 17 }}>No Public Spaces found....</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={apiResult.data?.spaces}
+      <FlashList
+        numColumns={4}
+        data={data?.pages.flatMap((page) => page.spaces)}
         renderItem={renderItem}
-        // estimatedItemSize={200}
-        keyExtractor={(_, index) => `${index}`}
+        keyExtractor={(item, index) => `${item._id}-${index}`}
+        removeClippedSubviews
+        estimatedItemSize={1000}
+        onMomentumScrollEnd={() => {
+          fetchNextPage();
+        }}
+        ListFooterComponent={renderFooter}
+        onEndReachedThreshold={0.7}
       />
     </View>
   );

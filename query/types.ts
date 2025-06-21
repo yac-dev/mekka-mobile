@@ -208,8 +208,14 @@ export type GetSpaceBySecretKeyOutputType = {
   space?: SpaceType;
 };
 
+export type GetSpacesInputType = {
+  currentPage: number;
+};
+
 export type GetSpacesOutputType = {
   spaces: SpaceType[];
+  currentPage: number;
+  hasNextPage: number | null;
 };
 
 export type GetTagsBySpaceIdInputType = {
