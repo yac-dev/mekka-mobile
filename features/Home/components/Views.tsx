@@ -35,6 +35,28 @@ const windowWidth = Dimensions.get('window').width;
 const viewItemContainerWidth = windowWidth / 3;
 const viewItemButtonWidth = viewItemContainerWidth * 0.7;
 
+const to24 = (label: string) => {
+  const match = label.match(/^(\d+)(am|pm)$/);
+  if (!match) return 0;
+  let h = parseInt(match[1], 10);
+  if (match[2] === 'am') {
+    if (h === 12) return 0;
+    return h;
+  } else {
+    if (h === 12) return 12;
+    return h + 12;
+  }
+};
+
+const getCurrentTimeString = () => {
+  const currentTime = new Date();
+  const hours = currentTime.getHours();
+  const minutes = currentTime.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 === 0 ? 12 : hours % 12;
+  return `${displayHours}${ampm}`;
+};
+
 // space変えて、mapに切り替えて、その後gridに変えると選択中のspaceでtag選択がなくなってしまう。。。
 export const Views: React.FC<{
   openAddNewPostMenuBottomSheet: (index: number) => void;
@@ -80,6 +102,45 @@ export const Views: React.FC<{
 
   const onTabPress = (item) => {
     setIndex(item.key);
+  };
+
+  const isCurrentTimeInRange = (hoursFrom: string, hoursTo: string) => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+    // Convert fromValue and toValue to minutes
+    const fromMinutes = to24(hoursFrom) * 60;
+    const toMinutes = to24(hoursTo) * 60;
+
+    // Create actual date objects for from and to
+    const today = new Date();
+    const fromDate = new Date(today);
+    fromDate.setHours(to24(hoursFrom), 0, 0, 0);
+
+    const toDate = new Date(today);
+    if (hoursTo === '12am') {
+      // 12amの場合は翌日の0時として設定
+      toDate.setDate(today.getDate() + 1);
+      toDate.setHours(0, 0, 0, 0);
+    } else {
+      toDate.setHours(to24(hoursTo), 0, 0, 0);
+    }
+
+    // Handle special case for "12am" (midnight)
+    if (hoursTo === '12am') {
+      // 12amの場合は、from時刻以降または翌日の0時まで
+      return currentTimeInMinutes >= fromMinutes;
+    }
+
+    // Normal case
+    if (fromMinutes <= toMinutes) {
+      return currentTimeInMinutes >= fromMinutes && currentTimeInMinutes <= toMinutes;
+    } else {
+      // Crosses midnight (e.g., 10pm to 6am)
+      return currentTimeInMinutes >= fromMinutes || currentTimeInMinutes <= toMinutes;
+    }
   };
 
   const renderScene = ({ route }: { route: { key: string } }) => {
@@ -186,6 +247,7 @@ export const Views: React.FC<{
 
       <TouchableOpacity
         style={{
+          // backgroundColor: 'rgb(50,50,50)',
           position: 'absolute',
           bottom: 60,
           right: 15,
@@ -210,22 +272,34 @@ export const Views: React.FC<{
         }}
         activeOpacity={0.7}
         onPress={() => {
-          openAddNewPostMenuBottomSheet(0);
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          // openAddNewPostMenuBottomSheet(0);
+          // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          if (isCurrentTimeInRange(currentSpace.hours.from, currentSpace.hours.to)) {
+            openAddNewPostMenuBottomSheet(0);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          } else {
+            Alert.alert(
+              'Cannot Post',
+              `Current time (${getCurrentTimeString()}) is outside the posting time range (${
+                currentSpace.hours.from
+              } - ${currentSpace.hours.to}).\n\nYou cannot post at this time.`,
+              [{ text: 'OK', style: 'default' }]
+            );
+          }
         }}
       >
         <ExpoImage source={{ uri: currentSpace.icon }} style={{ width: '100%', height: '100%', borderRadius: 30 }} />
         <View
           style={{
-            width: 20,
-            height: 20,
+            width: 22,
+            height: 22,
             borderRadius: 30,
             alignItems: 'center',
             justifyContent: 'center',
             position: 'absolute',
             bottom: -4,
             right: -4,
-            backgroundColor: 'rgb(50,50,50)',
+            backgroundColor: 'rgb(70,70,70)',
           }}
         >
           <VectorIcon.II name='add' size={16} color={'white'} />
