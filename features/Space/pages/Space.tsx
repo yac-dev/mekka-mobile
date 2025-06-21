@@ -10,6 +10,8 @@ import {
   StyleSheet,
   ScrollView,
   Platform,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Image as ExpoImage } from 'expo-image';
@@ -17,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AppButton } from '../../../components';
 import { VectorIcon } from '../../../Icons';
 import { GridView, Posts, RegionView, ViewPostsTypeToggleButton } from '../components';
-import { SpaceStackNavigatorProps } from '../../../navigations';
+import { SpaceStackNavigatorProps } from '../navigations';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useRecoilValue } from 'recoil';
 import { createPostResultAtomFamily } from '../../../api/atoms';
@@ -100,7 +102,7 @@ export const Space: React.FC<ISpace> = ({
     spaceStackNavigation.navigate('CreateNewPostStackNavigator', {
       screen: 'NormalPost',
       params: {
-        handleNavigation: () => spaceStackNavigation.goBack(),
+        onPostPress: () => spaceStackNavigation.goBack(),
       },
     });
   };
@@ -457,14 +459,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
+type SpaceRulesProps = {
+  space: SpaceType;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+};
+
+export const SpaceRules: React.FC<SpaceRulesProps> = ({
+  space,
+  contentContainerStyle = { paddingHorizontal: 12, paddingVertical: 5 },
+}) => {
   return (
     <View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 12, paddingVertical: 5 }}
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={contentContainerStyle}>
         <View style={{ flexDirection: 'row' }}>
           <View
             style={{
@@ -522,7 +528,8 @@ export const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
                 tintColor='white'
               />
               <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
-                {Math.floor(space.disappearAfter / 60)}h {space.disappearAfter % 60}m
+                {Math.floor(space.disappearAfter / 60)}h{' '}
+                {space.disappearAfter % 60 === 0 ? '' : `${space.disappearAfter % 60}m`}
               </Text>
             </View>
           </View>
@@ -619,7 +626,13 @@ export const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
 
           {space.isPublic && (
             <View
-              style={{ backgroundColor: 'rgb(50,50,50)', borderRadius: 4, paddingHorizontal: 8, paddingVertical: 4 }}
+              style={{
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 4,
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+                marginRight: 5,
+              }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <VectorIcon.II

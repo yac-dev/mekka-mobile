@@ -11,6 +11,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getSpaces } from '../../../query';
 import { queryKeys } from '../../../query';
 import { FlashList } from '@shopify/flash-list';
+import { SpaceRules } from '../../Space';
 
 const Discover: React.FC = () => {
   const discoverStackNavigation = useNavigation<DiscoverStackNavigatorProp>();
@@ -175,19 +176,20 @@ const Discover: React.FC = () => {
     // ここをreusableにしたいよね。どうするか。
 
     return (
-      <TouchableOpacity style={styles.itemInnerContainer} activeOpacity={0.7} onPress={() => onSpacePress(item)}>
-        <ExpoImage style={styles.spaceIcon} source={{ uri: item.icon }} contentFit='cover' />
+      <View style={styles.itemInnerContainer}>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => onSpacePress(item)}>
+          <ExpoImage style={styles.spaceIcon} source={{ uri: item.icon }} contentFit='cover' />
+        </TouchableOpacity>
         <View style={{ flexDirection: 'column' }}>
-          <Text style={styles.spaceName}>{item.name}</Text>
-          <Text numberOfLines={2} style={styles.description}>
-            {item.description}
-          </Text>
-          {renderLabels(item)}
-          {/* ここにlabelを表示していく。 */}
-          {/* <VectorIcon.II name='image' size={13} color={'black'} style={{ marginRight: 3 }} />
-                <VectorIcon.OI name='video' size={13} color={'black'} /> */}
+          <TouchableOpacity activeOpacity={0.7} onPress={() => onSpacePress(item)}>
+            <Text style={styles.spaceName}>{item.name}</Text>
+            <Text numberOfLines={2} style={styles.description}>
+              {item.description}
+            </Text>
+          </TouchableOpacity>
+          <SpaceRules space={item} contentContainerStyle={{ paddingLeft: 0, paddingRight: 80 + 20 }} />
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -230,7 +232,6 @@ const Discover: React.FC = () => {
   return (
     <View style={styles.container}>
       <FlashList
-        numColumns={4}
         data={data?.pages.flatMap((page) => page.spaces)}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item._id}-${index}`}
