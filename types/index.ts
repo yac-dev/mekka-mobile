@@ -146,12 +146,16 @@ export type SpaceType = {
   reactions: ReactionType[];
   totalPosts: number;
   totalMembers: number;
-  rate: number;
   createdBy: UserType;
   createdAt: string;
   updatedAt: string;
   tags: TagType[];
   lastCheckedIn: string;
+  hours: {
+    from: string;
+    to: string;
+  };
+  capacity: number;
 };
 
 export type SpaceAndUserRelationshipType = {

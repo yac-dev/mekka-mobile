@@ -80,8 +80,6 @@ export const Space: React.FC<ISpace> = ({
     mutationKey: [mutationKeys.createPost, currentSpace._id],
   });
 
-  console.log('isCreatePostPendingはどう？', isCreatePostPending);
-
   useEffect(() => {
     setRoutes(currentSpace.tags.map((tag, index) => ({ ...tag, key: index })));
   }, [currentSpace.tags.length]);
@@ -373,10 +371,10 @@ export const Space: React.FC<ISpace> = ({
         style={{
           position: 'absolute',
           bottom: 0,
-          alignSelf: 'center',
           backgroundColor: 'black',
           borderTopWidth: 1,
           borderTopColor: 'rgb(50,50,50)',
+          width: '100%',
         }}
       >
         <FlatList
@@ -525,6 +523,28 @@ export const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
               />
               <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
                 {Math.floor(space.disappearAfter / 60)}h {space.disappearAfter % 60}m
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <ExpoImage
+                style={{ width: 14, height: 14, marginRight: 6 }}
+                source={require('../../../assets/forApp/ghost.png')}
+                contentFit='contain'
+                tintColor='white'
+              />
+              <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
+                {space.hours?.from} - {space.hours?.to}
               </Text>
             </View>
           </View>

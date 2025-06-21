@@ -138,7 +138,8 @@ export const Base = () => {
             !formData.description.isValidated ||
             !formData.contentType.isValidated ||
             !formData.reactions.isValidated ||
-            !formData.capacity.isValidated
+            !formData.capacity.isValidated ||
+            !formData.hours.isValidated
           }
         >
           <Text
@@ -153,7 +154,8 @@ export const Base = () => {
                 !formData.description.isValidated ||
                 !formData.contentType.isValidated ||
                 !formData.reactions.isValidated ||
-                !formData.capacity.isValidated
+                !formData.capacity.isValidated ||
+                !formData.hours.isValidated
                   ? 'rgb(100,100,100)'
                   : 'white',
               fontSize: 20,

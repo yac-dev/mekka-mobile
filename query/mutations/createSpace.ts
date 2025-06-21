@@ -14,6 +14,8 @@ export const createSpace = async (input: CreateSpaceInputType): Promise<CreateSp
     payload.append('videoLength', input.videoLength.value.toString());
     payload.append('disappearAfter', input.disappearAfter.value.toString());
     payload.append('description', input.description.value);
+    payload.append('hours', JSON.stringify(input.hours.value));
+    payload.append('capacity', input.capacity.value.toString());
     payload.append('createdBy', JSON.stringify(input.user));
     const iconData = {
       name: `${input.icon.value.split('/').pop().split('.')[0]}.png`,

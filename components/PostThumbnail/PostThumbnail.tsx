@@ -60,9 +60,6 @@ export const PostThumbnail: React.FC<PostThumbnailProps> = ({
     setIsLoading(false);
   };
 
-  console.log('post.createdAt', post.createdAt);
-  console.log('currentSpace.lastCheckedIn');
-
   return (
     <TouchableOpacity
       activeOpacity={0.7}
