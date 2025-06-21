@@ -331,9 +331,9 @@ export const Space: React.FC<ISpace> = ({
                     </Text>
                     <View style={{ flexDirection: 'column' }}>
                       {!currentSpace.isPublic ? (
-                        <Text style={{ color: 'rgb(180,180,180)', fontSize: 11, fontWeight: 'bold' }}>Private</Text>
+                        <Text style={{ color: 'rgb(180,180,180)', fontSize: 13, fontWeight: 'bold' }}>Private</Text>
                       ) : null}
-                      <Text
+                      {/* <Text
                         style={{
                           color: 'rgb(180,180,180)',
                           fontSize: 11,
@@ -341,7 +341,7 @@ export const Space: React.FC<ISpace> = ({
                         }}
                       >
                         {currentSpace.totalMembers} {currentSpace.totalMembers === 1 ? 'member' : 'members'}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
 
@@ -537,14 +537,26 @@ export const SpaceRules: React.FC<{ space: SpaceType }> = ({ space }) => {
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <ExpoImage
-                style={{ width: 14, height: 14, marginRight: 6 }}
-                source={require('../../../assets/forApp/ghost.png')}
-                contentFit='contain'
-                tintColor='white'
-              />
+              <VectorIcon.MCI name='clock-time-two-outline' size={14} color={'white'} style={{ marginRight: 6 }} />
               <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
-                {space.hours?.from} - {space.hours?.to}
+                {space.hours.from} - {space.hours.to}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.MCI name='account-group' size={14} color={'white'} style={{ marginRight: 6 }} />
+              <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
+                {space.totalMembers}/{`${space.capacity === -1 ? '∞' : space.capacity}`} members{' '}
               </Text>
             </View>
           </View>
