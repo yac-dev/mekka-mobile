@@ -18,7 +18,7 @@ type FeatureProps = {
 export const Feature: React.FC<FeatureProps> = ({ spaceId }) => {
   // const { apiResult } = useGetSpaceByIdState();
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData([queryKeys.spaceById, spaceId]);
+  const data = queryClient.getQueryData<{ space: SpaceType }>([queryKeys.spaceById, spaceId]);
 
   const renderReactions = (space: SpaceType) => {
     if (space.isReactionAvailable) {
@@ -75,256 +75,198 @@ export const Feature: React.FC<FeatureProps> = ({ spaceId }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', paddingHorizontal: 15, paddingTop: 10 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['red1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.MI name='public' size={20} color={'white'} />
-                </View>
-              }
-              title='Visibility'
-              value={data?.space.isPublic ? 'Public' : 'Private'}
-            />
-            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['pink1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.MCI name='advertisements' size={20} color={'white'} />
-                </View>
-              }
-              title='Banner'
-              value={'Turned off'}
-            />
-            {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['blue1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.MCI name='dots-grid' size={20} color={'white'} />
-                </View>
-              }
-              title='Posts'
-              value={'100'}
-            />
-            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['purple1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.MCI name='account-group' size={20} color={'white'} />
-                </View>
-              }
-              title='Members'
-              value={'100 / free'}
-            /> */}
-          </View>
-          <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['blue1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ExpoImage
-                    source={require('../../../assets/forApp/photo-video.png')}
-                    style={{ width: 20, height: 20 }}
-                    tintColor={'white'}
-                  />
-                </View>
-              }
-              title='Content'
-              value={
-                data?.space.contentType
-                  ? data?.space.contentType === 'photo'
-                    ? 'Photo'
-                    : data?.space.contentType === 'video'
-                    ? 'Video'
-                    : 'Photo & Video'
-                  : ''
-              }
-            />
-
-            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['green1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ExpoImage
-                    source={require('../../../assets/forApp/ghost.png')}
-                    style={{ width: 20, height: 20 }}
-                    tintColor={'white'}
-                  />
-                </View>
-              }
-              title='Moment'
-              value={convertMinutesToHoursAndMinutes(data?.space.disappearAfter)}
-            />
-            {data?.space.videoLength ? (
-              <>
-                <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-                <MenuCell
-                  icon={
-                    <View
-                      style={{
-                        backgroundColor: Colors.iconColors['yellow1'],
-                        width: 30,
-                        height: 30,
-                        marginRight: 15,
-                        borderRadius: 8,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <VectorIcon.II name='play-circle-sharp' size={20} color={'white'} />
-                    </View>
-                  }
-                  title='Video Length'
-                  value={formatTimeString(data?.space.videoLength)}
+    <View style={{ backgroundColor: 'black', paddingHorizontal: 15 }}>
+      <View>
+        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['red1'],
+                  width: 30,
+                  height: 30,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <ExpoImage
+                  source={require('../../../assets/forApp/photo-video.png')}
+                  style={{ width: 20, height: 20 }}
+                  tintColor={'white'}
                 />
-              </>
-            ) : null}
+              </View>
+            }
+            title='Content'
+            value={
+              data?.space.contentType
+                ? data?.space.contentType === 'photo'
+                  ? 'Photo'
+                  : data?.space.contentType === 'video'
+                  ? 'Video'
+                  : 'Photo & Video'
+                : ''
+            }
+          />
 
-            {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['orange1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.MCI name='clock-time-two-outline' size={20} color={'white'} />
-                </View>
-              }
-              title='Time Slot'
-              value={'Anytime'}
-            /> */}
-          </View>
-          <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['yellow1'],
-                    width: 32,
-                    height: 32,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.II name='thumbs-up-sharp' size={20} color={'white'} />
-                </View>
-              }
-              title='Reaction'
-              value={renderReactions(data?.space)}
-            />
-            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['brown1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.FD name='comments' size={20} color={'white'} />
-                </View>
-              }
-              title='Comment'
-              value={data?.space.isCommentAvailable ? 'Allowed' : 'Disallowed'}
-            />
-            <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-            <MenuCell
-              icon={
-                <View
-                  style={{
-                    backgroundColor: Colors.iconColors['violet1'],
-                    width: 30,
-                    height: 30,
-                    marginRight: 15,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <VectorIcon.II name='person-add' size={20} color={'white'} />
-                </View>
-              }
-              title='Following'
-              value={data?.space.isFollowAvailable ? 'Allowed' : 'Disallowed'}
-            />
-          </View>
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['indigo1'],
+                  width: 30,
+                  height: 30,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <ExpoImage
+                  source={require('../../../assets/forApp/ghost.png')}
+                  style={{ width: 20, height: 20 }}
+                  tintColor={'white'}
+                />
+              </View>
+            }
+            title='Moment'
+            value={convertMinutesToHoursAndMinutes(data?.space.disappearAfter)}
+          />
+          {data?.space.videoLength ? (
+            <>
+              <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+              <MenuCell
+                icon={
+                  <View
+                    style={{
+                      backgroundColor: Colors.iconColors['orange1'],
+                      width: 30,
+                      height: 30,
+                      marginRight: 15,
+                      borderRadius: 8,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <VectorIcon.II name='play-circle-sharp' size={20} color={'white'} />
+                  </View>
+                }
+                title='Video Length'
+                value={formatTimeString(data?.space.videoLength)}
+              />
+            </>
+          ) : null}
         </View>
-      </ScrollView>
+        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['yellow1'],
+                  width: 32,
+                  height: 32,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='thumbs-up-sharp' size={20} color={'white'} />
+              </View>
+            }
+            title='Reaction'
+            value={renderReactions(data?.space)}
+          />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['green1'],
+                  width: 30,
+                  height: 30,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.FD name='comments' size={20} color={'white'} />
+              </View>
+            }
+            title='Comment'
+            value={data?.space.isCommentAvailable ? 'Allowed' : 'Disallowed'}
+          />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['brown1'],
+                  width: 30,
+                  height: 30,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='person-add' size={20} color={'white'} />
+              </View>
+            }
+            title='Following'
+            value={data?.space.isFollowAvailable ? 'Allowed' : 'Disallowed'}
+          />
+        </View>
+        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['pink1'],
+                  width: 30,
+                  height: 30,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.II name='megaphone' size={20} color={'white'} />
+              </View>
+            }
+            title='Ads'
+            value={'Turned off'}
+          />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <MenuCell
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['gray1'],
+                  width: 30,
+                  height: 30,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <ExpoImage
+                  style={{ width: 20, height: 20 }}
+                  source={require('../../../assets/forApp/learning.png')}
+                  contentFit='contain'
+                  tintColor='white'
+                />
+              </View>
+            }
+            title='Algorithm'
+            value={'Turned off'}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -336,7 +278,7 @@ const Divider = () => {
 type MenuCellProp = {
   icon: React.ReactNode;
   title: string;
-  value: string;
+  value: React.ReactNode;
 };
 
 const MenuCell: React.FC<MenuCellProp> = ({ icon, title, value }) => {

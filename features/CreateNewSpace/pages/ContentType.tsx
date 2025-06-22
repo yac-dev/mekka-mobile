@@ -15,6 +15,7 @@ import { VectorIcon } from '../../../Icons';
 import { Image as ExpoImage } from 'expo-image';
 import BottomSheetModal from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModal';
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
+import { iconColorTable } from '../../../themes/color';
 
 const formatTime = (inputSeconds: number): { minutes: number; seconds: number } => {
   const minutes = Math.floor(inputSeconds / 60);
@@ -188,13 +189,17 @@ const ContentType = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: 'black' }}
+      contentContainerStyle={{ paddingBottom: 40 }}
+      keyboardShouldPersistTaps='handled'
+    >
       <View
         style={{
           paddingLeft: screenHorizontalPadding,
           paddingRight: screenHorizontalPadding,
           paddingTop: 20,
-          paddingBottom: 20,
+          paddingBottom: 10,
         }}
       >
         <Text
@@ -208,311 +213,429 @@ const ContentType = () => {
         >
           Content type
         </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          What kind of content can be shared in this space?
+        <Text
+          style={{
+            textAlign: 'center',
+            color: 'rgb(180, 180, 180)',
+            marginBottom: 4,
+            fontSize: 15,
+            lineHeight: 20,
+          }}
+        >
+          Choose what kind of content people can post in this space. You can allow photos, videos, or both.
         </Text>
       </View>
-      {/* <View style={{ marginBottom: 30 }}>
+      <View style={{ flexDirection: 'column', paddingHorizontal: screenHorizontalPadding }}>
+        {/* Photo & Video Card */}
         <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onContentTypeChange('photoAndVideo')}
-          activeOpacity={0.7}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <ExpoImage
-              style={{ width: 20, aspectRatio: 1, marginRight: 20 }}
-              source={require('../../../assets/forApp/photo-video.png')}
-              contentFit='cover'
-              tintColor={'white'}
-            />
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo & Video</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Both photo and video are available.</Text>
-            </View>
-          </View>
-          {formData.contentType.value === 'photoAndVideo' ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onContentTypeChange('video')}
-          activeOpacity={0.7}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <ExpoImage
-              style={{ width: 20, aspectRatio: 1, marginRight: 20 }}
-              source={require('../../../assets/forApp/video.png')}
-              contentFit='cover'
-              tintColor={'white'}
-            />
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Video</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only video is available.</Text>
-            </View>
-          </View>
-          {formData.contentType.value === 'video' ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ padding: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-          onPress={() => onContentTypeChange('photo')}
-          activeOpacity={0.7}
-        >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <ExpoImage
-              style={{ width: 20, aspectRatio: 1, marginRight: 20 }}
-              source={require('../../../assets/forApp/photo.png')}
-              contentFit='cover'
-              tintColor={'white'}
-            />
-            <View style={{ width: 250 }}>
-              <Text style={{ color: 'white', fontSize: 17, marginBottom: 5 }}>Photo</Text>
-              <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only photo is available.</Text>
-            </View>
-          </View>
-          {formData.contentType.value === 'photo' ? (
-            <Ionicons name='checkmark' size={20} color={'white'} style={{ marginRight: 10 }} />
-          ) : null}
-        </TouchableOpacity>
-      </View> */}
-      <View>
-        <ScrollView
-          horizontal
           style={{
             flexDirection: 'row',
-            paddingBottom: 30,
-            paddingVertical: 10,
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 18,
+            marginRight: 0,
+            marginBottom: 18,
+            position: 'relative',
+            overflow: 'visible',
+            minHeight: 80,
           }}
-          contentContainerStyle={{
-            paddingHorizontal: screenHorizontalPadding,
-          }}
+          activeOpacity={0.85}
+          onPress={() => onContentTypeChange('photoAndVideo')}
         >
-          <View style={{ width: itemWidth, paddingRight: 15 }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 20,
-                width: '100%',
-                height: 160,
-              }}
-              activeOpacity={0.8}
-              onPress={() => onContentTypeChange('photoAndVideo')}
-            >
-              <View
-                style={{
-                  height: 85,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderBottomWidth: 0.3,
-                  borderBottomColor: 'rgb(100,100,100)',
-                }}
-              >
-                <ExpoImage
-                  style={{ width: 50, aspectRatio: 1 }}
-                  source={require('../../../assets/forApp/photo-video.png')}
-                  contentFit='cover'
-                  tintColor={'white'}
-                />
-              </View>
-              <View style={{ padding: 10 }}>
-                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Photo & Video</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Both photo and video are available.</Text>
-              </View>
-            </TouchableOpacity>
-            {formData.contentType.value === 'photoAndVideo' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -10,
-                  right: 0,
-                  backgroundColor: 'black',
-                  width: 35,
-                  height: 35,
-                  borderRadius: 20,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: 'white',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 15,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Ionicons name='checkmark' color='black' size={20} />
-                </View>
-              </View>
-            ) : null}
-          </View>
-          <View style={{ width: itemWidth, paddingRight: 15 }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 20,
-                width: '100%',
-                height: 160,
-              }}
-              activeOpacity={0.8}
-              onPress={() => onContentTypeChange('video')}
-            >
-              <View
-                style={{
-                  height: 85,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderBottomWidth: 0.3,
-                  borderBottomColor: 'rgb(100,100,100)',
-                }}
-              >
-                <ExpoImage
-                  style={{ width: 50, aspectRatio: 1 }}
-                  source={require('../../../assets/forApp/video.png')}
-                  contentFit='cover'
-                  tintColor={'white'}
-                />
-              </View>
-              <View style={{ padding: 10 }}>
-                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Video</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only video is available.</Text>
-              </View>
-            </TouchableOpacity>
-            {formData.contentType.value === 'video' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -10,
-                  right: 0,
-                  backgroundColor: 'black',
-                  width: 35,
-                  height: 35,
-                  borderRadius: 20,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: 'white',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 15,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Ionicons name='checkmark' color='black' size={20} />
-                </View>
-              </View>
-            ) : null}
-          </View>
-          <View style={{ width: itemWidth, paddingRight: 15 }}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgb(50,50,50)',
-                borderRadius: 20,
-                width: '100%',
-                height: 160,
-              }}
-              activeOpacity={0.8}
-              onPress={() => onContentTypeChange('photo')}
-            >
-              <View
-                style={{
-                  height: 85,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderBottomWidth: 0.3,
-                  borderBottomColor: 'rgb(100,100,100)',
-                }}
-              >
-                <ExpoImage
-                  style={{ width: 50, aspectRatio: 1 }}
-                  source={require('../../../assets/forApp/photo.png')}
-                  contentFit='cover'
-                  tintColor={'white'}
-                />
-              </View>
-              <View style={{ padding: 10 }}>
-                <Text style={{ color: 'white', fontSize: 15, marginBottom: 5, fontWeight: 'bold' }}>Photo</Text>
-                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13 }}>Only photo is available.</Text>
-              </View>
-            </TouchableOpacity>
-            {formData.contentType.value === 'photo' ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -10,
-                  right: 0,
-                  backgroundColor: 'black',
-                  width: 35,
-                  height: 35,
-                  borderRadius: 20,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: 'white',
-                    width: 25,
-                    height: 25,
-                    borderRadius: 15,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Ionicons name='checkmark' color='black' size={20} />
-                </View>
-              </View>
-            ) : null}
-          </View>
-        </ScrollView>
-      </View>
-      {formData.contentType.value === 'video' || formData.contentType.value === 'photoAndVideo' ? (
-        <View>
-          <View>
-            <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', paddingBottom: 20 }}>
-              You can limit the length of videos that can be posted.
+          {/* Icon */}
+          <ExpoImage
+            style={{ width: 36, aspectRatio: 1, marginRight: 14 }}
+            source={require('../../../assets/forApp/photo-video.png')}
+            contentFit='cover'
+            tintColor={iconColorTable.blue1}
+          />
+          {/* Title & Description */}
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Photo & Video</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Both photos and videos can be shared. Perfect for all kinds of moments.
             </Text>
           </View>
-          <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center', paddingBottom: 20 }}>
-            {formData.videoLength.value ? formatTimeString(formData.videoLength.value) : ''}
+          {/* Checkmark */}
+          {formData.contentType.value === 'photoAndVideo' ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+        {/* Video Card */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 18,
+            marginRight: 0,
+            marginBottom: 18,
+            position: 'relative',
+            overflow: 'visible',
+            minHeight: 80,
+          }}
+          activeOpacity={0.85}
+          onPress={() => onContentTypeChange('video')}
+        >
+          {/* Icon */}
+          <ExpoImage
+            style={{ width: 36, aspectRatio: 1, marginRight: 14 }}
+            source={require('../../../assets/forApp/video.png')}
+            contentFit='cover'
+            tintColor={iconColorTable.red1}
+          />
+          {/* Title & Description */}
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Video</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Only videos can be posted. Great for dynamic stories and events.
+            </Text>
+          </View>
+          {/* Checkmark */}
+          {formData.contentType.value === 'video' ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+        {/* Photo Card */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 18,
+            marginBottom: 18,
+            position: 'relative',
+            overflow: 'visible',
+            minHeight: 80,
+          }}
+          activeOpacity={0.85}
+          onPress={() => onContentTypeChange('photo')}
+        >
+          {/* Icon */}
+          <ExpoImage
+            style={{ width: 36, aspectRatio: 1, marginRight: 14 }}
+            source={require('../../../assets/forApp/photo.png')}
+            contentFit='cover'
+            tintColor={iconColorTable.yellow1}
+          />
+          {/* Title & Description */}
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>Photo</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Only photos can be posted. Ideal for snapshots and memories.
+            </Text>
+          </View>
+          {/* Checkmark */}
+          {formData.contentType.value === 'photo' ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+      </View>
+      {formData.contentType.value === 'video' || formData.contentType.value === 'photoAndVideo' ? (
+        <View style={{ paddingHorizontal: screenHorizontalPadding, paddingTop: 10 }}>
+          <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 14 }}>
+            You can limit the length of videos that can be posted. Choose a preset or set your own.
           </Text>
-          <View>
-            <FlatList
-              data={presetTimes}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={renderItem}
-              contentContainerStyle={{ paddingHorizontal: 20 }}
-              ListHeaderComponent={
-                <TouchableOpacity
-                  activeOpacity={0.7}
+          {/* 1st row: 5 sec & 30 sec */}
+          <View style={{ flexDirection: 'row', gap: 12, marginBottom: 12 }}>
+            {/* 5 sec */}
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 18,
+                padding: 18,
+                position: 'relative',
+                overflow: 'visible',
+                minHeight: 60,
+              }}
+              activeOpacity={0.85}
+              onPress={() => onVideoLengthChange(5)}
+            >
+              <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>5 sec</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Super short moments</Text>
+              </View>
+              {formData.videoLength.value === 5 ? (
+                <View
                   style={{
-                    backgroundColor: 'rgb(50, 50, 50)',
-                    paddingVertical: 10,
-                    paddingHorizontal: 15,
-                    borderRadius: 20,
-                    marginRight: 10,
-                    flexDirection: 'row',
-                  }}
-                  onPress={() => {
-                    openCustomTimeBottomSheet(0);
+                    position: 'absolute',
+                    top: -8,
+                    right: -8,
+                    backgroundColor: 'white',
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.12,
+                    shadowRadius: 2,
+                    borderWidth: 2,
+                    borderColor: 'black',
                   }}
                 >
-                  <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold', marginRight: 5 }}>Custom</Text>
-                  <VectorIcon.MCI name='chevron-down' size={20} color='white' />
-                </TouchableOpacity>
-              }
-            />
+                  <Ionicons name='checkmark' color='black' size={18} />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+            {/* 30 sec */}
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 18,
+                padding: 18,
+                position: 'relative',
+                overflow: 'visible',
+                minHeight: 60,
+              }}
+              activeOpacity={0.85}
+              onPress={() => onVideoLengthChange(30)}
+            >
+              <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>30 sec</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>For short stories</Text>
+              </View>
+              {formData.videoLength.value === 30 ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -8,
+                    right: -8,
+                    backgroundColor: 'white',
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.12,
+                    shadowRadius: 2,
+                    borderWidth: 2,
+                    borderColor: 'black',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={18} />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+          </View>
+          {/* 2nd row: 1 min & 3 min */}
+          <View style={{ flexDirection: 'row', gap: 12, marginBottom: 12 }}>
+            {/* 1 min */}
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 18,
+                padding: 18,
+                position: 'relative',
+                overflow: 'visible',
+                minHeight: 60,
+              }}
+              activeOpacity={0.85}
+              onPress={() => onVideoLengthChange(60)}
+            >
+              <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>1 min</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Capture more details</Text>
+              </View>
+              {formData.videoLength.value === 60 ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -8,
+                    right: -8,
+                    backgroundColor: 'white',
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.12,
+                    shadowRadius: 2,
+                    borderWidth: 2,
+                    borderColor: 'black',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={18} />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+            {/* 3 min */}
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 18,
+                padding: 18,
+                position: 'relative',
+                overflow: 'visible',
+                minHeight: 60,
+              }}
+              activeOpacity={0.85}
+              onPress={() => onVideoLengthChange(180)}
+            >
+              <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>3 min</Text>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>For longer events</Text>
+              </View>
+              {formData.videoLength.value === 180 ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -8,
+                    right: -8,
+                    backgroundColor: 'white',
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.12,
+                    shadowRadius: 2,
+                    borderWidth: 2,
+                    borderColor: 'black',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={18} />
+                </View>
+              ) : null}
+            </TouchableOpacity>
+          </View>
+          {/* 3rd row: Custom left-aligned */}
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'rgb(50,50,50)',
+                borderRadius: 18,
+                padding: 18,
+                position: 'relative',
+                overflow: 'visible',
+                minHeight: 60,
+                marginBottom: 12,
+              }}
+              activeOpacity={0.85}
+              onPress={() => openCustomTimeBottomSheet(0)}
+            >
+              <View style={{ flex: 1, alignItems: 'flex-start' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom</Text>
+                  {![5, 10, 30, 60, 180].includes(formData.videoLength.value) ? (
+                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15, marginLeft: 8 }}>
+                      {formatTimeString(formData.videoLength.value)}
+                    </Text>
+                  ) : null}
+                </View>
+                <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>Set your own length</Text>
+              </View>
+              {/* Chevron down icon on the far right */}
+              <Ionicons name='chevron-down' size={22} color='white' style={{ marginLeft: 8, marginRight: 4 }} />
+              {![5, 10, 30, 60, 180].includes(formData.videoLength.value) ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -8,
+                    right: -8,
+                    backgroundColor: 'white',
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.12,
+                    shadowRadius: 2,
+                    borderWidth: 2,
+                    borderColor: 'black',
+                  }}
+                >
+                  <Ionicons name='checkmark' color='black' size={18} />
+                </View>
+              ) : null}
+            </TouchableOpacity>
           </View>
         </View>
       ) : null}
@@ -527,7 +650,7 @@ const ContentType = () => {
           {selectedMin === '0' ? renderSecPickerItemsFromFiveToFiftyNine() : renderSecPickerItems()}
         </View>
       </AppBottomSheet.Gorhom>
-    </View>
+    </ScrollView>
   );
 };
 

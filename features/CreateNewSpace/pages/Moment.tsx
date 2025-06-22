@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, StyleSheet, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { CreateNewSpaceContext } from '../contexts/CreateNewSpaceProvider';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import BottomSheetModal from '@gorhom/bottom-sheet/lib/typescript/components/bot
 import { AppBottomSheet } from '../../../components/AppBottomSheet';
 import { convertMinutesToHoursAndMinutes } from '.';
 import { AppButton } from '../../../components/Button';
+import { Ionicons } from '@expo/vector-icons';
 
 const formatTime = (inputMinutes: number): { hours: number; minutes: number } => {
   const hours = Math.floor(inputMinutes / 60);
@@ -31,24 +32,29 @@ const calculateMinutes = (hours: string, minutes: string) => {
 type PresetTime = {
   label: string;
   value: number;
+  description: string;
 };
 
 const presetTimes: PresetTime[] = [
   {
-    label: '5 minutes',
+    label: '5 min',
     value: 5,
+    description: 'Perfect for quick updates and live moments',
   },
   {
     label: '1 hour',
     value: 60,
+    description: 'Great for events and activities in real-time',
   },
   {
     label: '12 hours',
     value: 12 * 60,
+    description: 'Ideal for day-long events and gatherings',
   },
   {
     label: '24 hours',
     value: 24 * 60,
+    description: 'Perfect for daily updates and memories',
   },
 ];
 
@@ -181,42 +187,250 @@ const Moment = () => {
           Moment Time
         </Text>
         <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)' }}>
-          Set how long your post will be visible before it disappears.
+          Choose how long your posts stay visible.
         </Text>
       </View>
 
-      <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center', paddingBottom: 30 }}>
-        {formData.disappearAfter.value ? convertMinutesToHoursAndMinutes(formData.disappearAfter.value) : ''}
-      </Text>
-
-      <View>
-        <FlatList
-          data={presetTimes}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
-          ListHeaderComponent={
-            <TouchableOpacity
-              activeOpacity={0.7}
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        {/* 5 min */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 14,
+            position: 'relative',
+            overflow: 'visible',
+            marginBottom: 12,
+          }}
+          activeOpacity={0.85}
+          onPress={() => onDisapperAfterChange(5)}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>5 min</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Perfect for quick updates and live moments
+            </Text>
+          </View>
+          {formData.disappearAfter.value === 5 ? (
+            <View
               style={{
-                backgroundColor: 'rgb(50, 50, 50)',
-                paddingVertical: 10,
-                paddingHorizontal: 15,
-                borderRadius: 20,
-                marginRight: 10,
-                flexDirection: 'row',
-              }}
-              onPress={() => {
-                openCustomTimeBottomSheet(0);
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
               }}
             >
-              <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>Custom</Text>
-              <VectorIcon.MCI name='chevron-down' size={20} color='white' />
-            </TouchableOpacity>
-          }
-        />
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+
+        {/* 1 hour */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 14,
+            position: 'relative',
+            overflow: 'visible',
+            marginBottom: 12,
+          }}
+          activeOpacity={0.85}
+          onPress={() => onDisapperAfterChange(60)}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>1 hour</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Great for events and activities in real-time
+            </Text>
+          </View>
+          {formData.disappearAfter.value === 60 ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+
+        {/* 12 hours */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 14,
+            position: 'relative',
+            overflow: 'visible',
+            marginBottom: 12,
+          }}
+          activeOpacity={0.85}
+          onPress={() => onDisapperAfterChange(12 * 60)}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>12 hours</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Ideal for day-long events and gatherings
+            </Text>
+          </View>
+          {formData.disappearAfter.value === 12 * 60 ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+
+        {/* 24 hours */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 14,
+            position: 'relative',
+            overflow: 'visible',
+            marginBottom: 12,
+          }}
+          activeOpacity={0.85}
+          onPress={() => onDisapperAfterChange(24 * 60)}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>24 hours</Text>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Perfect for daily updates and memories
+            </Text>
+          </View>
+          {formData.disappearAfter.value === 24 * 60 ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
+
+        {/* Custom option */}
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'rgb(50,50,50)',
+            borderRadius: 18,
+            padding: 14,
+            position: 'relative',
+            overflow: 'visible',
+            marginBottom: 12,
+          }}
+          activeOpacity={0.85}
+          onPress={() => openCustomTimeBottomSheet(0)}
+        >
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Custom</Text>
+              {![5, 60, 12 * 60, 24 * 60].includes(formData.disappearAfter.value) && (
+                <Text style={{ color: 'white', fontSize: 15, marginLeft: 8 }}>
+                  {convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
+                </Text>
+              )}
+            </View>
+            <Text style={{ color: 'rgb(170,170,170)', fontSize: 13, lineHeight: 18 }}>
+              Create your own unique rhythm
+            </Text>
+          </View>
+          <Ionicons name='chevron-down' size={22} color='white' />
+          {![5, 60, 12 * 60, 24 * 60].includes(formData.disappearAfter.value) ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: -8,
+                right: -8,
+                backgroundColor: 'white',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.12,
+                shadowRadius: 2,
+                borderWidth: 2,
+                borderColor: 'black',
+              }}
+            >
+              <Ionicons name='checkmark' color='black' size={18} />
+            </View>
+          ) : null}
+        </TouchableOpacity>
       </View>
+
       <Text
         style={{
           color: 'rgb(170,170,170)',
@@ -286,9 +500,8 @@ const Moment = () => {
             </Text>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text style={styles.modalText}>
-                Similar to Instagram Stories, you can create temporary posts that automatically vanish after your
-                specified time.
-                <Text style={{ color: 'white', fontWeight: 'bold' }}></Text>
+                Moments are temporary posts that create a unique rhythm in your space. The duration you choose shapes
+                how people interact and share their experiences.
               </Text>
             </View>
           </View>

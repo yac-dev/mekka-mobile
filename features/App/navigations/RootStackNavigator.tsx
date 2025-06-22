@@ -127,9 +127,6 @@ export const RootStackNavigator = () => {
     mutationKey: [mutationKeys.registerPushToken],
     mutationFn: (input: RegisterPushTokenInputType) => registerPushToken(input),
   });
-
-  console.log('logsTable', JSON.stringify(logsTable, null, 2));
-  console.log('momentLogs', momentLogs);
   // spaeceのtagを0追加する感じかな。。。
 
   useEffect(() => {

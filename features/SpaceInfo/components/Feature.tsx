@@ -173,7 +173,7 @@ export const Feature: React.FC<FeatureProps> = ({ position, syncOffset, firstRef
                   />
                 </View>
               }
-              title='Recomendation'
+              title='Algorithm'
               value={'Turned off'}
             />
             {/* {currentSpace.isPublic === undefined ? null : currentSpace.isPublic ? (

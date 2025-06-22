@@ -137,7 +137,9 @@ export const Base = () => {
             !formData.isCommentAvailable.isValidated ||
             !formData.description.isValidated ||
             !formData.contentType.isValidated ||
-            !formData.reactions.isValidated
+            !formData.reactions.isValidated ||
+            !formData.capacity.isValidated ||
+            !formData.hours.isValidated
           }
         >
           <Text
@@ -151,14 +153,16 @@ export const Base = () => {
                 !formData.isCommentAvailable.isValidated ||
                 !formData.description.isValidated ||
                 !formData.contentType.isValidated ||
-                !formData.reactions.isValidated
+                !formData.reactions.isValidated ||
+                !formData.capacity.isValidated ||
+                !formData.hours.isValidated
                   ? 'rgb(100,100,100)'
                   : 'white',
               fontSize: 20,
               fontWeight: 'bold',
             }}
           >
-            Done
+            Submit
           </Text>
         </TouchableOpacity>
       ),
@@ -179,7 +183,7 @@ export const Base = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black', padding: 10 }}>
+    <View style={{ flex: 1, backgroundColor: 'black', paddingTop: 10, paddingHorizontal: 10 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text
           style={{
@@ -192,102 +196,78 @@ export const Base = () => {
         >
           Ready to start but...
         </Text>
-        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 20 }}>
-          If you want to customize your space rules,{'\n'}tap any section to change based on your preference.
+        <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', marginBottom: 14 }}>
+          Make your space your own.{'\n'}Tap any section below to customize the rules{'\n'}and settings—change them
+          anytime to fit your style.
         </Text>
         {/* これviewで囲わないとばぐるんだけど。。。なぜ？？ Viewで囲わないと縦方向にjustifuContent:"space-between"みたいな形になる。。。*/}
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{
-            alignSelf: 'center',
-            backgroundColor: 'rgb(50,50,50)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 110,
-            height: 110,
-            padding: 2,
-            borderRadius: 110 / 2,
-            marginBottom: 10,
-          }}
-          onPress={() => onIconChange()}
-        >
-          <ExpoImage
-            style={{ width: 110, height: 110, borderRadius: 110 / 2, alignSelf: 'center' }}
-            source={{ uri: formData.icon.value }}
-            contentFit='cover'
-          />
-        </TouchableOpacity>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            marginBottom: 30,
-            borderBottomWidth: 0.3,
-            borderBottomColor: 'rgb(88, 88, 88)',
+            justifyContent: 'center',
+            paddingHorizontal: 16,
+            marginBottom: 10,
+            marginTop: 5,
           }}
         >
-          <TextInput
+          <TouchableOpacity
+            activeOpacity={0.7}
             style={{
-              fontSize: 18,
-              color: 'white',
-              flex: 1,
-              padding: 10,
+              alignSelf: 'center',
+              backgroundColor: 'rgb(50,50,50)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 50,
+              height: 50,
+              padding: 2,
+              borderRadius: 60 / 2,
+              marginRight: 14,
             }}
-            placeholder='Name'
-            placeholderTextColor={'rgb(170,170,170)'}
-            autoCapitalize='none'
-            value={formData.name.value}
-            onChangeText={(text) => onNameChange(text)}
-          />
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {renderText()}
-            <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
+            onPress={() => onIconChange()}
+          >
+            <ExpoImage
+              style={{ width: 50, height: 50, borderRadius: 100, alignSelf: 'center' }}
+              source={{ uri: formData.icon.value }}
+              contentFit='cover'
+            />
+          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              onPress={() => createNewSpaceNavigation.navigate('SpaceVisibilitySelection')}
+              activeOpacity={0.7}
+            >
+              <Text style={{ color: 'rgb(170,170,170)', fontSize: 15, fontWeight: 'bold' }}>
+                {formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderBottomWidth: 0.3,
+                borderBottomColor: 'rgb(88, 88, 88)',
+              }}
+            >
+              <TextInput
+                style={{
+                  fontSize: 18,
+                  color: 'white',
+                  flex: 1,
+                  paddingVertical: 10,
+                }}
+                placeholder='Name'
+                placeholderTextColor={'rgb(170,170,170)'}
+                autoCapitalize='none'
+                value={formData.name.value}
+                onChangeText={(text) => onNameChange(text)}
+              />
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {renderText()}
+                <Text style={{ marginRight: 10, color: 'rgb(170,170,170)' }}>/40</Text>
+              </View>
+            </View>
           </View>
-        </View>
-        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
-          <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('SelectSpaceVisibility')}
-            icon={
-              <View
-                style={{
-                  backgroundColor: Colors.iconColors['red1'],
-                  width: 32,
-                  height: 32,
-                  marginRight: 15,
-                  borderRadius: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <VectorIcon.MI name='public' size={20} color={'white'} />
-              </View>
-            }
-            title='Visibility'
-            value={formData.isPublic.value !== undefined ? (formData.isPublic.value ? 'Public' : 'Private') : ''}
-            requirementText={formData.isPublic.value === undefined ? 'Required to choose.' : undefined}
-          />
-          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
-          <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('Description')}
-            icon={
-              <View
-                style={{
-                  backgroundColor: Colors.iconColors['blue1'],
-                  width: 32,
-                  height: 32,
-                  marginRight: 15,
-                  borderRadius: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <VectorIcon.MCI name='lead-pencil' size={20} color={'white'} />
-              </View>
-            }
-            title='Description'
-            value={formData.description.value.replace(/\n/g, '')}
-            requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
-          />
         </View>
         <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
@@ -295,7 +275,7 @@ export const Base = () => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['pink1'],
+                  backgroundColor: Colors.iconColors['red1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -329,7 +309,7 @@ export const Base = () => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['orange1'],
+                  backgroundColor: Colors.iconColors['indigo1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -348,13 +328,13 @@ export const Base = () => {
             title='Moment'
             value={convertMinutesToHoursAndMinutes(formData.disappearAfter.value)}
           />
-          {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
           <MenuCell
-            onCellPress={() => createNewSpaceNavigation.navigate('Slot')}
+            onCellPress={() => createNewSpaceNavigation.navigate('Hours')}
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['indigo1'],
+                  backgroundColor: Colors.iconColors['orange1'],
                   width: 32,
                   height: 32,
                   marginRight: 15,
@@ -366,12 +346,12 @@ export const Base = () => {
                 <VectorIcon.MCI name='clock-time-two-outline' size={20} color={'white'} />
               </View>
             }
-            title='Slot'
-            value={'Anytime'}
-            requirementText={!formData.contentType.value ? 'Required to choose.' : undefined}
-          /> */}
+            title='Hours'
+            value={`${formData.hours.value.from} - ${formData.hours.value.to}`}
+            requirementText={!formData.hours.isValidated ? 'Required to choose.' : undefined}
+          />
         </View>
-        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             onCellPress={() => createNewSpaceNavigation.navigate('Reaction')}
             icon={
@@ -415,7 +395,7 @@ export const Base = () => {
                 <VectorIcon.FD name='comments' size={20} color={'white'} />
               </View>
             }
-            title='Comment'
+            title='Comments'
             value={formData.isCommentAvailable.value ? 'Allowed' : 'Disallowed'}
           />
           {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
@@ -448,6 +428,7 @@ export const Base = () => {
               />
             </>
           ) : null}
+
           {/* <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} /> */}
           {/* {formData.isPublic.value === undefined ? null : formData.isPublic.value ? (
             <MenuCell
@@ -477,7 +458,63 @@ export const Base = () => {
             />
           ) : null} */}
         </View>
+        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+          <MenuCell
+            onCellPress={() => createNewSpaceNavigation.navigate('Capacity')}
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['pink1'],
+                  width: 32,
+                  height: 32,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.MCI name='account-group' size={20} color={'white'} />
+              </View>
+            }
+            title='Capacity'
+            value={formData.capacity.value === -1 ? 'Unlimited' : `${formData.capacity.value} members`}
+          />
+          <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
+          <MenuCell
+            onCellPress={() => createNewSpaceNavigation.navigate('Description')}
+            icon={
+              <View
+                style={{
+                  backgroundColor: Colors.iconColors['blue1'],
+                  width: 32,
+                  height: 32,
+                  marginRight: 15,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <VectorIcon.MCI name='lead-pencil' size={20} color={'white'} />
+              </View>
+            }
+            title='Description'
+            value={formData.description.value.replace(/\n/g, '')}
+            requirementText={!formData.description.value ? 'Required to fill out.' : undefined}
+          />
+        </View>
       </ScrollView>
+      <TouchableOpacity onPress={() => console.log('start from tamplate')} activeOpacity={0.7}>
+        <Text
+          style={{
+            color: 'rgb(170,170,170)',
+            fontSize: 16,
+            alignSelf: 'center',
+            textDecorationLine: 'underline',
+          }}
+        >
+          ⚡️ Start from Template
+        </Text>
+      </TouchableOpacity>
       {/* ここもすぐにmodalを閉じてあげようかな。。。 */}
       <LoadingSpinner isVisible={status === 'pending'} message='Creating a space...' />
       {/* <Text style={{ textAlign: 'center', color: 'rgb(180, 180, 180)', fontSize: 11 }}>

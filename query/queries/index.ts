@@ -16,3 +16,4 @@ export * from './getSpaceById';
 export * from './getFollowingUsersByUserId';
 export * from './getNotificationsByUserId';
 export * from './getRepliesByCommentId';
+export * from './getSpaces';

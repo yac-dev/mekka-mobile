@@ -37,6 +37,7 @@ import * as Haptics from 'expo-haptics';
 import { Icons } from '../../../Icons/images';
 import { UpdateMeInputType } from '../../../query/types';
 import { FlashList } from '@shopify/flash-list';
+import { SpaceRules } from '../../Space/pages/Space';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -255,7 +256,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
               marginRight: 10,
               padding: 5,
               paddingHorizontal: 10,
-              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(30,30,30)',
+              backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(50,50,50)',
               borderRadius: 130,
               // ...Platform.select({
               //   ios: {
@@ -301,31 +302,20 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   position: 'absolute',
                   bottom: -7,
                   right: -8,
-                  backgroundColor: 'black',
-                  borderRadius: 10,
+                  backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(50,50,50)',
                   width: 22,
                   height: 22,
+                  borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: 'rgb(30,30,30)',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ExpoImage
-                    style={{ width: 14, height: 14 }}
-                    source={require('../../../assets/forApp/photo.png')}
-                    contentFit='contain'
-                    tintColor='white'
-                  />
-                </View>
+                <ExpoImage
+                  style={{ width: 14, height: 14 }}
+                  source={require('../../../assets/forApp/photo.png')}
+                  contentFit='contain'
+                  tintColor='white'
+                />
               </View>
             ) : null}
             {item.type.length === 1 && item.type[0] === 'video' ? (
@@ -334,31 +324,20 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   position: 'absolute',
                   bottom: -7,
                   right: -8,
-                  backgroundColor: 'black',
-                  borderRadius: 10,
+                  backgroundColor: isFocused ? Colors.iconColors[item.color] : 'rgb(50,50,50)',
                   width: 22,
                   height: 22,
+                  borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: 'rgb(30,30,30)',
-                    width: 18,
-                    height: 18,
-                    borderRadius: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ExpoImage
-                    style={{ width: 14, height: 14 }}
-                    source={require('../../../assets/forApp/video.png')}
-                    contentFit='contain'
-                    tintColor='white'
-                  />
-                </View>
+                <ExpoImage
+                  style={{ width: 14, height: 14 }}
+                  source={require('../../../assets/forApp/video.png')}
+                  contentFit='contain'
+                  tintColor='white'
+                />
               </View>
             ) : null}
           </View>
@@ -501,7 +480,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
         regionDidChangeDebounceTime={100}
         // onMapIdle={onMapIdle}
       >
-        <View style={{ height: 105 }}>
+        {/* <View style={{ height: 105 }}>
           <View
             style={{
               flexDirection: 'column',
@@ -541,6 +520,67 @@ export const RegionView: React.FC<RegionViewProps> = ({
               </TouchableOpacity>
             </View>
           </View>
+        </View> */}
+        <View
+          style={{
+            height: 80,
+            // backgroundColor: 'red'
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'column',
+              paddingHorizontal: 12,
+              paddingTop: 8,
+              // paddingBottom: 8,
+            }}
+          >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <TouchableOpacity
+                style={{ flexDirection: 'column' }}
+                onPress={() => homeStackNavigation.navigate('SpaceInfoStackNavigator')}
+                activeOpacity={0.7}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 27, marginRight: 8 }}>
+                      {currentSpace.name}
+                    </Text>
+                    <View style={{ flexDirection: 'column' }}>
+                      {!currentSpace.isPublic ? (
+                        <Text style={{ color: 'rgb(180,180,180)', fontSize: 11, fontWeight: 'bold' }}>Private</Text>
+                      ) : null}
+                      <Text
+                        style={{
+                          color: 'rgb(180,180,180)',
+                          fontSize: 11,
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {currentSpace.totalMembers} {currentSpace.totalMembers === 1 ? 'member' : 'members'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <VectorIcon.MCI name='chevron-right' size={22} color={Colors.white} />
+                </View>
+              </TouchableOpacity>
+
+              {/* {isCreatePostPending && <ActivityIndicator size='small' color={Colors.white} />} */}
+            </View>
+          </View>
+          <SpaceRules space={currentSpace} />
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            alignSelf: 'center',
+            backgroundColor: 'black',
+            borderTopWidth: 1,
+            borderTopColor: 'rgb(50,50,50)',
+          }}
+        >
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -558,6 +598,8 @@ export const RegionView: React.FC<RegionViewProps> = ({
                   borderRadius: 100,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  width: 32,
+                  height: 32,
                   ...Platform.select({
                     ios: {
                       shadowColor: 'black',
@@ -576,7 +618,7 @@ export const RegionView: React.FC<RegionViewProps> = ({
                 activeOpacity={0.7}
               >
                 <ExpoImage
-                  style={{ width: 20, height: 20 }}
+                  style={{ width: 18, height: 18 }}
                   source={require('../../../assets/forApp/ghost.png')}
                   contentFit='contain'
                   tintColor={Colors.white}
@@ -643,7 +685,6 @@ const styles = StyleSheet.create({
     // borderBottomColor: 'white',
   },
 });
-
 // import React, { useContext, useRef, useEffect, useState } from 'react';
 // import { View, ActivityIndicator } from 'react-native';
 // import { PostType, TagType } from '../../../types';

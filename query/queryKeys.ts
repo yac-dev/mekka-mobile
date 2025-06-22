@@ -22,4 +22,5 @@ export const queryKeys = {
   reactions: 'reactions',
   notifications: 'notifications',
   repliesByCommentId: 'repliesByCommentId',
+  getSpaces: 'getSpaces',
 };
