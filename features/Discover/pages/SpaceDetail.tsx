@@ -41,8 +41,10 @@ const StatCard = ({
   label: string;
 }) => (
   <TouchableOpacity style={styles.statCard} onPress={() => console.log(`${label} card pressed.`)} activeOpacity={0.75}>
-    <VectorIcon.MCI name={iconName} color='white' size={24} style={{ marginBottom: 4 }} />
-    <Text style={styles.statValue}>{value}</Text>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <VectorIcon.MCI name={iconName} color='white' size={24} style={{ marginRight: 6 }} />
+      <Text style={styles.statValue}>{value}</Text>
+    </View>
     <Text style={styles.statLabel}>{label}</Text>
   </TouchableOpacity>
 );
@@ -100,13 +102,17 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
     queryFn: () => getSpaceById({ _id: spaceId }),
   });
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    if (isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-    });
+    })
+      .format(date)
+      .replace(',', '');
   };
 
   const isJoinSpaceValidated = () => {
@@ -117,9 +123,22 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
     return false;
   };
 
+  const isSpaceFull = () => {
+    if (!getSpaceByIdData?.space) {
+      return false;
+    }
+    const { capacity, totalMembers } = getSpaceByIdData.space;
+    if (capacity === -1) {
+      return false; // unlimited capacity
+    }
+    return totalMembers >= capacity;
+  };
+
   const onJoinPress = async () => {
     joinPublicSpaceBySpaceIdMutation({ userId: auth._id, spaceId: spaceId });
   };
+
+  console.log('getSpaceByIdData', getSpaceByIdData);
 
   if (getSpaceByIdStatus === 'pending') {
     return (
@@ -145,64 +164,37 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
                   color: 'white',
                   fontWeight: 'bold',
                   fontSize: 22,
+                  marginBottom: 8,
                 }}
               >
                 {getSpaceByIdData?.space.name}
               </Text>
-            </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              disabled={isJoinSpaceValidated()}
-              onPress={() => onJoinPress()}
-              style={{
-                backgroundColor: isJoinSpaceValidated() ? 'grey' : '#2A85FF',
-                paddingVertical: 8,
-                paddingHorizontal: 16,
-                borderRadius: 20,
-              }}
-            >
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}
-              >
-                {isJoinSpaceValidated() ? 'Joined' : 'Join'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={{ color: 'white', fontSize: 15, marginBottom: 16 }}>{getSpaceByIdData?.space.description}</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
-              <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
-              <Text
-                style={{
-                  color: 'rgb(150, 150, 150)',
-                  fontSize: 12,
-                }}
-              >
-                {getSpaceByIdData?.space.createdBy.name}
-              </Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <VectorIcon.MCI name='cake-variant' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
-              <Text
-                style={{
-                  color: 'rgb(150, 150, 150)',
-                  fontSize: 12,
-                }}
-              >
-                since {formatDate(getSpaceByIdData?.space.createdAt)}
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <VectorIcon.MCI name='cake-variant' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
+                <Text
+                  style={{
+                    color: 'rgb(150, 150, 150)',
+                    fontSize: 12,
+                  }}
+                >
+                  Since {formatDate(getSpaceByIdData?.space.createdAt)}
+                </Text>
+              </View>
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 15, marginBottom: 24 }}>{getSpaceByIdData?.space.description}</Text>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            // contentContainerStyle={{ paddingHorizontal: 12 }}
+          >
             <StatCard
               label={'Members'}
-              value={getSpaceByIdData?.space.totalMembers ?? 0}
+              value={`${getSpaceByIdData?.space.totalMembers ?? 0} / ${
+                getSpaceByIdData?.space.capacity === -1 ? '∞' : getSpaceByIdData?.space.capacity ?? '-'
+              }`}
               iconName={'account-group-outline'}
             />
             <StatCard label={'Posts'} value={getSpaceByIdData?.space.totalPosts ?? 0} iconName={'note-text-outline'} />
@@ -212,8 +204,65 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
               iconName={'tag-multiple-outline'}
             />
             <StatCard label={'Rate'} value={'-'} iconName={'star-outline'} />
-          </View>
+            <TouchableOpacity style={styles.statCard} activeOpacity={0.75}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                {getSpaceByIdData?.space.createdBy.avatar ? (
+                  <ExpoImage
+                    style={{ width: 24, height: 24, borderRadius: 12, marginRight: 6 }}
+                    source={{ uri: getSpaceByIdData.space.createdBy.avatar }}
+                    contentFit='cover'
+                  />
+                ) : (
+                  <View
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: 12,
+                      marginRight: 6,
+                      backgroundColor: 'rgb(70,70,70)',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}>
+                      {getSpaceByIdData?.space.createdBy.name.slice(0, 2).toUpperCase()}
+                    </Text>
+                  </View>
+                )}
+                <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold', flex: 1 }} numberOfLines={1}>
+                  {getSpaceByIdData?.space.createdBy.name}
+                </Text>
+              </View>
+
+              <Text style={styles.statLabel}>Moderator</Text>
+            </TouchableOpacity>
+          </ScrollView>
+
+          <TouchableOpacity
+            activeOpacity={0.7}
+            disabled={isJoinSpaceValidated() || isSpaceFull()}
+            onPress={() => onJoinPress()}
+            style={{
+              backgroundColor: isJoinSpaceValidated() || isSpaceFull() ? 'grey' : '#2A85FF',
+              paddingVertical: 12,
+              borderRadius: 20,
+              alignItems: 'center',
+              marginTop: 14,
+              marginBottom: 8,
+            }}
+          >
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}
+            >
+              {isJoinSpaceValidated() ? 'Joined' : 'Join'}
+            </Text>
+          </TouchableOpacity>
         </View>
+
         <Feature spaceId={spaceId} />
       </ScrollView>
       <LoadingSpinner isVisible={status === 'pending'} message={'Processing now 🤔'} />
@@ -231,9 +280,9 @@ const styles = StyleSheet.create({
   statCard: {
     backgroundColor: 'rgb(30, 30, 30)',
     borderRadius: 8,
-    paddingVertical: 12,
     paddingHorizontal: 8,
-    flex: 1,
+    paddingVertical: 12,
+    width: 90,
     marginHorizontal: 4,
     alignItems: 'center',
     justifyContent: 'center',
@@ -242,11 +291,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
-    marginTop: 2,
   },
   statLabel: {
     color: 'rgb(150, 150, 150)',
     fontSize: 12,
+    marginTop: 4,
   },
 });
 
