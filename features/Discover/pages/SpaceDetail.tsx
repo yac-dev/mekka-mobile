@@ -262,7 +262,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
             onPress={() => onJoinPress()}
             style={{
               backgroundColor: isJoinSpaceValidated() || isSpaceFull() ? 'grey' : '#2A85FF',
-              paddingVertical: 8,
+              paddingVertical: 12,
               borderRadius: 20,
               alignItems: 'center',
               marginTop: 14,
