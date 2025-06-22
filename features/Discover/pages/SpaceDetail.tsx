@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import { Tabs } from '../components';
 import { LoadingSpinner } from '../../../components';
 import { useGetSpaceByIdState } from '../hooks/useGetSpaceByIdState';
@@ -30,6 +30,22 @@ import { Feature } from '../components';
 type SpaceDetailProps = {
   spaceId: string;
 };
+
+const StatCard = ({
+  iconName,
+  value,
+  label,
+}: {
+  iconName: React.ComponentProps<typeof VectorIcon.MCI>['name'];
+  value: string | number;
+  label: string;
+}) => (
+  <TouchableOpacity style={styles.statCard} onPress={() => console.log(`${label} card pressed.`)} activeOpacity={0.75}>
+    <VectorIcon.MCI name={iconName} color='white' size={24} style={{ marginBottom: 4 }} />
+    <Text style={styles.statValue}>{value}</Text>
+    <Text style={styles.statLabel}>{label}</Text>
+  </TouchableOpacity>
+);
 
 const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
   const queryClient = useQueryClient();
@@ -69,6 +85,14 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
       }
       spaceDetailStackNavigation.goBack();
     },
+    onError: (error) => {
+      console.log('error', error);
+      showMessage({ message: 'Something went wrong...', type: 'danger' });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKeys.spaceById, spaceId] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.mySpaces, auth._id] });
+    },
   });
 
   const { data: getSpaceByIdData, status: getSpaceByIdStatus } = useQuery({
@@ -97,24 +121,6 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
     joinPublicSpaceBySpaceIdMutation({ userId: auth._id, spaceId: spaceId });
   };
 
-  useEffect(() => {
-    spaceDetailStackNavigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity activeOpacity={0.7} disabled={isJoinSpaceValidated()} onPress={() => onJoinPress()}>
-          <Text
-            style={{
-              color: isJoinSpaceValidated() ? 'rgb(100,100,100)' : 'white',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}
-          >
-            Join
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [status]);
-
   if (getSpaceByIdStatus === 'pending') {
     return (
       <View style={styles.loading}>
@@ -125,59 +131,91 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <View style={{ marginBottom: 20 }}>
-        <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ padding: 16 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
             <ExpoImage
-              style={{ width: 60, height: 60, borderRadius: 40, marginBottom: 15 }}
+              style={{ width: 60, height: 60, borderRadius: 30, marginRight: 12 }}
               source={{ uri: getSpaceByIdData?.space.icon }}
               contentFit='cover'
             />
-            <Text
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: 22,
+                }}
+              >
+                {getSpaceByIdData?.space.name}
+              </Text>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              disabled={isJoinSpaceValidated()}
+              onPress={() => onJoinPress()}
               style={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: 27,
+                backgroundColor: isJoinSpaceValidated() ? 'grey' : '#2A85FF',
+                paddingVertical: 8,
+                paddingHorizontal: 16,
+                borderRadius: 20,
               }}
             >
-              {getSpaceByIdData?.space.name}
-            </Text>
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                }}
+              >
+                {isJoinSpaceValidated() ? 'Joined' : 'Join'}
+              </Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={{ paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ lineHeight: 21, color: 'white', fontSize: 15, marginBottom: 5 }}>
-            {getSpaceByIdData?.space.description}
-          </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+
+          <Text style={{ color: 'white', fontSize: 15, marginBottom: 16 }}>{getSpaceByIdData?.space.description}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
               <VectorIcon.MCI name='rocket-launch' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
               <Text
                 style={{
                   color: 'rgb(150, 150, 150)',
                   fontSize: 12,
-                  marginRight: 10,
                 }}
               >
                 {getSpaceByIdData?.space.createdBy.name}
               </Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <VectorIcon.MCI name='cake-variant' color='rgb(150, 150, 150)' size={12} style={{ marginRight: 5 }} />
               <Text
                 style={{
                   color: 'rgb(150, 150, 150)',
                   fontSize: 12,
-                  marginRight: 10,
                 }}
               >
                 since {formatDate(getSpaceByIdData?.space.createdAt)}
               </Text>
             </View>
           </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <StatCard
+              label={'Members'}
+              value={getSpaceByIdData?.space.totalMembers ?? 0}
+              iconName={'account-group-outline'}
+            />
+            <StatCard label={'Posts'} value={getSpaceByIdData?.space.totalPosts ?? 0} iconName={'note-text-outline'} />
+            <StatCard
+              label={'Tags'}
+              value={getSpaceByIdData?.space.tags?.length ?? 0}
+              iconName={'tag-multiple-outline'}
+            />
+            <StatCard label={'Rate'} value={'-'} iconName={'star-outline'} />
+          </View>
         </View>
-      </View>
-      <Tabs tagId={getSpaceByIdData?.space.tags[1]._id} spaceId={spaceId} />
-      {/* <Feature spaceId={spaceId} /> */}
+        <Feature spaceId={spaceId} />
+      </ScrollView>
       <LoadingSpinner isVisible={status === 'pending'} message={'Processing now 🤔'} />
     </View>
   );
@@ -189,6 +227,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'black',
+  },
+  statCard: {
+    backgroundColor: 'rgb(30, 30, 30)',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    flex: 1,
+    marginHorizontal: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statValue: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginTop: 2,
+  },
+  statLabel: {
+    color: 'rgb(150, 150, 150)',
+    fontSize: 12,
   },
 });
 
