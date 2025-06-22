@@ -77,7 +77,7 @@ export const Feature: React.FC<FeatureProps> = ({ spaceId }) => {
   return (
     <View style={{ backgroundColor: 'black', paddingHorizontal: 15 }}>
       <View>
-        <View style={{ marginBottom: 20, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
+        <View style={{ marginBottom: 15, backgroundColor: 'rgb(30,30,30)', borderRadius: 10 }}>
           <MenuCell
             icon={
               <View
