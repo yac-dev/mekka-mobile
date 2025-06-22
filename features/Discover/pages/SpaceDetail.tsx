@@ -25,6 +25,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { joinPublicSpaceBySpaceId } from '../../../query/mutations';
 import { JoinPublicSpaceBySpaceIdInputType } from '../../../query/types';
 import { Feature } from '../components';
+import { AppButton } from '../../../components';
+import { Colors } from '../../../themes';
 // ここに、spaceのthumbnailから始まり、
 
 type SpaceDetailProps = {
@@ -35,12 +37,14 @@ const StatCard = ({
   iconName,
   value,
   label,
+  onPress,
 }: {
   iconName: React.ComponentProps<typeof VectorIcon.MCI>['name'];
   value: string | number;
   label: string;
+  onPress?: () => void;
 }) => (
-  <TouchableOpacity style={styles.statCard} onPress={() => console.log(`${label} card pressed.`)} activeOpacity={0.75}>
+  <TouchableOpacity style={styles.statCard} onPress={onPress ?? (() => {})} activeOpacity={0.75}>
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <VectorIcon.MCI name={iconName} color='white' size={24} style={{ marginRight: 6 }} />
       <Text style={styles.statValue}>{value}</Text>
@@ -196,6 +200,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
                 getSpaceByIdData?.space.capacity === -1 ? '∞' : getSpaceByIdData?.space.capacity ?? '-'
               }`}
               iconName={'account-group-outline'}
+              onPress={() => spaceDetailStackNavigation.navigate('Members', { spaceId })}
             />
             <StatCard label={'Posts'} value={getSpaceByIdData?.space.totalPosts ?? 0} iconName={'note-text-outline'} />
             <StatCard
@@ -204,7 +209,20 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
               iconName={'tag-multiple-outline'}
             />
             <StatCard label={'Rate'} value={'-'} iconName={'star-outline'} />
-            <TouchableOpacity style={styles.statCard} activeOpacity={0.75}>
+            <TouchableOpacity
+              style={styles.statCard}
+              activeOpacity={0.75}
+              // onPress={() => {
+              //   if (getSpaceByIdData?.space.createdBy._id) {
+              //     spaceDetailStackNavigation.navigate('UserStackNavigator', {
+              //       screen: 'User',
+              //       params: {
+              //         userId: getSpaceByIdData.space.createdBy._id,
+              //       },
+              //     });
+              //   }
+              // }}
+            >
               <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
                 {getSpaceByIdData?.space.createdBy.avatar ? (
                   <ExpoImage
@@ -244,7 +262,7 @@ const SpaceDetail: React.FC<SpaceDetailProps> = ({ spaceId }) => {
             onPress={() => onJoinPress()}
             style={{
               backgroundColor: isJoinSpaceValidated() || isSpaceFull() ? 'grey' : '#2A85FF',
-              paddingVertical: 12,
+              paddingVertical: 8,
               borderRadius: 20,
               alignItems: 'center',
               marginTop: 14,
