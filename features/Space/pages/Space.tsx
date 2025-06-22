@@ -528,8 +528,9 @@ export const SpaceRules: React.FC<SpaceRulesProps> = ({
                 tintColor='white'
               />
               <Text style={{ color: 'white', fontSize: 11, fontWeight: 'bold' }}>
-                {Math.floor(space.disappearAfter / 60)}h{' '}
-                {space.disappearAfter % 60 === 0 ? '' : `${space.disappearAfter % 60}m`}
+                {`${Math.floor(space.disappearAfter / 60) > 0 ? `${Math.floor(space.disappearAfter / 60)}h` : ''} ${
+                  space.disappearAfter % 60 > 0 ? `${space.disappearAfter % 60}m` : ''
+                }`.trim()}
               </Text>
             </View>
           </View>
@@ -671,6 +672,20 @@ export const SpaceRules: React.FC<SpaceRulesProps> = ({
                 tintColor='rgb(100,100,100)'
               />
               <Text style={{ color: 'rgb(100,100,100)', fontSize: 11, fontWeight: 'bold' }}>Algorithm</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: 'rgb(50,50,50)',
+              borderRadius: 4,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              marginRight: 5,
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <VectorIcon.II name='megaphone' size={14} color={'rgb(100,100,100)'} style={{ marginRight: 6 }} />
+              <Text style={{ color: 'rgb(100,100,100)', fontSize: 11, fontWeight: 'bold' }}>Ads</Text>
             </View>
           </View>
         </View>

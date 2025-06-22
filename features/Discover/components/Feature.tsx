@@ -234,10 +234,10 @@ export const Feature: React.FC<FeatureProps> = ({ spaceId }) => {
                   alignItems: 'center',
                 }}
               >
-                <VectorIcon.MCI name='advertisements' size={20} color={'white'} />
+                <VectorIcon.II name='megaphone' size={20} color={'white'} />
               </View>
             }
-            title='Banner'
+            title='Ads'
             value={'Turned off'}
           />
           <View style={{ height: 0.5, backgroundColor: 'rgb(100, 100, 100)', marginLeft: 15 + 32 + 15 }} />
@@ -245,7 +245,7 @@ export const Feature: React.FC<FeatureProps> = ({ spaceId }) => {
             icon={
               <View
                 style={{
-                  backgroundColor: Colors.iconColors['purple1'],
+                  backgroundColor: Colors.iconColors['gray1'],
                   width: 30,
                   height: 30,
                   marginRight: 15,
@@ -254,11 +254,16 @@ export const Feature: React.FC<FeatureProps> = ({ spaceId }) => {
                   alignItems: 'center',
                 }}
               >
-                <VectorIcon.MI name='tune' size={20} color={'white'} />
+                <ExpoImage
+                  style={{ width: 20, height: 20 }}
+                  source={require('../../../assets/forApp/learning.png')}
+                  contentFit='contain'
+                  tintColor='white'
+                />
               </View>
             }
             title='Algorithm'
-            value={'Default'}
+            value={'Turned off'}
           />
         </View>
       </View>
